@@ -133,6 +133,7 @@ $\Omega(\rho,z;D)$ two-center geometry & Model ansatz, action-compatible & Yes &
 $V_{\rm eff}$, low modes, WKB action & Action-derived + numerically converged & Yes & Extend same solver chain to full $(D,\eta,N)$ map \\
 $g_N$ Cardy envelope + $q^{(N-1)^2}$ regulator & EFT-motivated surrogate & Yes & Replace by explicit microscopic counting model \\
 $\chi_N^{(LR)}(D)$ localized channel & Action-derived extraction (Appendix~\ref{app:chi_loc}) & Yes & Full localized projection over full scan grid \\
+$\Gamma_{N,\ell}$ channel normalization ($A_\ell$) & Kerr-inspired surrogate ($A_1=A_2=1$) & Yes & Benchmark action-derived profile $\tilde A_\ell(D)$ (Appendix~\ref{app:superrad_candidate}) \\
 Open-system $\chi_{\rm eff}$ (Lindblad) & Concept-level proposal only & No & Derive $L_k,\gamma_k$ from EYMH-consistent environment model, then rescan \\
 $B_N$ visibility law [Eq.~\eqref{eq:BN_yukawa_prop}] & Yukawa-anchored surrogate & Yes & Replace with overlap-defined $y_N^{\rm eff}$ program (Section~\ref{sec:yukawa_roadmap}) \\
 $H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}] & Observable proxy & Yes & Derive EFT vertex-level mapping from action-derived operator chain \\
@@ -399,6 +400,7 @@ In the demonstrator, we map the two-mode basis to the lowest two superradiant ch
 \label{eq:gamma_basis_map}
 \end{equation}
 Any mixing matrix element is rendered dimensionless with $\bar{\Gamma}_N$, independent of whether the basis is parity $(+,-)$ or localized $(L,R)$. Higher-$\ell$ modes are parametrically suppressed by the $(\omega_N M_*)^{4\ell+4}$ scaling and are deferred to future extensions. All rates are expressed in \textbf{dimensionless units} ($M_*=1$); $A_\ell$ is a normalization convention fixed to unity in the demonstrator and varied by $\pm 10\%$ in Appendix~\ref{app:Veff}.
+A first-principles profile candidate for $A_\ell$ extracted from the same action-derived chain is benchmarked in Appendix~\ref{app:superrad_candidate}; it is reported as diagnostic only and is not used in baseline figures.
 The effective formation rate of layer $N$ is the largest positive eigenvalue of this matrix:
 \begin{equation}
 \boxed{
@@ -604,6 +606,7 @@ The use of two parameter sets is a deliberate design choice: action-derived mixi
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
     \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; map-level impact is mild in profile-scaled mode but this closure is not yet propagated into baseline figures.
+    \item \textbf{Superradiant channel normalization}: Eq.~\eqref{eq:Gamma_channel} uses $A_1=A_2=1$ in the baseline maps. An action-derived profile candidate $\tilde A_\ell(D)$ is benchmarked in Appendix~\ref{app:superrad_candidate}; it introduces visible map shifts and is therefore kept as diagnostic only.
 \end{enumerate}
 
 \textbf{Status and redefinition of the mixing channel.}
@@ -1165,6 +1168,80 @@ $\eta_{\rm eff}=\eta_{\rm prob}(D)$ & 0.800 & 0.000 & 0.1000 & $4.85\times10^{-2
 \end{table}
 
 At current scan resolution, profile-scaled implementations are nearly degenerate with baseline map-level summaries, while fully closed $\eta_{\rm eff}=\eta_{\rm fp}(D)$ shifts proxy-fit quality more noticeably. Therefore, Eq.~\eqref{eq:eta_pref_candidates} is reported as a first-principles candidate benchmark and is not propagated into baseline reported figures.
+
+\subsection{Action-Derived First-Principles Candidate for Superradiant Channel Scaling}
+\label{app:superrad_candidate}
+To test a geometry-closed replacement direction for the channel normalization in Eq.~\eqref{eq:Gamma_channel}, we keep the same 1D action-derived chain and define channel-resolved barrier actions
+\begin{equation}
+U_\ell(z;D)\equiv U(z;D)+\frac{\ell(\ell+1)}{z^2+\varepsilon^2},\qquad
+S_{N,\ell}(D)\equiv\int_{z_-}^{z_+}\dd z\,\sqrt{U_\ell(z;D)-E_N(D)},
+\end{equation}
+with $E_N=\omega_N^2-m_0^2$ in bound-state convention.
+We then define geometry-driven channel rates
+\begin{equation}
+\Gamma_{N,\ell}^{\rm(geo)}(D)\equiv \omega_N(D)\,e^{-2S_{N,\ell}(D)},
+\end{equation}
+and infer effective channel normalizations by matching to Eq.~\eqref{eq:Gamma_channel}:
+\begin{equation}
+A_\ell^{\rm(fp)}(D;N)\equiv
+\frac{\Gamma_{N,\ell}^{\rm(geo)}(D)}{\omega_N(D)\,(\omega_N(D)M_*)^{4\ell+4}}.
+\end{equation}
+Using $(D_{\rm ref},N_{\rm ref})=(12,2)$, we define profile factors
+\begin{equation}
+\tilde A_\ell(D)\equiv \frac{A_\ell^{\rm(fp)}(D;N_{\rm ref})}{A_\ell^{\rm(fp)}(D_{\rm ref};N_{\rm ref})}.
+\label{eq:superrad_A_profile}
+\end{equation}
+The reproducible script is \texttt{extract\_superrad\_prefactor\_1d.py} in the \texttt{code/} directory.
+
+\begin{table}[t]
+\centering
+\caption{1D on-axis benchmark for superradiant profile candidates at $D=\{6,12,18\}$ (coarse/mid/fine). Source CSV: \texttt{output/superrad\_fp\_1d/superrad\_prefactor\_D6-12-18.csv}.}
+\label{tab:superrad_prefactor}
+\small
+\begin{tabular}{cccccccc}
+\hline\hline
+$D$ & level & $\omega_{N_{\rm ref}}$ & $S_{N_{\rm ref},1}$ & $S_{N_{\rm ref},2}$ & $\tilde A_1$ & $\tilde A_2$ & $A_2^{\rm(fp)}/A_1^{\rm(fp)}$ \\
+\hline
+6  & coarse & 0.738989 & 12.7478 & 20.7033 & $1.2936\times10^{4}$ & $5.5305\times10^{4}$ & $4.1247\times10^{-7}$ \\
+6  & mid    & 0.739468 & 12.7644 & 20.7073 & $1.2452\times10^{4}$ & $5.4667\times10^{4}$ & $4.2192\times10^{-7}$ \\
+6  & fine   & 0.739629 & 12.7711 & 20.7088 & $1.2652\times10^{4}$ & $5.6814\times10^{4}$ & $4.2589\times10^{-7}$ \\
+12 & coarse & 0.722035 & 17.5746 & 26.3029 & $1.0000$ & $1.0000$ & $9.6480\times10^{-8}$ \\
+12 & mid    & 0.722513 & 17.5720 & 26.3009 & $1.0000$ & $1.0000$ & $9.6103\times10^{-8}$ \\
+12 & fine   & 0.722674 & 17.5866 & 26.3217 & $1.0000$ & $1.0000$ & $9.4844\times10^{-8}$ \\
+18 & coarse & 0.719408 & 22.0000 & 31.0465 & $1.47\times10^{-4}$ & $7.9\times10^{-5}$ & $5.1810\times10^{-8}$ \\
+18 & mid    & 0.719888 & 22.0060 & 31.0550 & $1.45\times10^{-4}$ & $7.8\times10^{-5}$ & $5.1411\times10^{-8}$ \\
+18 & fine   & 0.720050 & 22.0043 & 31.0573 & $1.50\times10^{-4}$ & $8.0\times10^{-5}$ & $5.0954\times10^{-8}$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+For non-fine rows in Table~\ref{tab:superrad_prefactor}, the maximum relative deviations are
+\begin{equation}
+\max\!\left(\frac{|\tilde A_1-\tilde A_1^{\rm(fine)}|}{|\tilde A_1^{\rm(fine)}|}\right)=3.22\times10^{-2},\quad
+\max\!\left(\frac{|\tilde A_2-\tilde A_2^{\rm(fine)}|}{|\tilde A_2^{\rm(fine)}|}\right)=3.78\times10^{-2}.
+\end{equation}
+The fine full-scan profile over $D=4,\dots,20$ yields $\tilde A_1\in[8.54\times10^{-6},\,4.10\times10^5]$ and $\tilde A_2\in[3.95\times10^{-6},\,4.92\times10^6]$ (source files in \texttt{output/superrad\_fp\_1d/}), indicating a very stiff $D$-dependence in this preliminary closure.
+
+To quantify map-level sensitivity, we compare baseline $(A_1,A_2)=(1,1)$ against profile-scaled implementations on the same $60\times60$ grid. Results are summarized in Table~\ref{tab:superrad_impact} (source CSV: \texttt{paper/superrad\_profile\_impact.csv}).
+
+\begin{table}[t]
+\centering
+\caption{Global-scan impact of superradiant profile candidates (diagnostic only; not baseline).}
+\label{tab:superrad_impact}
+\small
+\begin{tabular}{lcccc}
+\hline\hline
+case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
+\hline
+baseline $(A_1,A_2)=(1,1)$ & 0.800 & 0.000 & 0.0942 & $3.05\times10^{-7}$ \\
+$(A_1,A_2)=(\tilde A_1,\tilde A_2)$ & 0.7317 & 0.000 & 0.0358 & $2.23\times10^{-4}$ \\
+$(A_1,A_2)=0.5(\tilde A_1,\tilde A_2)$ & 0.7106 & 0.000 & 0.0358 & $2.23\times10^{-4}$ \\
+$(A_1,A_2)=2(\tilde A_1,\tilde A_2)$ & 0.7550 & 0.000 & 0.0358 & $2.23\times10^{-4}$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+At current scan resolution, the action-derived superradiant profile candidate induces non-negligible shifts in both $\mathcal{R}_3$ coverage and proxy-compatibility area. Therefore, Eq.~\eqref{eq:superrad_A_profile} is reported as a first-principles diagnostic benchmark and is not propagated into baseline reported figures.
 
 
 \section{Ansatz Ablation Study}

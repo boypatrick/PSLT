@@ -6,6 +6,8 @@
 
 This bundle contains the complete source code, data, and manuscript for the PSLT verification project.
 
+**Reproducibility badge:** Core figures/tables are reproducible via `python3 code/generate_plots.py` and `python3 code/extract_chi_localized_2d.py`.
+
 ## Directory Structure
 - `paper/`: Contains the main Latex manuscript (`main.tex`).
 - `code/`: Contains the Python verification scripts.
@@ -45,6 +47,6 @@ pdflatex main.tex
 - `pdflatex` (for manuscript)
 
 ## Key Results
-- **Three-Generation Stability:** The theory generates a stable 3-generation structure (Generation Ratio > 95%) in over 56% of the parameter space.
-- **H→μμ Compatibility:** The predicted signal strength is consistent with ATLAS/CMS measurements ($\chi^2 \approx 0$ at best fit).
+- **Three-Generation Stability:** In the current D-interpolated localized-channel scan, the theory gives Generation Ratio $\mathcal{R}_3>90\%$ over **80.0%** of the sampled $(D,\eta)$ grid, while $\mathcal{R}_3>95\%$ is not reached in this setup.
+- **H→μμ Proxy Compatibility:** The proxy-accepted region ($\chi^2<4$) occupies about **9.4%** of the sampled grid, with best grid point near $(D,\eta)\approx(9.97,1.36)$ and $\chi^2\sim 3.0\times10^{-7}$.
 - **Yukawa-Anchored Visibility + High-$N$ Stability:** Visibility is anchored to SM Yukawa couplings via a Yukawa-proportional law with sublinear compression ($B_{1,2,3}\propto Y_{1,2,3}^{p_B}$), while a $q^{(N-1)^2}$-type regulator in $g_N$ prevents high-$N$ runaway.

@@ -786,6 +786,38 @@ Across all non-fine runs in Table~\ref{tab:chi_loc}, we obtain
 \end{equation}
 which satisfies the stated convergence and absolute-null criteria.
 
+For interpolation support and reproducibility of scan-level diagnostics, we additionally ran a fine-grid-only auxiliary sweep on integer separations $D=4,\dots,20$ using the same solver settings (\texttt{--full-scan} in \texttt{extract\_chi\_localized\_2d.py}). These points are used as profile-support data in the repository, while the formal acceptance criteria above remain defined by the benchmark convergence set $D=\{6,12,18\}$.
+
+\begin{table}[t]
+\centering
+\caption{Auxiliary fine-grid localized profile points from the full-scan run ($D=4$--$20$). Source CSV: \texttt{output/chi\_fp\_2d/localized\_chi\_D4-5-...-20.csv}.}
+\label{tab:chi_loc_full}
+\small
+\begin{tabular}{cccc}
+\hline\hline
+$D$ & $\lambda_1$ & $\lambda_2$ & $\chi_N^{(LR)}$ \\
+\hline
+4  & 2.06671 & 2.56696 & $5.266\times10^{-4}$ \\
+5  & 2.34635 & 2.85471 & $3.311\times10^{-4}$ \\
+6  & 2.16611 & 2.62106 & $4.018\times10^{-4}$ \\
+7  & 2.42273 & 2.88524 & $2.661\times10^{-4}$ \\
+8  & 2.24778 & 2.66479 & $3.202\times10^{-4}$ \\
+9  & 2.10111 & 2.48071 & $3.758\times10^{-4}$ \\
+10 & 2.32055 & 2.70644 & $2.623\times10^{-4}$ \\
+11 & 2.17620 & 2.52926 & $3.064\times10^{-4}$ \\
+12 & 2.37821 & 2.73632 & $2.214\times10^{-4}$ \\
+13 & 2.24440 & 2.57510 & $2.554\times10^{-4}$ \\
+14 & 2.42772 & 2.76173 & $1.906\times10^{-4}$ \\
+15 & 2.30010 & 2.61030 & $2.181\times10^{-4}$ \\
+16 & 2.47457 & 2.78817 & $1.661\times10^{-4}$ \\
+17 & 2.34884 & 2.64089 & $1.895\times10^{-4}$ \\
+18 & 2.23864 & 2.51202 & $2.132\times10^{-4}$ \\
+19 & 2.39519 & 2.67161 & $1.663\times10^{-4}$ \\
+20 & 2.28581 & 2.54509 & $1.867\times10^{-4}$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
 Figure~\ref{fig:chi_loc_modes} shows the fine-grid 2D parity eigenmodes used in the localized extraction at $D=\{6,12,18\}$. The expected even/odd nodal structure is manifest and remains stable across the three benchmark separations.
 
 \begin{figure*}[t]

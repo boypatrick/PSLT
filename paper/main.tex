@@ -132,6 +132,7 @@ $\Omega(\rho,z;D)$ two-center geometry & Model ansatz, action-compatible & Yes &
 $V_{\rm eff}$, low modes, WKB action & Action-derived + numerically converged & Yes & Extend same solver chain to full $(D,\eta,N)$ map \\
 $g_N$ Cardy envelope + $q^{(N-1)^2}$ regulator & EFT-motivated surrogate & Yes & Replace by explicit microscopic counting model \\
 $\chi_N^{(LR)}(D)$ localized channel & Action-derived extraction (Appendix~\ref{app:chi_loc}) & Yes & Full localized projection over full scan grid \\
+Open-system $\chi_{\rm eff}$ (Lindblad) & Concept-level proposal only & No & Derive $L_k,\gamma_k$ from EYMH-consistent environment model, then rescan \\
 $B_N$ visibility law [Eq.~\eqref{eq:BN_yukawa_prop}] & Yukawa-anchored surrogate & Yes & Replace with overlap-defined $y_N^{\rm eff}$ program (Section~\ref{sec:yukawa_roadmap}) \\
 $H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}] & Observable proxy & Yes & Derive EFT vertex-level mapping from action-derived operator chain \\
 \bottomrule
@@ -299,6 +300,15 @@ We estimate the finite-$N$ error as:
 For our baseline, this gives $\delta g_1/g_1 \lesssim 55\%$, $\delta g_2/g_2 \lesssim 39\%$, $\delta g_3/g_3 \lesssim 32\%$. These uncertainties are absorbed into the effective parameters $(c_{\rm eff}, \nu)$, which are calibrated against the phase diagram rather than derived from first principles. (The Gaussian regulator $\kappa_g$ has negligible effect for $N \leq 3$.)
 
 \textbf{Key point:} We do not claim that Eq.~\eqref{eq:gN_reg} is exact for $N = 1,2,3$. Rather, it provides a \emph{controlled interpolation} between the physically motivated asymptotic form and the demonstrator regime, with $\Order(1)$ uncertainties that are subsumed into the effective parameters.
+
+\subsection{Assessment of a Phase-Space First-Principles Candidate}
+\label{sec:gn_phase_space_assessment}
+We also evaluated a semiclassical phase-space candidate for replacing Eq.~\eqref{eq:gN_reg},
+\begin{equation}
+\rho_{\rm WKB}(E)\propto \int_{U(z)<E}\frac{\dd z}{\sqrt{E-U(z)}},\qquad
+g_N^{\rm(ps)} \sim 1+\int \rho_{\rm WKB}(E)\,\dd E,
+\end{equation}
+with $U(z)=V_{\rm eff}(z)-m_0^2$ from the same action-derived geometry. This direction is physically motivated, but a naive implementation is not yet a drop-in replacement: for bound layers ($E_N<0$), choosing integration bounds as $(0\to E_N)$ is inconsistent with the bound-state threshold convention and can produce nonphysical normalization behavior (including $g_N<1$ in low layers). A consistent replacement requires a fully specified microcanonical prescription (turning-point set, lower reference energy, finite-volume normalization, and 2D extension) under the same convergence standards as Appendix~\ref{app:chi_loc}. Therefore, in this manuscript, Eq.~\eqref{eq:gN_reg} remains the scan-level surrogate while the phase-space program is kept as ongoing first-principles work.
 
 
 
@@ -587,6 +597,7 @@ The use of two parameter sets is a deliberate design choice: action-derived mixi
 \begin{enumerate}
     \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison uses the proxy $g_{h\mu\mu}^{\rm eff}\propto \sqrt{W_2}$ rather than a full derivation from the EYMH action. Consistently, the current scan still uses the surrogate visibility law in Eq.~\eqref{eq:BN_yukawa_prop}; the action-derived operator program in Section~\ref{sec:yukawa_roadmap} and Eq.~\eqref{eq:yukawa_eff_roadmap} has not yet replaced the global map.
     \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and propagate its D-interpolated profile in the global scan. The remaining gap is a full $(D,\eta,N)$ localized projection.
+    \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is plausible as an effective environment model, but this manuscript does not yet derive jump operators and rates $(L_k,\gamma_k)$ from the EYMH projection geometry. It is therefore not used in any reported scan statistic.
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ is extracted from the action-derived 2D localized solver (Appendix~\ref{app:chi_loc}), while the global $(D,\eta)$ scan still uses a simplified kinetic surrogate for rapid mapping. A full end-to-end scan using one identical operator chain for both extraction and phase mapping is left for future work.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in this version; a fully geometry-closed $t_{\rm coh}(D,\eta,N)$ prescription is still under development.

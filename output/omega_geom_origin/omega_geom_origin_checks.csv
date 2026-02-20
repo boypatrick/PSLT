@@ -1,0 +1,2 @@
+eps,norm_num,norm_abs_err,laplacian_max_abs_err,laplacian_max_rel_err,laplacian_median_rel_err
+0.1,0.9999996250001174,3.7499988259082073e-07,0.00013314615331694313,0.00013892469580898713,2.0697507974319866e-06

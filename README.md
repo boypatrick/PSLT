@@ -50,6 +50,7 @@ python3 scan_eta_profile_impact.py
 python3 extract_superrad_prefactor_1d.py --Ds 6,12,18
 python3 extract_superrad_prefactor_1d.py --full-scan
 python3 scan_superrad_profile_impact.py
+python3 verify_omega_geometric_origin.py
 python3 extract_gn_phase_space_candidate.py --D 12
 python3 lindblad_chi_minimal.py
 python3 extract_gn_phase_space_2d.py --Ds 6,12,18
@@ -75,6 +76,8 @@ This also writes the full localized-channel profile tables to:
 - `output/superrad_fp_1d/superrad_prefactor_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20_relerr.csv`
 - `output/superrad_fp_1d/superrad_profile_impact.csv`
 - `output/superrad_fp_1d/superrad_profile_values.csv`
+- `output/omega_geom_origin/omega_geom_origin_checks.csv`
+- `output/omega_geom_origin/omega_geom_origin_samples.csv`
 - `output/gn_fp_1d/gn_phase_space_candidate_D12.csv`
 - `output/chi_open_system/lindblad_minimal_timeseries.csv`
 - `output/gn_fp_2d/gn_phase_space_2d_D6-12-18.csv`

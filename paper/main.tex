@@ -129,7 +129,7 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \toprule
 \textbf{Component} & \textbf{Current Status} & \textbf{Used in Global Scan} & \textbf{Next Upgrade Path} \\
 \midrule
-$\Omega(\rho,z;D)$ two-center geometry & Model ansatz, action-compatible & Yes & Derive from a specific higher-dimensional parent solution \\
+$\Omega(\rho,z;D)$ two-center geometry & Green-function solution of projected Poisson constraint (two-source model) & Yes & Derive the projected source term from a specific higher-dimensional parent solution \\
 $V_{\rm eff}$, low modes, WKB action & Action-derived + numerically converged & Yes & Extend same solver chain to full $(D,\eta,N)$ map \\
 $g_N$ Cardy envelope + $q^{(N-1)^2}$ regulator & EFT-motivated surrogate & Yes & Replace by explicit microscopic counting model \\
 $\chi_N^{(LR)}(D)$ localized channel & Action-derived extraction (Appendix~\ref{app:chi_loc}) & Yes & Full localized projection over full scan grid \\
@@ -151,18 +151,40 @@ This section demonstrates the complete derivation chain $\Omega(x;D) \to V_{\rm 
 \subsection{Two-Center Harmonic Conformal Factor}
 \label{sec:two_center}
 
-We consider a two-center conformal factor with harmonic structure:
+The geometric origin of the dual-center conformal factor is formulated as a projected Poisson constraint on the static spatial slice:
+\begin{equation}
+\nabla^2\Omega(\mathbf{x})=-4\pi\,\sigma(\mathbf{x}),\qquad
+\sigma(\mathbf{x})\equiv a\!\left[\rho_\varepsilon(\mathbf{x}-\mathbf{x}_+)+\rho_\varepsilon(\mathbf{x}-\mathbf{x}_-)\right].
+\label{eq:Omega_poisson}
+\end{equation}
+Here $\mathbf{x}_\pm=\pm(D/2)\hat z$ are the two projected centers and $\rho_\varepsilon$ is a normalized smeared source. With Green's function $G(\mathbf{x})=(4\pi|\mathbf{x}|)^{-1}$ for $-\nabla^2$, the unique asymptotically flat solution ($\Omega\to1$ at $|\mathbf{x}|\to\infty$) is
+\begin{equation}
+\Omega(\mathbf{x})=1+\int d^3x'\,\frac{\sigma(\mathbf{x}')}{|\mathbf{x}-\mathbf{x}'|}.
+\label{eq:Omega_green}
+\end{equation}
+Choosing the Plummer-type kernel
+\begin{equation}
+\rho_\varepsilon(\mathbf{r})=\frac{3\varepsilon^2}{4\pi\,(|\mathbf{r}|^2+\varepsilon^2)^{5/2}},\qquad
+\int d^3r\,\rho_\varepsilon(\mathbf{r})=1,
+\label{eq:rho_eps_norm}
+\end{equation}
+one obtains the closed form
 \begin{equation}
 \boxed{
 \Omega(\rho, z; D) = 1 + a \left( \frac{1}{r_+} + \frac{1}{r_-} \right), \qquad r_\pm = \sqrt{\rho^2 + (z \mp D/2)^2 + \varepsilon^2}
 }
 \label{eq:Omega_two_center}
 \end{equation}
-where $(\rho, z)$ are cylindrical coordinates (axisymmetric, $m=0$), $x_\pm = \pm (D/2) \hat{z}$ are the two center positions, $a$ is the conformal factor strength, and $\varepsilon$ is a core regularization parameter that smears the $\delta$-function sources:
+in cylindrical coordinates $(\rho,z)$ (axisymmetric, $m=0$). The corresponding source identity follows from
+\begin{equation}
+\nabla^2\!\left(\frac{1}{\sqrt{r^2+\varepsilon^2}}\right)= -\frac{3\varepsilon^2}{(r^2+\varepsilon^2)^{5/2}},
+\label{eq:laplace_plummer}
+\end{equation}
+hence
 \begin{equation}
 \nabla^2 \Omega = -4\pi a \left[ \rho_\varepsilon(x - x_+) + \rho_\varepsilon(x - x_-) \right], \qquad \rho_\varepsilon(x) = \frac{3\varepsilon^2}{4\pi (|x|^2 + \varepsilon^2)^{5/2}}.
 \end{equation}
-This form is directly analogous to superposed harmonic functions in gravitational potential theory.
+Equation~\eqref{eq:Omega_two_center} therefore is not an arbitrary fitting form: once Eq.~\eqref{eq:Omega_poisson}, two-center source support, and asymptotic flatness are fixed, it is the corresponding Green-function solution.
 
 \subsection{Action-Derived Effective Potential}
 \label{sec:curvature}
@@ -643,15 +665,35 @@ The author acknowledges the use of PDG 2024 data and standard Python scientific 
 \subsection{Two-Center Harmonic Conformal Factor}
 \label{app:Omega}
 
-We adopt the two-center harmonic conformal factor with core regularization:
+We define the conformal factor by a projected Poisson problem on the static slice,
+\begin{equation}
+\nabla^2\Omega(\mathbf{x})=-4\pi a\!\left[\rho_\varepsilon(\mathbf{x}-\mathbf{x}_+)+\rho_\varepsilon(\mathbf{x}-\mathbf{x}_-)\right],\qquad
+\Omega\to 1\ \ (|\mathbf{x}|\to\infty),
+\end{equation}
+with $\mathbf{x}_\pm=\pm(D/2)\hat z$. Using the Green representation
+\begin{equation}
+\Omega(\mathbf{x})=1+a\sum_{s=\pm}\int d^3x'\,\frac{\rho_\varepsilon(\mathbf{x}'-\mathbf{x}_s)}{|\mathbf{x}-\mathbf{x}'|},
+\end{equation}
+and the normalized Plummer kernel
+\begin{equation}
+\rho_\varepsilon(\mathbf{r})=\frac{3\varepsilon^2}{4\pi\,(|\mathbf{r}|^2+\varepsilon^2)^{5/2}},\qquad
+\int d^3r\,\rho_\varepsilon(\mathbf{r})=1,
+\end{equation}
+the integral is analytic and gives
 \begin{equation}
 \Omega(\rho, z; D) = 1 + a\left(\frac{1}{\sqrt{\rho^2 + (z-D/2)^2 + \varepsilon^2}} + \frac{1}{\sqrt{\rho^2 + (z+D/2)^2 + \varepsilon^2}}\right)
 \end{equation}
-where $a$ is the geometric strength, $\varepsilon$ is the core regularization scale, and $D$ is the dual-center separation. Away from the cores ($|\mathbf{x} - \mathbf{x}_\pm| \gg \varepsilon$), this satisfies $\nabla^2\Omega \approx 0$. Near the cores, the smeared Laplacian is:
+where $a$ is the geometric strength, $\varepsilon$ is the core regularization scale, and $D$ is the dual-center separation. Away from the cores ($|\mathbf{x} - \mathbf{x}_\pm| \gg \varepsilon$), this satisfies $\nabla^2\Omega \approx 0$. The radial identity
+\begin{equation}
+\nabla^2\!\left(\frac{1}{\sqrt{r^2+\varepsilon^2}}\right)= -\frac{3\varepsilon^2}{(r^2+\varepsilon^2)^{5/2}}
+\end{equation}
+gives the smeared Laplacian:
 \begin{equation}
 \nabla^2\Omega = -3a\varepsilon^2\left[(r_+^2 + \varepsilon^2)^{-5/2} + (r_-^2 + \varepsilon^2)^{-5/2}\right] < 0
 \end{equation}
-This negative contribution is essential for forming the attractive wells in $V_{\rm eff}$.
+which is equivalent to the source form in Eq.~\eqref{eq:Omega_poisson}. This negative contribution is essential for forming the attractive wells in $V_{\rm eff}$.
+As a reproducibility check, \texttt{verify\_omega\_geometric\_origin.py} confirms
+$\int d^3r\,\rho_\varepsilon=1$ with absolute error $3.75\times10^{-7}$ and validates the radial Laplacian identity with max relative error $1.39\times10^{-4}$ in the non-asymptotic band (see \texttt{output/omega\_geom\_origin/}).
 
 \subsection{Veff Derivation from KG Equation}
 \label{app:derivation}

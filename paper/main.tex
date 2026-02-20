@@ -39,7 +39,7 @@ The theoretical closure is achieved by unifying three key modules:
 (ii) a \textbf{Rank-2 Computable Kinetic module} ($\Gamma_N$) defined as the largest positive eigenvalue of a $2\times2$ growth matrix with explicit WKB tunneling suppression; and
 (iii) a \textbf{Visibility module} ($B_N$) anchored to Standard Model lepton Yukawa couplings via a sublinear compression exponent $0<p_B<1$, with high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator.
 The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates a stable ``winner'' phase diagram with clear dominance of layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
-We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over most sampled points), and (2) a proxy compatibility test with the ATLAS Run-3 $H\to\mu\mu$ signal strength ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
+We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over $80.0\%$ of the sampled $(D,\eta)$ grid), and (2) a proxy compatibility test with the ATLAS Run-3 $H\to\mu\mu$ signal strength ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
 The proxy mapping yields a restricted acceptance band (about $9.4\%$ of the scanned grid for $\chi^2<4$), providing a sharper falsifiable constraint on $(D,\eta)$.
 \end{abstract}
 
@@ -467,7 +467,7 @@ Micro-degeneracy $g_N$ & $c_{\rm eff}$ & 0.5 & Cardy entropy coefficient \\
 \midrule
 Visibility $B_N$ & $p_B$ & 0.30 & Sublinear compression \\
 \midrule
- Kinetics $\Gamma_N$ & $\chi_N^{(LR)}(D)$ & App.~\ref{app:chi_loc} & Localized-channel profile (action-derived extraction, D-interpolated in scan) \\
+ Kinetics $\Gamma_N$ & $\chi_N^{(LR)}(D)$ & App.~\ref{app:chi_loc} & Localized-channel profile (action-derived extraction, D-interpolated in final scans; early demonstrator used constant $\chi=0.2$) \\
 & $a_0$ & 0.02 & Geometric perturbation \\
 & $\epsilon$ & 0.2 & Core regularization \\
 & $A_1, A_2$ & 1.0 & Channel normalization \\
@@ -755,6 +755,7 @@ with $\bar{\Gamma}_N$ from Eq.~\eqref{eq:gamma_basis_map}. Here $\lambda_{1,2}$ 
 \item Solver: generalized eigensystem (shift-invert low-mode targeting, $\sigma=2.5$), tolerance $10^{-8}$, maxiter $3\times10^4$.
 \item Acceptance criteria: $\delta_{\Delta E}\equiv |\Delta E_{\rm level}-\Delta E_{\rm fine}|/|\Delta E_{\rm fine}|<5\%$, $\delta_{\chi}\equiv |\chi_{\rm level}-\chi_{\rm fine}|/|\chi_{\rm fine}|<5\%$, and null-channel absolute bound $|M_{12}^{\rm(sym)}|<10^{-12}$.
 \end{itemize}
+The complete pipeline, scripts, and raw tables used here are available in the project repository: \url{https://github.com/boypatrick/PSLT}.
 
 \begin{table*}[t]
 \centering

@@ -331,6 +331,7 @@ r_N(D, \eta) = \eta \, \ee^{-2 S_N(D)}.
 \label{eq:rN}
 \end{equation}
 Here, $\eta$ is a dimensionless \emph{overlap amplitude} (not a probability), representing the effective strength of the dual-center interaction; values $\eta > 1$ are permitted, corresponding to collective or multi-channel enhancement.
+An action-derived prefactor candidate $\eta_{\rm fp}(D)$ extracted from splitting--action data is reported in Appendix~\ref{app:eta_candidate} as a conservative replacement direction; it is not used in the baseline scan.
 
 \subsection{Dimensionality and Units}
 We adopt natural units $\hbar = c = 1$. The theory is defined relative to a fundamental mass scale $M_*$ (set to unity). The dual-center separation is parameterized by a dimensionless ratio $D$ (representing physical separation in units of the characteristic length scale $M_*^{-1}$). The field frequencies scale as $\omega_N \sim M_*/D$.
@@ -602,6 +603,7 @@ The use of two parameter sets is a deliberate design choice: action-derived mixi
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ is extracted from the action-derived 2D localized solver (Appendix~\ref{app:chi_loc}), while the global $(D,\eta)$ scan still uses a simplified kinetic surrogate for rapid mapping. A full end-to-end scan using one identical operator chain for both extraction and phase mapping is left for future work.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
+    \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; map-level impact is mild in profile-scaled mode but this closure is not yet propagated into baseline figures.
 \end{enumerate}
 
 \textbf{Status and redefinition of the mixing channel.}
@@ -1097,6 +1099,72 @@ $\min(\pi/\Delta\omega_{12},10^4)$ & 0.800 & 0.000 & 0.188 & $2.46\times10^{-5}$
 \end{table}
 
 The dephasing candidate leaves $\mathcal{R}_3$ summary fractions unchanged on this grid, but significantly alters the proxy-compatible $H\to\mu\mu$ area. Therefore, in this manuscript, Eq.~\eqref{eq:tcoh_dephasing} is reported as a first-principles candidate benchmark only and is not propagated into the baseline reported figures.
+
+\subsection{Splitting-Prefactor First-Principles Candidate for \texorpdfstring{$\eta$}{eta}}
+\label{app:eta_candidate}
+To test a geometry-closed replacement direction for the overlap amplitude in Eq.~\eqref{eq:rN}, we use the same action-derived quantities $(\Delta E_{12},S_1)$ and define the splitting prefactor
+\begin{equation}
+\Delta E_{12}(D)\approx A_{12}(D)\,\ee^{-S_1(D)},\qquad
+A_{12}(D)\equiv \Delta E_{12}(D)\,\ee^{S_1(D)}.
+\end{equation}
+With a reference point $D_{\rm ref}=12$, we define two dimensionless candidates:
+\begin{equation}
+\eta_{\rm amp}(D)\equiv \frac{A_{12}(D)}{A_{12}(D_{\rm ref})},\qquad
+\eta_{\rm prob}(D)\equiv \eta_{\rm amp}(D)^2.
+\label{eq:eta_pref_candidates}
+\end{equation}
+The reproducible script is \texttt{extract\_eta\_prefactor\_1d.py} in the \texttt{code/} directory.
+
+\begin{table}[t]
+\centering
+\caption{1D on-axis benchmark for $\eta$ prefactor candidates at $D=\{6,12,18\}$ (coarse/mid/fine). Source CSV: \texttt{output/eta\_fp\_1d/eta\_prefactor\_D6-12-18.csv}.}
+\label{tab:eta_prefactor}
+\small
+\begin{tabular}{ccccccc}
+\hline\hline
+$D$ & level & $\Delta E_{12}$ & $S_1$ & $A_{12}$ & $\eta_{\rm amp}$ & $\eta_{\rm prob}$ \\
+\hline
+6  & coarse & $2.6433\times10^{-2}$ & 4.28295 & 1.91521 & 1.04764 & 1.09755 \\
+6  & mid    & $2.6475\times10^{-2}$ & 4.29274 & 1.93709 & 1.05923 & 1.12197 \\
+6  & fine   & $2.6489\times10^{-2}$ & 4.28158 & 1.91661 & 1.04787 & 1.09803 \\
+12 & coarse & $3.6727\times10^{-4}$ & 8.51270 & 1.82812 & 1.00000 & 1.00000 \\
+12 & mid    & $3.6889\times10^{-4}$ & 8.50865 & 1.82877 & 1.00000 & 1.00000 \\
+12 & fine   & $3.6944\times10^{-4}$ & 8.50734 & 1.82906 & 1.00000 & 1.00000 \\
+18 & coarse & $5.2804\times10^{-6}$ & 12.75507 & 1.82864 & 1.00028 & 1.00056 \\
+18 & mid    & $5.3189\times10^{-6}$ & 12.75845 & 1.84820 & 1.01063 & 1.02137 \\
+18 & fine   & $5.3320\times10^{-6}$ & 12.74576 & 1.82936 & 1.00017 & 1.00033 \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+For non-fine levels in Table~\ref{tab:eta_prefactor}, we obtain
+\begin{equation}
+\max\!\left(\frac{|\eta_{\rm amp}-\eta_{\rm amp}^{\rm(fine)}|}{|\eta_{\rm amp}^{\rm(fine)}|}\right)=1.08\times10^{-2},\qquad
+\max\!\left(\frac{|\eta_{\rm prob}-\eta_{\rm prob}^{\rm(fine)}|}{|\eta_{\rm prob}^{\rm(fine)}|}\right)=2.18\times10^{-2},
+\end{equation}
+and the fine full-scan profile over $D=4,\dots,20$ gives $\eta_{\rm amp}\in[0.9996,1.1695]$ and $\eta_{\rm prob}\in[0.9992,1.3677]$ (source CSV: \texttt{output/eta\_fp\_1d/eta\_prefactor\_D4-5-\dots-20.csv}).
+
+To quantify map-level sensitivity, we compare baseline $\eta_{\rm eff}=\eta$ against profile-scaled and fully-closed variants on the same $60\times60$ grid. Results are summarized in Table~\ref{tab:eta_impact} (source CSV: \texttt{paper/eta\_profile\_impact.csv}).
+
+\begin{table}[t]
+\centering
+\caption{Global-scan impact of $\eta$ prefactor candidates (diagnostic only; not baseline).}
+\label{tab:eta_impact}
+\small
+\begin{tabular}{lcccc}
+\hline\hline
+case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
+\hline
+baseline $\eta_{\rm eff}=\eta$ & 0.800 & 0.000 & 0.0942 & $3.05\times10^{-7}$ \\
+$\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)$ & 0.800 & 0.000 & 0.0939 & $9.66\times10^{-7}$ \\
+$\eta_{\rm eff}=\eta\,\eta_{\rm prob}(D)$ & 0.800 & 0.000 & 0.0942 & $2.00\times10^{-6}$ \\
+$\eta_{\rm eff}=\eta_{\rm amp}(D)$ & 0.800 & 0.000 & 0.1000 & $5.01\times10^{-2}$ \\
+$\eta_{\rm eff}=\eta_{\rm prob}(D)$ & 0.800 & 0.000 & 0.1000 & $4.85\times10^{-2}$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+At current scan resolution, profile-scaled implementations are nearly degenerate with baseline map-level summaries, while fully closed $\eta_{\rm eff}=\eta_{\rm fp}(D)$ shifts proxy-fit quality more noticeably. Therefore, Eq.~\eqref{eq:eta_pref_candidates} is reported as a first-principles candidate benchmark and is not propagated into baseline reported figures.
 
 
 \section{Ansatz Ablation Study}

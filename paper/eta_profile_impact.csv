@@ -1,0 +1,6 @@
+case,f_R3_gt_0p90,f_R3_gt_0p95,f_hmumu_chi2_le_4,best_chi2,winner_mean
+baseline_eta_scan,0.8,0.0,0.09416666666666666,3.045043359054686e-07,1.1
+eta_scaled_amp_profile,0.8,0.0,0.09388888888888888,9.65920537801181e-07,1.1
+eta_scaled_prob_profile,0.8,0.0,0.09416666666666666,2.0013071348030995e-06,1.1
+eta_closed_amp_profile,0.8,0.0,0.1,0.05009572520641175,1.1
+eta_closed_prob_profile,0.8,0.0,0.1,0.04848078727967143,1.1

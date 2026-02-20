@@ -44,6 +44,9 @@ python3 extract_omega_exact_convergence.py --Ds 6,12,18
 python3 extract_tcoh_dephasing_1d.py --Ds 6,12,18
 python3 extract_tcoh_dephasing_1d.py --full-scan
 python3 scan_tcoh_profile_impact.py
+python3 extract_eta_prefactor_1d.py --Ds 6,12,18
+python3 extract_eta_prefactor_1d.py --full-scan
+python3 scan_eta_profile_impact.py
 python3 extract_gn_phase_space_candidate.py --D 12
 python3 lindblad_chi_minimal.py
 python3 extract_gn_phase_space_2d.py --Ds 6,12,18
@@ -59,6 +62,10 @@ This also writes the full localized-channel profile tables to:
 - `output/tcoh_fp_1d/tcoh_dephasing_D6-12-18_relerr.csv`
 - `output/tcoh_fp_1d/tcoh_dephasing_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv`
 - `output/tcoh_fp_1d/tcoh_profile_impact.csv`
+- `output/eta_fp_1d/eta_prefactor_D6-12-18.csv`
+- `output/eta_fp_1d/eta_prefactor_D6-12-18_relerr.csv`
+- `output/eta_fp_1d/eta_prefactor_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv`
+- `output/eta_fp_1d/eta_profile_impact.csv`
 - `output/gn_fp_1d/gn_phase_space_candidate_D12.csv`
 - `output/chi_open_system/lindblad_minimal_timeseries.csv`
 - `output/gn_fp_2d/gn_phase_space_2d_D6-12-18.csv`

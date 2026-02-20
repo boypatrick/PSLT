@@ -115,6 +115,29 @@ The layer index $N$ emerges naturally as the principal quantum number of this sp
 \end{equation}
 where $\mu_0$ and $\gamma$ are determined numerically from the geometry (Section~\ref{sec:worked_example}). This form captures the essential $N$-dependence from the hydrogenic spectrum while allowing the $D$-dependence to be set by explicit calculation.
 
+\subsection{Model-Chain Assumption Status}
+\label{sec:assumption_status}
+For transparency, Table~\ref{tab:assumption_status} separates action-derived components from EFT-level surrogates currently used in the global scan.
+
+\begin{table*}[htbp]
+\centering
+\caption{Status map of the PSLT closed chain in the present manuscript.}
+\label{tab:assumption_status}
+\small
+\begin{tabular}{p{0.23\linewidth} p{0.24\linewidth} p{0.22\linewidth} p{0.25\linewidth}}
+\toprule
+\textbf{Component} & \textbf{Current Status} & \textbf{Used in Global Scan} & \textbf{Next Upgrade Path} \\
+\midrule
+$\Omega(\rho,z;D)$ two-center geometry & Model ansatz, action-compatible & Yes & Derive from a specific higher-dimensional parent solution \\
+$V_{\rm eff}$, low modes, WKB action & Action-derived + numerically converged & Yes & Extend same solver chain to full $(D,\eta,N)$ map \\
+$g_N$ Cardy envelope + $q^{(N-1)^2}$ regulator & EFT-motivated surrogate & Yes & Replace by explicit microscopic counting model \\
+$\chi_N^{(LR)}(D)$ localized channel & Action-derived extraction (Appendix~\ref{app:chi_loc}) & Yes & Full localized projection over full scan grid \\
+$B_N$ visibility law [Eq.~\eqref{eq:BN_yukawa_prop}] & Yukawa-anchored surrogate & Yes & Replace with overlap-defined $y_N^{\rm eff}$ program (Section~\ref{sec:yukawa_roadmap}) \\
+$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}] & Observable proxy & Yes & Derive EFT vertex-level mapping from action-derived operator chain \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
 
 % ============================================================
 \section{Geometry-to-Spectrum Worked Example}
@@ -402,6 +425,7 @@ Thus the $\ell = 1,2$ truncation still captures the dominant contribution in the
 \label{eq:epsilon_overlap}
 \end{equation}
 where $\delta V$ is the deviation of $V_{\rm eff}$ from spherical symmetry. With the explicit spherical-average definition used in Eq.~\eqref{eq:chi_first_principles}, this overlap is symmetry-suppressed for the parity-even/odd pair and numerically yields $\chi_N^{\rm(sym)}\approx 0$ (Appendix~\ref{app:chi_sym}). Therefore, in the present demonstrator, the parameterization $\epsilon_{\rm mix} = \chi\sqrt{\Gamma_{N,1}\Gamma_{N,2}}$ is interpreted as an \emph{effective localized-channel coupling} (not the parity-symmetric overlap coefficient).
+The basis transformation between parity modes and localized modes is a unitary change of representation and is mathematically legitimate; it does not change the underlying operator spectrum. What changes is the channel diagnostic: $\chi_N^{\rm(sym)}$ is the parity-overlap coefficient (symmetry-protected null in Appendix~\ref{app:chi_sym}), while $\chi_N^{(LR)}$ is the localized splitting coefficient used as the effective coarse-grained input (Appendix~\ref{app:chi_loc}). We report both quantities explicitly to avoid basis-mixing ambiguity.
 Figure~\ref{fig:mixing_channels} summarizes this channel interpretation and the corresponding basis redefinition used in Appendix~\ref{app:chi_loc}.
 
 \begin{figure}[htbp]

@@ -1,0 +1,10 @@
+TODO #3B: D=6/12 rho-window check (rho_max=1,2,4) + true refinement grid convergence (coarse/mid/fine)
+Preset: physical_gap (a=0.040, eps=0.10, m0=1.0, xi=0.14)
+PAD in z-window: 1.0
+Algorithms: Dijkstra24 (24-neighbor) and FMM (eikonal |∇T|=sqrt(U-E))
+
+Key acceptance metrics (see final_acceptance_table.csv):
+- D=6 algo=dijkstra24: window rel(rho=1 vs 4)=0.000e+00, rel(rho=2 vs 4)=0.000e+00; grid rel(mid)=-7.939e-04, rel(coarse)=-2.241e-03; |Smin-Sz_grid|/Sz_grid=9.678e-04
+- D=12 algo=dijkstra24: window rel(rho=1 vs 4)=0.000e+00, rel(rho=2 vs 4)=0.000e+00; grid rel(mid)=-4.056e-04, rel(coarse)=-1.073e-03; |Smin-Sz_grid|/Sz_grid=4.750e-04
+- D=6 algo=fmm: window rel(rho=1 vs 4)=0.000e+00, rel(rho=2 vs 4)=0.000e+00; grid rel(mid)=-8.441e-04, rel(coarse)=-7.444e-04; |Smin-Sz_grid|/Sz_grid=1.381e-04
+- D=12 algo=fmm: window rel(rho=1 vs 4)=0.000e+00, rel(rho=2 vs 4)=0.000e+00; grid rel(mid)=-4.119e-04, rel(coarse)=-3.510e-04; |Smin-Sz_grid|/Sz_grid=9.665e-05

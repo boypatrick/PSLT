@@ -1,0 +1,75 @@
+\begin{tikzpicture}[
+  x=1cm,y=1cm,
+  >=Latex,
+  line cap=round,
+  line join=round,
+  font=\footnotesize,
+  module/.style={draw=black, rounded corners=2pt, fill=black!4, minimum width=2.85cm, minimum height=2.15cm, align=center},
+  flow/.style={-Latex, line width=0.8pt},
+  feedback/.style={-Latex, line width=0.8pt, dashed},
+  loop/.style={-Latex, line width=0.8pt, densely dotted}
+]
+
+% ===== Top modules =====
+\node[module] (geom) at (0.0, 1.5) {};
+\node[module] (spec) at (3.4, 1.5) {};
+\node[module] (kin)  at (6.8, 1.5) {};
+\node[module, minimum width=3.35cm] (obs) at (10.55, 1.5) {};
+
+\node[font=\bfseries\normalsize] at (0.0, 2.35) {Geometry};
+\node[font=\bfseries\normalsize] at (3.4, 2.35) {Spectrum};
+\node[font=\bfseries\normalsize] at (6.8, 2.35) {Kinetics};
+\node[font=\bfseries\normalsize] at (10.55, 2.35) {Observable};
+
+% Geometry icon
+\draw[line width=0.7pt] (-0.52,1.55) circle (0.28);
+\draw[line width=0.7pt] ( 0.52,1.55) circle (0.28);
+\fill (-0.52,1.55) circle (0.07);
+\fill ( 0.52,1.55) circle (0.07);
+\draw[flow, line width=0.6pt, -{Latex[length=1.2mm,width=0.9mm]}] (-0.50,1.08) -- (0.50,1.08);
+\draw[flow, line width=0.6pt, -{Latex[length=1.2mm,width=0.9mm]}] (0.50,1.08) -- (-0.50,1.08);
+\node at (0.0,0.92) {$D$};
+\node[font=\footnotesize] at (0.0,0.66) {$\Omega(\rho,z)$};
+
+% Spectrum icon: double-well + even/odd stylized modes
+\draw[line width=0.8pt, samples=100, smooth, domain=-1.3:1.3]
+  plot ({3.4+0.82*\x},{1.55+0.35*((\x*\x-0.55)^2-0.25)});
+\draw[line width=0.8pt, samples=120, smooth, domain=-1.2:1.2]
+  plot ({3.4+0.82*\x},{1.50+0.27*(exp(-2.4*(\x+0.75)^2)+exp(-2.4*(\x-0.75)^2)-0.40)});
+\draw[line width=0.7pt, densely dashed, samples=120, smooth, domain=-1.2:1.2]
+  plot ({3.4+0.82*\x},{1.42+0.30*(exp(-2.5*(\x+0.75)^2)-exp(-2.5*(\x-0.75)^2)});
+\node[font=\footnotesize] at (3.4,0.67) {$\psi_+$ solid \;|\; $\psi_-$ dashed};
+
+% Kinetics icon
+\draw[flow] (5.95,2.00) -- (7.62,2.00);
+\draw[feedback] (5.95,1.76) -- (7.62,1.76);
+\node[align=center] at (6.8,1.36) {$\Gamma_N,\;\chi_N^{(LR)}$};
+\node[align=center,font=\footnotesize] at (6.8,0.82) {$W_N = B_N g_N$\\$[1-e^{-\Gamma_N t_{\rm coh}}]$};
+
+% Observable icon
+\draw[line width=0.6pt] (9.35,1.08) -- (11.76,1.08);
+\draw[fill=black!14,pattern=north east lines,pattern color=black!45] (9.48,1.08) rectangle (10.05,1.55);
+\draw[fill=black!14,pattern=north west lines,pattern color=black!45] (10.16,1.08) rectangle (10.73,1.87);
+\draw[fill=black!14,pattern=grid,pattern color=black!45] (10.84,1.08) rectangle (11.41,2.22);
+\node[font=\footnotesize] at (10.90,0.86) {$P_1\quad P_2\quad P_3$};
+\node at (10.55,0.60) {$\mathcal{R}_3$};
+
+% Flow arrows
+\draw[flow] (1.44,1.50) -- (1.95,1.50);
+\draw[flow] (4.84,1.50) -- (5.35,1.50);
+\draw[flow] (8.24,1.50) -- (8.84,1.50);
+
+% ===== Equation block =====
+\node[draw=black, rounded corners=3pt, minimum width=10.5cm, minimum height=2.6cm, fill=white, align=center] (eq) at (5.30,-1.65) {};
+\node[font=\bfseries\Large] at (5.30,-0.95) {Closed-Chain Equation};
+\node[font=\large] at (5.30,-1.62) {$P_N=\dfrac{W_N}{\sum_K W_K}$};
+\node[font=\normalsize] at (5.30,-2.16) {$W_N = B_N g_N\,[1-e^{-\Gamma_N t_{\rm coh}}]$};
+
+% Feedback arrows to indicate scan loop and data consistency
+\draw[feedback] (10.95,0.43) .. controls (10.55,0.10) and (10.25,-0.15) .. (9.95,-0.35);
+\node[font=\footnotesize] at (11.22,0.20) {data};
+\draw[loop] (5.30,-2.95) -- (5.30,0.42);
+
+\node[font=\small] at (5.30,-3.40) {Geometry $\rightarrow$ Spectrum $\rightarrow$ Kinetics $\rightarrow$ Observable};
+
+\end{tikzpicture}

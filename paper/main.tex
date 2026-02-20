@@ -1,0 +1,856 @@
+\documentclass[aps,prd,onecolumn,notitlepage,nofootinbib,superscriptaddress,11pt]{revtex4-2}
+
+% -------- packages --------
+\usepackage{amsmath,amssymb,bm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+% -------- graphics path --------
+% \graphicspath{{../output/}}
+
+% -------- macros --------
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\argmax}{\mathop{\mathrm{arg\,max}}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\Order}{\mathcal{O}}
+\newcommand{\Mpl}{M_{\rm Pl}}
+
+\begin{document}
+
+\title{\Large \bf \texorpdfstring{The Projection Spectral Layer Theory (PSLT):\\ A Rank-2 Computable Closure for the Three-Generation Structure\\ and Higgs Signal Strength}{The Projection Spectral Layer Theory (PSLT): A Rank-2 Computable Closure for the Three-Generation Structure and Higgs Signal Strength}}
+
+\author{Bo-Yu Chen}
+\affiliation{Independent Researcher}
+
+\date{February 2, 2026}
+
+\begin{abstract}
+We present a comprehensive, computable EFT-level ``closed chain'' for the Projection Spectral Layer Theory (PSLT) that naturally generates a self-consistent three-generation structure of matter. 
+The framework is built on a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action with non-minimal curvature coupling, where the background geometry induces a layer-indexed spectral scale $\omega_N$.
+The theoretical closure is achieved by unifying three key modules:
+(i) a \textbf{Micro-degeneracy module} ($g_N$) modeled by a Cardy-controlled envelope with an explicit high-$N$ regulator ($q^{(N-1)^2}$-type suppression) that prevents entropic runaway;
+(ii) a \textbf{Rank-2 Computable Kinetic module} ($\Gamma_N$) defined as the largest positive eigenvalue of a $2\times2$ growth matrix with explicit WKB tunneling suppression; and
+(iii) a \textbf{Visibility module} ($B_N$) anchored to Standard Model lepton Yukawa couplings via a sublinear compression exponent $0<p_B<1$, with high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator.
+The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates a stable ``winner'' phase diagram with clear dominance of layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
+We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over most sampled points), and (2) a proxy compatibility test with the ATLAS Run-3 $H\to\mu\mu$ signal strength ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
+The proxy mapping yields a restricted acceptance band (about $9.4\%$ of the scanned grid for $\chi^2<4$), providing a sharper falsifiable constraint on $(D,\eta)$.
+\end{abstract}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Introduction}
+\label{sec:intro}
+
+The existence of exactly three generations of fermions is one of the most persistent puzzles in the Standard Model (SM) of particle physics. While the SM accommodates three families through the CKM and PMNS mixing matrices, it offers no dynamical reason for why the number is three, nor why the mass hierarchy spans such a vast range. Traditional attempts to explain this structure often rely on complex discrete symmetries or string logic compactifications that, while elegant, can be difficult to falsify directly.
+
+The Projection Spectral Layer Theory (PSLT) proposes a different paradigm: \emph{Generation structure is a spectral consequence of the underlying projection geometry of spacetime.} In this framework, "generations" are not ad-hoc copies but rather distinct \emph{spectral layers} ($N=1,2,3,\dots$) of vacuum excitations, selected by a competition between microstate degeneracy (entropy) and geometric formation rates (kinetics).
+
+In this work, we consolidate the complete theoretical framework of PSLT into a single, falsifiable "closed chain". We upgrade earlier effective descriptions to a \textbf{computable} rank-2 dynamical system with an action-derived extraction subchain and a surrogate global scan chain. The core deliverable is a map from geometric control parameters $(D, \eta)$---representing dual-center separation and overlap---to an experimentally observable layer probability $P_N$.
+
+Our primary contributions are:
+\begin{enumerate}
+    \item \textbf{Theoretical Motivation}: We present three convergent arguments for the micro-degeneracy $g_N$ (Route A: Mock-modular, Route B: ER=EPR, Route C: QG Template) as motivations for a Cardy-controlled envelope, and make the closure numerically stable by adding an explicit high-$N$ regulator.
+    \item \textbf{Rank-2 Computable Kinetics}: We replace heuristic growth rates with a rigorous eigenvalue problem for the formation matrix $\mathbf{M}_N$, incorporating numerical WKB tunneling suppression.
+    \item \textbf{Yukawa-Anchored Visibility}: We anchor $B_N$ to Standard Model lepton Yukawa couplings with a sublinear compression exponent, and use high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator.
+    \item \textbf{Verification}: We demonstrate stable three-generation dominance at $\mathcal{R}_3>90\%$ and a constrained proxy-compatible band for LHC $H\to\mu\mu$.
+\end{enumerate}
+
+% ============================================================
+\section{Theoretical Framework}
+\label{sec:theory}
+
+\subsection{The Closed Chain Equation}
+The central output of the PSLT framework is the normalized layer occupancy probability $P_N(t_{\rm coh})$, defined by the competition between entropic weight ($W_{\rm entropy}$) and kinetic formation ($W_{\rm kinetic}$). The master equation is:
+\begin{equation}
+\boxed{
+P_N(t_{\rm coh}; D, \eta) = \frac{W_N(t_{\rm coh})}{\sum_K W_K(t_{\rm coh})}, \qquad W_N = B_N \cdot g_N \cdot \left( 1 - \ee^{-\Gamma_N(D,\eta) t_{\rm coh}} \right).
+}
+\label{eq:master_P}
+\end{equation}
+This equation unifies the three critical modules:
+\begin{itemize}
+    \item $g_N$: \textbf{Micro-degeneracy} (Entropy). The number of available microstates in layer $N$.
+    \item $\Gamma_N$: \textbf{Dynamical Rate} (Kinetics). The rate at which these states can form/tunnel from the vacuum.
+    \item $B_N$: \textbf{Visibility Factor} (Observation). The coupling strength of layer $N$ to the observable sector.
+\end{itemize}
+Figure~\ref{fig:framework} illustrates the logical flow of the PSLT framework.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\linewidth]{pslt_framework.png}
+    \caption{Schematic overview of the PSLT framework. Geometric inputs $(D, \eta)$ feed into three modules (micro-degeneracy $g_N$, kinetic rate $\Gamma_N$, visibility $B_N$), which combine in the master equation to yield the observable layer probabilities $P_N$ and the three-generation ratio $\mathcal{R}_3$. High-$N$ suppression is implemented \textbf{only} in $g_N$ via $\kappa_g$, while $B_{N>3}$ saturates to unity.}
+    \label{fig:framework}
+\end{figure}
+
+\subsection{Geometric Foundation: Minimal EYMH + Curvature}
+We start from a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action supplemented by a non-minimal curvature coupling $\xi R|\Phi|^2$:
+\begin{equation}
+S = \int \dd^4x \sqrt{-g} \left[ \frac{\Mpl^2}{2} R - \frac{1}{4} F_{\mu\nu}^a F^{a\mu\nu} - (D_\mu \Phi)^\dagger (D^\mu \Phi) - \lambda(|\Phi|^2 - v^2)^2 - \xi R |\Phi|^2 \right].
+\label{eq:action}
+\end{equation}
+PSLT posits that the background geometry is a \emph{projection} from a higher-dimensional manifold, inducing a locally conformally flat metric:
+\begin{equation}
+g_{\mu\nu}(x) = \Omega^2(x) \eta_{\mu\nu}.
+\end{equation}
+Under conformal rescaling $\Phi \to \Omega^{-1} \tilde{\Phi}$, the scalar equation of motion reduces to a Schrödinger-like eigenproblem:
+\begin{equation}
+[-\nabla^2 + V_{\rm eff}(x)] \psi_N = \omega_N^2 \psi_N,
+\end{equation}
+where the effective potential $V_{\rm eff}$ is determined by the conformal factor $\Omega(x)$ and the specific projection geometry (e.g., stereographic projection of dual centers).
+
+The layer index $N$ emerges naturally as the principal quantum number of this spectrum. In Section~\ref{sec:worked_example}, we derive the spectral scale $\mu(D)$ explicitly from a two-center geometry; the result supports a power-law scaling $\mu(D) \propto D^{-\gamma}$ with $\gamma \approx 0.1$ in the demonstrator regime. For analytic tractability, we adopt the \textbf{hydrogenic proxy}:
+\begin{equation}
+\omega_N(D) \simeq \mu(D) \left( 1 - \frac{1}{2N^2} \right), \qquad \mu(D) = \mu_0 \, D^{-\gamma},
+\label{eq:omega_N}
+\end{equation}
+where $\mu_0$ and $\gamma$ are determined numerically from the geometry (Section~\ref{sec:worked_example}). This form captures the essential $N$-dependence from the hydrogenic spectrum while allowing the $D$-dependence to be set by explicit calculation.
+
+
+% ============================================================
+\section{Geometry-to-Spectrum Worked Example}
+\label{sec:worked_example}
+
+This section demonstrates the complete derivation chain $\Omega(x;D) \to V_{\rm eff}(x) \to \omega_N(D)$, establishing the geometry-to-spectrum correspondence as a computational reality rather than an ansatz.
+
+\subsection{Two-Center Harmonic Conformal Factor}
+\label{sec:two_center}
+
+We consider a two-center conformal factor with harmonic structure:
+\begin{equation}
+\boxed{
+\Omega(\rho, z; D) = 1 + a \left( \frac{1}{r_+} + \frac{1}{r_-} \right), \qquad r_\pm = \sqrt{\rho^2 + (z \mp D/2)^2 + \varepsilon^2}
+}
+\label{eq:Omega_two_center}
+\end{equation}
+where $(\rho, z)$ are cylindrical coordinates (axisymmetric, $m=0$), $x_\pm = \pm (D/2) \hat{z}$ are the two center positions, $a$ is the conformal factor strength, and $\varepsilon$ is a core regularization parameter that smears the $\delta$-function sources:
+\begin{equation}
+\nabla^2 \Omega = -4\pi a \left[ \rho_\varepsilon(x - x_+) + \rho_\varepsilon(x - x_-) \right], \qquad \rho_\varepsilon(x) = \frac{3\varepsilon^2}{4\pi (|x|^2 + \varepsilon^2)^{5/2}}.
+\end{equation}
+This form is directly analogous to superposed harmonic functions in gravitational potential theory.
+
+\subsection{Action-Derived Effective Potential}
+\label{sec:curvature}
+
+We derive $V_{\rm eff}$ directly from the Klein-Gordon equation in curved spacetime. Consider a scalar field with non-minimal curvature coupling:
+\begin{equation}
+(\Box_g - m_0^2 - \xi R)\Phi = 0.
+\label{eq:KG}
+\end{equation}
+For time-harmonic modes $\Phi = e^{-i\omega t}\phi(\mathbf{x})$ in the background $g_{\mu\nu} = \Omega^2 \eta_{\mu\nu}$, we perform the conformal field rescaling $\phi = \Omega^{-1}\psi$. After explicit calculation of $\Box_g$ and cancellation of first-derivative terms (see Appendix~\ref{app:derivation}), the equation reduces to:
+\begin{equation}
+\boxed{
+\left[-\nabla^2 + V_{\rm eff}(\mathbf{x})\right]\psi = \omega^2 \psi
+}
+\label{eq:Schrodinger}
+\end{equation}
+with the \textbf{action-derived} effective potential:
+\begin{equation}
+\boxed{
+V_{\rm eff} = m_0^2 \Omega^2 + (1 - 6\xi)\,\Omega^{-1} \nabla^2\Omega
+}
+\label{eq:Veff_true}
+\end{equation}
+This is the \textbf{only form} consistent with the action---no engineered barrier or box terms appear.
+
+\paragraph{Key properties.}
+\begin{enumerate}
+    \item At $\xi = \xi_c = 1/6$ (conformal coupling in 4D), the derivative term vanishes: $V_{\rm eff} \to m_0^2\Omega^2$.
+    \item As $r \to \infty$: $\Omega \to 1$, $\nabla^2\Omega \to 0$, so $V_{\rm eff} \to m_0^2$ (continuum threshold).
+    \item Near each center: $\nabla^2\Omega < 0$ (smeared source), so for $\xi < 1/6$ the potential develops attractive wells.
+\end{enumerate}
+
+We define the shifted potential $U \equiv V_{\rm eff} - m_0^2$ so that $U \to 0$ at infinity. Bound states satisfy $E = \omega^2 - m_0^2 < 0$. Figure~\ref{fig:Veff_true} shows the decomposition.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Veff_true_D12.png}
+    \caption{Action-derived potential decomposition at $D = 12$. Top: mass term $m_0^2(\Omega^2 - 1)$ and curvature term $(1-6\xi)\Omega^{-1}\nabla^2\Omega$. Bottom: total $U = V_{\rm eff} - m_0^2$ showing the double-well structure. The 4 turning points confirm the tunneling geometry.}
+    \label{fig:Veff_true}
+\end{figure}
+
+
+
+\subsection{Numerical Solution}
+\label{sec:numerical_solution}
+
+We solve the 2D axisymmetric eigenproblem using finite differences on a $(\rho, z)$ grid with Eq.~\eqref{eq:Veff_true}:
+\begin{equation}
+\left[ -\frac{\partial^2}{\partial\rho^2} - \frac{1}{\rho}\frac{\partial}{\partial\rho} - \frac{\partial^2}{\partial z^2} + V_{\rm eff}(\rho, z; D) \right] \psi_N = \omega_N^2 \psi_N.
+\label{eq:2D_eigenproblem}
+\end{equation}
+Boundary conditions: $\partial_\rho \psi|_{\rho=0} = 0$ (axis regularity), $\psi|_{\rm boundary} = 0$ (Dirichlet). Parameters: $a = 1.0$, $\varepsilon = 0.2$, $m_0 = 1.0$, $\xi = 0.0$. Grid: $(n_\rho, n_z) = (50, 500)$ with fine resolution $\Delta z \ll \varepsilon$ near the cores.
+
+\textbf{Critical numerical requirement}: The grid spacing must satisfy $\Delta z \ll \varepsilon$ to resolve the smeared source structure. This is essential for capturing the deep negative wells in $U$.
+
+\subsection{Single-Track Results}
+\label{sec:spectral_extraction}
+
+Table~\ref{tab:true_unified} shows the unified results. All $D \in [6,20]$ produce \textbf{bound states} ($E_1 = \omega_1^2 - m_0^2 < 0$) and \textbf{non-zero WKB actions} ($S_1 \in [10.6, 22.8]$). The 4 turning points confirm the double-well tunneling geometry.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{true_single_track.png}
+    \caption{Single-track results from action-derived $V_{\rm eff}$. Top-left: Bound state energy $E_1 < 0$. Top-right: Layer frequency $\omega_1$. Bottom-left: WKB tunneling action $S_1$. Bottom-right: Tunneling probability $r_1 = e^{-2S_1}$. All quantities are computed from the same $V_{\rm eff}(\rho,z;D)$.}
+    \label{fig:single_track}
+\end{figure}
+
+\input{true_unified_table}
+
+
+
+\subsection{Summary: Unified Geometry-to-Kinetics Pipeline}
+\label{sec:geometry_summary}
+
+This worked example closes the logic gap between the conformal geometry and the spectral/kinetic structure. \textbf{The same $V_{\rm eff}$ determines both the layer frequencies and the tunneling rates}:
+\begin{enumerate}
+    \item \textbf{Conformal factor}: $\Omega(\rho, z; D)$ is explicitly specified (Eq.~\eqref{eq:Omega_two_center}).
+    \item \textbf{Effective potential}: $V_{\rm eff}$ is derived from $\Omega$ (Eq.~\eqref{eq:Veff_true}), with explicit D-dependence.
+    \item \textbf{Spectrum}: $\omega_N(D)$ is computed numerically, yielding $\mu(D) = \mu_0 D^{-\gamma}$ [see Eq.~\eqref{eq:omega_N}].
+    \item \textbf{Tunneling}: $S_N(D) = \int dz \sqrt{V_{\rm eff} - \omega_N^2}$ is computed from the \emph{same} potential.
+    \item \textbf{Kinetic rates}: $r_N = e^{-2S_N}$ directly follows from the geometry.
+\end{enumerate}
+This is a \textbf{single-track derivation} for the extraction subchain: there is no separate "toy potential" inside this subsection, and the quantities $\Omega \to V_{\rm eff} \to \omega_N \to S_N$ are computed from one specified geometry. In the present paper, this action-derived extraction is then propagated into a faster surrogate kinetic scan for the global $(D,\eta)$ mapping (Section~\ref{sec:results} and item 3 of the limitations).
+
+
+% ============================================================
+\section{Module 1: The Three Routes to Micro-Degeneracy gN}
+\label{sec:gN}
+
+The factor $g_N$ counts the effective degrees of freedom in layer $N$. We justify its form via three convergent theoretical routes.
+
+\subsection{Route A: Mock-Modular Counting}
+In $\mathcal{N}=4$ string theory, the degeneracy of single-centered dyonic states is captured by the Fourier coefficients of mock modular forms (specifically, the holomorphic part of a harmonic Maass form) \cite{DMZ2012}. Since PSLT layers are analogous to charge sectors, we identify $g_N$ with these coefficients:
+\begin{equation}
+g_N^{\rm (A)} = |c_N|, \quad \text{where } \sum c_N q^N = \frac{1}{\eta(\tau)^{\chi}} \times (\text{Mock Piece}).
+\end{equation}
+
+\subsection{Route B: ER=EPR and Entanglement Entropy}
+Following the ER=EPR conjecture \cite{MaldacenaSusskind2013}, the dual centers connected by the projection geometry can be viewed as an entangled pair. The layer index $N$ corresponds to the excitation level of the wormhole connection. The entropy $S(N) = \ln g_N$ must scale extensively with the effective "area" of the excitation. Conformal field theory predicts a Cardy-like growth for high energy states:
+\begin{equation}
+S(N) \sim 2\pi \sqrt{\frac{c_{\rm eff} N}{6}}.
+\end{equation}
+
+\subsection{Route C: Quantum Gravity Template}
+For consistency with black hole entropy, the growth of microstates must eventually be bounded to avoid violating holographic bounds. This suggests that while the Cardy growth dominates asymptotically, it must be regulated.
+
+\subsection{Unified Cardy-Controlled Envelope with High-N Regulator}
+The three routes above provide convergent \emph{motivations} (not derivations) for a Cardy-like asymptotic growth, together with a need for finite-volume/holographic regulation. Combining these insights, we adopt an EFT-level ansatz with the minimum number of free parameters:
+\begin{equation}
+\boxed{
+g_N(c_{\rm eff}, \nu, \kappa_g) = \frac{\exp\left( 2\pi \sqrt{\frac{c_{\rm eff} N}{6}} \right)}{N^\nu}\,\exp\left[-\kappa_g (N-1)^2\right].
+}
+\label{eq:gN_reg}
+\end{equation}
+The first factor is the standard Cardy envelope; the Gaussian-in-$N$ term corresponds to a $q^{(N-1)^2}$ suppression with $q=\exp(-\kappa_g)$ and prevents entropic runaway of arbitrarily high layers. In our demonstrator we use $(c_{\rm eff},\nu,\kappa_g)=(0.5,5.0,0.03)$, which yields rapid $N_{\max}$ convergence without fine tuning.
+
+\textbf{Summary of motivational roles.} Route A (Mock-modular) and Route B (ER=EPR) support the Cardy envelope's plausibility; Route C (QG Template) supports the necessity of a high-$N$ regulator. Equation~\eqref{eq:gN_reg} is an \emph{EFT-level minimal ansatz}---all falsifiability comes from its numerical predictions (convergence, phase diagram, observable compatibility).
+
+\subsection{Cardy Regime Validity and Finite-N Corrections}
+\label{sec:cardy_validity}
+
+The asymptotic Cardy formula is valid when the dimensionless entropy $S(N) = 2\pi\sqrt{c_{\rm eff} N/6}$ satisfies $S(N) \gg 1$. For our demonstrator parameters:
+\begin{equation}
+S(N) = 2\pi\sqrt{\frac{0.5 \cdot N}{6}} \approx 1.81\sqrt{N}.
+\end{equation}
+Thus $S(1) \approx 1.81$, $S(2) \approx 2.57$, $S(3) \approx 3.14$. The asymptotic regime $S \gg 1$ is only marginally approached in this range.
+
+For $N = 1,2,3$ (the physically relevant regime), we are \emph{not} in the strict Cardy limit. However, the exact degeneracy from a modular-completed partition function differs from the asymptotic Cardy result by subleading corrections~\cite{DMZ2012}:
+\begin{equation}
+g_N^{\rm exact} = g_N^{\rm Cardy} \left[ 1 + \Order\left(\frac{1}{\sqrt{N}}\right) \right].
+\end{equation}
+We estimate the finite-$N$ error as:
+\begin{equation}
+\frac{\delta g_N}{g_N} \lesssim \frac{1}{S(N)} \approx \frac{0.55}{\sqrt{N}}.
+\label{eq:gN_error}
+\end{equation}
+For our baseline, this gives $\delta g_1/g_1 \lesssim 55\%$, $\delta g_2/g_2 \lesssim 39\%$, $\delta g_3/g_3 \lesssim 32\%$. These uncertainties are absorbed into the effective parameters $(c_{\rm eff}, \nu)$, which are calibrated against the phase diagram rather than derived from first principles. (The Gaussian regulator $\kappa_g$ has negligible effect for $N \leq 3$.)
+
+\textbf{Key point:} We do not claim that Eq.~\eqref{eq:gN_reg} is exact for $N = 1,2,3$. Rather, it provides a \emph{controlled interpolation} between the physically motivated asymptotic form and the demonstrator regime, with $\Order(1)$ uncertainties that are subsumed into the effective parameters.
+
+
+
+% ============================================================
+\section{Module 2: Rank-2 Computable Kinetics GammaN}
+\label{sec:kinetics}
+
+The kinetic rate $\Gamma_N$ determines how strictly the geometry selects specific layers. We upgrade previous heuristic models to a rigorous Rank-2 system.
+
+\subsection{Dual-Center Tunneling Suppression}
+The formation of a layer requires tunneling through the potential barrier created by the dual-center geometry. We model this via a WKB action integral:
+\begin{equation}
+S_N(D) = \int_{x_-}^{x_+} \dd x \sqrt{V_{\rm eff}(x; D) - \omega_N^2},
+\label{eq:SN}
+\end{equation}
+The tunneling probability is then:
+\begin{equation}
+r_N(D, \eta) = \eta \, \ee^{-2 S_N(D)}.
+\label{eq:rN}
+\end{equation}
+Here, $\eta$ is a dimensionless \emph{overlap amplitude} (not a probability), representing the effective strength of the dual-center interaction; values $\eta > 1$ are permitted, corresponding to collective or multi-channel enhancement.
+
+\subsection{Dimensionality and Units}
+We adopt natural units $\hbar = c = 1$. The theory is defined relative to a fundamental mass scale $M_*$ (set to unity). The dual-center separation is parameterized by a dimensionless ratio $D$ (representing physical separation in units of the characteristic length scale $M_*^{-1}$). The field frequencies scale as $\omega_N \sim M_*/D$.
+
+\subsection{Derivation of the Rank-2 Growth Matrix}
+\label{sec:rank2_derivation}
+
+To make the rank-2 closure explicit, we start from a two-mode linear system for layer $N$ in a generic basis $q\in\{a,b\}$ with tunneling prefactor $r_N$:
+\begin{equation}
+\frac{\dd}{\dd t}
+\begin{pmatrix}
+n_{N,a}\\
+n_{N,b}
+\end{pmatrix}
+=
+r_N
+\begin{pmatrix}
+\Gamma_{N,a} & \epsilon_{\rm mix}\\
+\epsilon_{\rm mix} & \Gamma_{N,b}
+\end{pmatrix}
+\begin{pmatrix}
+n_{N,a}\\
+n_{N,b}
+\end{pmatrix},
+\label{eq:rank2_linear_system}
+\end{equation}
+where $n_{N,q}$ is the coarse-grained occupation in channel $q$.
+Equation~\eqref{eq:rank2_linear_system} is the probability-level (coarse-grained) form of a coupled-mode system after absorbing convention-dependent amplitude factors into $(A_\ell,\chi)$.
+The matrix multiplying $(n_{N,a},n_{N,b})^T$ is therefore the growth matrix $\mathbf{M}_N$ used below.
+
+The off-diagonal term is modeled as
+\begin{equation}
+\epsilon_{\rm mix} = \chi \sqrt{\Gamma_{N,a}\Gamma_{N,b}},
+\label{eq:epsmix_model}
+\end{equation}
+which is consistent with a weak-coupling overlap estimate
+$\epsilon_{\rm mix}\sim \int \psi_{N,1}^* \delta V \psi_{N,2}\,\dd^3x$ and guarantees the correct rate dimension.
+
+\subsection{Rank-2 Computable Closure}
+The formation rate $\Gamma_N$ is derived from the positive eigenvalue of the rank-2 interaction matrix $\mathbf{M}_N$:
+\begin{equation}
+\Gamma_{N} = \max(0, \lambda_+)
+\end{equation}
+where $\lambda_+$ is the largest real eigenvalue of:
+\begin{equation}
+\mathbf{M}_N = r_N \begin{pmatrix}
+\Gamma_{N,a} & \epsilon_{\rm mix} \\
+\epsilon_{\rm mix} & \Gamma_{N,b}
+\end{pmatrix}
+\end{equation}
+Here, $r_N = \eta e^{-2S_N}$ is the tunneling suppression factor. The mixing term is parameterized by a dimensionless coupling $\chi$:
+\begin{equation}
+\epsilon_{\rm mix} = \chi \sqrt{\Gamma_{N,a} \Gamma_{N,b}}
+\end{equation}
+The channel rates $\Gamma_{N,\ell}$ follow the superradiant scaling~\cite{DetweilerSuperrad1980}:
+\begin{equation}
+\Gamma_{N,\ell} = A_\ell \, \omega_N (\omega_N M_*)^{4\ell+4}, \qquad A_\ell \equiv 1 \ (\text{demonstrator}),
+\label{eq:Gamma_channel}
+\end{equation}
+In the demonstrator, we map the two-mode basis to the lowest two superradiant channels:
+\begin{equation}
+\Gamma_{N,a}\equiv \Gamma_{N,1},\qquad
+\Gamma_{N,b}\equiv \Gamma_{N,2},\qquad
+\bar{\Gamma}_N\equiv\sqrt{\Gamma_{N,a}\Gamma_{N,b}}.
+\label{eq:gamma_basis_map}
+\end{equation}
+Any mixing matrix element is rendered dimensionless with $\bar{\Gamma}_N$, independent of whether the basis is parity $(+,-)$ or localized $(L,R)$. Higher-$\ell$ modes are parametrically suppressed by the $(\omega_N M_*)^{4\ell+4}$ scaling and are deferred to future extensions. All rates are expressed in \textbf{dimensionless units} ($M_*=1$); $A_\ell$ is a normalization convention fixed to unity in the demonstrator and varied by $\pm 10\%$ in Appendix~\ref{app:Veff}.
+The effective formation rate of layer $N$ is the largest positive eigenvalue of this matrix:
+\begin{equation}
+\boxed{
+\Gamma_N(D, \eta) = \max\big(0, \lambda_+(\mathbf{M}_N(D,\eta))\big).
+}
+\label{eq:GammaN_eigen}
+\end{equation}
+For completeness, the analytic expression for $\lambda_+$ is:
+\begin{equation}
+\lambda_+ = r_N \left[ \frac{\Gamma_{N,a} + \Gamma_{N,b}}{2} + \sqrt{\left(\frac{\Gamma_{N,a} - \Gamma_{N,b}}{2}\right)^2 + \epsilon_{\rm mix}^2} \right].
+\label{eq:lambda_plus}
+\end{equation}
+This ``Rank-2 Closure'' ensures that $\Gamma_N$ is not a fitted parameter but a derived quantity dependent explicitly on $(D, \eta)$.
+
+\subsection{Physical Interpretation: Quasi-Bound State Decay}
+\label{sec:quasi_bound}
+
+The superradiant scaling (Eq.~\eqref{eq:Gamma_channel}) can be understood as the decay rate of quasi-bound states in the two-center geometry. In general, a field mode trapped by a potential barrier has a complex frequency:
+\begin{equation}
+\omega_N = \omega_N^{(R)} - i\,\omega_N^{(I)}, \qquad \Gamma_N \equiv 2\omega_N^{(I)},
+\label{eq:complex_omega}
+\end{equation}
+where $\omega_N^{(I)} > 0$ represents the decay rate due to tunneling or radiation to infinity.
+
+For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from the centrifugal barrier at the light ring. In the dual-center geometry, an analogous mechanism operates: modes must tunnel through the geometric barrier (captured by WKB factor $e^{-2S_N}$) and the channel rates $\Gamma_{N,\ell}$ encode the residual decay probability.
+
+\textbf{Rank-2 truncation justification:} The $(omega_N M_*)^{4\ell+4}$ scaling ensures that higher-$\ell$ modes are exponentially suppressed for $\omega_N M_* < 1$ (our regime). Concretely, for $\omega_N M_* \sim 0.1$:
+\begin{equation}
+\frac{\Gamma_{N,3}}{\Gamma_{N,2}} \sim (\omega_N M_*)^4 \sim 10^{-4}.
+\end{equation}
+Thus the $\ell = 1,2$ truncation still captures the dominant contribution in the demonstrator regime; higher-$\ell$ channels are subleading and deferred to future work.
+
+\textbf{Mixing term interpretation:} The off-diagonal term $\epsilon_{\rm mix}$ can be interpreted as the mode-overlap integral between the $\ell=1$ and $\ell=2$ wavefunctions via the non-spherical part of the potential:
+\begin{equation}
+\epsilon_{\rm mix} \sim \int \psi_{N,1}^* \, \delta V \, \psi_{N,2} \, d^3x,
+\label{eq:epsilon_overlap}
+\end{equation}
+where $\delta V$ is the deviation of $V_{\rm eff}$ from spherical symmetry. With the explicit spherical-average definition used in Eq.~\eqref{eq:chi_first_principles}, this overlap is symmetry-suppressed for the parity-even/odd pair and numerically yields $\chi_N^{\rm(sym)}\approx 0$ (Appendix~\ref{app:chi_sym}). Therefore, in the present demonstrator, the parameterization $\epsilon_{\rm mix} = \chi\sqrt{\Gamma_{N,1}\Gamma_{N,2}}$ is interpreted as an \emph{effective localized-channel coupling} (not the parity-symmetric overlap coefficient).
+Figure~\ref{fig:mixing_channels} summarizes this channel interpretation and the corresponding basis redefinition used in Appendix~\ref{app:chi_loc}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{pslt_mixing_channels.png}
+    \caption{Physical interpretation of the mixing channel. In the parity-symmetric basis, overlap cancellation yields $\chi_N^{\rm(sym)}\approx 0$. In the localized basis, the level splitting $\Delta E$ defines the effective coupling $\chi_N^{(LR)}(D)$ used in the global scan.}
+    \label{fig:mixing_channels}
+\end{figure}
+
+
+
+% ============================================================
+\section{Module 3: Yukawa-Anchored Visibility BN}
+\label{sec:BN}
+
+In early versions of the theory, $B_N$ was an arbitrary matching factor. In the revised closure, we anchor $B_N$ directly to Standard Model Yukawa couplings and separately regulate the high-$N$ tower via Eq.~\eqref{eq:gN_reg}.
+
+Since our primary observable is the $H\to\mu\mu$ signal strength, we anchor visibility to the \textbf{charged-lepton Yukawa} couplings:
+\begin{equation}
+Y_1 \equiv y_e, \quad Y_2 \equiv y_\mu, \quad Y_3 \equiv y_\tau, \qquad y_\ell = \sqrt{2}\,m_\ell/v,
+\label{eq:Y_lepton}
+\end{equation}
+and define a cumulative effective strength:
+\begin{equation}
+\tilde{Y}_N \equiv \sum_{k=1}^{\min(N,3)} Y_k, \qquad N \ge 1.
+\label{eq:Y_cumulative}
+\end{equation}
+This cumulative definition restricts the visibility anchoring to the three observable generations.
+We adopt a \textbf{Yukawa-derived visibility law} with a sublinear compression exponent $0<p_B<1$:
+\begin{equation}
+\boxed{
+B_N = \left(\frac{\tilde{Y}_N}{\tilde{Y}_3}\right)^{p_B}, \qquad N=1,2,3, \qquad B_3\equiv 1.
+}
+\label{eq:BN_yukawa_prop}
+\end{equation}
+The exponent $p_B$ keeps the scaling monotonic in Yukawa strength while preventing a trivial outcome in which $N=3$ dominates everywhere due to the extreme SM hierarchy.\footnote{An alternative using up-type quark Yukawas was explored; using lepton Yukawas removes sector ambiguity and enables a direct one-to-one mapping between the $N=2$ layer and the muon-generation observable.}
+Numerically, using PDG 2024 inputs~\cite{PDG2024} and $p_B=0.30$, we obtain representative values $B_1\simeq 0.085$, $B_2\simeq 0.42$, $B_3=1$ (normalized).
+
+\subsection{High-\texorpdfstring{$N$}{N} Saturation (Avoiding Double-Counting)}
+For layers $N > 3$, we set $B_N = B_3 = 1$ (saturation). The high-$N$ suppression is provided \emph{solely} by the $\kappa_g$ term in $g_N$ (Eq.~\eqref{eq:gN_reg}), avoiding double-counting.\footnote{An alternative approach with explicit $B_N$ tail suppression ($B_N \propto \ee^{-\beta_B(N-3)^2}$) was explored; see Appendix~\ref{app:ablation} for comparison.}
+
+% ============================================================
+\section{Verification Results}
+\label{sec:results}
+
+We implement the full closure numerically and scan the parameter space $(D \in [4, 20], \eta \in [0.2, 4.0])$.
+
+\subsection{Configuration and Parameter Table}
+Based on stability analysis, we use the baseline parameters summarized in Table~\ref{tab:params}.
+
+\begin{table}[htbp]
+\centering
+\caption{Baseline parameters for the PSLT demonstrator. All dimensionful quantities are in units of $M_*$.}
+\label{tab:params}
+\small
+\begin{tabular}{@{}llcp{0.48\linewidth}@{}}
+\toprule
+\textbf{Module} & \textbf{Parameter} & \textbf{Value} & \textbf{Physical Role} \\
+\midrule
+Micro-degeneracy $g_N$ & $c_{\rm eff}$ & 0.5 & Cardy entropy coefficient \\
+& $\nu$ & 5.0 & Polynomial suppression \\
+& $\kappa_g$ & 0.03 & High-$N$ regulator \\
+\midrule
+Visibility $B_N$ & $p_B$ & 0.30 & Sublinear compression \\
+\midrule
+ Kinetics $\Gamma_N$ & $\chi_N^{(LR)}(D)$ & App.~\ref{app:chi_loc} & Localized-channel profile (action-derived extraction, D-interpolated in scan) \\
+& $a_0$ & 0.02 & Geometric perturbation \\
+& $\epsilon$ & 0.2 & Core regularization \\
+& $A_1, A_2$ & 1.0 & Channel normalization \\
+\midrule
+Dynamics & $t_{\rm coh}$ & 1.0 & Coherence time ($M_*^{-1}$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Three-Generation Phase Diagram}
+The winner map $N^\star(D, \eta)$ (Fig.~\ref{fig:phase}) reveals a robust structure:
+\begin{itemize}
+    \item For $D \lesssim 8$, Layer 3 ($N=3$) dominates.
+    \item For $D \gtrsim 8$, Layer 2 ($N=2$) dominates.
+    \item Layer 1 ($N=1$) is enhanced by $B_1$ but is kinetically suppressed at large $D$.
+\end{itemize}
+Crucially, we define the \textbf{Generation Ratio}:
+\begin{equation}
+\mathcal{R}_3 \equiv \sum_{N=1}^{3} P_N = \frac{\sum_{N=1}^{3} W_N}{\sum_{K=1}^{N_{\max}} W_K}.
+\label{eq:R3}
+\end{equation}
+With $\chi_N^{(LR)}(D)$ interpolation from Appendix~\ref{app:chi_loc}, our numerical scan gives $\mathcal{R}_3 > 90\%$ over $80.0\%$ of the sampled $(D,\eta)$ grid, while no point reaches $\mathcal{R}_3 > 95\%$ in this setup. This still supports a dominant three-layer sector, but with a stricter robustness statement than earlier constant-$\chi$ scans. We emphasize that this global map uses a simplified surrogate kinetic operator, with only the mixing-profile input imported from the action-derived extraction.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.48\linewidth]{three_generation_phase_diagram.png}
+    \includegraphics[width=0.48\linewidth]{three_generation_bars.png}
+    \caption{Left: Winner phase diagram showing regions dominated by Gen 2 and Gen 3. Right: Detailed probability distributions showing robust three-generation dominance ($\mathcal{R}_3 > 90\%$) in relevant regions.}
+    \label{fig:phase}
+\end{figure}
+
+\subsection{H to mumu Signal Strength (Observable Proxy)}
+We confront the theory with the ATLAS Run-3 $H\to\mu\mu$ signal strength, $\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$ (combined uncertainty)~\cite{ATLAS_Hmumu}.
+
+Within the PSLT closure, we construct a \textbf{minimal observable proxy} by restricting to the second-layer (muon-generation) weight:
+\begin{equation}
+W_2(D,\eta) = B_2\,g_2\left(1-\ee^{-\Gamma_2(D,\eta)t_{\rm coh}}\right).
+\end{equation}
+We define the predicted signal strength as a ratio to a fixed reference geometry $(D_0,\eta_0)=(10,1)$:
+\begin{equation}
+\mu_{\mu\mu}^{\rm pred}(D,\eta) = \frac{W_2(D,\eta)}{W_2(D_0,\eta_0)}.
+\label{eq:mu_pred}
+\end{equation}
+This is a \emph{proxy mapping}, not a first-principles EFT derivation. We assume that the effective $h\mu\mu$ coupling scales with layerweight: $g_{h\mu\mu}^{\rm eff} \propto \sqrt{W_2}$. Deriving this from the EYMH action remains an open problem.
+
+The compatibility is quantified via:
+\begin{equation}
+\chi^2(D,\eta) = \frac{\left(\mu_{\mu\mu}^{\rm pred} - \mu_{\mu\mu}^{\rm obs}\right)^2}{\sigma_{\mu\mu}^2},
+\label{eq:chi2_hmumu}
+\end{equation}
+where $\sigma_{\mu\mu}=0.4$. Figure~\ref{fig:hmumu} shows the \textbf{proxy acceptance region} defined by $\chi^2 < 4$ (heuristic threshold); we do not claim a formal 95\% CL exclusion. In the present D-interpolated $\chi_N^{(LR)}$ scan, the proxy-accepted fraction is $9.4\%$, with best grid point $\chi^2\simeq 3.0\times10^{-7}$ at $(D,\eta)\approx(9.97,1.36)$. All phase-diagram claims are quoted only after satisfying the quantitative convergence criteria in Appendix~\ref{app:Veff}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.48\linewidth]{hmumu_exclusion.png}
+    \includegraphics[width=0.48\linewidth]{hmumu_signal_strength.png}
+    \caption{Compatibility with $H\to\mu\mu$. Left: $\chi^2$ map showing a restricted proxy-accepted band ($\chi^2<4$). Right: Predicted signal strength proxy.}
+    \label{fig:hmumu}
+\end{figure}
+
+% ============================================================
+\section{Discussion and Conclusion}
+\label{sec:conclusion}
+
+We have presented a computable EFT-level demonstrator of the Projection Spectral Layer Theory. By closing the loop between geometric inputs and observable layer probabilities, we have shown that:
+\begin{enumerate}
+    \item \textbf{Generations are spectral}: The ``three generation'' structure is not an input but a dynamical output of competing entropy ($g_N$), kinetics ($\Gamma_N$), and visibility ($B_N$).
+    \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated at high $N$ [Eq.~\eqref{eq:gN_reg}] and the observable sector is anchored to the SM Yukawa pattern [Eq.~\eqref{eq:BN_yukawa_prop}].
+    \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With D-interpolated $\chi_N^{(LR)}$, the $H\to\mu\mu$ proxy acceptance forms a restricted band (about $9.4\%$ of the scan), providing a sharper falsifiable constraint on $(D,\eta)$.
+\end{enumerate}
+
+\textbf{Limitations and outlook.}
+The present closure is internally consistent but remains an EFT-level demonstrator in several places:
+The use of two parameter sets is a deliberate design choice: action-derived mixing extraction is fixed by Appendix~\ref{app:chi_loc}, while the global $(D,\eta)$ scan uses a surrogate baseline for map-level robustness.
+\begin{enumerate}
+    \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison uses the proxy $g_{h\mu\mu}^{\rm eff}\propto \sqrt{W_2}$ rather than a full derivation from the EYMH action.
+    \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and propagate its D-interpolated profile in the global scan. The remaining gap is a full $(D,\eta,N)$ localized projection.
+    \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ is extracted from the action-derived 2D localized solver (Appendix~\ref{app:chi_loc}), while the global $(D,\eta)$ scan still uses a simplified kinetic surrogate for rapid mapping. A full end-to-end scan using one identical operator chain for both extraction and phase mapping is left for future work.
+    \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
+    \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in this version; a fully geometry-closed $t_{\rm coh}(D,\eta,N)$ prescription is still under development.
+\end{enumerate}
+
+\textbf{Status and redefinition of the mixing channel.}
+Using Eq.~\eqref{eq:gamma_basis_map}, we fix a basis-independent normalization scale $\bar{\Gamma}_N$ and define the parity-symmetric overlap channel by
+\begin{equation}
+\begin{aligned}
+\chi_N^{\rm(sym)}(D)&=\frac{|M_{12}^{\rm(sym)}(D,N)|}{\bar{\Gamma}_N(D)},\\
+M_{12}^{\rm(sym)}(D,N)&=2\pi\!\int_0^{\rho_{\max}}\!\rho\,d\rho
+\int_{-z_{\max}}^{z_{\max}}\!dz\,
+\psi_{N,1}^*(\rho,z)\,\delta V(\rho,z;D)\,\psi_{N,2}(\rho,z),
+\end{aligned}
+\label{eq:chi_first_principles}
+\end{equation}
+and Eq.~\eqref{eq:epsilon_overlap} with the explicit spherical-average $\delta V$ gives $\chi_N^{\rm(sym)}\approx 0$ (Appendix~\ref{app:chi_sym}). To avoid mixing two inequivalent notions, we redefine the phenomenological mixing channel in a localized-well basis:
+\begin{equation}
+\psi_{N,L}=\frac{\psi_{N,+}+\psi_{N,-}}{\sqrt{2}},\qquad
+\psi_{N,R}=\frac{\psi_{N,+}-\psi_{N,-}}{\sqrt{2}},
+\end{equation}
+and define the channel mixing from the corresponding two-state Hamiltonian element:
+\begin{equation}
+M_{LR}^{(H)}(D,N)\equiv\frac{\lambda_{N,2}(D)-\lambda_{N,1}(D)}{2},\qquad
+\chi_N^{(LR)}(D)\equiv\frac{|M_{LR}^{(H)}(D,N)|}{\bar{\Gamma}_N(D)}.
+\end{equation}
+The baseline mixing entry in Table~\ref{tab:params} is interpreted as the localized-channel coefficient. First-principles localized extraction results are given in Appendix~\ref{app:chi_loc}, and its D-interpolated profile is used in the global $(D,\eta)$ scan of Section~\ref{sec:results}.
+
+\begin{acknowledgments}
+The author acknowledges the use of PDG 2024 data and standard Python scientific stacks for verification.
+\end{acknowledgments}
+
+\appendix
+\section{Action-Derived Effective Potential and WKB}
+\label{app:Veff}
+
+\subsection{Two-Center Harmonic Conformal Factor}
+\label{app:Omega}
+
+We adopt the two-center harmonic conformal factor with core regularization:
+\begin{equation}
+\Omega(\rho, z; D) = 1 + a\left(\frac{1}{\sqrt{\rho^2 + (z-D/2)^2 + \varepsilon^2}} + \frac{1}{\sqrt{\rho^2 + (z+D/2)^2 + \varepsilon^2}}\right)
+\end{equation}
+where $a$ is the geometric strength, $\varepsilon$ is the core regularization scale, and $D$ is the dual-center separation. Away from the cores ($|\mathbf{x} - \mathbf{x}_\pm| \gg \varepsilon$), this satisfies $\nabla^2\Omega \approx 0$. Near the cores, the smeared Laplacian is:
+\begin{equation}
+\nabla^2\Omega = -3a\varepsilon^2\left[(r_+^2 + \varepsilon^2)^{-5/2} + (r_-^2 + \varepsilon^2)^{-5/2}\right] < 0
+\end{equation}
+This negative contribution is essential for forming the attractive wells in $V_{\rm eff}$.
+
+\subsection{Veff Derivation from KG Equation}
+\label{app:derivation}
+
+Starting from $(\Box_g - m_0^2 - \xi R)\Phi = 0$ with $g_{\mu\nu} = \Omega^2 \eta_{\mu\nu}$:
+
+\paragraph{Step 1: $\Box_g$ in conformal coordinates.}
+\begin{equation}
+\Box_g \Phi = \Omega^{-2}(-\partial_t^2 + \nabla^2)\Phi + 2\Omega^{-3}\nabla\Omega \cdot \nabla\Phi
+\end{equation}
+
+\paragraph{Step 2: Time separation.}
+For $\Phi = e^{-i\omega t}\phi(\mathbf{x})$:
+\begin{equation}
+\nabla^2\phi + 2\Omega^{-1}\nabla\Omega\cdot\nabla\phi + [\omega^2 - \Omega^2(m_0^2 + \xi R)]\phi = 0
+\end{equation}
+
+\paragraph{Step 3: Conformal field rescaling.}
+Setting $\phi = \Omega^{-1}\psi$ eliminates the first-derivative term. Using $R = -6\Omega^{-3}\nabla^2\Omega$ for 4D conformally flat space:
+\begin{equation}
+\boxed{[-\nabla^2 + V_{\rm eff}]\psi = \omega^2\psi, \quad V_{\rm eff} = m_0^2\Omega^2 + (1-6\xi)\Omega^{-1}\nabla^2\Omega}
+\label{eq:Veff_action}
+\end{equation}
+
+\paragraph{Double-well formation condition.}
+For $\xi < 1/6$ and $\nabla^2\Omega < 0$ near cores, the curvature term contributes \textbf{negatively} to $V_{\rm eff}$, creating attractive wells. The mass term $m_0^2\Omega^2$ provides the continuum threshold at infinity.
+
+\paragraph{Self-consistency check.}
+At $\xi = \xi_c = 1/6$ (conformal coupling): $V_{\rm eff} \to m_0^2\Omega^2$, and the curvature contribution vanishes identically. $\checkmark$
+
+\subsection{1D On-Axis Reduction}
+\label{app:1D}
+
+For efficient scanning, we use the on-axis ($\rho = 0$) reduction:
+\begin{equation}
+\left[-\frac{d^2}{dz^2} + U(z)\right]\psi_n(z) = E_n \psi_n(z), \quad U(z) = V_{\rm eff}(\rho=0, z) - m_0^2
+\end{equation}
+where $E_n = \omega_n^2 - m_0^2$. Bound states satisfy $E_n < 0$; stable modes additionally require $\omega_n^2 = m_0^2 + E_n > 0$.
+
+\subsection{2D Axisymmetric Validation}
+\label{app:2D}
+
+We validated the 1D reduction by comparing with the full 2D axisymmetric Laplacian:
+\begin{equation}
+\nabla^2\Omega = \frac{\partial^2\Omega}{\partial\rho^2} + \frac{1}{\rho}\frac{\partial\Omega}{\partial\rho} + \frac{\partial^2\Omega}{\partial z^2}
+\end{equation}
+For the physical-gap parameters ($a=0.04$, $\varepsilon=0.1$, $m_0=1$, $\xi=0.14$), the relative error at $\rho=0$ is:
+\begin{center}
+\begin{tabular}{cc}
+\hline
+$D$ & Max $|U_{\rm 2D} - U_{\rm 1D}|/\max|U|$ \\
+\hline
+6 & $4.0 \times 10^{-4}$ \\
+12 & $4.0 \times 10^{-4}$ \\
+18 & $4.0 \times 10^{-4}$ \\
+\hline
+\end{tabular}
+\end{center}
+The 1D 3D-identity approximation is accurate to $< 0.1\%$, validating its use for phase scans.
+
+\subsection{WKB Action Convention}
+\label{app:WKB}
+
+The tunneling action through the central barrier is:
+\begin{equation}
+S_N = \int_{z_1}^{z_2} \sqrt{U(z) - E_N}\, dz
+\label{eq:SN_def}
+\end{equation}
+where $z_{1,2}$ are the turning points satisfying $U(z_{1,2}) = E_N$. The tunneling suppression factor is:
+\begin{equation}
+r_N = \eta \cdot e^{-2S_N}
+\end{equation}
+\textbf{Convention note:} For rates/probabilities we use $e^{-2S}$, while the level-splitting amplitude scales as $e^{-S}$. The empirical splitting relation below therefore tests the amplitude-level law.
+
+\subsection{Splitting--Action Consistency Check}
+\label{app:splitting}
+
+The most stringent internal consistency check is the relation between level splitting and tunneling action. For symmetric double wells, WKB theory predicts $\Delta E \propto e^{-S}$. From our action-derived scan:
+\begin{equation}
+\boxed{\ln\Delta E \approx -1.01\,S_1 + 0.69, \qquad R^2 = 0.9999}
+\end{equation}
+This near-perfect linear relation (Fig.~\ref{fig:splitting_action}) confirms that the \textbf{same} $V_{\rm eff}$ controls both the spectrum and the tunneling kinetics---not an engineered coincidence.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\linewidth]{splitting_action_consistency.png}
+\caption{Splitting--action consistency check. The level splitting $\Delta E = E_2 - E_1$ follows $\exp(-S_1)$ to $R^2 = 0.9999$, confirming the action-derived $V_{\rm eff}$ governs both spectrum and tunneling.}
+\label{fig:splitting_action}
+\end{figure}
+
+\subsection{Action-Derived Numerical Results}
+\label{app:table}
+
+Table~\ref{tab:action_derived} shows the key spectral and tunneling quantities from the action-derived calculation. Grid convergence: $|E_1|$ variation $< 0.2\%$ for $dz \in [0.01, 0.02]$ at fixed $z_{\max} = 80$.
+
+\begin{table}[htbp]
+\centering
+\caption{Action-derived spectral and tunneling data. Parameters: $a=0.04$, $\varepsilon=0.1$, $m_0=1$, $\xi=0.14$.}
+\label{tab:action_derived}
+\begin{tabular}{cccccc}
+\hline\hline
+$D$ & $E_1$ & $E_2$ & $\omega_1$ & $S_1$ & $\Delta E$ \\
+\hline
+4 & $-0.505$ & $-0.390$ & $0.704$ & $2.92$ & $1.15\times 10^{-1}$ \\
+8 & $-0.476$ & $-0.469$ & $0.724$ & $5.68$ & $6.32\times 10^{-3}$ \\
+12 & $-0.478$ & $-0.478$ & $0.722$ & $8.51$ & $3.69\times 10^{-4}$ \\
+16 & $-0.481$ & $-0.481$ & $0.721$ & $11.33$ & $2.19\times 10^{-5}$ \\
+20 & $-0.482$ & $-0.482$ & $0.720$ & $14.16$ & $1.30\times 10^{-6}$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+\subsection{Fixed-dz Convergence}
+\label{app:convergence}
+
+We verified numerical stability using fixed grid spacing $dz$ (rather than fixed $N_z$):
+\begin{itemize}
+\item For $dz \in \{0.04, 0.02, 0.01\}$ and $z_{\max} \in \{60, 80\}$: $E_1$ variation $< 0.3\%$, $S_1$ variation $< 0.2\%$.
+\item Results are independent of $z_{\max}$ for $z_{\max} > 60$ (domain truncation error negligible).
+\end{itemize}
+
+\section{First-Principles Symmetry-Channel Test for chi}
+\label{app:chi_sym}
+
+Using the explicit definition in Eq.~\eqref{eq:chi_first_principles}, we computed $M_{12}$ and $\chi_N^{\rm(sym)}$ on 2D axisymmetric grids for $D=\{6,12,18\}$ with coarse/mid/fine resolutions. The modes are normalized with the cylindrical measure $2\pi\rho\,d\rho\,dz$, and orthogonality satisfies $|\langle\psi_1,\psi_2\rangle|<10^{-15}$ in all runs.
+
+\begin{table}[htbp]
+\centering
+\caption{Fine-grid symmetry-channel extraction using Eq.~\eqref{eq:chi_first_principles}. Parameters: $a=0.04$, $\varepsilon=0.1$, $m_0=1$, $\xi=0.14$.}
+\label{tab:chi_sym}
+\begin{tabular}{cccc}
+\hline\hline
+$D$ & $|M_{12}^{\rm(sym)}|$ & $\chi_N^{\rm(sym)}$ & $|\langle\psi_1,\psi_2\rangle|$ \\
+\hline
+6  & $2.09\times 10^{-16}$ & $1.66\times 10^{-19}$ & $3.12\times 10^{-17}$ \\
+12 & $6.03\times 10^{-16}$ & $5.69\times 10^{-19}$ & $3.47\times 10^{-18}$ \\
+18 & $6.24\times 10^{-16}$ & $6.20\times 10^{-19}$ & $2.11\times 10^{-16}$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+These values are numerically consistent with symmetry-protected cancellation of the parity-symmetric overlap channel. Across coarse/mid/fine grids, $M_{12}^{\rm(sym)}$ changes sign but remains at $\Order(10^{-16})$, indicating no resolved nonzero mixing in this channel.
+
+For this reason, the phenomenological Rank-2 coefficient in the main text is interpreted as a localized-channel effective coupling (Section~\ref{sec:conclusion}), not as $\chi_N^{\rm(sym)}$ from Eq.~\eqref{eq:chi_first_principles}.
+
+
+
+\section{Localized-Channel First-Principles Extraction of chi}
+\label{app:chi_loc}
+
+We compute the nonzero mixing channel directly in localized basis using
+\begin{equation}
+M_{LR}^{(H)}=\frac{\lambda_2-\lambda_1}{2},\qquad
+\chi_N^{(LR)}=\frac{|M_{LR}^{(H)}|}{\bar{\Gamma}_N},
+\end{equation}
+with $\bar{\Gamma}_N$ from Eq.~\eqref{eq:gamma_basis_map}. Here $\lambda_{1,2}$ are generalized operator eigenvalues from $K\psi=\lambda M\psi$ in the localized extraction solver; they are not the bound-state energy convention $E=\omega^2-m_0^2<0$ used in Appendix~\ref{app:Veff}. The extraction uses \texttt{code/extract\_chi\_localized\_2d.py} with fixed settings:
+\begin{itemize}
+\item Domain: $\rho_{\max}=3.0$, $z_{\max}=D/2+6.0$.
+\item Grids: coarse $(d\rho,dz)=(0.12,0.06)$, mid $(0.08,0.04)$, fine $(0.06,0.03)$.
+\item Solver: generalized eigensystem (shift-invert low-mode targeting, $\sigma=2.5$), tolerance $10^{-8}$, maxiter $3\times10^4$.
+\item Acceptance criteria: $\delta_{\Delta E}\equiv |\Delta E_{\rm level}-\Delta E_{\rm fine}|/|\Delta E_{\rm fine}|<5\%$, $\delta_{\chi}\equiv |\chi_{\rm level}-\chi_{\rm fine}|/|\chi_{\rm fine}|<5\%$, and null-channel absolute bound $|M_{12}^{\rm(sym)}|<10^{-12}$.
+\end{itemize}
+
+\begin{table*}[t]
+\centering
+\caption{Localized-channel extraction for $D=\{6,12,18\}$ (coarse/mid/fine). Parameters: $a=0.04$, $\varepsilon=0.1$, $m_0=1$, $\xi=0.14$.}
+\label{tab:chi_loc}
+\begin{tabular}{ccccccccc}
+\hline\hline
+$D$ & level & $(d\rho,dz)$ & $(N_\rho,N_z)$ & $\lambda_1$ & $\lambda_2$ & $M_{LR}^{(H)}$ & $\chi_N^{(LR)}$ & $|M_{12}^{\rm(sym)}|$ \\
+\hline
+6  & coarse & $(0.12,0.06)$ & $(25,300)$  & $2.14765$ & $2.60073$ & $2.26541\times10^{-1}$ & $4.13261\times10^{-4}$ & $5.29\times10^{-17}$ \\
+6  & mid    & $(0.08,0.04)$ & $(38,450)$  & $2.14362$ & $2.59798$ & $2.27178\times10^{-1}$ & $4.17350\times10^{-4}$ & $2.44\times10^{-19}$ \\
+6  & fine   & $(0.06,0.03)$ & $(50,600)$  & $2.16611$ & $2.62106$ & $2.27474\times10^{-1}$ & $4.01827\times10^{-4}$ & $1.56\times10^{-18}$ \\
+12 & coarse & $(0.12,0.06)$ & $(25,400)$  & $2.36032$ & $2.71730$ & $1.78492\times10^{-1}$ & $2.27261\times10^{-4}$ & $2.89\times10^{-17}$ \\
+12 & mid    & $(0.08,0.04)$ & $(38,600)$  & $2.35598$ & $2.71374$ & $1.78883\times10^{-1}$ & $2.29384\times10^{-4}$ & $6.96\times10^{-17}$ \\
+12 & fine   & $(0.06,0.03)$ & $(50,800)$  & $2.37821$ & $2.73632$ & $1.79054\times10^{-1}$ & $2.21414\times10^{-4}$ & $1.03\times10^{-17}$ \\
+18 & coarse & $(0.12,0.06)$ & $(25,500)$  & $2.22204$ & $2.49466$ & $1.36311\times10^{-1}$ & $2.18683\times10^{-4}$ & $1.94\times10^{-17}$ \\
+18 & mid    & $(0.08,0.04)$ & $(38,750)$  & $2.21686$ & $2.49001$ & $1.36575\times10^{-1}$ & $2.21053\times10^{-4}$ & $1.54\times10^{-15}$ \\
+18 & fine   & $(0.06,0.03)$ & $(50,1000)$ & $2.23864$ & $2.51202$ & $1.36694\times10^{-1}$ & $2.13187\times10^{-4}$ & $2.19\times10^{-16}$ \\
+\hline\hline
+\end{tabular}
+\end{table*}
+
+Across all non-fine runs in Table~\ref{tab:chi_loc}, we obtain
+\begin{equation}
+\max \delta_{\Delta E}=4.10\times10^{-3},\qquad
+\max \delta_{\chi}=3.86\times10^{-2},\qquad
+\max |M_{12}^{\rm(sym)}|=1.54\times10^{-15},
+\end{equation}
+which satisfies the stated convergence and absolute-null criteria.
+
+Figure~\ref{fig:chi_loc_modes} shows the fine-grid 2D parity eigenmodes used in the localized extraction at $D=\{6,12,18\}$. The expected even/odd nodal structure is manifest and remains stable across the three benchmark separations.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{chi_wavefunction_contours_D6_12_18.png}
+\caption{Fine-grid 2D axisymmetric eigenmodes used in Appendix~\ref{app:chi_loc}. Each row corresponds to one benchmark separation ($D=6,12,18$); columns show the lowest even/odd parity modes $(\psi_1,\psi_2)$ entering the localized-channel extraction pipeline.}
+\label{fig:chi_loc_modes}
+\end{figure*}
+
+To test profile uncertainty in the global map, we benchmarked six $\chi_N^{(LR)}(D)$ choices built from the same fine-grid knots $(D,\chi_N^{(LR)})=\{(6,4.02\times10^{-4}),\,(12,2.21\times10^{-4}),\,(18,2.13\times10^{-4})\}$: linear interpolation, log-linear exponential fit $\ln\chi = -7.5956 - 0.05282\,D$, and $\pm20\%$ amplitude rescalings of each profile. Re-running the full $60\times60$ scan gives identical grid-level summary metrics (within scan resolution):
+\begin{equation}
+f(\mathcal{R}_3>0.90)=0.800,\quad
+f(\mathcal{R}_3>0.95)=0,\quad
+f(\chi^2_{\mu\mu}<4)=0.094,
+\end{equation}
+with the same best-fit point $(D,\eta)\approx(9.97,1.36)$. Thus, at current scan resolution, profile-interpolation uncertainty is subdominant to other model-systematics.
+
+\begin{table*}[t]
+\centering
+\caption{Extended profile-sensitivity test for $\chi_N^{(LR)}(D)$ in the $60\times60$ global scan. Source data file: \texttt{paper/chi\_profile\_robustness.csv}.}
+\label{tab:chi_profile_sensitivity}
+\small
+\begin{tabular}{lcccc}
+\hline\hline
+Profile & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & Best $(D,\eta)$ \\
+\hline
+Linear interpolation & $0.800$ & $0$ & $0.094$ & $(9.97,\;1.36)$ \\
+Exponential fit      & $0.800$ & $0$ & $0.094$ & $(9.97,\;1.36)$ \\
+Linear $\times 0.8$  & $0.800$ & $0$ & $0.094$ & $(9.97,\;1.36)$ \\
+Linear $\times 1.2$  & $0.800$ & $0$ & $0.094$ & $(9.97,\;1.36)$ \\
+Exp-fit $\times 0.8$ & $0.800$ & $0$ & $0.094$ & $(9.97,\;1.36)$ \\
+Exp-fit $\times 1.2$ & $0.800$ & $0$ & $0.094$ & $(9.97,\;1.36)$ \\
+\hline\hline
+\end{tabular}
+\end{table*}
+
+As a stronger stress test, we further rescaled the localized profile by large factors and tracked boundary movement directly on the $(D,\eta)$ grid. Figure~\ref{fig:chi_scale_stress} shows that the user-requested cases $\times0.5$ and $\times2$ remain exactly coincident with baseline boundaries at this scan resolution. In this setup, the first visible boundary drift appears only in the $H\to\mu\mu$ proxy mask near $\times10^5$, while the $\mathcal{R}_3>0.90$ boundary remains unchanged throughout the tested range. All boundary-coincidence statements in this paragraph refer to the present $60\times60$ scan resolution.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{chi_scale_stress_test.png}
+\caption{Strong $\chi$-amplitude stress test on the global map. Left: overlay of $\chi^2_{\mu\mu}\leq4$ boundary for selected scales, including the requested $\times0.5$ and $\times2$, plus an extreme scale where drift first appears. Right: changed-cell fractions versus scale (relative to baseline $\times1$). Source data file: \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}.}
+\label{fig:chi_scale_stress}
+\end{figure*}
+
+
+\section{Ansatz Ablation Study}
+\label{app:ablation}
+
+To demonstrate that the three-generation structure is robust and not an artifact of a particular ansatz choice, we compare the baseline Yukawa-proportional $B_N$ (this work) against the alternative ``inverse Yukawa'' ansatz explored in earlier versions.
+
+\subsection{Inverse Yukawa Ansatz (Ablation A)}
+The inverse Yukawa ansatz sets $B_N^{\rm (inv)} \propto 1/\sum_{f \in \text{Gen } N} y_f$, yielding:
+\begin{equation}
+B_1^{\rm (inv)} \approx 10^5, \quad B_2^{\rm (inv)} \approx 125, \quad B_3^{\rm (inv)} = 1.
+\end{equation}
+This massive hierarchy ($B_1 \gg B_2 \gg B_3$) directly encodes the answer by over-enhancing layer 1. While it can produce $\mathcal{R}_3 > 95\%$, the mechanism is less transparent: the visibility factor, rather than the entropic/kinetic competition, drives the result.
+
+\subsection{Comparison}
+\begin{itemize}
+    \item \textbf{Baseline (Yukawa-proportional)}: $B_1 < B_2 < B_3$. The three-generation structure emerges from the $g_N$--$\Gamma_N$ competition modulated by modest $B_N$ differences.
+    \item \textbf{Ablation A (Inverse Yukawa)}: $B_1 \gg B_2 \gg B_3$. Layer 1 is artificially boosted; the selection mechanism is less falsifiable.
+\end{itemize}
+
+We recommend the baseline as the primary closure due to its greater transparency and falsifiability.
+
+\bibliographystyle{apsrev4-2}
+\bibliography{mainRefs}
+\end{document}

@@ -1,0 +1,87 @@
+{
+  "metadata": {
+    "source": "Particle Data Group (PDG) 2024 Review of Particle Physics",
+    "url": "https://pdg.lbl.gov",
+    "generated": "2026-02-01",
+    "notes": "Charged lepton properties relevant for PSLT three-generation verification"
+  },
+  "charged_leptons": [
+    {
+      "name": "electron",
+      "symbol": "e",
+      "generation": 1,
+      "charge": -1,
+      "mass_MeV": 0.51099895,
+      "mass_uncertainty_MeV": 1.5e-10,
+      "lifetime_s": "stable",
+      "mean_lifetime_s": null,
+      "magnetic_moment_anomaly": 0.00115965218128,
+      "pdg_id": 11
+    },
+    {
+      "name": "muon",
+      "symbol": "mu",
+      "generation": 2,
+      "charge": -1,
+      "mass_MeV": 105.6583755,
+      "mass_uncertainty_MeV": 2.3e-06,
+      "lifetime_s": 2.1969811e-06,
+      "lifetime_uncertainty_s": 2.2e-12,
+      "magnetic_moment_anomaly": 0.00116592061,
+      "pdg_id": 13
+    },
+    {
+      "name": "tau",
+      "symbol": "tau",
+      "generation": 3,
+      "charge": -1,
+      "mass_MeV": 1776.86,
+      "mass_uncertainty_MeV": 0.12,
+      "lifetime_s": 2.903e-13,
+      "lifetime_uncertainty_s": 5e-16,
+      "magnetic_moment_anomaly": null,
+      "pdg_id": 15
+    }
+  ],
+  "neutrinos": [
+    {
+      "name": "electron_neutrino",
+      "symbol": "nu_e",
+      "generation": 1,
+      "charge": 0,
+      "mass_limit_eV": "<1.1",
+      "pdg_id": 12
+    },
+    {
+      "name": "muon_neutrino",
+      "symbol": "nu_mu",
+      "generation": 2,
+      "charge": 0,
+      "mass_limit_eV": "<0.19e6",
+      "pdg_id": 14
+    },
+    {
+      "name": "tau_neutrino",
+      "symbol": "nu_tau",
+      "generation": 3,
+      "charge": 0,
+      "mass_limit_eV": "<18.2e6",
+      "pdg_id": 16
+    }
+  ],
+  "higgs_signal_strength": {
+    "H_to_mumu": {
+      "value": 1.4,
+      "stat_uncertainty": null,
+      "syst_uncertainty": null,
+      "combined_uncertainty": 0.4,
+      "source": "ATLAS Run 3 (13.6 TeV, 165 fb^-1) combined with Run 2",
+      "reference": "ATLAS Collaboration, arXiv:2507.03595"
+    }
+  },
+  "mass_ratios": {
+    "m_mu_over_m_e": 206.768283,
+    "m_tau_over_m_mu": 16.8167,
+    "m_tau_over_m_e": 3477.23
+  }
+}

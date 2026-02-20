@@ -1,0 +1,113 @@
+{
+    "metadata": {
+        "source": "Particle Data Group (PDG) 2024 Review of Particle Physics",
+        "url": "https://pdg.lbl.gov",
+        "generated": "2026-02-01",
+        "notes": "Quark properties for PSLT three-generation verification"
+    },
+    "quarks": [
+        {
+            "name": "up",
+            "symbol": "u",
+            "generation": 1,
+            "charge": 0.667,
+            "mass_MeV": 2.16,
+            "mass_uncertainty_MeV": 0.49,
+            "mass_type": "MS-bar at 2 GeV",
+            "pdg_id": 2
+        },
+        {
+            "name": "down",
+            "symbol": "d",
+            "generation": 1,
+            "charge": -0.333,
+            "mass_MeV": 4.67,
+            "mass_uncertainty_MeV": 0.48,
+            "mass_type": "MS-bar at 2 GeV",
+            "pdg_id": 1
+        },
+        {
+            "name": "charm",
+            "symbol": "c",
+            "generation": 2,
+            "charge": 0.667,
+            "mass_GeV": 1.27,
+            "mass_uncertainty_GeV": 0.02,
+            "mass_type": "MS-bar at m_c",
+            "pdg_id": 4
+        },
+        {
+            "name": "strange",
+            "symbol": "s",
+            "generation": 2,
+            "charge": -0.333,
+            "mass_MeV": 93.4,
+            "mass_uncertainty_MeV": 8.6,
+            "mass_type": "MS-bar at 2 GeV",
+            "pdg_id": 3
+        },
+        {
+            "name": "top",
+            "symbol": "t",
+            "generation": 3,
+            "charge": 0.667,
+            "mass_GeV": 172.57,
+            "mass_uncertainty_GeV": 0.29,
+            "mass_type": "Direct measurement (pole mass)",
+            "width_GeV": 1.42,
+            "width_uncertainty_GeV": 0.19,
+            "pdg_id": 6
+        },
+        {
+            "name": "bottom",
+            "symbol": "b",
+            "generation": 3,
+            "charge": -0.333,
+            "mass_GeV": 4.18,
+            "mass_uncertainty_GeV": 0.03,
+            "mass_type": "MS-bar at m_b",
+            "pdg_id": 5
+        }
+    ],
+    "yukawa_couplings": {
+        "note": "Yukawa couplings y = sqrt(2) m / v, where v = 246 GeV",
+        "v_higgs_GeV": 246.22,
+        "leptons": {
+            "electron": 2.935e-6,
+            "muon": 6.072e-4,
+            "tau": 1.021e-2
+        },
+        "quarks": {
+            "up": 1.24e-5,
+            "down": 2.68e-5,
+            "strange": 5.36e-4,
+            "charm": 7.29e-3,
+            "bottom": 2.40e-2,
+            "top": 0.991
+        }
+    },
+    "mass_ratios": {
+        "m_c_over_m_u": 587.96,
+        "m_t_over_m_c": 135.88,
+        "m_t_over_m_u": 79894.44,
+        "m_s_over_m_d": 20.00,
+        "m_b_over_m_s": 44.75,
+        "m_b_over_m_d": 895.07
+    },
+    "ckm_matrix": {
+        "note": "Wolfenstein parametrization: λ, A, ρ̄, η̄",
+        "lambda": 0.22500,
+        "A": 0.826,
+        "rho_bar": 0.159,
+        "eta_bar": 0.348,
+        "Vud": 0.97373,
+        "Vus": 0.2243,
+        "Vub": 0.00382,
+        "Vcd": 0.221,
+        "Vcs": 0.975,
+        "Vcb": 0.0408,
+        "Vtd": 0.0086,
+        "Vts": 0.0415,
+        "Vtb": 1.014
+    }
+}

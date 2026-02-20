@@ -443,6 +443,24 @@ Numerically, using PDG 2024 inputs~\cite{PDG2024} and $p_B=0.30$, we obtain repr
 \subsection{High-\texorpdfstring{$N$}{N} Saturation (Avoiding Double-Counting)}
 For layers $N > 3$, we set $B_N = B_3 = 1$ (saturation). The high-$N$ suppression is provided \emph{solely} by the $\kappa_g$ term in $g_N$ (Eq.~\eqref{eq:gN_reg}), avoiding double-counting.\footnote{An alternative approach with explicit $B_N$ tail suppression ($B_N \propto \ee^{-\beta_B(N-3)^2}$) was explored; see Appendix~\ref{app:ablation} for comparison.}
 
+\subsection{Roadmap: Action-Derived Effective Yukawa Operator}
+\label{sec:yukawa_roadmap}
+To replace the current Yukawa-anchored surrogate law [Eq.~\eqref{eq:BN_yukawa_prop}] with a first-principles operator, the next step is to extend the EYMH setup by an explicit lepton Yukawa sector in the same conformal background:
+\begin{equation}
+\mathcal{L}_{Y} = -y_0\,\bar{L}H\ell_R + \mathrm{h.c.}, \qquad g_{\mu\nu}=\Omega^2\eta_{\mu\nu}.
+\end{equation}
+After fixing one consistent canonical normalization convention (frame and field redefinition), we decompose the Higgs fluctuation on the same action-derived spatial modes used in Appendix~\ref{app:chi_loc},
+\begin{equation}
+H(x,\rho,z)=\sum_N h_N(x)\,u_N(\rho,z;D),
+\end{equation}
+and define a mode-resolved effective coupling by overlap:
+\begin{equation}
+y_N^{\rm eff}(D)=y_0\!\int 2\pi\rho\,\dd\rho\,\dd z\;
+u_N(\rho,z;D)\,f_L(\rho,z)\,f_R(\rho,z)\,\mathcal{W}_{\rm frame}(\rho,z;D).
+\label{eq:yukawa_eff_roadmap}
+\end{equation}
+Here $f_{L,R}$ denote lepton profile functions and $\mathcal{W}_{\rm frame}$ collects fixed normalization factors from the chosen conformal-frame convention. In this roadmap, the same 2D localized solver and convergence criteria as Appendix~\ref{app:chi_loc} are reused, so the eventual replacement of Eq.~\eqref{eq:BN_yukawa_prop} is done within one numerically consistent operator chain.
+
 % ============================================================
 \section{Verification Results}
 \label{sec:results}
@@ -543,7 +561,7 @@ We have presented a computable EFT-level demonstrator of the Projection Spectral
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:
 The use of two parameter sets is a deliberate design choice: action-derived mixing extraction is fixed by Appendix~\ref{app:chi_loc}, while the global $(D,\eta)$ scan uses a surrogate baseline for map-level robustness.
 \begin{enumerate}
-    \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison uses the proxy $g_{h\mu\mu}^{\rm eff}\propto \sqrt{W_2}$ rather than a full derivation from the EYMH action.
+    \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison uses the proxy $g_{h\mu\mu}^{\rm eff}\propto \sqrt{W_2}$ rather than a full derivation from the EYMH action. Consistently, the current scan still uses the surrogate visibility law in Eq.~\eqref{eq:BN_yukawa_prop}; the action-derived operator program in Section~\ref{sec:yukawa_roadmap} and Eq.~\eqref{eq:yukawa_eff_roadmap} has not yet replaced the global map.
     \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and propagate its D-interpolated profile in the global scan. The remaining gap is a full $(D,\eta,N)$ localized projection.
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ is extracted from the action-derived 2D localized solver (Appendix~\ref{app:chi_loc}), while the global $(D,\eta)$ scan still uses a simplified kinetic surrogate for rapid mapping. A full end-to-end scan using one identical operator chain for both extraction and phase mapping is left for future work.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.

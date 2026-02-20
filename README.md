@@ -40,11 +40,15 @@ cd code
 python3 generate_plots.py
 python3 extract_chi_localized_2d.py --Ds 6,12,18
 python3 extract_chi_localized_2d.py --full-scan
+python3 extract_gn_phase_space_candidate.py --D 12
+python3 lindblad_chi_minimal.py
 ```
 
 This also writes the full localized-channel profile tables to:
 - `output/chi_fp_2d/localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv`
 - `output/chi_fp_2d/localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20_relerr.csv`
+- `output/gn_fp_1d/gn_phase_space_candidate_D12.csv`
+- `output/chi_open_system/lindblad_minimal_timeseries.csv`
 
 ### 2. Paper Compilation
 To compile the manuscript (requires a standard TexLive distribution with RevTeX 4.2):

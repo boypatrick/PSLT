@@ -916,6 +916,51 @@ As a stronger stress test, we further rescaled the localized profile by large fa
 \label{fig:chi_scale_stress}
 \end{figure*}
 
+\section{Preliminary First-Principles Replacement Candidate Checks}
+\label{app:fp_candidates}
+
+\subsection{1D Phase-Space Candidate for \texorpdfstring{$g_N$}{gN}}
+To test a first-principles replacement direction for Eq.~\eqref{eq:gN_reg}, we evaluated the semiclassical 1D candidate on the same action-derived axis potential:
+\begin{equation}
+\rho_{\rm WKB}(E;D)=\frac{1}{2\pi}\int_{U(z;D)<E}\frac{\dd z}{\sqrt{E-U(z;D)}},
+\end{equation}
+\begin{equation}
+g_N^{\rm(ps)}(D)=1+\int_{E_{\min}(D)}^{E_N(D)}\rho_{\rm WKB}(E';D)\,\dd E',\qquad E_{\min}(D)\equiv \min_z U(z;D).
+\end{equation}
+Using the reproducible script \texttt{extract\_gn\_phase\_space\_candidate.py} (in the \texttt{code/} directory), we ran a coarse/mid/fine test at $D=12$ (Table~\ref{tab:gn_ps_d12}). The candidate is numerically stable at the few-$10^{-3}$ level versus fine grid, but it is \emph{not} yet used in the baseline global scan.
+
+\begin{table}[t]
+\centering
+\caption{Preliminary 1D phase-space candidate $g_N^{\rm(ps)}$ at $D=12$. Source CSV: \texttt{output/gn\_fp\_1d/gn\_phase\_space\_candidate\_D12.csv}.}
+\label{tab:gn_ps_d12}
+\small
+\begin{tabular}{cccccccc}
+\hline\hline
+level & $dz$ & $E_1$ & $E_2$ & $E_3$ & $g_1^{\rm(ps)}$ & $g_2^{\rm(ps)}$ & max rel.$g$ vs fine \\
+\hline
+coarse & 0.04 & $-0.636696$ & $-0.608074$ & $-0.575010$ & $1.056725$ & $1.054421$ & $1.31\times10^{-2}$ \\
+mid    & 0.02 & $-0.637061$ & $-0.608419$ & $-0.575335$ & $1.066813$ & $1.074099$ & $5.30\times10^{-3}$ \\
+fine   & 0.01 & $-0.637233$ & $-0.608582$ & $-0.575488$ & $1.063919$ & $1.068433$ & $0$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+\subsection{Minimal Lindblad Demonstrator for Open-System \texorpdfstring{$\chi$}{chi}}
+As a methodological bridge (not a replacement of Appendix~\ref{app:chi_loc}), we provide a minimal two-level open-system model:
+\begin{equation}
+\dot{\rho}=-i[H,\rho]+\gamma_\phi\mathcal{D}[\sigma_z]\rho+\gamma_{\rm mix}\mathcal{D}[\sigma_x]\rho,\qquad
+H=\begin{pmatrix}0 & \Delta/2\\ \Delta/2 & 0\end{pmatrix}.
+\end{equation}
+The script \texttt{code/lindblad\_chi\_minimal.py} outputs reproducible diagnostics such as
+\begin{equation}
+C_{\max}\equiv \max_t |\rho_{LR}(t)|,\qquad P_{\max}\equiv \max_t \rho_{RR}(t),
+\end{equation}
+and an optional normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. For the default demonstrator point ($\Delta=0.358108$, $\gamma_\phi=0.05$, $\gamma_{\rm mix}=0.01$, $\bar{\Gamma}_N=808.7$), we obtain
+\begin{equation}
+C_{\max}=3.775\times10^{-1},\qquad P_{\max}=7.693\times10^{-1},\qquad \chi_{\rm eff}^{\rm(proxy)}=9.34\times10^{-6}.
+\end{equation}
+These numbers are model-dependent because $(\gamma_\phi,\gamma_{\rm mix})$ are not yet derived from a microscopic EYMH bath model; therefore this open-system block remains outside all reported scan statistics.
+
 
 \section{Ansatz Ablation Study}
 \label{app:ablation}

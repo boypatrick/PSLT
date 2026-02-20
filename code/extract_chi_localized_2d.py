@@ -17,6 +17,10 @@ It also reports the parity-symmetric overlap channel as a null diagnostic:
 Outputs:
   - localized_chi_D6-12-18.csv
   - localized_chi_D6-12-18_relerr.csv
+
+Notes:
+  - Default run targets benchmark knots D={6,12,18}.
+  - Use --full-scan to run D=4..20 (integer grid) and export full profile tables.
 """
 
 from __future__ import annotations
@@ -228,6 +232,11 @@ def run_case(
 def main():
     ap = argparse.ArgumentParser(description="Localized-channel chi extraction (2D axisymmetric).")
     ap.add_argument("--Ds", default="6,12,18", help="Comma-separated D values")
+    ap.add_argument(
+        "--full-scan",
+        action="store_true",
+        help="Use full D grid: D=4,5,...,20 (overrides --Ds).",
+    )
     ap.add_argument("--rho-max", type=float, default=3.0, help="Radial box size")
     ap.add_argument("--z-margin", type=float, default=6.0, help="Use z_max = D/2 + z_margin")
     ap.add_argument("--n-mu", type=int, default=120, help="Gauss-Legendre points for spherical average")
@@ -243,7 +252,10 @@ def main():
     ap.add_argument("--outdir", default="/Users/boypatrick/codex/PSLT_20260202/output/chi_fp_2d")
     args = ap.parse_args()
 
-    d_list: List[float] = [float(s.strip()) for s in args.Ds.split(",") if s.strip()]
+    if args.full_scan:
+        d_list = [float(d) for d in range(4, 21)]
+    else:
+        d_list = [float(s.strip()) for s in args.Ds.split(",") if s.strip()]
     levels = [
         Level("coarse", dr=0.12, dz=0.06),
         Level("mid", dr=0.08, dz=0.04),

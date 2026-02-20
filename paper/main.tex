@@ -409,9 +409,19 @@ Here, $r_N = \eta e^{-2S_N}$ is the tunneling suppression factor. The mixing ter
 \begin{equation}
 \epsilon_{\rm mix} = \chi \sqrt{\Gamma_{N,a} \Gamma_{N,b}}
 \end{equation}
-The channel rates $\Gamma_{N,\ell}$ follow the superradiant scaling~\cite{DetweilerSuperrad1980}:
+The channel rates $\Gamma_{N,\ell}$ follow the superradiant scaling~\cite{DetweilerSuperrad1980}. To avoid dimensional ambiguity, we define
 \begin{equation}
-\Gamma_{N,\ell} = A_\ell \, \omega_N (\omega_N M_*)^{4\ell+4}, \qquad A_\ell \equiv 1 \ (\text{demonstrator}),
+\hat{\omega}_N \equiv \frac{\omega_N}{M_*},\qquad
+\hat{\Gamma}_{N,\ell}\equiv \frac{\Gamma_{N,\ell}}{M_*},
+\end{equation}
+and write
+\begin{equation}
+\hat{\Gamma}_{N,\ell} = A_\ell \,\hat{\omega}_N^{4\ell+5},
+\label{eq:Gamma_channel_hat}
+\end{equation}
+which is equivalent to
+\begin{equation}
+\Gamma_{N,\ell} = A_\ell \, \omega_N \left(\frac{\omega_N}{M_*}\right)^{4\ell+4}, \qquad A_\ell \equiv 1 \ (\text{demonstrator}),
 \label{eq:Gamma_channel}
 \end{equation}
 In the demonstrator, we map the two-mode basis to the lowest two superradiant channels:
@@ -421,7 +431,7 @@ In the demonstrator, we map the two-mode basis to the lowest two superradiant ch
 \bar{\Gamma}_N\equiv\sqrt{\Gamma_{N,a}\Gamma_{N,b}}.
 \label{eq:gamma_basis_map}
 \end{equation}
-Any mixing matrix element is rendered dimensionless with $\bar{\Gamma}_N$, independent of whether the basis is parity $(+,-)$ or localized $(L,R)$. Higher-$\ell$ modes are parametrically suppressed by the $(\omega_N M_*)^{4\ell+4}$ scaling and are deferred to future extensions. All rates are expressed in \textbf{dimensionless units} ($M_*=1$); $A_\ell$ is a normalization convention fixed to unity in the demonstrator and varied by $\pm 10\%$ in Appendix~\ref{app:Veff}.
+Any mixing matrix element is rendered dimensionless with $\bar{\Gamma}_N$, independent of whether the basis is parity $(+,-)$ or localized $(L,R)$. Higher-$\ell$ modes are parametrically suppressed by the $\hat{\omega}_N^{4\ell+4}$ scaling and are deferred to future extensions. All baseline scans are reported in \textbf{dimensionless units} ($M_*=1$), where Eq.~\eqref{eq:Gamma_channel_hat} and Eq.~\eqref{eq:Gamma_channel} are numerically identical; $A_\ell$ is a normalization convention fixed to unity in the demonstrator and varied by $\pm 10\%$ in Appendix~\ref{app:Veff}.
 A first-principles profile candidate for $A_\ell$ extracted from the same action-derived chain is benchmarked in Appendix~\ref{app:superrad_candidate}; it is reported as diagnostic only and is not used in baseline figures.
 The effective formation rate of layer $N$ is the largest positive eigenvalue of this matrix:
 \begin{equation}
@@ -449,9 +459,9 @@ where $\omega_N^{(I)} > 0$ represents the decay rate due to tunneling or radiati
 
 For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from the centrifugal barrier at the light ring. In the dual-center geometry, an analogous mechanism operates: modes must tunnel through the geometric barrier (captured by WKB factor $e^{-2S_N}$) and the channel rates $\Gamma_{N,\ell}$ encode the residual decay probability.
 
-\textbf{Rank-2 truncation justification:} The $(omega_N M_*)^{4\ell+4}$ scaling ensures that higher-$\ell$ modes are exponentially suppressed for $\omega_N M_* < 1$ (our regime). Concretely, for $\omega_N M_* \sim 0.1$:
+\textbf{Rank-2 truncation justification:} The $\hat{\omega}_N^{4\ell+4}$ scaling ensures that higher-$\ell$ modes are exponentially suppressed for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
 \begin{equation}
-\frac{\Gamma_{N,3}}{\Gamma_{N,2}} \sim (\omega_N M_*)^4 \sim 10^{-4}.
+\frac{\Gamma_{N,3}}{\Gamma_{N,2}} \sim \hat{\omega}_N^4 \sim 10^{-4}.
 \end{equation}
 Thus the $\ell = 1,2$ truncation still captures the dominant contribution in the demonstrator regime; higher-$\ell$ channels are subleading and deferred to future work.
 
@@ -616,6 +626,7 @@ We have presented a computable EFT-level demonstrator of the Projection Spectral
     \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated at high $N$ [Eq.~\eqref{eq:gN_reg}] and the observable sector is anchored to the SM Yukawa pattern [Eq.~\eqref{eq:BN_yukawa_prop}].
     \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With D-interpolated $\chi_N^{(LR)}$, the $H\to\mu\mu$ proxy acceptance forms a restricted band (about $9.4\%$ of the scan), providing a sharper falsifiable constraint on $(D,\eta)$.
 \end{enumerate}
+At the same time, the present implementation keeps three EFT-level surrogates explicit: the Cardy-controlled $g_N$ envelope, the Yukawa-anchored visibility law $B_N$, and the $H\to\mu\mu$ proxy map in Eq.~\eqref{eq:mu_pred}.
 
 \textbf{Limitations and outlook.}
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:

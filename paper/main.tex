@@ -114,6 +114,7 @@ The layer index $N$ emerges naturally as the principal quantum number of this sp
 \label{eq:omega_N}
 \end{equation}
 where $\mu_0$ and $\gamma$ are determined numerically from the geometry (Section~\ref{sec:worked_example}). This form captures the essential $N$-dependence from the hydrogenic spectrum while allowing the $D$-dependence to be set by explicit calculation.
+For transparency, we additionally provide a bound-state exact benchmark for $(\omega_1,\omega_2)$ at $D=\{6,12,18\}$ with coarse/mid/fine convergence from the same action-derived operator chain (Appendix~\ref{app:omega_exact_conv}, Table~\ref{tab:omega_exact_conv}). These benchmark values use $E=\omega^2-m_0^2<0$ and should not be mixed with the generalized localized-extraction eigenvalues $\lambda$ in Appendix~\ref{app:chi_loc}.
 
 \subsection{Model-Chain Assumption Status}
 \label{sec:assumption_status}
@@ -600,7 +601,7 @@ The use of two parameter sets is a deliberate design choice: action-derived mixi
     \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is plausible as an effective environment model, but this manuscript does not yet derive jump operators and rates $(L_k,\gamma_k)$ from the EYMH projection geometry. It is therefore not used in any reported scan statistic.
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ is extracted from the action-derived 2D localized solver (Appendix~\ref{app:chi_loc}), while the global $(D,\eta)$ scan still uses a simplified kinetic surrogate for rapid mapping. A full end-to-end scan using one identical operator chain for both extraction and phase mapping is left for future work.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
-    \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in this version; a fully geometry-closed $t_{\rm coh}(D,\eta,N)$ prescription is still under development.
+    \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
 \end{enumerate}
 
 \textbf{Status and redefinition of the mixing channel.}
@@ -757,6 +758,34 @@ $D$ & $E_1$ & $E_2$ & $\omega_1$ & $S_1$ & $\Delta E$ \\
 \hline\hline
 \end{tabular}
 \end{table}
+
+\subsection{Bound-State omega Convergence Benchmark}
+\label{app:omega_exact_conv}
+
+To make the surrogate-vs-exact distinction explicit, we report a direct bound-state benchmark for $\omega_N$ from the same action-derived 1D operator chain used in Table~\ref{tab:action_derived}. The settings are fixed to the physical-gap parameter set ($a=0.04$, $\varepsilon=0.1$, $m_0=1$, $\xi=0.14$), $z_{\max}=80$, and three resolutions: coarse ($N_z=4001$), mid ($N_z=6001$), fine ($N_z=8001$). The reproducible script is \texttt{code/extract\_omega\_exact\_convergence.py}.
+
+\begin{table}[htbp]
+\centering
+\caption{Bound-state $\omega_N$ convergence benchmark at $D=\{6,12,18\}$ from the action-derived operator chain. Relative errors are quoted versus fine grid.}
+\label{tab:omega_exact_conv}
+\begin{tabular}{ccccccc}
+\hline\hline
+$D$ & level & $N_z$ & $\omega_1$ & $\omega_2$ & $\Delta\omega_{12}$ & max rel.$\omega$ vs fine \\
+\hline
+6  & coarse & 4001 & 0.720883 & 0.738989 & $1.8107\times10^{-2}$ & $8.65\times10^{-4}$ \\
+6  & mid    & 6001 & 0.721345 & 0.739468 & $1.8123\times10^{-2}$ & $2.18\times10^{-4}$ \\
+6  & fine   & 8001 & 0.721500 & 0.739629 & $1.8129\times10^{-2}$ & $0$ \\
+12 & coarse & 4001 & 0.721781 & 0.722035 & $2.5438\times10^{-4}$ & $8.84\times10^{-4}$ \\
+12 & mid    & 6001 & 0.722258 & 0.722513 & $2.5533\times10^{-4}$ & $2.23\times10^{-4}$ \\
+12 & fine   & 8001 & 0.722418 & 0.722674 & $2.5565\times10^{-4}$ & $0$ \\
+18 & coarse & 4001 & 0.719404 & 0.719408 & $3.6700\times10^{-6}$ & $8.92\times10^{-4}$ \\
+18 & mid    & 6001 & 0.719885 & 0.719888 & $3.6943\times10^{-6}$ & $2.25\times10^{-4}$ \\
+18 & fine   & 8001 & 0.720046 & 0.720050 & $3.7025\times10^{-6}$ & $0$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+This benchmark is the operator-level reference for $\omega_N$ in the bound-state convention. In contrast, Appendix~\ref{app:chi_loc} uses generalized localized-extraction eigenvalues $\lambda$ for mixing-channel extraction; the two quantities serve different roles and are not identified.
 
 \subsection{Fixed-dz Convergence}
 \label{app:convergence}
@@ -1010,6 +1039,64 @@ $D$ & $\gamma_\phi$ & $\gamma_{\rm mix}$ & $C_{\max}$ & $\chi_{\rm eff}^{\rm(pro
 \end{tabular}
 \end{table}
 These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation.
+
+\subsection{Dephasing-Based First-Principles Candidate for \texorpdfstring{$t_{\rm coh}$}{tcoh}}
+\label{app:tcoh_candidate}
+To close the finite-time module with the same action-derived spectral chain, we test the dephasing candidate
+\begin{equation}
+\Delta\omega_{12}(D)\equiv \omega_2(D)-\omega_1(D),\qquad
+t_{\rm coh}^{\rm(deph)}(D)\equiv \frac{\pi}{\Delta\omega_{12}(D)},
+\label{eq:tcoh_dephasing}
+\end{equation}
+where $(\omega_1,\omega_2)$ are extracted from the bound-state convention $E_n=\omega_n^2-m_0^2<0$ in the same 1D on-axis operator chain as Appendix~\ref{app:Veff}. The reproducible implementation is provided in the code directory (\texttt{extract\_tcoh\_dephasing\_1d.py}).
+
+\begin{table}[t]
+\centering
+\caption{1D on-axis dephasing candidate for $t_{\rm coh}$ at $D=\{6,12,18\}$ (coarse/mid/fine). Source CSV: \texttt{output/tcoh\_fp\_1d/tcoh\_dephasing\_D6-12-18.csv}.}
+\label{tab:tcoh_dephasing}
+\small
+\begin{tabular}{cccccc}
+\hline\hline
+$D$ & level & $\omega_1$ & $\omega_2$ & $\Delta\omega_{12}$ & $t_{\rm coh}^{\rm(deph)}$ \\
+\hline
+6  & coarse & 0.720883 & 0.738989 & $1.8107\times10^{-2}$ & $1.7350\times10^{2}$ \\
+6  & mid    & 0.721345 & 0.739468 & $1.8123\times10^{-2}$ & $1.7334\times10^{2}$ \\
+6  & fine   & 0.721500 & 0.739629 & $1.8129\times10^{-2}$ & $1.7329\times10^{2}$ \\
+12 & coarse & 0.721781 & 0.722035 & $2.5438\times10^{-4}$ & $1.2350\times10^{4}$ \\
+12 & mid    & 0.722258 & 0.722513 & $2.5533\times10^{-4}$ & $1.2304\times10^{4}$ \\
+12 & fine   & 0.722418 & 0.722674 & $2.5565\times10^{-4}$ & $1.2289\times10^{4}$ \\
+18 & coarse & 0.719404 & 0.719408 & $3.6700\times10^{-6}$ & $8.5602\times10^{5}$ \\
+18 & mid    & 0.719885 & 0.719888 & $3.6943\times10^{-6}$ & $8.5039\times10^{5}$ \\
+18 & fine   & 0.720046 & 0.720050 & $3.7025\times10^{-6}$ & $8.4850\times10^{5}$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+For non-fine levels, the maximum relative deviation is
+\begin{equation}
+\max\!\left(\frac{|t_{\rm coh}-t_{\rm coh}^{\rm(fine)}|}{|t_{\rm coh}^{\rm(fine)}|}\right)=8.86\times10^{-3},
+\end{equation}
+which is numerically stable at the sub-$10^{-2}$ level for this benchmark set.
+
+To assess map-level impact, we compared three cases on the same $60\times60$ $(D,\eta)$ grid: baseline constant $t_{\rm coh}=1$, raw dephasing profile from Eq.~\eqref{eq:tcoh_dephasing}, and a capped variant $\min(t_{\rm coh}^{\rm(deph)},10^4)$. Results are summarized in Table~\ref{tab:tcoh_impact} (source CSV: \texttt{paper/tcoh\_profile\_impact.csv}).
+
+\begin{table}[t]
+\centering
+\caption{Global-scan impact of the dephasing $t_{\rm coh}$ candidate (diagnostic only; not baseline).}
+\label{tab:tcoh_impact}
+\small
+\begin{tabular}{lcccc}
+\hline\hline
+case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
+\hline
+constant $t_{\rm coh}=1$ & 0.800 & 0.000 & 0.094 & $3.05\times10^{-7}$ \\
+$\pi/\Delta\omega_{12}(D)$ & 0.800 & 0.000 & 0.344 & $2.46\times10^{-5}$ \\
+$\min(\pi/\Delta\omega_{12},10^4)$ & 0.800 & 0.000 & 0.188 & $2.46\times10^{-5}$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+The dephasing candidate leaves $\mathcal{R}_3$ summary fractions unchanged on this grid, but significantly alters the proxy-compatible $H\to\mu\mu$ area. Therefore, in this manuscript, Eq.~\eqref{eq:tcoh_dephasing} is reported as a first-principles candidate benchmark only and is not propagated into the baseline reported figures.
 
 
 \section{Ansatz Ablation Study}

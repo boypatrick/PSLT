@@ -945,21 +945,71 @@ fine   & 0.01 & $-0.637233$ & $-0.608582$ & $-0.575488$ & $1.063919$ & $1.068433
 \end{tabular}
 \end{table}
 
-\subsection{Minimal Lindblad Demonstrator for Open-System \texorpdfstring{$\chi$}{chi}}
-As a methodological bridge (not a replacement of Appendix~\ref{app:chi_loc}), we provide a minimal two-level open-system model:
+\subsection{2D Axisymmetric Benchmark for \texorpdfstring{$g_N^{\rm(ps)}$}{gN(ps)}}
+To reduce projection ambiguity, we also ran a 2D axisymmetric benchmark on $D=\{6,12,18\}$ using the same geometry chain as Appendix~\ref{app:chi_loc}. We define
+\begin{equation}
+N_{\rm ps}(E)=\frac{1}{4\pi}\int \dd^2x\,\dd^2p\;\Theta(E-U-p^2)
+=\frac{1}{2}\int \rho\,\dd\rho\,\dd z\,[E-U(\rho,z)]_+,
+\end{equation}
+\begin{equation}
+g_{N,\rm raw}^{\rm(ps)}=1+N_{\rm ps}(\lambda_N)-N_{\rm ps}(\lambda_1),\qquad
+\hat g_N\equiv\frac{g_{N,\rm raw}^{\rm(ps)}}{g_{3,\rm raw}^{\rm(ps)}}.
+\end{equation}
+The script \texttt{extract\_gn\_phase\_space\_2d.py} (in \texttt{code/}) gives Table~\ref{tab:gn_ps_2d}. For non-fine levels, the maximum profile deviation is
+\begin{equation}
+\max_{\text{non-fine}}\left(\max_N\frac{|\hat g_N-\hat g_N^{\rm(fine)}|}{|\hat g_N^{\rm(fine)}|}\right)=2.35\times10^{-2}.
+\end{equation}
+As in the 1D candidate check, this benchmark is reported as a replacement candidate only and is not propagated into the baseline global scan.
+
+\begin{table}[t]
+\centering
+\caption{Fine-grid 2D phase-space profile candidate at $D=\{6,12,18\}$. Source CSV: \texttt{output/gn\_fp\_2d/gn\_phase\_space\_2d\_D6-12-18.csv}.}
+\label{tab:gn_ps_2d}
+\small
+\begin{tabular}{cccccc}
+\hline\hline
+$D$ & $\lambda_1$ & $\lambda_2$ & $\lambda_3$ & $\hat g_1$ & $\hat g_2$ \\
+\hline
+6  & $0.719476$ & $0.804126$ & $0.945018$ & $9.867\times10^{-2}$ & $4.370\times10^{-1}$ \\
+12 & $0.686186$ & $0.747510$ & $0.822830$ & $1.193\times10^{-1}$ & $5.146\times10^{-1}$ \\
+18 & $0.667848$ & $0.713807$ & $0.767832$ & $1.291\times10^{-1}$ & $5.294\times10^{-1}$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+\subsection{Geometry-Informed Lindblad Demonstrator for Open-System \texorpdfstring{$\chi$}{chi}}
+As a methodological bridge (not a replacement of Appendix~\ref{app:chi_loc}), we consider a two-level open-system model:
 \begin{equation}
 \dot{\rho}=-i[H,\rho]+\gamma_\phi\mathcal{D}[\sigma_z]\rho+\gamma_{\rm mix}\mathcal{D}[\sigma_x]\rho,\qquad
 H=\begin{pmatrix}0 & \Delta/2\\ \Delta/2 & 0\end{pmatrix}.
 \end{equation}
-The script \texttt{code/lindblad\_chi\_minimal.py} outputs reproducible diagnostics such as
+For this demonstrator we set $\gamma_{\rm mix}(D)\equiv M_{LR}^{(H)}(D)$ from Appendix~\ref{app:chi_loc}, and define a geometry-informed dephasing proxy
+\begin{equation}
+\gamma_\phi(D)\equiv \sqrt{\left\langle\left(\delta V\right)^2\right\rangle_\rho},\qquad
+\delta V=V_{\rm eff}-\bar V_{\rm eff}(r),
+\end{equation}
+with cylindrical weighting $\langle\cdots\rangle_\rho$. The script \texttt{extract\_chi\_open\_system\_geometry.py} outputs reproducible diagnostics such as
 \begin{equation}
 C_{\max}\equiv \max_t |\rho_{LR}(t)|,\qquad P_{\max}\equiv \max_t \rho_{RR}(t),
 \end{equation}
-and an optional normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. For the default demonstrator point ($\Delta=0.358108$, $\gamma_\phi=0.05$, $\gamma_{\rm mix}=0.01$, $\bar{\Gamma}_N=808.7$), we obtain
-\begin{equation}
-C_{\max}=3.775\times10^{-1},\qquad P_{\max}=7.693\times10^{-1},\qquad \chi_{\rm eff}^{\rm(proxy)}=9.34\times10^{-6}.
-\end{equation}
-These numbers are model-dependent because $(\gamma_\phi,\gamma_{\rm mix})$ are not yet derived from a microscopic EYMH bath model; therefore this open-system block remains outside all reported scan statistics.
+and a normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. Results for $D=\{6,12,18\}$ are summarized in Table~\ref{tab:chi_open_geom}. The proxy remains below the baseline localized extraction scale by a factor $\sim 0.10$--$0.16$, and this block is therefore kept outside all reported scan statistics.
+
+\begin{table}[t]
+\centering
+\caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}
+\label{tab:chi_open_geom}
+\small
+\begin{tabular}{ccccccc}
+\hline\hline
+$D$ & $\gamma_\phi$ & $\gamma_{\rm mix}$ & $C_{\max}$ & $\chi_{\rm eff}^{\rm(proxy)}$ & $\chi_N^{(LR)}$ & ratio \\
+\hline
+6  & $0.656901$ & $0.227474$ & $0.077658$ & $6.24\times10^{-5}$ & $4.02\times10^{-4}$ & $0.155$ \\
+12 & $0.744389$ & $0.179054$ & $0.063765$ & $2.82\times10^{-5}$ & $2.21\times10^{-4}$ & $0.128$ \\
+18 & $0.805854$ & $0.136694$ & $0.051381$ & $2.19\times10^{-5}$ & $2.13\times10^{-4}$ & $0.103$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation.
 
 
 \section{Ansatz Ablation Study}

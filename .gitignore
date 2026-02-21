@@ -19,3 +19,8 @@ __pycache__/
 
 # Matplotlib cache
 .matplotlib/
+
+# Reproducibility runs (generated artifacts and logs)
+repro/runs/*
+!repro/runs/.gitkeep
+repro/latest

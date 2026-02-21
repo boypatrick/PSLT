@@ -6,97 +6,58 @@
 
 This bundle contains the complete source code, data, and manuscript for the PSLT verification project.
 
-**Reproducibility badge:** Core figures/tables are reproducible via `python3 code/generate_plots.py` and `python3 code/extract_chi_localized_2d.py`.
+**Reproducibility badge:** clone -> one command -> packaged Fig/Table artifacts with manifest/checksums.
 
 ## Directory Structure
 - `paper/`: Contains the main Latex manuscript (`main.tex`).
 - `code/`: Contains the Python verification scripts.
   - `pslt_lib.py`: The core unified library (Kinetics, Visibility, Parameters).
-  - `generate_plots.py`: One-click script to reproduce all figures.
+  - `generate_plots.py`: Main plotting script for phase maps and H->mumu proxy plots.
 - `data/`: Contains PDG data files (`pdg_leptons.json`, `pdg_quarks.json`).
 - `output/`: Contains the generated plots and figures used in the paper.
+- `scripts/repro/`: One-click reproducibility pipeline and packaging tools.
+- `repro/`: Reproducibility docs, artifact map, and run outputs.
 
-## Reproduction Instructions
+## Reproduction Instructions (One Click)
 
-### 1. Verification Plots
-To reproduce all phase diagrams and verification plots, run:
-
-```bash
-cd code
-python3 generate_plots.py
-```
-
-This will populate the `output/` directory with:
-- `three_generation_phase_diagram.png`
-- `three_generation_bars.png`
-- `hmumu_exclusion.png`
-- `hmumu_signal_strength.png`
-
-## Full Reproducibility
-All manuscript-level outputs can be regenerated with:
+### 1. Generate + Package Fig/Table Artifacts
+From repository root:
 
 ```bash
-cd code
-python3 generate_plots.py
-python3 extract_chi_localized_2d.py --Ds 6,12,18
-python3 extract_chi_localized_2d.py --full-scan
-python3 extract_omega_exact_convergence.py --Ds 6,12,18
-python3 extract_tcoh_dephasing_1d.py --Ds 6,12,18
-python3 extract_tcoh_dephasing_1d.py --full-scan
-python3 scan_tcoh_profile_impact.py
-python3 extract_eta_prefactor_1d.py --Ds 6,12,18
-python3 extract_eta_prefactor_1d.py --full-scan
-python3 scan_eta_profile_impact.py
-python3 extract_superrad_prefactor_1d.py --Ds 6,12,18
-python3 extract_superrad_prefactor_1d.py --full-scan
-python3 scan_superrad_profile_impact.py
-python3 verify_omega_geometric_origin.py
-python3 extract_gn_phase_space_candidate.py --D 12
-python3 lindblad_chi_minimal.py
-python3 extract_gn_phase_space_2d.py --Ds 6,12,18
-python3 extract_chi_open_system_geometry.py --Ds 6,12,18
+bash scripts/repro/reproduce_paper.sh
 ```
 
-This also writes the full localized-channel profile tables to:
-- `output/chi_fp_2d/localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv`
-- `output/chi_fp_2d/localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20_relerr.csv`
-- `output/omega_fp_1d/omega_exact_D6-12-18.csv`
-- `output/omega_fp_1d/omega_exact_D6-12-18_relerr.csv`
-- `output/tcoh_fp_1d/tcoh_dephasing_D6-12-18.csv`
-- `output/tcoh_fp_1d/tcoh_dephasing_D6-12-18_relerr.csv`
-- `output/tcoh_fp_1d/tcoh_dephasing_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv`
-- `output/tcoh_fp_1d/tcoh_profile_impact.csv`
-- `output/eta_fp_1d/eta_prefactor_D6-12-18.csv`
-- `output/eta_fp_1d/eta_prefactor_D6-12-18_relerr.csv`
-- `output/eta_fp_1d/eta_prefactor_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv`
-- `output/eta_fp_1d/eta_profile_impact.csv`
-- `output/superrad_fp_1d/superrad_prefactor_D6-12-18.csv`
-- `output/superrad_fp_1d/superrad_prefactor_D6-12-18_relerr.csv`
-- `output/superrad_fp_1d/superrad_prefactor_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv`
-- `output/superrad_fp_1d/superrad_prefactor_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20_relerr.csv`
-- `output/superrad_fp_1d/superrad_profile_impact.csv`
-- `output/superrad_fp_1d/superrad_profile_values.csv`
-- `output/omega_geom_origin/omega_geom_origin_checks.csv`
-- `output/omega_geom_origin/omega_geom_origin_samples.csv`
-- `output/gn_fp_1d/gn_phase_space_candidate_D12.csv`
-- `output/chi_open_system/lindblad_minimal_timeseries.csv`
-- `output/gn_fp_2d/gn_phase_space_2d_D6-12-18.csv`
-- `output/gn_fp_2d/gn_phase_space_2d_D6-12-18_relerr.csv`
-- `output/chi_open_system/chi_open_system_geometry_D6-12-18.csv`
+This runs the reproducible pipeline, writes step logs, and packages normalized outputs under:
+- `repro/runs/<RUN_ID>/figures/Fig_XX_*.png`
+- `repro/runs/<RUN_ID>/tables/Tab_XX_*.csv`
+- `repro/runs/<RUN_ID>/manifest.json`
+- `repro/runs/<RUN_ID>/checksums.sha256`
 
-### 2. Paper Compilation
-To compile the manuscript (requires a standard TexLive distribution with RevTeX 4.2):
+`repro/latest` points to the latest packaged run.
+Detailed conventions and layout are documented in `repro/README.md`.
+
+### 2. Optional Paper Compile in Same Run
+If you also want to compile `paper/main.tex` in the same command:
 
 ```bash
-cd paper
-pdflatex main.tex
-pdflatex main.tex
+bash scripts/repro/reproduce_paper.sh --with-paper
 ```
+
+### 3. Package Existing Outputs Only
+If you already ran scripts manually and only want standardized packaging:
+
+```bash
+bash scripts/repro/reproduce_paper.sh --package-only
+```
+
+### 4. Legacy Manual Sequence (Advanced)
+The old manual script-by-script sequence is still valid, but the reproducible entrypoint above is now the recommended path.
+
 
 ## Requirements
 - Python 3.8+
 - `numpy`, `scipy`, `matplotlib`
-- `pdflatex` (for manuscript)
+- `latexmk` + `pdflatex` (only if `--with-paper`)
 
 ## Key Results
 - **Three-Generation Stability:** In the current D-interpolated localized-channel scan, the theory gives Generation Ratio $\mathcal{R}_3>90\%$ over **80.0%** of the sampled $(D,\eta)$ grid, while $\mathcal{R}_3>95\%$ is not reached in this setup.

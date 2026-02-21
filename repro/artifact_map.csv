@@ -1,0 +1,28 @@
+kind,id,artifact_name,source,required,notes
+figure,fig01,Fig_01_pslt_framework.png,paper/pslt_framework.png,1,Framework overview used in manuscript
+figure,fig02,Fig_02_veff_true_D12.png,output/true_single_track/Veff_true_D12.png,1,Action-derived profile figure
+figure,fig03,Fig_03_true_single_track.png,output/true_single_track/true_single_track.png,1,Single-track spectrum+tunneling figure
+figure,fig04,Fig_04_pslt_mixing_channels.png,paper/pslt_mixing_channels.png,1,Mixing-channel intuition diagram
+figure,fig05,Fig_05_three_generation_phase_diagram.png,output/three_generation_phase_diagram.png,1,Winner map and R3 map
+figure,fig06,Fig_06_three_generation_bars.png,output/three_generation_bars.png,1,Representative layer probability bars
+figure,fig07,Fig_07_hmumu_exclusion.png,output/hmumu_exclusion.png,1,H->mumu exclusion proxy map
+figure,fig08,Fig_08_hmumu_signal_strength.png,output/hmumu_signal_strength.png,1,H->mumu signal-strength proxy map
+figure,fig09,Fig_09_splitting_action_consistency.png,output/splitting_action_consistency.png,1,Splitting-action consistency check
+figure,fig10,Fig_10_chi_wavefunction_contours.png,output/chi_fp_2d/chi_wavefunction_contours_D6_12_18.png,1,Localized-mode contour figure
+figure,fig11,Fig_11_chi_scale_stress_test.png,output/chi_fp_2d/chi_scale_stress_test.png,1,Chi scale stress-test figure
+table,tab01,Tab_01_localized_chi_fullscan.csv,output/chi_fp_2d/localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv,1,Full-scan localized chi profile
+table,tab02,Tab_02_chi_profile_robustness.csv,paper/chi_profile_robustness.csv,1,Chi profile robustness scan summary
+table,tab03,Tab_03_chi_scale_stress.csv,output/chi_fp_2d/chi_scale_stress_test.csv,1,Chi stress-test raw data
+table,tab04,Tab_04_gn_phase_space_1d.csv,output/gn_fp_1d/gn_phase_space_candidate_D12.csv,1,1D g_N first-principles candidate
+table,tab05,Tab_05_gn_phase_space_2d.csv,output/gn_fp_2d/gn_phase_space_2d_D6-12-18.csv,1,2D g_N first-principles candidate
+table,tab06,Tab_06_gn_profile_impact.csv,paper/gn_profile_impact.csv,1,g_N mode impact summary
+table,tab07,Tab_07_chi_open_geometry.csv,output/chi_open_system/chi_open_system_geometry_D6-12-18.csv,1,Open-system geometry demonstrator
+table,tab08,Tab_08_chi_open_ratio_band.csv,output/chi_open_system/chi_open_ratio_band_D4-5-*.csv,1,Open-system ratio band on D=4..20
+table,tab09,Tab_09_chi_open_sensitivity.csv,paper/chi_open_system_sensitivity.csv,1,Open-system sensitivity scan summary
+table,tab10,Tab_10_tcoh_dephasing.csv,output/tcoh_fp_1d/tcoh_dephasing_D6-12-18.csv,1,t_coh dephasing benchmark
+table,tab11,Tab_11_tcoh_impact.csv,paper/tcoh_profile_impact.csv,1,t_coh profile impact summary
+table,tab12,Tab_12_eta_prefactor.csv,output/eta_fp_1d/eta_prefactor_D6-12-18.csv,1,eta prefactor benchmark
+table,tab13,Tab_13_eta_impact.csv,paper/eta_profile_impact.csv,1,eta profile impact summary
+table,tab14,Tab_14_superrad_prefactor.csv,output/superrad_fp_1d/superrad_prefactor_D6-12-18.csv,1,Superradiant prefactor benchmark
+table,tab15,Tab_15_superrad_impact.csv,paper/superrad_profile_impact.csv,1,Superradiant profile impact summary
+paper,paper01,Paper_main.pdf,paper/main.pdf,0,Optional manuscript PDF (requires --with-paper)

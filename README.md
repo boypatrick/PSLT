@@ -13,6 +13,7 @@ This bundle contains the complete source code, data, and manuscript for the PSLT
 - `code/`: Contains the Python verification scripts.
   - `pslt_lib.py`: The core unified library (Kinetics, Visibility, Parameters).
   - `generate_plots.py`: Main plotting script for phase maps and H->mumu proxy plots.
+  - `scan_hll_signal_strengths.py`: Proxy maps and summaries for H->ee, H->mumu, H->tautau.
 - `data/`: Contains PDG data files (`pdg_leptons.json`, `pdg_quarks.json`).
 - `output/`: Contains the generated plots and figures used in the paper.
 - `scripts/repro/`: One-click reproducibility pipeline and packaging tools.

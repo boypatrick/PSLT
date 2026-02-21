@@ -707,7 +707,7 @@ bash scripts/repro/reproduce_paper.sh --package-only
 \hline\hline
 Stage & Primary scripts & Key outputs \\
 \hline
-Global maps and proxy plots & \texttt{generate\_plots.py} & \texttt{output/three\_generation\_*.png}, \texttt{output/hmumu\_*.png} \\
+Global maps and proxy plots & \texttt{generate\_plots.py}; \texttt{scan\_hll\_signal\_strengths.py} & \texttt{output/three\_generation\_*.png}; \texttt{output/hmumu\_*.png}; \texttt{output/hll\_signal\_strength/*} \\
 Localized mixing extraction & \texttt{extract\_chi\_localized\_2d.py} (\texttt{--Ds}, \texttt{--full-scan}) & \texttt{output/chi\_fp\_2d/localized\_chi\_D*.csv} \\
 Localized-profile diagnostics & \texttt{scan\_chi\_profile\_robustness.py}; \texttt{plot\_chi\_*.py} & \texttt{paper/chi\_profile\_robustness.csv}; \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}; \texttt{paper/chi\_wavefunction\_contours\_D*.png} \\
 $g_N$ first-principles candidates & \path{extract_gn_phase_space_candidate.py}; \path{extract_gn_phase_space_2d.py}; \path{scan_gn_profile_impact.py} & \texttt{output/gn\_fp\_1d/*.csv}; \texttt{output/gn\_fp\_2d/*.csv}; \texttt{paper/gn\_profile\_impact.csv} \\

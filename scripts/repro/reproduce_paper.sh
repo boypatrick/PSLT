@@ -139,6 +139,8 @@ sync_paper_assets() {
   sync_one "output/three_generation_bars.png" "paper/three_generation_bars.png" 1
   sync_one "output/hmumu_exclusion.png" "paper/hmumu_exclusion.png" 1
   sync_one "output/hmumu_signal_strength.png" "paper/hmumu_signal_strength.png" 1
+  sync_one "output/hll_signal_strength/hll_signal_strength_maps.png" "paper/hll_signal_strength_maps.png" 1
+  sync_one "output/hll_signal_strength/hll_signal_strength_summary.csv" "paper/hll_signal_strength_summary.csv" 1
   sync_one "output/true_single_track/Veff_true_D12.png" "paper/Veff_true_D12.png" 1
   sync_one "output/true_single_track/true_single_track.png" "paper/true_single_track.png" 1
   sync_one "output/chi_fp_2d/chi_wavefunction_contours_D6_12_18.png" "paper/chi_wavefunction_contours_D6_12_18.png" 1
@@ -211,21 +213,23 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/scan_chi_open_system_sensitivity.py"
   run_step "24" "generate_plots" \
     "$PYTHON_BIN code/generate_plots.py"
-  run_step "25" "verify_robustness" \
+  run_step "25" "scan_hll_signal_strengths" \
+    "$PYTHON_BIN code/scan_hll_signal_strengths.py"
+  run_step "26" "verify_robustness" \
     "$PYTHON_BIN code/verify_robustness.py"
-  run_step "26" "validate_2d_laplacian" \
+  run_step "27" "validate_2d_laplacian" \
     "$PYTHON_BIN code/validate_2d_laplacian.py"
-  run_step "27" "splitting_action_analysis" \
+  run_step "28" "splitting_action_analysis" \
     "$PYTHON_BIN code/splitting_action_analysis.py"
-  run_step "28" "true_single_track_solver" \
+  run_step "29" "true_single_track_solver" \
     "$PYTHON_BIN code/true_single_track_solver.py"
-  run_step "29" "generate_physical_intuition_figs" \
+  run_step "30" "generate_physical_intuition_figs" \
     "$PYTHON_BIN code/generate_physical_intuition_figs.py"
-  run_step "30" "sync_paper_assets" "sync_paper_assets"
+  run_step "31" "sync_paper_assets" "sync_paper_assets"
 fi
 
 if [[ "$WITH_PAPER" -eq 1 ]]; then
-  run_step "31" "compile_paper" \
+  run_step "32" "compile_paper" \
     "cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex"
 fi
 

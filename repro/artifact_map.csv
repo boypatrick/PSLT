@@ -10,6 +10,7 @@ figure,fig08,Fig_08_hmumu_signal_strength.png,output/hmumu_signal_strength.png,1
 figure,fig09,Fig_09_splitting_action_consistency.png,output/splitting_action_consistency.png,1,Splitting-action consistency check
 figure,fig10,Fig_10_chi_wavefunction_contours.png,output/chi_fp_2d/chi_wavefunction_contours_D6_12_18.png,1,Localized-mode contour figure
 figure,fig11,Fig_11_chi_scale_stress_test.png,output/chi_fp_2d/chi_scale_stress_test.png,1,Chi scale stress-test figure
+figure,fig12,Fig_12_hll_signal_strength_maps.png,output/hll_signal_strength/hll_signal_strength_maps.png,1,H->ee/H->mumu/H->tautau proxy map panel
 table,tab01,Tab_01_localized_chi_fullscan.csv,output/chi_fp_2d/localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv,1,Full-scan localized chi profile
 table,tab02,Tab_02_chi_profile_robustness.csv,paper/chi_profile_robustness.csv,1,Chi profile robustness scan summary
 table,tab03,Tab_03_chi_scale_stress.csv,output/chi_fp_2d/chi_scale_stress_test.csv,1,Chi stress-test raw data
@@ -25,4 +26,5 @@ table,tab12,Tab_12_eta_prefactor.csv,output/eta_fp_1d/eta_prefactor_D6-12-18.csv
 table,tab13,Tab_13_eta_impact.csv,paper/eta_profile_impact.csv,1,eta profile impact summary
 table,tab14,Tab_14_superrad_prefactor.csv,output/superrad_fp_1d/superrad_prefactor_D6-12-18.csv,1,Superradiant prefactor benchmark
 table,tab15,Tab_15_superrad_impact.csv,paper/superrad_profile_impact.csv,1,Superradiant profile impact summary
+table,tab16,Tab_16_hll_signal_strength_summary.csv,output/hll_signal_strength/hll_signal_strength_summary.csv,1,H->ll proxy signal-strength summary
 paper,paper01,Paper_main.pdf,paper/main.pdf,0,Optional manuscript PDF (requires --with-paper)

@@ -25,7 +25,7 @@ import numpy as np
 from pslt_lib import PSLTKinetics, PSLTParameters
 
 
-ROOT = Path("/Users/boypatrick/codex/PSLT_20260202")
+ROOT = Path(__file__).resolve().parent.parent
 OUTDIR = ROOT / "output" / "chi_fp_2d"
 PAPER_DIR = ROOT / "paper"
 

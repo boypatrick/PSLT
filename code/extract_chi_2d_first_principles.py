@@ -36,6 +36,9 @@ import pandas as pd
 from scipy.sparse import diags, eye, kron
 from scipy.sparse.linalg import eigsh
 
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_OUTDIR = ROOT / "output" / "chi_fp_2d"
+
 
 @dataclass(frozen=True)
 class PhysicalParams:
@@ -242,7 +245,7 @@ def main():
         default=2.55,
         help="Shift-invert target for eigsh. Use negative value to disable (SA mode).",
     )
-    ap.add_argument("--outdir", default="/Users/boypatrick/codex/PSLT_20260202/output/chi_fp_2d")
+    ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
     d_list: List[float] = [float(s.strip()) for s in args.Ds.split(",") if s.strip()]

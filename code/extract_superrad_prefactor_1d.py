@@ -38,6 +38,9 @@ import numpy as np
 import pandas as pd
 import scipy.linalg as la
 
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_OUTDIR = ROOT / "output" / "superrad_fp_1d"
+
 
 @dataclass(frozen=True)
 class PhysicalParams:
@@ -190,7 +193,7 @@ def main() -> None:
     ap.add_argument("--zmax", type=float, default=80.0)
     ap.add_argument("--D-ref", type=float, default=12.0)
     ap.add_argument("--N-ref", type=int, default=2)
-    ap.add_argument("--outdir", default="/Users/boypatrick/codex/PSLT_20260202/output/superrad_fp_1d")
+    ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
     if args.full_scan:

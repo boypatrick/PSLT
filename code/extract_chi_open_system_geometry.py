@@ -22,6 +22,10 @@ import pandas as pd
 from scipy.integrate import solve_ivp
 from scipy.sparse import diags, eye, kron
 
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_CHI_SOURCE = ROOT / "output" / "chi_fp_2d" / "localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv"
+DEFAULT_OUTDIR = ROOT / "output" / "chi_open_system"
+
 
 @dataclass(frozen=True)
 class PhysicalParams:
@@ -125,9 +129,9 @@ def main() -> None:
     ap.add_argument("--nstep", type=int, default=2000)
     ap.add_argument(
         "--chi-source",
-        default="/Users/boypatrick/codex/PSLT_20260202/output/chi_fp_2d/localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
+        default=str(DEFAULT_CHI_SOURCE),
     )
-    ap.add_argument("--outdir", default="/Users/boypatrick/codex/PSLT_20260202/output/chi_open_system")
+    ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
     D_list = [float(s.strip()) for s in args.Ds.split(",") if s.strip()]
@@ -187,4 +191,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

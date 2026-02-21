@@ -22,6 +22,9 @@ from scipy.integrate import simpson
 from scipy.sparse import diags
 from scipy.sparse.linalg import eigsh
 
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_OUTDIR = ROOT / "output" / "gn_fp_1d"
+
 
 def build_u_axis(z: np.ndarray, D: float, a: float, eps: float, m0: float, xi: float) -> np.ndarray:
     rp = np.sqrt((z - D / 2.0) ** 2 + eps**2)
@@ -72,7 +75,7 @@ def main() -> None:
     ap.add_argument("--n-states", type=int, default=3)
     ap.add_argument("--nE", type=int, default=600)
     ap.add_argument("--sigma", type=float, default=-0.55)
-    ap.add_argument("--outdir", default="/Users/boypatrick/codex/PSLT_20260202/output/gn_fp_1d")
+    ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
     levels = [("coarse", 0.04), ("mid", 0.02), ("fine", 0.01)]
@@ -114,4 +117,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

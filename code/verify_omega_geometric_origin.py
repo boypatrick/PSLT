@@ -22,11 +22,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+ROOT = Path(__file__).resolve().parent.parent
+
 
 def main() -> None:
     eps = 0.1
 
-    outdir = Path("/Users/boypatrick/codex/PSLT_20260202/output/omega_geom_origin")
+    outdir = ROOT / "output" / "omega_geom_origin"
     outdir.mkdir(parents=True, exist_ok=True)
 
     # 1) Kernel normalization

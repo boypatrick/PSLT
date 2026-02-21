@@ -23,6 +23,9 @@ import numpy as np
 import pandas as pd
 import scipy.linalg as la
 
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_OUTDIR = ROOT / "output" / "omega_fp_1d"
+
 
 @dataclass(frozen=True)
 class PhysicalParams:
@@ -100,7 +103,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Extract omega_N convergence benchmarks (bound-state convention).")
     ap.add_argument("--Ds", default="6,12,18", help="Comma-separated D values.")
     ap.add_argument("--zmax", type=float, default=80.0, help="Half-box size in z.")
-    ap.add_argument("--outdir", default="/Users/boypatrick/codex/PSLT_20260202/output/omega_fp_1d")
+    ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
     d_list: List[float] = [float(x.strip()) for x in args.Ds.split(",") if x.strip()]

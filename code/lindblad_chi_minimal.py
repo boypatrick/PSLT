@@ -16,6 +16,9 @@ import numpy as np
 import pandas as pd
 from scipy.integrate import solve_ivp
 
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_OUTDIR = ROOT / "output" / "chi_open_system"
+
 
 def run_lindblad(
     delta: float,
@@ -66,7 +69,7 @@ def main() -> None:
     ap.add_argument("--gamma-ref", type=float, default=808.7, help="Reference rate for optional dimensionless proxy")
     ap.add_argument("--tmax", type=float, default=200.0)
     ap.add_argument("--nstep", type=int, default=2000)
-    ap.add_argument("--outdir", default="/Users/boypatrick/codex/PSLT_20260202/output/chi_open_system")
+    ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
     df, cmax, pmax = run_lindblad(
@@ -92,4 +95,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

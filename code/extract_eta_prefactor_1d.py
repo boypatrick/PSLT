@@ -25,6 +25,9 @@ import numpy as np
 import pandas as pd
 import scipy.linalg as la
 
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_OUTDIR = ROOT / "output" / "eta_fp_1d"
+
 
 @dataclass(frozen=True)
 class PhysicalParams:
@@ -161,7 +164,7 @@ def main() -> None:
     ap.add_argument("--full-scan", action="store_true", help="Use D=4..20 integer grid (fine only).")
     ap.add_argument("--zmax", type=float, default=80.0)
     ap.add_argument("--D-ref", type=float, default=12.0, help="Reference D for eta normalization.")
-    ap.add_argument("--outdir", default="/Users/boypatrick/codex/PSLT_20260202/output/eta_fp_1d")
+    ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
     if args.full_scan:

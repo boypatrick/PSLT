@@ -23,6 +23,9 @@ import numpy as np
 import pandas as pd
 import scipy.linalg as la
 
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_OUTDIR = ROOT / "output" / "tcoh_fp_1d"
+
 
 @dataclass(frozen=True)
 class PhysicalParams:
@@ -106,7 +109,7 @@ def main() -> None:
     ap.add_argument("--full-scan", action="store_true", help="Use D = 4..20 integer grid.")
     ap.add_argument("--zmax", type=float, default=80.0, help="Half-box size in z.")
     ap.add_argument("--delta-floor", type=float, default=1e-12, help="Safety floor for Delta omega in t_coh.")
-    ap.add_argument("--outdir", default="/Users/boypatrick/codex/PSLT_20260202/output/tcoh_fp_1d")
+    ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
     if args.full_scan:
@@ -167,4 +170,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

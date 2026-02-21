@@ -32,6 +32,9 @@ import pandas as pd
 from scipy.sparse import diags, eye, kron
 from scipy.sparse.linalg import eigsh
 
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_OUTDIR = ROOT / "output" / "gn_fp_2d"
+
 
 @dataclass(frozen=True)
 class PhysicalParams:
@@ -113,7 +116,7 @@ def main() -> None:
     ap.add_argument("--z-margin", type=float, default=6.0)
     ap.add_argument("--tol", type=float, default=1e-8)
     ap.add_argument("--maxiter", type=int, default=30000)
-    ap.add_argument("--outdir", default="/Users/boypatrick/codex/PSLT_20260202/output/gn_fp_2d")
+    ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
     D_list = [float(s.strip()) for s in args.Ds.split(",") if s.strip()]

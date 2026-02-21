@@ -70,6 +70,16 @@
     }
   ],
   "higgs_signal_strength": {
+    "H_to_ee": {
+      "value": null,
+      "stat_uncertainty": null,
+      "syst_uncertainty": null,
+      "combined_uncertainty": null,
+      "upper_limit_95CL": null,
+      "source": "Template placeholder: fill from latest ATLAS/CMS combination",
+      "reference": null,
+      "notes": "Optional input used by code/scan_hll_signal_strengths.py when value and combined_uncertainty are set"
+    },
     "H_to_mumu": {
       "value": 1.4,
       "stat_uncertainty": null,
@@ -77,6 +87,15 @@
       "combined_uncertainty": 0.4,
       "source": "ATLAS Run 3 (13.6 TeV, 165 fb^-1) combined with Run 2",
       "reference": "ATLAS Collaboration, arXiv:2507.03595"
+    },
+    "H_to_tautau": {
+      "value": null,
+      "stat_uncertainty": null,
+      "syst_uncertainty": null,
+      "combined_uncertainty": null,
+      "source": "Template placeholder: fill from latest ATLAS/CMS combination",
+      "reference": null,
+      "notes": "Optional input used by code/scan_hll_signal_strengths.py when value and combined_uncertainty are set"
     }
   },
   "mass_ratios": {

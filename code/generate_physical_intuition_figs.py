@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 import numpy as np
 
-
-PAPER_DIR = Path("/Users/boypatrick/codex/PSLT_20260202/paper")
+ROOT = Path(__file__).resolve().parent.parent
+PAPER_DIR = ROOT / "paper"
 
 
 def add_box(ax, xy, wh, title, body, fc="#f3f6fb", ec="#2f3b52"):
@@ -108,7 +108,7 @@ def draw_chain_figure(path: Path):
         (0.82, 0.20),
         (0.15, 0.26),
         "Benchmarks",
-        r"$\mathcal R_3,\ \mu_{\mu\mu}$" + "\nPhase diagram & proxy fit",
+        r"$\mathcal{R}_3,\ \mu_{\mu\mu}$" + "\nPhase diagram & proxy fit",
         fc="#f7f7f7",
     )
 

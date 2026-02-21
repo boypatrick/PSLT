@@ -19,7 +19,7 @@ Contains:
 3. YukawaVisibility: Logic for B_N factors from Yukawa-proportional scaling
    (with sublinear power compression) and a decoupling tail for N>3.
 
-This library is part of the PSLT_20260201 bundle.
+This library is part of the PSLT research bundle.
 """
 import numpy as np
 import math
@@ -84,8 +84,8 @@ def load_yukawa_data(data_dir: Path = None) -> dict:
         elif (base_path.parent / "data").exists():
             data_dir = base_path.parent / "data"
         else:
-            # Last resort: absolute path from original setup
-            data_dir = Path("/Users/boypatrick/antigravity/PSLT_20260201/data")
+            # Last resort: resolve against project root if script is relocated.
+            data_dir = base_path.resolve().parent / "data"
     
     try:
         with open(data_dir / "pdg_leptons.json", 'r') as f:

@@ -134,7 +134,7 @@ $V_{\rm eff}$, low modes, WKB action & Action-derived + numerically converged & 
 $g_N$ Cardy envelope + $q^{(N-1)^2}$ regulator & EFT-motivated surrogate & Yes & Replace by explicit microscopic counting model \\
 $\chi_N^{(LR)}(D)$ localized channel & Action-derived extraction (Appendix~\ref{app:chi_loc}) & Yes & Full localized projection over full scan grid \\
 $\Gamma_{N,\ell}$ channel normalization ($A_\ell$) & Kerr-inspired surrogate ($A_1=A_2=1$) & Yes & Benchmark action-derived profile $\tilde A_\ell(D)$ (Appendix~\ref{app:superrad_candidate}) \\
-Open-system $\chi_{\rm eff}$ (Lindblad) & Concept-level proposal only & No & Derive $L_k,\gamma_k$ from EYMH-consistent environment model, then rescan \\
+Open-system $\chi_{\rm eff}$ (Lindblad) & Scan-ready diagnostic module with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}) & Diagnostic only (not baseline) & Derive microscopic EYMH bath $(L_k,\gamma_k)$ and then promote to baseline if robust \\
 $B_N$ visibility law [Eq.~\eqref{eq:BN_yukawa_prop}] & Yukawa-anchored surrogate & Yes & Replace with overlap-defined $y_N^{\rm eff}$ program (Section~\ref{sec:yukawa_roadmap}) \\
 $H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}] & Observable proxy & Yes & Derive EFT vertex-level mapping from action-derived operator chain \\
 \bottomrule
@@ -634,7 +634,7 @@ The use of two parameter sets is a deliberate design choice: action-derived mixi
 \begin{enumerate}
     \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison uses the proxy $g_{h\mu\mu}^{\rm eff}\propto \sqrt{W_2}$ rather than a full derivation from the EYMH action. Consistently, the current scan still uses the surrogate visibility law in Eq.~\eqref{eq:BN_yukawa_prop}; the action-derived operator program in Section~\ref{sec:yukawa_roadmap} and Eq.~\eqref{eq:yukawa_eff_roadmap} has not yet replaced the global map.
     \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and propagate its D-interpolated profile in the global scan. The remaining gap is a full $(D,\eta,N)$ localized projection.
-    \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is plausible as an effective environment model, but this manuscript does not yet derive jump operators and rates $(L_k,\gamma_k)$ from the EYMH projection geometry. It is therefore not used in any reported scan statistic.
+    \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). On $D=4,\dots,20$, the diagnostic ratio band is $\chi_{\rm open}/\chi_{LR}\in[0.0979,0.1667]$ with unchanged core map fractions at current resolution; however, the jump operators and rates $(L_k,\gamma_k)$ are still effective ansatz quantities rather than a microscopic EYMH bath derivation, so this block remains outside baseline figures.
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ is extracted from the action-derived 2D localized solver (Appendix~\ref{app:chi_loc}), while the global $(D,\eta)$ scan still uses a simplified kinetic surrogate for rapid mapping. A full end-to-end scan using one identical operator chain for both extraction and phase mapping is left for future work.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
@@ -1014,7 +1014,7 @@ To test a first-principles replacement direction for Eq.~\eqref{eq:gN_reg}, we e
 \begin{equation}
 g_N^{\rm(ps)}(D)=1+\int_{E_{\min}(D)}^{E_N(D)}\rho_{\rm WKB}(E';D)\,\dd E',\qquad E_{\min}(D)\equiv \min_z U(z;D).
 \end{equation}
-Using the reproducible script \texttt{extract\_gn\_phase\_space\_candidate.py} (in the \texttt{code/} directory), we ran a coarse/mid/fine test at $D=12$ (Table~\ref{tab:gn_ps_d12}). The candidate is numerically stable at the few-$10^{-3}$ level versus fine grid, but it is \emph{not} yet used in the baseline global scan.
+Using the reproducible script \texttt{extract\_gn\_phase\_space\_candidate.py} (in the \texttt{code/} directory), we ran a coarse/mid/fine test at $D=12$ (Table~\ref{tab:gn_ps_d12}). The candidate is numerically stable at the few-$10^{-3}$ level versus fine grid.
 
 \begin{table}[t]
 \centering
@@ -1046,7 +1046,7 @@ The script \texttt{extract\_gn\_phase\_space\_2d.py} (in \texttt{code/}) gives T
 \begin{equation}
 \max_{\text{non-fine}}\left(\max_N\frac{|\hat g_N-\hat g_N^{\rm(fine)}|}{|\hat g_N^{\rm(fine)}|}\right)=2.35\times10^{-2}.
 \end{equation}
-As in the 1D candidate check, this benchmark is reported as a replacement candidate only and is not propagated into the baseline global scan.
+As in the 1D candidate check, this benchmark is reported as a replacement candidate. To test map-level impact, we connected both candidates to the main scan through \texttt{g\_mode} choices (\texttt{cardy}, \texttt{fp\_1d}, \texttt{fp\_2d}) and the reproducible script \texttt{scan\_gn\_profile\_impact.py}. Results in Table~\ref{tab:gn_profile_impact} show that the main conclusion is retained: $f(\mathcal{R}_3>0.90)$ shifts by at most $0.0167$ (absolute), while high-$N$ runaway remains controlled with $f(N_{\rm win}>3)=0$ in all tested modes.
 
 \begin{table}[t]
 \centering
@@ -1064,22 +1064,39 @@ $D$ & $\lambda_1$ & $\lambda_2$ & $\lambda_3$ & $\hat g_1$ & $\hat g_2$ \\
 \end{tabular}
 \end{table}
 
-\subsection{Geometry-Informed Lindblad Demonstrator for Open-System \texorpdfstring{$\chi$}{chi}}
+\begin{table}[t]
+\centering
+\caption{Map-level impact of first-principles $g_N$ profiles on the $60\times60$ scan (diagnostic only; baseline remains Cardy mode). Source CSV: \texttt{paper/gn\_profile\_impact.csv}.}
+\label{tab:gn_profile_impact}
+\small
+\begin{tabular}{lcccc}
+\hline\hline
+case & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & mean tail prob. \\
+\hline
+baseline Cardy & 0.800 & 0.0942 & 0.000 & 0.0873 \\
+$g_N$ fp\_1d profile & 0.800 & 0.0942 & 0.000 & 0.0894 \\
+$g_N$ fp\_2d profile & 0.783 & 0.0942 & 0.000 & 0.0905 \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+\subsection{Geometry-Informed Lindblad Scan-Ready Module for Open-System \texorpdfstring{$\chi$}{chi}}
+\label{app:chi_open_scan}
 As a methodological bridge (not a replacement of Appendix~\ref{app:chi_loc}), we consider a two-level open-system model:
 \begin{equation}
 \dot{\rho}=-i[H,\rho]+\gamma_\phi\mathcal{D}[\sigma_z]\rho+\gamma_{\rm mix}\mathcal{D}[\sigma_x]\rho,\qquad
 H=\begin{pmatrix}0 & \Delta/2\\ \Delta/2 & 0\end{pmatrix}.
 \end{equation}
-For this demonstrator we set $\gamma_{\rm mix}(D)\equiv M_{LR}^{(H)}(D)$ from Appendix~\ref{app:chi_loc}, and define a geometry-informed dephasing proxy
+For this module we set $\gamma_{\rm mix}(D)\equiv M_{LR}^{(H)}(D)$ from Appendix~\ref{app:chi_loc}, and define a geometry-informed dephasing proxy
 \begin{equation}
 \gamma_\phi(D)\equiv \sqrt{\left\langle\left(\delta V\right)^2\right\rangle_\rho},\qquad
 \delta V=V_{\rm eff}-\bar V_{\rm eff}(r),
 \end{equation}
-with cylindrical weighting $\langle\cdots\rangle_\rho$. The script \texttt{extract\_chi\_open\_system\_geometry.py} outputs reproducible diagnostics such as
+with cylindrical weighting $\langle\cdots\rangle_\rho$. The minimal Lindblad evolution is generated by \texttt{lindblad\_chi\_minimal.py}, and geometry-profile extraction is handled by \texttt{extract\_chi\_open\_system\_geometry.py}. These scripts output reproducible diagnostics such as
 \begin{equation}
 C_{\max}\equiv \max_t |\rho_{LR}(t)|,\qquad P_{\max}\equiv \max_t \rho_{RR}(t),
 \end{equation}
-and a normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. Results for $D=\{6,12,18\}$ are summarized in Table~\ref{tab:chi_open_geom}. The proxy remains below the baseline localized extraction scale by a factor $\sim 0.10$--$0.16$, and this block is therefore kept outside all reported scan statistics.
+and a normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. Results for $D=\{6,12,18\}$ are summarized in Table~\ref{tab:chi_open_geom}. Extending the same profile to $D=4,\dots,20$ gives a stable baseline ratio band $\chi_{\rm open}/\chi_{LR}\in[0.0979,0.1667]$ with mean $0.1290$ (source CSV: \texttt{output/chi\_open\_system/chi\_open\_ratio\_band\_D4-5-\dots-20.csv}).
 
 \begin{table}[t]
 \centering
@@ -1096,7 +1113,29 @@ $D$ & $\gamma_\phi$ & $\gamma_{\rm mix}$ & $C_{\max}$ & $\chi_{\rm eff}^{\rm(pro
 \hline\hline
 \end{tabular}
 \end{table}
-These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation.
+
+\begin{table}[t]
+\centering
+\caption{Open-system sensitivity scan with profiled $(\gamma_\phi,\gamma_{\rm mix})$ on the $60\times60$ map. Source CSV: \texttt{paper/chi\_open\_system\_sensitivity.csv}.}
+\label{tab:chi_open_sensitivity}
+\small
+\begin{tabular}{lccc}
+\hline\hline
+case & ratio min & ratio max & ratio mean \\
+\hline
+baseline localized & 1.000 & 1.000 & 1.000 \\
+open-system base $(1,1)$ & 0.097 & 0.160 & 0.124 \\
+$\phi\times0.5$, mix$\times1$ & 0.146 & 0.216 & 0.178 \\
+$\phi\times2$, mix$\times1$ & 0.059 & 0.115 & 0.082 \\
+$\phi\times1$, mix$\times0.5$ & 0.058 & 0.109 & 0.079 \\
+$\phi\times1$, mix$\times2$ & 0.148 & 0.228 & 0.184 \\
+$\phi\times0.5$, mix$\times2$ & 0.206 & 0.275 & 0.232 \\
+$\phi\times2$, mix$\times0.5$ & 0.032 & 0.068 & 0.046 \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the core scan summaries remain unchanged on this grid: $f(\mathcal{R}_3>0.90)=0.800$, $f(\mathcal{R}_3>0.95)=0$, $f(\chi^2_{\mu\mu}<4)=0.0942$, and $f(N_{\rm win}>3)=0$. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
 
 \subsection{Dephasing-Based First-Principles Candidate for \texorpdfstring{$t_{\rm coh}$}{tcoh}}
 \label{app:tcoh_candidate}

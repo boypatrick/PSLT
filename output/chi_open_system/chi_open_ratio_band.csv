@@ -1,0 +1,2 @@
+case,csv_profile,ratio_min,ratio_max,ratio_mean,ratio_std,ratio_p10,ratio_p90
+open_system_base,/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_geometry_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv,0.09736778943306994,0.15963340500090367,0.12368182630164909,0.01744818619062958,0.10123632134723594,0.14985271684047272

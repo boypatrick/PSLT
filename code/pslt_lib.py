@@ -24,6 +24,8 @@ This library is part of the PSLT research bundle.
 import numpy as np
 import math
 import json
+import csv
+import re
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Tuple, List, Optional, Dict
@@ -45,6 +47,11 @@ class PSLTParameters:
     c_eff: float = 0.5      # Effective central charge (dimensionless)
     nu: float = 5.0         # Polynomial suppression exponent (dimensionless)
     kappa_g: float = 0.03    # High-N suppression strength in g_N: exp(-kappa_g*(N-1)^2)
+    g_mode: str = "cardy"   # "cardy", "fp_1d", "fp_2d"
+    g_fp_1d_csv: Optional[str] = None
+    g_fp_2d_csv: Optional[str] = None
+    g_fp_1d_ref_D: float = 12.0
+    g_fp_blend: float = 0.01  # 0->cardy, 1->fully anchored first-principles shape (N=1..3)
     
     # Geometry & Kinetics
     Omega_H: float = 0.9    # Horizon proxy angular velocity [Mass] (scaled by M)
@@ -69,6 +76,10 @@ class PSLTParameters:
         if self.chi_mode == "localized_interp":
             if len(self.chi_lr_D) < 2 or len(self.chi_lr_D) != len(self.chi_lr_vals):
                 raise ValueError("chi_lr_D and chi_lr_vals must have equal length >=2 for localized_interp.")
+        if self.g_mode not in {"cardy", "fp_1d", "fp_2d"}:
+            raise ValueError(f"Unsupported g_mode='{self.g_mode}'.")
+        if not (0.0 <= self.g_fp_blend <= 1.0):
+            raise ValueError("g_fp_blend must be in [0,1].")
 
 # =============================================================================
 # 2. Yukawa Visibility Module
@@ -149,8 +160,12 @@ class PSLTKinetics:
     """
     def __init__(self, params: Optional[PSLTParameters] = None, data_dir: Path = None):
         self.params = params if params else PSLTParameters()
+        self.root_dir = Path(__file__).resolve().parent.parent
         # Cache eta-independent kinetic prefactors keyed by (N, D_rounded).
         self._gamma_prefactor_cache: Dict[Tuple[int, float], float] = {}
+        self._g_fp_1d_profile: Optional[Dict[str, np.ndarray]] = None
+        self._g_fp_2d_profile: Optional[Dict[str, np.ndarray]] = None
+        self._g_mode_active: str = "cardy"
         
         # Initialize Visibility Factors (Gen 1-3 from Yukawa, N>3 decouples)
         try:
@@ -163,6 +178,110 @@ class PSLTKinetics:
         except Exception as e:
             print(f"Warning: Could not initialize Yukawa B_N ({e}). Using defaults.")
             self.B_map = {1: 0.05, 2: 0.25, 3: 1.0}
+
+        self._init_g_profiles()
+
+    def _guess_d_from_filename(self, path: Path) -> Optional[float]:
+        m = re.search(r"_D([0-9]+(?:\.[0-9]+)?)", path.stem)
+        if m:
+            return float(m.group(1))
+        return None
+
+    def _load_csv_rows(self, path: Path) -> List[Dict[str, str]]:
+        with open(path, "r", newline="") as f:
+            return list(csv.DictReader(f))
+
+    def _load_g_fp_1d_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        fine_rows = [r for r in rows if r.get("level", "").strip().lower() == "fine"]
+        row = fine_rows[0] if fine_rows else rows[-1]
+
+        keys = ("g1_ps", "g2_ps", "g3_ps")
+        if not all(k in row and row[k] not in {"", None} for k in keys):
+            return None
+
+        g123 = np.array([max(float(row[k]), 1e-30) for k in keys], dtype=float)
+        d_ref = self.params.g_fp_1d_ref_D
+        if row.get("D", "") not in {"", None}:
+            d_ref = float(row["D"])
+        else:
+            guessed = self._guess_d_from_filename(path)
+            if guessed is not None:
+                d_ref = guessed
+
+        return {"D": np.array([float(d_ref)], dtype=float), "g123": g123.reshape(1, 3)}
+
+    def _load_g_fp_2d_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        fine_rows = [r for r in rows if r.get("level", "").strip().lower() == "fine"]
+        use_rows = fine_rows if fine_rows else rows
+
+        entries: Dict[float, np.ndarray] = {}
+        for row in use_rows:
+            if row.get("D", "") in {"", None}:
+                continue
+            dval = float(row["D"])
+            if all(k in row and row[k] not in {"", None} for k in ("g1_raw", "g2_raw", "g3_raw")):
+                gvals = np.array(
+                    [max(float(row["g1_raw"]), 1e-30), max(float(row["g2_raw"]), 1e-30), max(float(row["g3_raw"]), 1e-30)],
+                    dtype=float,
+                )
+            elif all(k in row and row[k] not in {"", None} for k in ("g1_hat", "g2_hat", "g3_hat")):
+                g3 = self.g_N_cardy(3)
+                gvals = np.array(
+                    [max(float(row["g1_hat"]) * g3, 1e-30), max(float(row["g2_hat"]) * g3, 1e-30), max(float(row["g3_hat"]) * g3, 1e-30)],
+                    dtype=float,
+                )
+            else:
+                continue
+            entries[dval] = gvals
+
+        if not entries:
+            return None
+
+        d_sorted = np.array(sorted(entries.keys()), dtype=float)
+        g_sorted = np.vstack([entries[d] for d in d_sorted])
+        return {"D": d_sorted, "g123": g_sorted}
+
+    def _init_g_profiles(self) -> None:
+        p1 = Path(self.params.g_fp_1d_csv) if self.params.g_fp_1d_csv else self.root_dir / "output" / "gn_fp_1d" / "gn_phase_space_candidate_D12.csv"
+        p2 = Path(self.params.g_fp_2d_csv) if self.params.g_fp_2d_csv else self.root_dir / "output" / "gn_fp_2d" / "gn_phase_space_2d_D6-12-18.csv"
+
+        self._g_fp_1d_profile = self._load_g_fp_1d_profile(p1)
+        self._g_fp_2d_profile = self._load_g_fp_2d_profile(p2)
+
+        mode = self.params.g_mode
+        if mode == "fp_1d" and self._g_fp_1d_profile is None:
+            print(f"Warning: g_mode=fp_1d requested but profile is unavailable at {p1}. Falling back to cardy.")
+            mode = "cardy"
+        if mode == "fp_2d" and self._g_fp_2d_profile is None:
+            print(f"Warning: g_mode=fp_2d requested but profile is unavailable at {p2}. Falling back to cardy.")
+            mode = "cardy"
+        self._g_mode_active = mode
+
+    def active_g_mode(self) -> str:
+        return self._g_mode_active
+
+    def _interp_g123(self, D: float, profile: Dict[str, np.ndarray]) -> np.ndarray:
+        d_knots = profile["D"]
+        g_knots = profile["g123"]
+        if len(d_knots) == 1:
+            return g_knots[0].astype(float)
+        out = np.array(
+            [np.interp(D, d_knots, g_knots[:, 0]), np.interp(D, d_knots, g_knots[:, 1]), np.interp(D, d_knots, g_knots[:, 2])],
+            dtype=float,
+        )
+        return np.maximum(out, 1e-30)
 
     # --- Micro-degeneracy ---
     def g_N_cardy(self, N: int) -> float:
@@ -181,6 +300,38 @@ class PSLTKinetics:
         g_cardy = np.exp(exponent) / (N ** self.params.nu)
         sup = np.exp(-self.params.kappa_g * (N - 1) ** 2)
         return float(g_cardy * sup)
+
+    def g_N_effective(self, N: int, D: float) -> float:
+        """
+        Effective micro-degeneracy selector.
+
+        Modes:
+          - cardy: baseline surrogate.
+          - fp_1d / fp_2d: first-principles N=1..3 shape correction (D-interpolated when
+            available) blended onto cardy by g_fp_blend; N>3 follows cardy tail.
+        """
+        if N <= 0:
+            return 0.0
+
+        mode = self._g_mode_active
+        if mode == "cardy":
+            return self.g_N_cardy(N)
+
+        profile = self._g_fp_1d_profile if mode == "fp_1d" else self._g_fp_2d_profile
+        if profile is None:
+            return self.g_N_cardy(N)
+
+        g123_raw = self._interp_g123(D, profile)
+        g3_raw = max(float(g123_raw[2]), 1e-30)
+        g3_cardy = self.g_N_cardy(3)
+        if N <= 3:
+            ratio_fp = float(g123_raw[N - 1] / g3_raw)
+            ratio_cardy = self.g_N_cardy(N) / max(g3_cardy, 1e-30)
+            shape_corr = ratio_fp / max(ratio_cardy, 1e-30)
+            blend = self.params.g_fp_blend
+            return float(max(self.g_N_cardy(N) * (shape_corr ** blend), 1e-30))
+
+        return self.g_N_cardy(N)
 
     # --- Visibility ---
     def B_N(self, N: int) -> float:
@@ -331,7 +482,7 @@ class PSLTKinetics:
         gammas = []
         
         for N in Ns:
-            g = self.g_N_cardy(N)
+            g = self.g_N_effective(N, D)
             Gam = self.calculate_gamma_N(N, D, eta)
             B = self.B_N(N)
             

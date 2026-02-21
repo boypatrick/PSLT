@@ -29,6 +29,7 @@ import re
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Tuple, List, Optional, Dict
+from scipy.integrate import solve_ivp
 
 # =============================================================================
 # 1. Parameters (Dimensional Rigor)
@@ -58,9 +59,21 @@ class PSLTParameters:
     A1: float = 1.0         # l=1 amplitude (dimensionless prefactor for rate)
     A2: float = 1.0         # l=2 amplitude (dimensionless prefactor for rate)
     chi: float = 0.2        # Rank-2 mixing parameter (dimensionless)
-    chi_mode: str = "constant"  # "constant" or "localized_interp"
+    chi_mode: str = "constant"  # "constant", "localized_interp", or "open_system"
     chi_lr_D: Tuple[float, ...] = (6.0, 12.0, 18.0)  # knots for localized chi(D)
     chi_lr_vals: Tuple[float, ...] = (4.01827e-4, 2.21414e-4, 2.13187e-4)  # chi_LR at knots
+    chi_open_csv: Optional[str] = None
+    chi_open_D: Tuple[float, ...] = ()
+    chi_open_gamma_phi: Tuple[float, ...] = ()
+    chi_open_gamma_mix: Tuple[float, ...] = ()
+    chi_open_delta: Tuple[float, ...] = ()
+    chi_open_gamma_ref: Tuple[float, ...] = ()
+    chi_open_tmax: float = 200.0
+    chi_open_nstep: int = 400
+    chi_open_phi_scale: float = 1.0
+    chi_open_mix_scale: float = 1.0
+    chi_open_rtol: float = 1e-8
+    chi_open_atol: float = 1e-10
     a0: float = 0.02        # Geometric perturbation strength (dimensionless)
     eps: float = 0.2        # Core regulator length [Length] ~ 1/[Mass] (scaled)
     
@@ -71,11 +84,30 @@ class PSLTParameters:
     b_n_tail_beta: float = 0.50   # Used only when b_n_tail_mode == "gaussian"
 
     def __post_init__(self):
-        if self.chi_mode not in {"constant", "localized_interp"}:
+        if self.chi_mode not in {"constant", "localized_interp", "open_system"}:
             raise ValueError(f"Unsupported chi_mode='{self.chi_mode}'.")
         if self.chi_mode == "localized_interp":
             if len(self.chi_lr_D) < 2 or len(self.chi_lr_D) != len(self.chi_lr_vals):
                 raise ValueError("chi_lr_D and chi_lr_vals must have equal length >=2 for localized_interp.")
+        if self.chi_mode == "open_system":
+            if len(self.chi_open_D) > 0:
+                n = len(self.chi_open_D)
+                for arr_name, arr in {
+                    "chi_open_gamma_phi": self.chi_open_gamma_phi,
+                    "chi_open_gamma_mix": self.chi_open_gamma_mix,
+                    "chi_open_delta": self.chi_open_delta,
+                    "chi_open_gamma_ref": self.chi_open_gamma_ref,
+                }.items():
+                    if len(arr) != n:
+                        raise ValueError(f"{arr_name} must match chi_open_D length.")
+                if n < 2:
+                    raise ValueError("chi_open_D must have length >= 2 when provided.")
+            if self.chi_open_tmax <= 0:
+                raise ValueError("chi_open_tmax must be > 0.")
+            if self.chi_open_nstep < 20:
+                raise ValueError("chi_open_nstep must be >= 20.")
+            if self.chi_open_phi_scale <= 0 or self.chi_open_mix_scale <= 0:
+                raise ValueError("chi_open_phi_scale and chi_open_mix_scale must be > 0.")
         if self.g_mode not in {"cardy", "fp_1d", "fp_2d"}:
             raise ValueError(f"Unsupported g_mode='{self.g_mode}'.")
         if not (0.0 <= self.g_fp_blend <= 1.0):
@@ -166,6 +198,9 @@ class PSLTKinetics:
         self._g_fp_1d_profile: Optional[Dict[str, np.ndarray]] = None
         self._g_fp_2d_profile: Optional[Dict[str, np.ndarray]] = None
         self._g_mode_active: str = "cardy"
+        self._chi_mode_active: str = "constant"
+        self._chi_open_profile: Optional[Dict[str, np.ndarray]] = None
+        self._chi_open_cache: Dict[float, float] = {}
         
         # Initialize Visibility Factors (Gen 1-3 from Yukawa, N>3 decouples)
         try:
@@ -180,6 +215,7 @@ class PSLTKinetics:
             self.B_map = {1: 0.05, 2: 0.25, 3: 1.0}
 
         self._init_g_profiles()
+        self._init_chi_profiles()
 
     def _guess_d_from_filename(self, path: Path) -> Optional[float]:
         m = re.search(r"_D([0-9]+(?:\.[0-9]+)?)", path.stem)
@@ -272,6 +308,103 @@ class PSLTKinetics:
     def active_g_mode(self) -> str:
         return self._g_mode_active
 
+    def _load_chi_open_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        entries: Dict[float, Tuple[float, float, float, float]] = {}
+        for row in rows:
+            if row.get("D", "") in {"", None}:
+                continue
+            dval = float(row["D"])
+            gphi = row.get("gamma_phi_geom", row.get("gamma_phi", ""))
+            gmix = row.get("gamma_mix_geom", row.get("gamma_mix", ""))
+            delt = row.get("delta", "")
+            gref = row.get("Gamma_ref", row.get("gamma_ref", ""))
+            if gphi in {"", None} or gmix in {"", None} or delt in {"", None} or gref in {"", None}:
+                continue
+            entries[dval] = (float(gphi), float(gmix), float(delt), float(gref))
+
+        if len(entries) < 2:
+            return None
+
+        d_sorted = np.array(sorted(entries.keys()), dtype=float)
+        vals = np.array([entries[d] for d in d_sorted], dtype=float)
+        return {
+            "D": d_sorted,
+            "gamma_phi": np.maximum(vals[:, 0], 1e-30),
+            "gamma_mix": np.maximum(vals[:, 1], 1e-30),
+            "delta": np.maximum(np.abs(vals[:, 2]), 1e-30),
+            "gamma_ref": np.maximum(vals[:, 3], 1e-30),
+        }
+
+    def _auto_find_chi_open_csv(self) -> Optional[Path]:
+        base = self.root_dir / "output" / "chi_open_system"
+        if not base.exists():
+            return None
+        cands = sorted(base.glob("chi_open_system_geometry_D*.csv"))
+        if not cands:
+            return None
+
+        best_path: Optional[Path] = None
+        best_count = -1
+        for p in cands:
+            try:
+                rows = self._load_csv_rows(p)
+                n = len(rows)
+            except Exception:
+                continue
+            if n > best_count:
+                best_count = n
+                best_path = p
+        return best_path
+
+    def _init_chi_profiles(self) -> None:
+        mode = self.params.chi_mode
+        self._chi_mode_active = mode
+        self._chi_open_profile = None
+
+        if mode != "open_system":
+            return
+
+        if len(self.params.chi_open_D) > 0:
+            dvals = np.asarray(self.params.chi_open_D, dtype=float)
+            order = np.argsort(dvals)
+            self._chi_open_profile = {
+                "D": dvals[order],
+                "gamma_phi": np.maximum(np.asarray(self.params.chi_open_gamma_phi, dtype=float)[order], 1e-30),
+                "gamma_mix": np.maximum(np.asarray(self.params.chi_open_gamma_mix, dtype=float)[order], 1e-30),
+                "delta": np.maximum(np.abs(np.asarray(self.params.chi_open_delta, dtype=float)[order]), 1e-30),
+                "gamma_ref": np.maximum(np.asarray(self.params.chi_open_gamma_ref, dtype=float)[order], 1e-30),
+            }
+            return
+
+        path: Optional[Path]
+        if self.params.chi_open_csv:
+            path = Path(self.params.chi_open_csv)
+        else:
+            path = self._auto_find_chi_open_csv()
+        if path is not None:
+            self._chi_open_profile = self._load_chi_open_profile(path)
+            if self._chi_open_profile is None:
+                print(f"Warning: could not parse open-system chi profile from {path}.")
+        else:
+            print("Warning: no chi_open_system profile file found for chi_mode=open_system.")
+
+        if self._chi_open_profile is None:
+            if len(self.params.chi_lr_D) >= 2 and len(self.params.chi_lr_D) == len(self.params.chi_lr_vals):
+                self._chi_mode_active = "localized_interp"
+                print("Warning: chi_mode=open_system requested but profile unavailable; falling back to localized_interp.")
+            else:
+                self._chi_mode_active = "constant"
+                print("Warning: chi_mode=open_system requested but profile unavailable; falling back to constant chi.")
+
+    def active_chi_mode(self) -> str:
+        return self._chi_mode_active
+
     def _interp_g123(self, D: float, profile: Dict[str, np.ndarray]) -> np.ndarray:
         d_knots = profile["D"]
         g_knots = profile["g123"]
@@ -346,6 +479,43 @@ class PSLTKinetics:
             return float(np.exp(-beta * (N - 3) ** 2))
         return 1.0
 
+    def _interp_scalar(self, D: float, d_knots: np.ndarray, y_knots: np.ndarray) -> float:
+        order = np.argsort(d_knots)
+        d_sorted = d_knots[order]
+        y_sorted = y_knots[order]
+        return float(np.interp(D, d_sorted, y_sorted))
+
+    def _lindblad_cmax(self, delta: float, gamma_phi: float, gamma_mix: float) -> float:
+        H = np.array([[0.0, delta / 2.0], [delta / 2.0, 0.0]], dtype=complex)
+        sigma_x = np.array([[0.0, 1.0], [1.0, 0.0]], dtype=complex)
+        sigma_z = np.array([[1.0, 0.0], [0.0, -1.0]], dtype=complex)
+        L_ops = [np.sqrt(gamma_phi) * sigma_z, np.sqrt(gamma_mix) * sigma_x]
+
+        def rhs(_t: float, y: np.ndarray) -> np.ndarray:
+            rho = y.reshape(2, 2)
+            drho = -1j * (H @ rho - rho @ H)
+            for L in L_ops:
+                drho += L @ rho @ L.conj().T - 0.5 * (L.conj().T @ L @ rho + rho @ L.conj().T @ L)
+            return drho.reshape(-1)
+
+        rho0 = np.array([[1.0, 0.0], [0.0, 0.0]], dtype=complex).reshape(-1)
+        t_eval = np.linspace(0.0, self.params.chi_open_tmax, self.params.chi_open_nstep)
+        sol = solve_ivp(
+            rhs,
+            (0.0, self.params.chi_open_tmax),
+            rho0,
+            t_eval=t_eval,
+            rtol=self.params.chi_open_rtol,
+            atol=self.params.chi_open_atol,
+        )
+        if sol.y.shape[1] == 0:
+            return 0.0
+        max_abs = 0.0
+        for i in range(sol.y.shape[1]):
+            rho = sol.y[:, i].reshape(2, 2)
+            max_abs = max(max_abs, float(np.abs(rho[0, 1])))
+        return max_abs
+
     def chi_effective(self, D: float) -> float:
         """
         Effective mixing coefficient used in eps_mix.
@@ -353,16 +523,39 @@ class PSLTKinetics:
         - constant: chi_eff = params.chi
         - localized_interp: piecewise-linear interpolation of chi_LR(D)
           with endpoint clamping outside knot range.
+        - open_system: profile-interpolated (delta, gamma_phi, gamma_mix, gamma_ref)
+          fed into two-level Lindblad dynamics, returning
+          chi_eff = 2*gamma_mix*Cmax/gamma_ref.
         """
-        if self.params.chi_mode == "constant":
+        mode = self._chi_mode_active
+        if mode == "constant":
             return float(self.params.chi)
 
-        d_knots = np.asarray(self.params.chi_lr_D, dtype=float)
-        chi_knots = np.asarray(self.params.chi_lr_vals, dtype=float)
-        order = np.argsort(d_knots)
-        d_knots = d_knots[order]
-        chi_knots = chi_knots[order]
-        return float(np.interp(D, d_knots, chi_knots))
+        if mode == "localized_interp":
+            d_knots = np.asarray(self.params.chi_lr_D, dtype=float)
+            chi_knots = np.asarray(self.params.chi_lr_vals, dtype=float)
+            return self._interp_scalar(D, d_knots, chi_knots)
+
+        if mode == "open_system" and self._chi_open_profile is not None:
+            key = float(round(D, 8))
+            cached = self._chi_open_cache.get(key, None)
+            if cached is not None:
+                return cached
+
+            prof = self._chi_open_profile
+            d_knots = prof["D"]
+            delta = self._interp_scalar(D, d_knots, prof["delta"])
+            gamma_phi = self.params.chi_open_phi_scale * self._interp_scalar(D, d_knots, prof["gamma_phi"])
+            gamma_mix = self.params.chi_open_mix_scale * self._interp_scalar(D, d_knots, prof["gamma_mix"])
+            gamma_ref = self._interp_scalar(D, d_knots, prof["gamma_ref"])
+
+            cmax = self._lindblad_cmax(delta=delta, gamma_phi=gamma_phi, gamma_mix=gamma_mix)
+            chi_eff = float(2.0 * gamma_mix * cmax / max(gamma_ref, 1e-30))
+            chi_eff = max(chi_eff, 0.0)
+            self._chi_open_cache[key] = chi_eff
+            return chi_eff
+
+        return float(self.params.chi)
 
     # --- Geometry & WKB (Explicit Spec) ---
     def V_eff(self, x: float, mu: float, D: float) -> float:

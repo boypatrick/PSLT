@@ -120,6 +120,7 @@ def lindblad_metrics(delta: float, gamma_phi: float, gamma_mix: float, tmax: flo
 def main() -> None:
     ap = argparse.ArgumentParser(description="Geometry-informed open-system chi demonstrator.")
     ap.add_argument("--Ds", default="6,12,18")
+    ap.add_argument("--full-scan", action="store_true", help="Use D=4..20 integer grid (overrides --Ds).")
     ap.add_argument("--rho-max", type=float, default=3.0)
     ap.add_argument("--z-margin", type=float, default=6.0)
     ap.add_argument("--dr", type=float, default=0.06)
@@ -134,7 +135,10 @@ def main() -> None:
     ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
-    D_list = [float(s.strip()) for s in args.Ds.split(",") if s.strip()]
+    if args.full_scan:
+        D_list = [float(d) for d in range(4, 21)]
+    else:
+        D_list = [float(s.strip()) for s in args.Ds.split(",") if s.strip()]
     src = pd.read_csv(args.chi_source)
     src = src[src["level"] == "fine"].copy()
     p = PhysicalParams()
@@ -185,8 +189,24 @@ def main() -> None:
     out_csv = outdir / f"chi_open_system_geometry_D{tag}.csv"
     out.to_csv(out_csv, index=False)
 
+    band = pd.DataFrame(
+        [
+            {
+                "D_min": float(np.min(out["D"])),
+                "D_max": float(np.max(out["D"])),
+                "ratio_min": float(np.min(out["ratio_proxy_to_baseline"])),
+                "ratio_max": float(np.max(out["ratio_proxy_to_baseline"])),
+                "ratio_mean": float(np.mean(out["ratio_proxy_to_baseline"])),
+                "ratio_std": float(np.std(out["ratio_proxy_to_baseline"])),
+            }
+        ]
+    )
+    band_csv = outdir / f"chi_open_ratio_band_D{tag}.csv"
+    band.to_csv(band_csv, index=False)
+
     print(out.to_string(index=False))
     print(f"\n[done] wrote {out_csv}")
+    print(f"[done] wrote {band_csv}")
 
 
 if __name__ == "__main__":

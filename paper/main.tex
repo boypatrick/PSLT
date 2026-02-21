@@ -92,6 +92,17 @@ Figure~\ref{fig:framework} illustrates the logical flow of the PSLT framework.
     \label{fig:framework}
 \end{figure}
 
+\subsection{Action-Derived Chain at a Glance}
+\label{sec:action_chain_glance}
+For implementation-level clarity, Figure~\ref{fig:action_chain_onepage} summarizes the action-derived operator chain and its interfaces to scan-level diagnostics in one page. The executable, clone-level Standard Operating Procedure (SOP) is provided in Appendix~\ref{app:repro_sop}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\linewidth]{pslt_physical_chain.png}
+    \caption{One-page action-derived chain overview used in this manuscript: geometry input $\rightarrow$ operator extraction $\rightarrow$ scan diagnostics $\rightarrow$ observable proxy checks. This diagram is aligned with the repository reproducibility entrypoint and Appendix~\ref{app:repro_sop}.}
+    \label{fig:action_chain_onepage}
+\end{figure}
+
 \subsection{Geometric Foundation: Minimal EYMH + Curvature}
 We start from a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action supplemented by a non-minimal curvature coupling $\xi R|\Phi|^2$:
 \begin{equation}
@@ -670,6 +681,51 @@ The author acknowledges the use of PDG 2024 data and standard Python scientific 
 \end{acknowledgments}
 
 \appendix
+\section{Action-Derived Chain Reproducibility SOP}
+\label{app:repro_sop}
+This appendix provides a clone-level SOP for reproducing the action-derived extraction chain and the paper-level Fig/Table artifacts.
+
+\subsection{Single Entry Point}
+From repository root:
+\begin{verbatim}
+bash scripts/repro/reproduce_paper.sh
+\end{verbatim}
+Optional modes:
+\begin{verbatim}
+bash scripts/repro/reproduce_paper.sh --with-paper
+bash scripts/repro/reproduce_paper.sh --package-only
+\end{verbatim}
+
+\subsection{Step Map and Deliverables}
+\begin{table*}[t]
+\centering
+\caption{SOP step map for action-derived reproducibility. The one-click wrapper calls these modules in a fixed order and logs each step under \texttt{repro/runs/<RUN\_ID>/logs/}.}
+\label{tab:repro_sop}
+\scriptsize
+\noindent\textit{Full per-artifact mapping is listed in \texttt{repro/artifact\_map.csv}.}
+\begin{tabular}{p{0.20\linewidth} p{0.30\linewidth} p{0.40\linewidth}}
+\hline\hline
+Stage & Primary scripts & Key outputs \\
+\hline
+Global maps and proxy plots & \texttt{generate\_plots.py} & \texttt{output/three\_generation\_*.png}, \texttt{output/hmumu\_*.png} \\
+Localized mixing extraction & \texttt{extract\_chi\_localized\_2d.py} (\texttt{--Ds}, \texttt{--full-scan}) & \texttt{output/chi\_fp\_2d/localized\_chi\_D*.csv} \\
+Localized-profile diagnostics & \texttt{scan\_chi\_profile\_robustness.py}; \texttt{plot\_chi\_*.py} & \texttt{paper/chi\_profile\_robustness.csv}; \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}; \texttt{paper/chi\_wavefunction\_contours\_D*.png} \\
+$g_N$ first-principles candidates & \path{extract_gn_phase_space_candidate.py}; \path{extract_gn_phase_space_2d.py}; \path{scan_gn_profile_impact.py} & \texttt{output/gn\_fp\_1d/*.csv}; \texttt{output/gn\_fp\_2d/*.csv}; \texttt{paper/gn\_profile\_impact.csv} \\
+Open-system diagnostics & \texttt{lindblad\_chi\_minimal.py}; \texttt{extract\_chi\_open\_system\_*.py}; \texttt{scan\_chi\_open\_system\_*.py} & \texttt{output/chi\_open\_system/*.csv}; \texttt{paper/chi\_open\_system\_sensitivity.csv} \\
+Other first-principles profiles & \texttt{extract\_tcoh\_*.py}, \texttt{extract\_eta\_*.py}, \texttt{extract\_superrad\_*.py}; \texttt{scan\_*\_profile\_impact.py} & \texttt{paper/tcoh\_profile\_impact.csv}; \texttt{paper/eta\_profile\_impact.csv}; \texttt{paper/superrad\_profile\_impact.csv} \\
+Packaging and manifest & \texttt{package\_repro\_outputs.py} (wrapper stage) & \texttt{repro/runs/<RUN\_ID>/figures/}; \texttt{repro/runs/<RUN\_ID>/tables/}; \texttt{artifact\_index.csv}; \texttt{checksums.sha256}; \texttt{manifest.json} \\
+\hline\hline
+\end{tabular}
+\end{table*}
+
+\subsection{Acceptance Conditions}
+A run is considered reproducible for this manuscript if:
+\begin{enumerate}
+    \item the one-click command exits with return code 0;
+    \item \texttt{repro/latest/manifest.json} reports \texttt{missing\_required = 0};
+    \item \texttt{repro/latest/checksums.sha256} and \texttt{repro/latest/artifact\_index.csv} are generated and non-empty.
+\end{enumerate}
+
 \section{Action-Derived Effective Potential and WKB}
 \label{app:Veff}
 

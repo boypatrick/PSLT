@@ -64,3 +64,10 @@ The old manual script-by-script sequence is still valid, but the reproducible en
 - **Three-Generation Stability:** In the current D-interpolated localized-channel scan, the theory gives Generation Ratio $\mathcal{R}_3>90\%$ over **80.0%** of the sampled $(D,\eta)$ grid, while $\mathcal{R}_3>95\%$ is not reached in this setup.
 - **H→μμ Proxy Compatibility:** The proxy-accepted region ($\chi^2<4$) occupies about **9.4%** of the sampled grid, with best grid point near $(D,\eta)\approx(9.97,1.36)$ and $\chi^2\sim 3.0\times10^{-7}$.
 - **Yukawa-Anchored Visibility + High-$N$ Stability:** Visibility is anchored to SM Yukawa couplings via a Yukawa-proportional law with sublinear compression ($B_{1,2,3}\propto Y_{1,2,3}^{p_B}$), while a $q^{(N-1)^2}$-type regulator in $g_N$ prevents high-$N$ runaway.
+
+## First-Principles Migration Status
+- **g_N migration comparator:** `code/scan_gn_profile_impact.py` compares `g_mode=cardy/fp_1d/fp_2d`; current fp\_2d run gives a small absolute drift in $f(\mathcal{R}_3>0.90)$ (`-0.0167`) and keeps `f(N_win>3)=0`.
+- **Open-system chi module:** `code/scan_chi_open_system_sensitivity.py` runs `chi_mode=open_system` with profiled `gamma_phi(D), gamma_mix(D)` and reports a stable ratio band versus localized baseline.
+- **Cross-module summary:** `code/scan_first_principles_migration_summary.py` aggregates baseline vs fp\_2d vs open-system into:
+  - `output/first_principles_migration/first_principles_migration_summary.csv`
+  - `output/first_principles_migration/first_principles_migration_summary.png`

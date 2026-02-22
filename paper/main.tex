@@ -142,7 +142,7 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \midrule
 $\Omega(\rho,z;D)$ two-center geometry & Green-function solution of projected Poisson constraint (two-source model) & Yes & Derive the projected source term from a specific higher-dimensional parent solution \\
 $V_{\rm eff}$, low modes, WKB action & Action-derived + numerically converged & Yes & Extend same solver chain to full $(D,\eta,N)$ map \\
-$g_N$ Cardy envelope + $q^{(N-1)^2}$ regulator & EFT-motivated surrogate & Yes & Replace by explicit microscopic counting model \\
+$g_N$ Cardy envelope + $q^{(N-1)^2}$ regulator & EFT baseline + fp\_2d impact-tested migration comparator & Yes & Promote phase-space counting profile as primary replacement if map-level stability is retained \\
 $\chi_N^{(LR)}(D)$ localized channel & Action-derived extraction (Appendix~\ref{app:chi_loc}) & Yes & Full localized projection over full scan grid \\
 $\Gamma_{N,\ell}$ channel normalization ($A_\ell$) & Kerr-inspired surrogate ($A_1=A_2=1$) & Yes & Benchmark action-derived profile $\tilde A_\ell(D)$ (Appendix~\ref{app:superrad_candidate}) \\
 Open-system $\chi_{\rm eff}$ (Lindblad) & Scan-ready diagnostic module with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}) & Diagnostic only (not baseline) & Derive microscopic EYMH bath $(L_k,\gamma_k)$ and then promote to baseline if robust \\
@@ -610,7 +610,7 @@ We define the predicted signal strength as a ratio to a fixed reference geometry
 \mu_{\mu\mu}^{\rm pred}(D,\eta) = \frac{W_2(D,\eta)}{W_2(D_0,\eta_0)}.
 \label{eq:mu_pred}
 \end{equation}
-This is a \emph{proxy mapping}, not a first-principles EFT derivation. We assume that the effective $h\mu\mu$ coupling scales with layerweight: $g_{h\mu\mu}^{\rm eff} \propto \sqrt{W_2}$. Deriving this from the EYMH action remains an open problem.
+This is a \emph{proxy mapping}, not a first-principles EFT derivation. We assume that the effective $h\mu\mu$ coupling scales with layer weight: $g_{h\mu\mu}^{\rm eff} \propto \sqrt{W_2}$. By construction, Eq.~\eqref{eq:mu_pred} is a map-level normalization proxy and should not be interpreted as a Wilson-coefficient extraction. Deriving this mapping from the EYMH action remains an open problem.
 
 The compatibility is quantified via:
 \begin{equation}
@@ -634,7 +634,7 @@ Using the same map-level proxy definition, we additionally evaluate lepton-chann
 W_N=B_N\,g_N\left(1-\ee^{-\Gamma_N t_{\rm coh}}\right).
 \end{equation}
 Figure~\ref{fig:hll_proxy} summarizes the corresponding proxy maps on the same $(D,\eta)$ grid. The tabulated summary statistics are provided in \texttt{paper/hll\_signal\_strength\_summary.csv}.
-This extension remains a map-level proxy exercise: it does not yet replace the visibility sector with explicit overlap-defined $y_N^{\rm eff}$ operators in the global scan. A full three-channel 2D overlap program is reserved for future work.
+This extension remains a map-level proxy exercise: it does not yet replace the visibility sector with explicit overlap-defined $y_N^{\rm eff}$ operators in the global scan. The repository now includes three-channel observation fields (\texttt{H\_to\_ee}, \texttt{H\_to\_mumu}, \texttt{H\_to\_tautau}) in \texttt{data/pdg\_leptons.json} as a reproducible interface for the future overlap-operator migration.
 
 \begin{figure}[htbp]
     \centering
@@ -691,6 +691,7 @@ M_{LR}^{(H)}(D,N)\equiv\frac{\lambda_{N,2}(D)-\lambda_{N,1}(D)}{2},\qquad
 \chi_N^{(LR)}(D)\equiv\frac{|M_{LR}^{(H)}(D,N)|}{\bar{\Gamma}_N(D)}.
 \end{equation}
 The baseline mixing entry in Table~\ref{tab:params} is interpreted as the localized-channel coefficient. First-principles localized extraction results are given in Appendix~\ref{app:chi_loc}, and its D-interpolated profile is used in the global $(D,\eta)$ scan of Section~\ref{sec:results}.
+In terminology, $M_{LR}^{(H)}$ is a \emph{closed-system localized-basis splitting} quantity; it is not itself a decoherence rate. Open-system decoherence is introduced separately through Lindblad rates $(\gamma_\phi,\gamma_{\rm mix})$ in Appendix~\ref{app:chi_open_scan}.
 
 \begin{acknowledgments}
 The author acknowledges the use of PDG 2024 data and standard Python scientific stacks for verification.
@@ -1208,6 +1209,32 @@ $\phi\times2$, mix$\times0.5$ & 0.032 & 0.068 & 0.046 \\
 \end{table}
 
 Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the core scan summaries remain unchanged on this grid: $f(\mathcal{R}_3>0.90)=0.800$, $f(\mathcal{R}_3>0.95)=0$, $f(\chi^2_{\mu\mu}<4)=0.0942$, and $f(N_{\rm win}>3)=0$. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
+
+\subsection{Cross-Module Migration Snapshot}
+To compare the two main first-principles migration directions on the same map-level metrics, we aggregate three scenarios: baseline (\texttt{cardy + localized}), $g_N$ profile replacement (\texttt{fp\_2d + localized}), and open-system $\chi$ (\texttt{cardy + open\_system}). The reproducible script is \texttt{scan\_first\_principles\_migration\_summary.py}; outputs are \texttt{paper/first\_principles\_migration\_summary.csv} and Fig.~\ref{fig:first_principles_migration}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\linewidth]{first_principles_migration_summary.png}
+    \caption{Map-level migration snapshot across three scenarios. Left to right: $f(\mathcal{R}_3>0.90)$, $f(\chi^2_{\mu\mu}<4)$, and $f(N_{\rm win}>3)$.}
+    \label{fig:first_principles_migration}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Cross-module migration comparison from \texttt{paper/first\_principles\_migration\_summary.csv}.}
+\label{tab:first_principles_migration}
+\small
+\begin{tabular}{lcccc}
+\hline\hline
+scenario & $f(\mathcal{R}_3>0.90)$ & $\Delta f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ \\
+\hline
+baseline (\texttt{cardy + localized}) & 0.800 & 0.0000 & 0.0942 & 0.0000 \\
+$g_N$ migration (\texttt{fp\_2d + localized}) & 0.783 & $-0.0167$ & 0.0942 & 0.0000 \\
+$\chi$ migration (\texttt{cardy + open\_system}) & 0.800 & 0.0000 & 0.0942 & 0.0000 \\
+\hline\hline
+\end{tabular}
+\end{table}
 
 \subsection{Dephasing-Based First-Principles Candidate for \texorpdfstring{$t_{\rm coh}$}{tcoh}}
 \label{app:tcoh_candidate}

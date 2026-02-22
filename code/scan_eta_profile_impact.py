@@ -66,6 +66,8 @@ def make_kinetics() -> PSLTKinetics:
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode="eft_wilson_diag",
+        hll_observable_nmax=20,
     )
     return PSLTKinetics(params)
 
@@ -96,6 +98,8 @@ def evaluate_case(case: Case, kin: PSLTKinetics, amp_fn: Callable[[float], float
     mu_obs = 1.4
     sigma_obs = 0.4
     D0, eta0 = 10.0, 1.0
+    hll_mode = "eft_wilson_diag"
+    hll_nmax = 20
 
     def profile_of_D(D: float) -> float:
         return amp_fn(D) if case.profile == "amp" else prob_fn(D)
@@ -113,15 +117,32 @@ def evaluate_case(case: Case, kin: PSLTKinetics, amp_fn: Callable[[float], float
         e_eff = eta_eff(D, eta)
         return kin.get_probabilities(D, e_eff, t_coh, N_max=20)[2]
 
-    def get_W2(D: float, eta: float) -> float:
-        N = 2
-        e_eff = eta_eff(D, eta)
-        Gam = kin.calculate_gamma_N(N, D, e_eff)
-        g = kin.g_N_effective(N, D)
-        B = kin.B_N(N, D)
-        return float(B * g * (1.0 - np.exp(-Gam * t_coh)))
+    ref_eta_eff = eta_eff(D0, eta0)
+    amp_ref = kin.hll_channel_amplitude(
+        2,
+        D0,
+        ref_eta_eff,
+        t_coh,
+        observable_mode=hll_mode,
+        N_max=hll_nmax,
+    )
+    if amp_ref <= 0:
+        raise RuntimeError(f"{case.name}: non-positive H->mumu reference amplitude.")
 
-    W2_ref = get_W2(D0, eta0)
+    def mu_mumu(D: float, eta: float) -> float:
+        e_eff = eta_eff(D, eta)
+        amp = kin.hll_channel_amplitude(
+            2,
+            D,
+            e_eff,
+            t_coh,
+            observable_mode=hll_mode,
+            N_max=hll_nmax,
+        )
+        ratio = float(amp / max(amp_ref, 1e-30))
+        if hll_mode == "proxy_wratio":
+            return ratio
+        return ratio * ratio
 
     r3 = []
     chi2 = []
@@ -131,7 +152,7 @@ def evaluate_case(case: Case, kin: PSLTKinetics, amp_fn: Callable[[float], float
             meta = get_meta(D, eta)
             r3.append(float(meta["generation_ratio"]))
             winners.append(int(meta["winner"]))
-            mu_pred = get_W2(D, eta) / W2_ref if W2_ref > 0 else 0.0
+            mu_pred = mu_mumu(D, eta)
             chi2.append(float(((mu_pred - mu_obs) / sigma_obs) ** 2))
 
     r3 = np.asarray(r3)

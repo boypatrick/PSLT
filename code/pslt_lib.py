@@ -92,6 +92,8 @@ class PSLTParameters:
     b_n_power: float = 0.30       # Sublinear compression: B_gen ∝ (y_gen)^{b_n_power}
     b_n_tail_mode: str = "saturate"  # "saturate" (paper baseline) or "gaussian"
     b_n_tail_beta: float = 0.50   # Used only when b_n_tail_mode == "gaussian"
+    hll_observable_mode: str = "eft_wilson_diag"  # "proxy_wratio" or "eft_wilson_diag"
+    hll_observable_nmax: int = 20
 
     def __post_init__(self):
         if self.chi_mode not in {"constant", "localized_interp", "open_system"}:
@@ -138,6 +140,10 @@ class PSLTParameters:
             raise ValueError(f"Unsupported b_mode='{self.b_mode}'.")
         if self.b_overlap_floor <= 0:
             raise ValueError("b_overlap_floor must be > 0.")
+        if self.hll_observable_mode not in {"proxy_wratio", "eft_wilson_diag"}:
+            raise ValueError(f"Unsupported hll_observable_mode='{self.hll_observable_mode}'.")
+        if self.hll_observable_nmax < 3:
+            raise ValueError("hll_observable_nmax must be >= 3.")
 
 # =============================================================================
 # 2. Yukawa Visibility Module
@@ -518,31 +524,26 @@ class PSLTKinetics:
         if not rows:
             return None
 
-        entries: Dict[float, np.ndarray] = {}
+        entries_b: Dict[float, np.ndarray] = {}
+        entries_yraw: Dict[float, np.ndarray] = {}
+        entries_ycum: Dict[float, np.ndarray] = {}
         for row in rows:
             if row.get("D", "") in {"", None}:
                 continue
             dval = float(row["D"])
 
-            # Preferred explicit B columns.
-            if all(k in row and row[k] not in {"", None} for k in ("B1", "B2", "B3")):
-                bvals = np.array(
+            has_b = all(k in row and row[k] not in {"", None} for k in ("B1", "B2", "B3"))
+            has_ycum = all(k in row and row[k] not in {"", None} for k in ("y_eff_cum_1", "y_eff_cum_2", "y_eff_cum_3"))
+            has_yraw = all(k in row and row[k] not in {"", None} for k in ("y_eff_raw_1", "y_eff_raw_2", "y_eff_raw_3"))
+
+            bvals_row: Optional[np.ndarray] = None
+            if has_b:
+                bvals_row = np.array(
                     [max(float(row["B1"]), 1e-30), max(float(row["B2"]), 1e-30), max(float(row["B3"]), 1e-30)],
                     dtype=float,
                 )
-            # Fallback to cumulative overlap strengths.
-            elif all(k in row and row[k] not in {"", None} for k in ("y_eff_cum_1", "y_eff_cum_2", "y_eff_cum_3")):
-                yvals = np.array(
-                    [
-                        max(float(row["y_eff_cum_1"]), 1e-30),
-                        max(float(row["y_eff_cum_2"]), 1e-30),
-                        max(float(row["y_eff_cum_3"]), 1e-30),
-                    ],
-                    dtype=float,
-                )
-                bvals = yvals / max(yvals[2], 1e-30)
-            # Fallback to raw overlap strengths.
-            elif all(k in row and row[k] not in {"", None} for k in ("y_eff_raw_1", "y_eff_raw_2", "y_eff_raw_3")):
+
+            if has_yraw:
                 yraw = np.array(
                     [
                         max(float(row["y_eff_raw_1"]), 0.0),
@@ -552,20 +553,56 @@ class PSLTKinetics:
                     dtype=float,
                 )
                 ycum = np.array([yraw[0], yraw[0] + yraw[1], yraw[0] + yraw[1] + yraw[2]], dtype=float)
-                bvals = ycum / max(ycum[2], 1e-30)
+            elif has_ycum:
+                ycum = np.array(
+                    [
+                        max(float(row["y_eff_cum_1"]), 1e-30),
+                        max(float(row["y_eff_cum_2"]), 1e-30),
+                        max(float(row["y_eff_cum_3"]), 1e-30),
+                    ],
+                    dtype=float,
+                )
+                yraw = np.array(
+                    [ycum[0], max(ycum[1] - ycum[0], 0.0), max(ycum[2] - ycum[1], 0.0)],
+                    dtype=float,
+                )
+            elif has_b and bvals_row is not None:
+                # Legacy fallback when only normalized B_N is present.
+                ycum = np.array(bvals_row / max(bvals_row[2], 1e-30), dtype=float)
+                yraw = np.array(
+                    [ycum[0], max(ycum[1] - ycum[0], 0.0), max(ycum[2] - ycum[1], 0.0)],
+                    dtype=float,
+                )
             else:
                 continue
 
-            # Normalize profile row-wise to enforce B3=1 in overlap mode.
-            bvals = np.maximum(bvals / max(bvals[2], 1e-30), self.params.b_overlap_floor)
-            entries[dval] = bvals
+            if bvals_row is None:
+                bvals = ycum / max(ycum[2], 1e-30)
+            else:
+                bvals = bvals_row / max(bvals_row[2], 1e-30)
 
-        if not entries:
+            # Enforce B3=1 and positive overlap floor for robust interpolation.
+            bvals = np.maximum(bvals, self.params.b_overlap_floor)
+            yraw = np.maximum(yraw, self.params.b_overlap_floor)
+            ycum = np.maximum(ycum, self.params.b_overlap_floor)
+
+            entries_b[dval] = bvals
+            entries_yraw[dval] = yraw
+            entries_ycum[dval] = ycum
+
+        if not entries_b:
             return None
 
-        d_sorted = np.array(sorted(entries.keys()), dtype=float)
-        b_sorted = np.vstack([entries[d] for d in d_sorted])
-        return {"D": d_sorted, "B123": b_sorted}
+        d_sorted = np.array(sorted(entries_b.keys()), dtype=float)
+        b_sorted = np.vstack([entries_b[d] for d in d_sorted])
+        yraw_sorted = np.vstack([entries_yraw[d] for d in d_sorted])
+        ycum_sorted = np.vstack([entries_ycum[d] for d in d_sorted])
+        return {
+            "D": d_sorted,
+            "B123": b_sorted,
+            "YRAW123": yraw_sorted,
+            "YCUM123": ycum_sorted,
+        }
 
     def _auto_find_b_overlap_csv(self) -> Optional[Path]:
         base = self.root_dir / "output" / "y_eff_2d"
@@ -820,6 +857,112 @@ class PSLTKinetics:
             return float(np.exp(-beta * (N - 3) ** 2))
         return 1.0
 
+    def y_eff_raw_N(self, N: int, D: Optional[float] = None) -> float:
+        """
+        Effective overlap amplitude for layer N.
+
+        In overlap_2d mode this is interpolated from y_eff_raw_N(D) profile
+        (microcanonical-windowed extraction). In legacy yukawa mode, return
+        a deterministic fallback consistent with the configured B_N convention.
+        """
+        if N <= 0:
+            return 0.0
+
+        if self._b_mode_active == "overlap_2d" and self._b_overlap_profile is not None and N <= 3:
+            prof = self._b_overlap_profile
+            yraw = prof.get("YRAW123", None)
+            if yraw is not None:
+                d_knots = prof["D"]
+                y_knots = yraw[:, N - 1]
+                d_eval = float(np.mean(d_knots)) if D is None else float(D)
+                y_val = float(np.interp(d_eval, d_knots, y_knots))
+                return float(max(y_val, self.params.b_overlap_floor))
+
+        if N > 3:
+            return 0.0
+
+        # Legacy fallback from Yukawa-derived B map.
+        if self.params.b_n_mode == "single":
+            return float(max(self.B_map.get(N, 0.0), self.params.b_overlap_floor))
+
+        b1 = float(max(self.B_map.get(1, 0.0), self.params.b_overlap_floor))
+        b2 = float(max(self.B_map.get(2, b1), b1))
+        b3 = float(max(self.B_map.get(3, b2), b2))
+        yraw = np.array(
+            [
+                b1,
+                max(b2 - b1, self.params.b_overlap_floor),
+                max(b3 - b2, self.params.b_overlap_floor),
+            ],
+            dtype=float,
+        )
+        return float(yraw[N - 1])
+
+    def layer_weight(self, N: int, D: float, eta: float, t_coh: float) -> float:
+        gamma = self.calculate_gamma_N(N, D, eta)
+        g_n = self.g_N_effective(N, D)
+        b_n = self.B_N(N, D)
+        return float(b_n * g_n * (1.0 - np.exp(-gamma * t_coh)))
+
+    def layer_kinetic_weight(self, N: int, D: float, eta: float, t_coh: float) -> float:
+        gamma = self.calculate_gamma_N(N, D, eta)
+        g_n = self.g_N_effective(N, D)
+        return float(g_n * (1.0 - np.exp(-gamma * t_coh)))
+
+    def layer_kinetic_probability(self, N: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:
+        if N <= 0 or N > N_max:
+            return 0.0
+        q = np.array([self.layer_kinetic_weight(k, D, eta, t_coh) for k in range(1, N_max + 1)], dtype=float)
+        q_sum = float(np.sum(q))
+        if q_sum <= 0.0:
+            return 0.0
+        return float(max(q[N - 1], 0.0) / q_sum)
+
+    def hll_wilson_coeff(self, layer_n: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:
+        """
+        Map-level EFT ansatz for H->ll:
+          c_ll(D,eta) = y_eff_raw_N(D) * P_N^(kin)(D,eta)
+        where P_N^(kin) is the normalized kinetic occupancy from g_N and Gamma_N.
+        """
+        p_kin = self.layer_kinetic_probability(layer_n, D, eta, t_coh, N_max=N_max)
+        y_raw = self.y_eff_raw_N(layer_n, D)
+        return float(max(y_raw, self.params.b_overlap_floor) * p_kin)
+
+    def hll_channel_amplitude(
+        self,
+        layer_n: int,
+        D: float,
+        eta: float,
+        t_coh: float,
+        observable_mode: str = "eft_wilson_diag",
+        N_max: int = 20,
+    ) -> float:
+        if observable_mode == "proxy_wratio":
+            return self.layer_weight(layer_n, D, eta, t_coh)
+        if observable_mode == "eft_wilson_diag":
+            return self.hll_wilson_coeff(layer_n, D, eta, t_coh, N_max=N_max)
+        raise ValueError(f"Unsupported observable_mode='{observable_mode}'.")
+
+    def hll_mu_pred(
+        self,
+        layer_n: int,
+        D: float,
+        eta: float,
+        t_coh: float,
+        ref_D: float,
+        ref_eta: float,
+        observable_mode: Optional[str] = None,
+        N_max: Optional[int] = None,
+    ) -> float:
+        mode = self.params.hll_observable_mode if observable_mode is None else observable_mode
+        nmax = self.params.hll_observable_nmax if N_max is None else int(N_max)
+        amp = self.hll_channel_amplitude(layer_n, D, eta, t_coh, observable_mode=mode, N_max=nmax)
+        amp_ref = self.hll_channel_amplitude(layer_n, ref_D, ref_eta, t_coh, observable_mode=mode, N_max=nmax)
+        ratio = float(amp / max(amp_ref, 1e-30))
+        if mode == "proxy_wratio":
+            return ratio
+        return ratio * ratio
+
     def _interp_scalar(self, D: float, d_knots: np.ndarray, y_knots: np.ndarray) -> float:
         order = np.argsort(d_knots)
         d_sorted = d_knots[order]
@@ -1016,13 +1159,8 @@ class PSLTKinetics:
         gammas = []
         
         for N in Ns:
-            g = self.g_N_effective(N, D)
             Gam = self.calculate_gamma_N(N, D, eta)
-            B = self.B_N(N, D)
-            
-            # Main Closed Chain Equation
-            factor = 1 - np.exp(-Gam * t_coh)
-            w = B * g * factor
+            w = self.layer_weight(N, D, eta, t_coh)
             
             weights.append(w)
             gammas.append(Gam)

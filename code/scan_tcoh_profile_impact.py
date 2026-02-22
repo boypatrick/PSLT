@@ -63,6 +63,8 @@ def make_kinetics() -> PSLTKinetics:
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode="eft_wilson_diag",
+        hll_observable_nmax=20,
     )
     return PSLTKinetics(params)
 
@@ -91,6 +93,8 @@ def evaluate_case(case: Case, kin: PSLTKinetics, tcoh_fn: Callable[[float], floa
     mu_obs = 1.4
     sigma_obs = 0.4
     D0, eta0 = 10.0, 1.0
+    hll_mode = "eft_wilson_diag"
+    hll_nmax = 20
 
     def t_coh_of_D(D: float) -> float:
         if case.mode == "constant":
@@ -101,14 +105,24 @@ def evaluate_case(case: Case, kin: PSLTKinetics, tcoh_fn: Callable[[float], floa
             val = min(val, case.t_cap)
         return float(val)
 
-    def W2(D: float, eta: float) -> float:
-        N = 2
-        Gam = kin.calculate_gamma_N(N, D, eta)
-        g = kin.g_N_effective(N, D)
-        B = kin.B_N(N, D)
-        return float(B * g * (1.0 - np.exp(-Gam * t_coh_of_D(D))))
+    ref_t = t_coh_of_D(D0)
+    amp_ref = kin.hll_channel_amplitude(2, D0, eta0, ref_t, observable_mode=hll_mode, N_max=hll_nmax)
+    if amp_ref <= 0:
+        raise RuntimeError(f"{case.name}: non-positive H->mumu reference amplitude.")
 
-    W2_ref = W2(D0, eta0)
+    def mu_mumu(D: float, eta: float) -> float:
+        amp = kin.hll_channel_amplitude(
+            2,
+            D,
+            eta,
+            t_coh_of_D(D),
+            observable_mode=hll_mode,
+            N_max=hll_nmax,
+        )
+        ratio = float(amp / max(amp_ref, 1e-30))
+        if hll_mode == "proxy_wratio":
+            return ratio
+        return ratio * ratio
 
     ratios = []
     chi2_vals = []
@@ -116,7 +130,7 @@ def evaluate_case(case: Case, kin: PSLTKinetics, tcoh_fn: Callable[[float], floa
         for D in D_vals:
             _, _, meta = kin.get_probabilities(D, eta, t_coh_of_D(D), N_max=20)
             ratios.append(float(meta["generation_ratio"]))
-            mu_pred = W2(D, eta) / W2_ref if W2_ref > 0 else 0.0
+            mu_pred = mu_mumu(D, eta)
             chi2_vals.append(float(((mu_pred - mu_obs) / sigma_obs) ** 2))
 
     ratios = np.asarray(ratios)

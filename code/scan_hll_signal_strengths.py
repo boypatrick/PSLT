@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """
-Map-level PSLT proxy predictions for H->ll channels (ee, mumu, tautau).
+Map-level PSLT predictions for H->ll channels (ee, mumu, tautau).
 
-The proxy follows the paper's H->mumu definition:
-  W_N(D,eta) = B_N * g_N(D) * (1 - exp(-Gamma_N(D,eta) * t_coh))
-  mu_ll_pred = W_N / W_N_ref
+Observable modes:
+  - proxy_wratio:
+      W_N(D,eta) = B_N * g_N(D) * (1 - exp(-Gamma_N(D,eta) * t_coh))
+      mu_ll_pred = W_N / W_N_ref
+  - eft_wilson_diag (baseline):
+      c_ll(D,eta) = y_eff_raw_N(D) * P_N^(kin)(D,eta)
+      mu_ll_pred = |c_ll / c_ll_ref|^2
 
 with layer-channel assignment:
   ee -> N=1, mumu -> N=2, tautau -> N=3.
@@ -36,6 +40,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str((ROOT / "code").resolve()))
 
 from pslt_lib import PSLTKinetics, PSLTParameters  # noqa: E402
+from hll_observable import HLLObservableConfig, HLLChannelPredictor  # noqa: E402
 
 
 OUTDIR = ROOT / "output" / "hll_signal_strength"
@@ -72,6 +77,8 @@ PAPER_BASELINE = {
     "t_coh": 1.0,
     "ref_D": 10.0,
     "ref_eta": 1.0,
+    "hll_observable_mode": "eft_wilson_diag",
+    "hll_observable_nmax": 20,
     "D_min": 4.0,
     "D_max": 20.0,
     "D_num": 60,
@@ -185,38 +192,32 @@ def make_baseline_kinetics() -> PSLTKinetics:
         b_n_power=PAPER_BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode=PAPER_BASELINE["hll_observable_mode"],
+        hll_observable_nmax=PAPER_BASELINE["hll_observable_nmax"],
     )
     return PSLTKinetics(params)
-
-
-def layer_weight(
-    kinetics: PSLTKinetics,
-    layer_n: int,
-    d_val: float,
-    eta_val: float,
-    t_coh: float,
-) -> float:
-    gamma_n = kinetics.calculate_gamma_N(layer_n, d_val, eta_val)
-    g_n = kinetics.g_N_effective(layer_n, d_val)
-    b_n = kinetics.B_N(layer_n, d_val)
-    return float(b_n * g_n * (1.0 - np.exp(-gamma_n * t_coh)))
-
 
 def compute_maps(
     kinetics: PSLTKinetics,
 ) -> Tuple[np.ndarray, np.ndarray, Dict[str, np.ndarray], Dict[str, float]]:
     d_vals = np.linspace(PAPER_BASELINE["D_min"], PAPER_BASELINE["D_max"], PAPER_BASELINE["D_num"])
     eta_vals = np.linspace(PAPER_BASELINE["eta_min"], PAPER_BASELINE["eta_max"], PAPER_BASELINE["eta_num"])
-    t_coh = float(PAPER_BASELINE["t_coh"])
-    d_ref = float(PAPER_BASELINE["ref_D"])
-    eta_ref = float(PAPER_BASELINE["ref_eta"])
+    cfg = HLLObservableConfig(
+        mode=str(PAPER_BASELINE["hll_observable_mode"]),
+        t_coh=float(PAPER_BASELINE["t_coh"]),
+        ref_D=float(PAPER_BASELINE["ref_D"]),
+        ref_eta=float(PAPER_BASELINE["ref_eta"]),
+        n_max=int(PAPER_BASELINE["hll_observable_nmax"]),
+    )
 
-    ref_weights: Dict[str, float] = {}
+    predictors: Dict[str, HLLChannelPredictor] = {
+        channel: HLLChannelPredictor(kinetics, layer_n, cfg)
+        for channel, layer_n in CHANNEL_TO_LAYER.items()
+    }
+
+    ref_amps: Dict[str, float] = {}
     for channel, layer_n in CHANNEL_TO_LAYER.items():
-        w_ref = layer_weight(kinetics, layer_n, d_ref, eta_ref, t_coh)
-        if w_ref <= 0.0:
-            raise RuntimeError(f"Non-positive reference weight for channel={channel}.")
-        ref_weights[channel] = w_ref
+        ref_amps[channel] = predictors[channel].ref_amp
 
     maps: Dict[str, np.ndarray] = {
         channel: np.zeros((len(eta_vals), len(d_vals)), dtype=float)
@@ -225,11 +226,10 @@ def compute_maps(
 
     for i, eta in enumerate(eta_vals):
         for j, d in enumerate(d_vals):
-            for channel, layer_n in CHANNEL_TO_LAYER.items():
-                w_val = layer_weight(kinetics, layer_n, float(d), float(eta), t_coh)
-                maps[channel][i, j] = w_val / ref_weights[channel]
+            for channel in CHANNEL_TO_LAYER:
+                maps[channel][i, j] = predictors[channel].mu_pred(float(d), float(eta))
 
-    return d_vals, eta_vals, maps, ref_weights
+    return d_vals, eta_vals, maps, ref_amps
 
 
 def write_map_csv(
@@ -384,7 +384,7 @@ def plot_maps(
         cbar = fig.colorbar(im, ax=ax)
         cbar.set_label(r"$\mu_{\rm pred}$")
 
-    fig.suptitle("PSLT proxy signal-strength maps by lepton channel", fontsize=13)
+    fig.suptitle("PSLT EFT-diagonal signal-strength maps by lepton channel", fontsize=13)
     fig.savefig(out_png, dpi=200)
     plt.close(fig)
 
@@ -397,7 +397,12 @@ def main() -> None:
     kinetics = make_baseline_kinetics()
 
     d_vals, eta_vals, maps, ref_weights = compute_maps(kinetics)
-    print("[info] reference weights (D=10, eta=1):", ref_weights)
+    print(
+        "[info] observable mode:",
+        PAPER_BASELINE["hll_observable_mode"],
+        "| reference amplitudes (D=10, eta=1):",
+        ref_weights,
+    )
 
     out_map = OUTDIR / "hll_signal_strength_map.csv"
     write_map_csv(out_map, d_vals, eta_vals, maps, observations)

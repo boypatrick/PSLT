@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str((ROOT / "code").resolve()))
 
 from pslt_lib import PSLTKinetics, PSLTParameters
+from hll_observable import HLLObservableConfig, HLLChannelPredictor
 
 
 OUTDIR = ROOT / "output" / "gn_fp_impact"
@@ -59,6 +60,8 @@ def make_kinetics(g_mode: str) -> PSLTKinetics:
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode="eft_wilson_diag",
+        hll_observable_nmax=20,
     )
     return PSLTKinetics(params)
 
@@ -71,17 +74,14 @@ def eval_case_nmax(case: Case, n_max: int) -> Dict[str, float]:
     mu_obs = 1.4
     sigma_obs = 0.4
     D0, eta0 = 10.0, 1.0
-
-    def W2(D: float, eta: float) -> float:
-        N = 2
-        gam = kin.calculate_gamma_N(N, D, eta)
-        g = kin.g_N_effective(N, D)
-        B = kin.B_N(N, D)
-        return float(B * g * (1.0 - np.exp(-gam * t_coh)))
-
-    W2_ref = W2(D0, eta0)
-    if W2_ref <= 0:
-        raise RuntimeError(f"{case.name}: non-positive W2_ref at baseline point.")
+    hll_cfg = HLLObservableConfig(
+        mode="eft_wilson_diag",
+        t_coh=t_coh,
+        ref_D=D0,
+        ref_eta=eta0,
+        n_max=20,
+    )
+    hll_mumu = HLLChannelPredictor(kin, layer_n=2, cfg=hll_cfg)
 
     r3_list: List[float] = []
     winner_list: List[int] = []
@@ -95,7 +95,7 @@ def eval_case_nmax(case: Case, n_max: int) -> Dict[str, float]:
             winner = int(meta["winner"])
             tail = float(max(1.0 - r3, 0.0))
 
-            mu_pred = W2(float(D), float(eta)) / W2_ref
+            mu_pred = hll_mumu.mu_pred(float(D), float(eta))
             chi2 = float(((mu_pred - mu_obs) / sigma_obs) ** 2)
 
             r3_list.append(r3)

@@ -22,6 +22,7 @@ from typing import Dict, List, Tuple
 import numpy as np
 
 from pslt_lib import PSLTKinetics, PSLTParameters
+from hll_observable import HLLObservableConfig, HLLChannelPredictor
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -54,6 +55,8 @@ BASELINE = {
     "eta_num": 60,
     "hmumu_ref_D": 10.0,
     "hmumu_ref_eta": 1.0,
+    "hll_observable_mode": "eft_wilson_diag",
+    "hll_observable_nmax": 20,
     "mu_obs": 1.4,
     "sigma_obs": 0.4,
 }
@@ -111,16 +114,10 @@ def make_kinetics(case: Case, d_knots: np.ndarray, chi_knots: np.ndarray) -> PSL
         b_n_power=case.p_B,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode=BASELINE["hll_observable_mode"],
+        hll_observable_nmax=BASELINE["hll_observable_nmax"],
     )
     return PSLTKinetics(params)
-
-
-def get_w2(kin: PSLTKinetics, d: float, eta: float) -> float:
-    n = 2
-    gamma = kin.calculate_gamma_N(n, d, eta)
-    g_n = kin.g_N_effective(n, d)
-    b_n = kin.B_N(n, d)
-    return float(b_n * g_n * (1.0 - np.exp(-gamma * BASELINE["t_coh"])))
 
 
 def evaluate_case(case: Case, d_knots: np.ndarray, chi_knots: np.ndarray) -> Dict[str, float]:
@@ -140,14 +137,19 @@ def evaluate_case(case: Case, d_knots: np.ndarray, chi_knots: np.ndarray) -> Dic
     frac_r3_90 = float(np.mean(r3_map >= 0.90))
     frac_win_gt3 = float(np.mean(win_map > 3))
 
-    w2_ref = get_w2(kin, BASELINE["hmumu_ref_D"], BASELINE["hmumu_ref_eta"])
-    if w2_ref <= 0:
-        raise RuntimeError(f"Non-positive W2 reference for case {case.name}: {w2_ref}")
+    hll_cfg = HLLObservableConfig(
+        mode=str(BASELINE["hll_observable_mode"]),
+        t_coh=float(BASELINE["t_coh"]),
+        ref_D=float(BASELINE["hmumu_ref_D"]),
+        ref_eta=float(BASELINE["hmumu_ref_eta"]),
+        n_max=int(BASELINE["hll_observable_nmax"]),
+    )
+    hll_mumu = HLLChannelPredictor(kin, layer_n=2, cfg=hll_cfg)
 
     chi2 = np.zeros_like(r3_map)
     for i, eta in enumerate(eta_vals):
         for j, d in enumerate(d_vals):
-            mu_pred = get_w2(kin, d, eta) / w2_ref
+            mu_pred = hll_mumu.mu_pred(d, eta)
             chi2[i, j] = ((mu_pred - BASELINE["mu_obs"]) / BASELINE["sigma_obs"]) ** 2
 
     frac_chi2_le4 = float(np.mean(chi2 <= 4.0))

@@ -29,6 +29,7 @@ import pandas as pd
 
 from extract_chi_localized_2d import Level, PhysicalParams, run_case
 from pslt_lib import PSLTKinetics, PSLTParameters
+from hll_observable import HLLObservableConfig, HLLChannelPredictor
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -54,6 +55,8 @@ BASELINE = {
     "n_max": 20,
     "hmumu_ref_D": 10.0,
     "hmumu_ref_eta": 1.0,
+    "hll_observable_mode": "eft_wilson_diag",
+    "hll_observable_nmax": 20,
 }
 B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 
@@ -105,6 +108,8 @@ def make_kinetics_surrogate(d_knots: np.ndarray, chi_knots: np.ndarray) -> PSLTK
         b_n_power=BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode=BASELINE["hll_observable_mode"],
+        hll_observable_nmax=BASELINE["hll_observable_nmax"],
     )
     return PSLTKinetics(params)
 
@@ -129,16 +134,10 @@ def make_kinetics_constant(chi_const: float) -> PSLTKinetics:
         b_n_power=BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode=BASELINE["hll_observable_mode"],
+        hll_observable_nmax=BASELINE["hll_observable_nmax"],
     )
     return PSLTKinetics(params)
-
-
-def compute_w2(kin: PSLTKinetics, d: float, eta: float) -> float:
-    n = 2
-    gamma = kin.calculate_gamma_N(n, d, eta)
-    g_n = kin.g_N_effective(n, d)
-    b_n = kin.B_N(n, d)
-    return float(b_n * g_n * (1.0 - np.exp(-gamma * BASELINE["t_coh"])))
 
 
 def extract_direct_chi(d_values: List[float]) -> Dict[float, Dict[str, float]]:
@@ -165,7 +164,7 @@ def extract_direct_chi(d_values: List[float]) -> Dict[float, Dict[str, float]]:
     return out
 
 
-def point_metrics(kin: PSLTKinetics, d: float, eta: float) -> Dict[str, float]:
+def point_metrics(kin: PSLTKinetics, d: float, eta: float, hll_cfg: HLLObservableConfig) -> Dict[str, float]:
     _, p_n, meta = kin.get_probabilities(d, eta, BASELINE["t_coh"], N_max=BASELINE["n_max"])
     return {
         "winner": float(meta["winner"]),
@@ -173,7 +172,16 @@ def point_metrics(kin: PSLTKinetics, d: float, eta: float) -> Dict[str, float]:
         "P1": float(p_n[0]) if len(p_n) >= 1 else 0.0,
         "P2": float(p_n[1]) if len(p_n) >= 2 else 0.0,
         "P3": float(p_n[2]) if len(p_n) >= 3 else 0.0,
-        "W2": compute_w2(kin, d, eta),
+        "amp_mumu": float(
+            kin.hll_channel_amplitude(
+                2,
+                d,
+                eta,
+                hll_cfg.t_coh,
+                observable_mode=hll_cfg.mode,
+                N_max=hll_cfg.n_max,
+            )
+        ),
     }
 
 
@@ -186,13 +194,20 @@ def main() -> None:
 
     ref_d = float(BASELINE["hmumu_ref_D"])
     ref_eta = float(BASELINE["hmumu_ref_eta"])
+    hll_cfg = HLLObservableConfig(
+        mode=str(BASELINE["hll_observable_mode"]),
+        t_coh=float(BASELINE["t_coh"]),
+        ref_D=ref_d,
+        ref_eta=ref_eta,
+        n_max=int(BASELINE["hll_observable_nmax"]),
+    )
     chi_ref_direct_targets = [ref_d]
     point_ds = [float(p["D"]) for p in POINTS]
     direct = extract_direct_chi(point_ds + chi_ref_direct_targets)
 
-    w2_ref_sur = compute_w2(kin_sur, ref_d, ref_eta)
+    pred_sur = HLLChannelPredictor(kin_sur, layer_n=2, cfg=hll_cfg)
     kin_ref_dir = make_kinetics_constant(direct[ref_d]["chi_LR"])
-    w2_ref_dir = compute_w2(kin_ref_dir, ref_d, ref_eta)
+    pred_dir_ref = HLLChannelPredictor(kin_ref_dir, layer_n=2, cfg=hll_cfg)
 
     rows = []
     for p in POINTS:
@@ -204,11 +219,15 @@ def main() -> None:
         chi_direct = float(direct[d]["chi_LR"])
         kin_dir = make_kinetics_constant(chi_direct)
 
-        m_sur = point_metrics(kin_sur, d, eta)
-        m_dir = point_metrics(kin_dir, d, eta)
+        m_sur = point_metrics(kin_sur, d, eta, hll_cfg)
+        m_dir = point_metrics(kin_dir, d, eta, hll_cfg)
 
-        mu_sur = m_sur["W2"] / max(w2_ref_sur, 1e-30)
-        mu_dir = m_dir["W2"] / max(w2_ref_dir, 1e-30)
+        mu_sur = pred_sur.mu_pred(d, eta)
+        ratio_dir = float(m_dir["amp_mumu"] / max(pred_dir_ref.ref_amp, 1e-30))
+        if hll_cfg.mode == "proxy_wratio":
+            mu_dir = ratio_dir
+        else:
+            mu_dir = ratio_dir * ratio_dir
 
         delta_mu_abs = abs(mu_dir - mu_sur)
         delta_mu_rel = (mu_dir - mu_sur) / max(abs(mu_sur), 1e-30)

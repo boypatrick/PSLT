@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from pslt_lib import PSLTKinetics, PSLTParameters
+from hll_observable import HLLObservableConfig, HLLChannelPredictor
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -67,6 +68,8 @@ def make_kinetics(d_knots: np.ndarray, chi_knots: np.ndarray, scale: float) -> P
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode="eft_wilson_diag",
+        hll_observable_nmax=20,
     )
     return PSLTKinetics(params)
 
@@ -79,20 +82,15 @@ def scan_masks(scale: float, d_knots: np.ndarray, chi_knots: np.ndarray) -> Dict
 
     r3 = np.zeros((len(eta_vals), len(d_vals)))
     chi2 = np.zeros_like(r3)
-
-    def w2(d: float, eta: float) -> float:
-        n = 2
-        gamma = kin.calculate_gamma_N(n, d, eta)
-        return kin.B_N(n, d) * kin.g_N_effective(n, d) * (1.0 - np.exp(-gamma * t_coh))
-
-    w2_ref = w2(10.0, 1.0)
+    hll_cfg = HLLObservableConfig(mode="eft_wilson_diag", t_coh=t_coh, ref_D=10.0, ref_eta=1.0, n_max=20)
+    hll_mumu = HLLChannelPredictor(kin, layer_n=2, cfg=hll_cfg)
     mu_obs, sigma = 1.4, 0.4
 
     for i, eta in enumerate(eta_vals):
         for j, d in enumerate(d_vals):
             _, _, meta = kin.get_probabilities(d, eta, t_coh, 20)
             r3[i, j] = meta["generation_ratio"]
-            mu_pred = w2(d, eta) / w2_ref
+            mu_pred = hll_mumu.mu_pred(d, eta)
             chi2[i, j] = ((mu_pred - mu_obs) / sigma) ** 2
 
     return {

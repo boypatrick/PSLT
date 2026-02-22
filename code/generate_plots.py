@@ -31,6 +31,7 @@ import traceback
 # Import consolidated library
 sys.path.insert(0, str(Path(__file__).parent))
 from pslt_lib import PSLTKinetics, PSLTParameters, load_yukawa_data
+from hll_observable import HLLObservableConfig, HLLChannelPredictor
 
 OUTDIR = Path(__file__).parent.parent / "output"
 OUTDIR.mkdir(exist_ok=True, parents=True)
@@ -55,6 +56,8 @@ PAPER_BASELINE = {
     "t_coh": 1.0,
     "hmumu_ref_D": 10.0,
     "hmumu_ref_eta": 1.0,
+    "hll_observable_mode": "eft_wilson_diag",
+    "hll_observable_nmax": 20,
 }
 
 DEFAULT_CHI_D = np.array([6.0, 12.0, 18.0], dtype=float)
@@ -114,6 +117,8 @@ def make_baseline_kinetics() -> PSLTKinetics:
         b_n_power=PAPER_BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode=PAPER_BASELINE["hll_observable_mode"],
+        hll_observable_nmax=PAPER_BASELINE["hll_observable_nmax"],
     )
     print(
         "Using baseline profile:",
@@ -257,25 +262,14 @@ def plot_hmumu_check():
         mu_obs, sigma_obs = 1.4, 0.4
 
     kinetics = make_baseline_kinetics()
-
-    # In PSLT, we use a minimal generation-2 proxy:
-    #   W_2(D,eta) = B_2 g_2 [1 - exp(-Gamma_2 t_coh)]
-    # and define the predicted signal strength as the ratio to a fixed reference point.
-    t_coh = PAPER_BASELINE["t_coh"]
-
-    def get_W2(D, eta):
-        N = 2
-        Gam = kinetics.calculate_gamma_N(N, D, eta)
-        g = kinetics.g_N_effective(N, D)
-        B = kinetics.B_N(N, D)
-        return B * g * (1.0 - np.exp(-Gam * t_coh))
-
-    # Reference point (fixed, not tuned)
-    D0 = PAPER_BASELINE["hmumu_ref_D"]
-    eta0 = PAPER_BASELINE["hmumu_ref_eta"]
-    W2_ref = get_W2(D0, eta0)
-    if W2_ref <= 0:
-        raise RuntimeError("Reference W2_ref is non-positive; adjust (D0,eta0) or parameters.")
+    cfg = HLLObservableConfig(
+        mode=PAPER_BASELINE["hll_observable_mode"],
+        t_coh=PAPER_BASELINE["t_coh"],
+        ref_D=PAPER_BASELINE["hmumu_ref_D"],
+        ref_eta=PAPER_BASELINE["hmumu_ref_eta"],
+        n_max=PAPER_BASELINE["hll_observable_nmax"],
+    )
+    predictor = HLLChannelPredictor(kinetics, layer_n=2, cfg=cfg)
 
     # Scan (same region as the main phase diagram)
     D_vals = np.linspace(4, 20, 60)
@@ -285,7 +279,7 @@ def plot_hmumu_check():
 
     for i, eta in enumerate(eta_vals):
         for j, D in enumerate(D_vals):
-            val = get_W2(D, eta) / W2_ref
+            val = predictor.mu_pred(D, eta)
             mu_pred[i, j] = val
             chi2[i, j] = ((val - mu_obs) / sigma_obs) ** 2
 
@@ -293,7 +287,9 @@ def plot_hmumu_check():
     min_idx = np.unravel_index(np.argmin(chi2), chi2.shape)
     best_chi2 = float(chi2[min_idx])
     best_point = (float(D_vals[min_idx[1]]), float(eta_vals[min_idx[0]]))
-    print(f"  H->mumu fraction with chi2<=4.0 (proxy threshold): {frac_proxy:.3f}")
+    print(
+        f"  H->mumu fraction with chi2<=4.0 ({cfg.mode}): {frac_proxy:.3f}"
+    )
     print(f"  Best-fit (grid) chi2={best_chi2:.3f} at (D,eta)={best_point}")
 
     # Plot Chi2 (Exclusion map)
@@ -305,7 +301,7 @@ def plot_hmumu_check():
     )
     plt.colorbar(im, label=r"$\chi^2$")
     ax.contour(D_vals, eta_vals, chi2, levels=[1.0, 4.0], colors=["green", "orange"], linewidths=2)
-    ax.set_title(r"H$\to\mu\mu$ Compatibility (proxy: $\chi^2<4$)")
+    ax.set_title(rf"H$\to\mu\mu$ Compatibility ({cfg.mode}: $\chi^2<4$)")
     ax.set_xlabel("D")
     ax.set_ylabel(r"$\eta$")
 
@@ -322,7 +318,7 @@ def plot_hmumu_check():
     )
     plt.colorbar(im, label=r"$\mu_{\rm pred}$")
     ax.contour(D_vals, eta_vals, mu_pred, levels=[mu_obs], colors="white", linestyles="--")
-    ax.set_title(f"Predicted Signal Strength (Obs: {mu_obs} ± {sigma_obs})")
+    ax.set_title(f"Predicted Signal Strength ({cfg.mode}, Obs: {mu_obs} ± {sigma_obs})")
     ax.set_xlabel("D")
     ax.set_ylabel(r"$\eta$")
 

@@ -24,6 +24,7 @@ from typing import Dict, List
 import numpy as np
 
 from pslt_lib import PSLTKinetics, PSLTParameters
+from hll_observable import HLLObservableConfig, HLLChannelPredictor
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -62,6 +63,8 @@ def make_kinetics(case: Case) -> PSLTKinetics:
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode="eft_wilson_diag",
+        hll_observable_nmax=20,
     )
     return PSLTKinetics(params)
 
@@ -75,17 +78,14 @@ def evaluate_case_nmax(case: Case, n_max: int) -> Dict[str, float]:
     mu_obs = 1.4
     sigma_obs = 0.4
     d_ref, eta_ref = 10.0, 1.0
-
-    def w2(d: float, eta: float) -> float:
-        n = 2
-        gamma = kin.calculate_gamma_N(n, d, eta)
-        g = kin.g_N_effective(n, d)
-        b = kin.B_N(n, d)
-        return float(b * g * (1.0 - np.exp(-gamma * t_coh)))
-
-    w2_ref = w2(d_ref, eta_ref)
-    if w2_ref <= 0:
-        raise RuntimeError(f"{case.name}: non-positive W2_ref.")
+    hll_cfg = HLLObservableConfig(
+        mode="eft_wilson_diag",
+        t_coh=t_coh,
+        ref_D=d_ref,
+        ref_eta=eta_ref,
+        n_max=20,
+    )
+    hll_mumu = HLLChannelPredictor(kin, layer_n=2, cfg=hll_cfg)
 
     r3_vals: List[float] = []
     tail_vals: List[float] = []
@@ -98,7 +98,7 @@ def evaluate_case_nmax(case: Case, n_max: int) -> Dict[str, float]:
             r3 = float(meta["generation_ratio"])
             tail = float(max(1.0 - r3, 0.0))
             winner = int(meta["winner"])
-            mu_pred = w2(d, eta) / w2_ref
+            mu_pred = hll_mumu.mu_pred(d, eta)
             chi2 = float(((mu_pred - mu_obs) / sigma_obs) ** 2)
 
             r3_vals.append(r3)

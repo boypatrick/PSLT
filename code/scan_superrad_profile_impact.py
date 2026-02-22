@@ -69,6 +69,8 @@ def make_kinetics() -> PSLTKinetics:
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
+        hll_observable_mode="eft_wilson_diag",
+        hll_observable_nmax=20,
     )
     return PSLTKinetics(params)
 
@@ -157,14 +159,16 @@ def evaluate_case(
         A1_eff, A2_eff = Aeff(D)
         return calculate_gamma_with_profiles(kin, N=N, D=D, eta_eff=eta, A1_eff=A1_eff, A2_eff=A2_eff)
 
-    def W2(D: float, eta: float) -> float:
-        N = 2
-        Gam = gamma_N(N, D, eta)
-        g = kin.g_N_effective(N, D)
-        B = kin.B_N(N, D)
-        return float(B * g * (1.0 - np.exp(-Gam * t_coh)))
-
-    W2_ref = W2(D0, eta0)
+    q_ref = []
+    for N in range(1, 21):
+        g = kin.g_N_effective(N, D0)
+        gam = gamma_N(N, D0, eta0)
+        q_ref.append(g * (1.0 - np.exp(-gam * t_coh)))
+    q_ref = np.asarray(q_ref, dtype=float)
+    q_ref_sum = float(np.sum(q_ref))
+    c_ref = kin.y_eff_raw_N(2, D0) * (float(q_ref[1]) / q_ref_sum if q_ref_sum > 0 else 0.0)
+    if c_ref <= 0:
+        raise RuntimeError(f"{case.name}: non-positive H->mumu EFT reference coefficient.")
 
     ratios = []
     chi2_vals = []
@@ -173,22 +177,25 @@ def evaluate_case(
     for eta in eta_vals:
         for D in D_vals:
             weights = []
-            gammas = []
+            q_kin = []
             for N in range(1, 21):
                 Gam = gamma_N(N, D, eta)
                 g = kin.g_N_effective(N, D)
                 B = kin.B_N(N, D)
-                wN = B * g * (1.0 - np.exp(-Gam * t_coh))
+                qN = g * (1.0 - np.exp(-Gam * t_coh))
+                wN = B * qN
                 weights.append(wN)
-                gammas.append(Gam)
+                q_kin.append(qN)
             weights = np.asarray(weights, dtype=float)
             total = float(np.sum(weights))
             P = weights / total if total > 0 else weights
+            q_kin = np.asarray(q_kin, dtype=float)
+            q_sum = float(np.sum(q_kin))
+            c_mu = kin.y_eff_raw_N(2, D) * (float(q_kin[1]) / q_sum if q_sum > 0 else 0.0)
+            mu_pred = float((c_mu / max(c_ref, 1e-30)) ** 2)
 
             ratios.append(float(np.sum(P[:3])))
             winners.append(int(np.argmax(P) + 1))
-
-            mu_pred = W2(D, eta) / W2_ref if W2_ref > 0 else 0.0
             chi2_vals.append(float(((mu_pred - mu_obs) / sigma_obs) ** 2))
 
     ratios = np.asarray(ratios)

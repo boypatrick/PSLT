@@ -590,6 +590,7 @@ Crucially, we define the \textbf{Generation Ratio}:
 \label{eq:R3}
 \end{equation}
 With $\chi_N^{(LR)}(D)$ interpolation from Appendix~\ref{app:chi_loc}, our numerical scan gives $\mathcal{R}_3 > 90\%$ over $80.0\%$ of the sampled $(D,\eta)$ grid, while no point reaches $\mathcal{R}_3 > 95\%$ in this setup. The interpolation profile is anchored by the benchmark convergence set (Table~\ref{tab:chi_loc}) and the auxiliary full-scan support points (Table~\ref{tab:chi_loc_full}) in Appendix~\ref{app:chi_loc}. This still supports a dominant three-layer sector, but with a stricter robustness statement than earlier constant-$\chi$ scans. We emphasize that this global map uses a simplified surrogate kinetic operator, with only the mixing-profile input imported from the action-derived extraction.
+To quantify transfer bias from this surrogate interpolation step, we performed a point-level audit with direct localized fine extraction injected at each queried $D$ (recomputing $\chi_{LR}$ by the same 2D solver instead of using interpolated knots). The reproducible script is \texttt{scan\_surrogate\_vs\_action\_points.py}, with source table \texttt{paper/surrogate\_vs\_action\_points.csv}. As summarized in Table~\ref{tab:surrogate_action_points}, the direct-injection path changes $\chi$ by up to $\sim31\%$ at representative points, yet winner labels remain unchanged (3/3 matches) and map-level observables stay numerically stable ($\max|\Delta \mathcal{R}_3|=3.44\times10^{-11}$, $\max|\Delta\mu_{\mu\mu}^{\rm pred}|=2.80\times10^{-7}$ for the tested points).
 
 \begin{figure}[htbp]
     \centering
@@ -598,6 +599,40 @@ With $\chi_N^{(LR)}(D)$ interpolation from Appendix~\ref{app:chi_loc}, our numer
     \caption{Left: Winner phase diagram showing regions dominated by Gen 2 and Gen 3. Right: Detailed probability distributions showing robust three-generation dominance ($\mathcal{R}_3 > 90\%$) in relevant regions.}
     \label{fig:phase}
 \end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Point-level surrogate-vs-direct audit for the mixing-profile transfer. ``Surrogate'' uses $\chi_{LR}(D)$ from $D=\{6,12,18\}$ interpolation; ``direct'' recomputes fine-grid localized extraction at each listed $D$. Source CSV: \texttt{paper/surrogate\_vs\_action\_points.csv}.}
+\label{tab:surrogate_action_points}
+\small
+\begin{tabular}{ccccccc}
+\hline\hline
+$(D,\eta)$ & winner (sur/direct) & $\chi_{\rm interp}$ & $\chi_{\rm direct}$ & $|\Delta \mathcal{R}_3|$ & $|\Delta \mu_{\mu\mu}^{\rm pred}|$ & match \\
+\hline
+$(4.0,0.2)$ & $3/3$ & $4.02\times10^{-4}$ & $5.27\times10^{-4}$ & $3.44\times10^{-11}$ & $2.80\times10^{-7}$ & yes \\
+$(5.0,2.0)$ & $2/2$ & $4.02\times10^{-4}$ & $3.31\times10^{-4}$ & $4.93\times10^{-12}$ & $0$ & yes \\
+$(11.0,1.4)$ & $1/1$ & $2.51\times10^{-4}$ & $3.06\times10^{-4}$ & $0$ & $0$ & yes \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map, same $\chi_{LR}(D)$ interpolation, and all other settings fixed). Results are summarized in Table~\ref{tab:core_param_robustness} from \texttt{paper/core\_param\_robustness.csv}. Across this local window, $f(\mathcal{R}_3>0.90)$ shifts by at most $0.10$ (from the $\nu$ sweep), while $f(\chi_{\mu\mu}^2<4)$ remains unchanged at $0.0942$ and $f(N_{\rm win}>3)=0$ in all tested cases.
+
+\begin{table}[t]
+\centering
+\caption{Local one-at-a-time robustness scan around baseline closure parameters. Fractions are measured on the same $60\times60$ map as the baseline scan. Source CSV: \texttt{paper/core\_param\_robustness.csv}.}
+\label{tab:core_param_robustness}
+\small
+\begin{tabular}{ccccc}
+\hline\hline
+Parameter & Window (low/base/high) & $f(\mathcal{R}_3>0.90)$ low/base/high & $f(\chi^2_{\mu\mu}<4)$ low/base/high & Max abs drift \\
+\hline
+$c_{\rm eff}$ & $0.45/0.50/0.55$ & $0.8333/0.8000/0.7833$ & $0.0942/0.0942/0.0942$ & $\Delta f_{\mathcal{R}_3}=0.0333,\ \Delta f_{\chi^2}=0$ \\
+$\nu$ & $4.80/5.00/5.20$ & $0.7000/0.8000/0.8667$ & $0.0942/0.0942/0.0942$ & $\Delta f_{\mathcal{R}_3}=0.1000,\ \Delta f_{\chi^2}=0$ \\
+$p_B$ & $0.28/0.30/0.32$ & $0.8333/0.8000/0.7667$ & $0.0942/0.0942/0.0942$ & $\Delta f_{\mathcal{R}_3}=0.0333,\ \Delta f_{\chi^2}=0$ \\
+\hline\hline
+\end{tabular}
+\end{table}
 
 \subsection{H to mumu Signal Strength (Observable Proxy)}
 We confront the theory with the ATLAS Run-3 $H\to\mu\mu$ signal strength, $\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$ (combined uncertainty)~\cite{ATLAS_Hmumu}.
@@ -618,13 +653,28 @@ The compatibility is quantified via:
 \chi^2(D,\eta) = \frac{\left(\mu_{\mu\mu}^{\rm pred} - \mu_{\mu\mu}^{\rm obs}\right)^2}{\sigma_{\mu\mu}^2},
 \label{eq:chi2_hmumu}
 \end{equation}
-where $\sigma_{\mu\mu}=0.4$. Figure~\ref{fig:hmumu} shows the \textbf{proxy acceptance region} defined by $\chi^2 < 4$ (heuristic threshold); we do not claim a formal 95\% CL exclusion. In the present D-interpolated $\chi_N^{(LR)}$ scan, the proxy-accepted fraction is $9.4\%$, with best grid point $\chi^2\simeq 3.0\times10^{-7}$ at $(D,\eta)\approx(9.97,1.36)$. All phase-diagram claims are quoted only after satisfying the quantitative convergence criteria in Appendix~\ref{app:Veff}.
+where $\sigma_{\mu\mu}=0.4$. For one degree of freedom, we also report the local $p$-value
+\begin{equation}
+p_{\rm local}(D,\eta)=1-F_{\chi^2_1}\!\left(\chi^2(D,\eta)\right)
+=\mathrm{erfc}\!\left(\sqrt{\chi^2(D,\eta)/2}\right).
+\label{eq:plocal_hmumu}
+\end{equation}
+Figure~\ref{fig:hmumu} shows the \textbf{proxy acceptance region} in two equivalent languages,
+\begin{equation}
+\chi^2<4 \quad \Longleftrightarrow \quad p_{\rm local}>4.55\times10^{-2}\qquad(\text{dof}=1).
+\label{eq:chi2_plocal_equiv}
+\end{equation}
+We use this threshold only as an \emph{illustrative acceptance band} for map-level comparison and do not claim a formal 95\% CL exclusion. Because the $(D,\eta)$ scan is a multiple-comparison procedure (look-elsewhere) and no global trials correction is applied, this band is interpreted only as a falsifiable target region. In the present D-interpolated $\chi_N^{(LR)}$ scan, the proxy-accepted fraction is
+\begin{equation}
+f(\chi^2<4)=f\!\left(p_{\rm local}>4.55\times10^{-2}\right)=0.0942,
+\end{equation}
+with best grid point $\chi^2\simeq 3.0\times10^{-7}$ at $(D,\eta)\approx(9.97,1.36)$. All phase-diagram claims are quoted only after satisfying the quantitative convergence criteria in Appendix~\ref{app:Veff}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.48\linewidth]{hmumu_exclusion.png}
     \includegraphics[width=0.48\linewidth]{hmumu_signal_strength.png}
-    \caption{Compatibility with $H\to\mu\mu$. Left: $\chi^2$ map showing a restricted proxy-accepted band ($\chi^2<4$). Right: Predicted signal strength proxy.}
+    \caption{Compatibility with $H\to\mu\mu$. Left: $\chi^2$ map showing a restricted illustrative proxy-accepted band ($\chi^2<4$, equivalently $p_{\rm local}>4.55\times10^{-2}$ for dof$=1$). Right: Predicted signal strength proxy.}
     \label{fig:hmumu}
 \end{figure}
 
@@ -652,7 +702,7 @@ We have presented a computable EFT-level demonstrator of the Projection Spectral
 \begin{enumerate}
     \item \textbf{Generations are spectral}: The ``three generation'' structure is not an input but a dynamical output of competing entropy ($g_N$), kinetics ($\Gamma_N$), and visibility ($B_N$).
     \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated at high $N$ [Eq.~\eqref{eq:gN_reg}] and the observable sector is anchored to the SM Yukawa pattern [Eq.~\eqref{eq:BN_yukawa_prop}].
-    \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With D-interpolated $\chi_N^{(LR)}$, the $H\to\mu\mu$ proxy acceptance forms a restricted band (about $9.4\%$ of the scan), providing a sharper falsifiable constraint on $(D,\eta)$.
+    \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With D-interpolated $\chi_N^{(LR)}$, the $H\to\mu\mu$ illustrative proxy acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $9.4\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
 \end{enumerate}
 At the same time, the present implementation keeps three EFT-level surrogates explicit: the Cardy-controlled $g_N$ envelope, the Yukawa-anchored visibility law $B_N$, and the $H\to\mu\mu$ proxy map in Eq.~\eqref{eq:mu_pred}.
 
@@ -727,7 +777,8 @@ Stage & Primary scripts & Key outputs \\
 \hline
 Global maps and proxy plots & \texttt{generate\_plots.py}; \texttt{scan\_hll\_signal\_strengths.py} & \texttt{output/three\_generation\_*.png}; \texttt{output/hmumu\_*.png}; \texttt{output/hll\_signal\_strength/*} \\
 Localized mixing extraction & \texttt{extract\_chi\_localized\_2d.py} (\texttt{--Ds}, \texttt{--full-scan}) & \texttt{output/chi\_fp\_2d/localized\_chi\_D*.csv} \\
-Localized-profile diagnostics & \texttt{scan\_chi\_profile\_robustness.py}; \texttt{plot\_chi\_*.py} & \texttt{paper/chi\_profile\_robustness.csv}; \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}; \texttt{paper/chi\_wavefunction\_contours\_D*.png} \\
+Localized-profile diagnostics & \texttt{scan\_chi\_profile\_robustness.py}; \texttt{scan\_surrogate\_vs\_action\_points.py}; \texttt{plot\_chi\_*.py} & \texttt{paper/chi\_profile\_robustness.csv}; \texttt{paper/surrogate\_vs\_action\_points.csv}; \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}; \texttt{paper/chi\_wavefunction\_contours\_D*.png} \\
+Core-parameter robustness & \texttt{scan\_core\_param\_robustness.py} & \texttt{paper/core\_param\_robustness.csv}; \texttt{output/robustness/core\_param\_robustness\_cases.csv} \\
 $g_N$ first-principles candidates & \path{extract_gn_phase_space_candidate.py}; \path{extract_gn_phase_space_2d.py}; \path{scan_gn_profile_impact.py}; \path{scan_gn_nmax_convergence.py}; \path{plot_gn_cardy_vs_phase_space.py} & \texttt{output/gn\_fp\_1d/*.csv}; \texttt{output/gn\_fp\_2d/*.csv}; \texttt{paper/gn\_profile\_impact.csv}; \texttt{paper/gn\_nmax\_convergence.csv}; \texttt{paper/gn\_cardy\_vs\_phase\_space.png} \\
 Open-system diagnostics & \texttt{lindblad\_chi\_minimal.py}; \texttt{extract\_chi\_open\_system\_*.py}; \texttt{scan\_chi\_open\_system\_*.py} & \texttt{output/chi\_open\_system/*.csv}; \texttt{paper/chi\_open\_system\_sensitivity.csv} \\
 Other first-principles profiles & \texttt{extract\_tcoh\_*.py}, \texttt{extract\_eta\_*.py}, \texttt{extract\_superrad\_*.py}; \texttt{scan\_*\_profile\_impact.py} & \texttt{paper/tcoh\_profile\_impact.csv}; \texttt{paper/eta\_profile\_impact.csv}; \texttt{paper/superrad\_profile\_impact.csv} \\

@@ -145,6 +145,9 @@ sync_paper_assets() {
   sync_one "output/true_single_track/true_single_track.png" "paper/true_single_track.png" 1
   sync_one "output/chi_fp_2d/chi_wavefunction_contours_D6_12_18.png" "paper/chi_wavefunction_contours_D6_12_18.png" 1
   sync_one "output/chi_fp_2d/chi_scale_stress_test.png" "paper/chi_scale_stress_test.png" 1
+  sync_one "output/chi_fp_2d/surrogate_vs_action_points.csv" "paper/surrogate_vs_action_points.csv" 1
+  sync_one "output/chi_fp_2d/surrogate_vs_action_points_summary.csv" "paper/surrogate_vs_action_points_summary.csv" 1
+  sync_one "output/robustness/core_param_robustness_table.csv" "paper/core_param_robustness.csv" 1
   sync_one "output/gn_fp_impact/gn_profile_impact.csv" "paper/gn_profile_impact.csv" 1
   sync_one "output/gn_fp_impact/gn_nmax_convergence.csv" "paper/gn_nmax_convergence.csv" 1
   sync_one "output/gn_fp_impact/gn_cardy_vs_phase_space.csv" "paper/gn_cardy_vs_phase_space.csv" 1
@@ -176,6 +179,10 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/extract_chi_localized_2d.py --full-scan"
   run_step "03" "scan_chi_profile_robustness" \
     "$PYTHON_BIN code/scan_chi_profile_robustness.py"
+  run_step "03b" "scan_surrogate_vs_action_points" \
+    "$PYTHON_BIN code/scan_surrogate_vs_action_points.py"
+  run_step "03c" "scan_core_param_robustness" \
+    "$PYTHON_BIN code/scan_core_param_robustness.py"
   run_step "04" "plot_chi_wavefunction_contours" \
     "$PYTHON_BIN code/plot_chi_wavefunction_contours.py"
   run_step "05" "plot_chi_scale_stress_test" \

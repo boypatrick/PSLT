@@ -32,4 +32,8 @@ table,tab16,Tab_16_hll_signal_strength_summary.csv,output/hll_signal_strength/hl
 table,tab17,Tab_17_first_principles_migration_summary.csv,output/first_principles_migration/first_principles_migration_summary.csv,1,Cross-module migration summary metrics
 table,tab18,Tab_18_gn_nmax_convergence.csv,output/gn_fp_impact/gn_nmax_convergence.csv,1,N_max convergence for baseline and fp_2d g_N modes
 table,tab19,Tab_19_gn_cardy_vs_phase_space.csv,output/gn_fp_impact/gn_cardy_vs_phase_space.csv,1,Source data for low-N Cardy vs phase-space comparison
+table,tab20,Tab_20_surrogate_vs_action_points.csv,output/chi_fp_2d/surrogate_vs_action_points.csv,1,Point-level surrogate-vs-direct localized extraction bias audit
+table,tab21,Tab_21_surrogate_vs_action_points_summary.csv,output/chi_fp_2d/surrogate_vs_action_points_summary.csv,1,Summary metrics for point-level surrogate-vs-direct bias audit
+table,tab22,Tab_22_core_param_robustness.csv,output/robustness/core_param_robustness_table.csv,1,Local one-at-a-time robustness table for c_eff/nu/p_B
+table,tab23,Tab_23_core_param_robustness_cases.csv,output/robustness/core_param_robustness_cases.csv,1,Raw case-level map fractions for baseline and +/- parameter windows
 paper,paper01,Paper_main.pdf,paper/main.pdf,0,Optional manuscript PDF (requires --with-paper)

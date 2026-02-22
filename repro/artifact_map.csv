@@ -13,6 +13,7 @@ figure,fig11,Fig_11_chi_scale_stress_test.png,output/chi_fp_2d/chi_scale_stress_
 figure,fig12,Fig_12_hll_signal_strength_maps.png,output/hll_signal_strength/hll_signal_strength_maps.png,1,H->ee/H->mumu/H->tautau proxy map panel
 figure,fig13,Fig_13_first_principles_migration_summary.png,output/first_principles_migration/first_principles_migration_summary.png,1,Baseline vs fp_2d vs open-system migration summary
 figure,fig14,Fig_14_gn_cardy_vs_phase_space.png,output/gn_fp_impact/gn_cardy_vs_phase_space.png,1,Low-N comparison between Cardy and phase-space g_N profiles
+figure,fig15,Fig_15_action_chain_consistency.png,output/kinetic_action_chain/action_chain_consistency.png,1,Full-chain consistency scan: surrogate kinetic vs action-derived chain
 table,tab01,Tab_01_localized_chi_fullscan.csv,output/chi_fp_2d/localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv,1,Full-scan localized chi profile
 table,tab02,Tab_02_chi_profile_robustness.csv,paper/chi_profile_robustness.csv,1,Chi profile robustness scan summary
 table,tab03,Tab_03_chi_scale_stress.csv,output/chi_fp_2d/chi_scale_stress_test.csv,1,Chi stress-test raw data
@@ -39,4 +40,7 @@ table,tab23,Tab_23_core_param_robustness_cases.csv,output/robustness/core_param_
 table,tab24,Tab_24_gn_baseline_replacement.csv,output/gn_fp_impact/gn_baseline_replacement.csv,1,Baseline Cardy vs fp_2d_full replacement stress test summary
 table,tab25,Tab_25_gn_baseline_replacement_nmax.csv,output/gn_fp_impact/gn_baseline_replacement_nmax.csv,1,N_max convergence rows for baseline replacement stress test
 table,tab26,Tab_26_y_eff_overlap_profile.csv,output/y_eff_2d/y_eff_2d_three_channel_profile.csv,1,Overlap-defined visibility profile B_N(D) from y_N^eff extraction
+table,tab27,Tab_27_action_chain_consistency_summary.csv,output/kinetic_action_chain/action_chain_consistency_summary.csv,1,Map-level summary for full-chain consistency scan
+table,tab28,Tab_28_action_chain_surrogate_map.csv,output/kinetic_action_chain/surrogate_map.csv,1,Reference surrogate map used in full-chain consistency scan
+table,tab29,Tab_29_action_chain_full_map.csv,output/kinetic_action_chain/action_chain_map.csv,1,Action-derived full-chain map on the same grid
 paper,paper01,Paper_main.pdf,paper/main.pdf,0,Optional manuscript PDF (requires --with-paper)

@@ -158,6 +158,8 @@ sync_paper_assets() {
   sync_one "output/chi_open_system/chi_open_system_sensitivity.csv" "paper/chi_open_system_sensitivity.csv" 1
   sync_one "output/first_principles_migration/first_principles_migration_summary.csv" "paper/first_principles_migration_summary.csv" 1
   sync_one "output/first_principles_migration/first_principles_migration_summary.png" "paper/first_principles_migration_summary.png" 1
+  sync_one "output/kinetic_action_chain/action_chain_consistency_summary.csv" "paper/action_chain_consistency_summary.csv" 1
+  sync_one "output/kinetic_action_chain/action_chain_consistency.png" "paper/action_chain_consistency.png" 1
   sync_one "output/tcoh_fp_1d/tcoh_profile_impact.csv" "paper/tcoh_profile_impact.csv" 1
   sync_one "output/eta_fp_1d/eta_profile_impact.csv" "paper/eta_profile_impact.csv" 1
   sync_one "output/superrad_fp_1d/superrad_profile_impact.csv" "paper/superrad_profile_impact.csv" 1
@@ -238,6 +240,8 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/scan_chi_open_system_sensitivity.py"
   run_step "23b" "scan_first_principles_migration_summary" \
     "$PYTHON_BIN code/scan_first_principles_migration_summary.py"
+  run_step "23c" "scan_action_chain_consistency" \
+    "$PYTHON_BIN code/scan_action_chain_consistency.py"
   run_step "24" "generate_plots" \
     "$PYTHON_BIN code/generate_plots.py"
   run_step "25" "scan_hll_signal_strengths" \

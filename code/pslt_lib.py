@@ -65,6 +65,11 @@ class PSLTParameters:
     Omega_H: float = 0.9    # Horizon proxy angular velocity [Mass] (scaled by M)
     A1: float = 1.0         # l=1 amplitude (dimensionless prefactor for rate)
     A2: float = 1.0         # l=2 amplitude (dimensionless prefactor for rate)
+    gamma_mode: str = "surrogate"  # "surrogate" or "action_profile"
+    gamma_superrad_csv: Optional[str] = None
+    gamma_superrad_scale: float = 1.0
+    gamma_eta_mode: str = "scan"  # "scan", "scaled_amp", "scaled_prob", "closed_amp", "closed_prob"
+    gamma_eta_csv: Optional[str] = None
     chi: float = 0.2        # Rank-2 mixing parameter (dimensionless)
     chi_mode: str = "constant"  # "constant", "localized_interp", or "open_system"
     chi_lr_D: Tuple[float, ...] = (6.0, 12.0, 18.0)  # knots for localized chi(D)
@@ -81,6 +86,9 @@ class PSLTParameters:
     chi_open_mix_scale: float = 1.0
     chi_open_rtol: float = 1e-8
     chi_open_atol: float = 1e-10
+    t_coh_mode: str = "input"  # "input", "dephasing_profile", or "dephasing_profile_capped"
+    t_coh_dephasing_csv: Optional[str] = None
+    t_coh_cap: float = 1.0e4
     a0: float = 0.02        # Geometric perturbation strength (dimensionless)
     eps: float = 0.2        # Core regulator length [Length] ~ 1/[Mass] (scaled)
     
@@ -98,6 +106,16 @@ class PSLTParameters:
     def __post_init__(self):
         if self.chi_mode not in {"constant", "localized_interp", "open_system"}:
             raise ValueError(f"Unsupported chi_mode='{self.chi_mode}'.")
+        if self.gamma_mode not in {"surrogate", "action_profile"}:
+            raise ValueError(f"Unsupported gamma_mode='{self.gamma_mode}'.")
+        if self.gamma_superrad_scale <= 0:
+            raise ValueError("gamma_superrad_scale must be > 0.")
+        if self.gamma_eta_mode not in {"scan", "scaled_amp", "scaled_prob", "closed_amp", "closed_prob"}:
+            raise ValueError(f"Unsupported gamma_eta_mode='{self.gamma_eta_mode}'.")
+        if self.t_coh_mode not in {"input", "dephasing_profile", "dephasing_profile_capped"}:
+            raise ValueError(f"Unsupported t_coh_mode='{self.t_coh_mode}'.")
+        if self.t_coh_cap <= 0:
+            raise ValueError("t_coh_cap must be > 0.")
         if self.chi_mode == "localized_interp":
             if len(self.chi_lr_D) < 2 or len(self.chi_lr_D) != len(self.chi_lr_vals):
                 raise ValueError("chi_lr_D and chi_lr_vals must have equal length >=2 for localized_interp.")
@@ -236,6 +254,12 @@ class PSLTKinetics:
         self._chi_mode_active: str = "constant"
         self._chi_open_profile: Optional[Dict[str, np.ndarray]] = None
         self._chi_open_cache: Dict[float, float] = {}
+        self._gamma_mode_active: str = "surrogate"
+        self._gamma_superrad_profile: Optional[Dict[str, np.ndarray]] = None
+        self._gamma_eta_profile: Optional[Dict[str, np.ndarray]] = None
+        self._gamma_eta_mode_active: str = "scan"
+        self._tcoh_mode_active: str = "input"
+        self._tcoh_profile: Optional[Dict[str, np.ndarray]] = None
         self._b_mode_active: str = "yukawa"
         self._b_overlap_profile: Optional[Dict[str, np.ndarray]] = None
         
@@ -254,6 +278,7 @@ class PSLTKinetics:
         self._init_b_profiles()
         self._init_g_profiles()
         self._init_chi_profiles()
+        self._init_gamma_profiles()
 
     def _guess_d_from_filename(self, path: Path) -> Optional[float]:
         m = re.search(r"_D([0-9]+(?:\.[0-9]+)?)", path.stem)
@@ -746,6 +771,229 @@ class PSLTKinetics:
     def active_chi_mode(self) -> str:
         return self._chi_mode_active
 
+    def _load_superrad_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        entries: Dict[float, Tuple[float, float]] = {}
+        for row in rows:
+            if row.get("D", "") in {"", None}:
+                continue
+            level = row.get("level", "").strip().lower()
+            if level and level != "fine":
+                continue
+            a1 = row.get("A1_profile", "")
+            a2 = row.get("A2_profile", "")
+            if a1 in {"", None} or a2 in {"", None}:
+                continue
+            dval = float(row["D"])
+            entries[dval] = (max(float(a1), 1e-30), max(float(a2), 1e-30))
+
+        if len(entries) < 2:
+            return None
+
+        d_sorted = np.array(sorted(entries.keys()), dtype=float)
+        vals = np.array([entries[d] for d in d_sorted], dtype=float)
+        return {
+            "D": d_sorted,
+            "A1": np.maximum(vals[:, 0], 1e-30),
+            "A2": np.maximum(vals[:, 1], 1e-30),
+        }
+
+    def _auto_find_superrad_csv(self) -> Optional[Path]:
+        base = self.root_dir / "output" / "superrad_fp_1d"
+        if not base.exists():
+            return None
+        canonical = base / "superrad_prefactor_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv"
+        if canonical.exists():
+            return canonical
+        cands = sorted(base.glob("superrad_prefactor_D*.csv"))
+        if not cands:
+            return None
+        return cands[-1]
+
+    def _load_eta_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        entries: Dict[float, Tuple[float, float]] = {}
+        for row in rows:
+            if row.get("D", "") in {"", None}:
+                continue
+            level = row.get("level", "").strip().lower()
+            if level and level != "fine":
+                continue
+            amp = row.get("eta_amp", "")
+            prob = row.get("eta_prob", "")
+            if amp in {"", None} or prob in {"", None}:
+                continue
+            dval = float(row["D"])
+            entries[dval] = (max(float(amp), 1e-30), max(float(prob), 1e-30))
+
+        if len(entries) < 2:
+            return None
+
+        d_sorted = np.array(sorted(entries.keys()), dtype=float)
+        vals = np.array([entries[d] for d in d_sorted], dtype=float)
+        return {
+            "D": d_sorted,
+            "eta_amp": np.maximum(vals[:, 0], 1e-30),
+            "eta_prob": np.maximum(vals[:, 1], 1e-30),
+        }
+
+    def _auto_find_eta_csv(self) -> Optional[Path]:
+        base = self.root_dir / "output" / "eta_fp_1d"
+        if not base.exists():
+            return None
+        canonical = base / "eta_prefactor_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv"
+        if canonical.exists():
+            return canonical
+        cands = sorted(base.glob("eta_prefactor_D*.csv"))
+        if not cands:
+            return None
+        return cands[-1]
+
+    def _load_tcoh_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        entries: Dict[float, float] = {}
+        for row in rows:
+            if row.get("D", "") in {"", None}:
+                continue
+            level = row.get("level", "").strip().lower()
+            if level and level != "fine":
+                continue
+            tval = row.get("t_coh_deph", "")
+            if tval in {"", None}:
+                continue
+            dval = float(row["D"])
+            entries[dval] = max(float(tval), 1e-30)
+
+        if len(entries) < 2:
+            return None
+
+        d_sorted = np.array(sorted(entries.keys()), dtype=float)
+        vals = np.array([entries[d] for d in d_sorted], dtype=float)
+        return {"D": d_sorted, "t_coh": np.maximum(vals, 1e-30)}
+
+    def _auto_find_tcoh_csv(self) -> Optional[Path]:
+        base = self.root_dir / "output" / "tcoh_fp_1d"
+        if not base.exists():
+            return None
+        canonical = base / "tcoh_dephasing_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv"
+        if canonical.exists():
+            return canonical
+        cands = sorted(base.glob("tcoh_dephasing_D*.csv"))
+        if not cands:
+            return None
+        return cands[-1]
+
+    def _init_gamma_profiles(self) -> None:
+        self._gamma_mode_active = "surrogate"
+        self._gamma_superrad_profile = None
+        self._gamma_eta_profile = None
+        self._gamma_eta_mode_active = "scan"
+        self._tcoh_mode_active = "input"
+        self._tcoh_profile = None
+
+        mode = self.params.gamma_mode
+        if mode == "action_profile":
+            sup_path = Path(self.params.gamma_superrad_csv) if self.params.gamma_superrad_csv else self._auto_find_superrad_csv()
+            eta_path = Path(self.params.gamma_eta_csv) if self.params.gamma_eta_csv else self._auto_find_eta_csv()
+            sup_prof = self._load_superrad_profile(sup_path) if sup_path is not None else None
+            eta_prof = self._load_eta_profile(eta_path) if eta_path is not None else None
+
+            if sup_prof is None:
+                if sup_path is None:
+                    print("Warning: gamma_mode=action_profile requested but no superrad profile CSV found. Falling back to surrogate.")
+                else:
+                    print(f"Warning: failed to parse superrad profile at {sup_path}. Falling back to surrogate.")
+            elif eta_prof is None and self.params.gamma_eta_mode != "scan":
+                if eta_path is None:
+                    print("Warning: gamma_eta_mode requires eta profile but no eta CSV found. Falling back to gamma_eta_mode=scan.")
+                else:
+                    print(f"Warning: failed to parse eta profile at {eta_path}. Falling back to gamma_eta_mode=scan.")
+                self._gamma_superrad_profile = sup_prof
+                self._gamma_mode_active = "action_profile"
+                self._gamma_eta_mode_active = "scan"
+                self._gamma_eta_profile = None
+            elif sup_prof is not None:
+                self._gamma_superrad_profile = sup_prof
+                self._gamma_mode_active = "action_profile"
+                self._gamma_eta_mode_active = self.params.gamma_eta_mode
+                self._gamma_eta_profile = eta_prof
+
+        if self.params.t_coh_mode != "input":
+            tcoh_path = Path(self.params.t_coh_dephasing_csv) if self.params.t_coh_dephasing_csv else self._auto_find_tcoh_csv()
+            tcoh_prof = self._load_tcoh_profile(tcoh_path) if tcoh_path is not None else None
+            if tcoh_prof is None:
+                if tcoh_path is None:
+                    print("Warning: t_coh_mode requested but no dephasing profile CSV found. Falling back to input t_coh.")
+                else:
+                    print(f"Warning: failed to parse t_coh profile at {tcoh_path}. Falling back to input t_coh.")
+            else:
+                self._tcoh_mode_active = self.params.t_coh_mode
+                self._tcoh_profile = tcoh_prof
+
+    def active_gamma_mode(self) -> str:
+        return self._gamma_mode_active
+
+    def active_gamma_eta_mode(self) -> str:
+        return self._gamma_eta_mode_active
+
+    def active_t_coh_mode(self) -> str:
+        return self._tcoh_mode_active
+
+    def _gamma_action_A12(self, D: float) -> Tuple[float, float]:
+        if self._gamma_mode_active != "action_profile" or self._gamma_superrad_profile is None:
+            return float(self.params.A1), float(self.params.A2)
+
+        prof = self._gamma_superrad_profile
+        d_knots = prof["D"]
+        a1 = float(np.interp(D, d_knots, prof["A1"]))
+        a2 = float(np.interp(D, d_knots, prof["A2"]))
+        scale = float(self.params.gamma_superrad_scale)
+        return max(a1 * scale, 1e-30), max(a2 * scale, 1e-30)
+
+    def eta_effective(self, D: float, eta: float) -> float:
+        mode = self._gamma_eta_mode_active
+        if mode == "scan" or self._gamma_eta_profile is None:
+            return float(max(eta, 0.0))
+
+        prof = self._gamma_eta_profile
+        d_knots = prof["D"]
+        eta_amp = float(np.interp(D, d_knots, prof["eta_amp"]))
+        eta_prob = float(np.interp(D, d_knots, prof["eta_prob"]))
+
+        if mode == "scaled_amp":
+            return float(max(eta * eta_amp, 0.0))
+        if mode == "scaled_prob":
+            return float(max(eta * eta_prob, 0.0))
+        if mode == "closed_amp":
+            return float(max(eta_amp, 0.0))
+        if mode == "closed_prob":
+            return float(max(eta_prob, 0.0))
+        return float(max(eta, 0.0))
+
+    def t_coh_effective(self, D: float, t_coh: float) -> float:
+        if self._tcoh_mode_active == "input" or self._tcoh_profile is None:
+            return float(max(t_coh, 1e-30))
+        d_knots = self._tcoh_profile["D"]
+        t_prof = float(np.interp(D, d_knots, self._tcoh_profile["t_coh"]))
+        if self._tcoh_mode_active == "dephasing_profile_capped":
+            t_prof = min(t_prof, float(self.params.t_coh_cap))
+        return float(max(t_prof, 1e-30))
+
     def _interp_g123(self, D: float, profile: Dict[str, np.ndarray]) -> np.ndarray:
         d_knots = profile["D"]
         g_knots = profile["g123"]
@@ -902,12 +1150,14 @@ class PSLTKinetics:
         gamma = self.calculate_gamma_N(N, D, eta)
         g_n = self.g_N_effective(N, D)
         b_n = self.B_N(N, D)
-        return float(b_n * g_n * (1.0 - np.exp(-gamma * t_coh)))
+        t_eff = self.t_coh_effective(D, t_coh)
+        return float(b_n * g_n * (1.0 - np.exp(-gamma * t_eff)))
 
     def layer_kinetic_weight(self, N: int, D: float, eta: float, t_coh: float) -> float:
         gamma = self.calculate_gamma_N(N, D, eta)
         g_n = self.g_N_effective(N, D)
-        return float(g_n * (1.0 - np.exp(-gamma * t_coh)))
+        t_eff = self.t_coh_effective(D, t_coh)
+        return float(g_n * (1.0 - np.exp(-gamma * t_eff)))
 
     def layer_kinetic_probability(self, N: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:
         if N <= 0 or N > N_max:
@@ -1109,10 +1359,11 @@ class PSLTKinetics:
         if D <= 0:
             return 0.0
 
+        eta_eff = self.eta_effective(D, eta)
         key = (int(N), float(round(D, 8)))
         pref = self._gamma_prefactor_cache.get(key, None)
         if pref is not None:
-            return max(float(eta * pref), 0.0)
+            return max(float(eta_eff * pref), 0.0)
 
         mu = self.params.M / D  # [Mass]
         OmegaH = self.params.Omega_H * self.params.M  # [Mass]
@@ -1126,14 +1377,13 @@ class PSLTKinetics:
                 return 0.0
             return self.params.M * A * (alpha ** (4 * l + 4)) * delta_tilde  # [Mass]
 
-        g1 = gamma_sr(1, 1, self.params.A1)
-        g2 = gamma_sr(2, 2, self.params.A2)
+        A1_eff, A2_eff = self._gamma_action_A12(D)
+        g1 = gamma_sr(1, 1, A1_eff)
+        g2 = gamma_sr(2, 2, A2_eff)
 
         # WKB tunneling suppression (dimensionless)
         w_val = self.omega_N(mu, N, D)
         S = self.action_S(mu, D, w_val)
-        r_N = eta * np.exp(-2.0 * S)
-
         # Mixing term (shares units with g1,g2)
         chi_eff = self.chi_effective(D)
         eps_mix = chi_eff * math.sqrt(g1 * g2) if (g1 > 0 and g2 > 0) else 0.0
@@ -1145,7 +1395,7 @@ class PSLTKinetics:
 
         pref = float(np.exp(-2.0 * S) * lam_plus)
         self._gamma_prefactor_cache[key] = pref
-        Gamma = eta * pref
+        Gamma = eta_eff * pref
         return max(float(Gamma), 0.0)
 
     def get_probabilities(self, D: float, eta: float, t_coh: float, N_max: int=10) -> Tuple[np.ndarray, np.ndarray, dict]:

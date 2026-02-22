@@ -58,6 +58,7 @@ def make_kinetics(case: Case) -> PSLTKinetics:
         chi_lr_vals=(4.01827e-4, 2.21414e-4, 2.13187e-4),
         A1=1.0,
         A2=1.0,
+        gamma_mode="action_profile",
         b_mode="overlap_2d",
         b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=0.30,

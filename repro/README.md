@@ -75,3 +75,8 @@ Additional surrogate-transfer audit artifact:
 Additional core-parameter robustness artifacts:
 - `output/robustness/core_param_robustness_table.csv` + `_cases.csv`
   (from `code/scan_core_param_robustness.py`)
+
+Additional full-chain kinetic consistency artifacts:
+- `output/kinetic_action_chain/action_chain_consistency_summary.csv`
+- `output/kinetic_action_chain/action_chain_consistency.png`
+  (from `code/scan_action_chain_consistency.py`)

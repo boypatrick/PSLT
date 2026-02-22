@@ -1,4 +1,4 @@
 scenario,g_mode,chi_mode,f_R3_gt_0p90,delta_f_R3_gt_0p90_vs_baseline,f_hmumu_chi2_le_4,delta_f_hmumu_chi2_le_4_vs_baseline,f_winner_gt_3,delta_f_winner_gt_3_vs_baseline,best_chi2,mean_tail_prob,chi_ratio_mean,chi_ratio_min,chi_ratio_max
-baseline_cardy_localized,cardy,localized_interp,0.8,0.0,0.0941666666666666,0.0,0.0,0.0,3.045043359054686e-07,0.087283750282772,1.0,1.0,1.0
-gn_fp_2d_localized,fp_2d,localized_interp,0.7833333333333333,-0.01666666666666672,0.0941666666666666,0.0,0.0,0.0,2.6875549783055456e-07,0.0904921613581711,1.0,1.0,1.0
-chi_open_system_base,cardy,open_system,0.8,0.0,0.0941666666666666,0.0,0.0,0.0,3.045043359054686e-07,,0.123681826301649,0.0973677894330699,0.1596334050009036
+baseline_fp2d_full_localized,fp_2d_full,localized_interp,0.8,0.0,0.0908333333333333,0.0,0.0,0.0,2.026057412855439e-05,0.0864343071997203,1.0,1.0,1.0
+legacy_cardy_localized,cardy,localized_interp,0.8,0.0,0.0941666666666666,0.003333333333333313,0.0,0.0,3.045043359054686e-07,0.087283750282772,1.0,1.0,1.0
+chi_open_system_base,fp_2d_full,open_system,0.8,0.0,0.0908333333333333,0.0,0.0,0.0,2.026057412855439e-05,,0.123681826301649,0.0973677894330699,0.1596334050009036

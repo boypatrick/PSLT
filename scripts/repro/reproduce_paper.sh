@@ -183,8 +183,6 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/scan_chi_profile_robustness.py"
   run_step "03b" "scan_surrogate_vs_action_points" \
     "$PYTHON_BIN code/scan_surrogate_vs_action_points.py"
-  run_step "03c" "scan_core_param_robustness" \
-    "$PYTHON_BIN code/scan_core_param_robustness.py"
   run_step "04" "plot_chi_wavefunction_contours" \
     "$PYTHON_BIN code/plot_chi_wavefunction_contours.py"
   run_step "05" "plot_chi_scale_stress_test" \
@@ -223,6 +221,8 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/scan_gn_baseline_replacement.py"
   run_step "19d" "plot_gn_cardy_vs_phase_space" \
     "$PYTHON_BIN code/plot_gn_cardy_vs_phase_space.py"
+  run_step "19e" "scan_core_param_robustness" \
+    "$PYTHON_BIN code/scan_core_param_robustness.py"
   run_step "20" "lindblad_chi_minimal" \
     "$PYTHON_BIN code/lindblad_chi_minimal.py"
   run_step "21" "extract_chi_open_knots" \

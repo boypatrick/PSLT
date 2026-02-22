@@ -3,7 +3,7 @@
 N_max convergence scan for g_N migration tests.
 
 This script evaluates map-level metrics at multiple N_max values for:
-  - baseline_cardy (g_mode=cardy)
+  - baseline_fp_2d_full (g_mode=fp_2d_full)
   - first_principles_fp_2d (g_mode=fp_2d)
 
 Outputs:
@@ -155,7 +155,7 @@ def main() -> None:
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
 
     cases = [
-        Case(name="baseline_cardy", g_mode="cardy"),
+        Case(name="baseline_fp_2d_full", g_mode="fp_2d_full"),
         Case(name="first_principles_fp_2d", g_mode="fp_2d"),
     ]
 

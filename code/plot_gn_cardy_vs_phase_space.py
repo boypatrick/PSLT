@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Plot low-N comparison: g_N(Cardy) vs g_N(phase-space fp_2d).
+Plot low-N comparison: g_N(legacy Cardy) vs g_N(phase-space fp_2d).
 
 Inputs:
   - output/gn_fp_impact/gn_profile_values.csv
@@ -50,7 +50,7 @@ def _nearest_row(df: pd.DataFrame, case: str, d_target: float) -> pd.Series:
 
 def build_compare_table(df: pd.DataFrame, d_points: list[float], n_max_plot: int = 6) -> pd.DataFrame:
     rows = []
-    cardy_case = "baseline_cardy"
+    cardy_case = "legacy_cardy"
     fp_case = "first_principles_fp_2d"
     for d in d_points:
         cardy = _nearest_row(df, cardy_case, d)
@@ -120,7 +120,7 @@ def make_plot(tab: pd.DataFrame, out_png: Path) -> None:
     axes[0].set_ylabel(r"normalized $g_N/g_3$")
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="upper center", ncol=2, frameon=False, bbox_to_anchor=(0.5, 1.03))
-    fig.suptitle("Low-N comparison: Cardy baseline vs 2D phase-space profile", fontsize=23, y=1.09)
+    fig.suptitle("Low-N comparison: legacy Cardy reference vs 2D phase-space profile", fontsize=23, y=1.09)
     fig.tight_layout(rect=(0.0, 0.0, 1.0, 0.92))
     fig.savefig(out_png, dpi=300, bbox_inches="tight")
     plt.close(fig)

@@ -40,6 +40,12 @@ PAPER_BASELINE = {
     "c_eff": 0.5,
     "nu": 5.0,
     "kappa_g": 0.03,
+    "g_mode": "fp_2d_full",
+    "g_fp_full_window_blend": 0.8,
+    "g_fp_full_tail_beta": 1.1,
+    "g_fp_full_tail_shell_power": 0.0,
+    "g_fp_full_tail_clip_min": 1e-3,
+    "g_fp_full_tail_clip_max": 0.95,
     "chi_legacy": 0.2,
     "chi_mode": "localized_interp",
     "A1": 1.0,
@@ -89,6 +95,12 @@ def make_baseline_kinetics() -> PSLTKinetics:
         c_eff=PAPER_BASELINE["c_eff"],
         nu=PAPER_BASELINE["nu"],
         kappa_g=PAPER_BASELINE["kappa_g"],
+        g_mode=PAPER_BASELINE["g_mode"],
+        g_fp_full_window_blend=PAPER_BASELINE["g_fp_full_window_blend"],
+        g_fp_full_tail_beta=PAPER_BASELINE["g_fp_full_tail_beta"],
+        g_fp_full_tail_shell_power=PAPER_BASELINE["g_fp_full_tail_shell_power"],
+        g_fp_full_tail_clip_min=PAPER_BASELINE["g_fp_full_tail_clip_min"],
+        g_fp_full_tail_clip_max=PAPER_BASELINE["g_fp_full_tail_clip_max"],
         chi=PAPER_BASELINE["chi_legacy"],
         chi_mode=PAPER_BASELINE["chi_mode"],
         chi_lr_D=tuple(float(x) for x in chi_d),
@@ -100,7 +112,9 @@ def make_baseline_kinetics() -> PSLTKinetics:
         b_n_tail_mode="saturate",
     )
     print(
-        "Using mixing profile:",
+        "Using baseline profile:",
+        f"g_mode={params.g_mode},",
+        "with mixing profile",
         f"mode={params.chi_mode},",
         f"knots={list(params.chi_lr_D)},",
         f"chi={list(params.chi_lr_vals)}"
@@ -248,7 +262,7 @@ def plot_hmumu_check():
     def get_W2(D, eta):
         N = 2
         Gam = kinetics.calculate_gamma_N(N, D, eta)
-        g = kinetics.g_N_cardy(N)
+        g = kinetics.g_N_effective(N, D)
         B = kinetics.B_N(N)
         return B * g * (1.0 - np.exp(-Gam * t_coh))
 

@@ -62,13 +62,13 @@ The old manual script-by-script sequence is still valid, but the reproducible en
 
 ## Key Results
 - **Three-Generation Stability:** In the current D-interpolated localized-channel scan, the theory gives Generation Ratio $\mathcal{R}_3>90\%$ over **80.0%** of the sampled $(D,\eta)$ grid, while $\mathcal{R}_3>95\%$ is not reached in this setup.
-- **H→μμ Proxy Compatibility:** The proxy-accepted region ($\chi^2<4$) occupies about **9.4%** of the sampled grid, with best grid point near $(D,\eta)\approx(9.97,1.36)$ and $\chi^2\sim 3.0\times10^{-7}$.
-- **Yukawa-Anchored Visibility + High-$N$ Stability:** Visibility is anchored to SM Yukawa couplings via a Yukawa-proportional law with sublinear compression ($B_{1,2,3}\propto Y_{1,2,3}^{p_B}$), while a $q^{(N-1)^2}$-type regulator in $g_N$ prevents high-$N$ runaway.
+- **H→μμ Proxy Compatibility:** The proxy-accepted region ($\chi^2<4$) occupies about **9.1%** of the sampled grid, with best grid point near $(D,\eta)\approx(9.97,1.36)$ and $\chi^2\sim 2.0\times10^{-5}$.
+- **Yukawa-Anchored Visibility + High-$N$ Stability:** Visibility is anchored to SM Yukawa couplings via a Yukawa-proportional law with sublinear compression ($B_{1,2,3}\propto Y_{1,2,3}^{p_B}$), while baseline `g_mode=fp_2d_full` enforces bounded low-$N$ microcanonical windowing and controlled high-$N$ tail prescription.
 
 ## First-Principles Migration Status
-- **g_N migration comparator:** `code/scan_gn_profile_impact.py` compares `g_mode=cardy/fp_1d/fp_2d`; current fp\_2d run gives a small absolute drift in $f(\mathcal{R}_3>0.90)$ (`-0.0167`) and keeps `f(N_win>3)=0`.
+- **g_N migration comparator:** `code/scan_gn_profile_impact.py` compares `g_mode=fp_2d_full/cardy/fp_1d/fp_2d`; relative to baseline `fp_2d_full`, the largest drift is the `fp_2d` case with $\Delta f(\mathcal{R}_3>0.90)=-0.0167$, while `f(N_win>3)=0` remains controlled.
 - **g_N low-N alignment + N_max convergence:** `code/plot_gn_cardy_vs_phase_space.py` and `code/scan_gn_nmax_convergence.py` export low-$N$ Cardy-vs-phase-space overlays and $N_{\max}=20/30/40$ stability tables.
-- **g_N baseline-replacement stress test:** `code/scan_gn_baseline_replacement.py` compares baseline `cardy` against upgraded `fp_2d_full` (bounded microcanonical low-$N$ window + energy-gap tail prescription) and exports:
+- **g_N baseline cross-check:** `code/scan_gn_baseline_replacement.py` now uses baseline `fp_2d_full` and compares against legacy `cardy` reference, exporting:
   - `output/gn_fp_impact/gn_baseline_replacement.csv`
   - `output/gn_fp_impact/gn_baseline_replacement_nmax.csv`
 - **Open-system chi module:** `code/scan_chi_open_system_sensitivity.py` runs `chi_mode=open_system` with profiled `gamma_phi(D), gamma_mix(D)` and reports a stable ratio band versus localized baseline.
@@ -78,6 +78,6 @@ The old manual script-by-script sequence is still valid, but the reproducible en
 - **Core-parameter robustness table (B2):** `code/scan_core_param_robustness.py` exports local one-at-a-time windows for `c_eff`, `nu`, `p_B` and their map fractions:
   - `output/robustness/core_param_robustness_table.csv`
   - `output/robustness/core_param_robustness_cases.csv`
-- **Cross-module summary:** `code/scan_first_principles_migration_summary.py` aggregates baseline vs fp\_2d vs open-system into:
+- **Cross-module summary:** `code/scan_first_principles_migration_summary.py` aggregates baseline `fp_2d_full+localized` vs legacy `cardy+localized` vs `fp_2d_full+open_system` into:
   - `output/first_principles_migration/first_principles_migration_summary.csv`
   - `output/first_principles_migration/first_principles_migration_summary.png`

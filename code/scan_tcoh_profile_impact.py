@@ -45,6 +45,12 @@ def make_kinetics() -> PSLTKinetics:
         c_eff=0.5,
         nu=5.0,
         kappa_g=0.03,
+        g_mode="fp_2d_full",
+        g_fp_full_window_blend=0.8,
+        g_fp_full_tail_beta=1.1,
+        g_fp_full_tail_shell_power=0.0,
+        g_fp_full_tail_clip_min=1e-3,
+        g_fp_full_tail_clip_max=0.95,
         chi=0.2,
         chi_mode="localized_interp",
         chi_lr_D=(6.0, 12.0, 18.0),
@@ -95,7 +101,7 @@ def evaluate_case(case: Case, kin: PSLTKinetics, tcoh_fn: Callable[[float], floa
     def W2(D: float, eta: float) -> float:
         N = 2
         Gam = kin.calculate_gamma_N(N, D, eta)
-        g = kin.g_N_cardy(N)
+        g = kin.g_N_effective(N, D)
         B = kin.B_N(N)
         return float(B * g * (1.0 - np.exp(-Gam * t_coh_of_D(D))))
 
@@ -153,4 +159,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

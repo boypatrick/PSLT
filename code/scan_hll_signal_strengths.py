@@ -57,6 +57,12 @@ PAPER_BASELINE = {
     "c_eff": 0.5,
     "nu": 5.0,
     "kappa_g": 0.03,
+    "g_mode": "fp_2d_full",
+    "g_fp_full_window_blend": 0.8,
+    "g_fp_full_tail_beta": 1.1,
+    "g_fp_full_tail_shell_power": 0.0,
+    "g_fp_full_tail_clip_min": 1e-3,
+    "g_fp_full_tail_clip_max": 0.95,
     "chi_legacy": 0.2,
     "chi_mode": "localized_interp",
     "A1": 1.0,
@@ -160,6 +166,12 @@ def make_baseline_kinetics() -> PSLTKinetics:
         c_eff=PAPER_BASELINE["c_eff"],
         nu=PAPER_BASELINE["nu"],
         kappa_g=PAPER_BASELINE["kappa_g"],
+        g_mode=PAPER_BASELINE["g_mode"],
+        g_fp_full_window_blend=PAPER_BASELINE["g_fp_full_window_blend"],
+        g_fp_full_tail_beta=PAPER_BASELINE["g_fp_full_tail_beta"],
+        g_fp_full_tail_shell_power=PAPER_BASELINE["g_fp_full_tail_shell_power"],
+        g_fp_full_tail_clip_min=PAPER_BASELINE["g_fp_full_tail_clip_min"],
+        g_fp_full_tail_clip_max=PAPER_BASELINE["g_fp_full_tail_clip_max"],
         chi=PAPER_BASELINE["chi_legacy"],
         chi_mode=PAPER_BASELINE["chi_mode"],
         chi_lr_D=tuple(float(x) for x in chi_d),
@@ -409,4 +421,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

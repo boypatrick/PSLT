@@ -32,15 +32,15 @@
 \date{February 2, 2026}
 
 \begin{abstract}
-We present a comprehensive, computable EFT-level ``closed chain'' for the Projection Spectral Layer Theory (PSLT) that naturally generates a self-consistent three-generation structure of matter. 
+We present a comprehensive, computable EFT-level ``closed chain'' for the Projection Spectral Layer Theory (PSLT) that naturally generates a self-consistent three-generation structure of matter.
 The framework is built on a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action with non-minimal curvature coupling, where the background geometry induces a layer-indexed spectral scale $\omega_N$.
 The theoretical closure is achieved by unifying three key modules:
-(i) a \textbf{Micro-degeneracy module} ($g_N$) modeled by a Cardy-controlled envelope with an explicit high-$N$ regulator ($q^{(N-1)^2}$-type suppression) that prevents entropic runaway;
+(i) a \textbf{Micro-degeneracy module} ($g_N$) implemented in baseline \texttt{fp\_2d\_full} mode (bounded microcanonical low-$N$ window + energy-gap tail prescription, Cardy-normalized at $N=3$);
 (ii) a \textbf{Rank-2 Computable Kinetic module} ($\Gamma_N$) defined as the largest positive eigenvalue of a $2\times2$ growth matrix with explicit WKB tunneling suppression; and
 (iii) a \textbf{Visibility module} ($B_N$) anchored to Standard Model lepton Yukawa couplings via a sublinear compression exponent $0<p_B<1$, with high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator.
 The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates a stable ``winner'' phase diagram with clear dominance of layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
 We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over $80.0\%$ of the sampled $(D,\eta)$ grid), and (2) a proxy compatibility test with the ATLAS Run-3 $H\to\mu\mu$ signal strength ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
-The proxy mapping yields a restricted acceptance band (about $9.4\%$ of the scanned grid for $\chi^2<4$), providing a sharper falsifiable constraint on $(D,\eta)$.
+The proxy mapping yields a restricted acceptance band (about $9.1\%$ of the scanned grid for $\chi^2<4$), providing a sharper falsifiable constraint on $(D,\eta)$.
 \end{abstract}
 
 \maketitle
@@ -60,7 +60,7 @@ In this work, we consolidate the complete theoretical framework of PSLT into a s
 
 Our primary contributions are:
 \begin{enumerate}
-    \item \textbf{Theoretical Motivation}: We present three convergent arguments for the micro-degeneracy $g_N$ (Route A: Mock-modular, Route B: ER=EPR, Route C: QG Template) as motivations for a Cardy-controlled envelope, and make the closure numerically stable by adding an explicit high-$N$ regulator.
+    \item \textbf{Theoretical Motivation}: We present three convergent arguments for the micro-degeneracy $g_N$ (Route A: Mock-modular, Route B: ER=EPR, Route C: QG Template), and implement a scan-ready baseline through the bounded \texttt{fp\_2d\_full} profile with controlled high-$N$ tail prescription.
     \item \textbf{Rank-2 Computable Kinetics}: We replace heuristic growth rates with a rigorous eigenvalue problem for the formation matrix $\mathbf{M}_N$, incorporating numerical WKB tunneling suppression.
     \item \textbf{Yukawa-Anchored Visibility}: We anchor $B_N$ to Standard Model lepton Yukawa couplings with a sublinear compression exponent, and use high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator.
     \item \textbf{Verification}: We demonstrate stable three-generation dominance at $\mathcal{R}_3>90\%$ and a constrained proxy-compatible band for LHC $H\to\mu\mu$.
@@ -143,7 +143,7 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \midrule
 $\Omega(\rho,z;D)$ two-center geometry & Green-function solution of projected Poisson constraint (two-source model) & Yes & Derive the projected source term from a specific higher-dimensional parent solution \\
 $V_{\rm eff}$, low modes, WKB action & Action-derived + numerically converged & Yes & Extend same solver chain to full $(D,\eta,N)$ map \\
-$g_N$ Cardy envelope + $q^{(N-1)^2}$ regulator & EFT baseline + fp\_2d impact-tested migration comparator & Yes & Promote phase-space counting profile as primary replacement if map-level stability is retained \\
+$g_N$ phase-space full-tail mode (\texttt{fp\_2d\_full}) with Cardy normalization anchor & Baseline mode + legacy Cardy reference retained for comparator audits & Yes & Replace Cardy anchor normalization with fully action-derived normalization if map-level stability is retained \\
 $\chi_N^{(LR)}(D)$ localized channel & Action-derived extraction (Appendix~\ref{app:chi_loc}) & Yes & Full localized projection over full scan grid \\
 $\Gamma_{N,\ell}$ channel normalization ($A_\ell$) & Kerr-inspired surrogate ($A_1=A_2=1$) & Yes & Benchmark action-derived profile $\tilde A_\ell(D)$ (Appendix~\ref{app:superrad_candidate}) \\
 Open-system $\chi_{\rm eff}$ (Lindblad) & Scan-ready diagnostic module with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}) & Diagnostic only (not baseline) & Derive microscopic EYMH bath $(L_k,\gamma_k)$ and then promote to baseline if robust \\
@@ -561,9 +561,9 @@ Based on stability analysis, we use the baseline parameters summarized in Table~
 \toprule
 \textbf{Module} & \textbf{Parameter} & \textbf{Value} & \textbf{Physical Role} \\
 \midrule
-Micro-degeneracy $g_N$ & $c_{\rm eff}$ & 0.5 & Cardy entropy coefficient \\
-& $\nu$ & 5.0 & Polynomial suppression \\
-& $\kappa_g$ & 0.03 & High-$N$ regulator \\
+Micro-degeneracy $g_N$ & \texttt{g\_mode} & \texttt{fp\_2d\_full} & Baseline mode: bounded low-$N$ window + energy-gap tail profile \\
+& $(\alpha,\beta,s)$ & $(0.8,1.1,0.0)$ & low-$N$ window blend, tail damping, shell-power control \\
+& $c_{\rm eff},\nu,\kappa_g$ & $(0.5,5.0,0.03)$ & Cardy anchor parameters (legacy reference and normalization scale) \\
 \midrule
 Visibility $B_N$ & $p_B$ & 0.30 & Sublinear compression \\
 \midrule
@@ -616,7 +616,7 @@ $(11.0,1.4)$ & $1/1$ & $2.51\times10^{-4}$ & $3.06\times10^{-4}$ & $0$ & $0$ & y
 \end{tabular}
 \end{table}
 
-To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map, same $\chi_{LR}(D)$ interpolation, and all other settings fixed). Results are summarized in Table~\ref{tab:core_param_robustness} from \texttt{paper/core\_param\_robustness.csv}. Across this local window, $f(\mathcal{R}_3>0.90)$ shifts by at most $0.10$ (from the $\nu$ sweep), while $f(\chi_{\mu\mu}^2<4)$ remains unchanged at $0.0942$ and $f(N_{\rm win}>3)=0$ in all tested cases.
+To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map, same $\chi_{LR}(D)$ interpolation, and all other settings fixed). Results are summarized in Table~\ref{tab:core_param_robustness} from \texttt{paper/core\_param\_robustness.csv}. Across this local window, $f(\mathcal{R}_3>0.90)$ shifts by at most $0.1333$ (from the $p_B$ sweep), while $f(\chi_{\mu\mu}^2<4)$ remains unchanged at $0.0908$ and $f(N_{\rm win}>3)=0$ in all tested cases.
 
 \begin{table}[t]
 \centering
@@ -627,9 +627,9 @@ To propagate finite-$N$ surrogate uncertainty into map-level systematics, we als
 \hline\hline
 Parameter & Window (low/base/high) & $f(\mathcal{R}_3>0.90)$ low/base/high & $f(\chi^2_{\mu\mu}<4)$ low/base/high & Max abs drift \\
 \hline
-$c_{\rm eff}$ & $0.45/0.50/0.55$ & $0.8333/0.8000/0.7833$ & $0.0942/0.0942/0.0942$ & $\Delta f_{\mathcal{R}_3}=0.0333,\ \Delta f_{\chi^2}=0$ \\
-$\nu$ & $4.80/5.00/5.20$ & $0.7000/0.8000/0.8667$ & $0.0942/0.0942/0.0942$ & $\Delta f_{\mathcal{R}_3}=0.1000,\ \Delta f_{\chi^2}=0$ \\
-$p_B$ & $0.28/0.30/0.32$ & $0.8333/0.8000/0.7667$ & $0.0942/0.0942/0.0942$ & $\Delta f_{\mathcal{R}_3}=0.0333,\ \Delta f_{\chi^2}=0$ \\
+$c_{\rm eff}$ & $0.45/0.50/0.55$ & $0.8000/0.8000/0.8000$ & $0.0908/0.0908/0.0908$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$\nu$ & $4.80/5.00/5.20$ & $0.8000/0.8000/0.8000$ & $0.0908/0.0908/0.0908$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$p_B$ & $0.28/0.30/0.32$ & $0.9333/0.8000/0.7333$ & $0.0908/0.0908/0.0908$ & $\Delta f_{\mathcal{R}_3}=0.1333,\ \Delta f_{\chi^2}=0$ \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -666,9 +666,9 @@ Figure~\ref{fig:hmumu} shows the \textbf{proxy acceptance region} in two equival
 \end{equation}
 We use this threshold only as an \emph{illustrative acceptance band} for map-level comparison and do not claim a formal 95\% CL exclusion. Because the $(D,\eta)$ scan is a multiple-comparison procedure (look-elsewhere) and no global trials correction is applied, this band is interpreted only as a falsifiable target region. In the present D-interpolated $\chi_N^{(LR)}$ scan, the proxy-accepted fraction is
 \begin{equation}
-f(\chi^2<4)=f\!\left(p_{\rm local}>4.55\times10^{-2}\right)=0.0942,
+f(\chi^2<4)=f\!\left(p_{\rm local}>4.55\times10^{-2}\right)=0.0908,
 \end{equation}
-with best grid point $\chi^2\simeq 3.0\times10^{-7}$ at $(D,\eta)\approx(9.97,1.36)$. All phase-diagram claims are quoted only after satisfying the quantitative convergence criteria in Appendix~\ref{app:Veff}.
+with best grid point $\chi^2\simeq 2.0\times10^{-5}$ at $(D,\eta)\approx(9.97,1.36)$. All phase-diagram claims are quoted only after satisfying the quantitative convergence criteria in Appendix~\ref{app:Veff}.
 
 \begin{figure}[htbp]
     \centering
@@ -702,9 +702,9 @@ We have presented a computable EFT-level demonstrator of the Projection Spectral
 \begin{enumerate}
     \item \textbf{Generations are spectral}: The ``three generation'' structure is not an input but a dynamical output of competing entropy ($g_N$), kinetics ($\Gamma_N$), and visibility ($B_N$).
     \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated at high $N$ [Eq.~\eqref{eq:gN_reg}] and the observable sector is anchored to the SM Yukawa pattern [Eq.~\eqref{eq:BN_yukawa_prop}].
-    \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With D-interpolated $\chi_N^{(LR)}$, the $H\to\mu\mu$ illustrative proxy acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $9.4\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
+    \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With D-interpolated $\chi_N^{(LR)}$, the $H\to\mu\mu$ illustrative proxy acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $9.1\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
 \end{enumerate}
-At the same time, the present implementation keeps three EFT-level surrogates explicit: the Cardy-controlled $g_N$ envelope, the Yukawa-anchored visibility law $B_N$, and the $H\to\mu\mu$ proxy map in Eq.~\eqref{eq:mu_pred}.
+At the same time, the present implementation keeps three EFT-level surrogates explicit: the Cardy-normalized \texttt{fp\_2d\_full} $g_N$ closure, the Yukawa-anchored visibility law $B_N$, and the $H\to\mu\mu$ proxy map in Eq.~\eqref{eq:mu_pred}.
 
 \textbf{Limitations and outlook.}
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:
@@ -712,7 +712,7 @@ The use of two parameter sets is a deliberate design choice: action-derived mixi
 \begin{enumerate}
     \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison uses the proxy $g_{h\mu\mu}^{\rm eff}\propto \sqrt{W_2}$ rather than a full derivation from the EYMH action. Consistently, the current scan still uses the surrogate visibility law in Eq.~\eqref{eq:BN_yukawa_prop}; the action-derived operator program in Section~\ref{sec:yukawa_roadmap} and Eq.~\eqref{eq:yukawa_eff_roadmap} has not yet replaced the global map.
     \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and propagate its D-interpolated profile in the global scan. The remaining gap is a full $(D,\eta,N)$ localized projection.
-    \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). On $D=4,\dots,20$, the diagnostic ratio band is $\chi_{\rm open}/\chi_{LR}\in[0.0979,0.1667]$ with unchanged core map fractions at current resolution; however, the jump operators and rates $(L_k,\gamma_k)$ are still effective ansatz quantities rather than a microscopic EYMH bath derivation, so this block remains outside baseline figures.
+    \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). On $D=4,\dots,20$, the diagnostic ratio band is $\chi_{\rm open}/\chi_{LR}\in[0.0974,0.1596]$ with unchanged core map fractions at current resolution; however, the jump operators and rates $(L_k,\gamma_k)$ are still effective ansatz quantities rather than a microscopic EYMH bath derivation, so this block remains outside baseline figures.
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ is extracted from the action-derived 2D localized solver (Appendix~\ref{app:chi_loc}), while the global $(D,\eta)$ scan still uses a simplified kinetic surrogate for rapid mapping. A full end-to-end scan using one identical operator chain for both extraction and phase mapping is left for future work.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
@@ -1173,7 +1173,7 @@ The script \texttt{extract\_gn\_phase\_space\_2d.py} (in \texttt{code/}) exports
 \begin{equation}
 \max_{\text{non-fine}}\left(\max_N\frac{|\hat g_N-\hat g_N^{\rm(fine)}|}{|\hat g_N^{\rm(fine)}|}\right)=2.35\times10^{-2}.
 \end{equation}
-As in the 1D candidate check, this benchmark is reported as a replacement candidate. To test map-level impact, we connected both candidates to the main scan through \texttt{g\_mode} choices (\texttt{cardy}, \texttt{fp\_1d}, \texttt{fp\_2d}) and the reproducible script \texttt{scan\_gn\_profile\_impact.py}. Results in Table~\ref{tab:gn_profile_impact} show that the main conclusion is retained: $f(\mathcal{R}_3>0.90)$ shifts by at most $0.0167$ (absolute), while high-$N$ runaway remains controlled with $f(N_{\rm win}>3)=0$ in all tested modes.
+As in the 1D candidate check, this benchmark is reported as a replacement candidate. To test map-level impact, we connected both candidates to the main scan through \texttt{g\_mode} choices (\texttt{fp\_2d\_full}, \texttt{cardy}, \texttt{fp\_1d}, \texttt{fp\_2d}) and the reproducible script \texttt{scan\_gn\_profile\_impact.py}. Results in Table~\ref{tab:gn_profile_impact} show that the main conclusion is retained: relative to baseline \texttt{fp\_2d\_full}, the largest absolute shift is $0.0167$ in $f(\mathcal{R}_3>0.90)$ (for \texttt{fp\_2d}), while high-$N$ runaway remains controlled with $f(N_{\rm win}>3)=0$ in all tested modes.
 
 \begin{table}[t]
 \centering
@@ -1194,20 +1194,21 @@ $D$ & $\lambda_1$ & $\lambda_2$ & $\lambda_3$ & $\hat g_1$ & $\hat g_2$ \\
 \begin{figure*}[t]
     \centering
     \includegraphics[width=0.98\textwidth]{gn_cardy_vs_phase_space.png}
-    \caption{Low-$N$ comparison between Cardy baseline and 2D phase-space profile on $D=\{6,12,18\}$, shown as normalized ratios $g_N/g_3$ (log scale). The highlighted band marks $N=1,2,3$. Source files: \texttt{paper/gn\_cardy\_vs\_phase\_space.png}, \texttt{paper/gn\_cardy\_vs\_phase\_space.csv}.}
+    \caption{Low-$N$ comparison between legacy Cardy reference and 2D phase-space profile on $D=\{6,12,18\}$, shown as normalized ratios $g_N/g_3$ (log scale). The highlighted band marks $N=1,2,3$. Source files: \texttt{paper/gn\_cardy\_vs\_phase\_space.png}, \texttt{paper/gn\_cardy\_vs\_phase\_space.csv}.}
     \label{fig:gn_cardy_vs_phase_space}
 \end{figure*}
 
 \begin{table}[t]
 \centering
-\caption{Map-level impact of first-principles $g_N$ profiles on the $60\times60$ scan (diagnostic only; baseline remains Cardy mode). Source CSV: \texttt{paper/gn\_profile\_impact.csv}.}
+\caption{Map-level impact of first-principles $g_N$ profiles on the $60\times60$ scan (baseline is \texttt{fp\_2d\_full}; legacy Cardy retained as comparator). Source CSV: \texttt{paper/gn\_profile\_impact.csv}.}
 \label{tab:gn_profile_impact}
 \small
 \begin{tabular}{lcccc}
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & mean tail prob. \\
 \hline
-baseline Cardy & 0.800 & 0.0942 & 0.000 & 0.0873 \\
+baseline fp\_2d\_full & 0.800 & 0.0908 & 0.000 & 0.0864 \\
+legacy Cardy reference & 0.800 & 0.0942 & 0.000 & 0.0873 \\
 $g_N$ fp\_1d profile & 0.800 & 0.0942 & 0.000 & 0.0894 \\
 $g_N$ fp\_2d profile & 0.783 & 0.0942 & 0.000 & 0.0905 \\
 \hline\hline
@@ -1223,9 +1224,9 @@ $g_N$ fp\_2d profile & 0.783 & 0.0942 & 0.000 & 0.0905 \\
 \hline\hline
 case & $N_{\max}$ & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & mean tail prob. \\
 \hline
-baseline Cardy & 20 & 0.800 & 0.0942 & 0.000 & 0.087284 \\
-baseline Cardy & 30 & 0.800 & 0.0942 & 0.000 & 0.087284 \\
-baseline Cardy & 40 & 0.800 & 0.0942 & 0.000 & 0.087284 \\
+baseline fp\_2d\_full & 20 & 0.800 & 0.0908 & 0.000 & 0.086434 \\
+baseline fp\_2d\_full & 30 & 0.800 & 0.0908 & 0.000 & 0.086434 \\
+baseline fp\_2d\_full & 40 & 0.800 & 0.0908 & 0.000 & 0.086434 \\
 $g_N$ fp\_2d profile & 20 & 0.783 & 0.0942 & 0.000 & 0.090492 \\
 $g_N$ fp\_2d profile & 30 & 0.783 & 0.0942 & 0.000 & 0.090492 \\
 $g_N$ fp\_2d profile & 40 & 0.783 & 0.0942 & 0.000 & 0.090492 \\
@@ -1234,8 +1235,8 @@ $g_N$ fp\_2d profile & 40 & 0.783 & 0.0942 & 0.000 & 0.090492 \\
 \end{table}
 Across $N_{\max}=20,30,40$, both baseline and fp\_2d scenarios are numerically stable at map level: the key fractions $f(\mathcal{R}_3>0.90)$, $f(\chi^2_{\mu\mu}<4)$, and $f(N_{\rm win}>3)$ remain unchanged in this scan.
 
-\subsection{Baseline-Replacement Stress Test: \texorpdfstring{$g\_mode=\mathrm{fp\_2d\_full}$}{g_mode=fp_2d_full}}
-To test a strict replacement scenario (not only low-$N$ shape correction), we added an upgraded full-tail mode \texttt{g\_mode=fp\_2d\_full}. Instead of direct low-$N$ substitution plus geometric continuation, this upgrade uses an explicit bounded microcanonical window for $N\le 3$ and an energy-gap tail prescription for $N>3$:
+\subsection{Baseline Cross-Check Under \texorpdfstring{$g\_mode=\mathrm{fp\_2d\_full}$}{g_mode=fp_2d_full}}
+To implement a strict same-framework upgrade, we set \texttt{g\_mode=fp\_2d\_full} as the baseline. Instead of direct low-$N$ substitution plus geometric continuation, this mode uses an explicit bounded microcanonical window for $N\le 3$ and an energy-gap tail prescription for $N>3$:
 \begin{equation}
 g_N^{\rm(full)}(D)=g_3^{\rm(cardy)}\hat g_N(D),\quad
 \hat g_n=\left(\hat g_n^{\rm(dir)}\right)^{1-\alpha}\left(\hat g_n^{\rm(win)}\right)^{\alpha}\ (n=1,2,3),
@@ -1251,19 +1252,19 @@ and for $N>3$,
 \hat g_N^{\rm(target)}=\left(\frac{\Delta N_{\rm ps}^{(N)}}{\Delta N_{\rm ps}^{(3)}}\right)^{s}
 \exp\!\left[-\beta\frac{\lambda_N-\lambda_3}{\lambda_3-\lambda_2}\right],
 \end{equation}
-followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present stress test, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement} (source CSV: \texttt{paper/gn\_baseline\_replacement.csv}). Relative to baseline Cardy, this upgraded full replacement keeps $f(\mathcal{R}_3>0.90)$ unchanged at $0.800$ ($\Delta=0.000$), with a small shift in $f(\chi^2_{\mu\mu}<4)$ to $0.0908$ and $f(N_{\rm win}>3)=0$ still controlled. Therefore, the map-level main conclusion is retained under this same-framework upgrade.
+followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present baseline run, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement} (source CSV: \texttt{paper/gn\_baseline\_replacement.csv}). Relative to baseline \texttt{fp\_2d\_full}, the legacy Cardy reference keeps $f(\mathcal{R}_3>0.90)$ unchanged at $0.800$ ($\Delta=0.000$), shifts $f(\chi^2_{\mu\mu}<4)$ by only $+0.0033$, and still yields $f(N_{\rm win}>3)=0$. Therefore, the map-level main conclusion is retained under this baseline switch.
 
 \begin{table}[t]
 \centering
-\caption{Map-level baseline-replacement stress test for $g_N$: Cardy baseline versus full 2D phase-space-tail mode (\texttt{fp\_2d\_full}) on the same $60\times60$ grid. Source CSV: \texttt{paper/gn\_baseline\_replacement.csv}.}
+\caption{Map-level baseline cross-check for $g_N$: \texttt{fp\_2d\_full} baseline versus legacy Cardy reference on the same $60\times60$ grid. Source CSV: \texttt{paper/gn\_baseline\_replacement.csv}.}
 \label{tab:gn_baseline_replacement}
 \small
 \begin{tabular}{lcccc}
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & $\Delta f(\mathcal{R}_3>0.90)$ vs baseline \\
 \hline
-baseline Cardy & 0.800 & 0.0942 & 0.000 & 0.000 \\
-$g_N$ fp\_2d full-tail replacement & 0.800 & 0.0908 & 0.000 & 0.000 \\
+baseline fp\_2d\_full & 0.800 & 0.0908 & 0.000 & 0.000 \\
+legacy Cardy reference & 0.800 & 0.0942 & 0.000 & 0.000 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1287,7 +1288,7 @@ with cylindrical weighting $\langle\cdots\rangle_\rho$. The minimal Lindblad evo
 \begin{equation}
 C_{\max}\equiv \max_t |\rho_{LR}(t)|,\qquad P_{\max}\equiv \max_t \rho_{RR}(t),
 \end{equation}
-and a normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. Results for $D=\{6,12,18\}$ are summarized in Table~\ref{tab:chi_open_geom}. Extending the same profile to $D=4,\dots,20$ gives a stable baseline ratio band $\chi_{\rm open}/\chi_{LR}\in[0.0979,0.1667]$ with mean $0.1290$ (source CSV: \texttt{output/chi\_open\_system/chi\_open\_ratio\_band\_D4-5-\dots-20.csv}).
+and a normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. Results for $D=\{6,12,18\}$ are summarized in Table~\ref{tab:chi_open_geom}. Extending the same profile to $D=4,\dots,20$ gives a stable baseline ratio band $\chi_{\rm open}/\chi_{LR}\in[0.0974,0.1596]$ with mean $0.1237$ (source CSV: \texttt{output/chi\_open\_system/chi\_open\_ratio\_band.csv}).
 
 \begin{table}[t]
 \centering
@@ -1326,10 +1327,10 @@ $\phi\times2$, mix$\times0.5$ & 0.032 & 0.068 & 0.046 \\
 \end{tabular}
 \end{table}
 
-Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the core scan summaries remain unchanged on this grid: $f(\mathcal{R}_3>0.90)=0.800$, $f(\mathcal{R}_3>0.95)=0$, $f(\chi^2_{\mu\mu}<4)=0.0942$, and $f(N_{\rm win}>3)=0$. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
+Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the core scan summaries remain unchanged on this grid: $f(\mathcal{R}_3>0.90)=0.800$, $f(\mathcal{R}_3>0.95)=0$, $f(\chi^2_{\mu\mu}<4)=0.0908$, and $f(N_{\rm win}>3)=0$. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
 
 \subsection{Cross-Module Migration Snapshot}
-To compare the two main first-principles migration directions on the same map-level metrics, we aggregate three scenarios: baseline (\texttt{cardy + localized}), $g_N$ profile replacement (\texttt{fp\_2d + localized}), and open-system $\chi$ (\texttt{cardy + open\_system}). The reproducible script is \texttt{scan\_first\_principles\_migration\_summary.py}; outputs are \texttt{paper/first\_principles\_migration\_summary.csv} and Fig.~\ref{fig:first_principles_migration}.
+To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three scenarios: baseline (\texttt{fp\_2d\_full + localized}), legacy reference (\texttt{cardy + localized}), and open-system $\chi$ (\texttt{fp\_2d\_full + open\_system}). The reproducible script is \texttt{scan\_first\_principles\_migration\_summary.py}; outputs are \texttt{paper/first\_principles\_migration\_summary.csv} and Fig.~\ref{fig:first_principles_migration}.
 
 \begin{figure}[t]
     \centering
@@ -1347,9 +1348,9 @@ To compare the two main first-principles migration directions on the same map-le
 \hline\hline
 scenario & $f(\mathcal{R}_3>0.90)$ & $\Delta f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ \\
 \hline
-baseline (\texttt{cardy + localized}) & 0.800 & 0.0000 & 0.0942 & 0.0000 \\
-$g_N$ migration (\texttt{fp\_2d + localized}) & 0.783 & $-0.0167$ & 0.0942 & 0.0000 \\
-$\chi$ migration (\texttt{cardy + open\_system}) & 0.800 & 0.0000 & 0.0942 & 0.0000 \\
+baseline (\texttt{fp\_2d\_full + localized}) & 0.800 & 0.0000 & 0.0908 & 0.0000 \\
+legacy reference (\texttt{cardy + localized}) & 0.800 & 0.0000 & 0.0942 & 0.0000 \\
+$\chi$ migration (\texttt{fp\_2d\_full + open\_system}) & 0.800 & 0.0000 & 0.0908 & 0.0000 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1403,9 +1404,9 @@ To assess map-level impact, we compared three cases on the same $60\times60$ $(D
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
 \hline
-constant $t_{\rm coh}=1$ & 0.800 & 0.000 & 0.094 & $3.05\times10^{-7}$ \\
-$\pi/\Delta\omega_{12}(D)$ & 0.800 & 0.000 & 0.344 & $2.46\times10^{-5}$ \\
-$\min(\pi/\Delta\omega_{12},10^4)$ & 0.800 & 0.000 & 0.188 & $2.46\times10^{-5}$ \\
+constant $t_{\rm coh}=1$ & 0.800 & 0.000 & 0.0908 & $2.03\times10^{-5}$ \\
+$\pi/\Delta\omega_{12}(D)$ & 0.800 & 0.000 & 0.3681 & $3.21\times10^{-8}$ \\
+$\min(\pi/\Delta\omega_{12},10^4)$ & 0.800 & 0.000 & 0.1825 & $1.29\times10^{-5}$ \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1467,11 +1468,11 @@ To quantify map-level sensitivity, we compare baseline $\eta_{\rm eff}=\eta$ aga
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
 \hline
-baseline $\eta_{\rm eff}=\eta$ & 0.800 & 0.000 & 0.0942 & $3.05\times10^{-7}$ \\
-$\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)$ & 0.800 & 0.000 & 0.0939 & $9.66\times10^{-7}$ \\
-$\eta_{\rm eff}=\eta\,\eta_{\rm prob}(D)$ & 0.800 & 0.000 & 0.0942 & $2.00\times10^{-6}$ \\
-$\eta_{\rm eff}=\eta_{\rm amp}(D)$ & 0.800 & 0.000 & 0.1000 & $5.01\times10^{-2}$ \\
-$\eta_{\rm eff}=\eta_{\rm prob}(D)$ & 0.800 & 0.000 & 0.1000 & $4.85\times10^{-2}$ \\
+baseline $\eta_{\rm eff}=\eta$ & 0.800 & 0.000 & 0.0908 & $2.03\times10^{-5}$ \\
+$\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)$ & 0.800 & 0.000 & 0.0900 & $2.43\times10^{-5}$ \\
+$\eta_{\rm eff}=\eta\,\eta_{\rm prob}(D)$ & 0.800 & 0.000 & 0.0900 & $2.90\times10^{-5}$ \\
+$\eta_{\rm eff}=\eta_{\rm amp}(D)$ & 0.800 & 0.000 & 0.0833 & $3.63\times10^{-2}$ \\
+$\eta_{\rm eff}=\eta_{\rm prob}(D)$ & 0.800 & 0.000 & 0.0833 & $3.50\times10^{-2}$ \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1542,10 +1543,10 @@ To quantify map-level sensitivity, we compare baseline $(A_1,A_2)=(1,1)$ against
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
 \hline
-baseline $(A_1,A_2)=(1,1)$ & 0.800 & 0.000 & 0.0942 & $3.05\times10^{-7}$ \\
-$(A_1,A_2)=(\tilde A_1,\tilde A_2)$ & 0.7317 & 0.000 & 0.0358 & $2.23\times10^{-4}$ \\
-$(A_1,A_2)=0.5(\tilde A_1,\tilde A_2)$ & 0.7106 & 0.000 & 0.0358 & $2.23\times10^{-4}$ \\
-$(A_1,A_2)=2(\tilde A_1,\tilde A_2)$ & 0.7550 & 0.000 & 0.0358 & $2.23\times10^{-4}$ \\
+baseline $(A_1,A_2)=(1,1)$ & 0.8000 & 0.000 & 0.0908 & $2.03\times10^{-5}$ \\
+$(A_1,A_2)=(\tilde A_1,\tilde A_2)$ & 0.7961 & 0.000 & 0.0350 & $3.62\times10^{-5}$ \\
+$(A_1,A_2)=0.5(\tilde A_1,\tilde A_2)$ & 0.7939 & 0.000 & 0.0350 & $3.62\times10^{-5}$ \\
+$(A_1,A_2)=2(\tilde A_1,\tilde A_2)$ & 0.7981 & 0.000 & 0.0350 & $3.62\times10^{-5}$ \\
 \hline\hline
 \end{tabular}
 \end{table}

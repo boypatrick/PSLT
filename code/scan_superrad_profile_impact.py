@@ -51,6 +51,12 @@ def make_kinetics() -> PSLTKinetics:
         c_eff=0.5,
         nu=5.0,
         kappa_g=0.03,
+        g_mode="fp_2d_full",
+        g_fp_full_window_blend=0.8,
+        g_fp_full_tail_beta=1.1,
+        g_fp_full_tail_shell_power=0.0,
+        g_fp_full_tail_clip_min=1e-3,
+        g_fp_full_tail_clip_max=0.95,
         chi=0.2,
         chi_mode="localized_interp",
         chi_lr_D=(6.0, 12.0, 18.0),
@@ -151,7 +157,7 @@ def evaluate_case(
     def W2(D: float, eta: float) -> float:
         N = 2
         Gam = gamma_N(N, D, eta)
-        g = kin.g_N_cardy(N)
+        g = kin.g_N_effective(N, D)
         B = kin.B_N(N)
         return float(B * g * (1.0 - np.exp(-Gam * t_coh)))
 
@@ -167,7 +173,7 @@ def evaluate_case(
             gammas = []
             for N in range(1, 21):
                 Gam = gamma_N(N, D, eta)
-                g = kin.g_N_cardy(N)
+                g = kin.g_N_effective(N, D)
                 B = kin.B_N(N)
                 wN = B * g * (1.0 - np.exp(-Gam * t_coh))
                 weights.append(wN)

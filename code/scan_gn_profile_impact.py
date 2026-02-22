@@ -3,9 +3,10 @@
 Quantify global-scan impact of first-principles g_N candidates.
 
 Cases:
-  1) baseline surrogate: g_mode = cardy
-  2) first-principles 1D candidate: g_mode = fp_1d
-  3) first-principles 2D candidate: g_mode = fp_2d
+  1) baseline: g_mode = fp_2d_full
+  2) legacy surrogate reference: g_mode = cardy
+  3) first-principles 1D candidate: g_mode = fp_1d
+  4) first-principles 2D candidate: g_mode = fp_2d
 
 Outputs:
   - output/gn_fp_impact/gn_profile_impact.csv
@@ -157,7 +158,8 @@ def main() -> None:
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
 
     cases = [
-        Case(name="baseline_cardy", g_mode="cardy"),
+        Case(name="baseline_fp_2d_full", g_mode="fp_2d_full"),
+        Case(name="legacy_cardy", g_mode="cardy"),
         Case(name="first_principles_fp_1d", g_mode="fp_1d"),
         Case(name="first_principles_fp_2d", g_mode="fp_2d"),
     ]

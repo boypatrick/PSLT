@@ -3,9 +3,9 @@
 Build a map-level comparison snapshot for first-principles migration.
 
 Compared scenarios:
-  1) baseline:        g_mode=cardy, chi_mode=localized_interp
-  2) g_N promoted:    g_mode=fp_2d, chi_mode=localized_interp
-  3) chi open-system: g_mode=cardy, chi_mode=open_system
+  1) baseline:        g_mode=fp_2d_full, chi_mode=localized_interp
+  2) legacy reference g_mode=cardy, chi_mode=localized_interp
+  3) chi open-system: g_mode=fp_2d_full, chi_mode=open_system
 
 Inputs:
   - output/gn_fp_impact/gn_profile_impact.csv
@@ -62,8 +62,8 @@ def build_summary() -> pd.DataFrame:
     gn_df = pd.read_csv(GN_CSV)
     chi_df = pd.read_csv(CHI_CSV)
 
-    base = _pick_row(gn_df, "baseline_cardy")
-    fp2d = _pick_row(gn_df, "first_principles_fp_2d")
+    base = _pick_row(gn_df, "baseline_fp_2d_full")
+    legacy = _pick_row(gn_df, "legacy_cardy")
     open_base = _pick_row(chi_df, "open_system_base")
 
     base_r3 = _to_float(base["f_R3_gt_0p90"])
@@ -72,8 +72,8 @@ def build_summary() -> pd.DataFrame:
 
     rows = [
         {
-            "scenario": "baseline_cardy_localized",
-            "g_mode": "cardy",
+            "scenario": "baseline_fp2d_full_localized",
+            "g_mode": "fp_2d_full",
             "chi_mode": "localized_interp",
             "f_R3_gt_0p90": base_r3,
             "delta_f_R3_gt_0p90_vs_baseline": 0.0,
@@ -88,24 +88,24 @@ def build_summary() -> pd.DataFrame:
             "chi_ratio_max": 1.0,
         },
         {
-            "scenario": "gn_fp_2d_localized",
-            "g_mode": "fp_2d",
+            "scenario": "legacy_cardy_localized",
+            "g_mode": "cardy",
             "chi_mode": "localized_interp",
-            "f_R3_gt_0p90": _to_float(fp2d["f_R3_gt_0p90"]),
-            "delta_f_R3_gt_0p90_vs_baseline": _to_float(fp2d["f_R3_gt_0p90"]) - base_r3,
-            "f_hmumu_chi2_le_4": _to_float(fp2d["f_hmumu_chi2_le_4"]),
-            "delta_f_hmumu_chi2_le_4_vs_baseline": _to_float(fp2d["f_hmumu_chi2_le_4"]) - base_hmumu,
-            "f_winner_gt_3": _to_float(fp2d["f_winner_gt_3"]),
-            "delta_f_winner_gt_3_vs_baseline": _to_float(fp2d["f_winner_gt_3"]) - base_wgt3,
-            "best_chi2": _to_float(fp2d["best_chi2"]),
-            "mean_tail_prob": _to_float(fp2d.get("mean_tail_prob", np.nan)),
+            "f_R3_gt_0p90": _to_float(legacy["f_R3_gt_0p90"]),
+            "delta_f_R3_gt_0p90_vs_baseline": _to_float(legacy["f_R3_gt_0p90"]) - base_r3,
+            "f_hmumu_chi2_le_4": _to_float(legacy["f_hmumu_chi2_le_4"]),
+            "delta_f_hmumu_chi2_le_4_vs_baseline": _to_float(legacy["f_hmumu_chi2_le_4"]) - base_hmumu,
+            "f_winner_gt_3": _to_float(legacy["f_winner_gt_3"]),
+            "delta_f_winner_gt_3_vs_baseline": _to_float(legacy["f_winner_gt_3"]) - base_wgt3,
+            "best_chi2": _to_float(legacy["best_chi2"]),
+            "mean_tail_prob": _to_float(legacy.get("mean_tail_prob", np.nan)),
             "chi_ratio_mean": 1.0,
             "chi_ratio_min": 1.0,
             "chi_ratio_max": 1.0,
         },
         {
             "scenario": "chi_open_system_base",
-            "g_mode": "cardy",
+            "g_mode": "fp_2d_full",
             "chi_mode": "open_system",
             "f_R3_gt_0p90": _to_float(open_base["f_R3_gt_0p90"]),
             "delta_f_R3_gt_0p90_vs_baseline": _to_float(open_base["f_R3_gt_0p90"]) - base_r3,
@@ -125,9 +125,9 @@ def build_summary() -> pd.DataFrame:
 
 def make_plot(df: pd.DataFrame, out_png: Path) -> None:
     labels = [
-        "baseline\ncardy+localized",
-        "g_N fp_2d\n+localized",
-        "chi open\ncardy+open",
+        "baseline\nfp_2d_full+localized",
+        "legacy\ncardy+localized",
+        "chi open\nfp_2d_full+open",
     ]
     x = np.arange(len(labels))
     colors = ["#5b6770", "#1f77b4", "#d97706"]
@@ -165,7 +165,7 @@ def make_plot(df: pd.DataFrame, out_png: Path) -> None:
     drift = np.asarray(df["delta_f_R3_gt_0p90_vs_baseline"], dtype=float)
     fig.suptitle(
         "Map-Level Migration Snapshot: baseline vs first-principles switches\n"
-        f"R3 drift (absolute): fp_2d={drift[1]:+.4f}, open_system={drift[2]:+.4f}",
+        f"R3 drift (absolute): legacy_cardy={drift[1]:+.4f}, open_system={drift[2]:+.4f}",
         fontsize=12.5,
     )
     fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.90])

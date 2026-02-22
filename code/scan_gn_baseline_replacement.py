@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Baseline-replacement audit for g_N: Cardy surrogate vs fp_2d_full.
+Baseline cross-check for g_N: fp_2d_full baseline vs legacy Cardy reference.
 
 Goal:
-  Promote a first-principles candidate from comparator-only to baseline-replacement
-  stress test at map level, including N_max convergence checks.
+  After promoting fp_2d_full as baseline, keep a map-level cross-check against
+  the legacy Cardy surrogate on the same grid, including N_max convergence.
 
 Outputs:
   - output/gn_fp_impact/gn_baseline_replacement.csv
@@ -200,8 +200,8 @@ def main() -> None:
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
 
     cases = [
-        Case(name="baseline_cardy", g_mode="cardy", g_fp_blend=0.01),
-        Case(name="replacement_fp_2d_full", g_mode="fp_2d_full", g_fp_blend=1.0),
+        Case(name="baseline_fp_2d_full", g_mode="fp_2d_full", g_fp_blend=1.0),
+        Case(name="legacy_cardy", g_mode="cardy", g_fp_blend=0.01),
     ]
 
     nmax_list = [20, 30, 40]
@@ -214,7 +214,7 @@ def main() -> None:
 
     # Summary table uses manuscript baseline N_max=20.
     summary_rows = [r for r in nmax_rows if int(r["n_max"]) == 20]
-    summary_rows = with_deltas(summary_rows, baseline_case="baseline_cardy")
+    summary_rows = with_deltas(summary_rows, baseline_case="baseline_fp_2d_full")
 
     profile_rows = export_profile_rows(cases)
 

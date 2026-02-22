@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
 """
-2D axisymmetric phase-space candidate extraction for g_N (preliminary).
+2D axisymmetric phase-space extraction for g_N using the localized solver chain.
 
-This script evaluates a Weyl/WKB-style candidate on the same action-derived
-potential used by the localized chi extraction:
+This script reuses the same generalized operator builder as
+`extract_chi_localized_2d.py` (same geometry, same finite-difference structure)
+and computes low-lying generalized eigenvalues lambda_n on (rho, z) grids.
 
+Microcanonical definition (explicit):
   N_ps(E) = (1 / 4pi) * integral d^2x d^2p Theta(E - U - p^2)
           = 0.5 * integral rho dr dz [E - U(rho,z)]_+
 
-for the axisymmetric configuration-space measure. For each D we compute
-low-lying generalized eigenvalues lambda_{1,2,3}, then define
+For each mode n, the phase-space multiplicity candidate uses the window
+[lambda_1, lambda_n]:
+  g_raw,n = 1 + integral_{lambda_1}^{lambda_n} rho_ps(E') dE'
+          = 1 + N_ps(lambda_n) - N_ps(lambda_1)
 
-  g_raw,1 = 1
-  g_raw,n = 1 + N_ps(lambda_n) - N_ps(lambda_1), n=2,3
-
-and a normalized profile used for shape-comparison:
-
-  ghat_n = g_raw,n / g_raw,3  (so ghat_3 = 1).
-
-This is a candidate diagnostic only and is not used in the baseline scan.
+We export:
+  - low-N profile summary for n=1,2,3 (coarse/mid/fine)
+  - relative errors vs fine grid
+  - full low-mode spectral table (up to n_eigs) for reproducibility
 """
 
 from __future__ import annotations
@@ -26,140 +26,186 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass
 from pathlib import Path
+from typing import List
 
 import numpy as np
 import pandas as pd
-from scipy.sparse import diags, eye, kron
 from scipy.sparse.linalg import eigsh
+
+# Reuse the same localized extraction chain to avoid diverging operator choices.
+from extract_chi_localized_2d import PhysicalParams, Level, build_generalized_operator
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTDIR = ROOT / "output" / "gn_fp_2d"
 
 
 @dataclass(frozen=True)
-class PhysicalParams:
-    a: float = 0.04
-    eps: float = 0.1
-    m0: float = 1.0
-    xi: float = 0.14
+class SolveConfig:
+    tol: float
+    maxiter: int
+    sigma: float | None
+    n_eigs: int
 
 
-@dataclass(frozen=True)
-class Level:
-    name: str
-    dr: float
-    dz: float
+def solve_low_modes(K, M, cfg: SolveConfig) -> np.ndarray:
+    n_dim = K.shape[0]
+    k_req = max(6, cfg.n_eigs)
+    k_eff = min(k_req, max(2, n_dim - 2))
+    if k_eff < 3:
+        raise RuntimeError(f"Operator dimension too small for 3 low modes (dim={n_dim}).")
 
-
-def omega_2center(rho: np.ndarray, z: np.ndarray, D: float, p: PhysicalParams) -> np.ndarray:
-    rp2 = rho * rho + (z - D / 2.0) ** 2
-    rm2 = rho * rho + (z + D / 2.0) ** 2
-    return 1.0 + p.a * (1.0 / np.sqrt(rp2 + p.eps * p.eps) + 1.0 / np.sqrt(rm2 + p.eps * p.eps))
-
-
-def lap_omega_2center(rho: np.ndarray, z: np.ndarray, D: float, p: PhysicalParams) -> np.ndarray:
-    rp2 = rho * rho + (z - D / 2.0) ** 2
-    rm2 = rho * rho + (z + D / 2.0) ** 2
-    return p.a * (-3.0 * p.eps * p.eps * ((rp2 + p.eps * p.eps) ** (-2.5) + (rm2 + p.eps * p.eps) ** (-2.5)))
-
-
-def u_potential(rho: np.ndarray, z: np.ndarray, D: float, p: PhysicalParams) -> np.ndarray:
-    om = omega_2center(rho, z, D, p)
-    lap_om = lap_omega_2center(rho, z, D, p)
-    return p.m0 * p.m0 * (om * om - 1.0) + (1.0 - 6.0 * p.xi) * (lap_om / om)
-
-
-def build_generalized_operator(
-    D: float,
-    p: PhysicalParams,
-    rho_max: float,
-    z_max: float,
-    dr: float,
-    dz: float,
-):
-    nr = int(round(rho_max / dr))
-    nz = int(round(2.0 * z_max / dz))
-    if nr < 12 or nz < 16:
-        raise ValueError("Grid too small for stable eigensolve.")
-
-    rho = (np.arange(nr) + 0.5) * dr
-    z = -z_max + (np.arange(nz) + 0.5) * dz
-    rr, zz = np.meshgrid(rho, z, indexing="ij")
-    uu = u_potential(rr, zz, D, p)
-
-    rho_ph = (np.arange(nr) + 1.0) * dr
-    rho_mh = np.arange(nr) * dr
-    main_r = (rho_ph + rho_mh) / (dr * dr)
-    off_r = -rho_ph[:-1] / (dr * dr)
-    k_r = diags([off_r, main_r, off_r], offsets=[-1, 0, 1], format="csr")
-
-    main_z = np.full(nz, 2.0 / (dz * dz))
-    off_z = np.full(nz - 1, -1.0 / (dz * dz))
-    t_z = diags([off_z, main_z, off_z], offsets=[-1, 0, 1], format="csr")
-
-    r_diag = diags(rho, 0, format="csr")
-    k_mat = kron(k_r, eye(nz, format="csr")) + kron(r_diag, t_z)
-    k_mat = k_mat + diags((rho[:, None] * uu).ravel(), 0, format="csr")
-    m_mat = kron(r_diag, eye(nz, format="csr"))
-    return rho, z, uu, k_mat, m_mat
+    if cfg.sigma is None:
+        vals, _ = eigsh(
+            K,
+            k=k_eff,
+            M=M,
+            which="SA",
+            tol=cfg.tol,
+            maxiter=cfg.maxiter,
+        )
+    else:
+        vals, _ = eigsh(
+            K,
+            k=k_eff,
+            M=M,
+            sigma=cfg.sigma,
+            which="LM",
+            tol=cfg.tol,
+            maxiter=cfg.maxiter,
+        )
+    vals = np.sort(np.real(vals))
+    return vals
 
 
 def n_phase_space(E: float, U: np.ndarray, rho: np.ndarray, dr: float, dz: float) -> float:
-    # N_ps(E) = 0.5 * integral rho dr dz [E-U]_+
+    # N_ps(E) = 0.5 * integral rho dr dz [E - U]_+
     return float(0.5 * np.sum(rho[:, None] * np.maximum(E - U, 0.0)) * dr * dz)
 
 
+def parse_d_values(args) -> List[float]:
+    if args.full_scan:
+        return [float(d) for d in range(4, 21)]
+    return [float(s.strip()) for s in args.Ds.split(",") if s.strip()]
+
+
 def main() -> None:
-    ap = argparse.ArgumentParser(description="2D phase-space candidate extraction for g_N profile.")
-    ap.add_argument("--Ds", default="6,12,18")
+    ap = argparse.ArgumentParser(description="2D phase-space extraction for g_N (localized-chain aligned).")
+    ap.add_argument("--Ds", default="6,12,18", help="Comma-separated D values.")
+    ap.add_argument(
+        "--full-scan",
+        action="store_true",
+        help="Use full D grid: D=4,5,...,20 (overrides --Ds).",
+    )
     ap.add_argument("--rho-max", type=float, default=3.0)
-    ap.add_argument("--z-margin", type=float, default=6.0)
+    ap.add_argument("--z-margin", type=float, default=6.0, help="Use z_max = D/2 + z_margin.")
     ap.add_argument("--tol", type=float, default=1e-8)
     ap.add_argument("--maxiter", type=int, default=30000)
+    ap.add_argument(
+        "--sigma",
+        type=float,
+        default=2.5,
+        help="Shift-invert target (same convention as localized chi extraction). Use negative to disable.",
+    )
+    ap.add_argument(
+        "--n-eigs",
+        type=int,
+        default=40,
+        help="Number of low generalized eigenvalues to retain in spectral export.",
+    )
     ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
     args = ap.parse_args()
 
-    D_list = [float(s.strip()) for s in args.Ds.split(",") if s.strip()]
+    d_list = parse_d_values(args)
     levels = [
         Level("coarse", dr=0.12, dz=0.06),
         Level("mid", dr=0.08, dz=0.04),
         Level("fine", dr=0.06, dz=0.03),
     ]
     p = PhysicalParams()
+    sigma = None if args.sigma < 0 else float(args.sigma)
+    cfg = SolveConfig(tol=float(args.tol), maxiter=int(args.maxiter), sigma=sigma, n_eigs=int(args.n_eigs))
 
-    rows = []
-    for D in D_list:
+    profile_rows = []
+    spec_rows = []
+
+    for D in d_list:
         for lev in levels:
             z_max = D / 2.0 + args.z_margin
-            rho, z, uu, K, M = build_generalized_operator(D, p, args.rho_max, z_max, lev.dr, lev.dz)
-            # Use smallest-algebraic generalized eigenvalues for branch-stable low modes.
-            vals, _ = eigsh(K, k=6, M=M, which="SA", tol=args.tol, maxiter=args.maxiter)
-            vals = np.sort(np.real(vals))[:3]
-            Nvals = [n_phase_space(float(E), uu, rho, lev.dr, lev.dz) for E in vals]
-            g_raw = [1.0 + max(nv - Nvals[0], 0.0) for nv in Nvals]
-            ghat = [g / max(g_raw[2], 1e-30) for g in g_raw]
+            rho, z, _rr, _zz, uu, K, M = build_generalized_operator(
+                D=D,
+                p=p,
+                rho_max=args.rho_max,
+                z_max=z_max,
+                dr=lev.dr,
+                dz=lev.dz,
+            )
+            vals = solve_low_modes(K, M, cfg)
 
-            rows.append(
+            nps_vals = np.asarray([n_phase_space(float(E), uu, rho, lev.dr, lev.dz) for E in vals], dtype=float)
+            nps0 = float(nps_vals[0])
+            g_raw_all = np.asarray([1.0 + max(float(nv - nps0), 0.0) for nv in nps_vals], dtype=float)
+            if len(g_raw_all) < 3:
+                raise RuntimeError(f"D={D}, level={lev.name}: need >=3 modes, got {len(g_raw_all)}.")
+
+            g1, g2, g3 = (float(g_raw_all[i]) for i in range(3))
+            g3_safe = max(g3, 1e-30)
+            ghat = [g1 / g3_safe, g2 / g3_safe, g3 / g3_safe]
+            lam = [float(vals[i]) for i in range(3)]
+
+            profile_rows.append(
                 {
-                    "D": D,
+                    "D": float(D),
                     "level": lev.name,
-                    "dr": lev.dr,
-                    "dz": lev.dz,
+                    "dr": float(lev.dr),
+                    "dz": float(lev.dz),
                     "Nr": len(rho),
                     "Nz": len(z),
-                    "lambda1": float(vals[0]),
-                    "lambda2": float(vals[1]),
-                    "lambda3": float(vals[2]),
-                    "g1_raw": float(g_raw[0]),
-                    "g2_raw": float(g_raw[1]),
-                    "g3_raw": float(g_raw[2]),
+                    "lambda1": lam[0],
+                    "lambda2": lam[1],
+                    "lambda3": lam[2],
+                    "window_E_lo": lam[0],
+                    "window_E_hi_n2": lam[1],
+                    "window_E_hi_n3": lam[2],
+                    "Nps_lambda1": float(nps_vals[0]),
+                    "Nps_lambda2": float(nps_vals[1]),
+                    "Nps_lambda3": float(nps_vals[2]),
+                    "g1_raw": g1,
+                    "g2_raw": g2,
+                    "g3_raw": g3,
                     "g1_hat": float(ghat[0]),
                     "g2_hat": float(ghat[1]),
                     "g3_hat": float(ghat[2]),
+                    "n_eigs_exported": len(vals),
+                    "solver_sigma": np.nan if sigma is None else float(sigma),
                 }
             )
 
-    df = pd.DataFrame(rows).sort_values(["D", "level"]).reset_index(drop=True)
+            for i, ev in enumerate(vals, start=1):
+                g_raw = float(g_raw_all[i - 1])
+                spec_rows.append(
+                    {
+                        "D": float(D),
+                        "level": lev.name,
+                        "dr": float(lev.dr),
+                        "dz": float(lev.dz),
+                        "mode_n": i,
+                        "lambda_n": float(ev),
+                        "window_E_lo": float(vals[0]),
+                        "window_E_hi": float(ev),
+                        "Nps_lambda_n": float(nps_vals[i - 1]),
+                        "g_raw_n": g_raw,
+                        "g_hat_to_g3": float(g_raw / g3_safe),
+                    }
+                )
+
+            print(
+                f"[run] D={D:g}, level={lev.name}, "
+                f"lambda1..3=({lam[0]:.6f}, {lam[1]:.6f}, {lam[2]:.6f}), "
+                f"g_hat(1,2,3)=({ghat[0]:.6f}, {ghat[1]:.6f}, {ghat[2]:.6f})"
+            )
+
+    df = pd.DataFrame(profile_rows).sort_values(["D", "level"]).reset_index(drop=True)
+    spec_df = pd.DataFrame(spec_rows).sort_values(["D", "level", "mode_n"]).reset_index(drop=True)
 
     rel_rows = []
     for D in sorted(df["D"].unique()):
@@ -168,10 +214,12 @@ def main() -> None:
             continue
         ref = sub.loc["fine"]
         for lev in ["coarse", "mid", "fine"]:
+            if lev not in sub.index:
+                continue
             cur = sub.loc[lev]
             rel_rows.append(
                 {
-                    "D": D,
+                    "D": float(D),
                     "level": lev,
                     "rel_g1_hat_vs_fine": abs(cur["g1_hat"] - ref["g1_hat"]) / max(abs(ref["g1_hat"]), 1e-30),
                     "rel_g2_hat_vs_fine": abs(cur["g2_hat"] - ref["g2_hat"]) / max(abs(ref["g2_hat"]), 1e-30),
@@ -187,17 +235,20 @@ def main() -> None:
 
     outdir = Path(args.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
-    tag = "-".join(str(int(d)) for d in D_list)
+    tag = "-".join(str(int(d)) if float(d).is_integer() else str(d) for d in d_list)
     out_main = outdir / f"gn_phase_space_2d_D{tag}.csv"
     out_rel = outdir / f"gn_phase_space_2d_D{tag}_relerr.csv"
+    out_spec = outdir / f"gn_phase_space_2d_spectrum_D{tag}.csv"
     df.to_csv(out_main, index=False)
     rel_df.to_csv(out_rel, index=False)
+    spec_df.to_csv(out_spec, index=False)
 
-    print(df.to_string(index=False))
     print("\n[summary] rel errors vs fine")
-    print(rel_df.to_string(index=False))
+    if len(rel_df) > 0:
+        print(rel_df.to_string(index=False))
     print(f"\n[done] wrote {out_main}")
     print(f"[done] wrote {out_rel}")
+    print(f"[done] wrote {out_spec}")
 
 
 if __name__ == "__main__":

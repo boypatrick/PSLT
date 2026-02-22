@@ -67,6 +67,7 @@ The old manual script-by-script sequence is still valid, but the reproducible en
 
 ## First-Principles Migration Status
 - **g_N migration comparator:** `code/scan_gn_profile_impact.py` compares `g_mode=cardy/fp_1d/fp_2d`; current fp\_2d run gives a small absolute drift in $f(\mathcal{R}_3>0.90)$ (`-0.0167`) and keeps `f(N_win>3)=0`.
+- **g_N low-N alignment + N_max convergence:** `code/plot_gn_cardy_vs_phase_space.py` and `code/scan_gn_nmax_convergence.py` export low-$N$ Cardy-vs-phase-space overlays and $N_{\max}=20/30/40$ stability tables.
 - **Open-system chi module:** `code/scan_chi_open_system_sensitivity.py` runs `chi_mode=open_system` with profiled `gamma_phi(D), gamma_mix(D)` and reports a stable ratio band versus localized baseline.
 - **Cross-module summary:** `code/scan_first_principles_migration_summary.py` aggregates baseline vs fp\_2d vs open-system into:
   - `output/first_principles_migration/first_principles_migration_summary.csv`

@@ -727,7 +727,7 @@ Stage & Primary scripts & Key outputs \\
 Global maps and proxy plots & \texttt{generate\_plots.py}; \texttt{scan\_hll\_signal\_strengths.py} & \texttt{output/three\_generation\_*.png}; \texttt{output/hmumu\_*.png}; \texttt{output/hll\_signal\_strength/*} \\
 Localized mixing extraction & \texttt{extract\_chi\_localized\_2d.py} (\texttt{--Ds}, \texttt{--full-scan}) & \texttt{output/chi\_fp\_2d/localized\_chi\_D*.csv} \\
 Localized-profile diagnostics & \texttt{scan\_chi\_profile\_robustness.py}; \texttt{plot\_chi\_*.py} & \texttt{paper/chi\_profile\_robustness.csv}; \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}; \texttt{paper/chi\_wavefunction\_contours\_D*.png} \\
-$g_N$ first-principles candidates & \path{extract_gn_phase_space_candidate.py}; \path{extract_gn_phase_space_2d.py}; \path{scan_gn_profile_impact.py} & \texttt{output/gn\_fp\_1d/*.csv}; \texttt{output/gn\_fp\_2d/*.csv}; \texttt{paper/gn\_profile\_impact.csv} \\
+$g_N$ first-principles candidates & \path{extract_gn_phase_space_candidate.py}; \path{extract_gn_phase_space_2d.py}; \path{scan_gn_profile_impact.py}; \path{scan_gn_nmax_convergence.py}; \path{plot_gn_cardy_vs_phase_space.py} & \texttt{output/gn\_fp\_1d/*.csv}; \texttt{output/gn\_fp\_2d/*.csv}; \texttt{paper/gn\_profile\_impact.csv}; \texttt{paper/gn\_nmax\_convergence.csv}; \texttt{paper/gn\_cardy\_vs\_phase\_space.png} \\
 Open-system diagnostics & \texttt{lindblad\_chi\_minimal.py}; \texttt{extract\_chi\_open\_system\_*.py}; \texttt{scan\_chi\_open\_system\_*.py} & \texttt{output/chi\_open\_system/*.csv}; \texttt{paper/chi\_open\_system\_sensitivity.csv} \\
 Other first-principles profiles & \texttt{extract\_tcoh\_*.py}, \texttt{extract\_eta\_*.py}, \texttt{extract\_superrad\_*.py}; \texttt{scan\_*\_profile\_impact.py} & \texttt{paper/tcoh\_profile\_impact.csv}; \texttt{paper/eta\_profile\_impact.csv}; \texttt{paper/superrad\_profile\_impact.csv} \\
 Packaging and manifest & \texttt{package\_repro\_outputs.py} (wrapper stage) & \texttt{repro/runs/<RUN\_ID>/figures/}; \texttt{repro/runs/<RUN\_ID>/tables/}; \texttt{artifact\_index.csv}; \texttt{checksums.sha256}; \texttt{manifest.json} \\
@@ -1106,16 +1106,18 @@ fine   & 0.01 & $-0.637233$ & $-0.608582$ & $-0.575488$ & $1.063919$ & $1.068433
 \end{table}
 
 \subsection{2D Axisymmetric Benchmark for \texorpdfstring{$g_N^{\rm(ps)}$}{gN(ps)}}
-To reduce projection ambiguity, we also ran a 2D axisymmetric benchmark on $D=\{6,12,18\}$ using the same geometry chain as Appendix~\ref{app:chi_loc}. We define
+To reduce projection ambiguity, we also ran a 2D axisymmetric benchmark on $D=\{6,12,18\}$ using the same localized extraction chain as Appendix~\ref{app:chi_loc}: identical generalized operator build, identical box/range convention, and the same shift-invert low-mode settings $(\sigma=2.5,\ \mathrm{tol}=10^{-8},\ \mathrm{maxiter}=3\times10^4)$. We define
 \begin{equation}
 N_{\rm ps}(E)=\frac{1}{4\pi}\int \dd^2x\,\dd^2p\;\Theta(E-U-p^2)
 =\frac{1}{2}\int \rho\,\dd\rho\,\dd z\,[E-U(\rho,z)]_+,
 \end{equation}
 \begin{equation}
-g_{N,\rm raw}^{\rm(ps)}=1+N_{\rm ps}(\lambda_N)-N_{\rm ps}(\lambda_1),\qquad
+\mathcal{W}_N\equiv[\lambda_1,\lambda_N],\qquad
+g_{N,\rm raw}^{\rm(ps)}=1+\int_{\mathcal{W}_N}\rho_{\rm ps}(E')\,\dd E'
+=1+N_{\rm ps}(\lambda_N)-N_{\rm ps}(\lambda_1),\qquad
 \hat g_N\equiv\frac{g_{N,\rm raw}^{\rm(ps)}}{g_{3,\rm raw}^{\rm(ps)}}.
 \end{equation}
-The script \texttt{extract\_gn\_phase\_space\_2d.py} (in \texttt{code/}) gives Table~\ref{tab:gn_ps_2d}. For non-fine levels, the maximum profile deviation is
+The script \texttt{extract\_gn\_phase\_space\_2d.py} (in \texttt{code/}) exports both the low-$N$ profile table and the low-mode spectral table with explicit window bounds (source CSVs: \texttt{output/gn\_fp\_2d/gn\_phase\_space\_2d\_D6-12-18.csv}, \texttt{output/gn\_fp\_2d/gn\_phase\_space\_2d\_spectrum\_D6-12-18.csv}). For non-fine levels, the maximum profile deviation is
 \begin{equation}
 \max_{\text{non-fine}}\left(\max_N\frac{|\hat g_N-\hat g_N^{\rm(fine)}|}{|\hat g_N^{\rm(fine)}|}\right)=2.35\times10^{-2}.
 \end{equation}
@@ -1137,6 +1139,13 @@ $D$ & $\lambda_1$ & $\lambda_2$ & $\lambda_3$ & $\hat g_1$ & $\hat g_2$ \\
 \end{tabular}
 \end{table}
 
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.98\textwidth]{gn_cardy_vs_phase_space.png}
+    \caption{Low-$N$ comparison between Cardy baseline and 2D phase-space profile on $D=\{6,12,18\}$, shown as normalized ratios $g_N/g_3$ (log scale). The highlighted band marks $N=1,2,3$. Source files: \texttt{paper/gn\_cardy\_vs\_phase\_space.png}, \texttt{paper/gn\_cardy\_vs\_phase\_space.csv}.}
+    \label{fig:gn_cardy_vs_phase_space}
+\end{figure*}
+
 \begin{table}[t]
 \centering
 \caption{Map-level impact of first-principles $g_N$ profiles on the $60\times60$ scan (diagnostic only; baseline remains Cardy mode). Source CSV: \texttt{paper/gn\_profile\_impact.csv}.}
@@ -1152,6 +1161,26 @@ $g_N$ fp\_2d profile & 0.783 & 0.0942 & 0.000 & 0.0905 \\
 \hline\hline
 \end{tabular}
 \end{table}
+
+\begin{table}[t]
+\centering
+\caption{$N_{\max}$ convergence check for baseline and $g_N$ fp\_2d map-level summaries. Source CSV: \texttt{paper/gn\_nmax\_convergence.csv}.}
+\label{tab:gn_nmax_convergence}
+\small
+\begin{tabular}{lccccc}
+\hline\hline
+case & $N_{\max}$ & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & mean tail prob. \\
+\hline
+baseline Cardy & 20 & 0.800 & 0.0942 & 0.000 & 0.087284 \\
+baseline Cardy & 30 & 0.800 & 0.0942 & 0.000 & 0.087284 \\
+baseline Cardy & 40 & 0.800 & 0.0942 & 0.000 & 0.087284 \\
+$g_N$ fp\_2d profile & 20 & 0.783 & 0.0942 & 0.000 & 0.090492 \\
+$g_N$ fp\_2d profile & 30 & 0.783 & 0.0942 & 0.000 & 0.090492 \\
+$g_N$ fp\_2d profile & 40 & 0.783 & 0.0942 & 0.000 & 0.090492 \\
+\hline\hline
+\end{tabular}
+\end{table}
+Across $N_{\max}=20,30,40$, both baseline and fp\_2d scenarios are numerically stable at map level: the key fractions $f(\mathcal{R}_3>0.90)$, $f(\chi^2_{\mu\mu}<4)$, and $f(N_{\rm win}>3)$ remain unchanged in this scan.
 
 \subsection{Geometry-Informed Lindblad Scan-Ready Module for Open-System \texorpdfstring{$\chi$}{chi}}
 \label{app:chi_open_scan}

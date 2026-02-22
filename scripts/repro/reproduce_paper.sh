@@ -146,6 +146,9 @@ sync_paper_assets() {
   sync_one "output/chi_fp_2d/chi_wavefunction_contours_D6_12_18.png" "paper/chi_wavefunction_contours_D6_12_18.png" 1
   sync_one "output/chi_fp_2d/chi_scale_stress_test.png" "paper/chi_scale_stress_test.png" 1
   sync_one "output/gn_fp_impact/gn_profile_impact.csv" "paper/gn_profile_impact.csv" 1
+  sync_one "output/gn_fp_impact/gn_nmax_convergence.csv" "paper/gn_nmax_convergence.csv" 1
+  sync_one "output/gn_fp_impact/gn_cardy_vs_phase_space.csv" "paper/gn_cardy_vs_phase_space.csv" 1
+  sync_one "output/gn_fp_impact/gn_cardy_vs_phase_space.png" "paper/gn_cardy_vs_phase_space.png" 1
   sync_one "output/chi_open_system/chi_open_system_sensitivity.csv" "paper/chi_open_system_sensitivity.csv" 1
   sync_one "output/first_principles_migration/first_principles_migration_summary.csv" "paper/first_principles_migration_summary.csv" 1
   sync_one "output/first_principles_migration/first_principles_migration_summary.png" "paper/first_principles_migration_summary.png" 1
@@ -205,6 +208,10 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/extract_gn_phase_space_2d.py --Ds 6,12,18"
   run_step "19" "scan_gn_profile_impact" \
     "$PYTHON_BIN code/scan_gn_profile_impact.py"
+  run_step "19b" "scan_gn_nmax_convergence" \
+    "$PYTHON_BIN code/scan_gn_nmax_convergence.py --nmax-list 20,30,40"
+  run_step "19c" "plot_gn_cardy_vs_phase_space" \
+    "$PYTHON_BIN code/plot_gn_cardy_vs_phase_space.py"
   run_step "20" "lindblad_chi_minimal" \
     "$PYTHON_BIN code/lindblad_chi_minimal.py"
   run_step "21" "extract_chi_open_knots" \

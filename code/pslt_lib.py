@@ -48,11 +48,18 @@ class PSLTParameters:
     c_eff: float = 0.5      # Effective central charge (dimensionless)
     nu: float = 5.0         # Polynomial suppression exponent (dimensionless)
     kappa_g: float = 0.03    # High-N suppression strength in g_N: exp(-kappa_g*(N-1)^2)
-    g_mode: str = "cardy"   # "cardy", "fp_1d", "fp_2d"
+    g_mode: str = "cardy"   # "cardy", "fp_1d", "fp_2d", "fp_1d_full", "fp_2d_full"
     g_fp_1d_csv: Optional[str] = None
     g_fp_2d_csv: Optional[str] = None
+    g_fp_2d_spectrum_csv: Optional[str] = None
     g_fp_1d_ref_D: float = 12.0
     g_fp_blend: float = 0.01  # 0->cardy, 1->fully anchored first-principles shape (N=1..3)
+    # Used only in *_full modes.
+    g_fp_full_window_blend: float = 0.8  # 0->direct low-N profile, 1->microcanonical window profile
+    g_fp_full_tail_beta: float = 1.1     # Boltzmann-like suppression scale in microcanonical tail
+    g_fp_full_tail_shell_power: float = 0.0  # Shell-density slope weight in microcanonical tail
+    g_fp_full_tail_clip_min: float = 1e-3
+    g_fp_full_tail_clip_max: float = 0.95
     
     # Geometry & Kinetics
     Omega_H: float = 0.9    # Horizon proxy angular velocity [Mass] (scaled by M)
@@ -108,10 +115,22 @@ class PSLTParameters:
                 raise ValueError("chi_open_nstep must be >= 20.")
             if self.chi_open_phi_scale <= 0 or self.chi_open_mix_scale <= 0:
                 raise ValueError("chi_open_phi_scale and chi_open_mix_scale must be > 0.")
-        if self.g_mode not in {"cardy", "fp_1d", "fp_2d"}:
+        if self.g_mode not in {"cardy", "fp_1d", "fp_2d", "fp_1d_full", "fp_2d_full"}:
             raise ValueError(f"Unsupported g_mode='{self.g_mode}'.")
         if not (0.0 <= self.g_fp_blend <= 1.0):
             raise ValueError("g_fp_blend must be in [0,1].")
+        if not (0.0 <= self.g_fp_full_window_blend <= 1.0):
+            raise ValueError("g_fp_full_window_blend must be in [0,1].")
+        if self.g_fp_full_tail_beta <= 0.0:
+            raise ValueError("g_fp_full_tail_beta must be > 0.")
+        if self.g_fp_full_tail_shell_power < 0.0:
+            raise ValueError("g_fp_full_tail_shell_power must be >= 0.")
+        if not (0.0 < self.g_fp_full_tail_clip_min <= 1.0):
+            raise ValueError("g_fp_full_tail_clip_min must be in (0, 1].")
+        if not (0.0 < self.g_fp_full_tail_clip_max <= 1.0):
+            raise ValueError("g_fp_full_tail_clip_max must be in (0, 1].")
+        if self.g_fp_full_tail_clip_min > self.g_fp_full_tail_clip_max:
+            raise ValueError("g_fp_full_tail_clip_min cannot exceed g_fp_full_tail_clip_max.")
 
 # =============================================================================
 # 2. Yukawa Visibility Module
@@ -197,6 +216,9 @@ class PSLTKinetics:
         self._gamma_prefactor_cache: Dict[Tuple[int, float], float] = {}
         self._g_fp_1d_profile: Optional[Dict[str, np.ndarray]] = None
         self._g_fp_2d_profile: Optional[Dict[str, np.ndarray]] = None
+        self._g_fp_2d_spectrum: Optional[Dict[str, np.ndarray]] = None
+        self._g_fp_2d_spectrum_interp_cache: Dict[float, Dict[str, np.ndarray]] = {}
+        self._g_fp_2d_full_hat_cache: Dict[float, np.ndarray] = {}
         self._g_mode_active: str = "cardy"
         self._chi_mode_active: str = "constant"
         self._chi_open_profile: Optional[Dict[str, np.ndarray]] = None
@@ -289,20 +311,194 @@ class PSLTKinetics:
         g_sorted = np.vstack([entries[d] for d in d_sorted])
         return {"D": d_sorted, "g123": g_sorted}
 
+    def _load_g_fp_2d_spectrum(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        fine_rows = [r for r in rows if r.get("level", "").strip().lower() == "fine"]
+        use_rows = fine_rows if fine_rows else rows
+
+        entries: Dict[float, Dict[int, Tuple[float, float]]] = {}
+        for row in use_rows:
+            if row.get("D", "") in {"", None}:
+                continue
+            if row.get("mode_n", "") in {"", None}:
+                continue
+            if row.get("lambda_n", "") in {"", None}:
+                continue
+            if row.get("Nps_lambda_n", "") in {"", None}:
+                continue
+            dval = float(row["D"])
+            nval = int(float(row["mode_n"]))
+            if nval <= 0:
+                continue
+            lam = float(row["lambda_n"])
+            nps = float(row["Nps_lambda_n"])
+            entries.setdefault(dval, {})[nval] = (lam, nps)
+
+        if not entries:
+            return None
+
+        d_sorted = sorted(entries.keys())
+        common_modes = None
+        for dval in d_sorted:
+            mode_set = set(entries[dval].keys())
+            common_modes = mode_set if common_modes is None else (common_modes & mode_set)
+        if not common_modes:
+            return None
+
+        mode_list = sorted(int(n) for n in common_modes if int(n) >= 1)
+        n_max = 0
+        for n in mode_list:
+            if n == n_max + 1:
+                n_max = n
+            elif n > n_max + 1:
+                break
+        if n_max < 4:
+            return None
+
+        mode_idx = np.arange(1, n_max + 1, dtype=int)
+        lam_rows = []
+        nps_rows = []
+        for dval in d_sorted:
+            lam_rows.append([entries[dval][int(n)][0] for n in mode_idx])
+            nps_rows.append([entries[dval][int(n)][1] for n in mode_idx])
+
+        return {
+            "D": np.asarray(d_sorted, dtype=float),
+            "mode_n": mode_idx,
+            "lambda": np.asarray(lam_rows, dtype=float),
+            "nps": np.asarray(nps_rows, dtype=float),
+        }
+
+    def _interp_g_fp_2d_spectrum(self, D: float) -> Optional[Dict[str, np.ndarray]]:
+        if self._g_fp_2d_spectrum is None:
+            return None
+        d_key = float(round(D, 8))
+        cached = self._g_fp_2d_spectrum_interp_cache.get(d_key)
+        if cached is not None:
+            return cached
+
+        spec = self._g_fp_2d_spectrum
+        d_knots = spec["D"]
+        lam_knots = spec["lambda"]
+        nps_knots = spec["nps"]
+
+        if len(d_knots) == 1:
+            lam = lam_knots[0].astype(float)
+            nps = nps_knots[0].astype(float)
+        else:
+            lam = np.array([np.interp(D, d_knots, lam_knots[:, j]) for j in range(lam_knots.shape[1])], dtype=float)
+            nps = np.array([np.interp(D, d_knots, nps_knots[:, j]) for j in range(nps_knots.shape[1])], dtype=float)
+        out = {"lambda": np.maximum(lam, 1e-30), "nps": np.maximum(nps, 0.0)}
+        self._g_fp_2d_spectrum_interp_cache[d_key] = out
+        return out
+
+    def _build_fp_2d_full_hat_profile(self, D: float, g123_hat_direct: np.ndarray) -> np.ndarray:
+        """
+        Build a D-dependent ratio profile hat{g}_N = g_N / g_3 for fp_2d_full.
+
+        Low-N (N=1,2,3):
+          - Use a bounded microcanonical window anchored at E_cut=lambda_3:
+              hat{g}_1^(win) = 1 + Nps(lambda_3) - Nps(lambda_1)
+              hat{g}_2^(win) = 1 + Nps(lambda_3) - Nps(lambda_2)
+              hat{g}_3^(win) = 1
+          - Blend with the direct 2D extracted low-N ratios using
+            g_fp_full_window_blend in log-space.
+
+        Tail (N>3):
+          - Shell-density factor from adjacent phase-space shells.
+          - Boltzmann-like damping with local spacing scale (lambda_3-lambda_2).
+          - Per-step clipping for finite-volume stability.
+        """
+        d_key = float(round(D, 8))
+        cached = self._g_fp_2d_full_hat_cache.get(d_key)
+        if cached is not None:
+            return cached
+
+        spec = self._interp_g_fp_2d_spectrum(D)
+        direct = np.maximum(g123_hat_direct, 1e-30)
+        if spec is None:
+            # Fallback to legacy geometric extension when spectrum is unavailable.
+            n_cap = 64
+            hat = np.ones(n_cap, dtype=float)
+            hat[:3] = direct[:3]
+            r23 = float(direct[1] / max(direct[2], 1e-30))
+            r13 = float(direct[0] / max(direct[2], 1e-30))
+            r_tail = min(r23, r13)
+            r_tail = float(np.clip(r_tail, self.params.g_fp_full_tail_clip_min, self.params.g_fp_full_tail_clip_max))
+            for i in range(3, n_cap):
+                hat[i] = max(hat[i - 1] * r_tail, 1e-30)
+            self._g_fp_2d_full_hat_cache[d_key] = hat
+            return hat
+
+        lam = spec["lambda"]
+        nps = spec["nps"]
+        n_modes = len(lam)
+        hat = np.ones(n_modes, dtype=float)
+
+        nps1, nps2, nps3 = float(nps[0]), float(nps[1]), float(nps[2])
+        win = np.array(
+            [
+                1.0 + max(nps3 - nps1, 0.0),
+                1.0 + max(nps3 - nps2, 0.0),
+                1.0,
+            ],
+            dtype=float,
+        )
+        alpha = self.params.g_fp_full_window_blend
+        win = np.maximum(win, 1e-30)
+        low_hat = (direct[:3] ** (1.0 - alpha)) * (win ** alpha)
+        hat[:3] = np.maximum(low_hat, 1e-30)
+        hat[2] = 1.0
+
+        dE32 = max(float(lam[2] - lam[1]), 1e-9)
+        shell3 = max(float(nps[2] - nps[1]), 1e-30)
+        beta = self.params.g_fp_full_tail_beta
+        shell_power = self.params.g_fp_full_tail_shell_power
+        rmin = self.params.g_fp_full_tail_clip_min
+        rmax = self.params.g_fp_full_tail_clip_max
+
+        for idx in range(3, n_modes):
+            shell = max(float(nps[idx] - nps[idx - 1]), 1e-30)
+            shell_ratio = (shell / shell3) ** shell_power
+            boltz = math.exp(-beta * max(float(lam[idx] - lam[2]), 0.0) / dE32)
+            target_abs = max(shell_ratio * boltz, 1e-30)
+
+            prev = max(float(hat[idx - 1]), 1e-30)
+            step_target = target_abs / prev
+            step = float(np.clip(step_target, rmin, rmax))
+            hat[idx] = max(prev * step, 1e-30)
+
+        self._g_fp_2d_full_hat_cache[d_key] = hat
+        return hat
+
     def _init_g_profiles(self) -> None:
         p1 = Path(self.params.g_fp_1d_csv) if self.params.g_fp_1d_csv else self.root_dir / "output" / "gn_fp_1d" / "gn_phase_space_candidate_D12.csv"
         p2 = Path(self.params.g_fp_2d_csv) if self.params.g_fp_2d_csv else self.root_dir / "output" / "gn_fp_2d" / "gn_phase_space_2d_D6-12-18.csv"
+        p2_spec = Path(self.params.g_fp_2d_spectrum_csv) if self.params.g_fp_2d_spectrum_csv else self.root_dir / "output" / "gn_fp_2d" / "gn_phase_space_2d_spectrum_D6-12-18.csv"
 
         self._g_fp_1d_profile = self._load_g_fp_1d_profile(p1)
         self._g_fp_2d_profile = self._load_g_fp_2d_profile(p2)
+        self._g_fp_2d_spectrum = self._load_g_fp_2d_spectrum(p2_spec)
+        self._g_fp_2d_spectrum_interp_cache.clear()
+        self._g_fp_2d_full_hat_cache.clear()
 
         mode = self.params.g_mode
-        if mode == "fp_1d" and self._g_fp_1d_profile is None:
-            print(f"Warning: g_mode=fp_1d requested but profile is unavailable at {p1}. Falling back to cardy.")
+        if mode in {"fp_1d", "fp_1d_full"} and self._g_fp_1d_profile is None:
+            print(f"Warning: g_mode={mode} requested but profile is unavailable at {p1}. Falling back to cardy.")
             mode = "cardy"
-        if mode == "fp_2d" and self._g_fp_2d_profile is None:
-            print(f"Warning: g_mode=fp_2d requested but profile is unavailable at {p2}. Falling back to cardy.")
+        if mode in {"fp_2d", "fp_2d_full"} and self._g_fp_2d_profile is None:
+            print(f"Warning: g_mode={mode} requested but profile is unavailable at {p2}. Falling back to cardy.")
             mode = "cardy"
+        if mode == "fp_2d_full" and self._g_fp_2d_spectrum is None:
+            print(
+                "Warning: g_mode=fp_2d_full requested but no 2D spectrum file was parsed "
+                f"at {p2_spec}. Using legacy geometric full-tail fallback."
+            )
         self._g_mode_active = mode
 
     def active_g_mode(self) -> str:
@@ -442,6 +638,8 @@ class PSLTKinetics:
           - cardy: baseline surrogate.
           - fp_1d / fp_2d: first-principles N=1..3 shape correction (D-interpolated when
             available) blended onto cardy by g_fp_blend; N>3 follows cardy tail.
+          - fp_1d_full / fp_2d_full: first-principles N=1..3 profile with
+            full-profile continuation for N>3 (no Cardy tail fallback).
         """
         if N <= 0:
             return 0.0
@@ -450,15 +648,41 @@ class PSLTKinetics:
         if mode == "cardy":
             return self.g_N_cardy(N)
 
-        profile = self._g_fp_1d_profile if mode == "fp_1d" else self._g_fp_2d_profile
+        profile = self._g_fp_1d_profile if mode.startswith("fp_1d") else self._g_fp_2d_profile
         if profile is None:
             return self.g_N_cardy(N)
 
         g123_raw = self._interp_g123(D, profile)
         g3_raw = max(float(g123_raw[2]), 1e-30)
+        g123_hat = np.maximum(g123_raw / g3_raw, 1e-30)
         g3_cardy = self.g_N_cardy(3)
+
+        if mode in {"fp_1d_full", "fp_2d_full"}:
+            # Anchor overall scale at N=3 baseline while replacing the full shape.
+            if mode == "fp_2d_full":
+                hat_full = self._build_fp_2d_full_hat_profile(D, g123_hat)
+                if N <= len(hat_full):
+                    return float(max(g3_cardy * float(hat_full[N - 1]), 1e-30))
+
+                if len(hat_full) >= 2:
+                    step_tail = float(hat_full[-1] / max(hat_full[-2], 1e-30))
+                else:
+                    step_tail = self.params.g_fp_full_tail_clip_min
+                step_tail = float(np.clip(step_tail, self.params.g_fp_full_tail_clip_min, self.params.g_fp_full_tail_clip_max))
+                ratio = float(hat_full[-1]) * (step_tail ** (N - len(hat_full)))
+                return float(max(g3_cardy * ratio, 1e-30))
+
+            if N <= 3:
+                return float(max(g3_cardy * g123_hat[N - 1], 1e-30))
+            # 1D full mode keeps the legacy geometric extension.
+            r23 = float(g123_hat[1] / max(g123_hat[2], 1e-30))
+            r13 = float(g123_hat[0] / max(g123_hat[2], 1e-30))
+            r_tail = min(r23, r13)
+            r_tail = float(np.clip(r_tail, self.params.g_fp_full_tail_clip_min, self.params.g_fp_full_tail_clip_max))
+            return float(max(g3_cardy * (r_tail ** (N - 3)), 1e-30))
+
         if N <= 3:
-            ratio_fp = float(g123_raw[N - 1] / g3_raw)
+            ratio_fp = float(g123_hat[N - 1])
             ratio_cardy = self.g_N_cardy(N) / max(g3_cardy, 1e-30)
             shape_corr = ratio_fp / max(ratio_cardy, 1e-30)
             blend = self.params.g_fp_blend

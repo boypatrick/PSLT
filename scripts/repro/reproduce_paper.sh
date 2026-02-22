@@ -150,6 +150,8 @@ sync_paper_assets() {
   sync_one "output/robustness/core_param_robustness_table.csv" "paper/core_param_robustness.csv" 1
   sync_one "output/gn_fp_impact/gn_profile_impact.csv" "paper/gn_profile_impact.csv" 1
   sync_one "output/gn_fp_impact/gn_nmax_convergence.csv" "paper/gn_nmax_convergence.csv" 1
+  sync_one "output/gn_fp_impact/gn_baseline_replacement.csv" "paper/gn_baseline_replacement.csv" 1
+  sync_one "output/gn_fp_impact/gn_baseline_replacement_nmax.csv" "paper/gn_baseline_replacement_nmax.csv" 1
   sync_one "output/gn_fp_impact/gn_cardy_vs_phase_space.csv" "paper/gn_cardy_vs_phase_space.csv" 1
   sync_one "output/gn_fp_impact/gn_cardy_vs_phase_space.png" "paper/gn_cardy_vs_phase_space.png" 1
   sync_one "output/chi_open_system/chi_open_system_sensitivity.csv" "paper/chi_open_system_sensitivity.csv" 1
@@ -217,7 +219,9 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/scan_gn_profile_impact.py"
   run_step "19b" "scan_gn_nmax_convergence" \
     "$PYTHON_BIN code/scan_gn_nmax_convergence.py --nmax-list 20,30,40"
-  run_step "19c" "plot_gn_cardy_vs_phase_space" \
+  run_step "19c" "scan_gn_baseline_replacement" \
+    "$PYTHON_BIN code/scan_gn_baseline_replacement.py"
+  run_step "19d" "plot_gn_cardy_vs_phase_space" \
     "$PYTHON_BIN code/plot_gn_cardy_vs_phase_space.py"
   run_step "20" "lindblad_chi_minimal" \
     "$PYTHON_BIN code/lindblad_chi_minimal.py"

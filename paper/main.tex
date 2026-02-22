@@ -779,7 +779,7 @@ Global maps and proxy plots & \texttt{generate\_plots.py}; \texttt{scan\_hll\_si
 Localized mixing extraction & \texttt{extract\_chi\_localized\_2d.py} (\texttt{--Ds}, \texttt{--full-scan}) & \texttt{output/chi\_fp\_2d/localized\_chi\_D*.csv} \\
 Localized-profile diagnostics & \texttt{scan\_chi\_profile\_robustness.py}; \texttt{scan\_surrogate\_vs\_action\_points.py}; \texttt{plot\_chi\_*.py} & \texttt{paper/chi\_profile\_robustness.csv}; \texttt{paper/surrogate\_vs\_action\_points.csv}; \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}; \texttt{paper/chi\_wavefunction\_contours\_D*.png} \\
 Core-parameter robustness & \texttt{scan\_core\_param\_robustness.py} & \texttt{paper/core\_param\_robustness.csv}; \texttt{output/robustness/core\_param\_robustness\_cases.csv} \\
-$g_N$ first-principles candidates & \path{extract_gn_phase_space_candidate.py}; \path{extract_gn_phase_space_2d.py}; \path{scan_gn_profile_impact.py}; \path{scan_gn_nmax_convergence.py}; \path{plot_gn_cardy_vs_phase_space.py} & \texttt{output/gn\_fp\_1d/*.csv}; \texttt{output/gn\_fp\_2d/*.csv}; \texttt{paper/gn\_profile\_impact.csv}; \texttt{paper/gn\_nmax\_convergence.csv}; \texttt{paper/gn\_cardy\_vs\_phase\_space.png} \\
+$g_N$ first-principles candidates & \path{extract_gn_phase_space_candidate.py}; \path{extract_gn_phase_space_2d.py}; \path{scan_gn_profile_impact.py}; \path{scan_gn_nmax_convergence.py}; \path{scan_gn_baseline_replacement.py}; \path{plot_gn_cardy_vs_phase_space.py} & \texttt{output/gn\_fp\_1d/*.csv}; \texttt{output/gn\_fp\_2d/*.csv}; \texttt{paper/gn\_profile\_impact.csv}; \texttt{paper/gn\_nmax\_convergence.csv}; \texttt{paper/gn\_baseline\_replacement.csv}; \texttt{paper/gn\_cardy\_vs\_phase\_space.png} \\
 Open-system diagnostics & \texttt{lindblad\_chi\_minimal.py}; \texttt{extract\_chi\_open\_system\_*.py}; \texttt{scan\_chi\_open\_system\_*.py} & \texttt{output/chi\_open\_system/*.csv}; \texttt{paper/chi\_open\_system\_sensitivity.csv} \\
 Other first-principles profiles & \texttt{extract\_tcoh\_*.py}, \texttt{extract\_eta\_*.py}, \texttt{extract\_superrad\_*.py}; \texttt{scan\_*\_profile\_impact.py} & \texttt{paper/tcoh\_profile\_impact.csv}; \texttt{paper/eta\_profile\_impact.csv}; \texttt{paper/superrad\_profile\_impact.csv} \\
 Packaging and manifest & \texttt{package\_repro\_outputs.py} (wrapper stage) & \texttt{repro/runs/<RUN\_ID>/figures/}; \texttt{repro/runs/<RUN\_ID>/tables/}; \texttt{artifact\_index.csv}; \texttt{checksums.sha256}; \texttt{manifest.json} \\
@@ -1233,6 +1233,42 @@ $g_N$ fp\_2d profile & 40 & 0.783 & 0.0942 & 0.000 & 0.090492 \\
 \end{tabular}
 \end{table}
 Across $N_{\max}=20,30,40$, both baseline and fp\_2d scenarios are numerically stable at map level: the key fractions $f(\mathcal{R}_3>0.90)$, $f(\chi^2_{\mu\mu}<4)$, and $f(N_{\rm win}>3)$ remain unchanged in this scan.
+
+\subsection{Baseline-Replacement Stress Test: \texorpdfstring{$g\_mode=\mathrm{fp\_2d\_full}$}{g_mode=fp_2d_full}}
+To test a strict replacement scenario (not only low-$N$ shape correction), we added an upgraded full-tail mode \texttt{g\_mode=fp\_2d\_full}. Instead of direct low-$N$ substitution plus geometric continuation, this upgrade uses an explicit bounded microcanonical window for $N\le 3$ and an energy-gap tail prescription for $N>3$:
+\begin{equation}
+g_N^{\rm(full)}(D)=g_3^{\rm(cardy)}\hat g_N(D),\quad
+\hat g_n=\left(\hat g_n^{\rm(dir)}\right)^{1-\alpha}\left(\hat g_n^{\rm(win)}\right)^{\alpha}\ (n=1,2,3),
+\end{equation}
+with
+\begin{equation}
+\hat g_1^{\rm(win)}=1+N_{\rm ps}(\lambda_3)-N_{\rm ps}(\lambda_1),\ 
+\hat g_2^{\rm(win)}=1+N_{\rm ps}(\lambda_3)-N_{\rm ps}(\lambda_2),\ 
+\hat g_3^{\rm(win)}=1,
+\end{equation}
+and for $N>3$,
+\begin{equation}
+\hat g_N^{\rm(target)}=\left(\frac{\Delta N_{\rm ps}^{(N)}}{\Delta N_{\rm ps}^{(3)}}\right)^{s}
+\exp\!\left[-\beta\frac{\lambda_N-\lambda_3}{\lambda_3-\lambda_2}\right],
+\end{equation}
+followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present stress test, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement} (source CSV: \texttt{paper/gn\_baseline\_replacement.csv}). Relative to baseline Cardy, this upgraded full replacement keeps $f(\mathcal{R}_3>0.90)$ unchanged at $0.800$ ($\Delta=0.000$), with a small shift in $f(\chi^2_{\mu\mu}<4)$ to $0.0908$ and $f(N_{\rm win}>3)=0$ still controlled. Therefore, the map-level main conclusion is retained under this same-framework upgrade.
+
+\begin{table}[t]
+\centering
+\caption{Map-level baseline-replacement stress test for $g_N$: Cardy baseline versus full 2D phase-space-tail mode (\texttt{fp\_2d\_full}) on the same $60\times60$ grid. Source CSV: \texttt{paper/gn\_baseline\_replacement.csv}.}
+\label{tab:gn_baseline_replacement}
+\small
+\begin{tabular}{lcccc}
+\hline\hline
+case & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & $\Delta f(\mathcal{R}_3>0.90)$ vs baseline \\
+\hline
+baseline Cardy & 0.800 & 0.0942 & 0.000 & 0.000 \\
+$g_N$ fp\_2d full-tail replacement & 0.800 & 0.0908 & 0.000 & 0.000 \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+Across $N_{\max}=20,30,40$, both rows in Table~\ref{tab:gn_baseline_replacement} are numerically stable in this setup (source CSV: \texttt{paper/gn\_baseline\_replacement\_nmax.csv}).
 
 \subsection{Geometry-Informed Lindblad Scan-Ready Module for Open-System \texorpdfstring{$\chi$}{chi}}
 \label{app:chi_open_scan}

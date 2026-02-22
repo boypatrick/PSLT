@@ -49,11 +49,13 @@ BASELINE = {
     "A1": 1.0,
     "A2": 1.0,
     "p_B": 0.30,
+    "b_mode": "overlap_2d",
     "t_coh": 1.0,
     "n_max": 20,
     "hmumu_ref_D": 10.0,
     "hmumu_ref_eta": 1.0,
 }
+B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 
 
 POINTS = [
@@ -98,6 +100,8 @@ def make_kinetics_surrogate(d_knots: np.ndarray, chi_knots: np.ndarray) -> PSLTK
         chi_lr_vals=tuple(float(y) for y in chi_knots),
         A1=BASELINE["A1"],
         A2=BASELINE["A2"],
+        b_mode=BASELINE["b_mode"],
+        b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
@@ -120,6 +124,8 @@ def make_kinetics_constant(chi_const: float) -> PSLTKinetics:
         chi_mode="constant",
         A1=BASELINE["A1"],
         A2=BASELINE["A2"],
+        b_mode=BASELINE["b_mode"],
+        b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
@@ -131,7 +137,7 @@ def compute_w2(kin: PSLTKinetics, d: float, eta: float) -> float:
     n = 2
     gamma = kin.calculate_gamma_N(n, d, eta)
     g_n = kin.g_N_effective(n, d)
-    b_n = kin.B_N(n)
+    b_n = kin.B_N(n, d)
     return float(b_n * g_n * (1.0 - np.exp(-gamma * BASELINE["t_coh"])))
 
 

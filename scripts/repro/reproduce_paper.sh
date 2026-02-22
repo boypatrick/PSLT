@@ -148,6 +148,7 @@ sync_paper_assets() {
   sync_one "output/chi_fp_2d/surrogate_vs_action_points.csv" "paper/surrogate_vs_action_points.csv" 1
   sync_one "output/chi_fp_2d/surrogate_vs_action_points_summary.csv" "paper/surrogate_vs_action_points_summary.csv" 1
   sync_one "output/robustness/core_param_robustness_table.csv" "paper/core_param_robustness.csv" 1
+  sync_one "output/y_eff_2d/y_eff_2d_three_channel_profile.csv" "paper/y_eff_2d_three_channel_profile.csv" 0
   sync_one "output/gn_fp_impact/gn_profile_impact.csv" "paper/gn_profile_impact.csv" 1
   sync_one "output/gn_fp_impact/gn_nmax_convergence.csv" "paper/gn_nmax_convergence.csv" 1
   sync_one "output/gn_fp_impact/gn_baseline_replacement.csv" "paper/gn_baseline_replacement.csv" 1
@@ -179,6 +180,10 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/extract_chi_localized_2d.py --Ds 6,12,18"
   run_step "02" "extract_chi_localized_fullscan" \
     "$PYTHON_BIN code/extract_chi_localized_2d.py --full-scan"
+  run_step "02b" "extract_y_eff_knots" \
+    "$PYTHON_BIN code/extract_y_eff_2d_three_channel.py --Ds 6,12,18"
+  run_step "02c" "extract_y_eff_fullscan" \
+    "$PYTHON_BIN code/extract_y_eff_2d_three_channel.py --full-scan"
   run_step "03" "scan_chi_profile_robustness" \
     "$PYTHON_BIN code/scan_chi_profile_robustness.py"
   run_step "03b" "scan_surrogate_vs_action_points" \

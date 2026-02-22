@@ -3,9 +3,9 @@
 Build a map-level comparison snapshot for first-principles migration.
 
 Compared scenarios:
-  1) baseline:        g_mode=fp_2d_full, chi_mode=localized_interp
-  2) legacy reference g_mode=cardy, chi_mode=localized_interp
-  3) chi open-system: g_mode=fp_2d_full, chi_mode=open_system
+  1) baseline:        g_mode=fp_2d_full, chi_mode=localized_interp, b_mode=overlap_2d
+  2) legacy reference g_mode=cardy, chi_mode=localized_interp, b_mode=overlap_2d
+  3) chi open-system: g_mode=fp_2d_full, chi_mode=open_system, b_mode=overlap_2d
 
 Inputs:
   - output/gn_fp_impact/gn_profile_impact.csv
@@ -75,6 +75,7 @@ def build_summary() -> pd.DataFrame:
             "scenario": "baseline_fp2d_full_localized",
             "g_mode": "fp_2d_full",
             "chi_mode": "localized_interp",
+            "b_mode": "overlap_2d",
             "f_R3_gt_0p90": base_r3,
             "delta_f_R3_gt_0p90_vs_baseline": 0.0,
             "f_hmumu_chi2_le_4": base_hmumu,
@@ -91,6 +92,7 @@ def build_summary() -> pd.DataFrame:
             "scenario": "legacy_cardy_localized",
             "g_mode": "cardy",
             "chi_mode": "localized_interp",
+            "b_mode": "overlap_2d",
             "f_R3_gt_0p90": _to_float(legacy["f_R3_gt_0p90"]),
             "delta_f_R3_gt_0p90_vs_baseline": _to_float(legacy["f_R3_gt_0p90"]) - base_r3,
             "f_hmumu_chi2_le_4": _to_float(legacy["f_hmumu_chi2_le_4"]),
@@ -107,6 +109,7 @@ def build_summary() -> pd.DataFrame:
             "scenario": "chi_open_system_base",
             "g_mode": "fp_2d_full",
             "chi_mode": "open_system",
+            "b_mode": "overlap_2d",
             "f_R3_gt_0p90": _to_float(open_base["f_R3_gt_0p90"]),
             "delta_f_R3_gt_0p90_vs_baseline": _to_float(open_base["f_R3_gt_0p90"]) - base_r3,
             "f_hmumu_chi2_le_4": _to_float(open_base["f_hmumu_chi2_le_4"]),
@@ -125,9 +128,9 @@ def build_summary() -> pd.DataFrame:
 
 def make_plot(df: pd.DataFrame, out_png: Path) -> None:
     labels = [
-        "baseline\nfp_2d_full+localized",
-        "legacy\ncardy+localized",
-        "chi open\nfp_2d_full+open",
+        "baseline\nfp_2d_full+localized+overlap",
+        "legacy\ncardy+localized+overlap",
+        "chi open\nfp_2d_full+open+overlap",
     ]
     x = np.arange(len(labels))
     colors = ["#5b6770", "#1f77b4", "#d97706"]

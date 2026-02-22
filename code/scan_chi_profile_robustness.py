@@ -24,6 +24,7 @@ from pslt_lib import PSLTKinetics, PSLTParameters
 ROOT = Path(__file__).resolve().parent.parent
 OUTDIR = ROOT / "output" / "chi_fp_2d"
 PAPER_DIR = ROOT / "paper"
+B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 
 
 @dataclass(frozen=True)
@@ -37,6 +38,7 @@ BASELINE = {
     "c_eff": 0.5,
     "nu": 5.0,
     "kappa_g": 0.03,
+    "g_mode": "fp_2d_full",
     "A1": 1.0,
     "A2": 1.0,
     "p_B": 0.30,
@@ -90,12 +92,20 @@ def make_kinetics(d_profile: np.ndarray, chi_profile: np.ndarray) -> PSLTKinetic
         c_eff=BASELINE["c_eff"],
         nu=BASELINE["nu"],
         kappa_g=BASELINE["kappa_g"],
+        g_mode=BASELINE["g_mode"],
+        g_fp_full_window_blend=0.8,
+        g_fp_full_tail_beta=1.1,
+        g_fp_full_tail_shell_power=0.0,
+        g_fp_full_tail_clip_min=1e-3,
+        g_fp_full_tail_clip_max=0.95,
         chi=0.2,
         chi_mode="localized_interp",
         chi_lr_D=tuple(float(x) for x in d_profile),
         chi_lr_vals=tuple(float(y) for y in chi_profile),
         A1=BASELINE["A1"],
         A2=BASELINE["A2"],
+        b_mode="overlap_2d",
+        b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
@@ -126,8 +136,8 @@ def evaluate_case(case: ProfileCase, d_knots: np.ndarray, chi_knots: np.ndarray)
     def get_w2(d: float, eta: float) -> float:
         n = 2
         gamma = kinetics.calculate_gamma_N(n, d, eta)
-        g_n = kinetics.g_N_cardy(n)
-        b_n = kinetics.B_N(n)
+        g_n = kinetics.g_N_effective(n, d)
+        b_n = kinetics.B_N(n, d)
         return b_n * g_n * (1.0 - np.exp(-gamma * t_coh))
 
     w2_ref = get_w2(BASELINE["hmumu_ref_D"], BASELINE["hmumu_ref_eta"])

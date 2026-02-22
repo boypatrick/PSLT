@@ -85,6 +85,9 @@ class PSLTParameters:
     eps: float = 0.2        # Core regulator length [Length] ~ 1/[Mass] (scaled)
     
     # Visibility Scaling (Yukawa-proportional with compressed hierarchy)
+    b_mode: str = "yukawa"  # "yukawa" or "overlap_2d"
+    b_overlap_csv: Optional[str] = None
+    b_overlap_floor: float = 1e-8
     b_n_mode: str = "cumulative"  # "cumulative" or "single" over lepton Yukawas
     b_n_power: float = 0.30       # Sublinear compression: B_gen ∝ (y_gen)^{b_n_power}
     b_n_tail_mode: str = "saturate"  # "saturate" (paper baseline) or "gaussian"
@@ -131,6 +134,10 @@ class PSLTParameters:
             raise ValueError("g_fp_full_tail_clip_max must be in (0, 1].")
         if self.g_fp_full_tail_clip_min > self.g_fp_full_tail_clip_max:
             raise ValueError("g_fp_full_tail_clip_min cannot exceed g_fp_full_tail_clip_max.")
+        if self.b_mode not in {"yukawa", "overlap_2d"}:
+            raise ValueError(f"Unsupported b_mode='{self.b_mode}'.")
+        if self.b_overlap_floor <= 0:
+            raise ValueError("b_overlap_floor must be > 0.")
 
 # =============================================================================
 # 2. Yukawa Visibility Module
@@ -223,6 +230,8 @@ class PSLTKinetics:
         self._chi_mode_active: str = "constant"
         self._chi_open_profile: Optional[Dict[str, np.ndarray]] = None
         self._chi_open_cache: Dict[float, float] = {}
+        self._b_mode_active: str = "yukawa"
+        self._b_overlap_profile: Optional[Dict[str, np.ndarray]] = None
         
         # Initialize Visibility Factors (Gen 1-3 from Yukawa, N>3 decouples)
         try:
@@ -236,6 +245,7 @@ class PSLTKinetics:
             print(f"Warning: Could not initialize Yukawa B_N ({e}). Using defaults.")
             self.B_map = {1: 0.05, 2: 0.25, 3: 1.0}
 
+        self._init_b_profiles()
         self._init_g_profiles()
         self._init_chi_profiles()
 
@@ -501,6 +511,104 @@ class PSLTKinetics:
             )
         self._g_mode_active = mode
 
+    def _load_b_overlap_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        entries: Dict[float, np.ndarray] = {}
+        for row in rows:
+            if row.get("D", "") in {"", None}:
+                continue
+            dval = float(row["D"])
+
+            # Preferred explicit B columns.
+            if all(k in row and row[k] not in {"", None} for k in ("B1", "B2", "B3")):
+                bvals = np.array(
+                    [max(float(row["B1"]), 1e-30), max(float(row["B2"]), 1e-30), max(float(row["B3"]), 1e-30)],
+                    dtype=float,
+                )
+            # Fallback to cumulative overlap strengths.
+            elif all(k in row and row[k] not in {"", None} for k in ("y_eff_cum_1", "y_eff_cum_2", "y_eff_cum_3")):
+                yvals = np.array(
+                    [
+                        max(float(row["y_eff_cum_1"]), 1e-30),
+                        max(float(row["y_eff_cum_2"]), 1e-30),
+                        max(float(row["y_eff_cum_3"]), 1e-30),
+                    ],
+                    dtype=float,
+                )
+                bvals = yvals / max(yvals[2], 1e-30)
+            # Fallback to raw overlap strengths.
+            elif all(k in row and row[k] not in {"", None} for k in ("y_eff_raw_1", "y_eff_raw_2", "y_eff_raw_3")):
+                yraw = np.array(
+                    [
+                        max(float(row["y_eff_raw_1"]), 0.0),
+                        max(float(row["y_eff_raw_2"]), 0.0),
+                        max(float(row["y_eff_raw_3"]), 0.0),
+                    ],
+                    dtype=float,
+                )
+                ycum = np.array([yraw[0], yraw[0] + yraw[1], yraw[0] + yraw[1] + yraw[2]], dtype=float)
+                bvals = ycum / max(ycum[2], 1e-30)
+            else:
+                continue
+
+            # Normalize profile row-wise to enforce B3=1 in overlap mode.
+            bvals = np.maximum(bvals / max(bvals[2], 1e-30), self.params.b_overlap_floor)
+            entries[dval] = bvals
+
+        if not entries:
+            return None
+
+        d_sorted = np.array(sorted(entries.keys()), dtype=float)
+        b_sorted = np.vstack([entries[d] for d in d_sorted])
+        return {"D": d_sorted, "B123": b_sorted}
+
+    def _auto_find_b_overlap_csv(self) -> Optional[Path]:
+        base = self.root_dir / "output" / "y_eff_2d"
+        if not base.exists():
+            return None
+
+        canonical = base / "y_eff_2d_three_channel_profile.csv"
+        if canonical.exists():
+            return canonical
+
+        cands = sorted(base.glob("y_eff_2d_three_channel_profile_D*.csv"))
+        if cands:
+            return cands[-1]
+        return None
+
+    def _init_b_profiles(self) -> None:
+        mode = self.params.b_mode
+        self._b_mode_active = "yukawa"
+        self._b_overlap_profile = None
+
+        if mode != "overlap_2d":
+            return
+
+        if self.params.b_overlap_csv:
+            path = Path(self.params.b_overlap_csv)
+        else:
+            path = self._auto_find_b_overlap_csv()
+
+        if path is None:
+            print("Warning: b_mode=overlap_2d requested but no overlap profile CSV was found. Falling back to yukawa.")
+            return
+
+        prof = self._load_b_overlap_profile(path)
+        if prof is None:
+            print(f"Warning: could not parse overlap B_N profile from {path}. Falling back to yukawa.")
+            return
+
+        self._b_overlap_profile = prof
+        self._b_mode_active = "overlap_2d"
+
+    def active_b_mode(self) -> str:
+        return self._b_mode_active
+
     def active_g_mode(self) -> str:
         return self._g_mode_active
 
@@ -691,7 +799,16 @@ class PSLTKinetics:
         return self.g_N_cardy(N)
 
     # --- Visibility ---
-    def B_N(self, N: int) -> float:
+    def B_N(self, N: int, D: Optional[float] = None) -> float:
+        # Overlap-derived visibility profile for N=1,2,3.
+        if self._b_mode_active == "overlap_2d" and self._b_overlap_profile is not None and N <= 3:
+            prof = self._b_overlap_profile
+            d_knots = prof["D"]
+            b_knots = prof["B123"][:, N - 1]
+            d_eval = float(np.mean(d_knots)) if D is None else float(D)
+            b_val = float(np.interp(d_eval, d_knots, b_knots))
+            return float(max(b_val, self.params.b_overlap_floor))
+
         # SM-anchored visibility for N=1,2,3
         if N in self.B_map:
             return float(self.B_map[N])
@@ -901,7 +1018,7 @@ class PSLTKinetics:
         for N in Ns:
             g = self.g_N_effective(N, D)
             Gam = self.calculate_gamma_N(N, D, eta)
-            B = self.B_N(N)
+            B = self.B_N(N, D)
             
             # Main Closed Chain Equation
             factor = 1 - np.exp(-Gam * t_coh)

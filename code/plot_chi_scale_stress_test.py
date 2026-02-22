@@ -28,6 +28,7 @@ from pslt_lib import PSLTKinetics, PSLTParameters
 ROOT = Path(__file__).resolve().parent.parent
 OUTDIR = ROOT / "output" / "chi_fp_2d"
 PAPER_DIR = ROOT / "paper"
+B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 
 
 def load_fine_knots() -> Tuple[np.ndarray, np.ndarray]:
@@ -49,12 +50,20 @@ def make_kinetics(d_knots: np.ndarray, chi_knots: np.ndarray, scale: float) -> P
         c_eff=0.5,
         nu=5.0,
         kappa_g=0.03,
+        g_mode="fp_2d_full",
+        g_fp_full_window_blend=0.8,
+        g_fp_full_tail_beta=1.1,
+        g_fp_full_tail_shell_power=0.0,
+        g_fp_full_tail_clip_min=1e-3,
+        g_fp_full_tail_clip_max=0.95,
         chi=0.2,
         chi_mode="localized_interp",
         chi_lr_D=tuple(float(x) for x in d_knots),
         chi_lr_vals=tuple(float(y * scale) for y in chi_knots),
         A1=1.0,
         A2=1.0,
+        b_mode="overlap_2d",
+        b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
@@ -74,7 +83,7 @@ def scan_masks(scale: float, d_knots: np.ndarray, chi_knots: np.ndarray) -> Dict
     def w2(d: float, eta: float) -> float:
         n = 2
         gamma = kin.calculate_gamma_N(n, d, eta)
-        return kin.B_N(n) * kin.g_N_cardy(n) * (1.0 - np.exp(-gamma * t_coh))
+        return kin.B_N(n, d) * kin.g_N_effective(n, d) * (1.0 - np.exp(-gamma * t_coh))
 
     w2_ref = w2(10.0, 1.0)
     mu_obs, sigma = 1.4, 0.4

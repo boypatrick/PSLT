@@ -38,4 +38,5 @@ table,tab22,Tab_22_core_param_robustness.csv,output/robustness/core_param_robust
 table,tab23,Tab_23_core_param_robustness_cases.csv,output/robustness/core_param_robustness_cases.csv,1,Raw case-level map fractions for baseline and +/- parameter windows
 table,tab24,Tab_24_gn_baseline_replacement.csv,output/gn_fp_impact/gn_baseline_replacement.csv,1,Baseline Cardy vs fp_2d_full replacement stress test summary
 table,tab25,Tab_25_gn_baseline_replacement_nmax.csv,output/gn_fp_impact/gn_baseline_replacement_nmax.csv,1,N_max convergence rows for baseline replacement stress test
+table,tab26,Tab_26_y_eff_overlap_profile.csv,output/y_eff_2d/y_eff_2d_three_channel_profile.csv,1,Overlap-defined visibility profile B_N(D) from y_N^eff extraction
 paper,paper01,Paper_main.pdf,paper/main.pdf,0,Optional manuscript PDF (requires --with-paper)

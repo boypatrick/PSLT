@@ -68,6 +68,7 @@ PAPER_BASELINE = {
     "A1": 1.0,
     "A2": 1.0,
     "p_B": 0.30,
+    "b_mode": "overlap_2d",
     "t_coh": 1.0,
     "ref_D": 10.0,
     "ref_eta": 1.0,
@@ -81,6 +82,7 @@ PAPER_BASELINE = {
 
 DEFAULT_CHI_D = np.array([6.0, 12.0, 18.0], dtype=float)
 DEFAULT_CHI_VALS = np.array([4.01827e-4, 2.21414e-4, 2.13187e-4], dtype=float)
+B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 
 
 @dataclass(frozen=True)
@@ -178,6 +180,8 @@ def make_baseline_kinetics() -> PSLTKinetics:
         chi_lr_vals=tuple(float(x) for x in chi_vals),
         A1=PAPER_BASELINE["A1"],
         A2=PAPER_BASELINE["A2"],
+        b_mode=PAPER_BASELINE["b_mode"],
+        b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=PAPER_BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
@@ -194,7 +198,7 @@ def layer_weight(
 ) -> float:
     gamma_n = kinetics.calculate_gamma_N(layer_n, d_val, eta_val)
     g_n = kinetics.g_N_effective(layer_n, d_val)
-    b_n = kinetics.B_N(layer_n)
+    b_n = kinetics.B_N(layer_n, d_val)
     return float(b_n * g_n * (1.0 - np.exp(-gamma_n * t_coh)))
 
 

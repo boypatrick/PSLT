@@ -32,6 +32,7 @@ from pslt_lib import PSLTKinetics, PSLTParameters
 OUTDIR = ROOT / "output" / "gn_fp_impact"
 PAPER_DIR = ROOT / "paper"
 G_FP_BLEND = 0.01
+B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 
 
 @dataclass(frozen=True)
@@ -53,6 +54,8 @@ def make_kinetics(g_mode: str) -> PSLTKinetics:
         chi_lr_vals=(4.01827e-4, 2.21414e-4, 2.13187e-4),
         A1=1.0,
         A2=1.0,
+        b_mode="overlap_2d",
+        b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
@@ -73,7 +76,7 @@ def eval_case_nmax(case: Case, n_max: int) -> Dict[str, float]:
         N = 2
         gam = kin.calculate_gamma_N(N, D, eta)
         g = kin.g_N_effective(N, D)
-        B = kin.B_N(N)
+        B = kin.B_N(N, D)
         return float(B * g * (1.0 - np.exp(-gam * t_coh)))
 
     W2_ref = W2(D0, eta0)

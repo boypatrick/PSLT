@@ -1,0 +1,32 @@
+{
+  "hll_observable_mode": "eft_wilson_matched",
+  "selection_from_fixed_scan": {
+    "fixed_scan_ref_D": 10.0,
+    "fixed_scan_ref_eta": 1.0,
+    "f_chi2_le_4": 0.16805555555555557,
+    "best_chi2": 0.00016053710270786008,
+    "best_D": 9.423728813559322,
+    "best_eta": 1.2949152542372881,
+    "r3_mean": 0.8786152444205416,
+    "r3_frac_gt_090": 0.9322222222222222
+  },
+  "selected_by_mode": {
+    "fixed": {
+      "D": 9.966101694915254,
+      "eta": 0.9728813559322034
+    },
+    "chi2_best": {
+      "D": 9.423728813559322,
+      "eta": 1.2949152542372881
+    },
+    "robust_center": {
+      "D": 8.610169491525424,
+      "eta": 2.840677966101695
+    }
+  },
+  "recommended_mode": "robust_center",
+  "recommended": {
+    "D": 8.610169491525424,
+    "eta": 2.840677966101695
+  }
+}

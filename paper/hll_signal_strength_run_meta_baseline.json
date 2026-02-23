@@ -1,0 +1,9 @@
+{
+  "ref_mode": "fixed",
+  "ref_D": 10.0,
+  "ref_eta": 1.0,
+  "ref_source": "fixed_cli",
+  "suffix": "",
+  "observable_mode": "eft_wilson_matched",
+  "tag": ""
+}

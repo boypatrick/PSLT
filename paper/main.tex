@@ -676,7 +676,23 @@ C_{eH}^{ij}(D,\eta)=\sum_{N=1}^{3}Y_{iN}(D,\eta)\,P_N^{\rm(kin)}(D,\eta)\,Y_{jN}
 \left[\frac{\Gamma_{\rm tot}(D,\eta)}{\Gamma_{\rm tot}(D_0,\eta_0)}\right]^{-1}.
 \label{eq:mu_pred}
 \end{equation}
-Here $(D_0,\eta_0)=(10,1)$ is a fixed reference point. Equation~\eqref{eq:mu_pred} is implemented in \texttt{pslt\_lib.py} with \texttt{hll\_observable\_mode=eft\_wilson\_matched}; it is still a scan-level EFT module (not yet a full UV-to-EFT derivation from loop-level EYMH matching).
+In the baseline figures we keep a fixed reference point $(D_0,\eta_0)=(10,1)$ for comparability across scan variants.
+Equation~\eqref{eq:mu_pred} is implemented in \texttt{pslt\_lib.py} with \texttt{hll\_observable\_mode=eft\_wilson\_matched}; it is still a scan-level EFT module (not yet a full UV-to-EFT derivation from loop-level EYMH matching).
+\begin{equation}
+\left(D_0,\eta_0\right)_{\chi^2\text{-best}}
+\equiv
+\arg\min_{(D,\eta)\in\mathcal{G}} \chi^2(D,\eta),
+\label{eq:anchor_chi2_best}
+\end{equation}
+\begin{equation}
+\left(D_0,\eta_0\right)_{\rm robust}
+\equiv
+\arg\max_{(D,\eta)\in\mathcal{A}} d_{\partial\mathcal{A}}(D,\eta),
+\qquad
+\mathcal{A}\equiv\{(D,\eta)\in\mathcal{G}\,|\,\chi^2\le 4\},
+\label{eq:anchor_robust_center}
+\end{equation}
+where $\mathcal{G}$ is the scan grid and $d_{\partial\mathcal{A}}$ is the Euclidean distance to the acceptance-boundary complement on that grid. We use $\mathcal{R}_3$ (higher first) and then $\chi^2$ (lower first) as tie-breakers for Eq.~\eqref{eq:anchor_robust_center}. A full reference-anchor sensitivity audit is reported in Appendix~\ref{app:ref_anchor}: over the tested anchor grid, $f(\chi^2_{\mu\mu}<4)$ spans $[0.0208,\,0.2414]$, while the baseline fixed anchor gives $0.1681$, the dynamic $\chi^2$-best anchor gives $0.1475$, and the robust-center anchor gives $0.1219$.
 \begin{equation}
 \chi^2(D,\eta) = \frac{\left(\mu_{\mu\mu}^{\rm pred} - \mu_{\mu\mu}^{\rm obs}\right)^2}{\sigma_{\mu\mu}^2},
 \label{eq:chi2_hmumu}
@@ -1383,6 +1399,47 @@ $\chi$ migration (\texttt{fp\_2d\_full + open\_system}) & 0.932 & 0.0000 & 0.150
 \hline\hline
 \end{tabular}
 \end{table}
+
+\subsection{Reference-Anchor Sensitivity and Dynamic Selection Rule}
+\label{app:ref_anchor}
+Because Eq.~\eqref{eq:mu_pred} is normalized to a reference point $(D_0,\eta_0)$, we explicitly audit anchor dependence with two reproducible scripts: \texttt{select\_reference\_anchor.py} and \texttt{scan\_reference\_anchor\_sensitivity.py}. The workflow is:
+\begin{enumerate}
+    \item build a fixed-reference baseline map at $(D_0,\eta_0)=(10,1)$ on the same $60\times60$ grid;
+    \item extract three candidate anchors: fixed-grid point, $\chi^2$-best [Eq.~\eqref{eq:anchor_chi2_best}], and robust-center [Eq.~\eqref{eq:anchor_robust_center}];
+    \item re-anchor Eq.~\eqref{eq:mu_pred} with each candidate and recompute map summaries.
+\end{enumerate}
+Table~\ref{tab:ref_anchor_candidates} summarizes the selector outputs, and Fig.~\ref{fig:ref_anchor_sensitivity} shows the full grid-level sensitivity maps.
+
+\begin{table}[t]
+\centering
+\caption{Reference-anchor candidates and re-anchored map metrics. Source CSV: \texttt{paper/reference\_anchor\_candidates.csv}; selector JSON: \texttt{paper/reference\_anchor\_choice.json}.}
+\label{tab:ref_anchor_candidates}
+\small
+\begin{tabular}{lcccc}
+\hline\hline
+mode & $(D_0,\eta_0)$ & $\chi^2$ at selector point & $f(\chi^2_{\mu\mu}<4)$ (re-anchored) & best $\chi^2$ (re-anchored) \\
+\hline
+fixed-grid & $(9.97,\ 0.97)$ & $8.39\times10^{-1}$ & $0.1664$ & $1.43\times10^{-6}$ \\
+$\chi^2$-best & $(9.42,\ 1.29)$ & $1.61\times10^{-4}$ & $0.1475$ & $2.42\times10^{-8}$ \\
+robust-center & $(8.61,\ 2.84)$ & $6.53\times10^{-2}$ & $0.1219$ & $1.35\times10^{-5}$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\linewidth]{reference_anchor_sensitivity.png}
+    \caption{Systematic sensitivity over reference anchors $(D_0,\eta_0)$ under the EFT/Wilson-matched map. Left: $f(\chi^2_{\mu\mu}<4)$; right: best $\chi^2$. Overlaid markers indicate baseline fixed, $\chi^2$-best, and robust-center selectors. Source files: \texttt{paper/reference\_anchor\_sensitivity.csv}, \texttt{paper/reference\_anchor\_sensitivity.png}.}
+    \label{fig:ref_anchor_sensitivity}
+\end{figure}
+
+Across the tested reference-anchor grid $D_0\in\{7,\dots,13\}$ and $\eta_0\in\{0.6,0.9,\dots,2.4\}$, we find
+\begin{equation}
+f(\chi^2_{\mu\mu}<4)\in[0.0208,\,0.2414],\qquad
+\chi^2_{\min}\in[3.71\times10^{-8},\,9.93\times10^{-3}].
+\end{equation}
+The baseline fixed-anchor value used in main figures is $f(\chi^2_{\mu\mu}<4)=0.1681$.
+For reporting discipline, we keep this fixed anchor in headline plots and treat dynamic-anchor outputs as sensitivity diagnostics rather than post-hoc optimization.
 
 \subsection{Dephasing-Based First-Principles Candidate for \texorpdfstring{$t_{\rm coh}$}{tcoh}}
 \label{app:tcoh_candidate}

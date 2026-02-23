@@ -23,6 +23,7 @@ Outputs:
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import sys
@@ -39,12 +40,14 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str((ROOT / "code").resolve()))
 
-from pslt_lib import PSLTKinetics, PSLTParameters  # noqa: E402
 from hll_observable import HLLObservableConfig, HLLChannelPredictor  # noqa: E402
+from pslt_lib import PSLTKinetics, PSLTParameters  # noqa: E402
+from reference_anchor_utils import select_anchor_candidates_from_fixed_scan  # noqa: E402
 
 
 OUTDIR = ROOT / "output" / "hll_signal_strength"
 PAPER_DIR = ROOT / "paper"
+DEFAULT_REF_CHOICE_JSON = ROOT / "output" / "hll_reference_anchor" / "reference_anchor_choice.json"
 
 CHANNEL_TO_LAYER = {
     "ee": 1,
@@ -203,14 +206,16 @@ def make_baseline_kinetics() -> PSLTKinetics:
 
 def compute_maps(
     kinetics: PSLTKinetics,
+    ref_d: float,
+    ref_eta: float,
 ) -> Tuple[np.ndarray, np.ndarray, Dict[str, np.ndarray], Dict[str, float]]:
     d_vals = np.linspace(PAPER_BASELINE["D_min"], PAPER_BASELINE["D_max"], PAPER_BASELINE["D_num"])
     eta_vals = np.linspace(PAPER_BASELINE["eta_min"], PAPER_BASELINE["eta_max"], PAPER_BASELINE["eta_num"])
     cfg = HLLObservableConfig(
         mode=str(PAPER_BASELINE["hll_observable_mode"]),
         t_coh=float(PAPER_BASELINE["t_coh"]),
-        ref_D=float(PAPER_BASELINE["ref_D"]),
-        ref_eta=float(PAPER_BASELINE["ref_eta"]),
+        ref_D=float(ref_d),
+        ref_eta=float(ref_eta),
         n_max=int(PAPER_BASELINE["hll_observable_nmax"]),
     )
 
@@ -393,41 +398,147 @@ def plot_maps(
     plt.close(fig)
 
 
+def parse_args() -> argparse.Namespace:
+    ap = argparse.ArgumentParser(description="Map-level PSLT predictions for H->ll channels.")
+    ap.add_argument("--ref-mode", choices=["fixed", "chi2_best", "robust_center"], default="fixed")
+    ap.add_argument("--ref-d", type=float, default=float(PAPER_BASELINE["ref_D"]))
+    ap.add_argument("--ref-eta", type=float, default=float(PAPER_BASELINE["ref_eta"]))
+    ap.add_argument("--ref-choice-json", type=str, default=str(DEFAULT_REF_CHOICE_JSON))
+    ap.add_argument("--tag", type=str, default="")
+    ap.add_argument("--skip-paper-copy", action="store_true")
+    return ap.parse_args()
+
+
+def sanitize_tag(tag: str) -> str:
+    return "".join(ch if (ch.isalnum() or ch in "-_") else "_" for ch in str(tag).strip())
+
+
+def build_suffix(ref_mode: str, ref_d: float, ref_eta: float, tag: str) -> str:
+    clean_tag = sanitize_tag(tag)
+    if clean_tag:
+        return f"_{clean_tag}"
+
+    baseline_ref = (
+        ref_mode == "fixed"
+        and np.isclose(float(ref_d), float(PAPER_BASELINE["ref_D"]))
+        and np.isclose(float(ref_eta), float(PAPER_BASELINE["ref_eta"]))
+    )
+    if baseline_ref:
+        return ""
+
+    if ref_mode == "fixed":
+        d_token = str(float(ref_d)).replace("-", "m").replace(".", "p")
+        e_token = str(float(ref_eta)).replace("-", "m").replace(".", "p")
+        return f"_refD{d_token}_eta{e_token}"
+    return f"_{ref_mode}"
+
+
+def _load_anchor_from_json(path: Path, mode: str) -> tuple[float, float] | None:
+    if not path.exists():
+        return None
+    try:
+        payload = json.loads(path.read_text())
+        selected = payload.get("selected_by_mode", {}).get(mode, {})
+        if not isinstance(selected, dict):
+            return None
+        return float(selected["D"]), float(selected["eta"])
+    except Exception:
+        return None
+
+
+def resolve_reference_anchor(
+    args: argparse.Namespace,
+    kinetics: PSLTKinetics,
+    observations: Dict[str, Observation],
+) -> tuple[float, float, str]:
+    mode = str(args.ref_mode)
+    if mode == "fixed":
+        return float(args.ref_d), float(args.ref_eta), "fixed_cli"
+
+    json_path = Path(str(args.ref_choice_json))
+    loaded = _load_anchor_from_json(json_path, mode)
+    if loaded is not None:
+        return float(loaded[0]), float(loaded[1]), f"choice_json:{json_path.name}"
+
+    obs = observations.get(
+        "mumu",
+        Observation(mu_obs=1.4, sigma_obs=0.4, source="fallback default (ATLAS Run-3 proxy)"),
+    )
+
+    d_vals = np.linspace(PAPER_BASELINE["D_min"], PAPER_BASELINE["D_max"], PAPER_BASELINE["D_num"])
+    eta_vals = np.linspace(PAPER_BASELINE["eta_min"], PAPER_BASELINE["eta_max"], PAPER_BASELINE["eta_num"])
+    candidates = select_anchor_candidates_from_fixed_scan(
+        kinetics=kinetics,
+        d_vals=d_vals,
+        eta_vals=eta_vals,
+        mode=str(PAPER_BASELINE["hll_observable_mode"]),
+        t_coh=float(PAPER_BASELINE["t_coh"]),
+        n_max=int(PAPER_BASELINE["hll_observable_nmax"]),
+        mu_obs=float(obs.mu_obs),
+        sigma_obs=float(obs.sigma_obs),
+        fixed_ref_d=float(args.ref_d),
+        fixed_ref_eta=float(args.ref_eta),
+    )
+    row = candidates[mode]
+    return float(row["ref_D"]), float(row["ref_eta"]), "selector_fallback"
+
+
 def main() -> None:
+    args = parse_args()
     OUTDIR.mkdir(parents=True, exist_ok=True)
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
 
     observations = load_observations()
     kinetics = make_baseline_kinetics()
+    ref_d, ref_eta, ref_source = resolve_reference_anchor(args, kinetics, observations)
+    suffix = build_suffix(ref_mode=str(args.ref_mode), ref_d=ref_d, ref_eta=ref_eta, tag=str(args.tag))
 
-    d_vals, eta_vals, maps, ref_weights = compute_maps(kinetics)
+    d_vals, eta_vals, maps, ref_weights = compute_maps(kinetics, ref_d=ref_d, ref_eta=ref_eta)
     print(
         "[info] observable mode:",
         PAPER_BASELINE["hll_observable_mode"],
-        "| reference amplitudes (D=10, eta=1):",
+        f"| reference (D={ref_d:.6g}, eta={ref_eta:.6g}, source={ref_source}) amplitudes:",
         ref_weights,
     )
 
-    out_map = OUTDIR / "hll_signal_strength_map.csv"
+    out_map = OUTDIR / f"hll_signal_strength_map{suffix}.csv"
     write_map_csv(out_map, d_vals, eta_vals, maps, observations)
 
     summary_rows = build_summary_rows(d_vals, eta_vals, maps, observations)
-    out_summary = OUTDIR / "hll_signal_strength_summary.csv"
+    out_summary = OUTDIR / f"hll_signal_strength_summary{suffix}.csv"
     write_summary_csv(out_summary, summary_rows)
 
-    out_fig = OUTDIR / "hll_signal_strength_maps.png"
+    out_fig = OUTDIR / f"hll_signal_strength_maps{suffix}.png"
     plot_maps(out_fig, d_vals, eta_vals, maps, observations)
 
-    paper_summary = PAPER_DIR / "hll_signal_strength_summary.csv"
-    paper_fig = PAPER_DIR / "hll_signal_strength_maps.png"
-    paper_summary.write_text(out_summary.read_text())
-    paper_fig.write_bytes(out_fig.read_bytes())
+    run_meta = {
+        "ref_mode": str(args.ref_mode),
+        "ref_D": float(ref_d),
+        "ref_eta": float(ref_eta),
+        "ref_source": ref_source,
+        "suffix": suffix,
+        "observable_mode": str(PAPER_BASELINE["hll_observable_mode"]),
+        "tag": str(args.tag),
+    }
+    out_meta = OUTDIR / f"hll_signal_strength_run_meta{suffix or '_baseline'}.json"
+    out_meta.write_text(json.dumps(run_meta, indent=2))
+
+    paper_summary = PAPER_DIR / out_summary.name
+    paper_fig = PAPER_DIR / out_fig.name
+    paper_meta = PAPER_DIR / out_meta.name
+    if not args.skip_paper_copy:
+        paper_summary.write_text(out_summary.read_text())
+        paper_fig.write_bytes(out_fig.read_bytes())
+        paper_meta.write_text(out_meta.read_text())
 
     print(f"[saved] {out_map}")
     print(f"[saved] {out_summary}")
     print(f"[saved] {out_fig}")
-    print(f"[saved] {paper_summary}")
-    print(f"[saved] {paper_fig}")
+    print(f"[saved] {out_meta}")
+    if not args.skip_paper_copy:
+        print(f"[saved] {paper_summary}")
+        print(f"[saved] {paper_fig}")
+        print(f"[saved] {paper_meta}")
     for row in summary_rows:
         print(row)
 

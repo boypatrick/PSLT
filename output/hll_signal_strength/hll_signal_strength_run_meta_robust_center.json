@@ -1,0 +1,9 @@
+{
+  "ref_mode": "robust_center",
+  "ref_D": 8.610169491525424,
+  "ref_eta": 2.840677966101695,
+  "ref_source": "choice_json:reference_anchor_choice.json",
+  "suffix": "_robust_center",
+  "observable_mode": "eft_wilson_matched",
+  "tag": ""
+}

@@ -46,6 +46,7 @@ def make_kinetics(case: Case) -> PSLTKinetics:
         nu=5.0,
         kappa_g=0.03,
         g_mode=case.g_mode,
+        g_fp_norm_mode="phase_space",
         g_fp_blend=case.g_fp_blend,
         g_fp_full_window_blend=0.8,
         g_fp_full_tail_beta=1.1,

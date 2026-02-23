@@ -44,11 +44,12 @@ class PSLTParameters:
     # Fundamental Scale
     M: float = 1.0          # Fundamental Mass Scale [Mass]
 
-    # Micro-degeneracy (Cardy-controlled envelope + high-N suppression)
+    # Micro-degeneracy (Cardy envelope + first-principles profile options)
     c_eff: float = 0.5      # Effective central charge (dimensionless)
     nu: float = 5.0         # Polynomial suppression exponent (dimensionless)
     kappa_g: float = 0.03    # High-N suppression strength in g_N: exp(-kappa_g*(N-1)^2)
     g_mode: str = "cardy"   # "cardy", "fp_1d", "fp_2d", "fp_1d_full", "fp_2d_full"
+    g_fp_norm_mode: str = "phase_space"  # "cardy_anchor" or "phase_space" (used in *_full modes)
     g_fp_1d_csv: Optional[str] = None
     g_fp_2d_csv: Optional[str] = None
     g_fp_2d_spectrum_csv: Optional[str] = None
@@ -140,6 +141,8 @@ class PSLTParameters:
                 raise ValueError("chi_open_phi_scale and chi_open_mix_scale must be > 0.")
         if self.g_mode not in {"cardy", "fp_1d", "fp_2d", "fp_1d_full", "fp_2d_full"}:
             raise ValueError(f"Unsupported g_mode='{self.g_mode}'.")
+        if self.g_fp_norm_mode not in {"cardy_anchor", "phase_space"}:
+            raise ValueError(f"Unsupported g_fp_norm_mode='{self.g_fp_norm_mode}'.")
         if not (0.0 <= self.g_fp_blend <= 1.0):
             raise ValueError("g_fp_blend must be in [0,1].")
         if not (0.0 <= self.g_fp_full_window_blend <= 1.0):
@@ -336,7 +339,8 @@ class PSLTKinetics:
                     dtype=float,
                 )
             elif all(k in row and row[k] not in {"", None} for k in ("g1_hat", "g2_hat", "g3_hat")):
-                g3 = self.g_N_cardy(3)
+                # Hat-only inputs carry shape but no absolute normalization.
+                g3 = 1.0
                 gvals = np.array(
                     [max(float(row["g1_hat"]) * g3, 1e-30), max(float(row["g2_hat"]) * g3, 1e-30), max(float(row["g3_hat"]) * g3, 1e-30)],
                     dtype=float,
@@ -362,7 +366,7 @@ class PSLTKinetics:
         fine_rows = [r for r in rows if r.get("level", "").strip().lower() == "fine"]
         use_rows = fine_rows if fine_rows else rows
 
-        entries: Dict[float, Dict[int, Tuple[float, float]]] = {}
+        entries: Dict[float, Dict[int, Tuple[float, float, float]]] = {}
         for row in use_rows:
             if row.get("D", "") in {"", None}:
                 continue
@@ -378,7 +382,10 @@ class PSLTKinetics:
                 continue
             lam = float(row["lambda_n"])
             nps = float(row["Nps_lambda_n"])
-            entries.setdefault(dval, {})[nval] = (lam, nps)
+            g_raw = np.nan
+            if row.get("g_raw_n", "") not in {"", None}:
+                g_raw = float(row["g_raw_n"])
+            entries.setdefault(dval, {})[nval] = (lam, nps, g_raw)
 
         if not entries:
             return None
@@ -404,15 +411,27 @@ class PSLTKinetics:
         mode_idx = np.arange(1, n_max + 1, dtype=int)
         lam_rows = []
         nps_rows = []
+        graw_rows = []
         for dval in d_sorted:
-            lam_rows.append([entries[dval][int(n)][0] for n in mode_idx])
-            nps_rows.append([entries[dval][int(n)][1] for n in mode_idx])
+            lam_row = [entries[dval][int(n)][0] for n in mode_idx]
+            nps_row = [entries[dval][int(n)][1] for n in mode_idx]
+            graw_row = [entries[dval][int(n)][2] for n in mode_idx]
+            nps0 = float(nps_row[0])
+            # Reconstruct g_raw if missing in CSV (legacy exports).
+            graw_row = [
+                (1.0 + max(float(nps_val - nps0), 0.0)) if (not np.isfinite(gv) or gv <= 0.0) else float(gv)
+                for gv, nps_val in zip(graw_row, nps_row)
+            ]
+            lam_rows.append(lam_row)
+            nps_rows.append(nps_row)
+            graw_rows.append(graw_row)
 
         return {
             "D": np.asarray(d_sorted, dtype=float),
             "mode_n": mode_idx,
             "lambda": np.asarray(lam_rows, dtype=float),
             "nps": np.asarray(nps_rows, dtype=float),
+            "g_raw": np.asarray(graw_rows, dtype=float),
         }
 
     def _interp_g_fp_2d_spectrum(self, D: float) -> Optional[Dict[str, np.ndarray]]:
@@ -427,14 +446,17 @@ class PSLTKinetics:
         d_knots = spec["D"]
         lam_knots = spec["lambda"]
         nps_knots = spec["nps"]
+        graw_knots = spec["g_raw"]
 
         if len(d_knots) == 1:
             lam = lam_knots[0].astype(float)
             nps = nps_knots[0].astype(float)
+            g_raw = graw_knots[0].astype(float)
         else:
             lam = np.array([np.interp(D, d_knots, lam_knots[:, j]) for j in range(lam_knots.shape[1])], dtype=float)
             nps = np.array([np.interp(D, d_knots, nps_knots[:, j]) for j in range(nps_knots.shape[1])], dtype=float)
-        out = {"lambda": np.maximum(lam, 1e-30), "nps": np.maximum(nps, 0.0)}
+            g_raw = np.array([np.interp(D, d_knots, graw_knots[:, j]) for j in range(graw_knots.shape[1])], dtype=float)
+        out = {"lambda": np.maximum(lam, 1e-30), "nps": np.maximum(nps, 0.0), "g_raw": np.maximum(g_raw, 1e-30)}
         self._g_fp_2d_spectrum_interp_cache[d_key] = out
         return out
 
@@ -1023,6 +1045,23 @@ class PSLTKinetics:
         sup = np.exp(-self.params.kappa_g * (N - 1) ** 2)
         return float(g_cardy * sup)
 
+    def _g_full_scale_n3(self, mode: str, D: float, g123_raw: np.ndarray) -> float:
+        """
+        Absolute normalization for *_full first-principles g_N modes.
+
+        - cardy_anchor: keep legacy scale g_3 = g_3^Cardy.
+        - phase_space:  use action-derived g_3(D) from profile/spectrum.
+        """
+        if self.params.g_fp_norm_mode == "cardy_anchor":
+            return float(max(self.g_N_cardy(3), 1e-30))
+
+        # phase_space normalization (default in the upgraded baseline)
+        if mode == "fp_2d_full":
+            spec = self._interp_g_fp_2d_spectrum(D)
+            if spec is not None and len(spec.get("g_raw", [])) >= 3:
+                return float(max(float(spec["g_raw"][2]), 1e-30))
+        return float(max(float(g123_raw[2]), 1e-30))
+
     def g_N_effective(self, N: int, D: float) -> float:
         """
         Effective micro-degeneracy selector.
@@ -1033,6 +1072,7 @@ class PSLTKinetics:
             available) blended onto cardy by g_fp_blend; N>3 follows cardy tail.
           - fp_1d_full / fp_2d_full: first-principles N=1..3 profile with
             full-profile continuation for N>3 (no Cardy tail fallback).
+            Absolute normalization is selected by g_fp_norm_mode.
         """
         if N <= 0:
             return 0.0
@@ -1048,14 +1088,13 @@ class PSLTKinetics:
         g123_raw = self._interp_g123(D, profile)
         g3_raw = max(float(g123_raw[2]), 1e-30)
         g123_hat = np.maximum(g123_raw / g3_raw, 1e-30)
-        g3_cardy = self.g_N_cardy(3)
 
         if mode in {"fp_1d_full", "fp_2d_full"}:
-            # Anchor overall scale at N=3 baseline while replacing the full shape.
+            scale3 = self._g_full_scale_n3(mode, D, g123_raw)
             if mode == "fp_2d_full":
                 hat_full = self._build_fp_2d_full_hat_profile(D, g123_hat)
                 if N <= len(hat_full):
-                    return float(max(g3_cardy * float(hat_full[N - 1]), 1e-30))
+                    return float(max(scale3 * float(hat_full[N - 1]), 1e-30))
 
                 if len(hat_full) >= 2:
                     step_tail = float(hat_full[-1] / max(hat_full[-2], 1e-30))
@@ -1063,19 +1102,20 @@ class PSLTKinetics:
                     step_tail = self.params.g_fp_full_tail_clip_min
                 step_tail = float(np.clip(step_tail, self.params.g_fp_full_tail_clip_min, self.params.g_fp_full_tail_clip_max))
                 ratio = float(hat_full[-1]) * (step_tail ** (N - len(hat_full)))
-                return float(max(g3_cardy * ratio, 1e-30))
+                return float(max(scale3 * ratio, 1e-30))
 
             if N <= 3:
-                return float(max(g3_cardy * g123_hat[N - 1], 1e-30))
+                return float(max(scale3 * g123_hat[N - 1], 1e-30))
             # 1D full mode keeps the legacy geometric extension.
             r23 = float(g123_hat[1] / max(g123_hat[2], 1e-30))
             r13 = float(g123_hat[0] / max(g123_hat[2], 1e-30))
             r_tail = min(r23, r13)
             r_tail = float(np.clip(r_tail, self.params.g_fp_full_tail_clip_min, self.params.g_fp_full_tail_clip_max))
-            return float(max(g3_cardy * (r_tail ** (N - 3)), 1e-30))
+            return float(max(scale3 * (r_tail ** (N - 3)), 1e-30))
 
         if N <= 3:
             ratio_fp = float(g123_hat[N - 1])
+            g3_cardy = self.g_N_cardy(3)
             ratio_cardy = self.g_N_cardy(N) / max(g3_cardy, 1e-30)
             shape_corr = ratio_fp / max(ratio_cardy, 1e-30)
             blend = self.params.g_fp_blend

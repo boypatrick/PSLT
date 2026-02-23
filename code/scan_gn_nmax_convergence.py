@@ -48,6 +48,7 @@ def make_kinetics(g_mode: str) -> PSLTKinetics:
         nu=5.0,
         kappa_g=0.03,
         g_mode=g_mode,
+        g_fp_norm_mode="phase_space",
         g_fp_blend=G_FP_BLEND,
         chi=0.2,
         chi_mode="localized_interp",

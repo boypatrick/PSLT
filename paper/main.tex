@@ -35,7 +35,7 @@
 We present a comprehensive, computable EFT-level ``closed chain'' for the Projection Spectral Layer Theory (PSLT) that naturally generates a self-consistent three-generation structure of matter.
 The framework is built on a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action with non-minimal curvature coupling, where the background geometry induces a layer-indexed spectral scale $\omega_N$.
 The theoretical closure is achieved by unifying three key modules:
-(i) a \textbf{Micro-degeneracy module} ($g_N$) implemented in baseline \texttt{fp\_2d\_full} mode (bounded microcanonical low-$N$ window + energy-gap tail prescription, Cardy-normalized at $N=3$);
+(i) a \textbf{Micro-degeneracy module} ($g_N$) implemented in baseline \texttt{fp\_2d\_full} mode (bounded microcanonical low-$N$ window + energy-gap tail prescription, phase-space normalized at $N=3$);
 (ii) a \textbf{Rank-2 Computable Kinetic module} ($\Gamma_N$) defined as the largest positive eigenvalue of a $2\times2$ growth matrix with explicit WKB tunneling suppression; and
 (iii) a \textbf{Visibility module} ($B_N$) implemented from overlap-defined $y_N^{\rm eff}(D)$ profiles extracted by the same 2D localized operator chain, with branch tracking and microcanonical window averaging for mode-switch control, and high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator.
 The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates a stable ``winner'' phase diagram with clear dominance of layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
@@ -143,7 +143,7 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \midrule
 $\Omega(\rho,z;D)$ two-center geometry & Green-function solution of projected Poisson constraint (two-source model) & Yes & Derive the projected source term from a specific higher-dimensional parent solution \\
 $V_{\rm eff}$, low modes, WKB action & Action-derived + numerically converged & Yes & Extend same solver chain to full $(D,\eta,N)$ map \\
-$g_N$ phase-space full-tail mode (\texttt{fp\_2d\_full}) with Cardy normalization anchor & Baseline mode + legacy Cardy reference retained for comparator audits & Yes & Replace Cardy anchor normalization with fully action-derived normalization if map-level stability is retained \\
+$g_N$ phase-space full-tail mode (\texttt{fp\_2d\_full}) with phase-space normalization & Baseline mode + legacy Cardy reference retained for comparator audits & Yes & Extend from profile-interpolated $D$ support to direct full-grid action extraction \\
 $\chi_N^{(LR)}(D)$ localized channel & Action-derived extraction (Appendix~\ref{app:chi_loc}) & Yes & Full localized projection over full scan grid \\
 $\Gamma_{N,\ell}$ channel normalization ($A_\ell$) & Action-derived profile baseline $\tilde A_\ell(D)$ with constant-$A_\ell$ legacy comparator & Yes & Extend to full localized channel extraction without profile interpolation \\
 Open-system $\chi_{\rm eff}$ (Lindblad) & Scan-ready diagnostic module with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}) & Diagnostic only (not baseline) & Derive microscopic EYMH bath $(L_k,\gamma_k)$ and then promote to baseline if robust \\
@@ -304,16 +304,16 @@ S(N) \sim 2\pi \sqrt{\frac{c_{\rm eff} N}{6}}.
 For consistency with black hole entropy and holographic bounds~\cite{Bekenstein1973,tHooft1993}, the growth of microstates must eventually be bounded. This suggests that while the Cardy growth dominates asymptotically, it must be regulated.
 
 \subsection{Unified Cardy-Controlled Envelope with High-N Regulator}
-The three routes above provide convergent \emph{motivations} (not derivations) for a Cardy-like asymptotic growth, together with a need for finite-volume/holographic regulation. Combining these insights, we adopt an EFT-level ansatz with the minimum number of free parameters:
+The three routes above provide convergent \emph{motivations} (not derivations) for a Cardy-like asymptotic growth, together with a need for finite-volume/holographic regulation. We therefore keep an EFT-level reference envelope with the minimum number of free parameters:
 \begin{equation}
 \boxed{
 g_N(c_{\rm eff}, \nu, \kappa_g) = \frac{\exp\left( 2\pi \sqrt{\frac{c_{\rm eff} N}{6}} \right)}{N^\nu}\,\exp\left[-\kappa_g (N-1)^2\right].
 }
 \label{eq:gN_reg}
 \end{equation}
-The first factor is the standard Cardy envelope; the Gaussian-in-$N$ term corresponds to a $q^{(N-1)^2}$ suppression with $q=\exp(-\kappa_g)$ and prevents entropic runaway of arbitrarily high layers. In our demonstrator we use $(c_{\rm eff},\nu,\kappa_g)=(0.5,5.0,0.03)$, which yields rapid $N_{\max}$ convergence without fine tuning.
+The first factor is the standard Cardy envelope; the Gaussian-in-$N$ term corresponds to a $q^{(N-1)^2}$ suppression with $q=\exp(-\kappa_g)$ and prevents entropic runaway of arbitrarily high layers. In this manuscript, Eq.~\eqref{eq:gN_reg} is retained as a legacy comparator and uncertainty reference, while the scan baseline uses the phase-space-normalized \texttt{fp\_2d\_full} profile.
 
-\textbf{Summary of motivational roles.} Route A (Mock-modular) and Route B (ER=EPR) support the Cardy envelope's plausibility; Route C (QG Template) supports the necessity of a high-$N$ regulator. Equation~\eqref{eq:gN_reg} is an \emph{EFT-level minimal ansatz}---all falsifiability comes from its numerical predictions (convergence, phase diagram, observable compatibility).
+\textbf{Summary of motivational roles.} Route A (Mock-modular) and Route B (ER=EPR) support the Cardy envelope's plausibility; Route C (QG Template) supports the necessity of a high-$N$ regulator. Equation~\eqref{eq:gN_reg} remains an \emph{EFT-level comparator ansatz} in this version.
 
 \subsection{Cardy Regime Validity and Finite-N Corrections}
 \label{sec:cardy_validity}
@@ -339,12 +339,12 @@ For our baseline, this gives $\delta g_1/g_1 \lesssim 55\%$, $\delta g_2/g_2 \le
 
 \subsection{Assessment of a Phase-Space First-Principles Candidate}
 \label{sec:gn_phase_space_assessment}
-We also evaluated a semiclassical phase-space candidate for replacing Eq.~\eqref{eq:gN_reg},
+We also evaluated a semiclassical phase-space candidate to replace Eq.~\eqref{eq:gN_reg},
 \begin{equation}
 \rho_{\rm WKB}(E)\propto \int_{U(z)<E}\frac{\dd z}{\sqrt{E-U(z)}},\qquad
 g_N^{\rm(ps)} \sim 1+\int \rho_{\rm WKB}(E)\,\dd E,
 \end{equation}
-with $U(z)=V_{\rm eff}(z)-m_0^2$ from the same action-derived geometry. This direction is physically motivated, but a naive implementation is not yet a drop-in replacement: for bound layers ($E_N<0$), choosing integration bounds as $(0\to E_N)$ is inconsistent with the bound-state threshold convention and can produce nonphysical normalization behavior (including $g_N<1$ in low layers). A consistent replacement requires a fully specified microcanonical prescription (turning-point set, lower reference energy, finite-volume normalization, and 2D extension) under the same convergence standards as Appendix~\ref{app:chi_loc}. Therefore, in this manuscript, Eq.~\eqref{eq:gN_reg} remains the scan-level surrogate while the phase-space program is kept as ongoing first-principles work.
+with $U(z)=V_{\rm eff}(z)-m_0^2$ from the same action-derived geometry. The naive 1D implementation is not a drop-in baseline (for bound layers $E_N<0$, using $(0\to E_N)$ is inconsistent with the bound-state threshold convention and can produce nonphysical normalization behavior, including $g_N<1$ in low layers). We therefore use the converged 2D microcanonical extraction in \texttt{fp\_2d\_full} as baseline, while Eq.~\eqref{eq:gN_reg} is kept as a legacy comparator.
 
 
 
@@ -562,7 +562,7 @@ Based on stability analysis, we use the baseline parameters summarized in Table~
 \midrule
 Micro-degeneracy $g_N$ & \texttt{g\_mode} & \texttt{fp\_2d\_full} & Baseline mode: bounded low-$N$ window + energy-gap tail profile \\
 & $(\alpha,\beta,s)$ & $(0.8,1.1,0.0)$ & low-$N$ window blend, tail damping, shell-power control \\
-& $c_{\rm eff},\nu,\kappa_g$ & $(0.5,5.0,0.03)$ & Cardy anchor parameters (legacy reference and normalization scale) \\
+& $c_{\rm eff},\nu,\kappa_g$ & $(0.5,5.0,0.03)$ & Legacy Cardy-comparator parameters (not used for baseline normalization in \texttt{fp\_2d\_full}) \\
 \midrule
 Visibility $B_N$ & \texttt{b\_mode} & \texttt{overlap\_2d} & Baseline profile from overlap-defined $y_N^{\rm eff}(D)$ (tracked + microcanonical-windowed) \\
 & $p_B$ & 0.30 & Legacy Yukawa comparator/fallback parameter (inactive in overlap baseline) \\
@@ -700,10 +700,10 @@ Figure~\ref{fig:hll_proxy} summarizes the corresponding maps on the same $(D,\et
 We have presented a computable EFT-level demonstrator of the Projection Spectral Layer Theory. By closing the loop between geometric inputs and observable layer probabilities, we have shown that:
 \begin{enumerate}
     \item \textbf{Generations are spectral}: The ``three generation'' structure is not an input but a dynamical output of competing entropy ($g_N$), kinetics ($\Gamma_N$), and visibility ($B_N$).
-    \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated at high $N$ [Eq.~\eqref{eq:gN_reg}] and the observable sector uses overlap-defined visibility profiles $B_N(D)$ with explicit high-$N$ saturation.
+    \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated by the \texttt{fp\_2d\_full} microcanonical-window + tail prescription and the observable sector uses overlap-defined visibility profiles $B_N(D)$ with explicit high-$N$ saturation.
     \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With D-interpolated $\chi_N^{(LR)}$, the $H\to\mu\mu$ illustrative EFT-diagonal acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $8.3\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
 \end{enumerate}
-At the same time, the present implementation keeps two EFT-level approximations explicit: the Cardy-anchored normalization inside \texttt{fp\_2d\_full} for $g_N$, and the diagonal layer assignment in the $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}.
+At the same time, the present implementation keeps two EFT-level approximations explicit: profile interpolation in the scan-level $g_N(D)$/$\chi_N^{(LR)}(D)$ transfer chain, and the diagonal layer assignment in the $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}.
 
 \textbf{Limitations and outlook.}
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:
@@ -1237,7 +1237,7 @@ Across $N_{\max}=20,30,40$, both baseline and fp\_2d scenarios are numerically s
 \subsection{Baseline Cross-Check Under \texorpdfstring{$g\_mode=\mathrm{fp\_2d\_full}$}{g_mode=fp_2d_full}}
 To implement a strict same-framework upgrade, we set \texttt{g\_mode=fp\_2d\_full} as the baseline. Instead of direct low-$N$ substitution plus geometric continuation, this mode uses an explicit bounded microcanonical window for $N\le 3$ and an energy-gap tail prescription for $N>3$:
 \begin{equation}
-g_N^{\rm(full)}(D)=g_3^{\rm(cardy)}\hat g_N(D),\quad
+g_N^{\rm(full)}(D)=g_3^{\rm(ps)}(D)\hat g_N(D),\quad
 \hat g_n=\left(\hat g_n^{\rm(dir)}\right)^{1-\alpha}\left(\hat g_n^{\rm(win)}\right)^{\alpha}\ (n=1,2,3),
 \end{equation}
 with
@@ -1246,7 +1246,8 @@ with
 \hat g_2^{\rm(win)}=1+N_{\rm ps}(\lambda_3)-N_{\rm ps}(\lambda_2),\ 
 \hat g_3^{\rm(win)}=1,
 \end{equation}
-and for $N>3$,
+with $g_3^{\rm(ps)}(D)\equiv 1+N_{\rm ps}(\lambda_3)-N_{\rm ps}(\lambda_1)$ from the same 2D spectrum table.
+For $N>3$,
 \begin{equation}
 \hat g_N^{\rm(target)}=\left(\frac{\Delta N_{\rm ps}^{(N)}}{\Delta N_{\rm ps}^{(3)}}\right)^{s}
 \exp\!\left[-\beta\frac{\lambda_N-\lambda_3}{\lambda_3-\lambda_2}\right],

@@ -114,7 +114,7 @@ def make_kinetics(case: Case, chi_d: np.ndarray, chi_vals: np.ndarray) -> PSLTKi
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
-        hll_observable_mode="eft_wilson_diag",
+        hll_observable_mode="eft_wilson_matched",
         hll_observable_nmax=20,
     )
     return PSLTKinetics(params)
@@ -129,7 +129,7 @@ def evaluate_case(case: Case, kin: PSLTKinetics) -> Tuple[Dict[str, np.ndarray],
     sigma_obs = 0.4
 
     cfg = HLLObservableConfig(
-        mode="eft_wilson_diag",
+        mode="eft_wilson_matched",
         t_coh=t_input,
         ref_D=10.0,
         ref_eta=1.0,

@@ -69,7 +69,7 @@ def make_kinetics() -> PSLTKinetics:
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
-        hll_observable_mode="eft_wilson_diag",
+        hll_observable_mode="eft_wilson_matched",
         hll_observable_nmax=20,
     )
     return PSLTKinetics(params)

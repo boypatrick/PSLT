@@ -104,7 +104,7 @@ def make_kinetics(case: Case, d_loc: np.ndarray, chi_loc: np.ndarray, open_csv: 
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
-        hll_observable_mode="eft_wilson_diag",
+        hll_observable_mode="eft_wilson_matched",
         hll_observable_nmax=20,
         chi_lr_D=tuple(float(x) for x in d_loc),
         chi_lr_vals=tuple(float(x) for x in chi_loc),
@@ -134,7 +134,7 @@ def eval_case(case: Case, d_loc: np.ndarray, chi_loc: np.ndarray, open_csv: Path
     sigma_obs = 0.4
     D0, eta0 = 10.0, 1.0
     hll_cfg = HLLObservableConfig(
-        mode="eft_wilson_diag",
+        mode="eft_wilson_matched",
         t_coh=t_coh,
         ref_D=D0,
         ref_eta=eta0,

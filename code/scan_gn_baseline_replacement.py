@@ -65,7 +65,7 @@ def make_kinetics(case: Case) -> PSLTKinetics:
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
-        hll_observable_mode="eft_wilson_diag",
+        hll_observable_mode="eft_wilson_matched",
         hll_observable_nmax=20,
     )
     return PSLTKinetics(params)
@@ -81,7 +81,7 @@ def evaluate_case_nmax(case: Case, n_max: int) -> Dict[str, float]:
     sigma_obs = 0.4
     d_ref, eta_ref = 10.0, 1.0
     hll_cfg = HLLObservableConfig(
-        mode="eft_wilson_diag",
+        mode="eft_wilson_matched",
         t_coh=t_coh,
         ref_D=d_ref,
         ref_eta=eta_ref,

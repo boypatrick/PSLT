@@ -6,9 +6,9 @@ Observable modes:
   - proxy_wratio:
       W_N(D,eta) = B_N * g_N(D) * (1 - exp(-Gamma_N(D,eta) * t_coh))
       mu_ll_pred = W_N / W_N_ref
-  - eft_wilson_diag (baseline):
-      c_ll(D,eta) = y_eff_raw_N(D) * P_N^(kin)(D,eta)
-      mu_ll_pred = |c_ll / c_ll_ref|^2
+  - eft_wilson_matched (baseline):
+      C_{eH}^{ij}(D,eta) = sum_N Y_{iN}(D,eta) P_N^(kin)(D,eta) Y_{jN}(D,eta)
+      mu_ll_pred = |C_ii/C_ii_ref|^2 / (Gamma_tot/Gamma_tot_ref)
 
 with layer-channel assignment:
   ee -> N=1, mumu -> N=2, tautau -> N=3.
@@ -79,7 +79,7 @@ PAPER_BASELINE = {
     "t_coh": 1.0,
     "ref_D": 10.0,
     "ref_eta": 1.0,
-    "hll_observable_mode": "eft_wilson_diag",
+    "hll_observable_mode": "eft_wilson_matched",
     "hll_observable_nmax": 20,
     "D_min": 4.0,
     "D_max": 20.0,

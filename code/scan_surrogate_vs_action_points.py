@@ -55,7 +55,7 @@ BASELINE = {
     "n_max": 20,
     "hmumu_ref_D": 10.0,
     "hmumu_ref_eta": 1.0,
-    "hll_observable_mode": "eft_wilson_diag",
+    "hll_observable_mode": "eft_wilson_matched",
     "hll_observable_nmax": 20,
 }
 B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"

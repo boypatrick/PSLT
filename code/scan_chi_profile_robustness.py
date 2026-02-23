@@ -47,7 +47,7 @@ BASELINE = {
     "t_coh": 1.0,
     "hmumu_ref_D": 10.0,
     "hmumu_ref_eta": 1.0,
-    "hll_observable_mode": "eft_wilson_diag",
+    "hll_observable_mode": "eft_wilson_matched",
     "hll_observable_nmax": 20,
     "mu_obs": 1.4,
     "sigma_obs": 0.4,

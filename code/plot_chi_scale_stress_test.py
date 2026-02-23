@@ -69,7 +69,7 @@ def make_kinetics(d_knots: np.ndarray, chi_knots: np.ndarray, scale: float) -> P
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
-        hll_observable_mode="eft_wilson_diag",
+        hll_observable_mode="eft_wilson_matched",
         hll_observable_nmax=20,
     )
     return PSLTKinetics(params)
@@ -83,7 +83,7 @@ def scan_masks(scale: float, d_knots: np.ndarray, chi_knots: np.ndarray) -> Dict
 
     r3 = np.zeros((len(eta_vals), len(d_vals)))
     chi2 = np.zeros_like(r3)
-    hll_cfg = HLLObservableConfig(mode="eft_wilson_diag", t_coh=t_coh, ref_D=10.0, ref_eta=1.0, n_max=20)
+    hll_cfg = HLLObservableConfig(mode="eft_wilson_matched", t_coh=t_coh, ref_D=10.0, ref_eta=1.0, n_max=20)
     hll_mumu = HLLChannelPredictor(kin, layer_n=2, cfg=hll_cfg)
     mu_obs, sigma = 1.4, 0.4
 

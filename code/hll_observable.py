@@ -6,6 +6,9 @@ Two map-level modes are supported:
   - proxy_wratio:    mu = W_N / W_N(ref)
   - eft_wilson_diag: mu = |c_ll / c_ll(ref)|^2 with
                      c_ll = y_eff_raw_N(D) * P_N^(kin)(D,eta)
+  - eft_wilson_matched:
+                     C_{eH}^{ij} = sum_N Y_{iN} P_N^(kin) Y_{jN}
+                     mu_ll = (|C_ii/C_ii(ref)|^2) / (Gamma_tot/Gamma_tot(ref))
 """
 
 from __future__ import annotations
@@ -17,14 +20,14 @@ from pslt_lib import PSLTKinetics
 
 @dataclass(frozen=True)
 class HLLObservableConfig:
-    mode: str = "eft_wilson_diag"
+    mode: str = "eft_wilson_matched"
     t_coh: float = 1.0
     ref_D: float = 10.0
     ref_eta: float = 1.0
     n_max: int = 20
 
     def __post_init__(self) -> None:
-        if self.mode not in {"proxy_wratio", "eft_wilson_diag"}:
+        if self.mode not in {"proxy_wratio", "eft_wilson_diag", "eft_wilson_matched"}:
             raise ValueError(f"Unsupported HLL observable mode: {self.mode}")
         if self.n_max < 3:
             raise ValueError("n_max must be >= 3")
@@ -57,9 +60,21 @@ class HLLChannelPredictor:
         )
 
     def mu_pred(self, d_val: float, eta_val: float) -> float:
+        if self.cfg.mode == "eft_wilson_matched":
+            return float(
+                self.kinetics.hll_mu_pred(
+                    layer_n=self.layer_n,
+                    D=float(d_val),
+                    eta=float(eta_val),
+                    t_coh=float(self.cfg.t_coh),
+                    ref_D=float(self.cfg.ref_D),
+                    ref_eta=float(self.cfg.ref_eta),
+                    observable_mode=self.cfg.mode,
+                    N_max=int(self.cfg.n_max),
+                )
+            )
         amp = self.channel_amplitude(d_val, eta_val)
         ratio = float(amp / max(self.ref_amp, 1e-30))
         if self.cfg.mode == "proxy_wratio":
             return ratio
         return ratio * ratio
-

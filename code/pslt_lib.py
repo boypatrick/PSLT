@@ -30,6 +30,7 @@ from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Tuple, List, Optional, Dict
 from scipy.integrate import solve_ivp
+from eft_wilson_matching import EFTWilsonMatchConfig, mixing_epsilon, wilson_matrix, total_width_ratio
 
 # =============================================================================
 # 1. Parameters (Dimensional Rigor)
@@ -101,8 +102,18 @@ class PSLTParameters:
     b_n_power: float = 0.30       # Sublinear compression: B_gen ∝ (y_gen)^{b_n_power}
     b_n_tail_mode: str = "saturate"  # "saturate" (paper baseline) or "gaussian"
     b_n_tail_beta: float = 0.50   # Used only when b_n_tail_mode == "gaussian"
-    hll_observable_mode: str = "eft_wilson_diag"  # "proxy_wratio" or "eft_wilson_diag"
+    hll_observable_mode: str = "eft_wilson_matched"  # "proxy_wratio", "eft_wilson_diag", or "eft_wilson_matched"
     hll_observable_nmax: int = 20
+    hll_match_basis_mode: str = "sqrt_yraw"  # "sqrt_yraw" reproduces diagonal limit with mix_scale=0
+    hll_match_mix_scale: float = 200.0
+    hll_match_mix_max: float = 0.25
+    hll_match_eta_power: float = 1.0
+    hll_match_eta_ref: float = 1.0
+    hll_match_width_mode: str = "sm_leptonic"  # "none" or "sm_leptonic"
+    hll_match_width_scale: float = 1.0
+    hll_match_br_ee: float = 5.0e-9
+    hll_match_br_mumu: float = 2.2e-4
+    hll_match_br_tautau: float = 6.3e-2
 
     def __post_init__(self):
         if self.chi_mode not in {"constant", "localized_interp", "open_system"}:
@@ -161,10 +172,24 @@ class PSLTParameters:
             raise ValueError(f"Unsupported b_mode='{self.b_mode}'.")
         if self.b_overlap_floor <= 0:
             raise ValueError("b_overlap_floor must be > 0.")
-        if self.hll_observable_mode not in {"proxy_wratio", "eft_wilson_diag"}:
+        if self.hll_observable_mode not in {"proxy_wratio", "eft_wilson_diag", "eft_wilson_matched"}:
             raise ValueError(f"Unsupported hll_observable_mode='{self.hll_observable_mode}'.")
         if self.hll_observable_nmax < 3:
             raise ValueError("hll_observable_nmax must be >= 3.")
+        if self.hll_match_basis_mode not in {"sqrt_yraw", "yraw"}:
+            raise ValueError(f"Unsupported hll_match_basis_mode='{self.hll_match_basis_mode}'.")
+        if self.hll_match_mix_scale < 0.0:
+            raise ValueError("hll_match_mix_scale must be >= 0.")
+        if not (0.0 <= self.hll_match_mix_max <= 0.49):
+            raise ValueError("hll_match_mix_max must be in [0, 0.49].")
+        if self.hll_match_eta_ref <= 0.0:
+            raise ValueError("hll_match_eta_ref must be > 0.")
+        if self.hll_match_width_mode not in {"none", "sm_leptonic"}:
+            raise ValueError(f"Unsupported hll_match_width_mode='{self.hll_match_width_mode}'.")
+        if self.hll_match_width_scale < 0.0:
+            raise ValueError("hll_match_width_scale must be >= 0.")
+        if min(self.hll_match_br_ee, self.hll_match_br_mumu, self.hll_match_br_tautau) < 0.0:
+            raise ValueError("hll_match_br_* must be >= 0.")
 
 # =============================================================================
 # 2. Yukawa Visibility Module
@@ -1208,6 +1233,39 @@ class PSLTKinetics:
             return 0.0
         return float(max(q[N - 1], 0.0) / q_sum)
 
+    def _hll_match_config(self) -> EFTWilsonMatchConfig:
+        return EFTWilsonMatchConfig(
+            basis_mode=self.params.hll_match_basis_mode,
+            mix_scale=self.params.hll_match_mix_scale,
+            mix_max=self.params.hll_match_mix_max,
+            eta_power=self.params.hll_match_eta_power,
+            eta_ref=self.params.hll_match_eta_ref,
+            width_mode=self.params.hll_match_width_mode,
+            width_scale=self.params.hll_match_width_scale,
+            br_ee=self.params.hll_match_br_ee,
+            br_mumu=self.params.hll_match_br_mumu,
+            br_tautau=self.params.hll_match_br_tautau,
+            floor=self.params.b_overlap_floor,
+        )
+
+    def _hll_yraw_vector(self, D: float) -> np.ndarray:
+        return np.array(
+            [
+                max(self.y_eff_raw_N(1, D), self.params.b_overlap_floor),
+                max(self.y_eff_raw_N(2, D), self.params.b_overlap_floor),
+                max(self.y_eff_raw_N(3, D), self.params.b_overlap_floor),
+            ],
+            dtype=float,
+        )
+
+    def _hll_pkin_vector(self, D: float, eta: float, t_coh: float, N_max: int = 20) -> np.ndarray:
+        q = np.array([self.layer_kinetic_weight(k, D, eta, t_coh) for k in range(1, N_max + 1)], dtype=float)
+        q = np.maximum(q, 0.0)
+        q_sum = float(np.sum(q))
+        if q_sum <= 0.0:
+            return np.zeros(3, dtype=float)
+        return np.array([float(q[0] / q_sum), float(q[1] / q_sum), float(q[2] / q_sum)], dtype=float)
+
     def hll_wilson_coeff(self, layer_n: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:
         """
         Map-level EFT ansatz for H->ll:
@@ -1218,19 +1276,56 @@ class PSLTKinetics:
         y_raw = self.y_eff_raw_N(layer_n, D)
         return float(max(y_raw, self.params.b_overlap_floor) * p_kin)
 
+    def hll_wilson_matrix_matched(self, D: float, eta: float, t_coh: float, N_max: int = 20) -> np.ndarray:
+        """
+        Tree-level matched Wilson matrix C_{eH}^{ij} from overlap + kinetic chain:
+          C = Y(D,eta) * diag(P_kin) * Y(D,eta)^T
+        where Y contains flavor-layer couplings with bounded off-diagonal mixing.
+        """
+        cfg = self._hll_match_config()
+        y_raw = self._hll_yraw_vector(D)
+        p_kin = self._hll_pkin_vector(D, eta, t_coh, N_max=N_max)
+        chi_eff = self.chi_effective(D)
+        eps = mixing_epsilon(chi_eff=chi_eff, eta_val=eta, cfg=cfg)
+        return wilson_matrix(y_raw=y_raw, p_kin=p_kin, eps=eps, cfg=cfg)
+
+    def hll_wilson_coeff_matched(self, layer_n: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:
+        if layer_n <= 0 or layer_n > 3:
+            return 0.0
+        cmat = self.hll_wilson_matrix_matched(D, eta, t_coh, N_max=N_max)
+        return float(max(cmat[layer_n - 1, layer_n - 1], self.params.b_overlap_floor))
+
+    def hll_total_width_ratio_matched(
+        self,
+        D: float,
+        eta: float,
+        t_coh: float,
+        ref_D: float,
+        ref_eta: float,
+        N_max: int = 20,
+    ) -> float:
+        cfg = self._hll_match_config()
+        c = self.hll_wilson_matrix_matched(D, eta, t_coh, N_max=N_max)
+        c_ref = self.hll_wilson_matrix_matched(ref_D, ref_eta, t_coh, N_max=N_max)
+        c_diag = np.diag(c)
+        c_ref_diag = np.diag(c_ref)
+        return total_width_ratio(c_diag=c_diag, c_diag_ref=c_ref_diag, cfg=cfg)
+
     def hll_channel_amplitude(
         self,
         layer_n: int,
         D: float,
         eta: float,
         t_coh: float,
-        observable_mode: str = "eft_wilson_diag",
+        observable_mode: str = "eft_wilson_matched",
         N_max: int = 20,
     ) -> float:
         if observable_mode == "proxy_wratio":
             return self.layer_weight(layer_n, D, eta, t_coh)
         if observable_mode == "eft_wilson_diag":
             return self.hll_wilson_coeff(layer_n, D, eta, t_coh, N_max=N_max)
+        if observable_mode == "eft_wilson_matched":
+            return self.hll_wilson_coeff_matched(layer_n, D, eta, t_coh, N_max=N_max)
         raise ValueError(f"Unsupported observable_mode='{observable_mode}'.")
 
     def hll_mu_pred(
@@ -1251,7 +1346,18 @@ class PSLTKinetics:
         ratio = float(amp / max(amp_ref, 1e-30))
         if mode == "proxy_wratio":
             return ratio
-        return ratio * ratio
+        partial_ratio = ratio * ratio
+        if mode == "eft_wilson_matched":
+            width_ratio = self.hll_total_width_ratio_matched(
+                D=D,
+                eta=eta,
+                t_coh=t_coh,
+                ref_D=ref_D,
+                ref_eta=ref_eta,
+                N_max=nmax,
+            )
+            return float(partial_ratio / max(width_ratio, 1e-30))
+        return partial_ratio
 
     def _interp_scalar(self, D: float, d_knots: np.ndarray, y_knots: np.ndarray) -> float:
         order = np.argsort(d_knots)

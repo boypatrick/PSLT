@@ -756,7 +756,7 @@ The use of mixed-resolution ingredients is a deliberate design choice: action-de
 \begin{enumerate}
     \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison now uses a scan-level EFT/Wilson-matched map with bounded flavor mixing and leptonic-width closure [Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:mu_pred}], but a full derivation from the EYMH action (including operator-basis matching beyond this closure) is still pending.
     \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and inject its full scan-grid action-derived profile in the global map. The remaining gap is a full $(D,\eta,N)$ localized projection.
-    \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). On $D=4,\dots,20$, the diagnostic ratio band is $\chi_{\rm open}/\chi_{LR}\in[0.0974,0.1596]$ with unchanged core map fractions at current resolution; however, the jump operators and rates $(L_k,\gamma_k)$ are still effective ansatz quantities rather than a microscopic EYMH bath derivation, so this block remains outside baseline figures.
+    \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). On $D=4,\dots,20$, the diagnostic ratio band is $\chi_{\rm open}/\chi_{LR}\in[0.0852,0.2127]$ with unchanged core map fractions at current resolution; however, the jump operators and rates $(L_k,\gamma_k)$ are still effective ansatz quantities rather than a microscopic EYMH bath derivation, so this block remains outside baseline figures.
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map. A full end-to-end scan with direct localized recomputation at every grid point and channel remains future work.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
@@ -1217,7 +1217,7 @@ The script \texttt{extract\_gn\_phase\_space\_2d.py} (in \texttt{code/}) exports
 \begin{equation}
 \max_{\text{non-fine}}\left(\max_N\frac{|\hat g_N-\hat g_N^{\rm(fine)}|}{|\hat g_N^{\rm(fine)}|}\right)=2.35\times10^{-2}.
 \end{equation}
-As in the 1D candidate check, this benchmark is reported as a replacement candidate. To test map-level impact, we connected both candidates to the main scan through \texttt{g\_mode} choices (\texttt{fp\_2d\_full}, \texttt{cardy}, \texttt{fp\_1d}, \texttt{fp\_2d}) and the reproducible script \texttt{scan\_gn\_profile\_impact.py}. Results in Table~\ref{tab:gn_profile_impact} show that the main conclusion is retained: relative to baseline \texttt{fp\_2d\_full}, the largest absolute shift is $0.0669$ in $f(\mathcal{R}_3>0.90)$ (for \texttt{fp\_2d}), while high-$N$ runaway remains controlled with $f(N_{\rm win}>3)=0$ in all tested modes.
+As in the 1D candidate check, this benchmark is reported as a replacement candidate. To test map-level impact, we connected both candidates to the main scan through \texttt{g\_mode} choices (\texttt{fp\_2d\_full}, \texttt{cardy}, \texttt{fp\_1d}, \texttt{fp\_2d}) and the reproducible script \texttt{scan\_gn\_profile\_impact.py}. Results in Table~\ref{tab:gn_profile_impact} show that the main conclusion is retained: relative to baseline \texttt{fp\_2d\_full}, the largest absolute shift is $0.0669$ in $f(\mathcal{R}_3>0.90)$ (for \texttt{fp\_2d}), while high-$N$ runaway remains controlled with $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$ in all tested modes.
 
 \begin{table}[t]
 \centering
@@ -1333,7 +1333,7 @@ with cylindrical weighting $\langle\cdots\rangle_\rho$. The minimal Lindblad evo
 \begin{equation}
 C_{\max}\equiv \max_t |\rho_{LR}(t)|,\qquad P_{\max}\equiv \max_t \rho_{RR}(t),
 \end{equation}
-and a normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. Results for $D=\{6,12,18\}$ are summarized in Table~\ref{tab:chi_open_geom}. Extending the same profile to $D=4,\dots,20$ gives a stable baseline ratio band $\chi_{\rm open}/\chi_{LR}\in[0.0974,0.1596]$ with mean $0.1237$ (source CSV: \texttt{output/chi\_open\_system/chi\_open\_ratio\_band.csv}).
+and a normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. Results for $D=\{6,12,18\}$ are summarized in Table~\ref{tab:chi_open_geom}. Extending the same profile to $D=4,\dots,20$ gives a stable baseline ratio band $\chi_{\rm open}/\chi_{LR}\in[0.0852,0.2127]$ with mean $0.1269$ (source CSV: \texttt{output/chi\_open\_system/chi\_open\_ratio\_band.csv}).
 
 \begin{table}[t]
 \centering
@@ -1361,7 +1361,7 @@ $D$ & $\gamma_\phi$ & $\gamma_{\rm mix}$ & $C_{\max}$ & $\chi_{\rm eff}^{\rm(pro
 case & ratio min & ratio max & ratio mean \\
 \hline
 baseline localized & 1.000 & 1.000 & 1.000 \\
-open-system base $(1,1)$ & 0.097 & 0.160 & 0.124 \\
+open-system base $(1,1)$ & 0.085 & 0.213 & 0.127 \\
 $\phi\times0.5$, mix$\times1$ & 0.146 & 0.216 & 0.178 \\
 $\phi\times2$, mix$\times1$ & 0.059 & 0.115 & 0.082 \\
 $\phi\times1$, mix$\times0.5$ & 0.058 & 0.109 & 0.079 \\
@@ -1372,7 +1372,7 @@ $\phi\times2$, mix$\times0.5$ & 0.032 & 0.068 & 0.046 \\
 \end{tabular}
 \end{table}
 
-Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.932$, $f(\mathcal{R}_3>0.95)=0.217$, $f(N_{\rm win}>3)=0$), while the $H\to\mu\mu$ acceptance fraction shifts within a controlled band $f(\chi^2_{\mu\mu}<4)\in[0.1500,\,0.1603]$ around the localized reference. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
+Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.932$, $f(\mathcal{R}_3>0.95)=0.217$, $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$), while the $H\to\mu\mu$ acceptance fraction shifts within a controlled band $f(\chi^2_{\mu\mu}<4)\in[0.1500,\,0.1558]$ around the localized reference. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
 
 \subsection{Cross-Module Migration Snapshot}
 To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three scenarios: baseline (\texttt{fp\_2d\_full + localized\_grid}), legacy reference (\texttt{cardy + localized\_grid}), and open-system $\chi$ (\texttt{fp\_2d\_full + open\_system}). The reproducible script is \texttt{scan\_first\_principles\_migration\_summary.py}; outputs are \texttt{paper/first\_principles\_migration\_summary.csv} and Fig.~\ref{fig:first_principles_migration}.

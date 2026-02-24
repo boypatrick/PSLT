@@ -1,4 +1,4 @@
 case,gamma_mode_active,gamma_eta_mode_active,t_coh_mode_active,chi_mode_active,g_mode_active,b_mode_active,f_R3_gt_0p90,f_hmumu_chi2_le_4,f_winner_gt_3,best_chi2,delta_f_R3_gt_0p90,delta_f_hmumu_chi2_le_4,delta_f_winner_gt_3,max_abs_delta_R3,max_abs_delta_mu_mumu
 surrogate_kinetic,surrogate,scan,input,localized_interp,fp_2d_full,overlap_2d,0.9833333333333333,0.16027777777777777,0.0,4.502433424629286e-05,,,,,
-action_chain_full,action_profile,scaled_amp,dephasing_profile_capped,localized_interp,fp_2d_full,overlap_2d,1.0,0.16027777777777777,0.0,4.4805747454763064e-05,,,,,
-delta_action_minus_surrogate,,,,,,,,,,,0.01666666666666672,0.0,0.0,0.06148420497415519,12.046810003522852
+action_chain_full,action_profile,scaled_amp,dephasing_profile_capped,localized_interp,fp_2d_full,overlap_2d,1.0,0.16027777777777777,0.0,4.4863387731744776e-05,,,,,
+delta_action_minus_surrogate,,,,,,,,,,,0.01666666666666672,0.0,0.0,0.06148420497415519,9.83082304867697

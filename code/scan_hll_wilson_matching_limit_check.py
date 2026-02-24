@@ -22,6 +22,7 @@ import numpy as np
 
 from pslt_lib import PSLTKinetics, PSLTParameters
 from hll_observable import HLLObservableConfig, HLLChannelPredictor
+from action_grid_profile_utils import scan_d_values, select_chi_profile, select_superrad_profile
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -29,7 +30,7 @@ OUTDIR = ROOT / "output" / "hll_matching"
 B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 
 
-def make_kinetics(mode: str) -> PSLTKinetics:
+def make_kinetics(mode: str, chi_profile: Dict[str, object], superrad_profile: Dict[str, object]) -> PSLTKinetics:
     return PSLTKinetics(
         PSLTParameters(
             c_eff=0.5,
@@ -43,12 +44,13 @@ def make_kinetics(mode: str) -> PSLTKinetics:
             g_fp_full_tail_clip_min=1e-3,
             g_fp_full_tail_clip_max=0.95,
             chi=0.2,
-            chi_mode="localized_interp",
-            chi_lr_D=(6.0, 12.0, 18.0),
-            chi_lr_vals=(4.01827e-4, 2.21414e-4, 2.13187e-4),
+            chi_mode=str(chi_profile["mode"]),
+            chi_lr_D=tuple(float(x) for x in chi_profile["d"]),
+            chi_lr_vals=tuple(float(y) for y in chi_profile["chi"]),
             A1=1.0,
             A2=1.0,
-            gamma_mode="action_profile",
+            gamma_mode=str(superrad_profile["mode"]),
+            gamma_superrad_csv=str(superrad_profile["path"]),
             b_mode="overlap_2d",
             b_overlap_csv=str(B_OVERLAP_CSV),
             b_n_power=0.30,
@@ -80,8 +82,11 @@ def write_csv(path: Path, rows: List[Dict[str, float]]) -> None:
 def main() -> None:
     OUTDIR.mkdir(parents=True, exist_ok=True)
 
-    kin_diag = make_kinetics("eft_wilson_diag")
-    kin_match = make_kinetics("eft_wilson_matched")
+    d_scan = scan_d_values(4.0, 20.0, 60)
+    chi_profile = select_chi_profile(ROOT, d_scan)
+    superrad_profile = select_superrad_profile(ROOT, d_scan)
+    kin_diag = make_kinetics("eft_wilson_diag", chi_profile, superrad_profile)
+    kin_match = make_kinetics("eft_wilson_matched", chi_profile, superrad_profile)
 
     cfg_diag = HLLObservableConfig(mode="eft_wilson_diag", t_coh=1.0, ref_D=10.0, ref_eta=1.0, n_max=20)
     cfg_match = HLLObservableConfig(mode="eft_wilson_matched", t_coh=1.0, ref_D=10.0, ref_eta=1.0, n_max=20)

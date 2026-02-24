@@ -3,8 +3,8 @@
 Build a map-level comparison snapshot for first-principles migration.
 
 Compared scenarios:
-  1) baseline:        g_mode=fp_2d_full, chi_mode=localized_interp, b_mode=overlap_2d
-  2) legacy reference g_mode=cardy, chi_mode=localized_interp, b_mode=overlap_2d
+  1) baseline:        g_mode=fp_2d_full, chi_mode=localized_grid, b_mode=overlap_2d
+  2) legacy reference g_mode=cardy, chi_mode=localized_grid, b_mode=overlap_2d
   3) chi open-system: g_mode=fp_2d_full, chi_mode=open_system, b_mode=overlap_2d
 
 Inputs:
@@ -72,9 +72,9 @@ def build_summary() -> pd.DataFrame:
 
     rows = [
         {
-            "scenario": "baseline_fp2d_full_localized",
+            "scenario": "baseline_fp2d_full_action_grid",
             "g_mode": "fp_2d_full",
-            "chi_mode": "localized_interp",
+            "chi_mode": "localized_grid",
             "b_mode": "overlap_2d",
             "f_R3_gt_0p90": base_r3,
             "delta_f_R3_gt_0p90_vs_baseline": 0.0,
@@ -89,9 +89,9 @@ def build_summary() -> pd.DataFrame:
             "chi_ratio_max": 1.0,
         },
         {
-            "scenario": "legacy_cardy_localized",
+            "scenario": "legacy_cardy_action_grid",
             "g_mode": "cardy",
-            "chi_mode": "localized_interp",
+            "chi_mode": "localized_grid",
             "b_mode": "overlap_2d",
             "f_R3_gt_0p90": _to_float(legacy["f_R3_gt_0p90"]),
             "delta_f_R3_gt_0p90_vs_baseline": _to_float(legacy["f_R3_gt_0p90"]) - base_r3,
@@ -128,8 +128,8 @@ def build_summary() -> pd.DataFrame:
 
 def make_plot(df: pd.DataFrame, out_png: Path) -> None:
     labels = [
-        "baseline\nfp_2d_full+localized+overlap",
-        "legacy\ncardy+localized+overlap",
+        "baseline\nfp_2d_full+action_grid+overlap",
+        "legacy\ncardy+action_grid+overlap",
         "chi open\nfp_2d_full+open+overlap",
     ]
     x = np.arange(len(labels))

@@ -30,11 +30,11 @@ sys.path.insert(0, str((ROOT / "code").resolve()))
 
 from pslt_lib import PSLTParameters, PSLTKinetics
 from hll_observable import HLLObservableConfig, HLLChannelPredictor
+from action_grid_profile_utils import scan_d_values, select_chi_profile, select_superrad_profile
 
 
 OUTDIR = ROOT / "output" / "chi_open_system"
 PAPER_DIR = ROOT / "paper"
-CHI_FP_DIR = ROOT / "output" / "chi_fp_2d"
 B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 
 
@@ -44,24 +44,6 @@ class Case:
     mode: str  # localized | open_system
     phi_scale: float = 1.0
     mix_scale: float = 1.0
-
-
-def load_localized_profile() -> Tuple[np.ndarray, np.ndarray]:
-    cands = [
-        CHI_FP_DIR / "localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
-        CHI_FP_DIR / "localized_chi_D6-12-18.csv",
-    ]
-    path = next((p for p in cands if p.exists()), None)
-    if path is None:
-        raise FileNotFoundError("Missing localized chi profile CSV in output/chi_fp_2d.")
-
-    df = pd.read_csv(path)
-    df = df[df["level"].str.lower() == "fine"].copy().sort_values("D")
-    d = np.asarray(df["D"], dtype=float)
-    chi = np.asarray(df["chi_LR"], dtype=float)
-    if len(d) < 2:
-        raise RuntimeError(f"Not enough localized fine-grid points in {path}.")
-    return d, chi
 
 
 def pick_open_csv() -> Path:
@@ -84,7 +66,14 @@ def pick_open_csv() -> Path:
     return best
 
 
-def make_kinetics(case: Case, d_loc: np.ndarray, chi_loc: np.ndarray, open_csv: Path) -> PSLTKinetics:
+def make_kinetics(
+    case: Case,
+    d_loc: np.ndarray,
+    chi_loc: np.ndarray,
+    chi_mode: str,
+    superrad_profile: Dict[str, object],
+    open_csv: Path,
+) -> PSLTKinetics:
     base = dict(
         c_eff=0.5,
         nu=5.0,
@@ -98,7 +87,8 @@ def make_kinetics(case: Case, d_loc: np.ndarray, chi_loc: np.ndarray, open_csv: 
         chi=0.2,
         A1=1.0,
         A2=1.0,
-        gamma_mode="action_profile",
+        gamma_mode=str(superrad_profile["mode"]),
+        gamma_superrad_csv=str(superrad_profile["path"]),
         b_mode="overlap_2d",
         b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=0.30,
@@ -110,7 +100,7 @@ def make_kinetics(case: Case, d_loc: np.ndarray, chi_loc: np.ndarray, open_csv: 
         chi_lr_vals=tuple(float(x) for x in chi_loc),
     )
     if case.mode == "localized":
-        params = PSLTParameters(chi_mode="localized_interp", **base)
+        params = PSLTParameters(chi_mode=str(chi_mode), **base)
     else:
         params = PSLTParameters(
             chi_mode="open_system",
@@ -124,9 +114,16 @@ def make_kinetics(case: Case, d_loc: np.ndarray, chi_loc: np.ndarray, open_csv: 
     return PSLTKinetics(params)
 
 
-def eval_case(case: Case, d_loc: np.ndarray, chi_loc: np.ndarray, open_csv: Path) -> Tuple[Dict[str, float], List[Dict[str, float]]]:
-    kin = make_kinetics(case, d_loc, chi_loc, open_csv)
-    D_vals = np.linspace(4.0, 20.0, 60)
+def eval_case(
+    case: Case,
+    d_loc: np.ndarray,
+    chi_loc: np.ndarray,
+    chi_mode: str,
+    superrad_profile: Dict[str, object],
+    open_csv: Path,
+) -> Tuple[Dict[str, float], List[Dict[str, float]]]:
+    kin = make_kinetics(case, d_loc, chi_loc, chi_mode, superrad_profile, open_csv)
+    D_vals = scan_d_values(4.0, 20.0, 60)
     eta_vals = np.linspace(0.2, 4.0, 60)
     t_coh = 1.0
     n_max = 20
@@ -203,7 +200,12 @@ def main() -> None:
     OUTDIR.mkdir(parents=True, exist_ok=True)
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
 
-    d_loc, chi_loc = load_localized_profile()
+    d_scan = scan_d_values(4.0, 20.0, 60)
+    chi_profile = select_chi_profile(ROOT, d_scan)
+    superrad_profile = select_superrad_profile(ROOT, d_scan)
+    d_loc = np.asarray(chi_profile["d"], dtype=float)
+    chi_loc = np.asarray(chi_profile["chi"], dtype=float)
+    chi_mode = str(chi_profile["mode"])
     open_csv = pick_open_csv()
 
     cases = [
@@ -220,7 +222,7 @@ def main() -> None:
     metric_rows: List[Dict[str, float]] = []
     ratio_rows_all: List[Dict[str, float]] = []
     for case in cases:
-        metrics, ratio_rows = eval_case(case, d_loc, chi_loc, open_csv)
+        metrics, ratio_rows = eval_case(case, d_loc, chi_loc, chi_mode, superrad_profile, open_csv)
         metric_rows.append(metrics)
         ratio_rows_all.extend(ratio_rows)
 

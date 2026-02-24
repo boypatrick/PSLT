@@ -67,13 +67,13 @@ class PSLTParameters:
     Omega_H: float = 0.9    # Horizon proxy angular velocity [Mass] (scaled by M)
     A1: float = 1.0         # l=1 amplitude (dimensionless prefactor for rate)
     A2: float = 1.0         # l=2 amplitude (dimensionless prefactor for rate)
-    gamma_mode: str = "surrogate"  # "surrogate" or "action_profile"
+    gamma_mode: str = "surrogate"  # "surrogate", "action_profile", or "action_grid"
     gamma_superrad_csv: Optional[str] = None
     gamma_superrad_scale: float = 1.0
     gamma_eta_mode: str = "scan"  # "scan", "scaled_amp", "scaled_prob", "closed_amp", "closed_prob"
     gamma_eta_csv: Optional[str] = None
     chi: float = 0.2        # Rank-2 mixing parameter (dimensionless)
-    chi_mode: str = "constant"  # "constant", "localized_interp", or "open_system"
+    chi_mode: str = "constant"  # "constant", "localized_interp", "localized_grid", or "open_system"
     chi_lr_D: Tuple[float, ...] = (6.0, 12.0, 18.0)  # knots for localized chi(D)
     chi_lr_vals: Tuple[float, ...] = (4.01827e-4, 2.21414e-4, 2.13187e-4)  # chi_LR at knots
     chi_open_csv: Optional[str] = None
@@ -116,9 +116,9 @@ class PSLTParameters:
     hll_match_br_tautau: float = 6.3e-2
 
     def __post_init__(self):
-        if self.chi_mode not in {"constant", "localized_interp", "open_system"}:
+        if self.chi_mode not in {"constant", "localized_interp", "localized_grid", "open_system"}:
             raise ValueError(f"Unsupported chi_mode='{self.chi_mode}'.")
-        if self.gamma_mode not in {"surrogate", "action_profile"}:
+        if self.gamma_mode not in {"surrogate", "action_profile", "action_grid"}:
             raise ValueError(f"Unsupported gamma_mode='{self.gamma_mode}'.")
         if self.gamma_superrad_scale <= 0:
             raise ValueError("gamma_superrad_scale must be > 0.")
@@ -131,6 +131,9 @@ class PSLTParameters:
         if self.chi_mode == "localized_interp":
             if len(self.chi_lr_D) < 2 or len(self.chi_lr_D) != len(self.chi_lr_vals):
                 raise ValueError("chi_lr_D and chi_lr_vals must have equal length >=2 for localized_interp.")
+        if self.chi_mode == "localized_grid":
+            if len(self.chi_lr_D) < 1 or len(self.chi_lr_D) != len(self.chi_lr_vals):
+                raise ValueError("chi_lr_D and chi_lr_vals must have equal length >=1 for localized_grid.")
         if self.chi_mode == "open_system":
             if len(self.chi_open_D) > 0:
                 n = len(self.chi_open_D)
@@ -854,6 +857,9 @@ class PSLTKinetics:
         base = self.root_dir / "output" / "superrad_fp_1d"
         if not base.exists():
             return None
+        canonical_grid = base / "superrad_prefactor_Dgrid60_fine.csv"
+        if canonical_grid.exists():
+            return canonical_grid
         canonical = base / "superrad_prefactor_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv"
         if canonical.exists():
             return canonical
@@ -954,7 +960,7 @@ class PSLTKinetics:
         self._tcoh_profile = None
 
         mode = self.params.gamma_mode
-        if mode == "action_profile":
+        if mode in {"action_profile", "action_grid"}:
             sup_path = Path(self.params.gamma_superrad_csv) if self.params.gamma_superrad_csv else self._auto_find_superrad_csv()
             eta_path = Path(self.params.gamma_eta_csv) if self.params.gamma_eta_csv else self._auto_find_eta_csv()
             sup_prof = self._load_superrad_profile(sup_path) if sup_path is not None else None
@@ -962,7 +968,7 @@ class PSLTKinetics:
 
             if sup_prof is None:
                 if sup_path is None:
-                    print("Warning: gamma_mode=action_profile requested but no superrad profile CSV found. Falling back to surrogate.")
+                    print(f"Warning: gamma_mode={mode} requested but no superrad profile CSV found. Falling back to surrogate.")
                 else:
                     print(f"Warning: failed to parse superrad profile at {sup_path}. Falling back to surrogate.")
             elif eta_prof is None and self.params.gamma_eta_mode != "scan":
@@ -971,12 +977,12 @@ class PSLTKinetics:
                 else:
                     print(f"Warning: failed to parse eta profile at {eta_path}. Falling back to gamma_eta_mode=scan.")
                 self._gamma_superrad_profile = sup_prof
-                self._gamma_mode_active = "action_profile"
+                self._gamma_mode_active = mode
                 self._gamma_eta_mode_active = "scan"
                 self._gamma_eta_profile = None
             elif sup_prof is not None:
                 self._gamma_superrad_profile = sup_prof
-                self._gamma_mode_active = "action_profile"
+                self._gamma_mode_active = mode
                 self._gamma_eta_mode_active = self.params.gamma_eta_mode
                 self._gamma_eta_profile = eta_prof
 
@@ -1002,13 +1008,17 @@ class PSLTKinetics:
         return self._tcoh_mode_active
 
     def _gamma_action_A12(self, D: float) -> Tuple[float, float]:
-        if self._gamma_mode_active != "action_profile" or self._gamma_superrad_profile is None:
+        if self._gamma_mode_active not in {"action_profile", "action_grid"} or self._gamma_superrad_profile is None:
             return float(self.params.A1), float(self.params.A2)
 
         prof = self._gamma_superrad_profile
-        d_knots = prof["D"]
-        a1 = float(np.interp(D, d_knots, prof["A1"]))
-        a2 = float(np.interp(D, d_knots, prof["A2"]))
+        d_knots = np.asarray(prof["D"], dtype=float)
+        if self._gamma_mode_active == "action_grid":
+            a1 = self._grid_scalar(float(D), d_knots, np.asarray(prof["A1"], dtype=float), fallback_interp=True)
+            a2 = self._grid_scalar(float(D), d_knots, np.asarray(prof["A2"], dtype=float), fallback_interp=True)
+        else:
+            a1 = self._interp_scalar(float(D), d_knots, np.asarray(prof["A1"], dtype=float))
+            a2 = self._interp_scalar(float(D), d_knots, np.asarray(prof["A2"], dtype=float))
         scale = float(self.params.gamma_superrad_scale)
         return max(a1 * scale, 1e-30), max(a2 * scale, 1e-30)
 
@@ -1365,6 +1375,27 @@ class PSLTKinetics:
         y_sorted = y_knots[order]
         return float(np.interp(D, d_sorted, y_sorted))
 
+    def _grid_scalar(
+        self,
+        D: float,
+        d_knots: np.ndarray,
+        y_knots: np.ndarray,
+        tol: float = 1e-8,
+        fallback_interp: bool = True,
+    ) -> float:
+        """Lookup y(D) on an action-derived D grid with optional interpolation fallback."""
+        dvals = np.asarray(d_knots, dtype=float)
+        yvals = np.asarray(y_knots, dtype=float)
+        if dvals.size == 0:
+            raise ValueError("empty grid profile")
+
+        idx = int(np.argmin(np.abs(dvals - float(D))))
+        if abs(float(dvals[idx]) - float(D)) <= tol:
+            return float(yvals[idx])
+        if fallback_interp:
+            return self._interp_scalar(float(D), dvals, yvals)
+        raise ValueError(f"D={D} not found in action-derived grid profile (tol={tol}).")
+
     def _lindblad_cmax(self, delta: float, gamma_phi: float, gamma_mix: float) -> float:
         H = np.array([[0.0, delta / 2.0], [delta / 2.0, 0.0]], dtype=complex)
         sigma_x = np.array([[0.0, 1.0], [1.0, 0.0]], dtype=complex)
@@ -1403,6 +1434,8 @@ class PSLTKinetics:
         - constant: chi_eff = params.chi
         - localized_interp: piecewise-linear interpolation of chi_LR(D)
           with endpoint clamping outside knot range.
+        - localized_grid: action-derived grid lookup for chi_LR(D),
+          with interpolation fallback only if D is off-grid.
         - open_system: profile-interpolated (delta, gamma_phi, gamma_mix, gamma_ref)
           fed into two-level Lindblad dynamics, returning
           chi_eff = 2*gamma_mix*Cmax/gamma_ref.
@@ -1415,6 +1448,11 @@ class PSLTKinetics:
             d_knots = np.asarray(self.params.chi_lr_D, dtype=float)
             chi_knots = np.asarray(self.params.chi_lr_vals, dtype=float)
             return self._interp_scalar(D, d_knots, chi_knots)
+
+        if mode == "localized_grid":
+            d_knots = np.asarray(self.params.chi_lr_D, dtype=float)
+            chi_knots = np.asarray(self.params.chi_lr_vals, dtype=float)
+            return self._grid_scalar(D, d_knots, chi_knots, fallback_interp=True)
 
         if mode == "open_system" and self._chi_open_profile is not None:
             key = float(round(D, 8))

@@ -164,6 +164,8 @@ sync_paper_assets() {
   sync_one "output/eta_fp_1d/eta_profile_impact.csv" "paper/eta_profile_impact.csv" 1
   sync_one "output/superrad_fp_1d/superrad_profile_impact.csv" "paper/superrad_profile_impact.csv" 1
   sync_one "output/chi_fp_2d/chi_profile_robustness.csv" "paper/chi_profile_robustness.csv" 1
+  sync_one "output/chi_fp_2d/localized_chi_Dgrid60_fine.csv" "paper/localized_chi_Dgrid60_fine.csv" 0
+  sync_one "output/superrad_fp_1d/superrad_prefactor_Dgrid60_fine.csv" "paper/superrad_prefactor_Dgrid60_fine.csv" 0
 }
 
 cat > "$RUN_META" <<EOF
@@ -212,6 +214,8 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/extract_superrad_prefactor_1d.py --Ds 6,12,18"
   run_step "14" "extract_superrad_fullscan" \
     "$PYTHON_BIN code/extract_superrad_prefactor_1d.py --full-scan"
+  run_step "14b" "extract_action_grid_profiles" \
+    "$PYTHON_BIN code/extract_action_grid_profiles.py --d-min 4 --d-max 20 --d-num 60 --d-ref 12"
   run_step "15" "scan_superrad_profile_impact" \
     "$PYTHON_BIN code/scan_superrad_profile_impact.py"
   run_step "16" "verify_omega_geometric_origin" \

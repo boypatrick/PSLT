@@ -39,8 +39,8 @@ The theoretical closure is achieved by unifying three key modules:
 (ii) a \textbf{Rank-2 Computable Kinetic module} ($\Gamma_N$) defined as the largest positive eigenvalue of a $2\times2$ growth matrix with explicit WKB tunneling suppression; and
 (iii) a \textbf{Visibility module} ($B_N$) implemented from overlap-defined $y_N^{\rm eff}(D)$ profiles extracted by the same 2D localized operator chain, with branch tracking and microcanonical window averaging for mode-switch control, and high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator.
 The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates a stable ``winner'' phase diagram with clear dominance of layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
-We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over $93.2\%$ of the sampled $(D,\eta)$ grid), and (2) a scan-level EFT/Wilson-matched compatibility test with the ATLAS Run-3 $H\to\mu\mu$ signal strength ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
-The EFT/Wilson-matched mapping yields a restricted acceptance band (about $16.8\%$ of the scanned grid for $\chi^2<4$), providing a sharper falsifiable constraint on $(D,\eta)$.
+We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid), and (2) a scan-level EFT/Wilson-matched compatibility test with the ATLAS Run-3 $H\to\mu\mu$ signal strength ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
+The EFT/Wilson-matched mapping yields a restricted acceptance band (about $16.1\%$ of the scanned grid for $\chi^2<4$), providing a sharper falsifiable constraint on $(D,\eta)$.
 \end{abstract}
 
 \maketitle
@@ -56,7 +56,7 @@ The existence of exactly three generations of fermions is one of the most persis
 The Projection Spectral Layer Theory (PSLT) proposes a different paradigm: \emph{Generation structure is a spectral consequence of the underlying projection geometry of spacetime.} In this framework, "generations" are not ad-hoc copies but rather distinct \emph{spectral layers} ($N=1,2,3,\dots$) of vacuum excitations, selected by a competition between microstate degeneracy (entropy) and geometric formation rates (kinetics).
 This structural viewpoint is complementary to recent Clifford-algebra work where three families emerge from an intrinsic $S_3$ organization rather than manual generation copying~\cite{Gresnigt2026CliffordS3}; the emphasis here is different: a map-level computable closure with explicit scan-level falsifiability.
 
-In this work, we consolidate the complete theoretical framework of PSLT into a single, falsifiable "closed chain". We upgrade earlier effective descriptions to a \textbf{computable} rank-2 dynamical system with an action-derived extraction subchain and an action-informed global scan chain (profile-interpolated where needed for tractability). The core deliverable is a map from geometric control parameters $(D, \eta)$---representing dual-center separation and overlap---to an experimentally observable layer probability $P_N$.
+In this work, we consolidate the complete theoretical framework of PSLT into a single, falsifiable "closed chain". We upgrade earlier effective descriptions to a \textbf{computable} rank-2 dynamical system with an action-derived extraction subchain and an action-informed global scan chain, where $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ are now injected on the full scan grid from direct action-derived profiles. The core deliverable is a map from geometric control parameters $(D, \eta)$---representing dual-center separation and overlap---to an experimentally observable layer probability $P_N$.
 
 Our primary contributions are:
 \begin{enumerate}
@@ -143,9 +143,9 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \midrule
 $\Omega(\rho,z;D)$ two-center geometry & Green-function solution of projected Poisson constraint (two-source model) & Yes & Derive the projected source term from a specific higher-dimensional parent solution \\
 $V_{\rm eff}$, low modes, WKB action & Action-derived + numerically converged & Yes & Extend same solver chain to full $(D,\eta,N)$ map \\
-$g_N$ phase-space full-tail mode (\texttt{fp\_2d\_full}) with phase-space normalization & Baseline mode + legacy Cardy reference retained for comparator audits & Yes & Extend from profile-interpolated $D$ support to direct full-grid action extraction \\
+$g_N$ phase-space full-tail mode (\texttt{fp\_2d\_full}) with phase-space normalization & Baseline mode + legacy Cardy reference retained for comparator audits & Yes & Promote full $(D,\eta,N)$ action-derived extraction beyond map-level profile closure \\
 $\chi_N^{(LR)}(D)$ localized channel & Action-derived extraction (Appendix~\ref{app:chi_loc}) & Yes & Full localized projection over full scan grid \\
-$\Gamma_{N,\ell}$ channel normalization ($A_\ell$) & Action-derived profile baseline $\tilde A_\ell(D)$ with constant-$A_\ell$ legacy comparator & Yes & Extend to full localized channel extraction without profile interpolation \\
+$\Gamma_{N,\ell}$ channel normalization ($A_\ell$) & Action-derived profile baseline $\tilde A_\ell(D)$ with constant-$A_\ell$ legacy comparator & Yes & Extend to fully localized channel-resolved extraction over $(D,\eta,N)$ \\
 Open-system $\chi_{\rm eff}$ (Lindblad) & Scan-ready diagnostic module with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}) & Diagnostic only (not baseline) & Derive microscopic EYMH bath $(L_k,\gamma_k)$ and then promote to baseline if robust \\
 $B_N$ visibility profile $B_N(D)$ from overlap-defined $y_N^{\rm eff}$ & Action-derived profile extraction + tracked microcanonical windowing & Yes & Upgrade to fully normalized EFT operator matching (Section~\ref{sec:yukawa_roadmap}) \\
 $H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}] & EFT/Wilson-matched map (scan-level) & Yes & Extend to full UV-to-EFT matching from EYMH action (operator basis + loop-level matching) \\
@@ -522,7 +522,7 @@ The exponent $p_B$ keeps the scaling monotonic in Yukawa strength while preventi
 Numerically, using PDG 2024 inputs~\cite{PDG2024} and $p_B=0.30$, we obtain representative values $B_1\simeq 0.085$, $B_2\simeq 0.42$, $B_3=1$ (normalized).
 
 \subsection{High-\texorpdfstring{$N$}{N} Saturation (Avoiding Double-Counting)}
-For layers $N > 3$, we set $B_N = B_3 = 1$ (saturation). The high-$N$ suppression is provided \emph{solely} by the $\kappa_g$ term in $g_N$ (Eq.~\eqref{eq:gN_reg}), avoiding double-counting.\footnote{An alternative approach with explicit $B_N$ tail suppression ($B_N \propto \ee^{-\beta_B(N-3)^2}$) was explored; see Appendix~\ref{app:ablation} for comparison.}
+For layers $N > 3$, we set $B_N = B_3 = 1$ (saturation). In the baseline scan (\texttt{g\_mode=fp\_2d\_full}), high-$N$ control is provided by the bounded phase-space tail prescription and finite-volume clipping in the $g_N$ module; the $\kappa_g$ factor in Eq.~\eqref{eq:gN_reg} is retained only for legacy Cardy-comparator runs. This separation avoids double-counting high-$N$ damping in the visibility block.\footnote{An alternative approach with explicit $B_N$ tail suppression ($B_N \propto \ee^{-\beta_B(N-3)^2}$) was explored; see Appendix~\ref{app:ablation} for comparison.}
 
 \subsection{Roadmap: Action-Derived Effective Yukawa Operator}
 \label{sec:yukawa_roadmap}
@@ -567,7 +567,7 @@ Micro-degeneracy $g_N$ & \texttt{g\_mode} & \texttt{fp\_2d\_full} & Baseline mod
 Visibility $B_N$ & \texttt{b\_mode} & \texttt{overlap\_2d} & Baseline profile from overlap-defined $y_N^{\rm eff}(D)$ (tracked + microcanonical-windowed) \\
 & $p_B$ & 0.30 & Legacy Yukawa comparator/fallback parameter (inactive in overlap baseline) \\
 \midrule
- Kinetics $\Gamma_N$ & $\chi_N^{(LR)}(D)$ & App.~\ref{app:chi_loc} & Localized-channel profile (action-derived extraction, D-interpolated in final scans; early demonstrator used constant $\chi=0.2$) \\
+ Kinetics $\Gamma_N$ & $\chi_N^{(LR)}(D)$ & App.~\ref{app:chi_loc} & Localized-channel profile (action-derived extraction; baseline now uses full scan-grid profile injection, early demonstrator used constant $\chi=0.2$) \\
 & $a_0$ & 0.02 & Geometric perturbation \\
 & $\epsilon$ & 0.2 & Core regularization \\
 & $\tilde A_1(D), \tilde A_2(D)$ & App.~\ref{app:superrad_candidate} & Action-derived channel-normalization profile (constant $A_\ell$ kept as legacy comparator) \\
@@ -589,7 +589,7 @@ Crucially, we define the \textbf{Generation Ratio}:
 \mathcal{R}_3 \equiv \sum_{N=1}^{3} P_N = \frac{\sum_{N=1}^{3} W_N}{\sum_{K=1}^{N_{\max}} W_K}.
 \label{eq:R3}
 \end{equation}
-With $\chi_N^{(LR)}(D)$ interpolation from Appendix~\ref{app:chi_loc}, our numerical scan gives $\mathcal{R}_3 > 90\%$ over $93.2\%$ of the sampled $(D,\eta)$ grid, while $f(\mathcal{R}_3>0.95)=0.2167$ in this setup. The interpolation profile is anchored by the benchmark convergence set (Table~\ref{tab:chi_loc}) and the auxiliary full-scan support points (Table~\ref{tab:chi_loc_full}) in Appendix~\ref{app:chi_loc}. This still supports a dominant three-layer sector; the current baseline combines action-derived $g_N$ and $\tilde A_\ell(D)$ profiles with overlap-defined $B_N(D)$, while keeping profile interpolation in $\chi_N^{(LR)}(D)$ for map-level tractability.
+With full scan-grid action-derived profiles for $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ from Appendix~\ref{app:chi_loc}, our numerical scan gives $\mathcal{R}_3 > 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid, while $f(\mathcal{R}_3>0.95)=0.2167$ in this setup. The profile support is anchored by the benchmark convergence set (Table~\ref{tab:chi_loc}) and the auxiliary full-scan support points (Table~\ref{tab:chi_loc_full}) in Appendix~\ref{app:chi_loc}. This still supports a dominant three-layer sector; the current baseline combines action-derived $g_N$, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$ profiles with overlap-defined $B_N(D)$.
 To quantify transfer bias from this surrogate interpolation step, we performed a point-level audit with direct localized fine extraction injected at each queried $D$ (recomputing $\chi_{LR}$ by the same 2D solver instead of using interpolated knots). The reproducible script is \texttt{scan\_surrogate\_vs\_action\_points.py}, with source table \texttt{paper/surrogate\_vs\_action\_points.csv}. As summarized in Table~\ref{tab:surrogate_action_points}, the direct-injection path changes $\chi$ by up to $\sim31\%$ at representative points, while winner labels remain unchanged (3/3 matches) and $\mathcal{R}_3$ stays numerically stable ($\max|\Delta \mathcal{R}_3|=5.27\times10^{-11}$); under EFT/Wilson-matched observables, $\mu_{\mu\mu}^{\rm pred}$ can vary strongly at off-band points, so acceptance-level robustness is additionally tracked by the map summaries and Tables~\ref{tab:core_param_robustness}, \ref{tab:first_principles_migration}.
 
 \begin{figure}[htbp]
@@ -616,7 +616,7 @@ $(11.0,1.4)$ & $2/2$ & $2.51\times10^{-4}$ & $3.06\times10^{-4}$ & $0$ & $2.85\t
 \end{tabular}
 \end{table}
 
-To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map, same $\chi_{LR}(D)$ interpolation, and all other settings fixed). Results are summarized in Table~\ref{tab:core_param_robustness} from \texttt{paper/core\_param\_robustness.csv}. Across this local window, the key fractions remain unchanged: $f(\mathcal{R}_3>0.90)=0.9322$, $f(\chi_{\mu\mu}^2<4)=0.1681$, and $f(N_{\rm win}>3)=0$.
+To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map and full-grid action-derived $\chi_{LR}(D)$/$\tilde A_\ell(D)$ profiles). Results are summarized in Table~\ref{tab:core_param_robustness} from \texttt{paper/core\_param\_robustness.csv}. Across this local window, the key fractions remain unchanged: $f(\mathcal{R}_3>0.90)=0.9269$, $f(\chi_{\mu\mu}^2<4)=0.1614$, and $f(N_{\rm win}>3)\approx2.78\times10^{-4}$.
 
 \begin{table}[t]
 \centering
@@ -627,9 +627,9 @@ To propagate finite-$N$ surrogate uncertainty into map-level systematics, we als
 \hline\hline
 Parameter & Window (low/base/high) & $f(\mathcal{R}_3>0.90)$ low/base/high & $f(\chi^2_{\mu\mu}<4)$ low/base/high & Max abs drift \\
 \hline
-$c_{\rm eff}$ & $0.45/0.50/0.55$ & $0.9322/0.9322/0.9322$ & $0.1681/0.1681/0.1681$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
-$\nu$ & $4.80/5.00/5.20$ & $0.9322/0.9322/0.9322$ & $0.1681/0.1681/0.1681$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
-$p_B$ & $0.28/0.30/0.32$ & $0.9322/0.9322/0.9322$ & $0.1681/0.1681/0.1681$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$c_{\rm eff}$ & $0.45/0.50/0.55$ & $0.9269/0.9269/0.9269$ & $0.1614/0.1614/0.1614$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$\nu$ & $4.80/5.00/5.20$ & $0.9269/0.9269/0.9269$ & $0.1614/0.1614/0.1614$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$p_B$ & $0.28/0.30/0.32$ & $0.9269/0.9269/0.9269$ & $0.1614/0.1614/0.1614$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -692,7 +692,7 @@ Equation~\eqref{eq:mu_pred} is implemented in \texttt{pslt\_lib.py} with \texttt
 \mathcal{A}\equiv\{(D,\eta)\in\mathcal{G}\,|\,\chi^2\le 4\},
 \label{eq:anchor_robust_center}
 \end{equation}
-where $\mathcal{G}$ is the scan grid and $d_{\partial\mathcal{A}}$ is the Euclidean distance to the acceptance-boundary complement on that grid. We use $\mathcal{R}_3$ (higher first) and then $\chi^2$ (lower first) as tie-breakers for Eq.~\eqref{eq:anchor_robust_center}. A full reference-anchor sensitivity audit is reported in Appendix~\ref{app:ref_anchor}: over the tested anchor grid, $f(\chi^2_{\mu\mu}<4)$ spans $[0.0208,\,0.2414]$, while the baseline fixed anchor gives $0.1681$, the dynamic $\chi^2$-best anchor gives $0.1475$, and the robust-center anchor gives $0.1219$.
+where $\mathcal{G}$ is the scan grid and $d_{\partial\mathcal{A}}$ is the Euclidean distance to the acceptance-boundary complement on that grid. We use $\mathcal{R}_3$ (higher first) and then $\chi^2$ (lower first) as tie-breakers for Eq.~\eqref{eq:anchor_robust_center}. A full reference-anchor sensitivity audit is reported in Appendix~\ref{app:ref_anchor}: over the tested anchor grid, $f(\chi^2_{\mu\mu}<4)$ spans $[0.0231,\,0.2339]$, while the baseline fixed anchor gives $0.1614$, the dynamic $\chi^2$-best anchor gives $0.1028$, and the robust-center anchor gives $0.1189$.
 \begin{equation}
 \chi^2(D,\eta) = \frac{\left(\mu_{\mu\mu}^{\rm pred} - \mu_{\mu\mu}^{\rm obs}\right)^2}{\sigma_{\mu\mu}^2},
 \label{eq:chi2_hmumu}
@@ -708,11 +708,11 @@ Figure~\ref{fig:hmumu} shows the \textbf{EFT/Wilson-matched acceptance region} i
 \chi^2<4 \quad \Longleftrightarrow \quad p_{\rm local}>4.55\times10^{-2}\qquad(\text{dof}=1).
 \label{eq:chi2_plocal_equiv}
 \end{equation}
-We use this threshold only as an \emph{illustrative acceptance band} for map-level comparison and do not claim a formal 95\% CL exclusion. Because the $(D,\eta)$ scan is a multiple-comparison procedure (look-elsewhere) and no global trials correction is applied, this band is interpreted only as a falsifiable target region. In the present D-interpolated $\chi_N^{(LR)}$ scan, the accepted fraction is
+We use this threshold only as an \emph{illustrative acceptance band} for map-level comparison and do not claim a formal 95\% CL exclusion. Because the $(D,\eta)$ scan is a multiple-comparison procedure (look-elsewhere) and no global trials correction is applied, this band is interpreted only as a falsifiable target region. In the present full-grid action-derived profile scan, the accepted fraction is
 \begin{equation}
-f(\chi^2<4)=f\!\left(p_{\rm local}>4.55\times10^{-2}\right)=0.1681,
+f(\chi^2<4)=f\!\left(p_{\rm local}>4.55\times10^{-2}\right)=0.1614,
 \end{equation}
-with best grid point $\chi^2\simeq 1.61\times10^{-4}$ at $(D,\eta)\approx(9.42,1.29)$. All phase-diagram claims are quoted only after satisfying the quantitative convergence criteria in Appendix~\ref{app:Veff}.
+with best grid point $\chi^2\simeq 6.39\times10^{-5}$ at $(D,\eta)\approx(8.07,2.71)$. All phase-diagram claims are quoted only after satisfying the quantitative convergence criteria in Appendix~\ref{app:Veff}.
 
 \begin{figure}[htbp]
     \centering
@@ -746,18 +746,18 @@ We have presented a computable EFT-level demonstrator of the Projection Spectral
 \begin{enumerate}
     \item \textbf{Generations are spectral}: The ``three generation'' structure is not an input but a dynamical output of competing entropy ($g_N$), kinetics ($\Gamma_N$), and visibility ($B_N$).
     \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated by the \texttt{fp\_2d\_full} microcanonical-window + tail prescription and the observable sector uses overlap-defined visibility profiles $B_N(D)$ with explicit high-$N$ saturation.
-    \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With D-interpolated $\chi_N^{(LR)}$, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $16.8\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
+    \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With full-grid action-derived $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ profiles, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $16.1\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
 \end{enumerate}
-At the same time, the present implementation keeps two EFT-level approximations explicit: profile interpolation in the scan-level $g_N(D)$/$\chi_N^{(LR)}(D)$ transfer chain, and a bounded nearest-neighbor flavor projector in the matched $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}.
+At the same time, the present implementation keeps two EFT-level approximations explicit: map-level profile closure in the $g_N(D)$ sector and a bounded nearest-neighbor flavor projector in the matched $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}.
 
 \textbf{Limitations and outlook.}
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:
-The use of mixed-resolution ingredients is a deliberate design choice: action-derived extraction fixes low-mode profiles (\texttt{fp\_2d\_full} for $g_N$, overlap $B_N(D)$, and $\tilde A_\ell(D)$), while the global $(D,\eta)$ map still relies on profile interpolation (especially for $\chi_N^{(LR)}(D)$) for tractable scans.
+The use of mixed-resolution ingredients is a deliberate design choice: action-derived extraction fixes low-mode profiles (\texttt{fp\_2d\_full} for $g_N$, overlap $B_N(D)$, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$), while global-map evaluation is still an EFT-level closure rather than a full direct localized recomputation at every $(D,\eta,N)$ point.
 \begin{enumerate}
     \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison now uses a scan-level EFT/Wilson-matched map with bounded flavor mixing and leptonic-width closure [Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:mu_pred}], but a full derivation from the EYMH action (including operator-basis matching beyond this closure) is still pending.
-    \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and propagate its D-interpolated profile in the global scan. The remaining gap is a full $(D,\eta,N)$ localized projection.
+    \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and inject its full scan-grid action-derived profile in the global map. The remaining gap is a full $(D,\eta,N)$ localized projection.
     \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). On $D=4,\dots,20$, the diagnostic ratio band is $\chi_{\rm open}/\chi_{LR}\in[0.0974,0.1596]$ with unchanged core map fractions at current resolution; however, the jump operators and rates $(L_k,\gamma_k)$ are still effective ansatz quantities rather than a microscopic EYMH bath derivation, so this block remains outside baseline figures.
-    \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ is extracted from the action-derived 2D localized solver (Appendix~\ref{app:chi_loc}) and then profile-interpolated in the global $(D,\eta)$ map. A full end-to-end scan with direct localized recomputation at every grid point remains future work.
+    \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map. A full end-to-end scan with direct localized recomputation at every grid point and channel remains future work.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
     \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; map-level impact is mild in profile-scaled mode but this closure is not yet propagated into baseline figures.
@@ -785,7 +785,7 @@ and define the channel mixing from the corresponding two-state Hamiltonian eleme
 M_{LR}^{(H)}(D,N)\equiv\frac{\lambda_{N,2}(D)-\lambda_{N,1}(D)}{2},\qquad
 \chi_N^{(LR)}(D)\equiv\frac{|M_{LR}^{(H)}(D,N)|}{\bar{\Gamma}_N(D)}.
 \end{equation}
-The baseline mixing entry in Table~\ref{tab:params} is interpreted as the localized-channel coefficient. First-principles localized extraction results are given in Appendix~\ref{app:chi_loc}, and its D-interpolated profile is used in the global $(D,\eta)$ scan of Section~\ref{sec:results}.
+The baseline mixing entry in Table~\ref{tab:params} is interpreted as the localized-channel coefficient. First-principles localized extraction results are given in Appendix~\ref{app:chi_loc}, and its full scan-grid action-derived profile is used in the global $(D,\eta)$ scan of Section~\ref{sec:results}.
 In terminology, $M_{LR}^{(H)}$ is a \emph{closed-system localized-basis splitting} quantity; it is not itself a decoherence rate. Open-system decoherence is introduced separately through Lindblad rates $(\gamma_\phi,\gamma_{\rm mix})$ in Appendix~\ref{app:chi_open_scan}.
 
 \begin{acknowledgments}
@@ -1251,10 +1251,10 @@ $D$ & $\lambda_1$ & $\lambda_2$ & $\lambda_3$ & $\hat g_1$ & $\hat g_2$ \\
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & mean tail prob. \\
 \hline
-baseline fp\_2d\_full & 0.932 & 0.1681 & 0.000 & 0.1214 \\
-legacy Cardy reference & 0.882 & 0.1647 & 0.000 & 0.1070 \\
-$g_N$ fp\_1d profile & 0.867 & 0.1650 & 0.000 & 0.1082 \\
-$g_N$ fp\_2d profile & 0.865 & 0.1650 & 0.000 & 0.1088 \\
+baseline fp\_2d\_full & 0.927 & 0.1614 & 0.0003 & 0.1267 \\
+legacy Cardy reference & 0.877 & 0.1592 & 0.0003 & 0.1125 \\
+$g_N$ fp\_1d profile & 0.860 & 0.1597 & 0.0003 & 0.1137 \\
+$g_N$ fp\_2d profile & 0.860 & 0.1597 & 0.0003 & 0.1144 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1268,12 +1268,12 @@ $g_N$ fp\_2d profile & 0.865 & 0.1650 & 0.000 & 0.1088 \\
 \hline\hline
 case & $N_{\max}$ & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & mean tail prob. \\
 \hline
-baseline fp\_2d\_full & 20 & 0.932 & 0.1681 & 0.000 & 0.121385 \\
-baseline fp\_2d\_full & 30 & 0.932 & 0.1681 & 0.000 & 0.121385 \\
-baseline fp\_2d\_full & 40 & 0.932 & 0.1681 & 0.000 & 0.121385 \\
-$g_N$ fp\_2d profile & 20 & 0.865 & 0.1650 & 0.000 & 0.108846 \\
-$g_N$ fp\_2d profile & 30 & 0.865 & 0.1650 & 0.000 & 0.108846 \\
-$g_N$ fp\_2d profile & 40 & 0.865 & 0.1650 & 0.000 & 0.108846 \\
+baseline fp\_2d\_full & 20 & 0.927 & 0.1614 & 0.0003 & 0.126709 \\
+baseline fp\_2d\_full & 30 & 0.927 & 0.1614 & 0.0003 & 0.126709 \\
+baseline fp\_2d\_full & 40 & 0.927 & 0.1614 & 0.0003 & 0.126709 \\
+$g_N$ fp\_2d profile & 20 & 0.860 & 0.1597 & 0.0003 & 0.114352 \\
+$g_N$ fp\_2d profile & 30 & 0.860 & 0.1597 & 0.0003 & 0.114352 \\
+$g_N$ fp\_2d profile & 40 & 0.860 & 0.1597 & 0.0003 & 0.114352 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1297,7 +1297,7 @@ For $N>3$,
 \hat g_N^{\rm(target)}=\left(\frac{\Delta N_{\rm ps}^{(N)}}{\Delta N_{\rm ps}^{(3)}}\right)^{s}
 \exp\!\left[-\beta\frac{\lambda_N-\lambda_3}{\lambda_3-\lambda_2}\right],
 \end{equation}
-followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present baseline run, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement} (source CSV: \texttt{paper/gn\_baseline\_replacement.csv}). Relative to baseline \texttt{fp\_2d\_full}, the legacy Cardy reference lowers $f(\mathcal{R}_3>0.90)$ by $0.0503$ (from $0.932$ to $0.882$), lowers $f(\chi^2_{\mu\mu}<4)$ by $0.0033$ (from $0.1681$ to $0.1647$), and still yields $f(N_{\rm win}>3)=0$. Therefore, the map-level main conclusion is retained under this baseline switch.
+followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present baseline run, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement} (source CSV: \texttt{paper/gn\_baseline\_replacement.csv}). Relative to baseline \texttt{fp\_2d\_full}, the legacy Cardy reference lowers $f(\mathcal{R}_3>0.90)$ by $0.0500$ (from $0.9269$ to $0.8769$), lowers $f(\chi^2_{\mu\mu}<4)$ by $0.0022$ (from $0.1614$ to $0.1592$), and keeps $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$. Therefore, the map-level main conclusion is retained under this baseline switch.
 
 \begin{table}[t]
 \centering
@@ -1308,8 +1308,8 @@ followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.p
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & $\Delta f(\mathcal{R}_3>0.90)$ vs baseline \\
 \hline
-baseline fp\_2d\_full & 0.932 & 0.1681 & 0.000 & 0.000 \\
-legacy Cardy reference & 0.882 & 0.1647 & 0.000 & -0.0503 \\
+baseline fp\_2d\_full & 0.9269 & 0.1614 & 0.0003 & 0.0000 \\
+legacy Cardy reference & 0.8769 & 0.1592 & 0.0003 & -0.0500 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1375,7 +1375,7 @@ $\phi\times2$, mix$\times0.5$ & 0.032 & 0.068 & 0.046 \\
 Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.932$, $f(\mathcal{R}_3>0.95)=0.217$, $f(N_{\rm win}>3)=0$), while the $H\to\mu\mu$ acceptance fraction shifts within a controlled band $f(\chi^2_{\mu\mu}<4)\in[0.1500,\,0.1603]$ around the localized reference. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
 
 \subsection{Cross-Module Migration Snapshot}
-To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three scenarios: baseline (\texttt{fp\_2d\_full + localized}), legacy reference (\texttt{cardy + localized}), and open-system $\chi$ (\texttt{fp\_2d\_full + open\_system}). The reproducible script is \texttt{scan\_first\_principles\_migration\_summary.py}; outputs are \texttt{paper/first\_principles\_migration\_summary.csv} and Fig.~\ref{fig:first_principles_migration}.
+To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three scenarios: baseline (\texttt{fp\_2d\_full + localized\_grid}), legacy reference (\texttt{cardy + localized\_grid}), and open-system $\chi$ (\texttt{fp\_2d\_full + open\_system}). The reproducible script is \texttt{scan\_first\_principles\_migration\_summary.py}; outputs are \texttt{paper/first\_principles\_migration\_summary.csv} and Fig.~\ref{fig:first_principles_migration}.
 
 \begin{figure}[t]
     \centering
@@ -1393,9 +1393,9 @@ To compare the two main migration directions on the same map-level metrics under
 \hline\hline
 scenario & $f(\mathcal{R}_3>0.90)$ & $\Delta f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ \\
 \hline
-baseline (\texttt{fp\_2d\_full + localized}) & 0.932 & 0.0000 & 0.1681 & 0.0000 \\
-legacy reference (\texttt{cardy + localized}) & 0.882 & -0.0503 & 0.1647 & 0.0000 \\
-$\chi$ migration (\texttt{fp\_2d\_full + open\_system}) & 0.932 & 0.0000 & 0.1500 & 0.0000 \\
+baseline (\texttt{fp\_2d\_full + localized\_grid}) & 0.927 & 0.0000 & 0.1614 & 0.0003 \\
+legacy reference (\texttt{cardy + localized\_grid}) & 0.877 & -0.0500 & 0.1592 & 0.0003 \\
+$\chi$ migration (\texttt{fp\_2d\_full + open\_system}) & 0.927 & 0.0000 & 0.1500 & 0.0003 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1419,9 +1419,9 @@ Table~\ref{tab:ref_anchor_candidates} summarizes the selector outputs, and Fig.~
 \hline\hline
 mode & $(D_0,\eta_0)$ & $\chi^2$ at selector point & $f(\chi^2_{\mu\mu}<4)$ (re-anchored) & best $\chi^2$ (re-anchored) \\
 \hline
-fixed-grid & $(9.97,\ 0.97)$ & $8.39\times10^{-1}$ & $0.1664$ & $1.43\times10^{-6}$ \\
-$\chi^2$-best & $(9.42,\ 1.29)$ & $1.61\times10^{-4}$ & $0.1475$ & $2.42\times10^{-8}$ \\
-robust-center & $(8.61,\ 2.84)$ & $6.53\times10^{-2}$ & $0.1219$ & $1.35\times10^{-5}$ \\
+fixed-grid & $(9.97,\ 0.97)$ & $8.32\times10^{-1}$ & $0.1611$ & $3.06\times10^{-6}$ \\
+$\chi^2$-best & $(8.07,\ 2.71)$ & $6.39\times10^{-5}$ & $0.1028$ & $7.47\times10^{-6}$ \\
+robust-center & $(8.61,\ 3.29)$ & $8.55\times10^{-1}$ & $0.1189$ & $1.67\times10^{-5}$ \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1435,10 +1435,10 @@ robust-center & $(8.61,\ 2.84)$ & $6.53\times10^{-2}$ & $0.1219$ & $1.35\times10
 
 Across the tested reference-anchor grid $D_0\in\{7,\dots,13\}$ and $\eta_0\in\{0.6,0.9,\dots,2.4\}$, we find
 \begin{equation}
-f(\chi^2_{\mu\mu}<4)\in[0.0208,\,0.2414],\qquad
-\chi^2_{\min}\in[3.71\times10^{-8},\,9.93\times10^{-3}].
+f(\chi^2_{\mu\mu}<4)\in[0.0231,\,0.2339],\qquad
+\chi^2_{\min}\in[2.28\times10^{-9},\,4.36\times10^{-2}].
 \end{equation}
-The baseline fixed-anchor value used in main figures is $f(\chi^2_{\mu\mu}<4)=0.1681$.
+The baseline fixed-anchor value used in main figures is $f(\chi^2_{\mu\mu}<4)=0.1614$.
 For reporting discipline, we keep this fixed anchor in headline plots and treat dynamic-anchor outputs as sensitivity diagnostics rather than post-hoc optimization.
 
 \subsection{Dephasing-Based First-Principles Candidate for \texorpdfstring{$t_{\rm coh}$}{tcoh}}
@@ -1630,9 +1630,9 @@ To quantify map-level sensitivity, we compare a legacy constant-$A_\ell$ referen
 case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
 \hline
 legacy const $(A_1,A_2)=(1,1)$ & 0.9833 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
-action-profile $(A_1,A_2)=(\tilde A_1,\tilde A_2)$ & 0.9322 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
-$(A_1,A_2)=0.5(\tilde A_1,\tilde A_2)$ & 0.9108 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
-$(A_1,A_2)=2(\tilde A_1,\tilde A_2)$ & 0.9553 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
+action-profile $(A_1,A_2)=(\tilde A_1,\tilde A_2)$ & 0.9269 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
+$(A_1,A_2)=0.5(\tilde A_1,\tilde A_2)$ & 0.9061 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
+$(A_1,A_2)=2(\tilde A_1,\tilde A_2)$ & 0.9469 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
 \hline\hline
 \end{tabular}
 \end{table}

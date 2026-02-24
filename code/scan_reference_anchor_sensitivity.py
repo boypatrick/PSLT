@@ -26,12 +26,12 @@ import numpy as np
 from hll_observable import HLLObservableConfig, HLLChannelPredictor
 from pslt_lib import PSLTKinetics, PSLTParameters
 from reference_anchor_utils import compute_r3_and_winner_maps, select_anchor_candidates_from_fixed_scan
+from action_grid_profile_utils import scan_d_values, select_chi_profile, select_superrad_profile
 
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTDIR = ROOT / "output" / "hll_reference_anchor"
 PAPER_DIR = ROOT / "paper"
-CHI_CSV = ROOT / "output" / "chi_fp_2d" / "localized_chi_D6-12-18.csv"
 B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 CHOICE_JSON = OUTDIR / "reference_anchor_choice.json"
 
@@ -47,10 +47,10 @@ BASELINE = {
     "g_fp_full_tail_clip_min": 1e-3,
     "g_fp_full_tail_clip_max": 0.95,
     "chi_legacy": 0.2,
-    "chi_mode": "localized_interp",
+    "chi_mode": "localized_grid",
     "A1": 1.0,
     "A2": 1.0,
-    "gamma_mode": "action_profile",
+    "gamma_mode": "action_grid",
     "p_B": 0.30,
     "b_mode": "overlap_2d",
     "hll_observable_mode": "eft_wilson_matched",
@@ -68,25 +68,7 @@ BASELINE = {
     "eta_num": 60,
 }
 
-
-def load_chi_knots(path: Path) -> Tuple[np.ndarray, np.ndarray]:
-    if not path.exists():
-        raise FileNotFoundError(f"Missing chi profile csv: {path}")
-    rows: list[Tuple[float, float]] = []
-    with open(path, "r", newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if row.get("level", "").strip().lower() == "fine":
-                rows.append((float(row["D"]), float(row["chi_LR"])))
-    if len(rows) < 2:
-        raise RuntimeError(f"Need >=2 fine rows in {path}")
-    rows.sort(key=lambda t: t[0])
-    d = np.array([x for x, _ in rows], dtype=float)
-    chi = np.array([y for _, y in rows], dtype=float)
-    return d, chi
-
-
-def make_kinetics(d_knots: np.ndarray, chi_knots: np.ndarray) -> PSLTKinetics:
+def make_kinetics(chi_profile: Dict[str, object], superrad_profile: Dict[str, object]) -> PSLTKinetics:
     params = PSLTParameters(
         c_eff=BASELINE["c_eff"],
         nu=BASELINE["nu"],
@@ -99,12 +81,13 @@ def make_kinetics(d_knots: np.ndarray, chi_knots: np.ndarray) -> PSLTKinetics:
         g_fp_full_tail_clip_min=BASELINE["g_fp_full_tail_clip_min"],
         g_fp_full_tail_clip_max=BASELINE["g_fp_full_tail_clip_max"],
         chi=BASELINE["chi_legacy"],
-        chi_mode=BASELINE["chi_mode"],
-        chi_lr_D=tuple(float(x) for x in d_knots),
-        chi_lr_vals=tuple(float(y) for y in chi_knots),
+        chi_mode=str(chi_profile["mode"]),
+        chi_lr_D=tuple(float(x) for x in chi_profile["d"]),
+        chi_lr_vals=tuple(float(y) for y in chi_profile["chi"]),
         A1=BASELINE["A1"],
         A2=BASELINE["A2"],
-        gamma_mode=BASELINE["gamma_mode"],
+        gamma_mode=str(superrad_profile["mode"]),
+        gamma_superrad_csv=str(superrad_profile["path"]),
         b_mode=BASELINE["b_mode"],
         b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=BASELINE["p_B"],
@@ -255,9 +238,10 @@ def main() -> None:
     OUTDIR.mkdir(parents=True, exist_ok=True)
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
 
-    d_knots, chi_knots = load_chi_knots(CHI_CSV)
-    kinetics = make_kinetics(d_knots, chi_knots)
-    d_vals = np.linspace(BASELINE["D_min"], BASELINE["D_max"], BASELINE["D_num"])
+    d_vals = scan_d_values(BASELINE["D_min"], BASELINE["D_max"], BASELINE["D_num"])
+    chi_profile = select_chi_profile(ROOT, d_vals)
+    superrad_profile = select_superrad_profile(ROOT, d_vals)
+    kinetics = make_kinetics(chi_profile, superrad_profile)
     eta_vals = np.linspace(BASELINE["eta_min"], BASELINE["eta_max"], BASELINE["eta_num"])
 
     r3_map, winner_map = compute_r3_and_winner_maps(
@@ -359,4 +343,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

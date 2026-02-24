@@ -27,11 +27,13 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str((ROOT / "code").resolve()))
 
 from pslt_lib import PSLTKinetics, PSLTParameters
+from action_grid_profile_utils import scan_d_values, select_chi_profile
 
 
 OUTDIR = ROOT / "output" / "tcoh_fp_1d"
 PAPER_DIR = ROOT / "paper"
 B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
+_CHI_PROFILE: dict | None = None
 
 
 @dataclass(frozen=True)
@@ -41,7 +43,16 @@ class Case:
     t_cap: float | None = None
 
 
+def get_chi_profile() -> dict:
+    global _CHI_PROFILE
+    if _CHI_PROFILE is None:
+        d_scan = scan_d_values(4.0, 20.0, 60)
+        _CHI_PROFILE = select_chi_profile(ROOT, d_scan)
+    return _CHI_PROFILE
+
+
 def make_kinetics() -> PSLTKinetics:
+    chi_profile = get_chi_profile()
     params = PSLTParameters(
         c_eff=0.5,
         nu=5.0,
@@ -53,9 +64,9 @@ def make_kinetics() -> PSLTKinetics:
         g_fp_full_tail_clip_min=1e-3,
         g_fp_full_tail_clip_max=0.95,
         chi=0.2,
-        chi_mode="localized_interp",
-        chi_lr_D=(6.0, 12.0, 18.0),
-        chi_lr_vals=(4.01827e-4, 2.21414e-4, 2.13187e-4),
+        chi_mode=str(chi_profile["mode"]),
+        chi_lr_D=tuple(float(x) for x in chi_profile["d"]),
+        chi_lr_vals=tuple(float(y) for y in chi_profile["chi"]),
         A1=1.0,
         A2=1.0,
         b_mode="overlap_2d",

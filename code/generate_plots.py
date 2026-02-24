@@ -24,7 +24,6 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap, BoundaryNorm
 from pathlib import Path
 import json
-import csv
 import sys
 import traceback
 
@@ -32,6 +31,7 @@ import traceback
 sys.path.insert(0, str(Path(__file__).parent))
 from pslt_lib import PSLTKinetics, PSLTParameters, load_yukawa_data
 from hll_observable import HLLObservableConfig, HLLChannelPredictor
+from action_grid_profile_utils import scan_d_values, select_chi_profile, select_superrad_profile
 
 OUTDIR = Path(__file__).parent.parent / "output"
 OUTDIR.mkdir(exist_ok=True, parents=True)
@@ -49,10 +49,10 @@ PAPER_BASELINE = {
     "g_fp_full_tail_clip_min": 1e-3,
     "g_fp_full_tail_clip_max": 0.95,
     "chi_legacy": 0.2,
-    "chi_mode": "localized_interp",
+    "chi_mode": "localized_grid",
     "A1": 1.0,
     "A2": 1.0,
-    "gamma_mode": "action_profile",
+    "gamma_mode": "action_grid",
     "p_B": 0.30,
     "b_mode": "overlap_2d",
     "t_coh": 1.0,
@@ -60,44 +60,21 @@ PAPER_BASELINE = {
     "hmumu_ref_eta": 1.0,
     "hll_observable_mode": "eft_wilson_matched",
     "hll_observable_nmax": 20,
+    "D_min": 4.0,
+    "D_max": 20.0,
+    "D_num": 60,
 }
 
-DEFAULT_CHI_D = np.array([6.0, 12.0, 18.0], dtype=float)
-DEFAULT_CHI_VALS = np.array([4.01827e-4, 2.21414e-4, 2.13187e-4], dtype=float)
 B_OVERLAP_CSV = OUTDIR / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 
-
-def load_localized_chi_profile():
-    """
-    Load chi_LR(D) from Appendix-C extraction CSV (fine rows only).
-    Fallback to default knots if file is unavailable.
-    """
-    path = OUTDIR / "chi_fp_2d" / "localized_chi_D6-12-18.csv"
-    if not path.exists():
-        print(f"Warning: {path} not found. Falling back to built-in chi(D) knots.")
-        return DEFAULT_CHI_D.copy(), DEFAULT_CHI_VALS.copy()
-
-    try:
-        rows = []
-        with open(path, "r", newline="") as f:
-            reader = csv.DictReader(f)
-            for r in reader:
-                if r.get("level", "").strip().lower() == "fine":
-                    rows.append((float(r["D"]), float(r["chi_LR"])))
-        if len(rows) < 2:
-            raise ValueError("not enough fine rows in localized chi csv")
-        rows.sort(key=lambda t: t[0])
-        dvals = np.array([t[0] for t in rows], dtype=float)
-        chis = np.array([t[1] for t in rows], dtype=float)
-        print(f"Loaded localized chi(D) profile from {path}")
-        return dvals, chis
-    except Exception as exc:
-        print(f"Warning: failed to parse {path} ({exc}). Falling back to built-in chi(D) knots.")
-        return DEFAULT_CHI_D.copy(), DEFAULT_CHI_VALS.copy()
-
-
 def make_baseline_kinetics() -> PSLTKinetics:
-    chi_d, chi_vals = load_localized_chi_profile()
+    d_scan = scan_d_values(
+        PAPER_BASELINE["D_min"],
+        PAPER_BASELINE["D_max"],
+        PAPER_BASELINE["D_num"],
+    )
+    chi_prof = select_chi_profile(Path(__file__).resolve().parent.parent, d_scan)
+    superrad_prof = select_superrad_profile(Path(__file__).resolve().parent.parent, d_scan)
     params = PSLTParameters(
         c_eff=PAPER_BASELINE["c_eff"],
         nu=PAPER_BASELINE["nu"],
@@ -110,12 +87,13 @@ def make_baseline_kinetics() -> PSLTKinetics:
         g_fp_full_tail_clip_min=PAPER_BASELINE["g_fp_full_tail_clip_min"],
         g_fp_full_tail_clip_max=PAPER_BASELINE["g_fp_full_tail_clip_max"],
         chi=PAPER_BASELINE["chi_legacy"],
-        chi_mode=PAPER_BASELINE["chi_mode"],
-        chi_lr_D=tuple(float(x) for x in chi_d),
-        chi_lr_vals=tuple(float(x) for x in chi_vals),
+        chi_mode=str(chi_prof["mode"]),
+        chi_lr_D=tuple(float(x) for x in chi_prof["d"]),
+        chi_lr_vals=tuple(float(x) for x in chi_prof["chi"]),
         A1=PAPER_BASELINE["A1"],
         A2=PAPER_BASELINE["A2"],
-        gamma_mode=PAPER_BASELINE["gamma_mode"],
+        gamma_mode=str(superrad_prof["mode"]),
+        gamma_superrad_csv=str(superrad_prof["path"]),
         b_mode=PAPER_BASELINE["b_mode"],
         b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=PAPER_BASELINE["p_B"],
@@ -127,10 +105,11 @@ def make_baseline_kinetics() -> PSLTKinetics:
     print(
         "Using baseline profile:",
         f"g_mode={params.g_mode},",
-        "with mixing profile",
-        f"mode={params.chi_mode},",
-        f"knots={list(params.chi_lr_D)},",
-        f"chi={list(params.chi_lr_vals)}"
+        "with action-derived profiles",
+        f"chi_mode={params.chi_mode},",
+        f"chi_csv={chi_prof['path']},",
+        f"gamma_mode={params.gamma_mode},",
+        f"gamma_csv={superrad_prof['path']}",
     )
     return PSLTKinetics(params)
 

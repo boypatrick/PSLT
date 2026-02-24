@@ -1,0 +1,15 @@
+{
+  "ref_mode": "fixed",
+  "ref_D": 10.0,
+  "ref_eta": 1.0,
+  "ref_source": "fixed_cli",
+  "suffix": "_uv_rge_smoke",
+  "observable_mode": "eft_wilson_uv_rge",
+  "uv_blend": 0.0,
+  "uv_m2_power": 1.0,
+  "uv_rge_mu_low": 1.0,
+  "uv_rge_gamma_diag": 2.0,
+  "uv_rge_gamma_offdiag": 1.0,
+  "uv_rge_log_clip": 6.0,
+  "tag": "uv_rge_smoke"
+}

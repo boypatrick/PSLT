@@ -38,6 +38,7 @@ from eft_wilson_matching import (
     wilson_matrix_uv_tree,
     total_width_ratio,
 )
+from eft_rge import EFTLeadingLogRGEConfig, mu_match_from_m2, run_ceh_leading_log
 
 # =============================================================================
 # 1. Parameters (Dimensional Rigor)
@@ -109,7 +110,7 @@ class PSLTParameters:
     b_n_power: float = 0.30       # Sublinear compression: B_gen ∝ (y_gen)^{b_n_power}
     b_n_tail_mode: str = "saturate"  # "saturate" (paper baseline) or "gaussian"
     b_n_tail_beta: float = 0.50   # Used only when b_n_tail_mode == "gaussian"
-    hll_observable_mode: str = "eft_wilson_matched"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", or "eft_wilson_uv_tree"
+    hll_observable_mode: str = "eft_wilson_matched"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
     hll_observable_nmax: int = 20
     hll_match_basis_mode: str = "sqrt_yraw"  # "sqrt_yraw" reproduces diagonal limit with mix_scale=0
     hll_match_mix_scale: float = 200.0
@@ -125,6 +126,10 @@ class PSLTParameters:
     hll_uv_coupling_floor: float = 1e-30
     hll_uv_blend: float = 1.0
     hll_uv_m2_power: float = 1.0
+    hll_uv_rge_mu_low: float = 1.0
+    hll_uv_rge_gamma_diag: float = 2.0
+    hll_uv_rge_gamma_offdiag: float = 1.0
+    hll_uv_rge_log_clip: float = 6.0
 
     def __post_init__(self):
         if self.chi_mode not in {"constant", "localized_interp", "localized_grid", "open_system"}:
@@ -186,7 +191,13 @@ class PSLTParameters:
             raise ValueError(f"Unsupported b_mode='{self.b_mode}'.")
         if self.b_overlap_floor <= 0:
             raise ValueError("b_overlap_floor must be > 0.")
-        if self.hll_observable_mode not in {"proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree"}:
+        if self.hll_observable_mode not in {
+            "proxy_wratio",
+            "eft_wilson_diag",
+            "eft_wilson_matched",
+            "eft_wilson_uv_tree",
+            "eft_wilson_uv_rge",
+        }:
             raise ValueError(f"Unsupported hll_observable_mode='{self.hll_observable_mode}'.")
         if self.hll_observable_nmax < 3:
             raise ValueError("hll_observable_nmax must be >= 3.")
@@ -212,6 +223,10 @@ class PSLTParameters:
             raise ValueError("hll_uv_blend must be in [0,1].")
         if self.hll_uv_m2_power < 0.0:
             raise ValueError("hll_uv_m2_power must be >= 0.")
+        if self.hll_uv_rge_mu_low <= 0.0:
+            raise ValueError("hll_uv_rge_mu_low must be > 0.")
+        if self.hll_uv_rge_log_clip <= 0.0:
+            raise ValueError("hll_uv_rge_log_clip must be > 0.")
 
 # =============================================================================
 # 2. Yukawa Visibility Module
@@ -1370,6 +1385,15 @@ class PSLTKinetics:
             coupling_floor=self.params.hll_uv_coupling_floor,
         )
 
+    def _hll_uv_rge_config(self) -> EFTLeadingLogRGEConfig:
+        return EFTLeadingLogRGEConfig(
+            mu_low=self.params.hll_uv_rge_mu_low,
+            gamma_diag=self.params.hll_uv_rge_gamma_diag,
+            gamma_offdiag=self.params.hll_uv_rge_gamma_offdiag,
+            log_clip=self.params.hll_uv_rge_log_clip,
+            floor=self.params.hll_uv_coupling_floor,
+        )
+
     def _hll_yraw_vector(self, D: float) -> np.ndarray:
         return np.array(
             [
@@ -1466,6 +1490,23 @@ class PSLTKinetics:
         cmat = self.hll_wilson_matrix_uv_tree(D, eta, t_coh, N_max=N_max)
         return float(max(cmat[layer_n - 1, layer_n - 1], self.params.b_overlap_floor))
 
+    def hll_wilson_matrix_uv_rge(self, D: float, eta: float, t_coh: float, N_max: int = 20) -> np.ndarray:
+        """
+        UV-tree matrix followed by leading-log running to the low scale.
+        """
+        c_match = self.hll_wilson_matrix_uv_tree(D, eta, t_coh, N_max=N_max)
+        m2 = self._hll_m2_vector(D)
+        cfg = self._hll_uv_rge_config()
+        mu_match = mu_match_from_m2(m2, floor=cfg.floor)
+        c_low, _ = run_ceh_leading_log(c_match=c_match, mu_match=mu_match, cfg=cfg)
+        return c_low
+
+    def hll_wilson_coeff_uv_rge(self, layer_n: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:
+        if layer_n <= 0 or layer_n > 3:
+            return 0.0
+        cmat = self.hll_wilson_matrix_uv_rge(D, eta, t_coh, N_max=N_max)
+        return float(max(cmat[layer_n - 1, layer_n - 1], self.params.b_overlap_floor))
+
     def hll_total_width_ratio_matched(
         self,
         D: float,
@@ -1498,6 +1539,22 @@ class PSLTKinetics:
         c_ref_diag = np.diag(c_ref)
         return total_width_ratio(c_diag=c_diag, c_diag_ref=c_ref_diag, cfg=cfg)
 
+    def hll_total_width_ratio_uv_rge(
+        self,
+        D: float,
+        eta: float,
+        t_coh: float,
+        ref_D: float,
+        ref_eta: float,
+        N_max: int = 20,
+    ) -> float:
+        cfg = self._hll_match_config()
+        c = self.hll_wilson_matrix_uv_rge(D, eta, t_coh, N_max=N_max)
+        c_ref = self.hll_wilson_matrix_uv_rge(ref_D, ref_eta, t_coh, N_max=N_max)
+        c_diag = np.diag(c)
+        c_ref_diag = np.diag(c_ref)
+        return total_width_ratio(c_diag=c_diag, c_diag_ref=c_ref_diag, cfg=cfg)
+
     def hll_channel_amplitude(
         self,
         layer_n: int,
@@ -1515,6 +1572,8 @@ class PSLTKinetics:
             return self.hll_wilson_coeff_matched(layer_n, D, eta, t_coh, N_max=N_max)
         if observable_mode == "eft_wilson_uv_tree":
             return self.hll_wilson_coeff_uv_tree(layer_n, D, eta, t_coh, N_max=N_max)
+        if observable_mode == "eft_wilson_uv_rge":
+            return self.hll_wilson_coeff_uv_rge(layer_n, D, eta, t_coh, N_max=N_max)
         raise ValueError(f"Unsupported observable_mode='{observable_mode}'.")
 
     def hll_mu_pred(
@@ -1548,6 +1607,16 @@ class PSLTKinetics:
             return float(partial_ratio / max(width_ratio, 1e-30))
         if mode == "eft_wilson_uv_tree":
             width_ratio = self.hll_total_width_ratio_uv_tree(
+                D=D,
+                eta=eta,
+                t_coh=t_coh,
+                ref_D=ref_D,
+                ref_eta=ref_eta,
+                N_max=nmax,
+            )
+            return float(partial_ratio / max(width_ratio, 1e-30))
+        if mode == "eft_wilson_uv_rge":
+            width_ratio = self.hll_total_width_ratio_uv_rge(
                 D=D,
                 eta=eta,
                 t_coh=t_coh,

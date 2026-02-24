@@ -16,6 +16,8 @@ We report:
   - raw overlaps y_eff_raw_n (microcanonical-windowed)
   - cumulative overlaps y_eff_cum_n = sum_{k<=n} y_eff_raw_k
   - visibility profile B_n = y_eff_cum_n / y_eff_cum_3  (n=1,2,3)
+  - UV-tree inputs on the same tracked branches:
+      lambda_n(D), y_eff_flavor_{e,mu,tau,n}(D), g_uv_{e,mu,tau,n}(D)
 
 Outputs:
   - output/y_eff_2d/y_eff_2d_three_channel_D*.csv
@@ -64,6 +66,25 @@ class OverlapConfig:
     track_lambda_weight: float = 1.0
     track_parity_weight: float = 0.75
     track_logy_weight: float = 0.20
+    flavor_sigma_power: float = 0.08
+    flavor_sigma_min_scale: float = 0.70
+    flavor_sigma_max_scale: float = 1.50
+
+
+YUKAWA_LEPTON = {
+    "e": 2.935e-6,
+    "mu": 6.077e-4,
+    "tau": 1.022e-2,
+}
+
+
+def flavor_sigma_scales(cfg: OverlapConfig) -> Dict[str, float]:
+    y_ref = YUKAWA_LEPTON["mu"]
+    scales: Dict[str, float] = {}
+    for flavor, yval in YUKAWA_LEPTON.items():
+        raw = (y_ref / max(float(yval), 1e-30)) ** float(cfg.flavor_sigma_power)
+        scales[flavor] = float(np.clip(raw, cfg.flavor_sigma_min_scale, cfg.flavor_sigma_max_scale))
+    return scales
 
 
 def chirality_profiles(
@@ -276,6 +297,7 @@ def run_level_scan(
     prev_lam: Optional[np.ndarray] = None
     prev_y: Optional[np.ndarray] = None
     prev_parity: Optional[np.ndarray] = None
+    sigma_scales = flavor_sigma_scales(cfg)
 
     for d_val in sorted(float(x) for x in d_vals):
         solved = solve_modes(
@@ -315,6 +337,27 @@ def run_level_scan(
 
         y_modes = mode_overlap_values(psi=psi, kernel=kernel, rho=rho, dr=level.dr, dz=level.dz)
         parity = mode_parity_indicators(psi=psi, rho=rho, dr=level.dr, dz=level.dz)
+        y_modes_flavor: Dict[str, np.ndarray] = {}
+        for flavor in ("e", "mu", "tau"):
+            s = sigma_scales[flavor]
+            f_l_f, f_r_f = chirality_profiles(
+                rr=rr,
+                zz=zz,
+                rho=rho,
+                dr=level.dr,
+                dz=level.dz,
+                d_val=d_val,
+                sigma_l=cfg.sigma_l * s,
+                sigma_r=cfg.sigma_r * s,
+            )
+            kernel_f = f_l_f * f_r_f * frame
+            y_modes_flavor[flavor] = mode_overlap_values(
+                psi=psi,
+                kernel=kernel_f,
+                rho=rho,
+                dr=level.dr,
+                dz=level.dz,
+            )
 
         track_idx, track_score = assign_tracked_modes(
             evals=evals,
@@ -332,6 +375,7 @@ def run_level_scan(
         parity_track = np.zeros(cfg.n_track, dtype=float)
         sigma_track = np.zeros(cfg.n_track, dtype=float)
         nwin_track = np.zeros(cfg.n_track, dtype=int)
+        y_flavor = {flv: np.zeros(cfg.n_track, dtype=float) for flv in ("e", "mu", "tau")}
 
         for i in range(cfg.n_track):
             cidx = int(track_idx[i])
@@ -347,6 +391,14 @@ def run_level_scan(
             y_raw[i] = y_mc
             sigma_track[i] = sigma_mc
             nwin_track[i] = n_mc
+            for flavor in ("e", "mu", "tau"):
+                y_flv_mc, _, _ = microcanonical_average(
+                    evals=evals,
+                    y_modes=y_modes_flavor[flavor],
+                    center_idx=cidx,
+                    cfg=cfg,
+                )
+                y_flavor[flavor][i] = y_flv_mc
 
         y_cum = np.cumsum(y_raw)
         y3 = max(y_cum[min(2, cfg.n_track - 1)], 1e-30)
@@ -401,6 +453,27 @@ def run_level_scan(
             "B1": float(b_vals[0]),
             "B2": float(b_vals[1]),
             "B3": float(b_vals[2]),
+            "sigma_scale_e": float(sigma_scales["e"]),
+            "sigma_scale_mu": float(sigma_scales["mu"]),
+            "sigma_scale_tau": float(sigma_scales["tau"]),
+            "y_eff_flavor_e_1": float(y_flavor["e"][0]),
+            "y_eff_flavor_e_2": float(y_flavor["e"][1]),
+            "y_eff_flavor_e_3": float(y_flavor["e"][2]),
+            "y_eff_flavor_mu_1": float(y_flavor["mu"][0]),
+            "y_eff_flavor_mu_2": float(y_flavor["mu"][1]),
+            "y_eff_flavor_mu_3": float(y_flavor["mu"][2]),
+            "y_eff_flavor_tau_1": float(y_flavor["tau"][0]),
+            "y_eff_flavor_tau_2": float(y_flavor["tau"][1]),
+            "y_eff_flavor_tau_3": float(y_flavor["tau"][2]),
+            "g_uv_e_1": float(math.sqrt(max(y_flavor["e"][0], 1e-30))),
+            "g_uv_e_2": float(math.sqrt(max(y_flavor["e"][1], 1e-30))),
+            "g_uv_e_3": float(math.sqrt(max(y_flavor["e"][2], 1e-30))),
+            "g_uv_mu_1": float(math.sqrt(max(y_flavor["mu"][0], 1e-30))),
+            "g_uv_mu_2": float(math.sqrt(max(y_flavor["mu"][1], 1e-30))),
+            "g_uv_mu_3": float(math.sqrt(max(y_flavor["mu"][2], 1e-30))),
+            "g_uv_tau_1": float(math.sqrt(max(y_flavor["tau"][0], 1e-30))),
+            "g_uv_tau_2": float(math.sqrt(max(y_flavor["tau"][1], 1e-30))),
+            "g_uv_tau_3": float(math.sqrt(max(y_flavor["tau"][2], 1e-30))),
             "build_s": float(solved["build_s"]),
             "solve_s": float(solved["solve_s"]),
         }
@@ -468,6 +541,14 @@ def main() -> None:
     ap.add_argument("--track-lambda-weight", type=float, default=1.0, help="Tracking cost weight for lambda continuity.")
     ap.add_argument("--track-parity-weight", type=float, default=0.75, help="Tracking cost weight for parity continuity.")
     ap.add_argument("--track-logy-weight", type=float, default=0.20, help="Tracking cost weight for log-overlap continuity.")
+    ap.add_argument(
+        "--flavor-sigma-power",
+        type=float,
+        default=0.08,
+        help="Sigma scaling exponent from Yukawa hierarchy: sigma_f/sigma_mu ~ (y_mu/y_f)^power.",
+    )
+    ap.add_argument("--flavor-sigma-min-scale", type=float, default=0.70)
+    ap.add_argument("--flavor-sigma-max-scale", type=float, default=1.50)
     ap.add_argument("--tol", type=float, default=1e-8)
     ap.add_argument("--maxiter", type=int, default=30000)
     ap.add_argument(
@@ -483,6 +564,12 @@ def main() -> None:
         raise ValueError("--n-eigs must be >= 3.")
     if args.window_k < 0:
         raise ValueError("--window-k must be >= 0.")
+    if args.flavor_sigma_power < 0:
+        raise ValueError("--flavor-sigma-power must be >= 0.")
+    if args.flavor_sigma_min_scale <= 0 or args.flavor_sigma_max_scale <= 0:
+        raise ValueError("--flavor-sigma-min-scale and --flavor-sigma-max-scale must be > 0.")
+    if args.flavor_sigma_min_scale > args.flavor_sigma_max_scale:
+        raise ValueError("--flavor-sigma-min-scale cannot exceed --flavor-sigma-max-scale.")
 
     if args.full_scan:
         d_list = [float(d) for d in range(4, 21)]
@@ -509,6 +596,9 @@ def main() -> None:
         track_lambda_weight=float(args.track_lambda_weight),
         track_parity_weight=float(args.track_parity_weight),
         track_logy_weight=float(args.track_logy_weight),
+        flavor_sigma_power=float(args.flavor_sigma_power),
+        flavor_sigma_min_scale=float(args.flavor_sigma_min_scale),
+        flavor_sigma_max_scale=float(args.flavor_sigma_max_scale),
     )
     sigma = None if args.sigma < 0 else float(args.sigma)
     outdir = Path(args.outdir)
@@ -543,6 +633,9 @@ def main() -> None:
     if args.full_scan:
         prof_cols = [
             "D",
+            "lambda_1",
+            "lambda_2",
+            "lambda_3",
             "B1",
             "B2",
             "B3",
@@ -552,6 +645,27 @@ def main() -> None:
             "y_eff_cum_1",
             "y_eff_cum_2",
             "y_eff_cum_3",
+            "y_eff_flavor_e_1",
+            "y_eff_flavor_e_2",
+            "y_eff_flavor_e_3",
+            "y_eff_flavor_mu_1",
+            "y_eff_flavor_mu_2",
+            "y_eff_flavor_mu_3",
+            "y_eff_flavor_tau_1",
+            "y_eff_flavor_tau_2",
+            "y_eff_flavor_tau_3",
+            "g_uv_e_1",
+            "g_uv_e_2",
+            "g_uv_e_3",
+            "g_uv_mu_1",
+            "g_uv_mu_2",
+            "g_uv_mu_3",
+            "g_uv_tau_1",
+            "g_uv_tau_2",
+            "g_uv_tau_3",
+            "sigma_scale_e",
+            "sigma_scale_mu",
+            "sigma_scale_tau",
             "track_idx_1",
             "track_idx_2",
             "track_idx_3",
@@ -591,4 +705,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -30,7 +30,14 @@ from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Tuple, List, Optional, Dict
 from scipy.integrate import solve_ivp
-from eft_wilson_matching import EFTWilsonMatchConfig, mixing_epsilon, wilson_matrix, total_width_ratio
+from eft_wilson_matching import (
+    EFTWilsonMatchConfig,
+    UVTreeMatchConfig,
+    mixing_epsilon,
+    wilson_matrix,
+    wilson_matrix_uv_tree,
+    total_width_ratio,
+)
 
 # =============================================================================
 # 1. Parameters (Dimensional Rigor)
@@ -102,7 +109,7 @@ class PSLTParameters:
     b_n_power: float = 0.30       # Sublinear compression: B_gen ∝ (y_gen)^{b_n_power}
     b_n_tail_mode: str = "saturate"  # "saturate" (paper baseline) or "gaussian"
     b_n_tail_beta: float = 0.50   # Used only when b_n_tail_mode == "gaussian"
-    hll_observable_mode: str = "eft_wilson_matched"  # "proxy_wratio", "eft_wilson_diag", or "eft_wilson_matched"
+    hll_observable_mode: str = "eft_wilson_matched"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", or "eft_wilson_uv_tree"
     hll_observable_nmax: int = 20
     hll_match_basis_mode: str = "sqrt_yraw"  # "sqrt_yraw" reproduces diagonal limit with mix_scale=0
     hll_match_mix_scale: float = 200.0
@@ -114,6 +121,10 @@ class PSLTParameters:
     hll_match_br_ee: float = 5.0e-9
     hll_match_br_mumu: float = 2.2e-4
     hll_match_br_tautau: float = 6.3e-2
+    hll_uv_m2_floor: float = 1e-10
+    hll_uv_coupling_floor: float = 1e-30
+    hll_uv_blend: float = 1.0
+    hll_uv_m2_power: float = 1.0
 
     def __post_init__(self):
         if self.chi_mode not in {"constant", "localized_interp", "localized_grid", "open_system"}:
@@ -175,7 +186,7 @@ class PSLTParameters:
             raise ValueError(f"Unsupported b_mode='{self.b_mode}'.")
         if self.b_overlap_floor <= 0:
             raise ValueError("b_overlap_floor must be > 0.")
-        if self.hll_observable_mode not in {"proxy_wratio", "eft_wilson_diag", "eft_wilson_matched"}:
+        if self.hll_observable_mode not in {"proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree"}:
             raise ValueError(f"Unsupported hll_observable_mode='{self.hll_observable_mode}'.")
         if self.hll_observable_nmax < 3:
             raise ValueError("hll_observable_nmax must be >= 3.")
@@ -193,6 +204,14 @@ class PSLTParameters:
             raise ValueError("hll_match_width_scale must be >= 0.")
         if min(self.hll_match_br_ee, self.hll_match_br_mumu, self.hll_match_br_tautau) < 0.0:
             raise ValueError("hll_match_br_* must be >= 0.")
+        if self.hll_uv_m2_floor <= 0.0:
+            raise ValueError("hll_uv_m2_floor must be > 0.")
+        if self.hll_uv_coupling_floor <= 0.0:
+            raise ValueError("hll_uv_coupling_floor must be > 0.")
+        if not (0.0 <= self.hll_uv_blend <= 1.0):
+            raise ValueError("hll_uv_blend must be in [0,1].")
+        if self.hll_uv_m2_power < 0.0:
+            raise ValueError("hll_uv_m2_power must be >= 0.")
 
 # =============================================================================
 # 2. Yukawa Visibility Module
@@ -602,6 +621,8 @@ class PSLTKinetics:
         entries_b: Dict[float, np.ndarray] = {}
         entries_yraw: Dict[float, np.ndarray] = {}
         entries_ycum: Dict[float, np.ndarray] = {}
+        entries_lambda: Dict[float, np.ndarray] = {}
+        entries_guv: Dict[float, np.ndarray] = {}
         for row in rows:
             if row.get("D", "") in {"", None}:
                 continue
@@ -610,6 +631,35 @@ class PSLTKinetics:
             has_b = all(k in row and row[k] not in {"", None} for k in ("B1", "B2", "B3"))
             has_ycum = all(k in row and row[k] not in {"", None} for k in ("y_eff_cum_1", "y_eff_cum_2", "y_eff_cum_3"))
             has_yraw = all(k in row and row[k] not in {"", None} for k in ("y_eff_raw_1", "y_eff_raw_2", "y_eff_raw_3"))
+            has_lambda = all(k in row and row[k] not in {"", None} for k in ("lambda_1", "lambda_2", "lambda_3"))
+            has_guv = all(
+                k in row and row[k] not in {"", None}
+                for k in (
+                    "g_uv_e_1",
+                    "g_uv_e_2",
+                    "g_uv_e_3",
+                    "g_uv_mu_1",
+                    "g_uv_mu_2",
+                    "g_uv_mu_3",
+                    "g_uv_tau_1",
+                    "g_uv_tau_2",
+                    "g_uv_tau_3",
+                )
+            )
+            has_yflavor = all(
+                k in row and row[k] not in {"", None}
+                for k in (
+                    "y_eff_flavor_e_1",
+                    "y_eff_flavor_e_2",
+                    "y_eff_flavor_e_3",
+                    "y_eff_flavor_mu_1",
+                    "y_eff_flavor_mu_2",
+                    "y_eff_flavor_mu_3",
+                    "y_eff_flavor_tau_1",
+                    "y_eff_flavor_tau_2",
+                    "y_eff_flavor_tau_3",
+                )
+            )
 
             bvals_row: Optional[np.ndarray] = None
             if has_b:
@@ -661,9 +711,61 @@ class PSLTKinetics:
             yraw = np.maximum(yraw, self.params.b_overlap_floor)
             ycum = np.maximum(ycum, self.params.b_overlap_floor)
 
+            if has_lambda:
+                lam = np.array(
+                    [
+                        max(abs(float(row["lambda_1"])), self.params.hll_uv_m2_floor),
+                        max(abs(float(row["lambda_2"])), self.params.hll_uv_m2_floor),
+                        max(abs(float(row["lambda_3"])), self.params.hll_uv_m2_floor),
+                    ],
+                    dtype=float,
+                )
+            else:
+                lam = np.ones(3, dtype=float)
+
+            if has_guv:
+                guv = np.array(
+                    [
+                        [float(row["g_uv_e_1"]), float(row["g_uv_e_2"]), float(row["g_uv_e_3"])],
+                        [float(row["g_uv_mu_1"]), float(row["g_uv_mu_2"]), float(row["g_uv_mu_3"])],
+                        [float(row["g_uv_tau_1"]), float(row["g_uv_tau_2"]), float(row["g_uv_tau_3"])],
+                    ],
+                    dtype=float,
+                )
+            elif has_yflavor:
+                guv = np.sqrt(
+                    np.array(
+                        [
+                            [
+                                max(float(row["y_eff_flavor_e_1"]), self.params.hll_uv_coupling_floor),
+                                max(float(row["y_eff_flavor_e_2"]), self.params.hll_uv_coupling_floor),
+                                max(float(row["y_eff_flavor_e_3"]), self.params.hll_uv_coupling_floor),
+                            ],
+                            [
+                                max(float(row["y_eff_flavor_mu_1"]), self.params.hll_uv_coupling_floor),
+                                max(float(row["y_eff_flavor_mu_2"]), self.params.hll_uv_coupling_floor),
+                                max(float(row["y_eff_flavor_mu_3"]), self.params.hll_uv_coupling_floor),
+                            ],
+                            [
+                                max(float(row["y_eff_flavor_tau_1"]), self.params.hll_uv_coupling_floor),
+                                max(float(row["y_eff_flavor_tau_2"]), self.params.hll_uv_coupling_floor),
+                                max(float(row["y_eff_flavor_tau_3"]), self.params.hll_uv_coupling_floor),
+                            ],
+                        ],
+                        dtype=float,
+                    )
+                )
+            else:
+                # Fallback: diagonal flavor-layer matrix from layer-resolved raw overlaps.
+                guv = np.diag(np.sqrt(np.maximum(yraw, self.params.hll_uv_coupling_floor)))
+
+            guv = np.maximum(guv, self.params.hll_uv_coupling_floor)
+
             entries_b[dval] = bvals
             entries_yraw[dval] = yraw
             entries_ycum[dval] = ycum
+            entries_lambda[dval] = lam
+            entries_guv[dval] = guv
 
         if not entries_b:
             return None
@@ -672,11 +774,15 @@ class PSLTKinetics:
         b_sorted = np.vstack([entries_b[d] for d in d_sorted])
         yraw_sorted = np.vstack([entries_yraw[d] for d in d_sorted])
         ycum_sorted = np.vstack([entries_ycum[d] for d in d_sorted])
+        lam_sorted = np.vstack([entries_lambda[d] for d in d_sorted])
+        guv_sorted = np.stack([entries_guv[d] for d in d_sorted], axis=0)
         return {
             "D": d_sorted,
             "B123": b_sorted,
             "YRAW123": yraw_sorted,
             "YCUM123": ycum_sorted,
+            "LAMBDA123": lam_sorted,
+            "GUV": guv_sorted,
         }
 
     def _auto_find_b_overlap_csv(self) -> Optional[Path]:
@@ -1258,6 +1364,12 @@ class PSLTKinetics:
             floor=self.params.b_overlap_floor,
         )
 
+    def _hll_uv_tree_config(self) -> UVTreeMatchConfig:
+        return UVTreeMatchConfig(
+            m2_floor=self.params.hll_uv_m2_floor,
+            coupling_floor=self.params.hll_uv_coupling_floor,
+        )
+
     def _hll_yraw_vector(self, D: float) -> np.ndarray:
         return np.array(
             [
@@ -1275,6 +1387,38 @@ class PSLTKinetics:
         if q_sum <= 0.0:
             return np.zeros(3, dtype=float)
         return np.array([float(q[0] / q_sum), float(q[1] / q_sum), float(q[2] / q_sum)], dtype=float)
+
+    def _hll_g_uv_matrix(self, D: float) -> np.ndarray:
+        diag = np.diag(np.sqrt(np.maximum(self._hll_yraw_vector(D), self.params.hll_uv_coupling_floor)))
+        prof = self._b_overlap_profile
+        if self._b_mode_active == "overlap_2d" and prof is not None and "GUV" in prof:
+            d_knots = prof["D"]
+            g_knots = prof["GUV"]
+            g = np.zeros((3, 3), dtype=float)
+            for i in range(3):
+                for n in range(3):
+                    g[i, n] = float(np.interp(D, d_knots, g_knots[:, i, n]))
+            blend = float(self.params.hll_uv_blend)
+            g_eff = blend * g + (1.0 - blend) * diag
+            return np.maximum(g_eff, self.params.hll_uv_coupling_floor)
+
+        # Fallback: diagonal coupling from layer-resolved overlaps.
+        return np.maximum(diag, self.params.hll_uv_coupling_floor)
+
+    def _hll_m2_vector(self, D: float) -> np.ndarray:
+        pwr = float(self.params.hll_uv_m2_power)
+        prof = self._b_overlap_profile
+        if self._b_mode_active == "overlap_2d" and prof is not None and "LAMBDA123" in prof:
+            d_knots = prof["D"]
+            lam_knots = prof["LAMBDA123"]
+            lam = np.array([np.interp(D, d_knots, lam_knots[:, n]) for n in range(3)], dtype=float)
+            m2 = np.maximum(np.abs(lam), self.params.hll_uv_m2_floor)
+            if pwr == 0.0:
+                return np.ones(3, dtype=float)
+            return np.maximum(m2 ** pwr, self.params.hll_uv_m2_floor)
+        if pwr == 0.0:
+            return np.ones(3, dtype=float)
+        return np.ones(3, dtype=float)
 
     def hll_wilson_coeff(self, layer_n: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:
         """
@@ -1305,6 +1449,23 @@ class PSLTKinetics:
         cmat = self.hll_wilson_matrix_matched(D, eta, t_coh, N_max=N_max)
         return float(max(cmat[layer_n - 1, layer_n - 1], self.params.b_overlap_floor))
 
+    def hll_wilson_matrix_uv_tree(self, D: float, eta: float, t_coh: float, N_max: int = 20) -> np.ndarray:
+        """
+        UV-inspired tree-level matching closure:
+          C_{eH}^{ij} = sum_N g_{iN}(D) * [P_N^(kin)(D,eta) / M_N^2(D)] * g_{jN}(D).
+        """
+        cfg = self._hll_uv_tree_config()
+        g_uv = self._hll_g_uv_matrix(D)
+        p_kin = self._hll_pkin_vector(D, eta, t_coh, N_max=N_max)
+        m2 = self._hll_m2_vector(D)
+        return wilson_matrix_uv_tree(g_uv=g_uv, p_kin=p_kin, m2=m2, cfg=cfg)
+
+    def hll_wilson_coeff_uv_tree(self, layer_n: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:
+        if layer_n <= 0 or layer_n > 3:
+            return 0.0
+        cmat = self.hll_wilson_matrix_uv_tree(D, eta, t_coh, N_max=N_max)
+        return float(max(cmat[layer_n - 1, layer_n - 1], self.params.b_overlap_floor))
+
     def hll_total_width_ratio_matched(
         self,
         D: float,
@@ -1317,6 +1478,22 @@ class PSLTKinetics:
         cfg = self._hll_match_config()
         c = self.hll_wilson_matrix_matched(D, eta, t_coh, N_max=N_max)
         c_ref = self.hll_wilson_matrix_matched(ref_D, ref_eta, t_coh, N_max=N_max)
+        c_diag = np.diag(c)
+        c_ref_diag = np.diag(c_ref)
+        return total_width_ratio(c_diag=c_diag, c_diag_ref=c_ref_diag, cfg=cfg)
+
+    def hll_total_width_ratio_uv_tree(
+        self,
+        D: float,
+        eta: float,
+        t_coh: float,
+        ref_D: float,
+        ref_eta: float,
+        N_max: int = 20,
+    ) -> float:
+        cfg = self._hll_match_config()
+        c = self.hll_wilson_matrix_uv_tree(D, eta, t_coh, N_max=N_max)
+        c_ref = self.hll_wilson_matrix_uv_tree(ref_D, ref_eta, t_coh, N_max=N_max)
         c_diag = np.diag(c)
         c_ref_diag = np.diag(c_ref)
         return total_width_ratio(c_diag=c_diag, c_diag_ref=c_ref_diag, cfg=cfg)
@@ -1336,6 +1513,8 @@ class PSLTKinetics:
             return self.hll_wilson_coeff(layer_n, D, eta, t_coh, N_max=N_max)
         if observable_mode == "eft_wilson_matched":
             return self.hll_wilson_coeff_matched(layer_n, D, eta, t_coh, N_max=N_max)
+        if observable_mode == "eft_wilson_uv_tree":
+            return self.hll_wilson_coeff_uv_tree(layer_n, D, eta, t_coh, N_max=N_max)
         raise ValueError(f"Unsupported observable_mode='{observable_mode}'.")
 
     def hll_mu_pred(
@@ -1359,6 +1538,16 @@ class PSLTKinetics:
         partial_ratio = ratio * ratio
         if mode == "eft_wilson_matched":
             width_ratio = self.hll_total_width_ratio_matched(
+                D=D,
+                eta=eta,
+                t_coh=t_coh,
+                ref_D=ref_D,
+                ref_eta=ref_eta,
+                N_max=nmax,
+            )
+            return float(partial_ratio / max(width_ratio, 1e-30))
+        if mode == "eft_wilson_uv_tree":
+            width_ratio = self.hll_total_width_ratio_uv_tree(
                 D=D,
                 eta=eta,
                 t_coh=t_coh,

@@ -9,6 +9,9 @@ Two map-level modes are supported:
   - eft_wilson_matched:
                      C_{eH}^{ij} = sum_N Y_{iN} P_N^(kin) Y_{jN}
                      mu_ll = (|C_ii/C_ii(ref)|^2) / (Gamma_tot/Gamma_tot(ref))
+  - eft_wilson_uv_tree:
+                     C_{eH}^{ij} = sum_N g_{iN}(D) [P_N^(kin)/M_N^2(D)] g_{jN}(D)
+                     mu_ll = (|C_ii/C_ii(ref)|^2) / (Gamma_tot/Gamma_tot(ref))
 """
 
 from __future__ import annotations
@@ -27,7 +30,7 @@ class HLLObservableConfig:
     n_max: int = 20
 
     def __post_init__(self) -> None:
-        if self.mode not in {"proxy_wratio", "eft_wilson_diag", "eft_wilson_matched"}:
+        if self.mode not in {"proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree"}:
             raise ValueError(f"Unsupported HLL observable mode: {self.mode}")
         if self.n_max < 3:
             raise ValueError("n_max must be >= 3")
@@ -60,7 +63,7 @@ class HLLChannelPredictor:
         )
 
     def mu_pred(self, d_val: float, eta_val: float) -> float:
-        if self.cfg.mode == "eft_wilson_matched":
+        if self.cfg.mode in {"eft_wilson_matched", "eft_wilson_uv_tree"}:
             return float(
                 self.kinetics.hll_mu_pred(
                     layer_n=self.layer_n,

@@ -9,6 +9,9 @@ Observable modes:
   - eft_wilson_matched (baseline):
       C_{eH}^{ij}(D,eta) = sum_N Y_{iN}(D,eta) P_N^(kin)(D,eta) Y_{jN}(D,eta)
       mu_ll_pred = |C_ii/C_ii_ref|^2 / (Gamma_tot/Gamma_tot_ref)
+  - eft_wilson_uv_tree:
+      C_{eH}^{ij}(D,eta) = sum_N g_{iN}(D) [P_N^(kin)(D,eta)/M_N^2(D)] g_{jN}(D)
+      mu_ll_pred = |C_ii/C_ii_ref|^2 / (Gamma_tot/Gamma_tot_ref)
 
 with layer-channel assignment:
   ee -> N=1, mumu -> N=2, tautau -> N=3.
@@ -85,6 +88,9 @@ PAPER_BASELINE = {
     "ref_eta": 1.0,
     "hll_observable_mode": "eft_wilson_matched",
     "hll_observable_nmax": 20,
+    # UV-tree calibration knobs (used when --observable-mode eft_wilson_uv_tree)
+    "hll_uv_blend": 0.00,
+    "hll_uv_m2_power": 1.00,
     "D_min": 4.0,
     "D_max": 20.0,
     "D_num": 60,
@@ -146,7 +152,7 @@ def load_observations() -> Dict[str, Observation]:
     return obs
 
 
-def make_baseline_kinetics() -> PSLTKinetics:
+def make_baseline_kinetics(observable_mode: str, uv_blend: float, uv_m2_power: float) -> PSLTKinetics:
     d_scan = scan_d_values(
         PAPER_BASELINE["D_min"],
         PAPER_BASELINE["D_max"],
@@ -178,8 +184,10 @@ def make_baseline_kinetics() -> PSLTKinetics:
         b_n_power=PAPER_BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
-        hll_observable_mode=PAPER_BASELINE["hll_observable_mode"],
+        hll_observable_mode=str(observable_mode),
         hll_observable_nmax=PAPER_BASELINE["hll_observable_nmax"],
+        hll_uv_blend=float(uv_blend),
+        hll_uv_m2_power=float(uv_m2_power),
     )
     print(
         "[baseline]",
@@ -194,11 +202,12 @@ def compute_maps(
     kinetics: PSLTKinetics,
     ref_d: float,
     ref_eta: float,
+    observable_mode: str,
 ) -> Tuple[np.ndarray, np.ndarray, Dict[str, np.ndarray], Dict[str, float]]:
     d_vals = np.linspace(PAPER_BASELINE["D_min"], PAPER_BASELINE["D_max"], PAPER_BASELINE["D_num"])
     eta_vals = np.linspace(PAPER_BASELINE["eta_min"], PAPER_BASELINE["eta_max"], PAPER_BASELINE["eta_num"])
     cfg = HLLObservableConfig(
-        mode=str(PAPER_BASELINE["hll_observable_mode"]),
+        mode=str(observable_mode),
         t_coh=float(PAPER_BASELINE["t_coh"]),
         ref_D=float(ref_d),
         ref_eta=float(ref_eta),
@@ -346,6 +355,7 @@ def plot_maps(
     eta_vals: np.ndarray,
     maps: Dict[str, np.ndarray],
     observations: Dict[str, Observation],
+    observable_mode: str,
 ) -> None:
     fig, axes = plt.subplots(1, 3, figsize=(18, 5), constrained_layout=True)
     extent = [float(d_vals.min()), float(d_vals.max()), float(eta_vals.min()), float(eta_vals.max())]
@@ -379,7 +389,7 @@ def plot_maps(
         cbar = fig.colorbar(im, ax=ax)
         cbar.set_label(r"$\mu_{\rm pred}$")
 
-    fig.suptitle("PSLT EFT-diagonal signal-strength maps by lepton channel", fontsize=13)
+    fig.suptitle(f"PSLT signal-strength maps by lepton channel ({observable_mode})", fontsize=13)
     fig.savefig(out_png, dpi=200)
     plt.close(fig)
 
@@ -390,6 +400,13 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--ref-d", type=float, default=float(PAPER_BASELINE["ref_D"]))
     ap.add_argument("--ref-eta", type=float, default=float(PAPER_BASELINE["ref_eta"]))
     ap.add_argument("--ref-choice-json", type=str, default=str(DEFAULT_REF_CHOICE_JSON))
+    ap.add_argument(
+        "--observable-mode",
+        choices=["proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree"],
+        default=str(PAPER_BASELINE["hll_observable_mode"]),
+    )
+    ap.add_argument("--uv-blend", type=float, default=float(PAPER_BASELINE["hll_uv_blend"]))
+    ap.add_argument("--uv-m2-power", type=float, default=float(PAPER_BASELINE["hll_uv_m2_power"]))
     ap.add_argument("--tag", type=str, default="")
     ap.add_argument("--skip-paper-copy", action="store_true")
     return ap.parse_args()
@@ -436,6 +453,7 @@ def resolve_reference_anchor(
     args: argparse.Namespace,
     kinetics: PSLTKinetics,
     observations: Dict[str, Observation],
+    observable_mode: str,
 ) -> tuple[float, float, str]:
     mode = str(args.ref_mode)
     if mode == "fixed":
@@ -457,7 +475,7 @@ def resolve_reference_anchor(
         kinetics=kinetics,
         d_vals=d_vals,
         eta_vals=eta_vals,
-        mode=str(PAPER_BASELINE["hll_observable_mode"]),
+        mode=str(observable_mode),
         t_coh=float(PAPER_BASELINE["t_coh"]),
         n_max=int(PAPER_BASELINE["hll_observable_nmax"]),
         mu_obs=float(obs.mu_obs),
@@ -471,18 +489,29 @@ def resolve_reference_anchor(
 
 def main() -> None:
     args = parse_args()
+    if not (0.0 <= float(args.uv_blend) <= 1.0):
+        raise ValueError("--uv-blend must be in [0,1].")
+    if float(args.uv_m2_power) < 0.0:
+        raise ValueError("--uv-m2-power must be >= 0.")
     OUTDIR.mkdir(parents=True, exist_ok=True)
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
 
     observations = load_observations()
-    kinetics = make_baseline_kinetics()
-    ref_d, ref_eta, ref_source = resolve_reference_anchor(args, kinetics, observations)
+    observable_mode = str(args.observable_mode)
+    kinetics = make_baseline_kinetics(
+        observable_mode=observable_mode,
+        uv_blend=float(args.uv_blend),
+        uv_m2_power=float(args.uv_m2_power),
+    )
+    ref_d, ref_eta, ref_source = resolve_reference_anchor(args, kinetics, observations, observable_mode=observable_mode)
     suffix = build_suffix(ref_mode=str(args.ref_mode), ref_d=ref_d, ref_eta=ref_eta, tag=str(args.tag))
 
-    d_vals, eta_vals, maps, ref_weights = compute_maps(kinetics, ref_d=ref_d, ref_eta=ref_eta)
+    d_vals, eta_vals, maps, ref_weights = compute_maps(kinetics, ref_d=ref_d, ref_eta=ref_eta, observable_mode=observable_mode)
     print(
         "[info] observable mode:",
-        PAPER_BASELINE["hll_observable_mode"],
+        observable_mode,
+        f"| uv_blend={float(args.uv_blend):.3f}",
+        f"| uv_m2_power={float(args.uv_m2_power):.3f}",
         f"| reference (D={ref_d:.6g}, eta={ref_eta:.6g}, source={ref_source}) amplitudes:",
         ref_weights,
     )
@@ -495,7 +524,7 @@ def main() -> None:
     write_summary_csv(out_summary, summary_rows)
 
     out_fig = OUTDIR / f"hll_signal_strength_maps{suffix}.png"
-    plot_maps(out_fig, d_vals, eta_vals, maps, observations)
+    plot_maps(out_fig, d_vals, eta_vals, maps, observations, observable_mode=observable_mode)
 
     run_meta = {
         "ref_mode": str(args.ref_mode),
@@ -503,7 +532,9 @@ def main() -> None:
         "ref_eta": float(ref_eta),
         "ref_source": ref_source,
         "suffix": suffix,
-        "observable_mode": str(PAPER_BASELINE["hll_observable_mode"]),
+        "observable_mode": observable_mode,
+        "uv_blend": float(args.uv_blend),
+        "uv_m2_power": float(args.uv_m2_power),
         "tag": str(args.tag),
     }
     out_meta = OUTDIR / f"hll_signal_strength_run_meta{suffix or '_baseline'}.json"

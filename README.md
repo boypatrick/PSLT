@@ -61,12 +61,12 @@ The old manual script-by-script sequence is still valid, but the reproducible en
 - `latexmk` + `pdflatex` (only if `--with-paper`)
 
 ## Key Results
-- **Three-Generation Stability:** In the current action-profile kinetic baseline, the theory gives Generation Ratio $\mathcal{R}_3>90\%$ over **93.2%** of the sampled $(D,\eta)$ grid, with $\mathcal{R}_3>95\%$ over **21.7%** of the same grid.
-- **H→μμ Proxy Compatibility:** The proxy-accepted region ($\chi^2<4$) occupies about **8.3%** of the sampled grid, with best grid point near $(D,\eta)\approx(9.69,0.59)$ and $\chi^2\approx 5.10\times10^{-2}$.
+- **Three-Generation Stability:** In the current full-grid action-derived profile baseline, the theory gives Generation Ratio $\mathcal{R}_3>90\%$ over **92.7%** of the sampled $(D,\eta)$ grid, with $\mathcal{R}_3>95\%$ over **21.7%** of the same grid.
+- **H→μμ EFT/Wilson-Matched Compatibility:** The illustrative acceptance region ($\chi^2<4$) occupies about **16.1%** of the sampled grid, with best grid point near $(D,\eta)\approx(8.07,2.71)$ and $\chi^2\approx 6.39\times10^{-5}$.
 - **Overlap Visibility + High-$N$ Stability:** Baseline visibility uses overlap-defined `b_mode=overlap_2d` profiles from `y_N^{eff}(D)` extraction (with tracked microcanonical windows), while baseline `g_mode=fp_2d_full` uses phase-space normalization (no Cardy anchor) plus bounded low-$N$ microcanonical windowing and controlled high-$N$ tail prescription.
 
 ## First-Principles Migration Status
-- **g_N migration comparator:** `code/scan_gn_profile_impact.py` compares `g_mode=fp_2d_full/cardy/fp_1d/fp_2d`; relative to baseline `fp_2d_full`, the largest drift is the `fp_2d` case with $\Delta f(\mathcal{R}_3>0.90)=-0.0669$, while `f(N_win>3)=0` remains controlled.
+- **g_N migration comparator:** `code/scan_gn_profile_impact.py` compares `g_mode=fp_2d_full/cardy/fp_1d/fp_2d`; relative to baseline `fp_2d_full`, the largest drift is the `fp_2d` case with $\Delta f(\mathcal{R}_3>0.90)=-0.0669$, while high-$N$ runaway remains controlled at `f(N_win>3)\approx2.78\times10^{-4}`.
 - **g_N low-N alignment + N_max convergence:** `code/plot_gn_cardy_vs_phase_space.py` and `code/scan_gn_nmax_convergence.py` export low-$N$ Cardy-vs-phase-space overlays and $N_{\max}=20/30/40$ stability tables.
 - **g_N baseline cross-check:** `code/scan_gn_baseline_replacement.py` now uses baseline `fp_2d_full` and compares against legacy `cardy` reference, exporting:
   - `output/gn_fp_impact/gn_baseline_replacement.csv`
@@ -75,6 +75,10 @@ The old manual script-by-script sequence is still valid, but the reproducible en
 - **Surrogate-vs-direct chi transfer audit (B3):** `code/scan_surrogate_vs_action_points.py` reports point-level drift between interpolated `chi_LR(D)` and direct fine localized extraction injection, exporting:
   - `output/chi_fp_2d/surrogate_vs_action_points.csv`
   - `output/chi_fp_2d/surrogate_vs_action_points_summary.csv`
+- **Localized-direct D-grid promotion (D21):** `code/scan_localized_direct_surface_bias.py` promotes $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ to stabilized localized-direct `Dgrid21` profiles and quantifies map-level bias bounds under scan-level profile injection, exporting:
+  - `output/kinetic_action_chain/localized_direct_surface_points_Dgrid21_Egrid41.csv`
+  - `output/kinetic_action_chain/localized_direct_surface_summary_Dgrid21_Egrid41.csv`
+  - `output/kinetic_action_chain/localized_direct_surface_bias_Dgrid21_Egrid41.png`
 - **Core-parameter robustness table (B2):** `code/scan_core_param_robustness.py` exports local one-at-a-time windows for `c_eff`, `nu`, `p_B` and their map fractions:
   - `output/robustness/core_param_robustness_table.csv`
   - `output/robustness/core_param_robustness_cases.csv`

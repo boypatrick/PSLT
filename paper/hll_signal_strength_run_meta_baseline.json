@@ -5,5 +5,11 @@
   "ref_source": "fixed_cli",
   "suffix": "",
   "observable_mode": "eft_wilson_matched",
+  "uv_blend": 0.0,
+  "uv_m2_power": 1.0,
+  "uv_rge_mu_low": 1.0,
+  "uv_rge_gamma_diag": 2.0,
+  "uv_rge_gamma_offdiag": 1.0,
+  "uv_rge_log_clip": 6.0,
   "tag": ""
 }

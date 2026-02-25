@@ -87,12 +87,15 @@ def select_chi_profile(root: Path, d_scan: np.ndarray) -> Dict[str, object]:
       }
     """
     chi_dir = root / "output" / "chi_fp_2d"
+    kin_dir = root / "output" / "kinetic_action_chain"
     n = len(d_scan)
     candidates = [
+        kin_dir / f"localized_direct_profiles_chi_Dgrid{n}.csv",
         chi_dir / f"localized_chi_Dgrid{n}_fine.csv",
         chi_dir / "localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
         chi_dir / "localized_chi_D6-12-18.csv",
     ]
+    candidates.extend(sorted(kin_dir.glob("localized_direct_profiles_chi_Dgrid*.csv")))
     candidates.extend(sorted(chi_dir.glob("localized_chi_D*.csv")))
 
     seen = set()
@@ -123,11 +126,14 @@ def select_superrad_profile(root: Path, d_scan: np.ndarray) -> Dict[str, object]
       }
     """
     sup_dir = root / "output" / "superrad_fp_1d"
+    kin_dir = root / "output" / "kinetic_action_chain"
     n = len(d_scan)
     candidates = [
+        kin_dir / f"localized_direct_profiles_superrad_Dgrid{n}.csv",
         sup_dir / f"superrad_prefactor_Dgrid{n}_fine.csv",
         sup_dir / "superrad_prefactor_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
     ]
+    candidates.extend(sorted(kin_dir.glob("localized_direct_profiles_superrad_Dgrid*.csv")))
     candidates.extend(sorted(sup_dir.glob("superrad_prefactor_D*.csv")))
 
     seen = set()
@@ -149,4 +155,3 @@ def select_superrad_profile(root: Path, d_scan: np.ndarray) -> Dict[str, object]
         }
 
     raise FileNotFoundError("No readable superradiant profile CSV found in output/superrad_fp_1d.")
-

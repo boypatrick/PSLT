@@ -21,7 +21,7 @@ from __future__ import annotations
 import csv
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 import matplotlib
 
@@ -36,11 +36,11 @@ sys.path.insert(0, str((ROOT / "code").resolve()))
 
 from hll_observable import HLLChannelPredictor, HLLObservableConfig
 from pslt_lib import PSLTKinetics, PSLTParameters
+from action_grid_profile_utils import scan_d_values, select_chi_profile, select_superrad_profile
 
 
 OUTDIR = ROOT / "output" / "kinetic_action_chain"
 PAPER_DIR = ROOT / "paper"
-CHI_DIR = ROOT / "output" / "chi_fp_2d"
 B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 
 
@@ -52,43 +52,10 @@ class Case:
     t_coh_mode: str
 
 
-def _find_first_existing(paths: List[Path]) -> Optional[Path]:
-    for p in paths:
-        if p.exists():
-            return p
-    return None
-
-
-def load_localized_chi_profile() -> Tuple[np.ndarray, np.ndarray]:
-    path = _find_first_existing(
-        [
-            CHI_DIR / "localized_chi_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
-            CHI_DIR / "localized_chi_D6-12-18.csv",
-        ]
-    )
-    if path is None:
-        raise FileNotFoundError("Missing localized chi profile CSV in output/chi_fp_2d.")
-
-    rows: List[Tuple[float, float]] = []
-    with path.open("r", newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            level = row.get("level", "").strip().lower()
-            if level and level != "fine":
-                continue
-            if row.get("D", "") in {"", None} or row.get("chi_LR", "") in {"", None}:
-                continue
-            rows.append((float(row["D"]), float(row["chi_LR"])))
-    if len(rows) < 2:
-        raise RuntimeError(f"Not enough fine rows in {path}")
-
-    rows.sort(key=lambda x: x[0])
-    dvals = np.array([r[0] for r in rows], dtype=float)
-    chis = np.array([r[1] for r in rows], dtype=float)
-    return dvals, chis
-
-
-def make_kinetics(case: Case, chi_d: np.ndarray, chi_vals: np.ndarray) -> PSLTKinetics:
+def make_kinetics(case: Case, chi_profile: Dict[str, object], superrad_profile: Dict[str, object]) -> PSLTKinetics:
+    gamma_mode = case.gamma_mode
+    if gamma_mode == "action_auto":
+        gamma_mode = str(superrad_profile["mode"])
     params = PSLTParameters(
         c_eff=0.5,
         nu=5.0,
@@ -100,12 +67,13 @@ def make_kinetics(case: Case, chi_d: np.ndarray, chi_vals: np.ndarray) -> PSLTKi
         g_fp_full_tail_clip_min=1e-3,
         g_fp_full_tail_clip_max=0.95,
         chi=0.2,
-        chi_mode="localized_interp",
-        chi_lr_D=tuple(float(x) for x in chi_d),
-        chi_lr_vals=tuple(float(x) for x in chi_vals),
+        chi_mode=str(chi_profile["mode"]),
+        chi_lr_D=tuple(float(x) for x in np.asarray(chi_profile["d"], dtype=float)),
+        chi_lr_vals=tuple(float(x) for x in np.asarray(chi_profile["chi"], dtype=float)),
         A1=1.0,
         A2=1.0,
-        gamma_mode=case.gamma_mode,
+        gamma_mode=gamma_mode,
+        gamma_superrad_csv=str(superrad_profile["path"]),
         gamma_eta_mode=case.gamma_eta_mode,
         t_coh_mode=case.t_coh_mode,
         t_coh_cap=1.0e4,
@@ -120,9 +88,7 @@ def make_kinetics(case: Case, chi_d: np.ndarray, chi_vals: np.ndarray) -> PSLTKi
     return PSLTKinetics(params)
 
 
-def evaluate_case(case: Case, kin: PSLTKinetics) -> Tuple[Dict[str, np.ndarray], Dict[str, float]]:
-    d_vals = np.linspace(4.0, 20.0, 60)
-    eta_vals = np.linspace(0.2, 4.0, 60)
+def evaluate_case(case: Case, kin: PSLTKinetics, d_vals: np.ndarray, eta_vals: np.ndarray) -> Tuple[Dict[str, np.ndarray], Dict[str, float]]:
     t_input = 1.0
     n_max = 20
     mu_obs = 1.4
@@ -275,7 +241,13 @@ def main() -> None:
     OUTDIR.mkdir(parents=True, exist_ok=True)
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
 
-    chi_d, chi_vals = load_localized_chi_profile()
+    d_scan = scan_d_values(4.0, 20.0, 60)
+    eta_scan = np.linspace(0.2, 4.0, 60)
+    chi_profile = select_chi_profile(ROOT, d_scan)
+    superrad_profile = select_superrad_profile(ROOT, d_scan)
+    print(f"[chi profile] {chi_profile['path']} mode={chi_profile['mode']}")
+    print(f"[superrad profile] {superrad_profile['path']} mode={superrad_profile['mode']}")
+
     cases = [
         Case(
             name="surrogate_kinetic",
@@ -285,7 +257,7 @@ def main() -> None:
         ),
         Case(
             name="action_chain_full",
-            gamma_mode="action_profile",
+            gamma_mode="action_auto",
             gamma_eta_mode="scaled_amp",
             t_coh_mode="dephasing_profile_capped",
         ),
@@ -294,8 +266,8 @@ def main() -> None:
     maps_by_case: Dict[str, Dict[str, np.ndarray]] = {}
     stats_rows: List[Dict[str, float]] = []
     for case in cases:
-        kin = make_kinetics(case, chi_d, chi_vals)
-        maps, stats = evaluate_case(case, kin)
+        kin = make_kinetics(case, chi_profile, superrad_profile)
+        maps, stats = evaluate_case(case, kin, d_scan, eta_scan)
         maps_by_case[case.name] = maps
         stats_rows.append(stats)
 

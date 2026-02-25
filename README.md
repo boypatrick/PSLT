@@ -75,10 +75,10 @@ The old manual script-by-script sequence is still valid, but the reproducible en
 - **Surrogate-vs-direct chi transfer audit (B3):** `code/scan_surrogate_vs_action_points.py` reports point-level drift between interpolated `chi_LR(D)` and direct fine localized extraction injection, exporting:
   - `output/chi_fp_2d/surrogate_vs_action_points.csv`
   - `output/chi_fp_2d/surrogate_vs_action_points_summary.csv`
-- **Localized-direct D-grid promotion (D21):** `code/scan_localized_direct_surface_bias.py` promotes $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ to stabilized localized-direct `Dgrid21` profiles and quantifies map-level bias bounds under scan-level profile injection, exporting:
-  - `output/kinetic_action_chain/localized_direct_surface_points_Dgrid21_Egrid41.csv`
-  - `output/kinetic_action_chain/localized_direct_surface_summary_Dgrid21_Egrid41.csv`
-  - `output/kinetic_action_chain/localized_direct_surface_bias_Dgrid21_Egrid41.png`
+- **Localized-direct full D-grid mode (D60):** `code/scan_localized_direct_surface_bias.py` now promotes $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ to localized-direct `Dgrid60` profiles, and scan scripts prioritize these grid-aligned profiles (no D-interpolation on scan points; off-grid references use standard profile evaluation). Representative exports:
+  - `output/kinetic_action_chain/localized_direct_profiles_chi_Dgrid60.csv`
+  - `output/kinetic_action_chain/localized_direct_profiles_superrad_Dgrid60.csv`
+  - `output/kinetic_action_chain/localized_direct_surface_summary_Dgrid60_Egrid21.csv`
 - **Core-parameter robustness table (B2):** `code/scan_core_param_robustness.py` exports local one-at-a-time windows for `c_eff`, `nu`, `p_B` and their map fractions:
   - `output/robustness/core_param_robustness_table.csv`
   - `output/robustness/core_param_robustness_cases.csv`

@@ -75,13 +75,13 @@ class PSLTParameters:
     Omega_H: float = 0.9    # Horizon proxy angular velocity [Mass] (scaled by M)
     A1: float = 1.0         # l=1 amplitude (dimensionless prefactor for rate)
     A2: float = 1.0         # l=2 amplitude (dimensionless prefactor for rate)
-    gamma_mode: str = "surrogate"  # "surrogate", "action_profile", or "action_grid"
+    gamma_mode: str = "surrogate"  # "surrogate", "action_profile", "action_grid", or "action_grid_strict"
     gamma_superrad_csv: Optional[str] = None
     gamma_superrad_scale: float = 1.0
     gamma_eta_mode: str = "scan"  # "scan", "scaled_amp", "scaled_prob", "closed_amp", "closed_prob"
     gamma_eta_csv: Optional[str] = None
     chi: float = 0.2        # Rank-2 mixing parameter (dimensionless)
-    chi_mode: str = "constant"  # "constant", "localized_interp", "localized_grid", or "open_system"
+    chi_mode: str = "constant"  # "constant", "localized_interp", "localized_grid", "localized_grid_strict", or "open_system"
     chi_lr_D: Tuple[float, ...] = (6.0, 12.0, 18.0)  # knots for localized chi(D)
     chi_lr_vals: Tuple[float, ...] = (4.01827e-4, 2.21414e-4, 2.13187e-4)  # chi_LR at knots
     chi_open_csv: Optional[str] = None
@@ -132,9 +132,9 @@ class PSLTParameters:
     hll_uv_rge_log_clip: float = 6.0
 
     def __post_init__(self):
-        if self.chi_mode not in {"constant", "localized_interp", "localized_grid", "open_system"}:
+        if self.chi_mode not in {"constant", "localized_interp", "localized_grid", "localized_grid_strict", "open_system"}:
             raise ValueError(f"Unsupported chi_mode='{self.chi_mode}'.")
-        if self.gamma_mode not in {"surrogate", "action_profile", "action_grid"}:
+        if self.gamma_mode not in {"surrogate", "action_profile", "action_grid", "action_grid_strict"}:
             raise ValueError(f"Unsupported gamma_mode='{self.gamma_mode}'.")
         if self.gamma_superrad_scale <= 0:
             raise ValueError("gamma_superrad_scale must be > 0.")
@@ -147,9 +147,9 @@ class PSLTParameters:
         if self.chi_mode == "localized_interp":
             if len(self.chi_lr_D) < 2 or len(self.chi_lr_D) != len(self.chi_lr_vals):
                 raise ValueError("chi_lr_D and chi_lr_vals must have equal length >=2 for localized_interp.")
-        if self.chi_mode == "localized_grid":
+        if self.chi_mode in {"localized_grid", "localized_grid_strict"}:
             if len(self.chi_lr_D) < 1 or len(self.chi_lr_D) != len(self.chi_lr_vals):
-                raise ValueError("chi_lr_D and chi_lr_vals must have equal length >=1 for localized_grid.")
+                raise ValueError("chi_lr_D and chi_lr_vals must have equal length >=1 for localized_grid(_strict).")
         if self.chi_mode == "open_system":
             if len(self.chi_open_D) > 0:
                 n = len(self.chi_open_D)
@@ -1081,7 +1081,7 @@ class PSLTKinetics:
         self._tcoh_profile = None
 
         mode = self.params.gamma_mode
-        if mode in {"action_profile", "action_grid"}:
+        if mode in {"action_profile", "action_grid", "action_grid_strict"}:
             sup_path = Path(self.params.gamma_superrad_csv) if self.params.gamma_superrad_csv else self._auto_find_superrad_csv()
             eta_path = Path(self.params.gamma_eta_csv) if self.params.gamma_eta_csv else self._auto_find_eta_csv()
             sup_prof = self._load_superrad_profile(sup_path) if sup_path is not None else None
@@ -1129,14 +1129,15 @@ class PSLTKinetics:
         return self._tcoh_mode_active
 
     def _gamma_action_A12(self, D: float) -> Tuple[float, float]:
-        if self._gamma_mode_active not in {"action_profile", "action_grid"} or self._gamma_superrad_profile is None:
+        if self._gamma_mode_active not in {"action_profile", "action_grid", "action_grid_strict"} or self._gamma_superrad_profile is None:
             return float(self.params.A1), float(self.params.A2)
 
         prof = self._gamma_superrad_profile
         d_knots = np.asarray(prof["D"], dtype=float)
-        if self._gamma_mode_active == "action_grid":
-            a1 = self._grid_scalar(float(D), d_knots, np.asarray(prof["A1"], dtype=float), fallback_interp=True)
-            a2 = self._grid_scalar(float(D), d_knots, np.asarray(prof["A2"], dtype=float), fallback_interp=True)
+        if self._gamma_mode_active in {"action_grid", "action_grid_strict"}:
+            strict = self._gamma_mode_active == "action_grid_strict"
+            a1 = self._grid_scalar(float(D), d_knots, np.asarray(prof["A1"], dtype=float), fallback_interp=not strict)
+            a2 = self._grid_scalar(float(D), d_knots, np.asarray(prof["A2"], dtype=float), fallback_interp=not strict)
         else:
             a1 = self._interp_scalar(float(D), d_knots, np.asarray(prof["A1"], dtype=float))
             a2 = self._interp_scalar(float(D), d_knots, np.asarray(prof["A2"], dtype=float))
@@ -1694,6 +1695,8 @@ class PSLTKinetics:
           with endpoint clamping outside knot range.
         - localized_grid: action-derived grid lookup for chi_LR(D),
           with interpolation fallback only if D is off-grid.
+        - localized_grid_strict: action-derived grid lookup for chi_LR(D),
+          with no interpolation fallback (raises if D is off-grid).
         - open_system: profile-interpolated (delta, gamma_phi, gamma_mix, gamma_ref)
           fed into two-level Lindblad dynamics, returning
           chi_eff = 2*gamma_mix*Cmax/gamma_ref.
@@ -1707,10 +1710,11 @@ class PSLTKinetics:
             chi_knots = np.asarray(self.params.chi_lr_vals, dtype=float)
             return self._interp_scalar(D, d_knots, chi_knots)
 
-        if mode == "localized_grid":
+        if mode in {"localized_grid", "localized_grid_strict"}:
             d_knots = np.asarray(self.params.chi_lr_D, dtype=float)
             chi_knots = np.asarray(self.params.chi_lr_vals, dtype=float)
-            return self._grid_scalar(D, d_knots, chi_knots, fallback_interp=True)
+            strict = mode == "localized_grid_strict"
+            return self._grid_scalar(D, d_knots, chi_knots, fallback_interp=not strict)
 
         if mode == "open_system" and self._chi_open_profile is not None:
             key = float(round(D, 8))

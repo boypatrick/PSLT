@@ -39,7 +39,7 @@ class Case:
 def evaluate_case(case: Case) -> Dict[str, float | str]:
     kin = make_baseline_kinetics(
         observable_mode="eft_wilson_uv_rge",
-        chain_mode="auto",
+        chain_mode="full_direct",
         d_min=float(PAPER_BASELINE["D_min"]),
         d_max=float(PAPER_BASELINE["D_max"]),
         d_num=int(PAPER_BASELINE["D_num"]),

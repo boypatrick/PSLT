@@ -435,7 +435,7 @@ def plot_maps(
 
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Map-level PSLT predictions for H->ll channels.")
-    ap.add_argument("--chain-mode", choices=["auto", "full_direct"], default="auto")
+    ap.add_argument("--chain-mode", choices=["auto", "full_direct"], default="full_direct")
     ap.add_argument("--ref-mode", choices=["fixed", "chi2_best", "robust_center"], default="fixed")
     ap.add_argument("--ref-d", type=float, default=float(PAPER_BASELINE["ref_D"]))
     ap.add_argument("--ref-eta", type=float, default=float(PAPER_BASELINE["ref_eta"]))

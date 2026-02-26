@@ -15,6 +15,7 @@ This bundle contains the complete source code, data, and manuscript for the PSLT
   - `generate_plots.py`: Main plotting script for phase maps and H->mumu proxy plots.
   - `scan_hll_signal_strengths.py`: Proxy maps and summaries for H->ee, H->mumu, H->tautau.
   - `scan_hll_uv_to_eft_matching.py`: UV-tree -> finite one-loop match -> LL-RG Wilson-map audit (`C_{eH}^{tree}`, `C_{eH}^{match}`, `C_{eH}^{IR}`) and map-level drift summaries.
+  - `publish_full_direct_map.py`: release-mode full_direct runner (main map + small complete direct audit + large spot-check direct audit + merged summary table).
   - `scan_hll_uv_envelope.py`: nonzero finite-match UV control envelope (`mu_mumu` pointwise min/max band + case summary).
   - `build_artifact_status_registry.py`: writes canonical vs diagnostic vs legacy artifact status tables for reviewer hygiene.
   - `scripts/repro/presubmit_prd_freeze.sh`: pre-submission freeze check runner (recompute, compile, package, and report).
@@ -109,6 +110,13 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/kinetic_action_chain/localized_direct_profiles_chi_Dgrid60.csv`
   - `output/kinetic_action_chain/localized_direct_profiles_superrad_Dgrid60.csv`
   - `output/kinetic_action_chain/localized_direct_surface_summary_Dgrid60_Egrid21.csv`
+- **Primary full_direct release mode:** `code/publish_full_direct_map.py` publishes one integrated release table combining:
+  - main-map strict full_direct baseline (`D60 x E60`)
+  - small-surface complete localized-direct audit (`D21 x E41`)
+  - large-surface spot-check localized-direct audit (`D60 x E21`)
+  - chain-mode parity audit (`auto` vs `full_direct`, `D21 x E41`)
+  and exports `output/kinetic_action_chain/full_direct_map_release_summary.csv` (mirrored to `paper/full_direct_map_release_summary.csv`).
+  Baseline scan scripts now default to `chain_mode=full_direct` (`scan_hll_signal_strengths.py`, `scan_hll_uv_to_eft_matching.py`), while `auto` is retained for comparator audits.
 - **Core-parameter robustness table (B2):** `code/scan_core_param_robustness.py` exports local one-at-a-time windows for `c_eff`, `nu`, `p_B` and their map fractions:
   - `output/robustness/core_param_robustness_table.csv`
   - `output/robustness/core_param_robustness_cases.csv`

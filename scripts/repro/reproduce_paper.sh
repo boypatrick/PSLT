@@ -250,6 +250,10 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/generate_plots.py"
   run_step "25" "scan_hll_signal_strengths" \
     "$PYTHON_BIN code/scan_hll_signal_strengths.py"
+  run_step "25b" "publish_full_direct_map" \
+    "MPLCONFIGDIR=/tmp/mpl PYTHONPYCACHEPREFIX=/tmp/pycache $PYTHON_BIN code/publish_full_direct_map.py"
+  run_step "25c" "build_artifact_status_registry" \
+    "$PYTHON_BIN code/build_artifact_status_registry.py"
   run_step "26" "verify_robustness" \
     "$PYTHON_BIN code/verify_robustness.py"
   run_step "27" "validate_2d_laplacian" \

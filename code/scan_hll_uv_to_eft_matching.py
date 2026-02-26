@@ -235,7 +235,7 @@ def plot_maps(
 
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="UV-to-EFT matching audit on PSLT scan grid")
-    ap.add_argument("--chain-mode", choices=["auto", "full_direct"], default="auto")
+    ap.add_argument("--chain-mode", choices=["auto", "full_direct"], default="full_direct")
     ap.add_argument("--d-min", type=float, default=float(BASELINE["D_min"]))
     ap.add_argument("--d-max", type=float, default=float(BASELINE["D_max"]))
     ap.add_argument("--d-num", type=int, default=int(BASELINE["D_num"]))

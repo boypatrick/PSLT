@@ -1,0 +1,7 @@
+{
+  "main_tag": "full_direct_map_release",
+  "small_surface": "output/kinetic_action_chain/localized_direct_surface_summary_Dgrid21_Egrid41.csv",
+  "large_surface": "output/kinetic_action_chain/localized_direct_surface_summary_Dgrid60_Egrid21.csv",
+  "chain_parity": "output/kinetic_action_chain/chain_mode_full_direct_audit_Dgrid21_Egrid41.csv",
+  "summary_csv": "output/kinetic_action_chain/full_direct_map_release_summary.csv"
+}

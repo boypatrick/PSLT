@@ -123,13 +123,19 @@ EOF
 
 if [[ "$SKIP_RECOMPUTE" -eq 0 ]]; then
   run_step "01" "py_compile_core" \
-    "PYTHONPYCACHEPREFIX=/tmp/pycache $PYTHON_BIN -m py_compile code/eft_rge.py code/pslt_lib.py code/hll_observable.py code/scan_hll_signal_strengths.py code/scan_hll_uv_to_eft_matching.py code/scan_hll_rge_sensitivity.py code/generate_plots.py"
+    "PYTHONPYCACHEPREFIX=/tmp/pycache $PYTHON_BIN -m py_compile code/eft_rge.py code/pslt_lib.py code/hll_observable.py code/scan_hll_signal_strengths.py code/scan_hll_uv_to_eft_matching.py code/scan_hll_rge_sensitivity.py code/scan_hll_uv_envelope.py code/publish_full_direct_map.py code/build_artifact_status_registry.py code/generate_plots.py"
   run_step "02" "scan_hll_uv_to_eft_matching" \
     "MPLCONFIGDIR=/tmp/mpl PYTHONPYCACHEPREFIX=/tmp/pycache $PYTHON_BIN code/scan_hll_uv_to_eft_matching.py"
   run_step "03" "scan_hll_signal_strengths" \
     "MPLCONFIGDIR=/tmp/mpl PYTHONPYCACHEPREFIX=/tmp/pycache $PYTHON_BIN code/scan_hll_signal_strengths.py"
   run_step "04" "scan_hll_rge_sensitivity" \
     "PYTHONPYCACHEPREFIX=/tmp/pycache $PYTHON_BIN code/scan_hll_rge_sensitivity.py"
+  run_step "04b" "publish_full_direct_map" \
+    "MPLCONFIGDIR=/tmp/mpl PYTHONPYCACHEPREFIX=/tmp/pycache $PYTHON_BIN code/publish_full_direct_map.py"
+  run_step "04c" "scan_hll_uv_envelope" \
+    "MPLCONFIGDIR=/tmp/mpl PYTHONPYCACHEPREFIX=/tmp/pycache $PYTHON_BIN code/scan_hll_uv_envelope.py --chain-mode full_direct --d-num 21 --eta-num 41"
+  run_step "04d" "build_artifact_status_registry" \
+    "$PYTHON_BIN code/build_artifact_status_registry.py"
 fi
 
 run_step "05" "compile_paper" \

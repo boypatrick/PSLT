@@ -68,6 +68,12 @@ def rows() -> List[Dict[str, object]]:
             "note": "Current UV map parity audit source.",
         },
         {
+            "artifact_path": "paper/full_direct_map_release_summary.csv",
+            "status": "canonical_baseline",
+            "category": "chain_mode_audit",
+            "note": "Integrated release summary: main full_direct map + small complete + large spot-check audits.",
+        },
+        {
             "artifact_path": "paper/hll_uv_envelope_summary.csv",
             "status": "canonical_baseline",
             "category": "uv_envelope",

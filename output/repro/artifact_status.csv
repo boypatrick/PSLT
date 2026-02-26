@@ -6,6 +6,7 @@ paper/core_param_robustness.csv,canonical_baseline,robustness,Main-text local on
 paper/hll_rge_sensitivity.csv,canonical_baseline,robustness,Main-text UV+LL-RG control sensitivity table source.,True
 paper/chain_mode_full_direct_audit_Dgrid21_Egrid41.csv,canonical_baseline,chain_mode_audit,Current strict chain_mode auto vs full_direct audit source.,True
 paper/chain_mode_uv_audit_Dgrid21_Egrid21.csv,canonical_baseline,chain_mode_audit,Current UV map parity audit source.,True
+paper/full_direct_map_release_summary.csv,canonical_baseline,chain_mode_audit,Integrated release summary: main full_direct map + small complete + large spot-check audits.,True
 paper/hll_uv_envelope_summary.csv,canonical_baseline,uv_envelope,UV control envelope summary (nonzero finite-match center).,True
 paper/hll_uv_envelope_cases.csv,canonical_baseline,uv_envelope,Per-case UV envelope run details.,True
 paper/hll_uv_envelope_map.csv,canonical_baseline,uv_envelope,Pointwise mu_mumu envelope bounds over the active grid.,True

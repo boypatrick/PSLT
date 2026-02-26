@@ -92,6 +92,24 @@ def rows() -> List[Dict[str, object]]:
             "note": "Pointwise mu_mumu envelope bounds over the active grid.",
         },
         {
+            "artifact_path": "paper/open_system_micro_baseline_candidate.csv",
+            "status": "diagnostic_variant",
+            "category": "open_system_gate",
+            "note": "Open-system micro baseline-candidate gate decision (diagnostic track).",
+        },
+        {
+            "artifact_path": "paper/kappa_env_anchor_calibration.csv",
+            "status": "diagnostic_variant",
+            "category": "open_system_gate",
+            "note": "Multi-anchor kappa_env calibration summary for open-system micro mode.",
+        },
+        {
+            "artifact_path": "paper/kappa_env_anchor_holdout.csv",
+            "status": "diagnostic_variant",
+            "category": "open_system_gate",
+            "note": "Holdout validation metrics for multi-anchor kappa_env calibration.",
+        },
+        {
             "artifact_path": "output/kinetic_action_chain/action_chain_consistency_summary.csv",
             "status": "legacy_comparator",
             "category": "chain_mode_audit",

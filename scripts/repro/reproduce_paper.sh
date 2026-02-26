@@ -156,6 +156,12 @@ sync_paper_assets() {
   sync_one "output/gn_fp_impact/gn_cardy_vs_phase_space.csv" "paper/gn_cardy_vs_phase_space.csv" 1
   sync_one "output/gn_fp_impact/gn_cardy_vs_phase_space.png" "paper/gn_cardy_vs_phase_space.png" 1
   sync_one "output/chi_open_system/chi_open_system_sensitivity.csv" "paper/chi_open_system_sensitivity.csv" 1
+  sync_one "output/chi_open_system/chi_open_system_micro_sensitivity.csv" "paper/chi_open_system_micro_sensitivity.csv" 1
+  sync_one "output/chi_open_system/open_system_micro_baseline_candidate.csv" "paper/open_system_micro_baseline_candidate.csv" 1
+  sync_one "output/chi_open_system/kappa_env_anchor_calibration.csv" "paper/kappa_env_anchor_calibration.csv" 1
+  sync_one "output/chi_open_system/kappa_env_anchor_holdout.csv" "paper/kappa_env_anchor_holdout.csv" 1
+  sync_one "output/chi_open_system/kappa_env_anchor_residuals.csv" "paper/kappa_env_anchor_residuals.csv" 0
+  sync_one "output/chi_open_system/chi_open_micro_ratio_band.csv" "paper/chi_open_micro_ratio_band.csv" 0
   sync_one "output/first_principles_migration/first_principles_migration_summary.csv" "paper/first_principles_migration_summary.csv" 1
   sync_one "output/first_principles_migration/first_principles_migration_summary.png" "paper/first_principles_migration_summary.png" 1
   sync_one "output/kinetic_action_chain/action_chain_consistency_summary.csv" "paper/action_chain_consistency_summary.csv" 1
@@ -242,9 +248,19 @@ if [[ "$PACKAGE_ONLY" -eq 0 ]]; then
     "$PYTHON_BIN code/extract_chi_open_system_geometry.py --full-scan"
   run_step "23" "scan_chi_open_sensitivity" \
     "$PYTHON_BIN code/scan_chi_open_system_sensitivity.py"
-  run_step "23b" "scan_first_principles_migration_summary" \
+  run_step "23a" "extract_chi_open_micro_precalib" \
+    "$PYTHON_BIN code/extract_chi_open_system_micro.py --full-scan --kappa-env 1.0"
+  run_step "23b" "calibrate_kappa_env_micro_multi_anchor" \
+    "$PYTHON_BIN code/calibrate_kappa_env_micro_anchor.py --anchor-Ds 6,9,12,15,18"
+  run_step "23c" "extract_chi_open_micro_calibrated" \
+    "$PYTHON_BIN code/extract_chi_open_system_micro.py --full-scan --kappa-env-from-csv output/chi_open_system/kappa_env_anchor_calibration.csv"
+  run_step "23d" "scan_chi_open_micro_sensitivity" \
+    "$PYTHON_BIN code/scan_chi_open_system_micro_sensitivity.py"
+  run_step "23e" "assess_open_micro_baseline_candidate" \
+    "$PYTHON_BIN code/assess_open_system_micro_baseline_candidate.py"
+  run_step "23f" "scan_first_principles_migration_summary" \
     "$PYTHON_BIN code/scan_first_principles_migration_summary.py"
-  run_step "23c" "scan_action_chain_consistency" \
+  run_step "23g" "scan_action_chain_consistency" \
     "$PYTHON_BIN code/scan_action_chain_consistency.py"
   run_step "24" "generate_plots" \
     "$PYTHON_BIN code/generate_plots.py"

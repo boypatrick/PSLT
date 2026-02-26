@@ -1,2 +1,2 @@
 case,csv_profile,ratio_min,ratio_max,ratio_mean,ratio_std,ratio_p10,ratio_p90
-open_micro_base,/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_micro_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv,0.009648138686093337,0.23414370433166226,0.08847943975797067,0.04727299677589756,0.03839526306943868,0.14518427208253937
+open_micro_base,/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_micro_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv,0.0173374262231964,0.3270996151244616,0.1379737148329626,0.06352353919571914,0.0663891951464004,0.21448061323554485

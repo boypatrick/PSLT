@@ -10,6 +10,9 @@ paper/full_direct_map_release_summary.csv,canonical_baseline,chain_mode_audit,In
 paper/hll_uv_envelope_summary.csv,canonical_baseline,uv_envelope,UV control envelope summary (nonzero finite-match center).,True
 paper/hll_uv_envelope_cases.csv,canonical_baseline,uv_envelope,Per-case UV envelope run details.,True
 paper/hll_uv_envelope_map.csv,canonical_baseline,uv_envelope,Pointwise mu_mumu envelope bounds over the active grid.,True
+paper/open_system_micro_baseline_candidate.csv,diagnostic_variant,open_system_gate,Open-system micro baseline-candidate gate decision (diagnostic track).,True
+paper/kappa_env_anchor_calibration.csv,diagnostic_variant,open_system_gate,Multi-anchor kappa_env calibration summary for open-system micro mode.,True
+paper/kappa_env_anchor_holdout.csv,diagnostic_variant,open_system_gate,Holdout validation metrics for multi-anchor kappa_env calibration.,True
 output/kinetic_action_chain/action_chain_consistency_summary.csv,legacy_comparator,chain_mode_audit,Older surrogate-vs-action comparator; not cited in current main text.,True
 output/kinetic_action_chain/action_chain_consistency.png,legacy_comparator,chain_mode_audit,Legacy comparator figure; retained for history only.,True
 output/hll_signal_strength/hll_signal_strength_summary_chi2_best.csv,diagnostic_variant,anchor_sensitivity,"Dynamic-anchor sensitivity variant, not baseline headline.",True

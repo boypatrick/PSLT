@@ -227,6 +227,11 @@ def main() -> None:
     ap.add_argument("--tmax", type=float, default=200.0)
     ap.add_argument("--nstep", type=int, default=1200)
     ap.add_argument("--kappa-env", type=float, default=1.0)
+    ap.add_argument(
+        "--kappa-env-from-csv",
+        default="",
+        help="Optional calibration CSV path; if provided, use column kappa_env_calibrated.",
+    )
     ap.add_argument("--tau-scale", type=float, default=1.0)
     ap.add_argument("--tau-floor", type=float, default=1e-6)
     ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
@@ -244,8 +249,16 @@ def main() -> None:
     p = PhysicalParams()
     level = Level("fine", dr=float(args.dr), dz=float(args.dz))
     sigma = None if float(args.sigma) < 0 else float(args.sigma)
+    kappa_env = float(args.kappa_env)
+    if args.kappa_env_from_csv:
+        calib_df = pd.read_csv(args.kappa_env_from_csv)
+        if calib_df.empty or "kappa_env_calibrated" not in calib_df.columns:
+            raise ValueError("kappa-env-from-csv must contain column 'kappa_env_calibrated'.")
+        kappa_env = float(calib_df.iloc[0]["kappa_env_calibrated"])
+        print(f"[info] using kappa_env from CSV: {kappa_env:.6g} ({args.kappa_env_from_csv})")
+
     env_cfg = MicroEnvConfig(
-        kappa_env=float(args.kappa_env),
+        kappa_env=float(kappa_env),
         tau_scale=float(args.tau_scale),
         tau_floor=float(args.tau_floor),
     )

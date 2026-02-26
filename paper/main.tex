@@ -421,7 +421,7 @@ Here, $r_N = \eta e^{-2S_N}$ is the tunneling suppression factor. The mixing ter
 \begin{equation}
 \epsilon_{\rm mix} = \chi \sqrt{\Gamma_{N,a} \Gamma_{N,b}}
 \end{equation}
-The channel rates $\Gamma_{N,\ell}$ follow the superradiant scaling~\cite{DetweilerSuperrad1980}. To avoid dimensional ambiguity, we define
+The channel rates $\Gamma_{N,\ell}$ are modeled by a Kerr-inspired barrier-leakage width proxy scaling~\cite{DetweilerSuperrad1980}. In the present static two-center background this is used as an EFT-level channel-rate template (not a literal ergoregion superradiance derivation). To avoid dimensional ambiguity, we define
 \begin{equation}
 \hat{\omega}_N \equiv \frac{\omega_N}{M_*},\qquad
 \hat{\Gamma}_{N,\ell}\equiv \frac{\Gamma_{N,\ell}}{M_*},
@@ -436,7 +436,7 @@ which is equivalent to
 \Gamma_{N,\ell} = A_\ell \, \omega_N \left(\frac{\omega_N}{M_*}\right)^{4\ell+4}, \qquad A_\ell \equiv 1 \ (\text{demonstrator}),
 \label{eq:Gamma_channel}
 \end{equation}
-In the demonstrator, we map the two-mode basis to the lowest two superradiant channels:
+In the demonstrator, we map the two-mode basis to the two lowest leakage channels (legacy ``superrad'' naming kept in file/script paths for reproducibility compatibility):
 \begin{equation}
 \Gamma_{N,a}\equiv \Gamma_{N,1},\qquad
 \Gamma_{N,b}\equiv \Gamma_{N,2},\qquad
@@ -458,17 +458,17 @@ For completeness, the analytic expression for $\lambda_+$ is:
 \end{equation}
 This ``Rank-2 Closure'' ensures that $\Gamma_N$ is not a fitted parameter but a derived quantity dependent explicitly on $(D, \eta)$.
 
-\subsection{Physical Interpretation: Quasi-Bound State Decay}
+\subsection{Physical Interpretation: Quasi-Bound Leakage and Width Proxy}
 \label{sec:quasi_bound}
 
-The superradiant scaling (Eq.~\eqref{eq:Gamma_channel}) can be understood as the decay rate of quasi-bound states in the two-center geometry. In general, a field mode trapped by a potential barrier has a complex frequency:
+The channel scaling in Eq.~\eqref{eq:Gamma_channel} is interpreted as a quasi-bound leakage-width proxy in the two-center geometry. In general, a field mode trapped by a potential barrier has a complex frequency:
 \begin{equation}
 \omega_N = \omega_N^{(R)} - i\,\omega_N^{(I)}, \qquad \Gamma_N \equiv 2\omega_N^{(I)},
 \label{eq:complex_omega}
 \end{equation}
 where $\omega_N^{(I)} > 0$ represents the decay rate due to tunneling or radiation to infinity.
 
-For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from the centrifugal barrier at the light ring. In the dual-center geometry, an analogous mechanism operates: modes must tunnel through the geometric barrier (captured by WKB factor $e^{-2S_N}$) and the channel rates $\Gamma_{N,\ell}$ encode the residual decay probability.
+For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from a rotating-background setup. In the static dual-center geometry considered here (no ergoregion), we use the same power as a leakage-template ansatz: modes must tunnel through the geometric barrier (captured by WKB factor $e^{-2S_N}$), while $\Gamma_{N,\ell}$ encodes the residual channel-dependent escape width. A full non-Hermitian width derivation for this static geometry is left as a dedicated upgrade path.
 
 \textbf{Rank-2 truncation justification:} The $\hat{\omega}_N^{4\ell+4}$ scaling ensures that higher-$\ell$ modes are exponentially suppressed for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
 \begin{equation}
@@ -730,6 +730,19 @@ To push this interface toward UV-to-EFT matching, we additionally run a reproduc
 \label{eq:anchor_robust_center}
 \end{equation}
 where $\mathcal{G}$ is the scan grid and $d_{\partial\mathcal{A}}$ is the Euclidean distance to the acceptance-boundary complement on that grid. We use $\mathcal{R}_3$ (higher first) and then $\chi^2$ (lower first) as tie-breakers for Eq.~\eqref{eq:anchor_robust_center}. A full reference-anchor sensitivity audit is reported in Appendix~\ref{app:ref_anchor}: over the tested anchor grid, $f(\chi^2_{\mu\mu}<4)$ spans $[0.0333,\,0.2411]$, while the baseline fixed anchor gives $0.1500$, the dynamic $\chi^2$-best anchor gives $0.1333$, and the robust-center anchor gives $0.1381$.
+To reduce anchor arbitrariness in reporting, we additionally track anchor-invariant Wilson-diagonal ratios on the same UV+LL-RG map:
+\begin{equation}
+\mathcal{R}_{e/\mu}^{\rm(inv)}(D,\eta)\equiv \left|\frac{C_{eH}^{ee,{\rm IR}}(D,\eta)}{C_{eH}^{\mu\mu,{\rm IR}}(D,\eta)}\right|^2,\qquad
+\mathcal{R}_{\tau/\mu}^{\rm(inv)}(D,\eta)\equiv \left|\frac{C_{eH}^{\tau\tau,{\rm IR}}(D,\eta)}{C_{eH}^{\mu\mu,{\rm IR}}(D,\eta)}\right|^2.
+\label{eq:anchor_invariant_ratios}
+\end{equation}
+Using \texttt{code/scan\_anchor\_invariant\_ratios.py} on \texttt{paper/hll\_uv\_to\_eft\_map.csv}, we obtain (all-grid) $p10/p50/p90$ bands
+$\mathcal{R}_{e/\mu}^{\rm(inv)}=(1.60\times10^{-2},\,1.26\times10^{-1},\,8.10\times10^{-1})$ and
+$\mathcal{R}_{\tau/\mu}^{\rm(inv)}=(2.59\times10^{-3},\,1.01\times10^{-2},\,3.84\times10^{-2})$;
+restricted to the illustrative acceptance band $\chi^2_{\mu\mu}<4$, they become
+$\mathcal{R}_{e/\mu}^{\rm(inv)}=(1.67\times10^{-2},\,6.39\times10^{-2},\,3.54\times10^{-1})$ and
+$\mathcal{R}_{\tau/\mu}^{\rm(inv)}=(5.23\times10^{-3},\,9.72\times10^{-3},\,5.17\times10^{-2})$.
+These diagnostics are anchor-independent and are reported as complementary constraints to Eq.~\eqref{eq:mu_pred}.
 \begin{equation}
 \chi^2(D,\eta) = \frac{\left(\mu_{\mu\mu}^{\rm pred} - \mu_{\mu\mu}^{\rm obs}\right)^2}{\sigma_{\mu\mu}^2},
 \label{eq:chi2_hmumu}
@@ -798,7 +811,7 @@ The use of mixed-resolution ingredients is a deliberate design choice: action-de
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
     \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; map-level impact is mild in profile-scaled mode but this closure is not yet propagated into baseline figures.
-    \item \textbf{Superradiant channel normalization}: the baseline maps now use action-derived profile factors $(A_1,A_2)=(\tilde A_1(D),\tilde A_2(D))$ from Appendix~\ref{app:superrad_candidate}. The remaining gap is to replace profile-level insertion with a fully localized, channel-resolved extraction across the full scan grid.
+    \item \textbf{Barrier-leakage channel normalization}: the baseline maps now use action-derived profile factors $(A_1,A_2)=(\tilde A_1(D),\tilde A_2(D))$ from Appendix~\ref{app:superrad_candidate} (legacy ``superrad'' file naming retained). The remaining gap is to replace profile-level insertion with a fully localized, channel-resolved extraction across the full scan grid.
 \end{enumerate}
 
 \textbf{Status and redefinition of the mixing channel.}
@@ -1602,7 +1615,7 @@ $\eta_{\rm eff}=\eta_{\rm prob}(D)$ & 0.983 & 0.217 & 0.0833 & $6.39\times10^{-2
 
 At current scan resolution, profile-scaled implementations remain close to the reference map-level summaries, while fully-closed implementations reduce $f(\chi^2_{\mu\mu}<4)$ to $0.0833$ in this diagnostic chain. Therefore, Eq.~\eqref{eq:eta_pref_candidates} is reported as a first-principles candidate benchmark and is not propagated into baseline reported figures.
 
-\subsection{Action-Derived First-Principles Candidate for Superradiant Channel Scaling}
+\subsection{Action-Derived First-Principles Candidate for Barrier-Leakage Channel Scaling}
 \label{app:superrad_candidate}
 To test a geometry-closed replacement direction for the channel normalization in Eq.~\eqref{eq:Gamma_channel}, we keep the same 1D action-derived chain and define channel-resolved barrier actions
 \begin{equation}
@@ -1624,11 +1637,11 @@ Using $(D_{\rm ref},N_{\rm ref})=(12,2)$, we define profile factors
 \tilde A_\ell(D)\equiv \frac{A_\ell^{\rm(fp)}(D;N_{\rm ref})}{A_\ell^{\rm(fp)}(D_{\rm ref};N_{\rm ref})}.
 \label{eq:superrad_A_profile}
 \end{equation}
-The reproducible script is \texttt{extract\_superrad\_prefactor\_1d.py} in the \texttt{code/} directory.
+The reproducible script is \texttt{extract\_superrad\_prefactor\_1d.py} in the \texttt{code/} directory (legacy naming).
 
 \begin{table}[t]
 \centering
-\caption{1D on-axis benchmark for superradiant profile candidates at $D=\{6,12,18\}$ (coarse/mid/fine). Source CSV: \texttt{output/superrad\_fp\_1d/superrad\_prefactor\_D6-12-18.csv}.}
+\caption{1D on-axis benchmark for barrier-leakage channel-profile candidates at $D=\{6,12,18\}$ (coarse/mid/fine). Source CSV: \texttt{output/superrad\_fp\_1d/superrad\_prefactor\_D6-12-18.csv} (legacy naming).}
 \label{tab:superrad_prefactor}
 \small
 \begin{tabular}{cccccccc}
@@ -1659,7 +1672,7 @@ To quantify map-level sensitivity, we compare a legacy constant-$A_\ell$ referen
 
 \begin{table}[t]
 \centering
-\caption{Global-scan impact of superradiant profile candidates (diagnostic only; not baseline).}
+\caption{Global-scan impact of barrier-leakage channel-profile candidates (diagnostic only; not baseline).}
 \label{tab:superrad_impact}
 \small
 \begin{tabular}{lcccc}

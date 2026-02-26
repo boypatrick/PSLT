@@ -2,9 +2,13 @@
 """
 Utilities for selecting action-derived chi/superradiant profiles for scan grids.
 
-Goal:
-  Prefer exact grid-aligned action-derived profiles (no interpolation on scan D-grid),
-  and gracefully fall back to legacy sparse-knot profiles when unavailable.
+Modes:
+  - auto:
+      Prefer exact grid-aligned action-derived profiles (no interpolation on scan
+      D-grid) and gracefully fall back to legacy sparse-knot profiles.
+  - full_direct:
+      Require direct localized profiles exactly on the active scan D-grid and
+      use strict grid lookup (no interpolation fallback).
 """
 
 from __future__ import annotations
@@ -76,16 +80,47 @@ def _matches_scan_grid(d_profile: np.ndarray, d_scan: np.ndarray, tol: float = 1
     return bool(np.allclose(d_profile, d_scan, rtol=0.0, atol=tol))
 
 
-def select_chi_profile(root: Path, d_scan: np.ndarray) -> Dict[str, object]:
+def _select_chi_profile_full_direct(root: Path, d_scan: np.ndarray) -> Dict[str, object]:
+    kin_dir = root / "output" / "kinetic_action_chain"
+    n = len(d_scan)
+    path = (kin_dir / f"localized_direct_profiles_chi_Dgrid{n}.csv").resolve()
+    parsed = _read_chi_rows(path)
+    if parsed is None:
+        raise FileNotFoundError(
+            f"full_direct requires {path} with readable fine-level chi rows."
+        )
+    d, chi = parsed
+    if not _matches_scan_grid(d, d_scan):
+        raise ValueError(
+            "full_direct chi profile does not match active scan grid exactly: "
+            f"profile_n={len(d)}, scan_n={len(d_scan)}"
+        )
+    return {
+        "path": path,
+        "d": d,
+        "chi": chi,
+        "mode": "localized_grid_strict",
+        "selection_mode": "full_direct",
+    }
+
+
+def select_chi_profile(root: Path, d_scan: np.ndarray, selection_mode: str = "auto") -> Dict[str, object]:
     """
     Return:
       {
         "path": Path,
         "d": np.ndarray,
         "chi": np.ndarray,
-        "mode": "localized_grid" | "localized_interp",
+        "mode": "localized_grid" | "localized_interp" | "localized_grid_strict",
+        "selection_mode": "auto" | "full_direct",
       }
     """
+    mode = str(selection_mode).strip().lower()
+    if mode == "full_direct":
+        return _select_chi_profile_full_direct(root, d_scan)
+    if mode != "auto":
+        raise ValueError(f"Unsupported selection_mode='{selection_mode}' for chi profile.")
+
     chi_dir = root / "output" / "chi_fp_2d"
     kin_dir = root / "output" / "kinetic_action_chain"
     n = len(d_scan)
@@ -109,12 +144,36 @@ def select_chi_profile(root: Path, d_scan: np.ndarray) -> Dict[str, object]:
             continue
         d, chi = parsed
         mode = "localized_grid" if _matches_scan_grid(d, d_scan) else "localized_interp"
-        return {"path": path, "d": d, "chi": chi, "mode": mode}
+        return {"path": path, "d": d, "chi": chi, "mode": mode, "selection_mode": "auto"}
 
     raise FileNotFoundError("No readable localized chi profile CSV found in output/chi_fp_2d.")
 
 
-def select_superrad_profile(root: Path, d_scan: np.ndarray) -> Dict[str, object]:
+def _select_superrad_profile_full_direct(root: Path, d_scan: np.ndarray) -> Dict[str, object]:
+    kin_dir = root / "output" / "kinetic_action_chain"
+    n = len(d_scan)
+    path = (kin_dir / f"localized_direct_profiles_superrad_Dgrid{n}.csv").resolve()
+    parsed = _read_superrad_rows(path)
+    if parsed is None:
+        raise FileNotFoundError(
+            f"full_direct requires {path} with readable fine-level superrad rows."
+        )
+    if not _matches_scan_grid(parsed["D"], d_scan):
+        raise ValueError(
+            "full_direct superrad profile does not match active scan grid exactly: "
+            f"profile_n={len(parsed['D'])}, scan_n={len(d_scan)}"
+        )
+    return {
+        "path": path,
+        "d": parsed["D"],
+        "A1": parsed["A1"],
+        "A2": parsed["A2"],
+        "mode": "action_grid_strict",
+        "selection_mode": "full_direct",
+    }
+
+
+def select_superrad_profile(root: Path, d_scan: np.ndarray, selection_mode: str = "auto") -> Dict[str, object]:
     """
     Return:
       {
@@ -122,9 +181,16 @@ def select_superrad_profile(root: Path, d_scan: np.ndarray) -> Dict[str, object]
         "d": np.ndarray,
         "A1": np.ndarray,
         "A2": np.ndarray,
-        "mode": "action_grid" | "action_profile",
+        "mode": "action_grid" | "action_profile" | "action_grid_strict",
+        "selection_mode": "auto" | "full_direct",
       }
     """
+    mode = str(selection_mode).strip().lower()
+    if mode == "full_direct":
+        return _select_superrad_profile_full_direct(root, d_scan)
+    if mode != "auto":
+        raise ValueError(f"Unsupported selection_mode='{selection_mode}' for superrad profile.")
+
     sup_dir = root / "output" / "superrad_fp_1d"
     kin_dir = root / "output" / "kinetic_action_chain"
     n = len(d_scan)
@@ -152,6 +218,7 @@ def select_superrad_profile(root: Path, d_scan: np.ndarray) -> Dict[str, object]
             "A1": parsed["A1"],
             "A2": parsed["A2"],
             "mode": mode,
+            "selection_mode": "auto",
         }
 
     raise FileNotFoundError("No readable superradiant profile CSV found in output/superrad_fp_1d.")

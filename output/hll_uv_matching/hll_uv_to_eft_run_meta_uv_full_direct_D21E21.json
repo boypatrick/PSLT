@@ -1,0 +1,18 @@
+{
+  "tag": "uv_full_direct_D21E21",
+  "chain_mode": "full_direct",
+  "ref_D_input": 9.6,
+  "ref_D_effective": 9.600000000000001,
+  "ref_D_snapped_to_grid": false,
+  "d_min": 4.0,
+  "d_max": 20.0,
+  "d_num": 21,
+  "eta_min": 0.2,
+  "eta_max": 4.0,
+  "eta_num": 21,
+  "uv_match_kappa_diag": 0.0,
+  "uv_match_kappa_offdiag": 0.0,
+  "summary_file": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_summary_uv_full_direct_D21E21.csv",
+  "map_file": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_map_uv_full_direct_D21E21.csv",
+  "figure_file": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_maps_uv_full_direct_D21E21.png"
+}

@@ -15,6 +15,12 @@ Outputs:
   - output/hll_uv_matching/hll_uv_to_eft_maps*.png
   - output/hll_uv_matching/hll_uv_to_eft_run_meta*.json
 and copies summary/figure/meta to paper/ unless --skip-paper-copy is set.
+
+Chain profile selection:
+  - --chain-mode auto        (default): prefer grid-aligned profiles and allow
+                              interpolation fallback when needed.
+  - --chain-mode full_direct: require exact localized-direct D-grid profiles
+                              and strict grid lookup (no interpolation fallback).
 """
 
 from __future__ import annotations
@@ -90,10 +96,23 @@ def make_suffix(tag: str) -> str:
     return f"_{clean}" if clean else ""
 
 
+def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray) -> tuple[float, bool]:
+    if str(chain_mode) != "full_direct":
+        return float(ref_d), False
+    if len(d_vals) == 0:
+        return float(ref_d), False
+    arr = np.asarray(d_vals, dtype=float)
+    idx = int(np.argmin(np.abs(arr - float(ref_d))))
+    snapped = float(arr[idx])
+    changed = not np.isclose(snapped, float(ref_d), rtol=0.0, atol=1e-10)
+    return snapped, changed
+
+
 def make_baseline_kinetics(
     d_min: float,
     d_max: float,
     d_num: int,
+    chain_mode: str,
     uv_blend: float,
     uv_m2_power: float,
     uv_match_kappa_diag: float,
@@ -104,8 +123,8 @@ def make_baseline_kinetics(
     uv_rge_log_clip: float,
 ) -> PSLTKinetics:
     d_scan = scan_d_values(d_min, d_max, d_num)
-    chi_prof = select_chi_profile(ROOT, d_scan)
-    superrad_prof = select_superrad_profile(ROOT, d_scan)
+    chi_prof = select_chi_profile(ROOT, d_scan, selection_mode=str(chain_mode))
+    superrad_prof = select_superrad_profile(ROOT, d_scan, selection_mode=str(chain_mode))
 
     params = PSLTParameters(
         c_eff=BASELINE["c_eff"],
@@ -145,6 +164,7 @@ def make_baseline_kinetics(
 
     print(
         "[baseline]",
+        f"chain_mode={chain_mode},",
         f"chi_mode={params.chi_mode},",
         f"chi_csv={chi_prof['path']},",
         f"gamma_mode={params.gamma_mode},",
@@ -215,6 +235,7 @@ def plot_maps(
 
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="UV-to-EFT matching audit on PSLT scan grid")
+    ap.add_argument("--chain-mode", choices=["auto", "full_direct"], default="auto")
     ap.add_argument("--d-min", type=float, default=float(BASELINE["D_min"]))
     ap.add_argument("--d-max", type=float, default=float(BASELINE["D_max"]))
     ap.add_argument("--d-num", type=int, default=int(BASELINE["D_num"]))
@@ -250,6 +271,7 @@ def main() -> None:
         d_min=float(args.d_min),
         d_max=float(args.d_max),
         d_num=int(args.d_num),
+        chain_mode=str(args.chain_mode),
         uv_blend=float(args.uv_blend),
         uv_m2_power=float(args.uv_m2_power),
         uv_match_kappa_diag=float(args.uv_match_kappa_diag),
@@ -262,6 +284,10 @@ def main() -> None:
 
     d_vals = np.linspace(float(args.d_min), float(args.d_max), int(args.d_num))
     eta_vals = np.linspace(float(args.eta_min), float(args.eta_max), int(args.eta_num))
+    ref_d_eff, snapped_ref_d = snap_ref_d_for_full_direct(str(args.chain_mode), float(args.ref_d), d_vals)
+    if snapped_ref_d:
+        print(f"[info] chain_mode=full_direct snapped ref_D to grid: {float(args.ref_d):.6g} -> {ref_d_eff:.6g}")
+
     t_coh = float(BASELINE["t_coh"])
     nmax = int(BASELINE["hll_observable_nmax"])
 
@@ -283,7 +309,7 @@ def main() -> None:
                 D=float(d),
                 eta=float(eta),
                 t_coh=t_coh,
-                ref_D=float(args.ref_d),
+                ref_D=float(ref_d_eff),
                 ref_eta=float(args.ref_eta),
                 observable_mode="eft_wilson_uv_tree",
                 N_max=nmax,
@@ -293,7 +319,7 @@ def main() -> None:
                 D=float(d),
                 eta=float(eta),
                 t_coh=t_coh,
-                ref_D=float(args.ref_d),
+                ref_D=float(ref_d_eff),
                 ref_eta=float(args.ref_eta),
                 observable_mode="eft_wilson_uv_rge",
                 N_max=nmax,
@@ -378,7 +404,7 @@ def main() -> None:
         "delta_f_chi2_le_4_uv_rge_minus_uv_tree": float(np.mean(arr_chi2_ir <= 4.0) - np.mean(arr_chi2_uv <= 4.0)),
         "best_chi2_uv_tree": float(np.min(arr_chi2_uv)),
         "best_chi2_uv_rge": float(np.min(arr_chi2_ir)),
-        "ref_D": float(args.ref_d),
+        "ref_D": float(ref_d_eff),
         "ref_eta": float(args.ref_eta),
         "mu_obs": float(args.mu_obs),
         "sigma_obs": float(args.sigma_obs),
@@ -390,6 +416,7 @@ def main() -> None:
         "uv_rge_gamma_diag": float(args.uv_rge_gamma_diag),
         "uv_rge_gamma_offdiag": float(args.uv_rge_gamma_offdiag),
         "uv_rge_log_clip": float(args.uv_rge_log_clip),
+        "chain_mode": str(args.chain_mode),
     }
 
     suffix = make_suffix(str(args.tag))
@@ -412,6 +439,10 @@ def main() -> None:
 
     run_meta = {
         "tag": str(args.tag),
+        "chain_mode": str(args.chain_mode),
+        "ref_D_input": float(args.ref_d),
+        "ref_D_effective": float(ref_d_eff),
+        "ref_D_snapped_to_grid": bool(snapped_ref_d),
         "d_min": float(args.d_min),
         "d_max": float(args.d_max),
         "d_num": int(args.d_num),

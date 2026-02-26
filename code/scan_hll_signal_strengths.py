@@ -26,6 +26,12 @@ Outputs:
   - output/hll_signal_strength/hll_signal_strength_maps.png
   - paper/hll_signal_strength_summary.csv
   - paper/hll_signal_strength_maps.png
+
+Chain profile selection:
+  - --chain-mode auto        (default): prefer grid-aligned profiles and allow
+                              interpolation fallback when needed.
+  - --chain-mode full_direct: require exact localized-direct D-grid profiles
+                              and strict grid lookup (no interpolation fallback).
 """
 
 from __future__ import annotations
@@ -164,6 +170,10 @@ def load_observations() -> Dict[str, Observation]:
 
 def make_baseline_kinetics(
     observable_mode: str,
+    chain_mode: str,
+    d_min: float,
+    d_max: float,
+    d_num: int,
     uv_blend: float,
     uv_m2_power: float,
     uv_match_kappa_diag: float,
@@ -173,13 +183,9 @@ def make_baseline_kinetics(
     uv_rge_gamma_offdiag: float,
     uv_rge_log_clip: float,
 ) -> PSLTKinetics:
-    d_scan = scan_d_values(
-        PAPER_BASELINE["D_min"],
-        PAPER_BASELINE["D_max"],
-        PAPER_BASELINE["D_num"],
-    )
-    chi_prof = select_chi_profile(ROOT, d_scan)
-    superrad_prof = select_superrad_profile(ROOT, d_scan)
+    d_scan = scan_d_values(float(d_min), float(d_max), int(d_num))
+    chi_prof = select_chi_profile(ROOT, d_scan, selection_mode=str(chain_mode))
+    superrad_prof = select_superrad_profile(ROOT, d_scan, selection_mode=str(chain_mode))
     params = PSLTParameters(
         c_eff=PAPER_BASELINE["c_eff"],
         nu=PAPER_BASELINE["nu"],
@@ -217,6 +223,7 @@ def make_baseline_kinetics(
     )
     print(
         "[baseline]",
+        f"chain_mode={chain_mode},",
         f"chi_mode={params.chi_mode},",
         f"chi_csv={chi_prof['path']},",
         f"gamma_mode={params.gamma_mode},",
@@ -229,9 +236,15 @@ def compute_maps(
     ref_d: float,
     ref_eta: float,
     observable_mode: str,
+    d_min: float,
+    d_max: float,
+    d_num: int,
+    eta_min: float,
+    eta_max: float,
+    eta_num: int,
 ) -> Tuple[np.ndarray, np.ndarray, Dict[str, np.ndarray], Dict[str, float]]:
-    d_vals = np.linspace(PAPER_BASELINE["D_min"], PAPER_BASELINE["D_max"], PAPER_BASELINE["D_num"])
-    eta_vals = np.linspace(PAPER_BASELINE["eta_min"], PAPER_BASELINE["eta_max"], PAPER_BASELINE["eta_num"])
+    d_vals = np.linspace(float(d_min), float(d_max), int(d_num))
+    eta_vals = np.linspace(float(eta_min), float(eta_max), int(eta_num))
     cfg = HLLObservableConfig(
         mode=str(observable_mode),
         t_coh=float(PAPER_BASELINE["t_coh"]),
@@ -422,6 +435,7 @@ def plot_maps(
 
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Map-level PSLT predictions for H->ll channels.")
+    ap.add_argument("--chain-mode", choices=["auto", "full_direct"], default="auto")
     ap.add_argument("--ref-mode", choices=["fixed", "chi2_best", "robust_center"], default="fixed")
     ap.add_argument("--ref-d", type=float, default=float(PAPER_BASELINE["ref_D"]))
     ap.add_argument("--ref-eta", type=float, default=float(PAPER_BASELINE["ref_eta"]))
@@ -439,6 +453,12 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--uv-rge-gamma-diag", type=float, default=float(PAPER_BASELINE["hll_uv_rge_gamma_diag"]))
     ap.add_argument("--uv-rge-gamma-offdiag", type=float, default=float(PAPER_BASELINE["hll_uv_rge_gamma_offdiag"]))
     ap.add_argument("--uv-rge-log-clip", type=float, default=float(PAPER_BASELINE["hll_uv_rge_log_clip"]))
+    ap.add_argument("--d-min", type=float, default=float(PAPER_BASELINE["D_min"]))
+    ap.add_argument("--d-max", type=float, default=float(PAPER_BASELINE["D_max"]))
+    ap.add_argument("--d-num", type=int, default=int(PAPER_BASELINE["D_num"]))
+    ap.add_argument("--eta-min", type=float, default=float(PAPER_BASELINE["eta_min"]))
+    ap.add_argument("--eta-max", type=float, default=float(PAPER_BASELINE["eta_max"]))
+    ap.add_argument("--eta-num", type=int, default=int(PAPER_BASELINE["eta_num"]))
     ap.add_argument("--tag", type=str, default="")
     ap.add_argument("--skip-paper-copy", action="store_true")
     return ap.parse_args()
@@ -486,6 +506,8 @@ def resolve_reference_anchor(
     kinetics: PSLTKinetics,
     observations: Dict[str, Observation],
     observable_mode: str,
+    d_vals: np.ndarray,
+    eta_vals: np.ndarray,
 ) -> tuple[float, float, str]:
     mode = str(args.ref_mode)
     if mode == "fixed":
@@ -501,8 +523,6 @@ def resolve_reference_anchor(
         Observation(mu_obs=1.4, sigma_obs=0.4, source="fallback default (ATLAS Run-3 proxy)"),
     )
 
-    d_vals = np.linspace(PAPER_BASELINE["D_min"], PAPER_BASELINE["D_max"], PAPER_BASELINE["D_num"])
-    eta_vals = np.linspace(PAPER_BASELINE["eta_min"], PAPER_BASELINE["eta_max"], PAPER_BASELINE["eta_num"])
     candidates = select_anchor_candidates_from_fixed_scan(
         kinetics=kinetics,
         d_vals=d_vals,
@@ -519,8 +539,22 @@ def resolve_reference_anchor(
     return float(row["ref_D"]), float(row["ref_eta"]), "selector_fallback"
 
 
+def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray) -> tuple[float, bool]:
+    if str(chain_mode) != "full_direct":
+        return float(ref_d), False
+    if len(d_vals) == 0:
+        return float(ref_d), False
+    arr = np.asarray(d_vals, dtype=float)
+    idx = int(np.argmin(np.abs(arr - float(ref_d))))
+    snapped = float(arr[idx])
+    changed = not np.isclose(snapped, float(ref_d), rtol=0.0, atol=1e-10)
+    return snapped, changed
+
+
 def main() -> None:
     args = parse_args()
+    if int(args.d_num) < 2 or int(args.eta_num) < 2:
+        raise ValueError("--d-num and --eta-num must be >= 2.")
     if not (0.0 <= float(args.uv_blend) <= 1.0):
         raise ValueError("--uv-blend must be in [0,1].")
     if float(args.uv_m2_power) < 0.0:
@@ -536,6 +570,10 @@ def main() -> None:
     observable_mode = str(args.observable_mode)
     kinetics = make_baseline_kinetics(
         observable_mode=observable_mode,
+        chain_mode=str(args.chain_mode),
+        d_min=float(args.d_min),
+        d_max=float(args.d_max),
+        d_num=int(args.d_num),
         uv_blend=float(args.uv_blend),
         uv_m2_power=float(args.uv_m2_power),
         uv_match_kappa_diag=float(args.uv_match_kappa_diag),
@@ -545,10 +583,36 @@ def main() -> None:
         uv_rge_gamma_offdiag=float(args.uv_rge_gamma_offdiag),
         uv_rge_log_clip=float(args.uv_rge_log_clip),
     )
-    ref_d, ref_eta, ref_source = resolve_reference_anchor(args, kinetics, observations, observable_mode=observable_mode)
+    d_vals_grid = np.linspace(float(args.d_min), float(args.d_max), int(args.d_num))
+    eta_vals_grid = np.linspace(float(args.eta_min), float(args.eta_max), int(args.eta_num))
+    ref_d, ref_eta, ref_source = resolve_reference_anchor(
+        args,
+        kinetics,
+        observations,
+        observable_mode=observable_mode,
+        d_vals=d_vals_grid,
+        eta_vals=eta_vals_grid,
+    )
+    ref_d_before_snap = float(ref_d)
+    ref_d, snapped = snap_ref_d_for_full_direct(str(args.chain_mode), float(ref_d), d_vals_grid)
+    if snapped:
+        old_ref_d = float(args.ref_d) if str(args.ref_mode) == "fixed" else float("nan")
+        print(f"[info] chain_mode=full_direct snapped ref_D to grid: {old_ref_d if old_ref_d == old_ref_d else 'selector'} -> {ref_d:.6g}")
+        ref_source = f"{ref_source}+snap_refD_to_grid"
     suffix = build_suffix(ref_mode=str(args.ref_mode), ref_d=ref_d, ref_eta=ref_eta, tag=str(args.tag))
 
-    d_vals, eta_vals, maps, ref_weights = compute_maps(kinetics, ref_d=ref_d, ref_eta=ref_eta, observable_mode=observable_mode)
+    d_vals, eta_vals, maps, ref_weights = compute_maps(
+        kinetics,
+        ref_d=ref_d,
+        ref_eta=ref_eta,
+        observable_mode=observable_mode,
+        d_min=float(args.d_min),
+        d_max=float(args.d_max),
+        d_num=int(args.d_num),
+        eta_min=float(args.eta_min),
+        eta_max=float(args.eta_max),
+        eta_num=int(args.eta_num),
+    )
     print(
         "[info] observable mode:",
         observable_mode,
@@ -559,6 +623,7 @@ def main() -> None:
         f"| uv_rge(mu_low={float(args.uv_rge_mu_low):.3f},",
         f"gamma_diag={float(args.uv_rge_gamma_diag):.3f},",
         f"gamma_offdiag={float(args.uv_rge_gamma_offdiag):.3f})",
+        f"| chain_mode={str(args.chain_mode)}",
         f"| reference (D={ref_d:.6g}, eta={ref_eta:.6g}, source={ref_source}) amplitudes:",
         ref_weights,
     )
@@ -576,6 +641,8 @@ def main() -> None:
     run_meta = {
         "ref_mode": str(args.ref_mode),
         "ref_D": float(ref_d),
+        "ref_D_input": float(ref_d_before_snap),
+        "ref_D_snapped_to_grid": bool(snapped),
         "ref_eta": float(ref_eta),
         "ref_source": ref_source,
         "suffix": suffix,
@@ -588,6 +655,13 @@ def main() -> None:
         "uv_rge_gamma_diag": float(args.uv_rge_gamma_diag),
         "uv_rge_gamma_offdiag": float(args.uv_rge_gamma_offdiag),
         "uv_rge_log_clip": float(args.uv_rge_log_clip),
+        "chain_mode": str(args.chain_mode),
+        "d_min": float(args.d_min),
+        "d_max": float(args.d_max),
+        "d_num": int(args.d_num),
+        "eta_min": float(args.eta_min),
+        "eta_max": float(args.eta_max),
+        "eta_num": int(args.eta_num),
         "tag": str(args.tag),
     }
     out_meta = OUTDIR / f"hll_signal_strength_run_meta{suffix or '_baseline'}.json"

@@ -148,7 +148,7 @@ $\chi_N^{(LR)}(D)$ localized channel & Stabilized localized-direct full-scan gri
 $\Gamma_{N,\ell}$ channel normalization ($A_\ell$) & Action-derived $\tilde A_\ell(D)$ baseline with stabilized localized-direct \texttt{Dgrid60} profile support and legacy constant-$A_\ell$ comparator & Yes & Extend to fully localized channel-resolved direct extraction over $(D,\eta,N)$ \\
 Open-system $\chi_{\rm eff}$ (Lindblad) & Scan-ready diagnostic module with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}) & Diagnostic only (not baseline) & Derive microscopic EYMH bath $(L_k,\gamma_k)$ and then promote to baseline if robust \\
 $B_N$ visibility profile $B_N(D)$ from overlap-defined $y_N^{\rm eff}$ & Action-derived profile extraction + tracked microcanonical windowing & Yes & Upgrade to fully normalized EFT operator matching (Section~\ref{sec:yukawa_roadmap}) \\
-$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}] & EFT/Wilson-matched map (scan-level) & Yes & Extend to full UV-to-EFT matching from EYMH action (operator basis + loop-level matching) \\
+$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}] & EFT/Wilson-matched baseline + UV-tree/LL-RG audit map & Yes & Extend current UV-tree + LL-RG closure to full UV-to-EFT matching from EYMH action (operator basis + loop-level matching) \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -678,6 +678,7 @@ C_{eH}^{ij}(D,\eta)=\sum_{N=1}^{3}Y_{iN}(D,\eta)\,P_N^{\rm(kin)}(D,\eta)\,Y_{jN}
 \end{equation}
 In the baseline figures we keep a fixed reference point $(D_0,\eta_0)=(10,1)$ for comparability across scan variants.
 Equation~\eqref{eq:mu_pred} is implemented in \texttt{pslt\_lib.py} with \texttt{hll\_observable\_mode=eft\_wilson\_matched}; it is still a scan-level EFT module (not yet a full UV-to-EFT derivation from loop-level EYMH matching).
+To push this interface toward UV-to-EFT matching, we additionally run a reproducible UV-tree $\rightarrow$ LL-RG audit with \texttt{scan\_hll\_uv\_to\_eft\_matching.py}, exporting per-point $C_{eH}^{\mu\mu}(\mu_{\rm match})$, $C_{eH}^{\mu\mu}(\mu_{\rm low})$, and running metadata over the same $(D,\eta)$ grid (\texttt{paper/hll\_uv\_to\_eft\_map.csv}, \texttt{paper/hll\_uv\_to\_eft\_summary.csv}). In the baseline UV settings used here ($\texttt{uv\_blend}=0$, $\texttt{uv\_m2\_power}=1$), the map-level drift is bounded: $\langle |\Delta \mu_{\mu\mu}|\rangle \simeq 6.19\times10^{-4}$ with $\max |\Delta \mu_{\mu\mu}|\simeq 8.93\times10^{-3}$, while $f(\chi^2_{\mu\mu}<4)$ is unchanged between UV-tree and UV+LL-RG in this scan.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv
@@ -819,7 +820,7 @@ bash scripts/repro/reproduce_paper.sh --package-only
 \hline\hline
 Stage & Primary scripts & Key outputs \\
 \hline
-Global maps and EFT/Wilson-matched observable plots & \texttt{generate\_plots.py}; \texttt{scan\_hll\_signal\_strengths.py} & \texttt{output/three\_generation\_*.png}; \texttt{output/hmumu\_*.png}; \texttt{output/hll\_signal\_strength/*} \\
+Global maps and EFT/Wilson-matched observable plots & \texttt{generate\_plots.py}; \texttt{scan\_hll\_signal\_strengths.py}; \texttt{scan\_hll\_uv\_to\_eft\_matching.py} & \texttt{output/three\_generation\_*.png}; \texttt{output/hmumu\_*.png}; \texttt{output/hll\_signal\_strength/*}; \texttt{output/hll\_uv\_matching/*} \\
 Localized mixing extraction & \texttt{extract\_chi\_localized\_2d.py} (\texttt{--Ds}, \texttt{--full-scan}) & \texttt{output/chi\_fp\_2d/localized\_chi\_D*.csv} \\
 Localized-profile diagnostics & \texttt{scan\_chi\_profile\_robustness.py}; \texttt{scan\_surrogate\_vs\_action\_points.py}; \texttt{plot\_chi\_*.py} & \texttt{paper/chi\_profile\_robustness.csv}; \texttt{paper/surrogate\_vs\_action\_points.csv}; \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}; \texttt{paper/chi\_wavefunction\_contours\_D*.png} \\
 Core-parameter robustness & \texttt{scan\_core\_param\_robustness.py} & \texttt{paper/core\_param\_robustness.csv}; \texttt{output/robustness/core\_param\_robustness\_cases.csv} \\

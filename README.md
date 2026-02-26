@@ -14,6 +14,7 @@ This bundle contains the complete source code, data, and manuscript for the PSLT
   - `pslt_lib.py`: The core unified library (Kinetics, Visibility, Parameters).
   - `generate_plots.py`: Main plotting script for phase maps and H->mumu proxy plots.
   - `scan_hll_signal_strengths.py`: Proxy maps and summaries for H->ee, H->mumu, H->tautau.
+  - `scan_hll_uv_to_eft_matching.py`: UV-tree -> LL-RG Wilson-map audit (`C_{eH}` at `mu_match` vs `mu_low`) and map-level drift summaries.
 - `data/`: Contains PDG data files (`pdg_leptons.json`, `pdg_quarks.json`).
 - `output/`: Contains the generated plots and figures used in the paper.
 - `scripts/repro/`: One-click reproducibility pipeline and packaging tools.
@@ -88,3 +89,7 @@ The old manual script-by-script sequence is still valid, but the reproducible en
 - **Full-chain consistency map (kinetic unification):** `code/scan_action_chain_consistency.py` runs the same action-derived kinetic chain on the full `(D,\eta,N)` map (no scan-side surrogate kinetic) and exports:
   - `output/kinetic_action_chain/action_chain_consistency_summary.csv`
   - `output/kinetic_action_chain/action_chain_consistency.png`
+- **UV-to-EFT matching audit:** `code/scan_hll_uv_to_eft_matching.py` exports per-point UV/IR Wilson diagonals and running metadata on the same scan grid:
+  - `output/hll_uv_matching/hll_uv_to_eft_map.csv`
+  - `output/hll_uv_matching/hll_uv_to_eft_summary.csv`
+  - `output/hll_uv_matching/hll_uv_to_eft_maps.png`

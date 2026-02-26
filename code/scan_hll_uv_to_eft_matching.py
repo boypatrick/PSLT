@@ -1,0 +1,410 @@
+#!/usr/bin/env python3
+"""
+Grid-level UV-to-EFT matching audit for PSLT H->ll observables.
+
+For each (D, eta) scan point, this script computes:
+  - UV-tree Wilson matrix C_{eH}(mu_match)
+  - LL-RG evolved Wilson matrix C_{eH}(mu_low)
+  - running metadata (mu_match, log(mu_match/mu_low))
+  - induced drift in mu_mumu between uv_tree and uv_rge modes
+
+Outputs:
+  - output/hll_uv_matching/hll_uv_to_eft_map*.csv
+  - output/hll_uv_matching/hll_uv_to_eft_summary*.csv
+  - output/hll_uv_matching/hll_uv_to_eft_maps*.png
+  - output/hll_uv_matching/hll_uv_to_eft_run_meta*.json
+and copies summary/figure/meta to paper/ unless --skip-paper-copy is set.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+from pathlib import Path
+import sys
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str((ROOT / "code").resolve()))
+
+from action_grid_profile_utils import scan_d_values, select_chi_profile, select_superrad_profile  # noqa: E402
+from pslt_lib import PSLTKinetics, PSLTParameters  # noqa: E402
+
+
+OUTDIR = ROOT / "output" / "hll_uv_matching"
+PAPER_DIR = ROOT / "paper"
+B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
+
+
+BASELINE = {
+    "c_eff": 0.5,
+    "nu": 5.0,
+    "kappa_g": 0.03,
+    "g_mode": "fp_2d_full",
+    "g_fp_norm_mode": "phase_space",
+    "g_fp_full_window_blend": 0.8,
+    "g_fp_full_tail_beta": 1.1,
+    "g_fp_full_tail_shell_power": 0.0,
+    "g_fp_full_tail_clip_min": 1e-3,
+    "g_fp_full_tail_clip_max": 0.95,
+    "chi_legacy": 0.2,
+    "chi_mode": "localized_grid",
+    "A1": 1.0,
+    "A2": 1.0,
+    "gamma_mode": "action_grid",
+    "p_B": 0.30,
+    "b_mode": "overlap_2d",
+    "t_coh": 1.0,
+    "hll_observable_nmax": 20,
+    "hll_uv_blend": 0.00,
+    "hll_uv_m2_power": 1.00,
+    "hll_uv_rge_mu_low": 1.0,
+    "hll_uv_rge_gamma_diag": 2.0,
+    "hll_uv_rge_gamma_offdiag": 1.0,
+    "hll_uv_rge_log_clip": 6.0,
+    "D_min": 4.0,
+    "D_max": 20.0,
+    "D_num": 60,
+    "eta_min": 0.2,
+    "eta_max": 4.0,
+    "eta_num": 60,
+    "ref_D": 10.0,
+    "ref_eta": 1.0,
+}
+
+
+def sanitize_tag(tag: str) -> str:
+    return "".join(ch if (ch.isalnum() or ch in "-_") else "_" for ch in str(tag).strip())
+
+
+def make_suffix(tag: str) -> str:
+    clean = sanitize_tag(tag)
+    return f"_{clean}" if clean else ""
+
+
+def make_baseline_kinetics(
+    d_min: float,
+    d_max: float,
+    d_num: int,
+    uv_blend: float,
+    uv_m2_power: float,
+    uv_rge_mu_low: float,
+    uv_rge_gamma_diag: float,
+    uv_rge_gamma_offdiag: float,
+    uv_rge_log_clip: float,
+) -> PSLTKinetics:
+    d_scan = scan_d_values(d_min, d_max, d_num)
+    chi_prof = select_chi_profile(ROOT, d_scan)
+    superrad_prof = select_superrad_profile(ROOT, d_scan)
+
+    params = PSLTParameters(
+        c_eff=BASELINE["c_eff"],
+        nu=BASELINE["nu"],
+        kappa_g=BASELINE["kappa_g"],
+        g_mode=BASELINE["g_mode"],
+        g_fp_norm_mode=BASELINE["g_fp_norm_mode"],
+        g_fp_full_window_blend=BASELINE["g_fp_full_window_blend"],
+        g_fp_full_tail_beta=BASELINE["g_fp_full_tail_beta"],
+        g_fp_full_tail_shell_power=BASELINE["g_fp_full_tail_shell_power"],
+        g_fp_full_tail_clip_min=BASELINE["g_fp_full_tail_clip_min"],
+        g_fp_full_tail_clip_max=BASELINE["g_fp_full_tail_clip_max"],
+        chi=BASELINE["chi_legacy"],
+        chi_mode=str(chi_prof["mode"]),
+        chi_lr_D=tuple(float(x) for x in chi_prof["d"]),
+        chi_lr_vals=tuple(float(x) for x in chi_prof["chi"]),
+        A1=BASELINE["A1"],
+        A2=BASELINE["A2"],
+        gamma_mode=str(superrad_prof["mode"]),
+        gamma_superrad_csv=str(superrad_prof["path"]),
+        b_mode=BASELINE["b_mode"],
+        b_overlap_csv=str(B_OVERLAP_CSV),
+        b_n_power=BASELINE["p_B"],
+        b_n_mode="cumulative",
+        b_n_tail_mode="saturate",
+        hll_observable_mode="eft_wilson_uv_rge",
+        hll_observable_nmax=int(BASELINE["hll_observable_nmax"]),
+        hll_uv_blend=float(uv_blend),
+        hll_uv_m2_power=float(uv_m2_power),
+        hll_uv_rge_mu_low=float(uv_rge_mu_low),
+        hll_uv_rge_gamma_diag=float(uv_rge_gamma_diag),
+        hll_uv_rge_gamma_offdiag=float(uv_rge_gamma_offdiag),
+        hll_uv_rge_log_clip=float(uv_rge_log_clip),
+    )
+
+    print(
+        "[baseline]",
+        f"chi_mode={params.chi_mode},",
+        f"chi_csv={chi_prof['path']},",
+        f"gamma_mode={params.gamma_mode},",
+        f"gamma_csv={superrad_prof['path']}",
+    )
+    return PSLTKinetics(params)
+
+
+def write_map_csv(path: Path, rows: list[dict[str, float]]) -> None:
+    if not rows:
+        raise RuntimeError("no map rows")
+    with path.open("w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def write_summary_csv(path: Path, row: dict[str, float]) -> None:
+    with path.open("w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(row.keys()))
+        writer.writeheader()
+        writer.writerow(row)
+
+
+def plot_maps(
+    out_png: Path,
+    d_vals: np.ndarray,
+    eta_vals: np.ndarray,
+    ceh_uv_mumu: np.ndarray,
+    ceh_ir_mumu: np.ndarray,
+    abs_delta_c: np.ndarray,
+    abs_delta_mu: np.ndarray,
+) -> None:
+    extent = [float(d_vals.min()), float(d_vals.max()), float(eta_vals.min()), float(eta_vals.max())]
+    fig, axes = plt.subplots(2, 2, figsize=(12.5, 8.0), constrained_layout=True)
+
+    panels = [
+        (axes[0, 0], ceh_uv_mumu, r"$C_{\mu\mu}^{UV}$"),
+        (axes[0, 1], ceh_ir_mumu, r"$C_{\mu\mu}^{IR}$"),
+        (axes[1, 0], abs_delta_c, r"$|\Delta C_{\mu\mu}|$"),
+        (axes[1, 1], abs_delta_mu, r"$|\Delta \mu_{\mu\mu}|$"),
+    ]
+
+    for ax, arr, title in panels:
+        p05, p95 = np.percentile(arr, [5.0, 95.0])
+        if p95 <= p05:
+            p05 = float(np.min(arr))
+            p95 = float(np.max(arr)) + 1e-12
+        im = ax.imshow(
+            arr,
+            origin="lower",
+            aspect="auto",
+            extent=extent,
+            cmap="viridis",
+            vmin=float(p05),
+            vmax=float(p95),
+        )
+        ax.set_title(title)
+        ax.set_xlabel("D")
+        ax.set_ylabel("eta")
+        cb = fig.colorbar(im, ax=ax)
+        cb.set_label("value")
+
+    fig.suptitle("UV-to-EFT matching maps (UV tree vs LL-RG IR)", fontsize=13)
+    fig.savefig(out_png, dpi=200)
+    plt.close(fig)
+
+
+def parse_args() -> argparse.Namespace:
+    ap = argparse.ArgumentParser(description="UV-to-EFT matching audit on PSLT scan grid")
+    ap.add_argument("--d-min", type=float, default=float(BASELINE["D_min"]))
+    ap.add_argument("--d-max", type=float, default=float(BASELINE["D_max"]))
+    ap.add_argument("--d-num", type=int, default=int(BASELINE["D_num"]))
+    ap.add_argument("--eta-min", type=float, default=float(BASELINE["eta_min"]))
+    ap.add_argument("--eta-max", type=float, default=float(BASELINE["eta_max"]))
+    ap.add_argument("--eta-num", type=int, default=int(BASELINE["eta_num"]))
+    ap.add_argument("--ref-d", type=float, default=float(BASELINE["ref_D"]))
+    ap.add_argument("--ref-eta", type=float, default=float(BASELINE["ref_eta"]))
+    ap.add_argument("--mu-obs", type=float, default=1.4)
+    ap.add_argument("--sigma-obs", type=float, default=0.4)
+    ap.add_argument("--uv-blend", type=float, default=float(BASELINE["hll_uv_blend"]))
+    ap.add_argument("--uv-m2-power", type=float, default=float(BASELINE["hll_uv_m2_power"]))
+    ap.add_argument("--uv-rge-mu-low", type=float, default=float(BASELINE["hll_uv_rge_mu_low"]))
+    ap.add_argument("--uv-rge-gamma-diag", type=float, default=float(BASELINE["hll_uv_rge_gamma_diag"]))
+    ap.add_argument("--uv-rge-gamma-offdiag", type=float, default=float(BASELINE["hll_uv_rge_gamma_offdiag"]))
+    ap.add_argument("--uv-rge-log-clip", type=float, default=float(BASELINE["hll_uv_rge_log_clip"]))
+    ap.add_argument("--tag", type=str, default="")
+    ap.add_argument("--skip-paper-copy", action="store_true")
+    return ap.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    if args.d_num < 2 or args.eta_num < 2:
+        raise ValueError("d-num and eta-num must be >= 2")
+
+    OUTDIR.mkdir(parents=True, exist_ok=True)
+    PAPER_DIR.mkdir(parents=True, exist_ok=True)
+
+    kin = make_baseline_kinetics(
+        d_min=float(args.d_min),
+        d_max=float(args.d_max),
+        d_num=int(args.d_num),
+        uv_blend=float(args.uv_blend),
+        uv_m2_power=float(args.uv_m2_power),
+        uv_rge_mu_low=float(args.uv_rge_mu_low),
+        uv_rge_gamma_diag=float(args.uv_rge_gamma_diag),
+        uv_rge_gamma_offdiag=float(args.uv_rge_gamma_offdiag),
+        uv_rge_log_clip=float(args.uv_rge_log_clip),
+    )
+
+    d_vals = np.linspace(float(args.d_min), float(args.d_max), int(args.d_num))
+    eta_vals = np.linspace(float(args.eta_min), float(args.eta_max), int(args.eta_num))
+    t_coh = float(BASELINE["t_coh"])
+    nmax = int(BASELINE["hll_observable_nmax"])
+
+    ceh_uv_mumu = np.zeros((len(eta_vals), len(d_vals)), dtype=float)
+    ceh_ir_mumu = np.zeros((len(eta_vals), len(d_vals)), dtype=float)
+    abs_delta_c = np.zeros((len(eta_vals), len(d_vals)), dtype=float)
+    abs_delta_mu = np.zeros((len(eta_vals), len(d_vals)), dtype=float)
+
+    rows: list[dict[str, float]] = []
+
+    for i, eta in enumerate(eta_vals):
+        for j, d in enumerate(d_vals):
+            c_uv = kin.compute_ceh_uv(float(d), float(eta), t_coh, N_max=nmax)
+            c_ir, meta = kin.hll_wilson_matrix_uv_rge_with_meta(float(d), float(eta), t_coh, N_max=nmax)
+
+            mu_uv = kin.hll_mu_pred(
+                layer_n=2,
+                D=float(d),
+                eta=float(eta),
+                t_coh=t_coh,
+                ref_D=float(args.ref_d),
+                ref_eta=float(args.ref_eta),
+                observable_mode="eft_wilson_uv_tree",
+                N_max=nmax,
+            )
+            mu_ir = kin.hll_mu_pred(
+                layer_n=2,
+                D=float(d),
+                eta=float(eta),
+                t_coh=t_coh,
+                ref_D=float(args.ref_d),
+                ref_eta=float(args.ref_eta),
+                observable_mode="eft_wilson_uv_rge",
+                N_max=nmax,
+            )
+
+            c_uv_diag = np.diag(c_uv)
+            c_ir_diag = np.diag(c_ir)
+            d_c = float(c_ir_diag[1] - c_uv_diag[1])
+            d_mu = float(mu_ir - mu_uv)
+
+            ceh_uv_mumu[i, j] = float(c_uv_diag[1])
+            ceh_ir_mumu[i, j] = float(c_ir_diag[1])
+            abs_delta_c[i, j] = abs(d_c)
+            abs_delta_mu[i, j] = abs(d_mu)
+
+            rows.append(
+                {
+                    "D": float(d),
+                    "eta": float(eta),
+                    "C_uv_ee": float(c_uv_diag[0]),
+                    "C_uv_mumu": float(c_uv_diag[1]),
+                    "C_uv_tautau": float(c_uv_diag[2]),
+                    "C_ir_ee": float(c_ir_diag[0]),
+                    "C_ir_mumu": float(c_ir_diag[1]),
+                    "C_ir_tautau": float(c_ir_diag[2]),
+                    "delta_C_mumu": d_c,
+                    "abs_delta_C_mumu": abs(d_c),
+                    "rel_delta_C_mumu": float(d_c / max(abs(c_uv_diag[1]), 1e-30)),
+                    "mu_match": float(meta["mu_match"]),
+                    "mu_low": float(meta["mu_low"]),
+                    "log_ratio": float(meta["log_ratio"]),
+                    "mu_mumu_uv_tree": float(mu_uv),
+                    "mu_mumu_uv_rge": float(mu_ir),
+                    "delta_mu_mumu": d_mu,
+                    "abs_delta_mu_mumu": abs(d_mu),
+                    "chi2_uv_tree": float(((mu_uv - float(args.mu_obs)) / float(args.sigma_obs)) ** 2),
+                    "chi2_uv_rge": float(((mu_ir - float(args.mu_obs)) / float(args.sigma_obs)) ** 2),
+                }
+            )
+
+    arr_abs_dc = np.asarray([r["abs_delta_C_mumu"] for r in rows], dtype=float)
+    arr_abs_dm = np.asarray([r["abs_delta_mu_mumu"] for r in rows], dtype=float)
+    arr_log = np.asarray([r["log_ratio"] for r in rows], dtype=float)
+    arr_chi2_uv = np.asarray([r["chi2_uv_tree"] for r in rows], dtype=float)
+    arr_chi2_ir = np.asarray([r["chi2_uv_rge"] for r in rows], dtype=float)
+
+    summary = {
+        "n_points": float(len(rows)),
+        "mean_abs_delta_C_mumu": float(np.mean(arr_abs_dc)),
+        "p95_abs_delta_C_mumu": float(np.percentile(arr_abs_dc, 95.0)),
+        "max_abs_delta_C_mumu": float(np.max(arr_abs_dc)),
+        "mean_abs_delta_mu_mumu": float(np.mean(arr_abs_dm)),
+        "p95_abs_delta_mu_mumu": float(np.percentile(arr_abs_dm, 95.0)),
+        "max_abs_delta_mu_mumu": float(np.max(arr_abs_dm)),
+        "mean_log_ratio": float(np.mean(arr_log)),
+        "p05_log_ratio": float(np.percentile(arr_log, 5.0)),
+        "p95_log_ratio": float(np.percentile(arr_log, 95.0)),
+        "f_chi2_le_4_uv_tree": float(np.mean(arr_chi2_uv <= 4.0)),
+        "f_chi2_le_4_uv_rge": float(np.mean(arr_chi2_ir <= 4.0)),
+        "delta_f_chi2_le_4_uv_rge_minus_uv_tree": float(np.mean(arr_chi2_ir <= 4.0) - np.mean(arr_chi2_uv <= 4.0)),
+        "best_chi2_uv_tree": float(np.min(arr_chi2_uv)),
+        "best_chi2_uv_rge": float(np.min(arr_chi2_ir)),
+        "ref_D": float(args.ref_d),
+        "ref_eta": float(args.ref_eta),
+        "mu_obs": float(args.mu_obs),
+        "sigma_obs": float(args.sigma_obs),
+        "uv_blend": float(args.uv_blend),
+        "uv_m2_power": float(args.uv_m2_power),
+        "uv_rge_mu_low": float(args.uv_rge_mu_low),
+        "uv_rge_gamma_diag": float(args.uv_rge_gamma_diag),
+        "uv_rge_gamma_offdiag": float(args.uv_rge_gamma_offdiag),
+        "uv_rge_log_clip": float(args.uv_rge_log_clip),
+    }
+
+    suffix = make_suffix(str(args.tag))
+    out_map = OUTDIR / f"hll_uv_to_eft_map{suffix}.csv"
+    out_summary = OUTDIR / f"hll_uv_to_eft_summary{suffix}.csv"
+    out_fig = OUTDIR / f"hll_uv_to_eft_maps{suffix}.png"
+    out_meta = OUTDIR / f"hll_uv_to_eft_run_meta{suffix or '_baseline'}.json"
+
+    write_map_csv(out_map, rows)
+    write_summary_csv(out_summary, summary)
+    plot_maps(
+        out_png=out_fig,
+        d_vals=d_vals,
+        eta_vals=eta_vals,
+        ceh_uv_mumu=ceh_uv_mumu,
+        ceh_ir_mumu=ceh_ir_mumu,
+        abs_delta_c=abs_delta_c,
+        abs_delta_mu=abs_delta_mu,
+    )
+
+    run_meta = {
+        "tag": str(args.tag),
+        "d_min": float(args.d_min),
+        "d_max": float(args.d_max),
+        "d_num": int(args.d_num),
+        "eta_min": float(args.eta_min),
+        "eta_max": float(args.eta_max),
+        "eta_num": int(args.eta_num),
+        "summary_file": str(out_summary),
+        "map_file": str(out_map),
+        "figure_file": str(out_fig),
+    }
+    out_meta.write_text(json.dumps(run_meta, indent=2))
+
+    if not args.skip_paper_copy:
+        (PAPER_DIR / out_map.name).write_text(out_map.read_text())
+        (PAPER_DIR / out_summary.name).write_text(out_summary.read_text())
+        (PAPER_DIR / out_fig.name).write_bytes(out_fig.read_bytes())
+        (PAPER_DIR / out_meta.name).write_text(out_meta.read_text())
+
+    print(f"[saved] {out_map}")
+    print(f"[saved] {out_summary}")
+    print(f"[saved] {out_fig}")
+    print(f"[saved] {out_meta}")
+    if not args.skip_paper_copy:
+        print(f"[saved] {PAPER_DIR / out_map.name}")
+        print(f"[saved] {PAPER_DIR / out_summary.name}")
+        print(f"[saved] {PAPER_DIR / out_fig.name}")
+        print(f"[saved] {PAPER_DIR / out_meta.name}")
+    print("[summary]", json.dumps(summary, indent=2))
+
+
+if __name__ == "__main__":
+    main()

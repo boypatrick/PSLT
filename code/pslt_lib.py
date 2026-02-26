@@ -1485,6 +1485,45 @@ class PSLTKinetics:
         m2 = self._hll_m2_vector(D)
         return wilson_matrix_uv_tree(g_uv=g_uv, p_kin=p_kin, m2=m2, cfg=cfg)
 
+    def compute_ceh_uv(self, D: float, eta: float, t_coh: float, N_max: int = 20) -> np.ndarray:
+        """
+        Unified UV-matching entrypoint used by scan scripts.
+        Returns C_{eH}(mu_match) from the UV-tree closure.
+        """
+        return self.hll_wilson_matrix_uv_tree(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
+
+    def run_ceh_llrg(self, c_uv: np.ndarray, m2: np.ndarray) -> tuple[np.ndarray, Dict[str, float]]:
+        """
+        Run leading-log RGE from UV matching scale to the configured low scale.
+
+        Returns:
+          (C_low, metadata) where metadata contains mu_match, mu_low, log_ratio.
+        """
+        cfg = self._hll_uv_rge_config()
+        mu_match = mu_match_from_m2(m2, floor=cfg.floor)
+        c_low, log_ratio = run_ceh_leading_log(c_match=c_uv, mu_match=mu_match, cfg=cfg)
+        return c_low, {
+            "mu_match": float(mu_match),
+            "mu_low": float(cfg.mu_low),
+            "log_ratio": float(log_ratio),
+        }
+
+    def hll_wilson_matrix_uv_rge_with_meta(
+        self,
+        D: float,
+        eta: float,
+        t_coh: float,
+        N_max: int = 20,
+    ) -> tuple[np.ndarray, Dict[str, float]]:
+        """
+        UV-tree matrix followed by leading-log running to the low scale,
+        with explicit running metadata.
+        """
+        c_uv = self.compute_ceh_uv(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
+        m2 = self._hll_m2_vector(D)
+        c_low, meta = self.run_ceh_llrg(c_uv=c_uv, m2=m2)
+        return c_low, meta
+
     def hll_wilson_coeff_uv_tree(self, layer_n: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:
         if layer_n <= 0 or layer_n > 3:
             return 0.0
@@ -1495,11 +1534,7 @@ class PSLTKinetics:
         """
         UV-tree matrix followed by leading-log running to the low scale.
         """
-        c_match = self.hll_wilson_matrix_uv_tree(D, eta, t_coh, N_max=N_max)
-        m2 = self._hll_m2_vector(D)
-        cfg = self._hll_uv_rge_config()
-        mu_match = mu_match_from_m2(m2, floor=cfg.floor)
-        c_low, _ = run_ceh_leading_log(c_match=c_match, mu_match=mu_match, cfg=cfg)
+        c_low, _ = self.hll_wilson_matrix_uv_rge_with_meta(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
         return c_low
 
     def hll_wilson_coeff_uv_rge(self, layer_n: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:

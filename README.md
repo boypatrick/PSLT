@@ -15,6 +15,7 @@ This bundle contains the complete source code, data, and manuscript for the PSLT
   - `generate_plots.py`: Main plotting script for phase maps and H->mumu proxy plots.
   - `scan_hll_signal_strengths.py`: Proxy maps and summaries for H->ee, H->mumu, H->tautau.
   - `scan_hll_uv_to_eft_matching.py`: UV-tree -> finite one-loop match -> LL-RG Wilson-map audit (`C_{eH}^{tree}`, `C_{eH}^{match}`, `C_{eH}^{IR}`) and map-level drift summaries.
+  - `scripts/repro/presubmit_prd_freeze.sh`: pre-submission freeze check runner (recompute, compile, package, and report).
 - `data/`: Contains PDG data files (`pdg_leptons.json`, `pdg_quarks.json`).
 - `output/`: Contains the generated plots and figures used in the paper.
 - `scripts/repro/`: One-click reproducibility pipeline and packaging tools.
@@ -54,6 +55,19 @@ bash scripts/repro/reproduce_paper.sh --package-only
 
 ### 4. Legacy Manual Sequence (Advanced)
 The old manual script-by-script sequence is still valid, but the reproducible entrypoint above is now the recommended path.
+
+### 5. PRD/JHEP Pre-Submission Freeze Check
+Run the targeted pre-submission check pipeline:
+
+```bash
+bash scripts/repro/presubmit_prd_freeze.sh
+```
+
+This executes core UV/EFT scans, compiles `paper/main.tex`, packages reproducibility artifacts, and writes:
+- `repro/runs/<RUN_ID>/presubmit_prd_report.json`
+- `repro/runs/<RUN_ID>/presubmit_prd_report.md`
+- `paper/presubmit_prd_report_latest.json`
+- `paper/presubmit_prd_report_latest.md`
 
 
 ## Requirements

@@ -1,0 +1,36 @@
+Dear Editors of Physical Review D,
+
+Please consider our manuscript,
+
+"The Projection Spectral Layer Theory (PSLT): A Rank-2 Computable Closure for the Three-Generation Structure and Higgs Signal Strength,"
+
+for publication as a Regular Article in Physical Review D.
+
+This work presents a computable EFT-level closure that links geometric inputs to generation-level observables through a single reproducible chain:
+(i) action-derived spectral structure and kinetic competition,
+(ii) overlap-defined visibility profiles, and
+(iii) scan-level EFT/Wilson-matched Higgs-channel maps.
+
+The main contributions are:
+1) A closed, reproducible generation-selection pipeline with stable three-generation dominance over the tested map-level scan domain.
+2) A falsifiable observable interface to H->mumu, including UV-tree to finite one-loop matching to LL-RG audit summaries on the same scan grid.
+3) Explicit migration diagnostics from surrogate ingredients toward first-principles profiles, with quantitative map-level bias bounds.
+
+The manuscript is positioned explicitly as an EFT-level demonstrator. We state current limitations and upgrade paths (full UV parent derivation, full per-grid direct localized extraction, and full loop-level UV-to-EFT matching from EYMH action) to avoid over-claiming.
+
+Reproducibility and data availability:
+- Source code, scripts, and generated artifacts are available in the project repository.
+- The manuscript figures/tables are reproducible via the provided one-command pipeline.
+- This submission version is tied to a specific git commit and packaged artifact manifests/checksums.
+
+This manuscript is not under consideration elsewhere and has not been published previously.
+All authors have approved the submission.
+
+Thank you for your consideration.
+
+Sincerely,
+
+Bo-Yu Chen
+Independent Researcher
+Corresponding author: [add preferred email]
+

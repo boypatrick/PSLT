@@ -39,6 +39,10 @@ class Case:
 def evaluate_case(case: Case) -> Dict[str, float | str]:
     kin = make_baseline_kinetics(
         observable_mode="eft_wilson_uv_rge",
+        chain_mode="auto",
+        d_min=float(PAPER_BASELINE["D_min"]),
+        d_max=float(PAPER_BASELINE["D_max"]),
+        d_num=int(PAPER_BASELINE["D_num"]),
         uv_blend=float(PAPER_BASELINE["hll_uv_blend"]),
         uv_m2_power=float(PAPER_BASELINE["hll_uv_m2_power"]),
         uv_match_kappa_diag=float(case.uv_match_kappa_diag),

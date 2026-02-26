@@ -1,0 +1,2 @@
+chain_mode,d_num,eta_num,n_cases,center_case,obs_mu,obs_sigma,f_chi2_le_4_center,f_chi2_le_4_min,f_chi2_le_4_max,f_chi2_le_4_span,case_at_f_chi2_le_4_min,case_at_f_chi2_le_4_max,mean_mu_half_width,p95_mu_half_width,max_mu_half_width,mean_mu_full_span,p95_mu_full_span,max_mu_full_span
+full_direct,21,41,12,center_nonzero,1.4,0.4,0.12427409988385599,0.12427409988385599,0.12427409988385599,0.0,center_nonzero,center_nonzero,0.0003025598473551001,0.001498060404475865,0.0038906626686596724,0.0006051196947102002,0.00299612080895173,0.007781325337319345

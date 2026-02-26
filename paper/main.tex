@@ -655,6 +655,7 @@ $p_B$ & $0.28/0.30/0.32$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\D
 \end{table}
 
 For the UV+LL-RG observable controls in the same baseline mode, we also scan one-at-a-time windows in $(\mu_{\rm low},\gamma_{\rm diag},\gamma_{\rm offdiag},\kappa_{\rm diag},\kappa_{\rm offdiag})$. As shown in Table~\ref{tab:hll_rge_sensitivity} (source CSV: \texttt{paper/hll\_rge\_sensitivity.csv}), $f(\chi^2_{\mu\mu}<4)$ remains fixed at $0.1500$ across all tested windows.
+To capture residual map-level drift in a nonzero finite-match setting, we additionally run a full-direct UV envelope scan centered at $(\kappa_{\rm diag},\kappa_{\rm offdiag})=(0.30,0.15)$ with one-at-a-time windows in $(\mu_{\rm low},\gamma_{\rm diag},\gamma_{\rm offdiag},\kappa_{\rm diag},\kappa_{\rm offdiag})$ using \texttt{code/scan\_hll\_uv\_envelope.py}. On the \texttt{Dgrid21$\times$Egrid41} map, the acceptance fraction span remains zero ($f_{\min}=f_{\max}=0.1243$), while the pointwise amplitude envelope is finite with mean half-width $3.03\times10^{-4}$, $p95$ half-width $1.50\times10^{-3}$, and max half-width $3.89\times10^{-3}$ (source CSV: \texttt{paper/hll\_uv\_envelope\_summary.csv}; map: \texttt{paper/hll\_uv\_envelope\_map.csv}).
 
 \begin{table}[t]
 \centering

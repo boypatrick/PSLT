@@ -15,6 +15,8 @@ This bundle contains the complete source code, data, and manuscript for the PSLT
   - `generate_plots.py`: Main plotting script for phase maps and H->mumu proxy plots.
   - `scan_hll_signal_strengths.py`: Proxy maps and summaries for H->ee, H->mumu, H->tautau.
   - `scan_hll_uv_to_eft_matching.py`: UV-tree -> finite one-loop match -> LL-RG Wilson-map audit (`C_{eH}^{tree}`, `C_{eH}^{match}`, `C_{eH}^{IR}`) and map-level drift summaries.
+  - `scan_hll_uv_envelope.py`: nonzero finite-match UV control envelope (`mu_mumu` pointwise min/max band + case summary).
+  - `build_artifact_status_registry.py`: writes canonical vs diagnostic vs legacy artifact status tables for reviewer hygiene.
   - `scripts/repro/presubmit_prd_freeze.sh`: pre-submission freeze check runner (recompute, compile, package, and report).
 - `data/`: Contains PDG data files (`pdg_leptons.json`, `pdg_quarks.json`).
 - `output/`: Contains the generated plots and figures used in the paper.
@@ -69,6 +71,19 @@ This executes core UV/EFT scans, compiles `paper/main.tex`, packages reproducibi
 - `paper/presubmit_prd_report_latest.json`
 - `paper/presubmit_prd_report_latest.md`
 
+### 6. Artifact Status Registry (Reviewer Hygiene)
+To avoid misreading old comparator outputs as baseline claims:
+
+```bash
+python3 code/build_artifact_status_registry.py
+```
+
+This writes:
+- `output/repro/artifact_status.csv`
+- `paper/artifact_status.csv`
+
+Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `legacy_comparator`.
+
 
 ## Requirements
 - Python 3.8+
@@ -100,7 +115,7 @@ This executes core UV/EFT scans, compiles `paper/main.tex`, packages reproducibi
 - **Cross-module summary:** `code/scan_first_principles_migration_summary.py` aggregates baseline `fp_2d_full+localized` vs legacy `cardy+localized` vs `fp_2d_full+open_system` into:
   - `output/first_principles_migration/first_principles_migration_summary.csv`
   - `output/first_principles_migration/first_principles_migration_summary.png`
-- **Full-chain consistency map (kinetic unification):** `code/scan_action_chain_consistency.py` runs the same action-derived kinetic chain on the full `(D,\eta,N)` map (no scan-side surrogate kinetic) and exports:
+- **Full-chain consistency comparator (kinetic unification audit):** `code/scan_action_chain_consistency.py` keeps a legacy surrogate-vs-action comparator run for historical context; the current strict chain-mode parity evidence is provided by `code/scan_chain_mode_full_direct_audit.py`. Comparator exports:
   - `output/kinetic_action_chain/action_chain_consistency_summary.csv`
   - `output/kinetic_action_chain/action_chain_consistency.png`
 - **UV-to-EFT matching audit:** `code/scan_hll_uv_to_eft_matching.py` exports per-point UV-tree / finite-match / IR Wilson diagonals and running metadata on the same scan grid:
@@ -110,3 +125,9 @@ This executes core UV/EFT scans, compiles `paper/main.tex`, packages reproducibi
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`
+- **UV control envelope (nonzero finite-match center):** `code/scan_hll_uv_envelope.py` scans one-at-a-time UV windows around nonzero `(kappa_diag,kappa_offdiag)` and exports:
+  - `output/robustness/hll_uv_envelope_cases.csv`
+  - `output/robustness/hll_uv_envelope_map.csv`
+  - `output/robustness/hll_uv_envelope_summary.csv`
+  - `output/robustness/hll_uv_envelope.png`
+  - mirrored copies under `paper/`.

@@ -1,0 +1,17 @@
+artifact_path,status,category,note,exists
+paper/main.pdf,canonical_baseline,manuscript,Current submission target PDF.,True
+paper/hll_signal_strength_summary.csv,canonical_baseline,observable_map,Baseline UV+LL-RG H->ll summary used in main text.,True
+paper/hll_uv_to_eft_summary.csv,canonical_baseline,uv_to_eft,Baseline UV-tree -> finite-match -> LL-RG summary.,True
+paper/core_param_robustness.csv,canonical_baseline,robustness,Main-text local one-at-a-time robustness table source.,True
+paper/hll_rge_sensitivity.csv,canonical_baseline,robustness,Main-text UV+LL-RG control sensitivity table source.,True
+paper/chain_mode_full_direct_audit_Dgrid21_Egrid41.csv,canonical_baseline,chain_mode_audit,Current strict chain_mode auto vs full_direct audit source.,True
+paper/chain_mode_uv_audit_Dgrid21_Egrid21.csv,canonical_baseline,chain_mode_audit,Current UV map parity audit source.,True
+paper/hll_uv_envelope_summary.csv,canonical_baseline,uv_envelope,UV control envelope summary (nonzero finite-match center).,True
+paper/hll_uv_envelope_cases.csv,canonical_baseline,uv_envelope,Per-case UV envelope run details.,True
+paper/hll_uv_envelope_map.csv,canonical_baseline,uv_envelope,Pointwise mu_mumu envelope bounds over the active grid.,True
+output/kinetic_action_chain/action_chain_consistency_summary.csv,legacy_comparator,chain_mode_audit,Older surrogate-vs-action comparator; not cited in current main text.,True
+output/kinetic_action_chain/action_chain_consistency.png,legacy_comparator,chain_mode_audit,Legacy comparator figure; retained for history only.,True
+output/hll_signal_strength/hll_signal_strength_summary_chi2_best.csv,diagnostic_variant,anchor_sensitivity,"Dynamic-anchor sensitivity variant, not baseline headline.",True
+output/hll_signal_strength/hll_signal_strength_summary_robust_center.csv,diagnostic_variant,anchor_sensitivity,"Robust-center anchor variant, not baseline headline.",True
+output/hll_signal_strength/hll_signal_strength_summary_uv_tree_calibrated.csv,diagnostic_variant,uv_modes,UV-tree calibrated mode; comparator only.,True
+output/hll_signal_strength/hll_signal_strength_summary_uv_rge_smoke.csv,diagnostic_variant,uv_modes,Smoke-mode output for quick checks only.,True

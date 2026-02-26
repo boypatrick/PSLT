@@ -1,0 +1,7 @@
+check,expression,value,target,pass
+kinetic_conformal_power,4 + 2*p_dirac - 1,0.0,0.0,True
+yukawa_conformal_power,4 + p_dirac + p_higgs + p_dirac,0.0,0.0,True
+profile_frame_power_baseline,unique(frame_power),0,0 (if column exists),True
+profile_frame_model_tag,unique(frame_model),minimal_dirac_conformal,minimal_dirac_conformal (if column exists),True
+profile_yukawa_net_power,max_abs(yukawa_net_omega_power),0.0,0 (if column exists),True
+profile_points,len(profile_csv),17,>=1,True

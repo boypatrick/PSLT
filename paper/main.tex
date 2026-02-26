@@ -530,7 +530,27 @@ Beyond the current overlap-profile baseline, the next step is a full EFT-level n
 \begin{equation}
 \mathcal{L}_{Y} = -y_0\,\bar{L}H\ell_R + \mathrm{h.c.}, \qquad g_{\mu\nu}=\Omega^2\eta_{\mu\nu}.
 \end{equation}
-After fixing one consistent canonical normalization convention (frame and field redefinition), we decompose the Higgs fluctuation on the same action-derived spatial modes used in Appendix~\ref{app:chi_loc},
+In the minimal conformal setup, we use the vierbein form
+\begin{equation}
+S_\Psi=\int d^4x\,\sqrt{-g}\;\ii\,\bar{\Psi}\,e^\mu_{\ a}\gamma^a\!\left(\partial_\mu+\frac{1}{4}\omega_{\mu bc}\gamma^{bc}\right)\!\Psi,
+\qquad e_\mu^{\ a}=\Omega\,\delta_\mu^{\ a},
+\end{equation}
+with $\sqrt{-g}=\Omega^4$ and $e^\mu_{\ a}=\Omega^{-1}\delta^\mu_{\ a}$. The canonical Weyl rescaling
+\begin{equation}
+\Psi=\Omega^{-3/2}\psi,\qquad H=\Omega^{-1}\varphi
+\label{eq:dirac_higgs_weyl}
+\end{equation}
+removes the spin-connection derivative term and yields canonical flat-frame kinetic terms (Appendix~\ref{app:dirac_conformal}).
+The Yukawa block then scales as
+\begin{equation}
+\sqrt{-g}\,\bar{\Psi}H\Psi
+\;\propto\;
+\Omega^{4}\cdot \Omega^{-3/2}\cdot \Omega^{-1}\cdot \Omega^{-3/2}
+\;=\;\Omega^0,
+\label{eq:yukawa_frame_cancel}
+\end{equation}
+so the minimal baseline has no residual conformal prefactor in the overlap kernel.
+After fixing this normalization convention, we decompose the Higgs fluctuation on the same action-derived spatial modes used in Appendix~\ref{app:chi_loc},
 \begin{equation}
 H(x,\rho,z)=\sum_N h_N(x)\,u_N(\rho,z;D),
 \end{equation}
@@ -540,7 +560,7 @@ y_N^{\rm eff}(D)=y_0\!\int 2\pi\rho\,\dd\rho\,\dd z\;
 u_N(\rho,z;D)\,f_L(\rho,z)\,f_R(\rho,z)\,\mathcal{W}_{\rm frame}(\rho,z;D).
 \label{eq:yukawa_eff_roadmap}
 \end{equation}
-Here $f_{L,R}$ denote lepton profile functions and $\mathcal{W}_{\rm frame}$ collects fixed normalization factors from the chosen conformal-frame convention. In this roadmap, the same 2D localized solver and convergence criteria as Appendix~\ref{app:chi_loc} are reused; the current scan-level implementation already uses this overlap profile at map level, while full operator normalization/matching remains future work.
+Here $f_{L,R}$ denote lepton profile functions and $\mathcal{W}_{\rm frame}$ collects fixed normalization factors from the chosen conformal-frame convention. In the minimal Dirac-conformal baseline implied by Eqs.~\eqref{eq:dirac_higgs_weyl}--\eqref{eq:yukawa_frame_cancel}, $\mathcal{W}_{\rm frame}=1$ (implemented as \texttt{frame\_power=0} in \texttt{extract\_y\_eff\_2d\_three\_channel.py}). Nonzero \texttt{frame\_power} is kept only as a diagnostic sensitivity direction and is not used in baseline figures. In this roadmap, the same 2D localized solver and convergence criteria as Appendix~\ref{app:chi_loc} are reused; the current scan-level implementation already uses this overlap profile at map level, while full operator normalization/matching remains future work.
 
 % ============================================================
 \section{Verification Results}
@@ -875,7 +895,7 @@ Localized-profile diagnostics & \texttt{scan\_chi\_profile\_robustness.py}; \tex
 Core-parameter robustness & \texttt{scan\_core\_param\_robustness.py} & \texttt{paper/core\_param\_robustness.csv}; \texttt{output/robustness/core\_param\_robustness\_cases.csv} \\
 $g_N$ first-principles candidates & \path{extract_gn_phase_space_candidate.py}; \path{extract_gn_phase_space_2d.py}; \path{scan_gn_profile_impact.py}; \path{scan_gn_nmax_convergence.py}; \path{scan_gn_baseline_replacement.py}; \path{plot_gn_cardy_vs_phase_space.py} & \texttt{output/gn\_fp\_1d/*.csv}; \texttt{output/gn\_fp\_2d/*.csv}; \texttt{paper/gn\_profile\_impact.csv}; \texttt{paper/gn\_nmax\_convergence.csv}; \texttt{paper/gn\_baseline\_replacement.csv}; \texttt{paper/gn\_cardy\_vs\_phase\_space.png} \\
 Open-system diagnostics & \texttt{lindblad\_chi\_minimal.py}; \texttt{extract\_chi\_open\_system\_*.py}; \texttt{scan\_chi\_open\_system\_*.py} & \texttt{output/chi\_open\_system/*.csv}; \texttt{paper/chi\_open\_system\_sensitivity.csv} \\
-Other first-principles profiles & \texttt{extract\_tcoh\_*.py}, \texttt{extract\_eta\_*.py}, \texttt{extract\_superrad\_*.py}; \texttt{scan\_*\_profile\_impact.py} & \texttt{paper/tcoh\_profile\_impact.csv}; \texttt{paper/eta\_profile\_impact.csv}; \texttt{paper/superrad\_profile\_impact.csv} \\
+Other first-principles profiles & \texttt{extract\_tcoh\_*.py}, \texttt{extract\_eta\_*.py}, \texttt{extract\_superrad\_*.py}, \texttt{check\_minimal\_dirac\_conformal.py}; \texttt{scan\_*\_profile\_impact.py} & \texttt{paper/tcoh\_profile\_impact.csv}; \texttt{paper/eta\_profile\_impact.csv}; \texttt{paper/superrad\_profile\_impact.csv}; \texttt{paper/minimal\_dirac\_conformal\_check.csv} \\
 Packaging and manifest & \texttt{package\_repro\_outputs.py} (wrapper stage) & \texttt{repro/runs/<RUN\_ID>/figures/}; \texttt{repro/runs/<RUN\_ID>/tables/}; \texttt{artifact\_index.csv}; \texttt{checksums.sha256}; \texttt{manifest.json} \\
 \hline\hline
 \end{tabular}
@@ -953,6 +973,47 @@ For $\xi < 1/6$ and $\nabla^2\Omega < 0$ near cores, the curvature term contribu
 
 \paragraph{Self-consistency check.}
 At $\xi = \xi_c = 1/6$ (conformal coupling): $V_{\rm eff} \to m_0^2\Omega^2$, and the curvature contribution vanishes identically. $\checkmark$
+
+\subsection{Minimal Dirac Coupling in the Conformal Background}
+\label{app:dirac_conformal}
+
+To make the visibility block explicitly compatible with the fermionic Yukawa origin, we summarize the minimal conformal Dirac reduction used by the baseline overlap kernel.
+
+For $g_{\mu\nu}=\Omega^2\eta_{\mu\nu}$, choose
+\begin{equation}
+e_\mu^{\ a}=\Omega\,\delta_\mu^{\ a},\qquad
+e^\mu_{\ a}=\Omega^{-1}\delta^\mu_{\ a},\qquad
+\sqrt{-g}=\Omega^4.
+\end{equation}
+The curved-space Dirac action is
+\begin{equation}
+S_\Psi=\int d^4x\,\sqrt{-g}\;\ii\,\bar{\Psi}\,e^\mu_{\ a}\gamma^a\!
+\left(\partial_\mu+\frac{1}{4}\omega_{\mu bc}\gamma^{bc}\right)\!\Psi,
+\end{equation}
+and the canonical Weyl rescaling
+\begin{equation}
+\Psi=\Omega^{-3/2}\psi
+\end{equation}
+removes the first-derivative conformal piece from the spin connection, yielding the flat-frame kinetic normalization.
+For the Higgs mode we use
+\begin{equation}
+H=\Omega^{-1}\varphi.
+\end{equation}
+The Yukawa density therefore carries net conformal power
+\begin{equation}
+\Omega^{4}\,\Omega^{-3/2}\,\Omega^{-1}\,\Omega^{-3/2}=\Omega^0,
+\end{equation}
+so the minimal overlap kernel has
+\begin{equation}
+\mathcal{W}_{\rm frame}=1.
+\end{equation}
+This is the baseline convention in \texttt{extract\_y\_eff\_2d\_three\_channel.py} (\texttt{frame\_power=0}); nonzero frame power is treated only as a diagnostic deformation.
+
+As a reproducibility check, \texttt{code/check\_minimal\_dirac\_conformal.py} exports
+\texttt{output/dirac\_frame\_check/minimal\_dirac\_conformal\_check.csv}
+and a paper copy at
+\texttt{paper/minimal\_dirac\_conformal\_check.csv},
+verifying the zero net conformal power in both kinetic and Yukawa factors.
 
 \subsection{1D On-Axis Reduction}
 \label{app:1D}

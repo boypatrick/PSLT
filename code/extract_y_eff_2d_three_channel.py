@@ -23,6 +23,12 @@ Outputs:
   - output/y_eff_2d/y_eff_2d_three_channel_D*.csv
   - output/y_eff_2d/y_eff_2d_three_channel_D*_relerr.csv
   - output/y_eff_2d/y_eff_2d_three_channel_profile.csv (from full-scan fine rows)
+
+Baseline frame convention (minimal conformal Dirac-Higgs reduction):
+  - Psi = Omega^{-3/2} psi
+  - H   = Omega^{-1} varphi
+  - net Yukawa conformal power = 0  -> W_frame = 1
+Hence baseline uses frame_power=0; nonzero frame_power is diagnostic only.
 """
 
 from __future__ import annotations
@@ -76,6 +82,11 @@ YUKAWA_LEPTON = {
     "mu": 6.077e-4,
     "tau": 1.022e-2,
 }
+
+FRAME_MODEL = "minimal_dirac_conformal"
+DIRAC_RESCALING_POWER = -1.5
+HIGGS_RESCALING_POWER = -1.0
+YUKAWA_NET_OMEGA_POWER = 4.0 + DIRAC_RESCALING_POWER + HIGGS_RESCALING_POWER + DIRAC_RESCALING_POWER
 
 
 def flavor_sigma_scales(cfg: OverlapConfig) -> Dict[str, float]:
@@ -423,6 +434,10 @@ def run_level_scan(
             "window_gap_scale": float(cfg.window_gap_scale),
             "window_sigma_mult": float(cfg.window_sigma_mult),
             "window_floor": float(cfg.window_floor),
+            "frame_model": FRAME_MODEL,
+            "dirac_rescaling_power": float(DIRAC_RESCALING_POWER),
+            "higgs_rescaling_power": float(HIGGS_RESCALING_POWER),
+            "yukawa_net_omega_power": float(YUKAWA_NET_OMEGA_POWER),
             "lambda_1": float(lam_track[0]),
             "lambda_2": float(lam_track[1]),
             "lambda_3": float(lam_track[2]),
@@ -633,6 +648,11 @@ def main() -> None:
     if args.full_scan:
         prof_cols = [
             "D",
+            "frame_model",
+            "frame_power",
+            "dirac_rescaling_power",
+            "higgs_rescaling_power",
+            "yukawa_net_omega_power",
             "lambda_1",
             "lambda_2",
             "lambda_3",

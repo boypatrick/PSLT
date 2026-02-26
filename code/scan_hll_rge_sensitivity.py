@@ -32,6 +32,8 @@ class Case:
     uv_rge_mu_low: float
     uv_rge_gamma_diag: float
     uv_rge_gamma_offdiag: float
+    uv_match_kappa_diag: float
+    uv_match_kappa_offdiag: float
 
 
 def evaluate_case(case: Case) -> Dict[str, float | str]:
@@ -39,6 +41,8 @@ def evaluate_case(case: Case) -> Dict[str, float | str]:
         observable_mode="eft_wilson_uv_rge",
         uv_blend=float(PAPER_BASELINE["hll_uv_blend"]),
         uv_m2_power=float(PAPER_BASELINE["hll_uv_m2_power"]),
+        uv_match_kappa_diag=float(case.uv_match_kappa_diag),
+        uv_match_kappa_offdiag=float(case.uv_match_kappa_offdiag),
         uv_rge_mu_low=float(case.uv_rge_mu_low),
         uv_rge_gamma_diag=float(case.uv_rge_gamma_diag),
         uv_rge_gamma_offdiag=float(case.uv_rge_gamma_offdiag),
@@ -82,6 +86,8 @@ def evaluate_case(case: Case) -> Dict[str, float | str]:
         "uv_rge_mu_low": float(case.uv_rge_mu_low),
         "uv_rge_gamma_diag": float(case.uv_rge_gamma_diag),
         "uv_rge_gamma_offdiag": float(case.uv_rge_gamma_offdiag),
+        "uv_match_kappa_diag": float(case.uv_match_kappa_diag),
+        "uv_match_kappa_offdiag": float(case.uv_match_kappa_offdiag),
         "f_chi2_le_4": float(np.mean(chi2 <= 4.0)),
         "best_chi2": float(np.min(chi2)),
         "best_D": float(d_vals[int(best_idx[1])]),
@@ -94,14 +100,20 @@ def evaluate_case(case: Case) -> Dict[str, float | str]:
 
 
 def build_cases() -> List[Case]:
+    kdiag0 = float(PAPER_BASELINE["hll_uv_match_kappa_diag"])
+    koff0 = float(PAPER_BASELINE["hll_uv_match_kappa_offdiag"])
     return [
-        Case("baseline", 1.0, 2.0, 1.0),
-        Case("mu_low_minus", 0.5, 2.0, 1.0),
-        Case("mu_low_plus", 2.0, 2.0, 1.0),
-        Case("gamma_diag_minus", 1.0, 1.0, 1.0),
-        Case("gamma_diag_plus", 1.0, 3.0, 1.0),
-        Case("gamma_offdiag_minus", 1.0, 2.0, 0.5),
-        Case("gamma_offdiag_plus", 1.0, 2.0, 1.5),
+        Case("baseline", 1.0, 2.0, 1.0, kdiag0, koff0),
+        Case("mu_low_minus", 0.5, 2.0, 1.0, kdiag0, koff0),
+        Case("mu_low_plus", 2.0, 2.0, 1.0, kdiag0, koff0),
+        Case("gamma_diag_minus", 1.0, 1.0, 1.0, kdiag0, koff0),
+        Case("gamma_diag_plus", 1.0, 3.0, 1.0, kdiag0, koff0),
+        Case("gamma_offdiag_minus", 1.0, 2.0, 0.5, kdiag0, koff0),
+        Case("gamma_offdiag_plus", 1.0, 2.0, 1.5, kdiag0, koff0),
+        Case("kappa_diag_minus", 1.0, 2.0, 1.0, -1.0, koff0),
+        Case("kappa_diag_plus", 1.0, 2.0, 1.0, +1.0, koff0),
+        Case("kappa_offdiag_minus", 1.0, 2.0, 1.0, kdiag0, -1.0),
+        Case("kappa_offdiag_plus", 1.0, 2.0, 1.0, kdiag0, +1.0),
     ]
 
 
@@ -111,6 +123,8 @@ def build_table_rows(rows_by_name: Dict[str, Dict[str, float | str]]) -> List[Di
         ("mu_low", "mu_low_minus", "mu_low_plus", "0.5 / 1.0 / 2.0"),
         ("gamma_diag", "gamma_diag_minus", "baseline", "1.0 / 2.0 / 3.0", "gamma_diag_plus"),
         ("gamma_offdiag", "gamma_offdiag_minus", "baseline", "0.5 / 1.0 / 1.5", "gamma_offdiag_plus"),
+        ("kappa_diag", "kappa_diag_minus", "baseline", "-1.0 / 0.0 / 1.0", "kappa_diag_plus"),
+        ("kappa_offdiag", "kappa_offdiag_minus", "baseline", "-1.0 / 0.0 / 1.0", "kappa_offdiag_plus"),
     ]
 
     out: List[Dict[str, str]] = []

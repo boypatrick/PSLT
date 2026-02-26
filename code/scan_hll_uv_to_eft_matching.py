@@ -3,7 +3,8 @@
 Grid-level UV-to-EFT matching audit for PSLT H->ll observables.
 
 For each (D, eta) scan point, this script computes:
-  - UV-tree Wilson matrix C_{eH}(mu_match)
+  - UV-tree Wilson matrix C_{eH}^{tree}(mu_match)
+  - finite one-loop matched matrix C_{eH}^{match}(mu_match)
   - LL-RG evolved Wilson matrix C_{eH}(mu_low)
   - running metadata (mu_match, log(mu_match/mu_low))
   - induced drift in mu_mumu between uv_tree and uv_rge modes
@@ -63,6 +64,8 @@ BASELINE = {
     "hll_observable_nmax": 20,
     "hll_uv_blend": 0.00,
     "hll_uv_m2_power": 1.00,
+    "hll_uv_match_kappa_diag": 0.0,
+    "hll_uv_match_kappa_offdiag": 0.0,
     "hll_uv_rge_mu_low": 1.0,
     "hll_uv_rge_gamma_diag": 2.0,
     "hll_uv_rge_gamma_offdiag": 1.0,
@@ -93,6 +96,8 @@ def make_baseline_kinetics(
     d_num: int,
     uv_blend: float,
     uv_m2_power: float,
+    uv_match_kappa_diag: float,
+    uv_match_kappa_offdiag: float,
     uv_rge_mu_low: float,
     uv_rge_gamma_diag: float,
     uv_rge_gamma_offdiag: float,
@@ -130,6 +135,8 @@ def make_baseline_kinetics(
         hll_observable_nmax=int(BASELINE["hll_observable_nmax"]),
         hll_uv_blend=float(uv_blend),
         hll_uv_m2_power=float(uv_m2_power),
+        hll_uv_match_kappa_diag=float(uv_match_kappa_diag),
+        hll_uv_match_kappa_offdiag=float(uv_match_kappa_offdiag),
         hll_uv_rge_mu_low=float(uv_rge_mu_low),
         hll_uv_rge_gamma_diag=float(uv_rge_gamma_diag),
         hll_uv_rge_gamma_offdiag=float(uv_rge_gamma_offdiag),
@@ -220,6 +227,8 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--sigma-obs", type=float, default=0.4)
     ap.add_argument("--uv-blend", type=float, default=float(BASELINE["hll_uv_blend"]))
     ap.add_argument("--uv-m2-power", type=float, default=float(BASELINE["hll_uv_m2_power"]))
+    ap.add_argument("--uv-match-kappa-diag", type=float, default=float(BASELINE["hll_uv_match_kappa_diag"]))
+    ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(BASELINE["hll_uv_match_kappa_offdiag"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(BASELINE["hll_uv_rge_mu_low"]))
     ap.add_argument("--uv-rge-gamma-diag", type=float, default=float(BASELINE["hll_uv_rge_gamma_diag"]))
     ap.add_argument("--uv-rge-gamma-offdiag", type=float, default=float(BASELINE["hll_uv_rge_gamma_offdiag"]))
@@ -243,6 +252,8 @@ def main() -> None:
         d_num=int(args.d_num),
         uv_blend=float(args.uv_blend),
         uv_m2_power=float(args.uv_m2_power),
+        uv_match_kappa_diag=float(args.uv_match_kappa_diag),
+        uv_match_kappa_offdiag=float(args.uv_match_kappa_offdiag),
         uv_rge_mu_low=float(args.uv_rge_mu_low),
         uv_rge_gamma_diag=float(args.uv_rge_gamma_diag),
         uv_rge_gamma_offdiag=float(args.uv_rge_gamma_offdiag),
@@ -264,6 +275,7 @@ def main() -> None:
     for i, eta in enumerate(eta_vals):
         for j, d in enumerate(d_vals):
             c_uv = kin.compute_ceh_uv(float(d), float(eta), t_coh, N_max=nmax)
+            c_match, _match_meta = kin.hll_wilson_matrix_uv_match_with_meta(float(d), float(eta), t_coh, N_max=nmax)
             c_ir, meta = kin.hll_wilson_matrix_uv_rge_with_meta(float(d), float(eta), t_coh, N_max=nmax)
 
             mu_uv = kin.hll_mu_pred(
@@ -288,7 +300,10 @@ def main() -> None:
             )
 
             c_uv_diag = np.diag(c_uv)
+            c_match_diag = np.diag(c_match)
             c_ir_diag = np.diag(c_ir)
+            d_c_match = float(c_match_diag[1] - c_uv_diag[1])
+            d_c_rge = float(c_ir_diag[1] - c_match_diag[1])
             d_c = float(c_ir_diag[1] - c_uv_diag[1])
             d_mu = float(mu_ir - mu_uv)
 
@@ -304,15 +319,26 @@ def main() -> None:
                     "C_uv_ee": float(c_uv_diag[0]),
                     "C_uv_mumu": float(c_uv_diag[1]),
                     "C_uv_tautau": float(c_uv_diag[2]),
+                    "C_match_ee": float(c_match_diag[0]),
+                    "C_match_mumu": float(c_match_diag[1]),
+                    "C_match_tautau": float(c_match_diag[2]),
                     "C_ir_ee": float(c_ir_diag[0]),
                     "C_ir_mumu": float(c_ir_diag[1]),
                     "C_ir_tautau": float(c_ir_diag[2]),
+                    "delta_C_match_mumu": d_c_match,
+                    "abs_delta_C_match_mumu": abs(d_c_match),
+                    "delta_C_rge_mumu": d_c_rge,
+                    "abs_delta_C_rge_mumu": abs(d_c_rge),
                     "delta_C_mumu": d_c,
                     "abs_delta_C_mumu": abs(d_c),
                     "rel_delta_C_mumu": float(d_c / max(abs(c_uv_diag[1]), 1e-30)),
                     "mu_match": float(meta["mu_match"]),
                     "mu_low": float(meta["mu_low"]),
                     "log_ratio": float(meta["log_ratio"]),
+                    "finite_fac_diag": float(meta["finite_fac_diag"]),
+                    "finite_fac_offdiag": float(meta["finite_fac_offdiag"]),
+                    "kappa_diag": float(meta["kappa_diag"]),
+                    "kappa_offdiag": float(meta["kappa_offdiag"]),
                     "mu_mumu_uv_tree": float(mu_uv),
                     "mu_mumu_uv_rge": float(mu_ir),
                     "delta_mu_mumu": d_mu,
@@ -323,6 +349,8 @@ def main() -> None:
             )
 
     arr_abs_dc = np.asarray([r["abs_delta_C_mumu"] for r in rows], dtype=float)
+    arr_abs_dc_match = np.asarray([r["abs_delta_C_match_mumu"] for r in rows], dtype=float)
+    arr_abs_dc_rge = np.asarray([r["abs_delta_C_rge_mumu"] for r in rows], dtype=float)
     arr_abs_dm = np.asarray([r["abs_delta_mu_mumu"] for r in rows], dtype=float)
     arr_log = np.asarray([r["log_ratio"] for r in rows], dtype=float)
     arr_chi2_uv = np.asarray([r["chi2_uv_tree"] for r in rows], dtype=float)
@@ -330,6 +358,12 @@ def main() -> None:
 
     summary = {
         "n_points": float(len(rows)),
+        "mean_abs_delta_C_match_mumu": float(np.mean(arr_abs_dc_match)),
+        "p95_abs_delta_C_match_mumu": float(np.percentile(arr_abs_dc_match, 95.0)),
+        "max_abs_delta_C_match_mumu": float(np.max(arr_abs_dc_match)),
+        "mean_abs_delta_C_rge_mumu": float(np.mean(arr_abs_dc_rge)),
+        "p95_abs_delta_C_rge_mumu": float(np.percentile(arr_abs_dc_rge, 95.0)),
+        "max_abs_delta_C_rge_mumu": float(np.max(arr_abs_dc_rge)),
         "mean_abs_delta_C_mumu": float(np.mean(arr_abs_dc)),
         "p95_abs_delta_C_mumu": float(np.percentile(arr_abs_dc, 95.0)),
         "max_abs_delta_C_mumu": float(np.max(arr_abs_dc)),
@@ -350,6 +384,8 @@ def main() -> None:
         "sigma_obs": float(args.sigma_obs),
         "uv_blend": float(args.uv_blend),
         "uv_m2_power": float(args.uv_m2_power),
+        "uv_match_kappa_diag": float(args.uv_match_kappa_diag),
+        "uv_match_kappa_offdiag": float(args.uv_match_kappa_offdiag),
         "uv_rge_mu_low": float(args.uv_rge_mu_low),
         "uv_rge_gamma_diag": float(args.uv_rge_gamma_diag),
         "uv_rge_gamma_offdiag": float(args.uv_rge_gamma_offdiag),
@@ -382,6 +418,8 @@ def main() -> None:
         "eta_min": float(args.eta_min),
         "eta_max": float(args.eta_max),
         "eta_num": int(args.eta_num),
+        "uv_match_kappa_diag": float(args.uv_match_kappa_diag),
+        "uv_match_kappa_offdiag": float(args.uv_match_kappa_offdiag),
         "summary_file": str(out_summary),
         "map_file": str(out_map),
         "figure_file": str(out_fig),

@@ -60,6 +60,8 @@ PAPER_BASELINE = {
     "hmumu_ref_eta": 1.0,
     "hll_observable_mode": "eft_wilson_uv_rge",
     "hll_observable_nmax": 20,
+    "hll_uv_match_kappa_diag": 0.0,
+    "hll_uv_match_kappa_offdiag": 0.0,
     "D_min": 4.0,
     "D_max": 20.0,
     "D_num": 60,
@@ -101,6 +103,8 @@ def make_baseline_kinetics() -> PSLTKinetics:
         b_n_tail_mode="saturate",
         hll_observable_mode=PAPER_BASELINE["hll_observable_mode"],
         hll_observable_nmax=PAPER_BASELINE["hll_observable_nmax"],
+        hll_uv_match_kappa_diag=PAPER_BASELINE["hll_uv_match_kappa_diag"],
+        hll_uv_match_kappa_offdiag=PAPER_BASELINE["hll_uv_match_kappa_offdiag"],
     )
     print(
         "Using baseline profile:",

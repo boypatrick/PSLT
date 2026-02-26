@@ -13,7 +13,8 @@ Two map-level modes are supported:
                      C_{eH}^{ij} = sum_N g_{iN}(D) [P_N^(kin)/M_N^2(D)] g_{jN}(D)
                      mu_ll = (|C_ii/C_ii(ref)|^2) / (Gamma_tot/Gamma_tot(ref))
   - eft_wilson_uv_rge:
-                     C_{eH}^{ij}(mu_low) from UV-tree matrix + leading-log running
+                     C_{eH}^{ij}(mu_low) from UV-tree matrix
+                     + finite one-loop matching + leading-log running
                      mu_ll = (|C_ii/C_ii(ref)|^2) / (Gamma_tot/Gamma_tot(ref))
 """
 

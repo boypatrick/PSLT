@@ -17,6 +17,13 @@ import numpy as np
 
 
 @dataclass(frozen=True)
+class EFTFiniteOneLoopMatchConfig:
+    kappa_diag: float = 0.0
+    kappa_offdiag: float = 0.0
+    floor: float = 1e-30
+
+
+@dataclass(frozen=True)
 class EFTLeadingLogRGEConfig:
     mu_low: float = 1.0
     gamma_diag: float = 2.0
@@ -33,6 +40,37 @@ def mu_match_from_m2(m2: np.ndarray, floor: float = 1e-30) -> float:
     m2v = np.asarray(m2, dtype=float).reshape(-1)
     m = np.sqrt(np.maximum(np.abs(m2v), floor))
     return float(np.exp(np.mean(np.log(np.maximum(m, floor)))))
+
+
+def apply_ceh_finite_one_loop(
+    c_tree: np.ndarray,
+    cfg: EFTFiniteOneLoopMatchConfig,
+) -> tuple[np.ndarray, dict[str, float]]:
+    """
+    Minimal finite one-loop matching at mu_match:
+
+      C_match = C_tree + (kappa / 16 pi^2) * C_tree
+
+    with independent diagonal/off-diagonal coefficients.
+    """
+    c = np.asarray(c_tree, dtype=float)
+    if c.shape != (3, 3):
+        raise ValueError(f"c_tree must have shape (3,3), got {c.shape}.")
+
+    loop = 16.0 * np.pi * np.pi
+    fac_diag = 1.0 + float(cfg.kappa_diag) / loop
+    fac_off = 1.0 + float(cfg.kappa_offdiag) / loop
+
+    diag = np.diag(np.diag(c)) * fac_diag
+    off = (c - np.diag(np.diag(c))) * fac_off
+    c_match = np.maximum(diag + off, cfg.floor)
+
+    return c_match, {
+        "kappa_diag": float(cfg.kappa_diag),
+        "kappa_offdiag": float(cfg.kappa_offdiag),
+        "finite_fac_diag": float(fac_diag),
+        "finite_fac_offdiag": float(fac_off),
+    }
 
 
 def run_ceh_leading_log(

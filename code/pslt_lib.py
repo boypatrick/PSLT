@@ -38,7 +38,13 @@ from eft_wilson_matching import (
     wilson_matrix_uv_tree,
     total_width_ratio,
 )
-from eft_rge import EFTLeadingLogRGEConfig, mu_match_from_m2, run_ceh_leading_log
+from eft_rge import (
+    EFTFiniteOneLoopMatchConfig,
+    EFTLeadingLogRGEConfig,
+    mu_match_from_m2,
+    apply_ceh_finite_one_loop,
+    run_ceh_leading_log,
+)
 
 # =============================================================================
 # 1. Parameters (Dimensional Rigor)
@@ -126,6 +132,8 @@ class PSLTParameters:
     hll_uv_coupling_floor: float = 1e-30
     hll_uv_blend: float = 0.0
     hll_uv_m2_power: float = 1.0
+    hll_uv_match_kappa_diag: float = 0.0
+    hll_uv_match_kappa_offdiag: float = 0.0
     hll_uv_rge_mu_low: float = 1.0
     hll_uv_rge_gamma_diag: float = 2.0
     hll_uv_rge_gamma_offdiag: float = 1.0
@@ -1386,6 +1394,13 @@ class PSLTKinetics:
             coupling_floor=self.params.hll_uv_coupling_floor,
         )
 
+    def _hll_uv_finite_match_config(self) -> EFTFiniteOneLoopMatchConfig:
+        return EFTFiniteOneLoopMatchConfig(
+            kappa_diag=self.params.hll_uv_match_kappa_diag,
+            kappa_offdiag=self.params.hll_uv_match_kappa_offdiag,
+            floor=self.params.hll_uv_coupling_floor,
+        )
+
     def _hll_uv_rge_config(self) -> EFTLeadingLogRGEConfig:
         return EFTLeadingLogRGEConfig(
             mu_low=self.params.hll_uv_rge_mu_low,
@@ -1492,6 +1507,25 @@ class PSLTKinetics:
         """
         return self.hll_wilson_matrix_uv_tree(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
 
+    def hll_wilson_matrix_uv_match_with_meta(
+        self,
+        D: float,
+        eta: float,
+        t_coh: float,
+        N_max: int = 20,
+    ) -> tuple[np.ndarray, Dict[str, float]]:
+        """
+        UV-tree matrix with minimal finite one-loop matching applied at mu_match.
+        """
+        c_uv = self.compute_ceh_uv(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
+        cfg = self._hll_uv_finite_match_config()
+        c_match, meta = apply_ceh_finite_one_loop(c_tree=c_uv, cfg=cfg)
+        return c_match, meta
+
+    def hll_wilson_matrix_uv_match(self, D: float, eta: float, t_coh: float, N_max: int = 20) -> np.ndarray:
+        c_match, _ = self.hll_wilson_matrix_uv_match_with_meta(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
+        return c_match
+
     def run_ceh_llrg(self, c_uv: np.ndarray, m2: np.ndarray) -> tuple[np.ndarray, Dict[str, float]]:
         """
         Run leading-log RGE from UV matching scale to the configured low scale.
@@ -1499,14 +1533,21 @@ class PSLTKinetics:
         Returns:
           (C_low, metadata) where metadata contains mu_match, mu_low, log_ratio.
         """
+        fin_cfg = self._hll_uv_finite_match_config()
+        c_match, fin_meta = apply_ceh_finite_one_loop(c_tree=c_uv, cfg=fin_cfg)
         cfg = self._hll_uv_rge_config()
         mu_match = mu_match_from_m2(m2, floor=cfg.floor)
-        c_low, log_ratio = run_ceh_leading_log(c_match=c_uv, mu_match=mu_match, cfg=cfg)
-        return c_low, {
+        c_low, log_ratio = run_ceh_leading_log(c_match=c_match, mu_match=mu_match, cfg=cfg)
+        meta = {
             "mu_match": float(mu_match),
             "mu_low": float(cfg.mu_low),
             "log_ratio": float(log_ratio),
+            "kappa_diag": float(fin_meta["kappa_diag"]),
+            "kappa_offdiag": float(fin_meta["kappa_offdiag"]),
+            "finite_fac_diag": float(fin_meta["finite_fac_diag"]),
+            "finite_fac_offdiag": float(fin_meta["finite_fac_offdiag"]),
         }
+        return c_low, meta
 
     def hll_wilson_matrix_uv_rge_with_meta(
         self,

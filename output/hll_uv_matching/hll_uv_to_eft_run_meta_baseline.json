@@ -6,6 +6,8 @@
   "eta_min": 0.2,
   "eta_max": 4.0,
   "eta_num": 60,
+  "uv_match_kappa_diag": 0.0,
+  "uv_match_kappa_offdiag": 0.0,
   "summary_file": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_summary.csv",
   "map_file": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_map.csv",
   "figure_file": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_maps.png"

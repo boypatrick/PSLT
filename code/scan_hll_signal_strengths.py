@@ -14,7 +14,8 @@ Observable modes:
       mu_ll_pred = |C_ii/C_ii_ref|^2 / (Gamma_tot/Gamma_tot_ref)
   - eft_wilson_uv_rge:
       C_{eH}^{ij}(mu_low) = RGE[ C_{eH}^{ij}(mu_match) ] with
-      C_{eH}^{ij}(mu_match) from the UV-tree closure
+      C_{eH}^{ij}(mu_match) = finite_one_loop_match[ C_{eH}^{tree}(mu_match) ]
+      from the UV-tree closure
 
 with layer-channel assignment:
   ee -> N=1, mumu -> N=2, tautau -> N=3.
@@ -94,6 +95,8 @@ PAPER_BASELINE = {
     # UV-tree calibration knobs (used when --observable-mode eft_wilson_uv_tree)
     "hll_uv_blend": 0.00,
     "hll_uv_m2_power": 1.00,
+    "hll_uv_match_kappa_diag": 0.0,
+    "hll_uv_match_kappa_offdiag": 0.0,
     "hll_uv_rge_mu_low": 1.0,
     "hll_uv_rge_gamma_diag": 2.0,
     "hll_uv_rge_gamma_offdiag": 1.0,
@@ -163,6 +166,8 @@ def make_baseline_kinetics(
     observable_mode: str,
     uv_blend: float,
     uv_m2_power: float,
+    uv_match_kappa_diag: float,
+    uv_match_kappa_offdiag: float,
     uv_rge_mu_low: float,
     uv_rge_gamma_diag: float,
     uv_rge_gamma_offdiag: float,
@@ -203,6 +208,8 @@ def make_baseline_kinetics(
         hll_observable_nmax=PAPER_BASELINE["hll_observable_nmax"],
         hll_uv_blend=float(uv_blend),
         hll_uv_m2_power=float(uv_m2_power),
+        hll_uv_match_kappa_diag=float(uv_match_kappa_diag),
+        hll_uv_match_kappa_offdiag=float(uv_match_kappa_offdiag),
         hll_uv_rge_mu_low=float(uv_rge_mu_low),
         hll_uv_rge_gamma_diag=float(uv_rge_gamma_diag),
         hll_uv_rge_gamma_offdiag=float(uv_rge_gamma_offdiag),
@@ -426,6 +433,8 @@ def parse_args() -> argparse.Namespace:
     )
     ap.add_argument("--uv-blend", type=float, default=float(PAPER_BASELINE["hll_uv_blend"]))
     ap.add_argument("--uv-m2-power", type=float, default=float(PAPER_BASELINE["hll_uv_m2_power"]))
+    ap.add_argument("--uv-match-kappa-diag", type=float, default=float(PAPER_BASELINE["hll_uv_match_kappa_diag"]))
+    ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(PAPER_BASELINE["hll_uv_match_kappa_offdiag"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(PAPER_BASELINE["hll_uv_rge_mu_low"]))
     ap.add_argument("--uv-rge-gamma-diag", type=float, default=float(PAPER_BASELINE["hll_uv_rge_gamma_diag"]))
     ap.add_argument("--uv-rge-gamma-offdiag", type=float, default=float(PAPER_BASELINE["hll_uv_rge_gamma_offdiag"]))
@@ -529,6 +538,8 @@ def main() -> None:
         observable_mode=observable_mode,
         uv_blend=float(args.uv_blend),
         uv_m2_power=float(args.uv_m2_power),
+        uv_match_kappa_diag=float(args.uv_match_kappa_diag),
+        uv_match_kappa_offdiag=float(args.uv_match_kappa_offdiag),
         uv_rge_mu_low=float(args.uv_rge_mu_low),
         uv_rge_gamma_diag=float(args.uv_rge_gamma_diag),
         uv_rge_gamma_offdiag=float(args.uv_rge_gamma_offdiag),
@@ -543,6 +554,8 @@ def main() -> None:
         observable_mode,
         f"| uv_blend={float(args.uv_blend):.3f}",
         f"| uv_m2_power={float(args.uv_m2_power):.3f}",
+        f"| finite_match(kappa_diag={float(args.uv_match_kappa_diag):.3f},",
+        f"kappa_offdiag={float(args.uv_match_kappa_offdiag):.3f})",
         f"| uv_rge(mu_low={float(args.uv_rge_mu_low):.3f},",
         f"gamma_diag={float(args.uv_rge_gamma_diag):.3f},",
         f"gamma_offdiag={float(args.uv_rge_gamma_offdiag):.3f})",
@@ -569,6 +582,8 @@ def main() -> None:
         "observable_mode": observable_mode,
         "uv_blend": float(args.uv_blend),
         "uv_m2_power": float(args.uv_m2_power),
+        "uv_match_kappa_diag": float(args.uv_match_kappa_diag),
+        "uv_match_kappa_offdiag": float(args.uv_match_kappa_offdiag),
         "uv_rge_mu_low": float(args.uv_rge_mu_low),
         "uv_rge_gamma_diag": float(args.uv_rge_gamma_diag),
         "uv_rge_gamma_offdiag": float(args.uv_rge_gamma_offdiag),

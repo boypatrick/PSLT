@@ -148,7 +148,7 @@ $\chi_N^{(LR)}(D)$ localized channel & Stabilized localized-direct full-scan gri
 $\Gamma_{N,\ell}$ channel normalization ($A_\ell$) & Action-derived $\tilde A_\ell(D)$ baseline with stabilized localized-direct \texttt{Dgrid60} profile support and legacy constant-$A_\ell$ comparator & Yes & Extend to fully localized channel-resolved direct extraction over $(D,\eta,N)$ \\
 Open-system $\chi_{\rm eff}$ (Lindblad) & Scan-ready diagnostic module with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}) & Diagnostic only (not baseline) & Derive microscopic EYMH bath $(L_k,\gamma_k)$ and then promote to baseline if robust \\
 $B_N$ visibility profile $B_N(D)$ from overlap-defined $y_N^{\rm eff}$ & Action-derived profile extraction + tracked microcanonical windowing & Yes & Upgrade to fully normalized EFT operator matching (Section~\ref{sec:yukawa_roadmap}) \\
-$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}] & EFT/Wilson-matched baseline + UV-tree/LL-RG audit map & Yes & Extend current UV-tree + LL-RG closure to full UV-to-EFT matching from EYMH action (operator basis + loop-level matching) \\
+$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}] & EFT/Wilson-matched baseline + UV-tree/finite-one-loop/LL-RG audit map & Yes & Extend current UV-tree + finite-one-loop + LL-RG closure to full UV-to-EFT matching from EYMH action (operator basis + loop-level matching) \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -634,7 +634,7 @@ $p_B$ & $0.28/0.30/0.32$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\D
 \end{tabular}
 \end{table}
 
-For the UV+LL-RG observable controls in the same baseline mode, we also scan one-at-a-time windows in $(\mu_{\rm low},\gamma_{\rm diag},\gamma_{\rm offdiag})$. As shown in Table~\ref{tab:hll_rge_sensitivity} (source CSV: \texttt{paper/hll\_rge\_sensitivity.csv}), $f(\chi^2_{\mu\mu}<4)$ remains fixed at $0.1500$ across all tested windows.
+For the UV+LL-RG observable controls in the same baseline mode, we also scan one-at-a-time windows in $(\mu_{\rm low},\gamma_{\rm diag},\gamma_{\rm offdiag},\kappa_{\rm diag},\kappa_{\rm offdiag})$. As shown in Table~\ref{tab:hll_rge_sensitivity} (source CSV: \texttt{paper/hll\_rge\_sensitivity.csv}), $f(\chi^2_{\mu\mu}<4)$ remains fixed at $0.1500$ across all tested windows.
 
 \begin{table}[t]
 \centering
@@ -648,6 +648,8 @@ parameter & window (low/base/high) & $f(\chi^2_{\mu\mu}<4)$ low/base/high & max 
 $\mu_{\rm low}$ & $0.5/1.0/2.0$ & $0.1500/0.1500/0.1500$ & $0$ \\
 $\gamma_{\rm diag}$ & $1.0/2.0/3.0$ & $0.1500/0.1500/0.1500$ & $0$ \\
 $\gamma_{\rm offdiag}$ & $0.5/1.0/1.5$ & $0.1500/0.1500/0.1500$ & $0$ \\
+$\kappa_{\rm diag}$ & $-1.0/0.0/1.0$ & $0.1500/0.1500/0.1500$ & $0$ \\
+$\kappa_{\rm offdiag}$ & $-1.0/0.0/1.0$ & $0.1500/0.1500/0.1500$ & $0$ \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -676,10 +678,26 @@ P_N^{\rm(kin)}(D,\eta)=\frac{\tilde q_N(D,\eta)}{\sum_{K=1}^{N_{\max}}\tilde q_K
 Y_{iN}(D,\eta)=\sqrt{y_N^{\rm eff,raw}(D)}\,\Pi_{iN}(\epsilon_{\rm mix}),
 \label{eq:flavor_projector}
 \end{equation}
+The bounded projector in Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:flavor_projector} is retained for matched-mode diagnostics; the baseline \texttt{eft\_wilson\_uv\_rge} maps use the UV-tree closure below.
 \begin{equation}
-C_{eH}^{ij}(D,\eta)=\sum_{N=1}^{3}Y_{iN}(D,\eta)\,P_N^{\rm(kin)}(D,\eta)\,Y_{jN}(D,\eta),
-\label{eq:wilson_matched}
+C_{eH}^{\rm tree,\,ij}(D,\eta)=\sum_{N=1}^{3}g_{iN}(D)\,
+\frac{P_N^{\rm(kin)}(D,\eta)}{M_N^2(D)}\,g_{jN}(D),
+\label{eq:wilson_tree_uv}
 \end{equation}
+\begin{equation}
+C_{eH}^{\rm match,\,ij}=
+\begin{cases}
+\left(1+\dfrac{\kappa_{\rm diag}}{16\pi^2}\right) C_{eH}^{\rm tree,\,ij}, & i=j,\\[4pt]
+\left(1+\dfrac{\kappa_{\rm offdiag}}{16\pi^2}\right) C_{eH}^{\rm tree,\,ij}, & i\neq j,
+\end{cases}
+\label{eq:ceh_finite_match}
+\end{equation}
+\begin{equation}
+C_{eH}^{\rm IR}=C_{eH}^{\rm match}+\frac{\ln(\mu_{\rm match}/\mu_{\rm low})}{16\pi^2}\,\gamma\!\odot C_{eH}^{\rm match},
+\label{eq:ceh_llrg}
+\end{equation}
+where $\gamma\!\odot C$ denotes blockwise application of $(\gamma_{\rm diag},\gamma_{\rm offdiag})$ to diagonal and off-diagonal matrix entries, respectively.
+In the baseline \texttt{eft\_wilson\_uv\_rge} mode used for figures, we evaluate observables with $C_{eH}\equiv C_{eH}^{\rm IR}$.
 \begin{equation}
 \frac{\Gamma_{\rm tot}(D,\eta)}{\Gamma_{\rm tot}(D_0,\eta_0)}
 =1+s_\Gamma\sum_{\ell=e,\mu,\tau}\mathrm{BR}_\ell^{\rm SM}
@@ -696,7 +714,7 @@ C_{eH}^{ij}(D,\eta)=\sum_{N=1}^{3}Y_{iN}(D,\eta)\,P_N^{\rm(kin)}(D,\eta)\,Y_{jN}
 \end{equation}
 In the baseline figures we keep a fixed reference point $(D_0,\eta_0)=(10,1)$ for comparability across scan variants.
 Equation~\eqref{eq:mu_pred} is implemented in \texttt{pslt\_lib.py} with \texttt{hll\_observable\_mode=eft\_wilson\_uv\_rge}; it is still a scan-level EFT module (not yet a full UV-to-EFT derivation from loop-level EYMH matching).
-To push this interface toward UV-to-EFT matching, we additionally run a reproducible UV-tree $\rightarrow$ LL-RG audit with \texttt{scan\_hll\_uv\_to\_eft\_matching.py}, exporting per-point $C_{eH}^{\mu\mu}(\mu_{\rm match})$, $C_{eH}^{\mu\mu}(\mu_{\rm low})$, and running metadata over the same $(D,\eta)$ grid (\texttt{paper/hll\_uv\_to\_eft\_map.csv}, \texttt{paper/hll\_uv\_to\_eft\_summary.csv}). In the baseline UV settings used here ($\texttt{uv\_blend}=0$, $\texttt{uv\_m2\_power}=1$), the map-level drift is bounded: $\langle |\Delta \mu_{\mu\mu}|\rangle \simeq 6.19\times10^{-4}$ with $\max |\Delta \mu_{\mu\mu}|\simeq 8.93\times10^{-3}$, while $f(\chi^2_{\mu\mu}<4)$ is unchanged between UV-tree and UV+LL-RG in this scan.
+To push this interface toward UV-to-EFT matching, we additionally run a reproducible UV-tree $\rightarrow$ finite-one-loop-match $\rightarrow$ LL-RG audit with \texttt{scan\_hll\_uv\_to\_eft\_matching.py}, exporting per-point $C_{eH}^{\mu\mu,{\rm tree}}(\mu_{\rm match})$, $C_{eH}^{\mu\mu,{\rm match}}(\mu_{\rm match})$, $C_{eH}^{\mu\mu,{\rm IR}}(\mu_{\rm low})$, and running metadata over the same $(D,\eta)$ grid (\texttt{paper/hll\_uv\_to\_eft\_map.csv}, \texttt{paper/hll\_uv\_to\_eft\_summary.csv}). In the baseline UV settings used here ($\texttt{uv\_blend}=0$, $\texttt{uv\_m2\_power}=1$, $\kappa_{\rm diag}=\kappa_{\rm offdiag}=0$), the finite-match step is numerically null at map level ($\max |\Delta C_{\mu\mu}^{\rm match}|=10^{-30}$), while LL-RG drift remains bounded: $\langle |\Delta \mu_{\mu\mu}|\rangle \simeq 6.19\times10^{-4}$ with $\max |\Delta \mu_{\mu\mu}|\simeq 8.93\times10^{-3}$; $f(\chi^2_{\mu\mu}<4)$ is unchanged between UV-tree and UV+LL-RG in this scan.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

@@ -1,0 +1,11 @@
+{
+  "kappa_env_calibrated": 236329.2612913031,
+  "ratio_anchor_target": 0.127530149580544,
+  "ratio_anchor_pred": 0.1294544273895904,
+  "ratio_anchor_abs_err": 0.0019242778090463875,
+  "D_ref": 12.0,
+  "kappa_src_micro_csv": 236329.2612913031,
+  "micro_source_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_micro_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
+  "target_source_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_geometry_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
+  "target_definition": "single-point anchor: ratio_proxy_to_baseline at D_ref from geometry profile"
+}

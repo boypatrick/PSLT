@@ -5,11 +5,11 @@ Build a map-level comparison snapshot for first-principles migration.
 Compared scenarios:
   1) baseline:        g_mode=fp_2d_full, chi_mode=localized_grid, b_mode=overlap_2d
   2) legacy reference g_mode=cardy, chi_mode=localized_grid, b_mode=overlap_2d
-  3) chi open-system: g_mode=fp_2d_full, chi_mode=open_system, b_mode=overlap_2d
+  3) chi open-system: g_mode=fp_2d_full, chi_mode=open_system_micro, b_mode=overlap_2d
 
 Inputs:
   - output/gn_fp_impact/gn_profile_impact.csv
-  - output/chi_open_system/chi_open_system_sensitivity.csv
+  - output/chi_open_system/chi_open_system_micro_sensitivity.csv
 
 Outputs:
   - output/first_principles_migration/first_principles_migration_summary.csv
@@ -36,7 +36,7 @@ OUTDIR = ROOT / "output" / "first_principles_migration"
 PAPER_DIR = ROOT / "paper"
 
 GN_CSV = ROOT / "output" / "gn_fp_impact" / "gn_profile_impact.csv"
-CHI_CSV = ROOT / "output" / "chi_open_system" / "chi_open_system_sensitivity.csv"
+CHI_CSV = ROOT / "output" / "chi_open_system" / "chi_open_system_micro_sensitivity.csv"
 
 
 def _pick_row(df: pd.DataFrame, case: str) -> pd.Series:
@@ -64,7 +64,7 @@ def build_summary() -> pd.DataFrame:
 
     base = _pick_row(gn_df, "baseline_fp_2d_full")
     legacy = _pick_row(gn_df, "legacy_cardy")
-    open_base = _pick_row(chi_df, "open_system_base")
+    open_base = _pick_row(chi_df, "open_micro_base")
 
     base_r3 = _to_float(base["f_R3_gt_0p90"])
     base_hmumu = _to_float(base["f_hmumu_chi2_le_4"])
@@ -106,9 +106,9 @@ def build_summary() -> pd.DataFrame:
             "chi_ratio_max": 1.0,
         },
         {
-            "scenario": "chi_open_system_base",
+            "scenario": "chi_open_system_micro_base",
             "g_mode": "fp_2d_full",
-            "chi_mode": "open_system",
+            "chi_mode": "open_system_micro",
             "b_mode": "overlap_2d",
             "f_R3_gt_0p90": _to_float(open_base["f_R3_gt_0p90"]),
             "delta_f_R3_gt_0p90_vs_baseline": _to_float(open_base["f_R3_gt_0p90"]) - base_r3,
@@ -130,7 +130,7 @@ def make_plot(df: pd.DataFrame, out_png: Path) -> None:
     labels = [
         "baseline\nfp_2d_full+action_grid+overlap",
         "legacy\ncardy+action_grid+overlap",
-        "chi open\nfp_2d_full+open+overlap",
+        "chi open\nfp_2d_full+open_micro+overlap",
     ]
     x = np.arange(len(labels))
     colors = ["#5b6770", "#1f77b4", "#d97706"]
@@ -168,7 +168,7 @@ def make_plot(df: pd.DataFrame, out_png: Path) -> None:
     drift = np.asarray(df["delta_f_R3_gt_0p90_vs_baseline"], dtype=float)
     fig.suptitle(
         "Map-Level Migration Snapshot: baseline vs first-principles switches\n"
-        f"R3 drift (absolute): legacy_cardy={drift[1]:+.4f}, open_system={drift[2]:+.4f}",
+        f"R3 drift (absolute): legacy_cardy={drift[1]:+.4f}, open_system_micro={drift[2]:+.4f}",
         fontsize=12.5,
     )
     fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.90])

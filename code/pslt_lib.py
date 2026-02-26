@@ -87,7 +87,7 @@ class PSLTParameters:
     gamma_eta_mode: str = "scan"  # "scan", "scaled_amp", "scaled_prob", "closed_amp", "closed_prob"
     gamma_eta_csv: Optional[str] = None
     chi: float = 0.2        # Rank-2 mixing parameter (dimensionless)
-    chi_mode: str = "constant"  # "constant", "localized_interp", "localized_grid", "localized_grid_strict", or "open_system"
+    chi_mode: str = "constant"  # "constant", "localized_interp", "localized_grid", "localized_grid_strict", "open_system", or "open_system_micro"
     chi_lr_D: Tuple[float, ...] = (6.0, 12.0, 18.0)  # knots for localized chi(D)
     chi_lr_vals: Tuple[float, ...] = (4.01827e-4, 2.21414e-4, 2.13187e-4)  # chi_LR at knots
     chi_open_csv: Optional[str] = None
@@ -140,7 +140,7 @@ class PSLTParameters:
     hll_uv_rge_log_clip: float = 6.0
 
     def __post_init__(self):
-        if self.chi_mode not in {"constant", "localized_interp", "localized_grid", "localized_grid_strict", "open_system"}:
+        if self.chi_mode not in {"constant", "localized_interp", "localized_grid", "localized_grid_strict", "open_system", "open_system_micro"}:
             raise ValueError(f"Unsupported chi_mode='{self.chi_mode}'.")
         if self.gamma_mode not in {"surrogate", "action_profile", "action_grid", "action_grid_strict"}:
             raise ValueError(f"Unsupported gamma_mode='{self.gamma_mode}'.")
@@ -158,7 +158,7 @@ class PSLTParameters:
         if self.chi_mode in {"localized_grid", "localized_grid_strict"}:
             if len(self.chi_lr_D) < 1 or len(self.chi_lr_D) != len(self.chi_lr_vals):
                 raise ValueError("chi_lr_D and chi_lr_vals must have equal length >=1 for localized_grid(_strict).")
-        if self.chi_mode == "open_system":
+        if self.chi_mode in {"open_system", "open_system_micro"}:
             if len(self.chi_open_D) > 0:
                 n = len(self.chi_open_D)
                 for arr_name, arr in {
@@ -853,7 +853,7 @@ class PSLTKinetics:
     def active_g_mode(self) -> str:
         return self._g_mode_active
 
-    def _load_chi_open_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+    def _load_chi_open_profile(self, path: Path, prefer_micro: bool = False) -> Optional[Dict[str, np.ndarray]]:
         if not path.exists():
             return None
         rows = self._load_csv_rows(path)
@@ -865,10 +865,16 @@ class PSLTKinetics:
             if row.get("D", "") in {"", None}:
                 continue
             dval = float(row["D"])
-            gphi = row.get("gamma_phi_geom", row.get("gamma_phi", ""))
-            gmix = row.get("gamma_mix_geom", row.get("gamma_mix", ""))
-            delt = row.get("delta", "")
-            gref = row.get("Gamma_ref", row.get("gamma_ref", ""))
+            if prefer_micro:
+                gphi = row.get("gamma_phi_micro", row.get("gamma_phi_geom", row.get("gamma_phi", "")))
+                gmix = row.get("gamma_mix_micro", row.get("gamma_mix_geom", row.get("gamma_mix", "")))
+                delt = row.get("delta_micro", row.get("delta", row.get("DeltaE", "")))
+                gref = row.get("gamma_ref_micro", row.get("Gamma_ref", row.get("gamma_ref", "")))
+            else:
+                gphi = row.get("gamma_phi_geom", row.get("gamma_phi", row.get("gamma_phi_micro", "")))
+                gmix = row.get("gamma_mix_geom", row.get("gamma_mix", row.get("gamma_mix_micro", "")))
+                delt = row.get("delta", row.get("delta_micro", row.get("DeltaE", "")))
+                gref = row.get("Gamma_ref", row.get("gamma_ref", row.get("gamma_ref_micro", "")))
             if gphi in {"", None} or gmix in {"", None} or delt in {"", None} or gref in {"", None}:
                 continue
             entries[dval] = (float(gphi), float(gmix), float(delt), float(gref))
@@ -907,12 +913,32 @@ class PSLTKinetics:
                 best_path = p
         return best_path
 
+    def _auto_find_chi_open_micro_csv(self) -> Optional[Path]:
+        base = self.root_dir / "output" / "chi_open_system"
+        if not base.exists():
+            return None
+        cands = sorted(base.glob("chi_open_system_micro_D*.csv"))
+        if not cands:
+            return None
+
+        best_path: Optional[Path] = None
+        best_count = -1
+        for p in cands:
+            try:
+                n = len(self._load_csv_rows(p))
+            except Exception:
+                continue
+            if n > best_count:
+                best_count = n
+                best_path = p
+        return best_path
+
     def _init_chi_profiles(self) -> None:
         mode = self.params.chi_mode
         self._chi_mode_active = mode
         self._chi_open_profile = None
 
-        if mode != "open_system":
+        if mode not in {"open_system", "open_system_micro"}:
             return
 
         if len(self.params.chi_open_D) > 0:
@@ -931,21 +957,27 @@ class PSLTKinetics:
         if self.params.chi_open_csv:
             path = Path(self.params.chi_open_csv)
         else:
-            path = self._auto_find_chi_open_csv()
+            if mode == "open_system_micro":
+                path = self._auto_find_chi_open_micro_csv()
+                if path is None:
+                    # Conservative fallback keeps the module usable even before micro CSV export.
+                    path = self._auto_find_chi_open_csv()
+            else:
+                path = self._auto_find_chi_open_csv()
         if path is not None:
-            self._chi_open_profile = self._load_chi_open_profile(path)
+            self._chi_open_profile = self._load_chi_open_profile(path, prefer_micro=(mode == "open_system_micro"))
             if self._chi_open_profile is None:
                 print(f"Warning: could not parse open-system chi profile from {path}.")
         else:
-            print("Warning: no chi_open_system profile file found for chi_mode=open_system.")
+            print(f"Warning: no chi_open_system profile file found for chi_mode={mode}.")
 
         if self._chi_open_profile is None:
             if len(self.params.chi_lr_D) >= 2 and len(self.params.chi_lr_D) == len(self.params.chi_lr_vals):
                 self._chi_mode_active = "localized_interp"
-                print("Warning: chi_mode=open_system requested but profile unavailable; falling back to localized_interp.")
+                print(f"Warning: chi_mode={mode} requested but profile unavailable; falling back to localized_interp.")
             else:
                 self._chi_mode_active = "constant"
-                print("Warning: chi_mode=open_system requested but profile unavailable; falling back to constant chi.")
+                print(f"Warning: chi_mode={mode} requested but profile unavailable; falling back to constant chi.")
 
     def active_chi_mode(self) -> str:
         return self._chi_mode_active
@@ -1773,8 +1805,9 @@ class PSLTKinetics:
           with interpolation fallback only if D is off-grid.
         - localized_grid_strict: action-derived grid lookup for chi_LR(D),
           with no interpolation fallback (raises if D is off-grid).
-        - open_system: profile-interpolated (delta, gamma_phi, gamma_mix, gamma_ref)
-          fed into two-level Lindblad dynamics, returning
+        - open_system / open_system_micro: profile-interpolated
+          (delta, gamma_phi, gamma_mix, gamma_ref) fed into
+          two-level Lindblad dynamics, returning
           chi_eff = 2*gamma_mix*Cmax/gamma_ref.
         """
         mode = self._chi_mode_active
@@ -1792,7 +1825,7 @@ class PSLTKinetics:
             strict = mode == "localized_grid_strict"
             return self._grid_scalar(D, d_knots, chi_knots, fallback_interp=not strict)
 
-        if mode == "open_system" and self._chi_open_profile is not None:
+        if mode in {"open_system", "open_system_micro"} and self._chi_open_profile is not None:
             key = float(round(D, 8))
             cached = self._chi_open_cache.get(key, None)
             if cached is not None:

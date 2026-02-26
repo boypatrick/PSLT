@@ -77,7 +77,7 @@ def make_kinetics() -> PSLTKinetics:
         b_n_power=0.30,
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
-        hll_observable_mode="eft_wilson_matched",
+        hll_observable_mode="eft_wilson_uv_rge",
         hll_observable_nmax=20,
     )
     return PSLTKinetics(params)
@@ -109,7 +109,7 @@ def evaluate_case(case: Case, kin: PSLTKinetics, amp_fn: Callable[[float], float
     mu_obs = 1.4
     sigma_obs = 0.4
     D0, eta0 = 10.0, 1.0
-    hll_mode = "eft_wilson_matched"
+    hll_mode = "eft_wilson_uv_rge"
     hll_nmax = 20
 
     def profile_of_D(D: float) -> float:

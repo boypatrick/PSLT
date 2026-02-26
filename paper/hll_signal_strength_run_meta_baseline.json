@@ -4,7 +4,7 @@
   "ref_eta": 1.0,
   "ref_source": "fixed_cli",
   "suffix": "",
-  "observable_mode": "eft_wilson_matched",
+  "observable_mode": "eft_wilson_uv_rge",
   "uv_blend": 0.0,
   "uv_m2_power": 1.0,
   "uv_rge_mu_low": 1.0,

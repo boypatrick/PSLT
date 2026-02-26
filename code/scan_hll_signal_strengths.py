@@ -6,7 +6,7 @@ Observable modes:
   - proxy_wratio:
       W_N(D,eta) = B_N * g_N(D) * (1 - exp(-Gamma_N(D,eta) * t_coh))
       mu_ll_pred = W_N / W_N_ref
-  - eft_wilson_matched (baseline):
+  - eft_wilson_uv_rge (baseline):
       C_{eH}^{ij}(D,eta) = sum_N Y_{iN}(D,eta) P_N^(kin)(D,eta) Y_{jN}(D,eta)
       mu_ll_pred = |C_ii/C_ii_ref|^2 / (Gamma_tot/Gamma_tot_ref)
   - eft_wilson_uv_tree:
@@ -89,7 +89,7 @@ PAPER_BASELINE = {
     "t_coh": 1.0,
     "ref_D": 10.0,
     "ref_eta": 1.0,
-    "hll_observable_mode": "eft_wilson_matched",
+    "hll_observable_mode": "eft_wilson_uv_rge",
     "hll_observable_nmax": 20,
     # UV-tree calibration knobs (used when --observable-mode eft_wilson_uv_tree)
     "hll_uv_blend": 0.00,
@@ -421,7 +421,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--ref-choice-json", type=str, default=str(DEFAULT_REF_CHOICE_JSON))
     ap.add_argument(
         "--observable-mode",
-        choices=["proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", "eft_wilson_uv_rge"],
+        choices=["proxy_wratio", "eft_wilson_diag", "eft_wilson_uv_rge", "eft_wilson_uv_tree", "eft_wilson_uv_rge"],
         default=str(PAPER_BASELINE["hll_observable_mode"]),
     )
     ap.add_argument("--uv-blend", type=float, default=float(PAPER_BASELINE["hll_uv_blend"]))

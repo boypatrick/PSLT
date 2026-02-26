@@ -48,7 +48,7 @@ BASELINE = {
     "gamma_mode": "action_grid",
     "p_B": 0.30,
     "b_mode": "overlap_2d",
-    "hll_observable_mode": "eft_wilson_matched",
+    "hll_observable_mode": "eft_wilson_uv_rge",
     "hll_observable_nmax": 20,
     "t_coh": 1.0,
     "mu_obs": 1.4,

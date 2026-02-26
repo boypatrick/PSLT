@@ -26,7 +26,7 @@ from pslt_lib import PSLTKinetics
 
 @dataclass(frozen=True)
 class HLLObservableConfig:
-    mode: str = "eft_wilson_matched"
+    mode: str = "eft_wilson_uv_rge"
     t_coh: float = 1.0
     ref_D: float = 10.0
     ref_eta: float = 1.0

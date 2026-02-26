@@ -77,7 +77,7 @@ class BaselineConfig:
     p_B: float = 0.30
     t_coh: float = 1.0
     n_max: int = 20
-    hll_observable_mode: str = "eft_wilson_matched"
+    hll_observable_mode: str = "eft_wilson_uv_rge"
     hll_observable_nmax: int = 20
     hmumu_ref_D: float = 10.0
     hmumu_ref_eta: float = 1.0

@@ -63,7 +63,7 @@ The old manual script-by-script sequence is still valid, but the reproducible en
 
 ## Key Results
 - **Three-Generation Stability:** In the current full-grid action-derived profile baseline, the theory gives Generation Ratio $\mathcal{R}_3>90\%$ over **92.7%** of the sampled $(D,\eta)$ grid, with $\mathcal{R}_3>95\%$ over **21.7%** of the same grid.
-- **H→μμ EFT/Wilson-Matched Compatibility:** The illustrative acceptance region ($\chi^2<4$) occupies about **16.1%** of the sampled grid, with best grid point near $(D,\eta)\approx(8.07,2.71)$ and $\chi^2\approx 6.39\times10^{-5}$.
+- **H→μμ EFT/Wilson-Matched Compatibility (UV+LL-RG baseline):** The illustrative acceptance region ($\chi^2<4$) occupies about **15.0%** of the sampled grid, with best grid point near $(D,\eta)\approx(4.00,0.264)$ and $\chi^2\approx 2.21\times10^{-5}$.
 - **Overlap Visibility + High-$N$ Stability:** Baseline visibility uses overlap-defined `b_mode=overlap_2d` profiles from `y_N^{eff}(D)` extraction (with tracked microcanonical windows), while baseline `g_mode=fp_2d_full` uses phase-space normalization (no Cardy anchor) plus bounded low-$N$ microcanonical windowing and controlled high-$N$ tail prescription.
 
 ## First-Principles Migration Status
@@ -93,3 +93,6 @@ The old manual script-by-script sequence is still valid, but the reproducible en
   - `output/hll_uv_matching/hll_uv_to_eft_map.csv`
   - `output/hll_uv_matching/hll_uv_to_eft_summary.csv`
   - `output/hll_uv_matching/hll_uv_to_eft_maps.png`
+- **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, and `gamma_offdiag`, exporting:
+  - `output/robustness/hll_rge_sensitivity_cases.csv`
+  - `output/robustness/hll_rge_sensitivity_table.csv`

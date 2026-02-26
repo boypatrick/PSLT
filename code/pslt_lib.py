@@ -110,7 +110,7 @@ class PSLTParameters:
     b_n_power: float = 0.30       # Sublinear compression: B_gen ∝ (y_gen)^{b_n_power}
     b_n_tail_mode: str = "saturate"  # "saturate" (paper baseline) or "gaussian"
     b_n_tail_beta: float = 0.50   # Used only when b_n_tail_mode == "gaussian"
-    hll_observable_mode: str = "eft_wilson_matched"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
+    hll_observable_mode: str = "eft_wilson_uv_rge"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
     hll_observable_nmax: int = 20
     hll_match_basis_mode: str = "sqrt_yraw"  # "sqrt_yraw" reproduces diagonal limit with mix_scale=0
     hll_match_mix_scale: float = 200.0
@@ -124,7 +124,7 @@ class PSLTParameters:
     hll_match_br_tautau: float = 6.3e-2
     hll_uv_m2_floor: float = 1e-10
     hll_uv_coupling_floor: float = 1e-30
-    hll_uv_blend: float = 1.0
+    hll_uv_blend: float = 0.0
     hll_uv_m2_power: float = 1.0
     hll_uv_rge_mu_low: float = 1.0
     hll_uv_rge_gamma_diag: float = 2.0

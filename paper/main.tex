@@ -40,7 +40,7 @@ The theoretical closure is achieved by unifying three key modules:
 (iii) a \textbf{Visibility module} ($B_N$) implemented from overlap-defined $y_N^{\rm eff}(D)$ profiles extracted by the same 2D localized operator chain, with branch tracking and microcanonical window averaging for mode-switch control, and high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator.
 The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates a stable ``winner'' phase diagram with clear dominance of layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
 We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid), and (2) a scan-level EFT/Wilson-matched compatibility test with the ATLAS Run-3 $H\to\mu\mu$ signal strength ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
-The EFT/Wilson-matched mapping yields a restricted acceptance band (about $16.1\%$ of the scanned grid for $\chi^2<4$), providing a sharper falsifiable constraint on $(D,\eta)$.
+In the current UV+LL-RG baseline mode (\texttt{hll\_observable\_mode=eft\_wilson\_uv\_rge}), the illustrative acceptance band is about $15.0\%$ of the scanned grid for $\chi^2<4$, providing a sharper falsifiable constraint on $(D,\eta)$.
 \end{abstract}
 
 \maketitle
@@ -616,7 +616,7 @@ $(11.0,1.4)$ & $2/2$ & $2.51\times10^{-4}$ & $3.06\times10^{-4}$ & $0$ & $2.85\t
 \end{tabular}
 \end{table}
 
-To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map and full-grid action-derived $\chi_{LR}(D)$/$\tilde A_\ell(D)$ profiles). Results are summarized in Table~\ref{tab:core_param_robustness} from \texttt{paper/core\_param\_robustness.csv}. Across this local window, the key fractions remain unchanged: $f(\mathcal{R}_3>0.90)=0.9269$, $f(\chi_{\mu\mu}^2<4)=0.1614$, and $f(N_{\rm win}>3)\approx2.78\times10^{-4}$.
+To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map and full-grid action-derived $\chi_{LR}(D)$/$\tilde A_\ell(D)$ profiles). Results are summarized in Table~\ref{tab:core_param_robustness} from \texttt{paper/core\_param\_robustness.csv}. Across this local window, the key fractions remain unchanged: $f(\mathcal{R}_3>0.90)=0.9269$, $f(\chi_{\mu\mu}^2<4)=0.1500$, and $f(N_{\rm win}>3)\approx2.78\times10^{-4}$.
 
 \begin{table}[t]
 \centering
@@ -627,17 +627,35 @@ To propagate finite-$N$ surrogate uncertainty into map-level systematics, we als
 \hline\hline
 Parameter & Window (low/base/high) & $f(\mathcal{R}_3>0.90)$ low/base/high & $f(\chi^2_{\mu\mu}<4)$ low/base/high & Max abs drift \\
 \hline
-$c_{\rm eff}$ & $0.45/0.50/0.55$ & $0.9269/0.9269/0.9269$ & $0.1614/0.1614/0.1614$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
-$\nu$ & $4.80/5.00/5.20$ & $0.9269/0.9269/0.9269$ & $0.1614/0.1614/0.1614$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
-$p_B$ & $0.28/0.30/0.32$ & $0.9269/0.9269/0.9269$ & $0.1614/0.1614/0.1614$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$c_{\rm eff}$ & $0.45/0.50/0.55$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$\nu$ & $4.80/5.00/5.20$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$p_B$ & $0.28/0.30/0.32$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
 \hline\hline
 \end{tabular}
 \end{table}
 
-\subsection{H to mumu Signal Strength (EFT/Wilson-Matched Mapping)}
+For the UV+LL-RG observable controls in the same baseline mode, we also scan one-at-a-time windows in $(\mu_{\rm low},\gamma_{\rm diag},\gamma_{\rm offdiag})$. As shown in Table~\ref{tab:hll_rge_sensitivity} (source CSV: \texttt{paper/hll\_rge\_sensitivity.csv}), $f(\chi^2_{\mu\mu}<4)$ remains fixed at $0.1500$ across all tested windows.
+
+\begin{table}[t]
+\centering
+\caption{One-at-a-time robustness scan for UV+LL-RG observable controls. Source CSV: \texttt{paper/hll\_rge\_sensitivity.csv}.}
+\label{tab:hll_rge_sensitivity}
+\small
+\begin{tabular}{lccc}
+\hline\hline
+parameter & window (low/base/high) & $f(\chi^2_{\mu\mu}<4)$ low/base/high & max abs drift \\
+\hline
+$\mu_{\rm low}$ & $0.5/1.0/2.0$ & $0.1500/0.1500/0.1500$ & $0$ \\
+$\gamma_{\rm diag}$ & $1.0/2.0/3.0$ & $0.1500/0.1500/0.1500$ & $0$ \\
+$\gamma_{\rm offdiag}$ & $0.5/1.0/1.5$ & $0.1500/0.1500/0.1500$ & $0$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+\subsection{H to mumu Signal Strength (EFT/Wilson-Matched Mapping, UV+LL-RG Baseline)}
 We confront the theory with the ATLAS Run-3 $H\to\mu\mu$ signal strength, $\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$ (combined uncertainty)~\cite{ATLAS_Hmumu}.
 
-Within the PSLT closure, we construct a scan-level EFT/Wilson-matched map by combining kinetic occupancy with overlap-extracted raw couplings:
+Within the PSLT closure, we construct a scan-level EFT/Wilson-matched map (evaluated in baseline \texttt{eft\_wilson\_uv\_rge} mode) by combining kinetic occupancy with overlap-extracted raw couplings:
 \begin{equation}
 \tilde q_N(D,\eta)=g_N(D)\left(1-\ee^{-\Gamma_N(D,\eta)t_{\rm coh}}\right),\qquad
 P_N^{\rm(kin)}(D,\eta)=\frac{\tilde q_N(D,\eta)}{\sum_{K=1}^{N_{\max}}\tilde q_K(D,\eta)}.
@@ -677,7 +695,7 @@ C_{eH}^{ij}(D,\eta)=\sum_{N=1}^{3}Y_{iN}(D,\eta)\,P_N^{\rm(kin)}(D,\eta)\,Y_{jN}
 \label{eq:mu_pred}
 \end{equation}
 In the baseline figures we keep a fixed reference point $(D_0,\eta_0)=(10,1)$ for comparability across scan variants.
-Equation~\eqref{eq:mu_pred} is implemented in \texttt{pslt\_lib.py} with \texttt{hll\_observable\_mode=eft\_wilson\_matched}; it is still a scan-level EFT module (not yet a full UV-to-EFT derivation from loop-level EYMH matching).
+Equation~\eqref{eq:mu_pred} is implemented in \texttt{pslt\_lib.py} with \texttt{hll\_observable\_mode=eft\_wilson\_uv\_rge}; it is still a scan-level EFT module (not yet a full UV-to-EFT derivation from loop-level EYMH matching).
 To push this interface toward UV-to-EFT matching, we additionally run a reproducible UV-tree $\rightarrow$ LL-RG audit with \texttt{scan\_hll\_uv\_to\_eft\_matching.py}, exporting per-point $C_{eH}^{\mu\mu}(\mu_{\rm match})$, $C_{eH}^{\mu\mu}(\mu_{\rm low})$, and running metadata over the same $(D,\eta)$ grid (\texttt{paper/hll\_uv\_to\_eft\_map.csv}, \texttt{paper/hll\_uv\_to\_eft\_summary.csv}). In the baseline UV settings used here ($\texttt{uv\_blend}=0$, $\texttt{uv\_m2\_power}=1$), the map-level drift is bounded: $\langle |\Delta \mu_{\mu\mu}|\rangle \simeq 6.19\times10^{-4}$ with $\max |\Delta \mu_{\mu\mu}|\simeq 8.93\times10^{-3}$, while $f(\chi^2_{\mu\mu}<4)$ is unchanged between UV-tree and UV+LL-RG in this scan.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
@@ -693,7 +711,7 @@ To push this interface toward UV-to-EFT matching, we additionally run a reproduc
 \mathcal{A}\equiv\{(D,\eta)\in\mathcal{G}\,|\,\chi^2\le 4\},
 \label{eq:anchor_robust_center}
 \end{equation}
-where $\mathcal{G}$ is the scan grid and $d_{\partial\mathcal{A}}$ is the Euclidean distance to the acceptance-boundary complement on that grid. We use $\mathcal{R}_3$ (higher first) and then $\chi^2$ (lower first) as tie-breakers for Eq.~\eqref{eq:anchor_robust_center}. A full reference-anchor sensitivity audit is reported in Appendix~\ref{app:ref_anchor}: over the tested anchor grid, $f(\chi^2_{\mu\mu}<4)$ spans $[0.0231,\,0.2339]$, while the baseline fixed anchor gives $0.1614$, the dynamic $\chi^2$-best anchor gives $0.1028$, and the robust-center anchor gives $0.1189$.
+where $\mathcal{G}$ is the scan grid and $d_{\partial\mathcal{A}}$ is the Euclidean distance to the acceptance-boundary complement on that grid. We use $\mathcal{R}_3$ (higher first) and then $\chi^2$ (lower first) as tie-breakers for Eq.~\eqref{eq:anchor_robust_center}. A full reference-anchor sensitivity audit is reported in Appendix~\ref{app:ref_anchor}: over the tested anchor grid, $f(\chi^2_{\mu\mu}<4)$ spans $[0.0333,\,0.2411]$, while the baseline fixed anchor gives $0.1500$, the dynamic $\chi^2$-best anchor gives $0.1333$, and the robust-center anchor gives $0.1381$.
 \begin{equation}
 \chi^2(D,\eta) = \frac{\left(\mu_{\mu\mu}^{\rm pred} - \mu_{\mu\mu}^{\rm obs}\right)^2}{\sigma_{\mu\mu}^2},
 \label{eq:chi2_hmumu}
@@ -711,15 +729,15 @@ Figure~\ref{fig:hmumu} shows the \textbf{EFT/Wilson-matched acceptance region} i
 \end{equation}
 We use this threshold only as an \emph{illustrative acceptance band} for map-level comparison and do not claim a formal 95\% CL exclusion. Because the $(D,\eta)$ scan is a multiple-comparison procedure (look-elsewhere) and no global trials correction is applied, this band is interpreted only as a falsifiable target region. In the present full-grid action-derived profile scan, the accepted fraction is
 \begin{equation}
-f(\chi^2<4)=f\!\left(p_{\rm local}>4.55\times10^{-2}\right)=0.1614,
+f(\chi^2<4)=f\!\left(p_{\rm local}>4.55\times10^{-2}\right)=0.1500,
 \end{equation}
-with best grid point $\chi^2\simeq 6.39\times10^{-5}$ at $(D,\eta)\approx(8.07,2.71)$. All phase-diagram claims are quoted only after satisfying the quantitative convergence criteria in Appendix~\ref{app:Veff}.
+with best grid point $\chi^2\simeq 2.21\times10^{-5}$ at $(D,\eta)\approx(4.00,0.264)$. All phase-diagram claims are quoted only after satisfying the quantitative convergence criteria in Appendix~\ref{app:Veff}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.48\linewidth]{hmumu_exclusion.png}
     \includegraphics[width=0.48\linewidth]{hmumu_signal_strength.png}
-    \caption{Compatibility with $H\to\mu\mu$ under the EFT/Wilson-matched map. Left: $\chi^2$ map showing a restricted illustrative accepted band ($\chi^2<4$, equivalently $p_{\rm local}>4.55\times10^{-2}$ for dof$=1$). Right: predicted $\mu_{\mu\mu}^{\rm pred}$.}
+    \caption{Compatibility with $H\to\mu\mu$ under the EFT/Wilson-matched UV+LL-RG map. Left: $\chi^2$ map showing a restricted illustrative accepted band ($\chi^2<4$, equivalently $p_{\rm local}>4.55\times10^{-2}$ for dof$=1$). Right: predicted $\mu_{\mu\mu}^{\rm pred}$.}
     \label{fig:hmumu}
 \end{figure}
 
@@ -747,7 +765,7 @@ We have presented a computable EFT-level demonstrator of the Projection Spectral
 \begin{enumerate}
     \item \textbf{Generations are spectral}: The ``three generation'' structure is not an input but a dynamical output of competing entropy ($g_N$), kinetics ($\Gamma_N$), and visibility ($B_N$).
     \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated by the \texttt{fp\_2d\_full} microcanonical-window + tail prescription and the observable sector uses overlap-defined visibility profiles $B_N(D)$ with explicit high-$N$ saturation.
-    \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With full-grid action-derived $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ profiles, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $16.1\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
+    \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With full-grid action-derived $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ profiles, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $15.0\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
 \end{enumerate}
 At the same time, the present implementation keeps two EFT-level approximations explicit: map-level profile closure in the $g_N(D)$ sector and a bounded nearest-neighbor flavor projector in the matched $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}.
 
@@ -1252,10 +1270,10 @@ $D$ & $\lambda_1$ & $\lambda_2$ & $\lambda_3$ & $\hat g_1$ & $\hat g_2$ \\
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & mean tail prob. \\
 \hline
-baseline fp\_2d\_full & 0.927 & 0.1614 & 0.0003 & 0.1267 \\
-legacy Cardy reference & 0.877 & 0.1592 & 0.0003 & 0.1125 \\
-$g_N$ fp\_1d profile & 0.860 & 0.1597 & 0.0003 & 0.1137 \\
-$g_N$ fp\_2d profile & 0.860 & 0.1597 & 0.0003 & 0.1144 \\
+baseline fp\_2d\_full & 0.927 & 0.1500 & 0.0003 & 0.1267 \\
+legacy Cardy reference & 0.877 & 0.1486 & 0.0003 & 0.1125 \\
+$g_N$ fp\_1d profile & 0.860 & 0.1486 & 0.0003 & 0.1137 \\
+$g_N$ fp\_2d profile & 0.860 & 0.1492 & 0.0003 & 0.1144 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1269,12 +1287,12 @@ $g_N$ fp\_2d profile & 0.860 & 0.1597 & 0.0003 & 0.1144 \\
 \hline\hline
 case & $N_{\max}$ & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & mean tail prob. \\
 \hline
-baseline fp\_2d\_full & 20 & 0.927 & 0.1614 & 0.0003 & 0.126709 \\
-baseline fp\_2d\_full & 30 & 0.927 & 0.1614 & 0.0003 & 0.126709 \\
-baseline fp\_2d\_full & 40 & 0.927 & 0.1614 & 0.0003 & 0.126709 \\
-$g_N$ fp\_2d profile & 20 & 0.860 & 0.1597 & 0.0003 & 0.114352 \\
-$g_N$ fp\_2d profile & 30 & 0.860 & 0.1597 & 0.0003 & 0.114352 \\
-$g_N$ fp\_2d profile & 40 & 0.860 & 0.1597 & 0.0003 & 0.114352 \\
+baseline fp\_2d\_full & 20 & 0.927 & 0.1500 & 0.0003 & 0.126709 \\
+baseline fp\_2d\_full & 30 & 0.927 & 0.1500 & 0.0003 & 0.126709 \\
+baseline fp\_2d\_full & 40 & 0.927 & 0.1500 & 0.0003 & 0.126709 \\
+$g_N$ fp\_2d profile & 20 & 0.860 & 0.1492 & 0.0003 & 0.114352 \\
+$g_N$ fp\_2d profile & 30 & 0.860 & 0.1492 & 0.0003 & 0.114352 \\
+$g_N$ fp\_2d profile & 40 & 0.860 & 0.1492 & 0.0003 & 0.114352 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1298,7 +1316,7 @@ For $N>3$,
 \hat g_N^{\rm(target)}=\left(\frac{\Delta N_{\rm ps}^{(N)}}{\Delta N_{\rm ps}^{(3)}}\right)^{s}
 \exp\!\left[-\beta\frac{\lambda_N-\lambda_3}{\lambda_3-\lambda_2}\right],
 \end{equation}
-followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present baseline run, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement} (source CSV: \texttt{paper/gn\_baseline\_replacement.csv}). Relative to baseline \texttt{fp\_2d\_full}, the legacy Cardy reference lowers $f(\mathcal{R}_3>0.90)$ by $0.0500$ (from $0.9269$ to $0.8769$), lowers $f(\chi^2_{\mu\mu}<4)$ by $0.0022$ (from $0.1614$ to $0.1592$), and keeps $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$. Therefore, the map-level main conclusion is retained under this baseline switch.
+followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present baseline run, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement} (source CSV: \texttt{paper/gn\_baseline\_replacement.csv}). Relative to baseline \texttt{fp\_2d\_full}, the legacy Cardy reference lowers $f(\mathcal{R}_3>0.90)$ by $0.0500$ (from $0.9269$ to $0.8769$), lowers $f(\chi^2_{\mu\mu}<4)$ by $0.0014$ (from $0.1500$ to $0.1486$), and keeps $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$. Therefore, the map-level main conclusion is retained under this baseline switch.
 
 \begin{table}[t]
 \centering
@@ -1309,8 +1327,8 @@ followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.p
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & $\Delta f(\mathcal{R}_3>0.90)$ vs baseline \\
 \hline
-baseline fp\_2d\_full & 0.9269 & 0.1614 & 0.0003 & 0.0000 \\
-legacy Cardy reference & 0.8769 & 0.1592 & 0.0003 & -0.0500 \\
+baseline fp\_2d\_full & 0.9269 & 0.1500 & 0.0003 & 0.0000 \\
+legacy Cardy reference & 0.8769 & 0.1486 & 0.0003 & -0.0500 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1373,7 +1391,7 @@ $\phi\times2$, mix$\times0.5$ & 0.032 & 0.068 & 0.046 \\
 \end{tabular}
 \end{table}
 
-Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.932$, $f(\mathcal{R}_3>0.95)=0.217$, $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$), while the $H\to\mu\mu$ acceptance fraction shifts within a controlled band $f(\chi^2_{\mu\mu}<4)\in[0.1500,\,0.1558]$ around the localized reference. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
+Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.932$, $f(\mathcal{R}_3>0.95)=0.217$, $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$), while the $H\to\mu\mu$ acceptance fraction remains fixed at $f(\chi^2_{\mu\mu}<4)=0.1500$ in this setup. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
 
 \subsection{Cross-Module Migration Snapshot}
 To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three scenarios: baseline (\texttt{fp\_2d\_full + localized\_grid}), legacy reference (\texttt{cardy + localized\_grid}), and open-system $\chi$ (\texttt{fp\_2d\_full + open\_system}). The reproducible script is \texttt{scan\_first\_principles\_migration\_summary.py}; outputs are \texttt{paper/first\_principles\_migration\_summary.csv} and Fig.~\ref{fig:first_principles_migration}.
@@ -1394,8 +1412,8 @@ To compare the two main migration directions on the same map-level metrics under
 \hline\hline
 scenario & $f(\mathcal{R}_3>0.90)$ & $\Delta f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ \\
 \hline
-baseline (\texttt{fp\_2d\_full + localized\_grid}) & 0.927 & 0.0000 & 0.1614 & 0.0003 \\
-legacy reference (\texttt{cardy + localized\_grid}) & 0.877 & -0.0500 & 0.1592 & 0.0003 \\
+baseline (\texttt{fp\_2d\_full + localized\_grid}) & 0.927 & 0.0000 & 0.1500 & 0.0003 \\
+legacy reference (\texttt{cardy + localized\_grid}) & 0.877 & -0.0500 & 0.1486 & 0.0003 \\
 $\chi$ migration (\texttt{fp\_2d\_full + open\_system}) & 0.927 & 0.0000 & 0.1500 & 0.0003 \\
 \hline\hline
 \end{tabular}
@@ -1420,9 +1438,9 @@ Table~\ref{tab:ref_anchor_candidates} summarizes the selector outputs, and Fig.~
 \hline\hline
 mode & $(D_0,\eta_0)$ & $\chi^2$ at selector point & $f(\chi^2_{\mu\mu}<4)$ (re-anchored) & best $\chi^2$ (re-anchored) \\
 \hline
-fixed-grid & $(9.97,\ 0.97)$ & $8.32\times10^{-1}$ & $0.1611$ & $3.06\times10^{-6}$ \\
-$\chi^2$-best & $(8.07,\ 2.71)$ & $6.39\times10^{-5}$ & $0.1028$ & $7.47\times10^{-6}$ \\
-robust-center & $(8.61,\ 3.29)$ & $8.55\times10^{-1}$ & $0.1189$ & $1.67\times10^{-5}$ \\
+fixed-grid & $(9.97,\ 0.97)$ & $8.83\times10^{-1}$ & $0.1500$ & $1.18\times10^{-3}$ \\
+$\chi^2$-best & $(4.00,\ 0.264)$ & $2.21\times10^{-5}$ & $0.1333$ & $1.90\times10^{-1}$ \\
+robust-center & $(9.42,\ 3.87)$ & $1.39\times10^{-3}$ & $0.1381$ & $4.74\times10^{-3}$ \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -1430,16 +1448,16 @@ robust-center & $(8.61,\ 3.29)$ & $8.55\times10^{-1}$ & $0.1189$ & $1.67\times10
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{reference_anchor_sensitivity.png}
-    \caption{Systematic sensitivity over reference anchors $(D_0,\eta_0)$ under the EFT/Wilson-matched map. Left: $f(\chi^2_{\mu\mu}<4)$; right: best $\chi^2$. Overlaid markers indicate baseline fixed, $\chi^2$-best, and robust-center selectors. Source files: \texttt{paper/reference\_anchor\_sensitivity.csv}, \texttt{paper/reference\_anchor\_sensitivity.png}.}
+    \caption{Systematic sensitivity over reference anchors $(D_0,\eta_0)$ under the EFT/Wilson-matched UV+LL-RG map. Left: $f(\chi^2_{\mu\mu}<4)$; right: best $\chi^2$. Overlaid markers indicate baseline fixed, $\chi^2$-best, and robust-center selectors. Source files: \texttt{paper/reference\_anchor\_sensitivity.csv}, \texttt{paper/reference\_anchor\_sensitivity.png}.}
     \label{fig:ref_anchor_sensitivity}
 \end{figure}
 
 Across the tested reference-anchor grid $D_0\in\{7,\dots,13\}$ and $\eta_0\in\{0.6,0.9,\dots,2.4\}$, we find
 \begin{equation}
-f(\chi^2_{\mu\mu}<4)\in[0.0231,\,0.2339],\qquad
-\chi^2_{\min}\in[2.28\times10^{-9},\,4.36\times10^{-2}].
+f(\chi^2_{\mu\mu}<4)\in[0.0333,\,0.2411],\qquad
+\chi^2_{\min}\in[1.52\times10^{-5},\,7.47\times10^{-1}].
 \end{equation}
-The baseline fixed-anchor value used in main figures is $f(\chi^2_{\mu\mu}<4)=0.1614$.
+The baseline fixed-anchor value used in main figures is $f(\chi^2_{\mu\mu}<4)=0.1500$.
 For reporting discipline, we keep this fixed anchor in headline plots and treat dynamic-anchor outputs as sensitivity diagnostics rather than post-hoc optimization.
 
 \subsection{Dephasing-Based First-Principles Candidate for \texorpdfstring{$t_{\rm coh}$}{tcoh}}

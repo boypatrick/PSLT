@@ -25,8 +25,8 @@ Chain profile selection:
                               build/rebuild active D-grid localized-direct
                               profiles at runtime, then run strict full_direct.
   - --chain-mode cell_direct_runtime:
-                              no profile object; evaluate chi_LR(D) and A_l(D)
-                              by direct solvers inside scan cells.
+                              no profile object; evaluate g_N(D), chi_LR(D),
+                              and A_l(D) by direct solvers inside scan cells.
 """
 
 from __future__ import annotations
@@ -143,10 +143,12 @@ def make_baseline_kinetics(
     d_scan = scan_d_values(d_min, d_max, d_num)
     chain_mode_eff = str(chain_mode).strip().lower()
     selection_mode = "full_direct" if chain_mode_eff in {"full_direct", "full_direct_runtime"} else "auto"
+    g_mode = str(BASELINE["g_mode"])
     chi_prof = None
     superrad_prof = None
     chi_mode = "localized_grid"
     gamma_mode = "action_grid"
+    g_source = "gn_profile_csv"
     chi_source = "runtime_cell_solver"
     gamma_source = "runtime_cell_solver"
 
@@ -172,8 +174,10 @@ def make_baseline_kinetics(
         chi_source = str(chi_prof["path"])
         gamma_source = str(superrad_prof["path"])
     elif chain_mode_eff == "cell_direct_runtime":
+        g_mode = "fp_2d_full_runtime_direct"
         chi_mode = "localized_runtime_direct"
         gamma_mode = "action_runtime_direct"
+        g_source = "runtime_cell_solver"
     else:
         chi_prof = select_chi_profile(ROOT, d_scan, selection_mode=selection_mode)
         superrad_prof = select_superrad_profile(ROOT, d_scan, selection_mode=selection_mode)
@@ -186,13 +190,19 @@ def make_baseline_kinetics(
         c_eff=BASELINE["c_eff"],
         nu=BASELINE["nu"],
         kappa_g=BASELINE["kappa_g"],
-        g_mode=BASELINE["g_mode"],
+        g_mode=g_mode,
         g_fp_norm_mode=BASELINE["g_fp_norm_mode"],
         g_fp_full_window_blend=BASELINE["g_fp_full_window_blend"],
         g_fp_full_tail_beta=BASELINE["g_fp_full_tail_beta"],
         g_fp_full_tail_shell_power=BASELINE["g_fp_full_tail_shell_power"],
         g_fp_full_tail_clip_min=BASELINE["g_fp_full_tail_clip_min"],
         g_fp_full_tail_clip_max=BASELINE["g_fp_full_tail_clip_max"],
+        runtime_direct_g_rho_max=float(runtime_direct_chi_rho_max),
+        runtime_direct_g_z_margin=float(runtime_direct_chi_z_margin),
+        runtime_direct_g_n_eigs=40,
+        runtime_direct_g_tol=float(runtime_direct_chi_tol),
+        runtime_direct_g_maxiter=int(runtime_direct_chi_maxiter),
+        runtime_direct_g_sigma=float(runtime_direct_chi_sigma),
         chi=BASELINE["chi_legacy"],
         chi_mode=str(chi_mode),
         chi_lr_D=tuple(float(x) for x in (np.asarray(chi_prof["d"], dtype=float) if chi_prof is not None else np.array([6.0, 12.0, 18.0], dtype=float))),
@@ -232,6 +242,8 @@ def make_baseline_kinetics(
         "[baseline]",
         f"chain_mode={chain_mode_eff},",
         f"selection_mode={selection_mode},",
+        f"g_mode={params.g_mode},",
+        f"g_source={g_source},",
         f"chi_mode={params.chi_mode},",
         f"chi_source={chi_source},",
         f"gamma_mode={params.gamma_mode},",

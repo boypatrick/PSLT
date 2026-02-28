@@ -64,7 +64,7 @@ def make_kinetics(d_knots: np.ndarray, chi_knots: np.ndarray, scale: float) -> P
         A1=1.0,
         A2=1.0,
         gamma_mode="action_profile",
-        b_mode="overlap_2d",
+        b_mode="eft_operator_norm",
         b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=0.30,
         b_n_mode="cumulative",

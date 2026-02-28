@@ -109,7 +109,7 @@ def make_kinetics(d_profile: np.ndarray, chi_profile: np.ndarray) -> PSLTKinetic
         A1=BASELINE["A1"],
         A2=BASELINE["A2"],
         gamma_mode=BASELINE["gamma_mode"],
-        b_mode="overlap_2d",
+        b_mode="eft_operator_norm",
         b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=BASELINE["p_B"],
         b_n_mode="cumulative",

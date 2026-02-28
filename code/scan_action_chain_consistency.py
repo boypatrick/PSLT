@@ -77,7 +77,7 @@ def make_kinetics(case: Case, chi_profile: Dict[str, object], superrad_profile: 
         gamma_eta_mode=case.gamma_eta_mode,
         t_coh_mode=case.t_coh_mode,
         t_coh_cap=1.0e4,
-        b_mode="overlap_2d",
+        b_mode="eft_operator_norm",
         b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=0.30,
         b_n_mode="cumulative",

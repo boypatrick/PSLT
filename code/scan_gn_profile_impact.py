@@ -71,7 +71,7 @@ def make_kinetics(g_mode: str) -> PSLTKinetics:
         A2=1.0,
         gamma_mode=str(superrad_profile["mode"]),
         gamma_superrad_csv=str(superrad_profile["path"]),
-        b_mode="overlap_2d",
+        b_mode="eft_operator_norm",
         b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=0.30,
         b_n_mode="cumulative",

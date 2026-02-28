@@ -127,7 +127,7 @@ class PSLTParameters:
     eps: float = 0.2        # Core regulator length [Length] ~ 1/[Mass] (scaled)
     
     # Visibility Scaling (Yukawa-proportional with compressed hierarchy)
-    b_mode: str = "yukawa"  # "yukawa" or "overlap_2d"
+    b_mode: str = "yukawa"  # "yukawa", "overlap_2d", or "eft_operator_norm"
     b_overlap_csv: Optional[str] = None
     b_overlap_floor: float = 1e-8
     b_n_mode: str = "cumulative"  # "cumulative" or "single" over lepton Yukawas
@@ -243,7 +243,7 @@ class PSLTParameters:
             raise ValueError("runtime_direct_g_dr must be > 0.")
         if self.runtime_direct_g_dz <= 0.0:
             raise ValueError("runtime_direct_g_dz must be > 0.")
-        if self.b_mode not in {"yukawa", "overlap_2d"}:
+        if self.b_mode not in {"yukawa", "overlap_2d", "eft_operator_norm"}:
             raise ValueError(f"Unsupported b_mode='{self.b_mode}'.")
         if self.b_overlap_floor <= 0:
             raise ValueError("b_overlap_floor must be > 0.")
@@ -394,6 +394,7 @@ class PSLTKinetics:
         self._tcoh_profile: Optional[Dict[str, np.ndarray]] = None
         self._b_mode_active: str = "yukawa"
         self._b_overlap_profile: Optional[Dict[str, np.ndarray]] = None
+        self._b_eft_norm_cache: Dict[float, np.ndarray] = {}
         
         # Initialize Visibility Factors (Gen 1-3 from Yukawa, N>3 decouples)
         try:
@@ -967,8 +968,9 @@ class PSLTKinetics:
         mode = self.params.b_mode
         self._b_mode_active = "yukawa"
         self._b_overlap_profile = None
+        self._b_eft_norm_cache.clear()
 
-        if mode != "overlap_2d":
+        if mode not in {"overlap_2d", "eft_operator_norm"}:
             return
 
         if self.params.b_overlap_csv:
@@ -986,7 +988,7 @@ class PSLTKinetics:
             return
 
         self._b_overlap_profile = prof
-        self._b_mode_active = "overlap_2d"
+        self._b_mode_active = str(mode)
 
     def active_b_mode(self) -> str:
         return self._b_mode_active
@@ -1593,6 +1595,13 @@ class PSLTKinetics:
 
     # --- Visibility ---
     def B_N(self, N: int, D: Optional[float] = None) -> float:
+        if self._b_mode_active == "eft_operator_norm" and self._b_overlap_profile is not None and N <= 3:
+            d_knots = self._b_overlap_profile["D"]
+            d_eval = float(np.mean(d_knots)) if D is None else float(D)
+            b_eft = self._b_eft_norm_vector(d_eval)
+            if b_eft is not None:
+                return float(max(b_eft[N - 1], self.params.b_overlap_floor))
+
         # Overlap-derived visibility profile for N=1,2,3.
         if self._b_mode_active == "overlap_2d" and self._b_overlap_profile is not None and N <= 3:
             prof = self._b_overlap_profile
@@ -1613,6 +1622,40 @@ class PSLTKinetics:
             return float(np.exp(-beta * (N - 3) ** 2))
         return 1.0
 
+    def _b_eft_norm_vector(self, D: float) -> Optional[np.ndarray]:
+        """
+        Fully normalized EFT-operator visibility profile for N=1,2,3:
+          K_N = g_N g_N^T / M_N^2
+          K_N^(IR) = LLRG( finite_match(K_N) )
+          B_N^(eft) = Tr[K_N^(IR)] / Tr[K_3^(IR)].
+        """
+        if self._b_overlap_profile is None:
+            return None
+
+        d_key = round(float(D), 6)
+        cached = self._b_eft_norm_cache.get(d_key)
+        if cached is not None:
+            return cached.copy()
+
+        g_uv = self._hll_g_uv_matrix(float(D))
+        m2 = np.maximum(self._hll_m2_vector(float(D)), self.params.hll_uv_m2_floor)
+        fin_cfg = self._hll_uv_finite_match_config()
+        rge_cfg = self._hll_uv_rge_config()
+        mu_match = mu_match_from_m2(m2, floor=rge_cfg.floor)
+
+        strengths = np.zeros(3, dtype=float)
+        for idx in range(3):
+            kernel = np.outer(g_uv[:, idx], g_uv[:, idx]) / max(float(m2[idx]), self.params.hll_uv_m2_floor)
+            kernel = np.maximum(kernel, self.params.hll_uv_coupling_floor)
+            k_match, _ = apply_ceh_finite_one_loop(kernel, fin_cfg)
+            k_ir, _ = run_ceh_leading_log(k_match, mu_match, rge_cfg)
+            strengths[idx] = max(float(np.trace(k_ir)), self.params.b_overlap_floor)
+
+        norm = max(float(strengths[2]), self.params.b_overlap_floor)
+        b123 = np.maximum(strengths / norm, self.params.b_overlap_floor)
+        self._b_eft_norm_cache[d_key] = b123.copy()
+        return b123
+
     def y_eff_raw_N(self, N: int, D: Optional[float] = None) -> float:
         """
         Effective overlap amplitude for layer N.
@@ -1624,7 +1667,7 @@ class PSLTKinetics:
         if N <= 0:
             return 0.0
 
-        if self._b_mode_active == "overlap_2d" and self._b_overlap_profile is not None and N <= 3:
+        if self._b_mode_active in {"overlap_2d", "eft_operator_norm"} and self._b_overlap_profile is not None and N <= 3:
             prof = self._b_overlap_profile
             yraw = prof.get("YRAW123", None)
             if yraw is not None:
@@ -1734,7 +1777,7 @@ class PSLTKinetics:
     def _hll_g_uv_matrix(self, D: float) -> np.ndarray:
         diag = np.diag(np.sqrt(np.maximum(self._hll_yraw_vector(D), self.params.hll_uv_coupling_floor)))
         prof = self._b_overlap_profile
-        if self._b_mode_active == "overlap_2d" and prof is not None and "GUV" in prof:
+        if self._b_mode_active in {"overlap_2d", "eft_operator_norm"} and prof is not None and "GUV" in prof:
             d_knots = prof["D"]
             g_knots = prof["GUV"]
             g = np.zeros((3, 3), dtype=float)
@@ -1751,7 +1794,7 @@ class PSLTKinetics:
     def _hll_m2_vector(self, D: float) -> np.ndarray:
         pwr = float(self.params.hll_uv_m2_power)
         prof = self._b_overlap_profile
-        if self._b_mode_active == "overlap_2d" and prof is not None and "LAMBDA123" in prof:
+        if self._b_mode_active in {"overlap_2d", "eft_operator_norm"} and prof is not None and "LAMBDA123" in prof:
             d_knots = prof["D"]
             lam_knots = prof["LAMBDA123"]
             lam = np.array([np.interp(D, d_knots, lam_knots[:, n]) for n in range(3)], dtype=float)

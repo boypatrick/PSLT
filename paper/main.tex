@@ -37,7 +37,7 @@ The framework is built on a minimal Einstein--Yang--Mills--Higgs (EYMH) effectiv
 The theoretical closure is achieved by unifying three key modules:
 (i) a \textbf{Micro-degeneracy module} ($g_N$) implemented in baseline \texttt{fp\_2d\_full} mode (bounded microcanonical low-$N$ window + energy-gap tail prescription, phase-space normalized at $N=3$);
 (ii) a \textbf{Rank-2 Computable Kinetic module} ($\Gamma_N$) defined as the largest positive eigenvalue of a $2\times2$ growth matrix with explicit WKB tunneling suppression; and
-(iii) a \textbf{Visibility module} ($B_N$) implemented from overlap-defined $y_N^{\rm eff}(D)$ profiles extracted by the same 2D localized operator chain, with branch tracking and microcanonical window averaging for mode-switch control, and high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator.
+(iii) a \textbf{Visibility module} ($B_N$) implemented in fully normalized EFT-operator mode (\texttt{b\_mode=eft\_operator\_norm}), where overlap-extracted flavor-layer couplings and mediator scales feed finite one-loop + LL-RG-normalized operator kernels, with high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator.
 The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates a stable ``winner'' phase diagram with clear dominance of layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
 We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid), and (2) a scan-level EFT/Wilson-matched compatibility test with the ATLAS Run-3 $H\to\mu\mu$ signal strength ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
 In the current UV+LL-RG baseline mode (\texttt{hll\_observable\_mode=eft\_wilson\_uv\_rge}), the illustrative acceptance band is about $15.0\%$ of the scanned grid for $\chi^2<4$, providing a sharper falsifiable constraint on $(D,\eta)$.
@@ -62,7 +62,7 @@ Our primary contributions are:
 \begin{enumerate}
     \item \textbf{Theoretical Motivation}: We present three convergent arguments for the micro-degeneracy $g_N$ (Route A: Mock-modular, Route B: ER=EPR, Route C: QG Template), and implement a scan-ready baseline through the bounded \texttt{fp\_2d\_full} profile with controlled high-$N$ tail prescription.
     \item \textbf{Rank-2 Computable Kinetics}: We replace heuristic growth rates with a rigorous eigenvalue problem for the formation matrix $\mathbf{M}_N$, incorporating numerical WKB tunneling suppression.
-    \item \textbf{Overlap-Defined Visibility}: We promote $B_N$ to overlap-defined $y_N^{\rm eff}(D)$ profiles from the 2D localized solver, stabilized by branch tracking and microcanonical windows; a Yukawa law is retained only as a legacy comparator/fallback.
+    \item \textbf{Fully Normalized EFT Visibility}: We promote $B_N$ to an EFT-operator-normalized baseline built from overlap-extracted flavor-layer couplings and mediator scales with finite one-loop + LL-RG normalization; overlap-only and Yukawa laws are retained only as legacy comparators/fallbacks.
     \item \textbf{Verification}: We demonstrate stable three-generation dominance at $\mathcal{R}_3>90\%$ and a constrained EFT/Wilson-matched-compatible band for LHC $H\to\mu\mu$.
 \end{enumerate}
 
@@ -147,7 +147,7 @@ $g_N$ phase-space full-tail mode (\texttt{fp\_2d\_full}) with phase-space normal
 $\chi_N^{(LR)}(D)$ localized channel & Stabilized localized-direct full-scan grid profile (\texttt{Dgrid60}) from 2D fine extraction + scan-level profile injection, released through \texttt{full\_direct\_map} mode (Appendix~\ref{app:chi_loc}; D60 + D21/E41 audits) & Yes (primary: \texttt{full\_direct}; extreme audit: \texttt{cell\_direct\_runtime}) & Keep per-cell direct runtime mode as reproducible stress path and promote to larger release grids when compute budget allows \\
 $\Gamma_{N,\ell}$ channel normalization ($A_\ell$) & Action-derived $\tilde A_\ell(D)$ baseline with stabilized localized-direct \texttt{Dgrid60} profile support and \texttt{full\_direct\_map} release checks; legacy constant-$A_\ell$ kept only as comparator & Yes (primary: \texttt{full\_direct}) & Extend to fully localized channel-resolved direct extraction over $(D,\eta,N)$ \\
 Open-system $\chi_{\rm eff}$ (Lindblad; geometry + micro profiles) & Scan-ready diagnostic module with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$, including multi-anchor + holdout-calibrated \texttt{open\_system\_micro} profile (Appendix~\ref{app:chi_open_scan}) & Diagnostic (baseline-candidate gate audited; not promoted) & Derive microscopic EYMH bath $(L_k,\gamma_k)$ and then promote to baseline if robust \\
-$B_N$ visibility profile $B_N(D)$ from overlap-defined $y_N^{\rm eff}$ & Action-derived profile extraction + tracked microcanonical windowing & Yes & Upgrade to fully normalized EFT operator matching (Section~\ref{sec:yukawa_roadmap}) \\
+$B_N$ visibility profile $B_N(D)$ from EFT-operator normalization & Baseline \texttt{eft\_operator\_norm}: overlap-extracted operator inputs $(g_{iN},\lambda_N)$ + finite one-loop + LL-RG-normalized kernel trace ratio & Yes & Promote from profile-evaluated normalization to per-cell direct operator extraction over full $(D,\eta,N)$ map \\
 $H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}] & EFT/Wilson-matched baseline + UV-tree/finite-one-loop/LL-RG audit map & Yes & Extend current UV-tree + finite-one-loop + LL-RG closure to full UV-to-EFT matching from EYMH action (operator basis + loop-level matching) \\
 \bottomrule
 \end{tabular}
@@ -498,7 +498,7 @@ Figure~\ref{fig:mixing_channels} summarizes this channel interpretation and the 
 \section{Module 3: Yukawa-Anchored Visibility BN}
 \label{sec:BN}
 
-In early versions of the theory, $B_N$ was an arbitrary matching factor. In the present baseline, $B_N(D)$ is extracted from overlap-defined $y_N^{\rm eff}(D)$ profiles using the same 2D localized operator chain as Appendix~\ref{app:chi_loc}, with mode-tracking and microcanonical-window averaging to suppress branch-switch artifacts; high-$N$ regularization remains isolated in Eq.~\eqref{eq:gN_reg}.
+In early versions of the theory, $B_N$ was an arbitrary matching factor. In the present baseline (\texttt{b\_mode=eft\_operator\_norm}), $B_N(D)$ is defined by fully normalized EFT operator kernels built from overlap-extracted flavor-layer couplings and mediator scales from the same 2D localized operator chain as Appendix~\ref{app:chi_loc}; finite one-loop matching and LL-RG normalization are applied before layer-wise normalization. Mode tracking and microcanonical-window averaging suppress branch-switch artifacts in the overlap extraction stage, while high-$N$ regularization remains isolated in Eq.~\eqref{eq:gN_reg}.
 
 Since our primary observable is the $H\to\mu\mu$ signal strength, we anchor visibility to the \textbf{charged-lepton Yukawa} couplings:
 \begin{equation}
@@ -526,7 +526,7 @@ For layers $N > 3$, we set $B_N = B_3 = 1$ (saturation). In the baseline scan (\
 
 \subsection{Roadmap: Action-Derived Effective Yukawa Operator}
 \label{sec:yukawa_roadmap}
-Beyond the current overlap-profile baseline, the next step is a full EFT-level normalization/matching derivation by extending the EYMH setup with an explicit lepton Yukawa sector in the same conformal background:
+With the EFT-operator-normalized baseline now in place, the next step is to replace profile-evaluated normalization by full per-cell direct operator extraction over $(D,\eta,N)$ while extending the EYMH setup with an explicit lepton Yukawa sector in the same conformal background:
 \begin{equation}
 \mathcal{L}_{Y} = -y_0\,\bar{L}H\ell_R + \mathrm{h.c.}, \qquad g_{\mu\nu}=\Omega^2\eta_{\mu\nu}.
 \end{equation}
@@ -560,7 +560,7 @@ y_N^{\rm eff}(D)=y_0\!\int 2\pi\rho\,\dd\rho\,\dd z\;
 u_N(\rho,z;D)\,f_L(\rho,z)\,f_R(\rho,z)\,\mathcal{W}_{\rm frame}(\rho,z;D).
 \label{eq:yukawa_eff_roadmap}
 \end{equation}
-Here $f_{L,R}$ denote lepton profile functions and $\mathcal{W}_{\rm frame}$ collects fixed normalization factors from the chosen conformal-frame convention. In the minimal Dirac-conformal baseline implied by Eqs.~\eqref{eq:dirac_higgs_weyl}--\eqref{eq:yukawa_frame_cancel}, $\mathcal{W}_{\rm frame}=1$ (implemented as \texttt{frame\_power=0} in \texttt{extract\_y\_eff\_2d\_three\_channel.py}). Nonzero \texttt{frame\_power} is kept only as a diagnostic sensitivity direction and is not used in baseline figures. In this roadmap, the same 2D localized solver and convergence criteria as Appendix~\ref{app:chi_loc} are reused; the current scan-level implementation already uses this overlap profile at map level, while full operator normalization/matching remains future work.
+Here $f_{L,R}$ denote lepton profile functions and $\mathcal{W}_{\rm frame}$ collects fixed normalization factors from the chosen conformal-frame convention. In the minimal Dirac-conformal baseline implied by Eqs.~\eqref{eq:dirac_higgs_weyl}--\eqref{eq:yukawa_frame_cancel}, $\mathcal{W}_{\rm frame}=1$ (implemented as \texttt{frame\_power=0} in \texttt{extract\_y\_eff\_2d\_three\_channel.py}). Nonzero \texttt{frame\_power} is kept only as a diagnostic sensitivity direction and is not used in baseline figures. In this roadmap, the same 2D localized solver and convergence criteria as Appendix~\ref{app:chi_loc} are reused; the current scan-level implementation already uses this operator-normalized visibility map, while full per-cell direct operator extraction remains future work.
 
 % ============================================================
 \section{Verification Results}
@@ -584,8 +584,8 @@ Micro-degeneracy $g_N$ & \texttt{g\_mode} & \texttt{fp\_2d\_full} & Baseline mod
 & $(\alpha,\beta,s)$ & $(0.8,1.1,0.0)$ & low-$N$ window blend, tail damping, shell-power control \\
 & $c_{\rm eff},\nu,\kappa_g$ & $(0.5,5.0,0.03)$ & Legacy Cardy-comparator parameters (not used for baseline normalization in \texttt{fp\_2d\_full}) \\
 \midrule
-Visibility $B_N$ & \texttt{b\_mode} & \texttt{overlap\_2d} & Baseline profile from overlap-defined $y_N^{\rm eff}(D)$ (tracked + microcanonical-windowed) \\
-& $p_B$ & 0.30 & Legacy Yukawa comparator/fallback parameter (inactive in overlap baseline) \\
+Visibility $B_N$ & \texttt{b\_mode} & \texttt{eft\_operator\_norm} & Baseline fully normalized EFT visibility from overlap-extracted operator inputs $(g_{iN},\lambda_N)$ with finite one-loop + LL-RG normalization \\
+& $p_B$ & 0.30 & Legacy Yukawa comparator/fallback parameter (inactive in EFT-operator baseline) \\
 \midrule
  Kinetics $\Gamma_N$ & $\chi_N^{(LR)}(D)$ & App.~\ref{app:chi_loc} & Localized-channel profile (action-derived extraction; baseline now uses full scan-grid profile injection, early demonstrator used constant $\chi=0.2$) \\
 & $a_0$ & 0.02 & Geometric perturbation \\
@@ -609,7 +609,7 @@ Crucially, we define the \textbf{Generation Ratio}:
 \mathcal{R}_3 \equiv \sum_{N=1}^{3} P_N = \frac{\sum_{N=1}^{3} W_N}{\sum_{K=1}^{N_{\max}} W_K}.
 \label{eq:R3}
 \end{equation}
-With full scan-grid action-derived profiles for $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ from Appendix~\ref{app:chi_loc}, our numerical scan gives $\mathcal{R}_3 > 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid, while $f(\mathcal{R}_3>0.95)=0.2167$ in this setup. The profile support is anchored by the benchmark convergence set (Table~\ref{tab:chi_loc}) and the auxiliary full-scan support points (Table~\ref{tab:chi_loc_full}) in Appendix~\ref{app:chi_loc}. This still supports a dominant three-layer sector; the current baseline combines action-derived $g_N$, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$ profiles with overlap-defined $B_N(D)$.
+With full scan-grid action-derived profiles for $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ from Appendix~\ref{app:chi_loc}, our numerical scan gives $\mathcal{R}_3 > 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid, while $f(\mathcal{R}_3>0.95)=0.2167$ in this setup. The profile support is anchored by the benchmark convergence set (Table~\ref{tab:chi_loc}) and the auxiliary full-scan support points (Table~\ref{tab:chi_loc_full}) in Appendix~\ref{app:chi_loc}. This still supports a dominant three-layer sector; the current baseline combines action-derived $g_N$, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$ profiles with EFT-operator-normalized $B_N(D)$.
 To quantify transfer bias from this surrogate interpolation step, we performed a point-level audit with direct localized fine extraction injected at each queried $D$ (recomputing $\chi_{LR}$ by the same 2D solver instead of using interpolated knots). The reproducible script is \texttt{scan\_surrogate\_vs\_action\_points.py}, with source table \texttt{paper/surrogate\_vs\_action\_points.csv}. As summarized in Table~\ref{tab:surrogate_action_points}, the direct-injection path changes $\chi$ by up to $\sim31\%$ at representative points, while winner labels remain unchanged (3/3 matches) and $\mathcal{R}_3$ stays numerically stable ($\max|\Delta \mathcal{R}_3|=5.27\times10^{-11}$); under EFT/Wilson-matched observables, $\mu_{\mu\mu}^{\rm pred}$ can vary strongly at off-band points, so acceptance-level robustness is additionally tracked by the map summaries and Tables~\ref{tab:core_param_robustness}, \ref{tab:first_principles_migration}.
 
 \begin{figure}[htbp]
@@ -820,7 +820,7 @@ Using the same map-level EFT/Wilson-matched definition, we additionally evaluate
 \left|\frac{C_{eH}^{\ell\ell}(D,\eta)}{C_{eH}^{\ell\ell}(D_0,\eta_0)}\right|^2
 \left[\frac{\Gamma_{\rm tot}(D,\eta)}{\Gamma_{\rm tot}(D_0,\eta_0)}\right]^{-1}.
 \end{equation}
-Figure~\ref{fig:hll_proxy} summarizes the corresponding maps on the same $(D,\eta)$ grid. The tabulated summary statistics are provided in \texttt{paper/hll\_signal\_strength\_summary.csv}. This extension is still a scan-level EFT map (not full UV matching), while the visibility sector in the global scan is implemented with explicit overlap-defined $y_N^{\rm eff}(D)$ profiles (extracted by \texttt{extract\_y\_eff\_2d\_three\_channel.py} with mode tracking and microcanonical windowing). The repository keeps three-channel observation fields (\texttt{H\_to\_ee}, \texttt{H\_to\_mumu}, \texttt{H\_to\_tautau}) in \texttt{data/pdg\_leptons.json} as a reproducible interface.
+Figure~\ref{fig:hll_proxy} summarizes the corresponding maps on the same $(D,\eta)$ grid. The tabulated summary statistics are provided in \texttt{paper/hll\_signal\_strength\_summary.csv}. This extension is still a scan-level EFT map (not full UV matching), while the visibility sector in the global scan now uses fully normalized EFT operator visibility (\texttt{b\_mode=eft\_operator\_norm}) built from overlap-extracted inputs by \texttt{extract\_y\_eff\_2d\_three\_channel.py} (with mode tracking and microcanonical windowing). The repository keeps three-channel observation fields (\texttt{H\_to\_ee}, \texttt{H\_to\_mumu}, \texttt{H\_to\_tautau}) in \texttt{data/pdg\_leptons.json} as a reproducible interface.
 
 \begin{figure}[htbp]
     \centering
@@ -836,14 +836,14 @@ Figure~\ref{fig:hll_proxy} summarizes the corresponding maps on the same $(D,\et
 We have presented a computable EFT-level demonstrator of the Projection Spectral Layer Theory. By closing the loop between geometric inputs and observable layer probabilities, we have shown that:
 \begin{enumerate}
     \item \textbf{Generations are spectral}: The ``three generation'' structure is not an input but a dynamical output of competing entropy ($g_N$), kinetics ($\Gamma_N$), and visibility ($B_N$).
-    \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated by the \texttt{fp\_2d\_full} microcanonical-window + tail prescription and the observable sector uses overlap-defined visibility profiles $B_N(D)$ with explicit high-$N$ saturation.
+    \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated by the \texttt{fp\_2d\_full} microcanonical-window + tail prescription and the observable sector uses EFT-operator-normalized visibility profiles $B_N(D)$ with explicit high-$N$ saturation.
     \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With full-grid action-derived $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ profiles, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $15.0\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
 \end{enumerate}
 At the same time, the present implementation keeps two EFT-level approximations explicit: baseline map-level profile closure in the $g_N(D)$ sector (with runtime-direct stress mode available) and a bounded nearest-neighbor flavor projector in the matched $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}.
 
 \textbf{Limitations and outlook.}
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:
-The use of mixed-resolution ingredients is a deliberate design choice: action-derived extraction fixes low-mode profiles (\texttt{fp\_2d\_full} for $g_N$, overlap $B_N(D)$, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$), while global-map evaluation is still an EFT-level closure rather than a full direct localized recomputation at every $(D,\eta,N)$ point.
+The use of mixed-resolution ingredients is a deliberate design choice: action-derived extraction fixes low-mode profiles (\texttt{fp\_2d\_full} for $g_N$, EFT-operator-normalized $B_N(D)$ from overlap-extracted inputs, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$), while global-map evaluation is still an EFT-level closure rather than a full direct localized recomputation at every $(D,\eta,N)$ point.
 \begin{enumerate}
     \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison now uses a scan-level EFT/Wilson-matched map with bounded flavor mixing and leptonic-width closure [Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:mu_pred}], but a full derivation from the EYMH action (including operator-basis matching beyond this closure) is still pending.
     \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and inject its full scan-grid action-derived profile in the global map. The remaining gap is a full $(D,\eta,N)$ localized projection.
@@ -1788,7 +1788,7 @@ At current scan resolution, replacing the legacy constant-$A_\ell$ reference by 
 \section{Ansatz Ablation Study}
 \label{app:ablation}
 
-To demonstrate that the three-generation structure is robust and not an artifact of a particular ansatz choice, we compare the baseline overlap-derived $B_N(D)$ profile (this work) against the alternative ``inverse Yukawa'' ansatz explored in earlier versions.
+To demonstrate that the three-generation structure is robust and not an artifact of a particular ansatz choice, we compare the baseline EFT-operator-normalized $B_N(D)$ profile (this work) against the alternative ``inverse Yukawa'' ansatz explored in earlier versions.
 
 \subsection{Inverse Yukawa Ansatz (Ablation A)}
 The inverse Yukawa ansatz sets $B_N^{\rm (inv)} \propto 1/\sum_{f \in \text{Gen } N} y_f$, yielding:
@@ -1799,7 +1799,7 @@ This massive hierarchy ($B_1 \gg B_2 \gg B_3$) directly encodes the answer by ov
 
 \subsection{Comparison}
 \begin{itemize}
-    \item \textbf{Baseline (overlap-derived profile)}: $B_1(D) < B_2(D) < B_3$ in the scanned range, with smooth $D$-dependence from tracked microcanonical overlaps. The three-generation structure emerges from the $g_N$--$\Gamma_N$ competition modulated by these profile differences.
+    \item \textbf{Baseline (EFT-operator-normalized profile)}: $B_N(D)$ remains smooth and bounded across the scanned range, with shape inherited from tracked microcanonical overlap extraction and operator normalization. The three-generation structure emerges from the $g_N$--$\Gamma_N$ competition modulated by these profile differences.
     \item \textbf{Ablation A (Inverse Yukawa)}: $B_1 \gg B_2 \gg B_3$. Layer 1 is artificially boosted; the selection mechanism is less falsifiable.
 \end{itemize}
 

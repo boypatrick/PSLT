@@ -46,7 +46,7 @@ BASELINE = {
     "A2": 1.0,
     "gamma_mode": "action_grid",
     "p_B": 0.30,
-    "b_mode": "overlap_2d",
+    "b_mode": "eft_operator_norm",
     "t_coh": 1.0,
     "n_max": 20,
     "D_min": 4.0,

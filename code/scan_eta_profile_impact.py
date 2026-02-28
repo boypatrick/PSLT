@@ -72,7 +72,7 @@ def make_kinetics() -> PSLTKinetics:
         chi_lr_vals=tuple(float(y) for y in chi_profile["chi"]),
         A1=1.0,
         A2=1.0,
-        b_mode="overlap_2d",
+        b_mode="eft_operator_norm",
         b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=0.30,
         b_n_mode="cumulative",

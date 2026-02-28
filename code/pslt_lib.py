@@ -81,13 +81,13 @@ class PSLTParameters:
     Omega_H: float = 0.9    # Horizon proxy angular velocity [Mass] (scaled by M)
     A1: float = 1.0         # l=1 amplitude (dimensionless prefactor for rate)
     A2: float = 1.0         # l=2 amplitude (dimensionless prefactor for rate)
-    gamma_mode: str = "surrogate"  # "surrogate", "action_profile", "action_grid", or "action_grid_strict"
+    gamma_mode: str = "surrogate"  # "surrogate", "action_profile", "action_grid", "action_grid_strict", or "action_runtime_direct"
     gamma_superrad_csv: Optional[str] = None
     gamma_superrad_scale: float = 1.0
     gamma_eta_mode: str = "scan"  # "scan", "scaled_amp", "scaled_prob", "closed_amp", "closed_prob"
     gamma_eta_csv: Optional[str] = None
     chi: float = 0.2        # Rank-2 mixing parameter (dimensionless)
-    chi_mode: str = "constant"  # "constant", "localized_interp", "localized_grid", "localized_grid_strict", "open_system", or "open_system_micro"
+    chi_mode: str = "constant"  # "constant", "localized_interp", "localized_grid", "localized_grid_strict", "localized_runtime_direct", "open_system", or "open_system_micro"
     chi_lr_D: Tuple[float, ...] = (6.0, 12.0, 18.0)  # knots for localized chi(D)
     chi_lr_vals: Tuple[float, ...] = (4.01827e-4, 2.21414e-4, 2.13187e-4)  # chi_LR at knots
     chi_open_csv: Optional[str] = None
@@ -102,6 +102,16 @@ class PSLTParameters:
     chi_open_mix_scale: float = 1.0
     chi_open_rtol: float = 1e-8
     chi_open_atol: float = 1e-10
+    runtime_direct_use_cache: bool = True  # False => recompute direct solvers on every call (very slow)
+    runtime_direct_chi_rho_max: float = 3.0
+    runtime_direct_chi_z_margin: float = 6.0
+    runtime_direct_chi_n_mu: int = 120
+    runtime_direct_chi_tol: float = 1e-8
+    runtime_direct_chi_maxiter: int = 30000
+    runtime_direct_chi_sigma: float = 2.5
+    runtime_direct_superrad_zmax: float = 80.0
+    runtime_direct_superrad_ref_d: float = 12.0
+    runtime_direct_superrad_n_ref: int = 2
     t_coh_mode: str = "input"  # "input", "dephasing_profile", or "dephasing_profile_capped"
     t_coh_dephasing_csv: Optional[str] = None
     t_coh_cap: float = 1.0e4
@@ -140,9 +150,9 @@ class PSLTParameters:
     hll_uv_rge_log_clip: float = 6.0
 
     def __post_init__(self):
-        if self.chi_mode not in {"constant", "localized_interp", "localized_grid", "localized_grid_strict", "open_system", "open_system_micro"}:
+        if self.chi_mode not in {"constant", "localized_interp", "localized_grid", "localized_grid_strict", "localized_runtime_direct", "open_system", "open_system_micro"}:
             raise ValueError(f"Unsupported chi_mode='{self.chi_mode}'.")
-        if self.gamma_mode not in {"surrogate", "action_profile", "action_grid", "action_grid_strict"}:
+        if self.gamma_mode not in {"surrogate", "action_profile", "action_grid", "action_grid_strict", "action_runtime_direct"}:
             raise ValueError(f"Unsupported gamma_mode='{self.gamma_mode}'.")
         if self.gamma_superrad_scale <= 0:
             raise ValueError("gamma_superrad_scale must be > 0.")
@@ -158,6 +168,22 @@ class PSLTParameters:
         if self.chi_mode in {"localized_grid", "localized_grid_strict"}:
             if len(self.chi_lr_D) < 1 or len(self.chi_lr_D) != len(self.chi_lr_vals):
                 raise ValueError("chi_lr_D and chi_lr_vals must have equal length >=1 for localized_grid(_strict).")
+        if self.runtime_direct_chi_rho_max <= 0.0:
+            raise ValueError("runtime_direct_chi_rho_max must be > 0.")
+        if self.runtime_direct_chi_z_margin <= 0.0:
+            raise ValueError("runtime_direct_chi_z_margin must be > 0.")
+        if self.runtime_direct_chi_n_mu < 20:
+            raise ValueError("runtime_direct_chi_n_mu must be >= 20.")
+        if self.runtime_direct_chi_tol <= 0.0:
+            raise ValueError("runtime_direct_chi_tol must be > 0.")
+        if self.runtime_direct_chi_maxiter < 1000:
+            raise ValueError("runtime_direct_chi_maxiter must be >= 1000.")
+        if self.runtime_direct_superrad_zmax <= 0.0:
+            raise ValueError("runtime_direct_superrad_zmax must be > 0.")
+        if self.runtime_direct_superrad_ref_d <= 0.0:
+            raise ValueError("runtime_direct_superrad_ref_d must be > 0.")
+        if self.runtime_direct_superrad_n_ref < 1:
+            raise ValueError("runtime_direct_superrad_n_ref must be >= 1.")
         if self.chi_mode in {"open_system", "open_system_micro"}:
             if len(self.chi_open_D) > 0:
                 n = len(self.chi_open_D)
@@ -327,6 +353,13 @@ class PSLTKinetics:
         self._chi_mode_active: str = "constant"
         self._chi_open_profile: Optional[Dict[str, np.ndarray]] = None
         self._chi_open_cache: Dict[float, float] = {}
+        self._chi_runtime_direct_cache: Dict[float, float] = {}
+        self._gamma_runtime_direct_cache: Dict[float, Tuple[float, float]] = {}
+        self._runtime_superrad_ref_a12: Optional[Tuple[float, float]] = None
+        self._runtime_chi_level = None
+        self._runtime_chi_params = None
+        self._runtime_superrad_level = None
+        self._runtime_superrad_params = None
         self._gamma_mode_active: str = "surrogate"
         self._gamma_superrad_profile: Optional[Dict[str, np.ndarray]] = None
         self._gamma_eta_profile: Optional[Dict[str, np.ndarray]] = None
@@ -1146,6 +1179,21 @@ class PSLTKinetics:
                 self._gamma_mode_active = mode
                 self._gamma_eta_mode_active = self.params.gamma_eta_mode
                 self._gamma_eta_profile = eta_prof
+        elif mode == "action_runtime_direct":
+            self._gamma_mode_active = mode
+            if self.params.gamma_eta_mode != "scan":
+                eta_path = Path(self.params.gamma_eta_csv) if self.params.gamma_eta_csv else self._auto_find_eta_csv()
+                eta_prof = self._load_eta_profile(eta_path) if eta_path is not None else None
+                if eta_prof is None:
+                    if eta_path is None:
+                        print("Warning: gamma_eta_mode requires eta profile but no eta CSV found. Falling back to gamma_eta_mode=scan.")
+                    else:
+                        print(f"Warning: failed to parse eta profile at {eta_path}. Falling back to gamma_eta_mode=scan.")
+                    self._gamma_eta_mode_active = "scan"
+                    self._gamma_eta_profile = None
+                else:
+                    self._gamma_eta_mode_active = self.params.gamma_eta_mode
+                    self._gamma_eta_profile = eta_prof
 
         if self.params.t_coh_mode != "input":
             tcoh_path = Path(self.params.t_coh_dephasing_csv) if self.params.t_coh_dephasing_csv else self._auto_find_tcoh_csv()
@@ -1168,7 +1216,88 @@ class PSLTKinetics:
     def active_t_coh_mode(self) -> str:
         return self._tcoh_mode_active
 
+    def _runtime_direct_chi(self, D: float) -> float:
+        key = float(round(D, 8))
+        if self.params.runtime_direct_use_cache:
+            cached = self._chi_runtime_direct_cache.get(key, None)
+            if cached is not None:
+                return float(cached)
+
+        # Lazy import to avoid heavy dependencies during non-direct modes.
+        from extract_chi_localized_2d import Level as ChiLevel  # local import by design
+        from extract_chi_localized_2d import PhysicalParams as ChiParams  # local import by design
+        from extract_chi_localized_2d import run_case as run_chi_case  # local import by design
+
+        if self._runtime_chi_level is None:
+            self._runtime_chi_level = ChiLevel("fine", dr=0.06, dz=0.03)
+        if self._runtime_chi_params is None:
+            self._runtime_chi_params = ChiParams()
+
+        row = run_chi_case(
+            D=float(D),
+            level=self._runtime_chi_level,
+            p=self._runtime_chi_params,
+            rho_max=float(self.params.runtime_direct_chi_rho_max),
+            z_margin=float(self.params.runtime_direct_chi_z_margin),
+            n_mu=int(self.params.runtime_direct_chi_n_mu),
+            tol=float(self.params.runtime_direct_chi_tol),
+            maxiter=int(self.params.runtime_direct_chi_maxiter),
+            sigma=None if float(self.params.runtime_direct_chi_sigma) < 0.0 else float(self.params.runtime_direct_chi_sigma),
+        )
+        chi_val = max(float(row["chi_LR"]), 0.0)
+        if self.params.runtime_direct_use_cache:
+            self._chi_runtime_direct_cache[key] = chi_val
+        return chi_val
+
+    def _runtime_direct_a12(self, D: float) -> Tuple[float, float]:
+        key = float(round(D, 8))
+        if self.params.runtime_direct_use_cache:
+            cached = self._gamma_runtime_direct_cache.get(key, None)
+            if cached is not None:
+                return float(cached[0]), float(cached[1])
+
+        # Lazy import to avoid heavy dependencies during non-direct modes.
+        from extract_superrad_prefactor_1d import Level as SuperradLevel  # local import by design
+        from extract_superrad_prefactor_1d import PhysicalParams as SuperradParams  # local import by design
+        from extract_superrad_prefactor_1d import solve_case as run_superrad_case  # local import by design
+
+        if self._runtime_superrad_level is None:
+            self._runtime_superrad_level = SuperradLevel("fine", Nz=8001)
+        if self._runtime_superrad_params is None:
+            self._runtime_superrad_params = SuperradParams()
+        if self._runtime_superrad_ref_a12 is None:
+            ref = run_superrad_case(
+                D=float(self.params.runtime_direct_superrad_ref_d),
+                level=self._runtime_superrad_level,
+                zmax=float(self.params.runtime_direct_superrad_zmax),
+                p=self._runtime_superrad_params,
+                n_ref=int(self.params.runtime_direct_superrad_n_ref),
+            )
+            self._runtime_superrad_ref_a12 = (
+                max(float(ref["A1_fp"]), 1e-300),
+                max(float(ref["A2_fp"]), 1e-300),
+            )
+
+        row = run_superrad_case(
+            D=float(D),
+            level=self._runtime_superrad_level,
+            zmax=float(self.params.runtime_direct_superrad_zmax),
+            p=self._runtime_superrad_params,
+            n_ref=int(self.params.runtime_direct_superrad_n_ref),
+        )
+        ref_a1, ref_a2 = self._runtime_superrad_ref_a12
+        a1 = max(float(row["A1_fp"]) / ref_a1, 1e-30)
+        a2 = max(float(row["A2_fp"]) / ref_a2, 1e-30)
+        if self.params.runtime_direct_use_cache:
+            self._gamma_runtime_direct_cache[key] = (a1, a2)
+        return a1, a2
+
     def _gamma_action_A12(self, D: float) -> Tuple[float, float]:
+        if self._gamma_mode_active == "action_runtime_direct":
+            a1, a2 = self._runtime_direct_a12(float(D))
+            scale = float(self.params.gamma_superrad_scale)
+            return max(a1 * scale, 1e-30), max(a2 * scale, 1e-30)
+
         if self._gamma_mode_active not in {"action_profile", "action_grid", "action_grid_strict"} or self._gamma_superrad_profile is None:
             return float(self.params.A1), float(self.params.A2)
 
@@ -1819,6 +1948,9 @@ class PSLTKinetics:
             chi_knots = np.asarray(self.params.chi_lr_vals, dtype=float)
             return self._interp_scalar(D, d_knots, chi_knots)
 
+        if mode == "localized_runtime_direct":
+            return self._runtime_direct_chi(float(D))
+
         if mode in {"localized_grid", "localized_grid_strict"}:
             d_knots = np.asarray(self.params.chi_lr_D, dtype=float)
             chi_knots = np.asarray(self.params.chi_lr_vals, dtype=float)
@@ -1916,9 +2048,14 @@ class PSLTKinetics:
 
         eta_eff = self.eta_effective(D, eta)
         key = (int(N), float(round(D, 8)))
-        pref = self._gamma_prefactor_cache.get(key, None)
-        if pref is not None:
-            return max(float(eta_eff * pref), 0.0)
+        use_pref_cache = True
+        if (self._chi_mode_active == "localized_runtime_direct" or self._gamma_mode_active == "action_runtime_direct") and (not self.params.runtime_direct_use_cache):
+            use_pref_cache = False
+
+        if use_pref_cache:
+            pref = self._gamma_prefactor_cache.get(key, None)
+            if pref is not None:
+                return max(float(eta_eff * pref), 0.0)
 
         mu = self.params.M / D  # [Mass]
         OmegaH = self.params.Omega_H * self.params.M  # [Mass]
@@ -1949,7 +2086,8 @@ class PSLTKinetics:
         lam_plus = 0.5 * (tr + math.sqrt(disc))
 
         pref = float(np.exp(-2.0 * S) * lam_plus)
-        self._gamma_prefactor_cache[key] = pref
+        if use_pref_cache:
+            self._gamma_prefactor_cache[key] = pref
         Gamma = eta_eff * pref
         return max(float(Gamma), 0.0)
 

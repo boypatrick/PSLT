@@ -35,6 +35,9 @@ Chain profile selection:
   - --chain-mode full_direct_runtime:
                               build/rebuild active D-grid localized-direct
                               profiles at runtime, then run strict full_direct.
+  - --chain-mode cell_direct_runtime:
+                              no profile object; evaluate chi_LR(D) and A_l(D)
+                              by direct solvers inside scan cells.
 """
 
 from __future__ import annotations
@@ -187,6 +190,7 @@ def make_baseline_kinetics(
     uv_rge_gamma_offdiag: float,
     uv_rge_log_clip: float,
     runtime_direct_force: bool,
+    runtime_direct_no_cache: bool,
     runtime_direct_chi_rho_max: float,
     runtime_direct_chi_z_margin: float,
     runtime_direct_chi_n_mu: int,
@@ -200,6 +204,13 @@ def make_baseline_kinetics(
     d_scan = scan_d_values(float(d_min), float(d_max), int(d_num))
     chain_mode_eff = str(chain_mode).strip().lower()
     selection_mode = "full_direct" if chain_mode_eff in {"full_direct", "full_direct_runtime"} else "auto"
+
+    chi_mode = "localized_grid"
+    gamma_mode = "action_grid"
+    chi_prof = None
+    superrad_prof = None
+    chi_source = "runtime_cell_solver"
+    gamma_source = "runtime_cell_solver"
 
     if chain_mode_eff == "full_direct_runtime":
         ensure_runtime_full_direct_profiles(
@@ -216,9 +227,23 @@ def make_baseline_kinetics(
             superrad_ref_d=float(runtime_direct_superrad_ref_d),
             superrad_n_ref=int(runtime_direct_superrad_n_ref),
         )
+        chi_prof = select_chi_profile(ROOT, d_scan, selection_mode=selection_mode)
+        superrad_prof = select_superrad_profile(ROOT, d_scan, selection_mode=selection_mode)
+        chi_mode = str(chi_prof["mode"])
+        gamma_mode = str(superrad_prof["mode"])
+        chi_source = str(chi_prof["path"])
+        gamma_source = str(superrad_prof["path"])
+    elif chain_mode_eff == "cell_direct_runtime":
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+    else:
+        chi_prof = select_chi_profile(ROOT, d_scan, selection_mode=selection_mode)
+        superrad_prof = select_superrad_profile(ROOT, d_scan, selection_mode=selection_mode)
+        chi_mode = str(chi_prof["mode"])
+        gamma_mode = str(superrad_prof["mode"])
+        chi_source = str(chi_prof["path"])
+        gamma_source = str(superrad_prof["path"])
 
-    chi_prof = select_chi_profile(ROOT, d_scan, selection_mode=selection_mode)
-    superrad_prof = select_superrad_profile(ROOT, d_scan, selection_mode=selection_mode)
     params = PSLTParameters(
         c_eff=PAPER_BASELINE["c_eff"],
         nu=PAPER_BASELINE["nu"],
@@ -231,13 +256,23 @@ def make_baseline_kinetics(
         g_fp_full_tail_clip_min=PAPER_BASELINE["g_fp_full_tail_clip_min"],
         g_fp_full_tail_clip_max=PAPER_BASELINE["g_fp_full_tail_clip_max"],
         chi=PAPER_BASELINE["chi_legacy"],
-        chi_mode=str(chi_prof["mode"]),
-        chi_lr_D=tuple(float(x) for x in chi_prof["d"]),
-        chi_lr_vals=tuple(float(x) for x in chi_prof["chi"]),
+        chi_mode=str(chi_mode),
+        chi_lr_D=tuple(float(x) for x in (np.asarray(chi_prof["d"], dtype=float) if chi_prof is not None else np.array([6.0, 12.0, 18.0], dtype=float))),
+        chi_lr_vals=tuple(float(x) for x in (np.asarray(chi_prof["chi"], dtype=float) if chi_prof is not None else np.array([4.01827e-4, 2.21414e-4, 2.13187e-4], dtype=float))),
         A1=PAPER_BASELINE["A1"],
         A2=PAPER_BASELINE["A2"],
-        gamma_mode=str(superrad_prof["mode"]),
-        gamma_superrad_csv=str(superrad_prof["path"]),
+        gamma_mode=str(gamma_mode),
+        gamma_superrad_csv=str(superrad_prof["path"]) if superrad_prof is not None else None,
+        runtime_direct_use_cache=not bool(runtime_direct_no_cache),
+        runtime_direct_chi_rho_max=float(runtime_direct_chi_rho_max),
+        runtime_direct_chi_z_margin=float(runtime_direct_chi_z_margin),
+        runtime_direct_chi_n_mu=int(runtime_direct_chi_n_mu),
+        runtime_direct_chi_tol=float(runtime_direct_chi_tol),
+        runtime_direct_chi_maxiter=int(runtime_direct_chi_maxiter),
+        runtime_direct_chi_sigma=float(runtime_direct_chi_sigma),
+        runtime_direct_superrad_zmax=float(runtime_direct_superrad_zmax),
+        runtime_direct_superrad_ref_d=float(runtime_direct_superrad_ref_d),
+        runtime_direct_superrad_n_ref=int(runtime_direct_superrad_n_ref),
         b_mode=PAPER_BASELINE["b_mode"],
         b_overlap_csv=str(B_OVERLAP_CSV),
         b_n_power=PAPER_BASELINE["p_B"],
@@ -259,9 +294,10 @@ def make_baseline_kinetics(
         f"chain_mode={chain_mode_eff},",
         f"selection_mode={selection_mode},",
         f"chi_mode={params.chi_mode},",
-        f"chi_csv={chi_prof['path']},",
+        f"chi_source={chi_source},",
         f"gamma_mode={params.gamma_mode},",
-        f"gamma_csv={superrad_prof['path']}",
+        f"gamma_source={gamma_source}",
+        f"runtime_direct_use_cache={params.runtime_direct_use_cache}",
     )
     return PSLTKinetics(params)
 
@@ -469,7 +505,7 @@ def plot_maps(
 
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Map-level PSLT predictions for H->ll channels.")
-    ap.add_argument("--chain-mode", choices=["auto", "full_direct", "full_direct_runtime"], default="full_direct")
+    ap.add_argument("--chain-mode", choices=["auto", "full_direct", "full_direct_runtime", "cell_direct_runtime"], default="full_direct")
     ap.add_argument("--ref-mode", choices=["fixed", "chi2_best", "robust_center"], default="fixed")
     ap.add_argument("--ref-d", type=float, default=float(PAPER_BASELINE["ref_D"]))
     ap.add_argument("--ref-eta", type=float, default=float(PAPER_BASELINE["ref_eta"]))
@@ -494,6 +530,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--eta-max", type=float, default=float(PAPER_BASELINE["eta_max"]))
     ap.add_argument("--eta-num", type=int, default=int(PAPER_BASELINE["eta_num"]))
     ap.add_argument("--runtime-direct-force", action="store_true")
+    ap.add_argument("--runtime-direct-no-cache", action="store_true")
     ap.add_argument("--runtime-direct-chi-rho-max", type=float, default=3.0)
     ap.add_argument("--runtime-direct-chi-z-margin", type=float, default=6.0)
     ap.add_argument("--runtime-direct-chi-n-mu", type=int, default=120)
@@ -627,6 +664,7 @@ def main() -> None:
         uv_rge_gamma_offdiag=float(args.uv_rge_gamma_offdiag),
         uv_rge_log_clip=float(args.uv_rge_log_clip),
         runtime_direct_force=bool(args.runtime_direct_force),
+        runtime_direct_no_cache=bool(args.runtime_direct_no_cache),
         runtime_direct_chi_rho_max=float(args.runtime_direct_chi_rho_max),
         runtime_direct_chi_z_margin=float(args.runtime_direct_chi_z_margin),
         runtime_direct_chi_n_mu=int(args.runtime_direct_chi_n_mu),
@@ -714,6 +752,7 @@ def main() -> None:
         "uv_rge_log_clip": float(args.uv_rge_log_clip),
         "chain_mode": str(args.chain_mode),
         "runtime_direct_force": bool(args.runtime_direct_force),
+        "runtime_direct_no_cache": bool(args.runtime_direct_no_cache),
         "runtime_direct_chi_rho_max": float(args.runtime_direct_chi_rho_max),
         "runtime_direct_chi_z_margin": float(args.runtime_direct_chi_z_margin),
         "runtime_direct_chi_n_mu": int(args.runtime_direct_chi_n_mu),

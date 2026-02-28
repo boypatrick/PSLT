@@ -1,9 +1,0 @@
-{
-  "ref_mode": "chi2_best",
-  "ref_D": 9.423728813559322,
-  "ref_eta": 1.2949152542372881,
-  "ref_source": "choice_json:reference_anchor_choice.json",
-  "suffix": "_chi2_best",
-  "observable_mode": "eft_wilson_matched",
-  "tag": ""
-}

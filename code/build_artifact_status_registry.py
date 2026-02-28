@@ -121,30 +121,6 @@ def rows() -> List[Dict[str, object]]:
             "category": "chain_mode_audit",
             "note": "Legacy comparator figure; retained for history only.",
         },
-        {
-            "artifact_path": "output/hll_signal_strength/hll_signal_strength_summary_chi2_best.csv",
-            "status": "diagnostic_variant",
-            "category": "anchor_sensitivity",
-            "note": "Dynamic-anchor sensitivity variant, not baseline headline.",
-        },
-        {
-            "artifact_path": "output/hll_signal_strength/hll_signal_strength_summary_robust_center.csv",
-            "status": "diagnostic_variant",
-            "category": "anchor_sensitivity",
-            "note": "Robust-center anchor variant, not baseline headline.",
-        },
-        {
-            "artifact_path": "output/hll_signal_strength/hll_signal_strength_summary_uv_tree_calibrated.csv",
-            "status": "diagnostic_variant",
-            "category": "uv_modes",
-            "note": "UV-tree calibrated mode; comparator only.",
-        },
-        {
-            "artifact_path": "output/hll_signal_strength/hll_signal_strength_summary_uv_rge_smoke.csv",
-            "status": "diagnostic_variant",
-            "category": "uv_modes",
-            "note": "Smoke-mode output for quick checks only.",
-        },
     ]
 
 

@@ -57,6 +57,8 @@ def read_hll_mumu_summary(path: Path) -> Dict[str, float]:
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Publish full_direct map release summary.")
     ap.add_argument("--force", action="store_true", help="Recompute all steps even if outputs already exist.")
+    ap.add_argument("--main-chain-mode", choices=["full_direct", "full_direct_runtime"], default="full_direct_runtime")
+    ap.add_argument("--runtime-direct-force", action="store_true", help="When main-chain-mode=full_direct_runtime, force direct profile rebuild.")
     return ap.parse_args()
 
 
@@ -77,7 +79,7 @@ def main() -> None:
             sys.executable,
             str(SCAN_HLL),
             "--chain-mode",
-            "full_direct",
+            str(args.main_chain_mode),
             "--d-min",
             "4",
             "--d-max",
@@ -92,7 +94,8 @@ def main() -> None:
             "60",
             "--tag",
             tag_main,
-        ],
+        ]
+        + (["--runtime-direct-force"] if (str(args.main_chain_mode) == "full_direct_runtime" and bool(args.runtime_direct_force)) else []),
         expected=main_summary,
         force=bool(args.force),
     )
@@ -250,6 +253,8 @@ def main() -> None:
         json.dumps(
             {
                 "main_tag": tag_main,
+                "main_chain_mode": str(args.main_chain_mode),
+                "runtime_direct_force": bool(args.runtime_direct_force),
                 "small_surface": str(small_summary.relative_to(ROOT)),
                 "large_surface": str(large_summary.relative_to(ROOT)),
                 "chain_parity": str(parity_summary.relative_to(ROOT)),

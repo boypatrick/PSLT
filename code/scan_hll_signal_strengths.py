@@ -32,6 +32,9 @@ Chain profile selection:
                               interpolation fallback when needed.
   - --chain-mode full_direct: require exact localized-direct D-grid profiles
                               and strict grid lookup (no interpolation fallback).
+  - --chain-mode full_direct_runtime:
+                              build/rebuild active D-grid localized-direct
+                              profiles at runtime, then run strict full_direct.
 """
 
 from __future__ import annotations
@@ -57,6 +60,7 @@ from hll_observable import HLLObservableConfig, HLLChannelPredictor  # noqa: E40
 from pslt_lib import PSLTKinetics, PSLTParameters  # noqa: E402
 from reference_anchor_utils import select_anchor_candidates_from_fixed_scan  # noqa: E402
 from action_grid_profile_utils import scan_d_values, select_chi_profile, select_superrad_profile  # noqa: E402
+from direct_chain_runtime import ensure_runtime_full_direct_profiles  # noqa: E402
 
 
 OUTDIR = ROOT / "output" / "hll_signal_strength"
@@ -182,10 +186,39 @@ def make_baseline_kinetics(
     uv_rge_gamma_diag: float,
     uv_rge_gamma_offdiag: float,
     uv_rge_log_clip: float,
+    runtime_direct_force: bool,
+    runtime_direct_chi_rho_max: float,
+    runtime_direct_chi_z_margin: float,
+    runtime_direct_chi_n_mu: int,
+    runtime_direct_chi_tol: float,
+    runtime_direct_chi_maxiter: int,
+    runtime_direct_chi_sigma: float,
+    runtime_direct_superrad_zmax: float,
+    runtime_direct_superrad_ref_d: float,
+    runtime_direct_superrad_n_ref: int,
 ) -> PSLTKinetics:
     d_scan = scan_d_values(float(d_min), float(d_max), int(d_num))
-    chi_prof = select_chi_profile(ROOT, d_scan, selection_mode=str(chain_mode))
-    superrad_prof = select_superrad_profile(ROOT, d_scan, selection_mode=str(chain_mode))
+    chain_mode_eff = str(chain_mode).strip().lower()
+    selection_mode = "full_direct" if chain_mode_eff in {"full_direct", "full_direct_runtime"} else "auto"
+
+    if chain_mode_eff == "full_direct_runtime":
+        ensure_runtime_full_direct_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            chi_rho_max=float(runtime_direct_chi_rho_max),
+            chi_z_margin=float(runtime_direct_chi_z_margin),
+            chi_n_mu=int(runtime_direct_chi_n_mu),
+            chi_tol=float(runtime_direct_chi_tol),
+            chi_maxiter=int(runtime_direct_chi_maxiter),
+            chi_sigma=float(runtime_direct_chi_sigma),
+            superrad_zmax=float(runtime_direct_superrad_zmax),
+            superrad_ref_d=float(runtime_direct_superrad_ref_d),
+            superrad_n_ref=int(runtime_direct_superrad_n_ref),
+        )
+
+    chi_prof = select_chi_profile(ROOT, d_scan, selection_mode=selection_mode)
+    superrad_prof = select_superrad_profile(ROOT, d_scan, selection_mode=selection_mode)
     params = PSLTParameters(
         c_eff=PAPER_BASELINE["c_eff"],
         nu=PAPER_BASELINE["nu"],
@@ -223,7 +256,8 @@ def make_baseline_kinetics(
     )
     print(
         "[baseline]",
-        f"chain_mode={chain_mode},",
+        f"chain_mode={chain_mode_eff},",
+        f"selection_mode={selection_mode},",
         f"chi_mode={params.chi_mode},",
         f"chi_csv={chi_prof['path']},",
         f"gamma_mode={params.gamma_mode},",
@@ -435,14 +469,14 @@ def plot_maps(
 
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Map-level PSLT predictions for H->ll channels.")
-    ap.add_argument("--chain-mode", choices=["auto", "full_direct"], default="full_direct")
+    ap.add_argument("--chain-mode", choices=["auto", "full_direct", "full_direct_runtime"], default="full_direct")
     ap.add_argument("--ref-mode", choices=["fixed", "chi2_best", "robust_center"], default="fixed")
     ap.add_argument("--ref-d", type=float, default=float(PAPER_BASELINE["ref_D"]))
     ap.add_argument("--ref-eta", type=float, default=float(PAPER_BASELINE["ref_eta"]))
     ap.add_argument("--ref-choice-json", type=str, default=str(DEFAULT_REF_CHOICE_JSON))
     ap.add_argument(
         "--observable-mode",
-        choices=["proxy_wratio", "eft_wilson_diag", "eft_wilson_uv_rge", "eft_wilson_uv_tree", "eft_wilson_uv_rge"],
+        choices=["proxy_wratio", "eft_wilson_diag", "eft_wilson_uv_tree", "eft_wilson_uv_rge"],
         default=str(PAPER_BASELINE["hll_observable_mode"]),
     )
     ap.add_argument("--uv-blend", type=float, default=float(PAPER_BASELINE["hll_uv_blend"]))
@@ -459,6 +493,16 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--eta-min", type=float, default=float(PAPER_BASELINE["eta_min"]))
     ap.add_argument("--eta-max", type=float, default=float(PAPER_BASELINE["eta_max"]))
     ap.add_argument("--eta-num", type=int, default=int(PAPER_BASELINE["eta_num"]))
+    ap.add_argument("--runtime-direct-force", action="store_true")
+    ap.add_argument("--runtime-direct-chi-rho-max", type=float, default=3.0)
+    ap.add_argument("--runtime-direct-chi-z-margin", type=float, default=6.0)
+    ap.add_argument("--runtime-direct-chi-n-mu", type=int, default=120)
+    ap.add_argument("--runtime-direct-chi-tol", type=float, default=1e-8)
+    ap.add_argument("--runtime-direct-chi-maxiter", type=int, default=30000)
+    ap.add_argument("--runtime-direct-chi-sigma", type=float, default=2.5)
+    ap.add_argument("--runtime-direct-superrad-zmax", type=float, default=80.0)
+    ap.add_argument("--runtime-direct-superrad-ref-d", type=float, default=12.0)
+    ap.add_argument("--runtime-direct-superrad-n-ref", type=int, default=2)
     ap.add_argument("--tag", type=str, default="")
     ap.add_argument("--skip-paper-copy", action="store_true")
     return ap.parse_args()
@@ -540,7 +584,7 @@ def resolve_reference_anchor(
 
 
 def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray) -> tuple[float, bool]:
-    if str(chain_mode) != "full_direct":
+    if str(chain_mode) not in {"full_direct", "full_direct_runtime"}:
         return float(ref_d), False
     if len(d_vals) == 0:
         return float(ref_d), False
@@ -582,6 +626,16 @@ def main() -> None:
         uv_rge_gamma_diag=float(args.uv_rge_gamma_diag),
         uv_rge_gamma_offdiag=float(args.uv_rge_gamma_offdiag),
         uv_rge_log_clip=float(args.uv_rge_log_clip),
+        runtime_direct_force=bool(args.runtime_direct_force),
+        runtime_direct_chi_rho_max=float(args.runtime_direct_chi_rho_max),
+        runtime_direct_chi_z_margin=float(args.runtime_direct_chi_z_margin),
+        runtime_direct_chi_n_mu=int(args.runtime_direct_chi_n_mu),
+        runtime_direct_chi_tol=float(args.runtime_direct_chi_tol),
+        runtime_direct_chi_maxiter=int(args.runtime_direct_chi_maxiter),
+        runtime_direct_chi_sigma=float(args.runtime_direct_chi_sigma),
+        runtime_direct_superrad_zmax=float(args.runtime_direct_superrad_zmax),
+        runtime_direct_superrad_ref_d=float(args.runtime_direct_superrad_ref_d),
+        runtime_direct_superrad_n_ref=int(args.runtime_direct_superrad_n_ref),
     )
     d_vals_grid = np.linspace(float(args.d_min), float(args.d_max), int(args.d_num))
     eta_vals_grid = np.linspace(float(args.eta_min), float(args.eta_max), int(args.eta_num))
@@ -597,7 +651,10 @@ def main() -> None:
     ref_d, snapped = snap_ref_d_for_full_direct(str(args.chain_mode), float(ref_d), d_vals_grid)
     if snapped:
         old_ref_d = float(args.ref_d) if str(args.ref_mode) == "fixed" else float("nan")
-        print(f"[info] chain_mode=full_direct snapped ref_D to grid: {old_ref_d if old_ref_d == old_ref_d else 'selector'} -> {ref_d:.6g}")
+        print(
+            "[info] chain_mode in {full_direct,full_direct_runtime} snapped ref_D to grid:",
+            f"{old_ref_d if old_ref_d == old_ref_d else 'selector'} -> {ref_d:.6g}",
+        )
         ref_source = f"{ref_source}+snap_refD_to_grid"
     suffix = build_suffix(ref_mode=str(args.ref_mode), ref_d=ref_d, ref_eta=ref_eta, tag=str(args.tag))
 
@@ -656,6 +713,16 @@ def main() -> None:
         "uv_rge_gamma_offdiag": float(args.uv_rge_gamma_offdiag),
         "uv_rge_log_clip": float(args.uv_rge_log_clip),
         "chain_mode": str(args.chain_mode),
+        "runtime_direct_force": bool(args.runtime_direct_force),
+        "runtime_direct_chi_rho_max": float(args.runtime_direct_chi_rho_max),
+        "runtime_direct_chi_z_margin": float(args.runtime_direct_chi_z_margin),
+        "runtime_direct_chi_n_mu": int(args.runtime_direct_chi_n_mu),
+        "runtime_direct_chi_tol": float(args.runtime_direct_chi_tol),
+        "runtime_direct_chi_maxiter": int(args.runtime_direct_chi_maxiter),
+        "runtime_direct_chi_sigma": float(args.runtime_direct_chi_sigma),
+        "runtime_direct_superrad_zmax": float(args.runtime_direct_superrad_zmax),
+        "runtime_direct_superrad_ref_d": float(args.runtime_direct_superrad_ref_d),
+        "runtime_direct_superrad_n_ref": int(args.runtime_direct_superrad_n_ref),
         "d_min": float(args.d_min),
         "d_max": float(args.d_max),
         "d_num": int(args.d_num),

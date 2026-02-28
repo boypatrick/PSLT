@@ -117,6 +117,7 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - chain-mode parity audit (`auto` vs `full_direct`, `D21 x E41`)
   and exports `output/kinetic_action_chain/full_direct_map_release_summary.csv` (mirrored to `paper/full_direct_map_release_summary.csv`).
   Baseline scan scripts now default to `chain_mode=full_direct` (`scan_hll_signal_strengths.py`, `scan_hll_uv_to_eft_matching.py`), while `auto` is retained for comparator audits.
+  A runtime-direct extension is also available via `chain_mode=full_direct_runtime`, which builds/rebuilds active D-grid localized-direct profiles (`chi_LR(D)`, `A_l(D)`) inside the scan entrypoint before strict full-direct evaluation.
 - **Core-parameter robustness table (B2):** `code/scan_core_param_robustness.py` exports local one-at-a-time windows for `c_eff`, `nu`, `p_B` and their map fractions:
   - `output/robustness/core_param_robustness_table.csv`
   - `output/robustness/core_param_robustness_cases.csv`

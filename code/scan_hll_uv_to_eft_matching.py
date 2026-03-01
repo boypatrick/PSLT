@@ -29,6 +29,12 @@ Chain profile selection:
                               g_N(D), chi_LR(D), and A_l(D) are evaluated by
                               direct solvers inside scan cells; B_N stays on
                               release EFT-operator profile closure.
+  - --chain-mode cell_direct_runtime_release:
+                              release-candidate all-direct path:
+                              evaluate g_N(D), chi_LR(D), A_l(D), and EFT
+                              operator visibility inputs by direct solvers
+                              inside scan cells, with cache enabled as
+                              the production default.
   - --chain-mode cell_direct_runtime_extreme:
                               stress-only all-direct path with no profile
                               object; evaluate g_N(D), chi_LR(D), A_l(D),
@@ -110,7 +116,13 @@ def make_suffix(tag: str) -> str:
 
 
 def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray) -> tuple[float, bool]:
-    if str(chain_mode) not in {"full_direct", "full_direct_runtime", "cell_direct_runtime", "cell_direct_runtime_extreme"}:
+    if str(chain_mode) not in {
+        "full_direct",
+        "full_direct_runtime",
+        "cell_direct_runtime",
+        "cell_direct_runtime_release",
+        "cell_direct_runtime_extreme",
+    }:
         return float(ref_d), False
     if len(d_vals) == 0:
         return float(ref_d), False
@@ -172,6 +184,8 @@ def make_baseline_kinetics(
     chi_source = "runtime_cell_solver"
     gamma_source = "runtime_cell_solver"
 
+    runtime_direct_no_cache_eff = bool(runtime_direct_no_cache)
+
     if chain_mode_eff == "full_direct_runtime":
         ensure_runtime_full_direct_profiles(
             root=ROOT,
@@ -198,6 +212,13 @@ def make_baseline_kinetics(
         chi_mode = "localized_runtime_direct"
         gamma_mode = "action_runtime_direct"
         g_source = "runtime_cell_solver"
+    elif chain_mode_eff == "cell_direct_runtime_release":
+        g_mode = "fp_2d_full_runtime_direct"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = "runtime_cell_solver"
+        runtime_direct_no_cache_eff = False
     elif chain_mode_eff == "cell_direct_runtime_extreme":
         g_mode = "fp_2d_full_runtime_direct"
         b_mode = "eft_operator_norm_runtime_direct"
@@ -237,7 +258,7 @@ def make_baseline_kinetics(
         A2=BASELINE["A2"],
         gamma_mode=str(gamma_mode),
         gamma_superrad_csv=str(superrad_prof["path"]) if superrad_prof is not None else None,
-        runtime_direct_use_cache=not bool(runtime_direct_no_cache),
+        runtime_direct_use_cache=not bool(runtime_direct_no_cache_eff),
         runtime_direct_chi_rho_max=float(runtime_direct_chi_rho_max),
         runtime_direct_chi_z_margin=float(runtime_direct_chi_z_margin),
         runtime_direct_chi_n_mu=int(runtime_direct_chi_n_mu),
@@ -345,7 +366,14 @@ def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="UV-to-EFT matching audit on PSLT scan grid")
     ap.add_argument(
         "--chain-mode",
-        choices=["auto", "full_direct", "full_direct_runtime", "cell_direct_runtime", "cell_direct_runtime_extreme"],
+        choices=[
+            "auto",
+            "full_direct",
+            "full_direct_runtime",
+            "cell_direct_runtime",
+            "cell_direct_runtime_release",
+            "cell_direct_runtime_extreme",
+        ],
         default="full_direct",
     )
     ap.add_argument("--d-min", type=float, default=float(BASELINE["D_min"]))
@@ -421,7 +449,7 @@ def main() -> None:
     ref_d_eff, snapped_ref_d = snap_ref_d_for_full_direct(str(args.chain_mode), float(args.ref_d), d_vals)
     if snapped_ref_d:
         print(
-            "[info] chain_mode in {full_direct,full_direct_runtime,cell_direct_runtime,cell_direct_runtime_extreme} snapped ref_D to grid:",
+            "[info] chain_mode in {full_direct,full_direct_runtime,cell_direct_runtime,cell_direct_runtime_release,cell_direct_runtime_extreme} snapped ref_D to grid:",
             f"{float(args.ref_d):.6g} -> {ref_d_eff:.6g}",
         )
 

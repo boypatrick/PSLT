@@ -68,6 +68,18 @@ def rows() -> List[Dict[str, object]]:
             "note": "Large-surface release gate: full_direct vs cell_direct_runtime parity audit.",
         },
         {
+            "artifact_path": "paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release.csv",
+            "status": "diagnostic_variant",
+            "category": "chain_mode_audit",
+            "note": "Small-surface release-candidate all-direct gate: full_direct vs cell_direct_runtime_release.",
+        },
+        {
+            "artifact_path": "paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release.csv",
+            "status": "diagnostic_variant",
+            "category": "chain_mode_audit",
+            "note": "Large-surface release-candidate all-direct gate: full_direct vs cell_direct_runtime_release.",
+        },
+        {
             "artifact_path": "paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_extreme.csv",
             "status": "diagnostic_variant",
             "category": "chain_mode_audit",
@@ -83,7 +95,7 @@ def rows() -> List[Dict[str, object]]:
             "artifact_path": "paper/full_direct_map_release_summary.csv",
             "status": "canonical_baseline",
             "category": "chain_mode_audit",
-            "note": "Integrated release summary: main full_direct map + direct-bias checks + large runtime/extreme chain gates.",
+            "note": "Integrated release summary: main full_direct map + direct-bias checks + runtime/release-candidate/extreme chain gates.",
         },
         {
             "artifact_path": "output/kinetic_action_chain/full_direct_map_release_meta.json",

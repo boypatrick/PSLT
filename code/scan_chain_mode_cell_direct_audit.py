@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Audit map-level bias between chain_mode=full_direct and chain_mode=cell_direct_runtime.
+Audit map-level bias between chain_mode=full_direct and a selected cell-direct chain mode.
 
 This script runs scan_hll_signal_strengths.py twice on the same grid:
   1) chain_mode=full_direct
-  2) chain_mode=cell_direct_runtime
+  2) chain_mode=<cell_chain_mode>
 
 Then it compares map outputs and writes a compact summary table.
 
@@ -109,7 +109,7 @@ def _snap_ref_d_to_grid(ref_d: float, d_min: float, d_max: float, d_num: int) ->
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Compare chain_mode=full_direct vs cell_direct_runtime on the same H->ll map grid.")
+    ap = argparse.ArgumentParser(description="Compare chain_mode=full_direct vs a selected cell-direct chain mode on the same H->ll map grid.")
     ap.add_argument("--d-min", type=float, default=4.0)
     ap.add_argument("--d-max", type=float, default=20.0)
     ap.add_argument("--d-num", type=int, default=21)
@@ -126,7 +126,7 @@ def main() -> None:
         "--cell-chain-mode",
         type=str,
         default="cell_direct_runtime",
-        choices=["cell_direct_runtime", "cell_direct_runtime_extreme"],
+        choices=["cell_direct_runtime", "cell_direct_runtime_release", "cell_direct_runtime_extreme"],
         help="Target chain mode to compare against full_direct.",
     )
     args = ap.parse_args()
@@ -187,7 +187,7 @@ def main() -> None:
     keys = ["D", "eta"]
     merged = full_map.merge(cell_map, on=keys, suffixes=("_full", "_cell"))
     if len(merged) != len(full_map) or len(merged) != len(cell_map):
-        raise RuntimeError("Map rows do not align between full_direct and cell_direct_runtime runs.")
+        raise RuntimeError("Map rows do not align between full_direct and selected cell-direct runs.")
 
     d_mu_ee = (merged["mu_ee_cell"] - merged["mu_ee_full"]).to_numpy(dtype=float)
     d_mu_mumu = (merged["mu_mumu_cell"] - merged["mu_mumu_full"]).to_numpy(dtype=float)
@@ -236,9 +236,7 @@ def main() -> None:
 
     tag_base = f"Dgrid{int(args.d_num)}_Egrid{int(args.eta_num)}"
     tag = (
-        tag_base
-        if str(args.cell_chain_mode) == "cell_direct_runtime"
-        else f"{tag_base}_{str(args.cell_chain_mode)}"
+        tag_base if str(args.cell_chain_mode) == "cell_direct_runtime" else f"{tag_base}_{str(args.cell_chain_mode)}"
     )
     out_csv = OUTDIR / f"chain_mode_cell_direct_audit_{tag}.csv"
     out_json = OUTDIR / f"chain_mode_cell_direct_audit_{tag}.json"

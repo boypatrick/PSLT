@@ -28,7 +28,12 @@ import pandas as pd
 os.environ.setdefault("MPLCONFIGDIR", "/tmp")
 os.environ.setdefault("XDG_CACHE_HOME", "/tmp")
 
-from scan_hll_signal_strengths import PAPER_BASELINE, compute_maps, make_baseline_kinetics
+from scan_hll_signal_strengths import (
+    PAPER_BASELINE,
+    compute_maps,
+    make_baseline_kinetics,
+    snap_ref_d_for_full_direct,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -37,27 +42,8 @@ OUT_HLL = ROOT / "output" / "hll_signal_strength"
 PAPER = ROOT / "paper"
 
 
-def _baseline_paths(tag: str) -> Tuple[Path, Path]:
-    return (
-        OUT_HLL / f"hll_signal_strength_map_{tag}.csv",
-        OUT_HLL / f"hll_signal_strength_run_meta_{tag}.json",
-    )
-
-
-def _load_baseline(tag: str) -> Tuple[pd.DataFrame, float, float]:
-    map_path, meta_path = _baseline_paths(tag)
-    if not map_path.exists():
-        raise FileNotFoundError(f"Missing baseline map: {map_path}")
-    if not meta_path.exists():
-        raise FileNotFoundError(f"Missing baseline meta: {meta_path}")
-    df = pd.read_csv(map_path).sort_values(["eta", "D"]).reset_index(drop=True)
-    meta = json.loads(meta_path.read_text())
-    ref_d = float(meta.get("ref_D_effective", PAPER_BASELINE["ref_D"]))
-    ref_eta = float(meta.get("ref_eta", PAPER_BASELINE["ref_eta"]))
-    return df, ref_d, ref_eta
-
-
-def _compute_candidate_map(
+def _compute_map(
+    chain_mode: str,
     params_override: Dict[str, float],
     d_num: int,
     eta_num: int,
@@ -66,7 +52,7 @@ def _compute_candidate_map(
 ) -> pd.DataFrame:
     kin = make_baseline_kinetics(
         observable_mode=str(PAPER_BASELINE["hll_observable_mode"]),
-        chain_mode="cell_direct_runtime_release",
+        chain_mode=str(chain_mode),
         d_min=float(PAPER_BASELINE["D_min"]),
         d_max=float(PAPER_BASELINE["D_max"]),
         d_num=int(d_num),
@@ -201,19 +187,41 @@ def main() -> None:
     OUT_ROB.mkdir(parents=True, exist_ok=True)
     PAPER.mkdir(parents=True, exist_ok=True)
 
-    full_small, ref_d_small, ref_eta_small = _load_baseline("full_direct_map_full_release_D21E41")
-    full_large, ref_d_large, ref_eta_large = _load_baseline("full_direct_map_full_release_D60E21")
+    # Use the same fixed-anchor convention as release parity gates.
+    ref_eta = float(PAPER_BASELINE["ref_eta"])
+    d_vals_small = np.linspace(float(PAPER_BASELINE["D_min"]), float(PAPER_BASELINE["D_max"]), 21)
+    d_vals_large = np.linspace(float(PAPER_BASELINE["D_min"]), float(PAPER_BASELINE["D_max"]), 60)
+    ref_d_small, _ = snap_ref_d_for_full_direct("full_direct", float(PAPER_BASELINE["ref_D"]), d_vals_small)
+    ref_d_large, _ = snap_ref_d_for_full_direct("full_direct", float(PAPER_BASELINE["ref_D"]), d_vals_large)
+
+    full_small = _compute_map(
+        chain_mode="full_direct",
+        params_override={},
+        d_num=21,
+        eta_num=41,
+        ref_d=float(ref_d_small),
+        ref_eta=float(ref_eta),
+    )
+    full_large = _compute_map(
+        chain_mode="full_direct",
+        params_override={},
+        d_num=60,
+        eta_num=21,
+        ref_d=float(ref_d_large),
+        ref_eta=float(ref_eta),
+    )
 
     candidates = _sample_candidates(int(args.n_candidates), int(args.seed))
 
     small_rows: List[Dict[str, float]] = []
     for idx, cand in enumerate(candidates):
-        cand_df = _compute_candidate_map(
+        cand_df = _compute_map(
+            chain_mode="cell_direct_runtime_release",
             params_override=cand,
             d_num=21,
             eta_num=41,
             ref_d=float(ref_d_small),
-            ref_eta=float(ref_eta_small),
+            ref_eta=float(ref_eta),
         )
         m = _metrics(full_small, cand_df)
         row = {"candidate_id": idx, **cand, **m}
@@ -239,12 +247,13 @@ def main() -> None:
             "runtime_direct_b_flavor_sigma_max_scale": float(r["runtime_direct_b_flavor_sigma_max_scale"]),
             "runtime_direct_b_profile_blend": float(r["runtime_direct_b_profile_blend"]),
         }
-        cand_df = _compute_candidate_map(
+        cand_df = _compute_map(
+            chain_mode="cell_direct_runtime_release",
             params_override=cand,
             d_num=60,
             eta_num=21,
             ref_d=float(ref_d_large),
-            ref_eta=float(ref_eta_large),
+            ref_eta=float(ref_eta),
         )
         m = _metrics(full_large, cand_df)
         row = {"candidate_id": int(r["candidate_id"]), **cand, **m}

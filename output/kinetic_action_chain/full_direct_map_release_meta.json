@@ -9,5 +9,6 @@
   "chain_parity_large_runtime": "output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21.csv",
   "chain_parity_large_release": "output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release.csv",
   "chain_parity_large_extreme": "output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_extreme.csv",
+  "b_module_diagnostics": "output/kinetic_action_chain/full_direct_b_module_diagnostics_D60E21.csv",
   "summary_csv": "output/kinetic_action_chain/full_direct_map_release_summary.csv"
 }

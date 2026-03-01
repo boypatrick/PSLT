@@ -22,12 +22,18 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
 from typing import Dict, List
 
+import numpy as np
 import pandas as pd
+
+os.environ.setdefault("MPLCONFIGDIR", "/tmp")
+
+from scan_hll_signal_strengths import PAPER_BASELINE, make_baseline_kinetics  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -65,6 +71,189 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--main-chain-mode", choices=["full_direct", "full_direct_runtime"], default="full_direct")
     ap.add_argument("--runtime-direct-force", action="store_true", help="When main-chain-mode=full_direct_runtime, force direct profile rebuild.")
     return ap.parse_args()
+
+
+def _map_csv(tag: str) -> Path:
+    return OUT_HLL / f"hll_signal_strength_map_{tag}.csv"
+
+
+def _snap_ref_d_to_grid(ref_d: float, d_values: np.ndarray) -> float:
+    if len(d_values) == 0:
+        return float(ref_d)
+    idx = int(np.argmin(np.abs(np.asarray(d_values, dtype=float) - float(ref_d))))
+    return float(d_values[idx])
+
+
+def _nearest_row_idx(df: pd.DataFrame, d_target: float, eta_target: float) -> int:
+    dist = (df["D"].astype(float) - float(d_target)) ** 2 + (df["eta"].astype(float) - float(eta_target)) ** 2
+    return int(dist.idxmin())
+
+
+def _extract_b_metrics(kinetics, d_val: float, eta_val: float, ref_d: float, ref_eta: float) -> Dict[str, float]:
+    t_coh = float(PAPER_BASELINE["t_coh"])
+    n_max = int(PAPER_BASELINE["hll_observable_nmax"])
+    mode = "eft_wilson_uv_rge"
+    b123 = np.array([kinetics.B_N(1, d_val), kinetics.B_N(2, d_val), kinetics.B_N(3, d_val)], dtype=float)
+    yraw = np.asarray(kinetics._hll_yraw_vector(float(d_val)), dtype=float)
+    m2 = np.asarray(kinetics._hll_m2_vector(float(d_val)), dtype=float)
+    width_ratio = float(
+        kinetics.hll_total_width_ratio_uv_rge(
+            D=float(d_val),
+            eta=float(eta_val),
+            t_coh=t_coh,
+            ref_D=float(ref_d),
+            ref_eta=float(ref_eta),
+            N_max=n_max,
+        )
+    )
+    mu_mumu_model = float(
+        kinetics.hll_mu_pred(
+            layer_n=2,
+            D=float(d_val),
+            eta=float(eta_val),
+            t_coh=t_coh,
+            ref_D=float(ref_d),
+            ref_eta=float(ref_eta),
+            observable_mode=mode,
+            N_max=n_max,
+        )
+    )
+    return {
+        "B1": float(b123[0]),
+        "B2": float(b123[1]),
+        "B3": float(b123[2]),
+        "yraw1": float(yraw[0]),
+        "yraw2": float(yraw[1]),
+        "yraw3": float(yraw[2]),
+        "m2_1": float(m2[0]),
+        "m2_2": float(m2[1]),
+        "m2_3": float(m2[2]),
+        "width_ratio": width_ratio,
+        "mu_mumu_model": mu_mumu_model,
+    }
+
+
+def build_b_module_diagnostics(
+    tag_full_large: str,
+    tag_cell_large_runtime: str,
+    tag_cell_large_release: str,
+    tag_cell_large_extreme: str,
+) -> pd.DataFrame:
+    full_map = pd.read_csv(_map_csv(tag_full_large))
+    full_map = full_map.sort_values(["D", "eta"]).reset_index(drop=True)
+    d_vals = np.sort(full_map["D"].astype(float).unique())
+    ref_d_eff = _snap_ref_d_to_grid(float(PAPER_BASELINE["ref_D"]), d_vals)
+    ref_eta = float(PAPER_BASELINE["ref_eta"])
+
+    common = {
+        "observable_mode": str(PAPER_BASELINE["hll_observable_mode"]),
+        "d_min": float(PAPER_BASELINE["D_min"]),
+        "d_max": float(PAPER_BASELINE["D_max"]),
+        "d_num": int(PAPER_BASELINE["D_num"]),
+        "uv_blend": float(PAPER_BASELINE["hll_uv_blend"]),
+        "uv_m2_power": float(PAPER_BASELINE["hll_uv_m2_power"]),
+        "uv_match_kappa_diag": float(PAPER_BASELINE["hll_uv_match_kappa_diag"]),
+        "uv_match_kappa_offdiag": float(PAPER_BASELINE["hll_uv_match_kappa_offdiag"]),
+        "uv_rge_mu_low": float(PAPER_BASELINE["hll_uv_rge_mu_low"]),
+        "uv_rge_gamma_diag": float(PAPER_BASELINE["hll_uv_rge_gamma_diag"]),
+        "uv_rge_gamma_offdiag": float(PAPER_BASELINE["hll_uv_rge_gamma_offdiag"]),
+        "uv_rge_log_clip": float(PAPER_BASELINE["hll_uv_rge_log_clip"]),
+        "runtime_direct_force": False,
+        "runtime_direct_no_cache": False,
+        "runtime_direct_chi_rho_max": float(PAPER_BASELINE.get("runtime_direct_chi_rho_max", 3.0)),
+        "runtime_direct_chi_z_margin": float(PAPER_BASELINE.get("runtime_direct_chi_z_margin", 6.0)),
+        "runtime_direct_chi_n_mu": int(PAPER_BASELINE.get("runtime_direct_chi_n_mu", 120)),
+        "runtime_direct_chi_tol": float(PAPER_BASELINE.get("runtime_direct_chi_tol", 1e-8)),
+        "runtime_direct_chi_maxiter": int(PAPER_BASELINE.get("runtime_direct_chi_maxiter", 30000)),
+        "runtime_direct_chi_sigma": float(PAPER_BASELINE.get("runtime_direct_chi_sigma", 2.5)),
+        "runtime_direct_superrad_zmax": float(PAPER_BASELINE.get("runtime_direct_superrad_zmax", 80.0)),
+        "runtime_direct_superrad_ref_d": float(PAPER_BASELINE.get("runtime_direct_superrad_ref_d", 12.0)),
+        "runtime_direct_superrad_n_ref": int(PAPER_BASELINE.get("runtime_direct_superrad_n_ref", 2)),
+    }
+
+    kinetics = {
+        "full_direct": make_baseline_kinetics(chain_mode="full_direct", **common),
+        "cell_direct_runtime": make_baseline_kinetics(chain_mode="cell_direct_runtime", **common),
+        "cell_direct_runtime_release": make_baseline_kinetics(chain_mode="cell_direct_runtime_release", **common),
+        "cell_direct_runtime_extreme": make_baseline_kinetics(chain_mode="cell_direct_runtime_extreme", **common),
+    }
+
+    comparisons = [
+        {
+            "scenario_label": "runtime_profile",
+            "chain_mode": "cell_direct_runtime",
+            "tag": tag_cell_large_runtime,
+        },
+        {
+            "scenario_label": "runtime_bnorm_release_candidate",
+            "chain_mode": "cell_direct_runtime_release",
+            "tag": tag_cell_large_release,
+        },
+        {
+            "scenario_label": "runtime_bnorm_extreme",
+            "chain_mode": "cell_direct_runtime_extreme",
+            "tag": tag_cell_large_extreme,
+        },
+    ]
+
+    rows: List[Dict[str, object]] = []
+    for comp in comparisons:
+        cmp_map = pd.read_csv(_map_csv(str(comp["tag"]))).sort_values(["D", "eta"]).reset_index(drop=True)
+        if len(cmp_map) != len(full_map):
+            raise RuntimeError(
+                f"B diagnostics map size mismatch for tag={comp['tag']}: full={len(full_map)} vs cmp={len(cmp_map)}"
+            )
+        if not np.allclose(full_map["D"].to_numpy(dtype=float), cmp_map["D"].to_numpy(dtype=float), rtol=0, atol=1e-12):
+            raise RuntimeError(f"B diagnostics D-grid mismatch for tag={comp['tag']}.")
+        if not np.allclose(full_map["eta"].to_numpy(dtype=float), cmp_map["eta"].to_numpy(dtype=float), rtol=0, atol=1e-12):
+            raise RuntimeError(f"B diagnostics eta-grid mismatch for tag={comp['tag']}.")
+
+        abs_delta = np.abs(full_map["mu_mumu"].to_numpy(dtype=float) - cmp_map["mu_mumu"].to_numpy(dtype=float))
+        idx_max = int(np.argmax(abs_delta))
+        idx_ref = _nearest_row_idx(full_map, d_target=ref_d_eff, eta_target=ref_eta)
+
+        for point_kind, idx in (("max_abs_delta_mu_mumu", idx_max), ("reference_anchor_nearest_grid", idx_ref)):
+            d_val = float(full_map.iloc[idx]["D"])
+            eta_val = float(full_map.iloc[idx]["eta"])
+            full_metrics = _extract_b_metrics(kinetics["full_direct"], d_val, eta_val, ref_d=ref_d_eff, ref_eta=ref_eta)
+            cmp_metrics = _extract_b_metrics(kinetics[str(comp["chain_mode"])], d_val, eta_val, ref_d=ref_d_eff, ref_eta=ref_eta)
+            rows.append(
+                {
+                    "scenario_label": str(comp["scenario_label"]),
+                    "chain_mode": str(comp["chain_mode"]),
+                    "tag": str(comp["tag"]),
+                    "point_kind": point_kind,
+                    "D": d_val,
+                    "eta": eta_val,
+                    "mu_mumu_full_map": float(full_map.iloc[idx]["mu_mumu"]),
+                    "mu_mumu_cmp_map": float(cmp_map.iloc[idx]["mu_mumu"]),
+                    "abs_delta_mu_mumu_map": float(abs_delta[idx]),
+                    "B1_full": full_metrics["B1"],
+                    "B2_full": full_metrics["B2"],
+                    "B3_full": full_metrics["B3"],
+                    "B1_cmp": cmp_metrics["B1"],
+                    "B2_cmp": cmp_metrics["B2"],
+                    "B3_cmp": cmp_metrics["B3"],
+                    "yraw1_full": full_metrics["yraw1"],
+                    "yraw2_full": full_metrics["yraw2"],
+                    "yraw3_full": full_metrics["yraw3"],
+                    "yraw1_cmp": cmp_metrics["yraw1"],
+                    "yraw2_cmp": cmp_metrics["yraw2"],
+                    "yraw3_cmp": cmp_metrics["yraw3"],
+                    "m2_1_full": full_metrics["m2_1"],
+                    "m2_2_full": full_metrics["m2_2"],
+                    "m2_3_full": full_metrics["m2_3"],
+                    "m2_1_cmp": cmp_metrics["m2_1"],
+                    "m2_2_cmp": cmp_metrics["m2_2"],
+                    "m2_3_cmp": cmp_metrics["m2_3"],
+                    "width_ratio_full": full_metrics["width_ratio"],
+                    "width_ratio_cmp": cmp_metrics["width_ratio"],
+                    "mu_mumu_full_model": full_metrics["mu_mumu_model"],
+                    "mu_mumu_cmp_model": cmp_metrics["mu_mumu_model"],
+                }
+            )
+
+    return pd.DataFrame(rows)
 
 
 def main() -> None:
@@ -315,6 +504,18 @@ def main() -> None:
     parity_large_release = pd.read_csv(parity_large_release_summary).iloc[0].to_dict()
     parity_large_extreme = pd.read_csv(parity_large_extreme_summary).iloc[0].to_dict()
 
+    # 9) B-module drift diagnostics (map-level max-drift + anchor points, D60 x E21).
+    b_diag_df = build_b_module_diagnostics(
+        tag_full_large=tag_full_large,
+        tag_cell_large_runtime=tag_cell_large_runtime,
+        tag_cell_large_release=tag_cell_large_release,
+        tag_cell_large_extreme=tag_cell_large_extreme,
+    )
+    b_diag_csv = OUT_KIN / "full_direct_b_module_diagnostics_D60E21.csv"
+    b_diag_paper_csv = PAPER / b_diag_csv.name
+    b_diag_df.to_csv(b_diag_csv, index=False)
+    b_diag_paper_csv.write_text(b_diag_csv.read_text())
+
     rows: List[Dict[str, object]] = [
         {
             "scenario": "main_map_full_direct_baseline",
@@ -359,7 +560,7 @@ def main() -> None:
             "source": str(large_summary.relative_to(ROOT)),
         },
         {
-            "scenario": "chain_mode_parity_full_direct_vs_cell_direct_runtime",
+            "scenario": "chain_mode_parity_full_direct_vs_cell_direct_runtime_profile",
             "grid": "D21xE41",
             "n_points": int(parity_small["n_points"]),
             "f_chi2_mumu_le_4": float(parity_small["f_chi2_le_4_mumu_full_direct"]),
@@ -373,7 +574,7 @@ def main() -> None:
             "source": str(parity_small_summary.relative_to(ROOT)),
         },
         {
-            "scenario": "chain_mode_large_parity_full_direct_vs_cell_direct_runtime",
+            "scenario": "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_profile",
             "grid": "D60xE21",
             "n_points": int(parity_large_runtime["n_points"]),
             "f_chi2_mumu_le_4": float(parity_large_runtime["f_chi2_le_4_mumu_full_direct"]),
@@ -387,7 +588,7 @@ def main() -> None:
             "source": str(parity_large_runtime_summary.relative_to(ROOT)),
         },
         {
-            "scenario": "chain_mode_parity_full_direct_vs_cell_direct_runtime_release",
+            "scenario": "chain_mode_parity_full_direct_vs_cell_direct_runtime_bnorm_release_candidate",
             "grid": "D21xE41",
             "n_points": int(parity_small_release["n_points"]),
             "f_chi2_mumu_le_4": float(parity_small_release["f_chi2_le_4_mumu_full_direct"]),
@@ -401,7 +602,7 @@ def main() -> None:
             "source": str(parity_small_release_summary.relative_to(ROOT)),
         },
         {
-            "scenario": "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_release",
+            "scenario": "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_release_candidate",
             "grid": "D60xE21",
             "n_points": int(parity_large_release["n_points"]),
             "f_chi2_mumu_le_4": float(parity_large_release["f_chi2_le_4_mumu_full_direct"]),
@@ -415,7 +616,7 @@ def main() -> None:
             "source": str(parity_large_release_summary.relative_to(ROOT)),
         },
         {
-            "scenario": "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_extreme",
+            "scenario": "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_extreme",
             "grid": "D60xE21",
             "n_points": int(parity_large_extreme["n_points"]),
             "f_chi2_mumu_le_4": float(parity_large_extreme["f_chi2_le_4_mumu_full_direct"]),
@@ -427,6 +628,20 @@ def main() -> None:
             "max_abs_delta_mu_mumu": float(parity_large_extreme["max_abs_delta_mu_mumu"]),
             "delta_f_chi2_mumu_le_4": float(parity_large_extreme["delta_f_chi2_le_4_mumu"]),
             "source": str(parity_large_extreme_summary.relative_to(ROOT)),
+        },
+        {
+            "scenario": "b_module_diagnostics_large_surface",
+            "grid": "D60xE21",
+            "n_points": int(len(b_diag_df)),
+            "f_chi2_mumu_le_4": "",
+            "best_chi2_mumu": "",
+            "best_D": "",
+            "best_eta": "",
+            "frac_winner_mismatch": "",
+            "max_abs_delta_R3": "",
+            "max_abs_delta_mu_mumu": "",
+            "delta_f_chi2_mumu_le_4": "",
+            "source": str(b_diag_csv.relative_to(ROOT)),
         },
     ]
 
@@ -452,6 +667,7 @@ def main() -> None:
                 "chain_parity_large_runtime": str(parity_large_runtime_summary.relative_to(ROOT)),
                 "chain_parity_large_release": str(parity_large_release_summary.relative_to(ROOT)),
                 "chain_parity_large_extreme": str(parity_large_extreme_summary.relative_to(ROOT)),
+                "b_module_diagnostics": str(b_diag_csv.relative_to(ROOT)),
                 "summary_csv": str(out_csv.relative_to(ROOT)),
             },
             indent=2,
@@ -461,6 +677,8 @@ def main() -> None:
     print(f"[saved] {out_csv}")
     print(f"[saved] {paper_csv}")
     print(f"[saved] {out_json}")
+    print(f"[saved] {b_diag_csv}")
+    print(f"[saved] {b_diag_paper_csv}")
     for row in rows:
         print(row)
 

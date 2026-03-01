@@ -1,17 +1,17 @@
 # PRD Pre-Submission Freeze Report
 
-- Generated (UTC): 2026-02-26T07:14:15Z
-- Run ID: 20260226T071415Z_9ad9e92_prd_freeze
+- Generated (UTC): 2026-03-01T14:10:28Z
+- Run ID: 20260301T140833Z_3e61a1a_prd_freeze
 - Git branch: main
-- Git commit: 9ad9e928816740a5839c6f840e6d9878c65fd5fc
-- Git dirty at report time: False
+- Git commit: 3e61a1a36ce55a0b811716757e95fdd9e3213e1d
+- Git dirty at report time: True
 
 ## Key Metrics
 
 - Baseline `f(R3>0.90)`: 0.926944
 - `f(chi2_mumu<4)`: 0.150000
 - Best `chi2_mumu`: 2.207981e-05
-- UV audit `max |delta mu_mumu|`: 8.926408e-03
+- UV audit `max |delta mu_mumu|`: 9.738091e-03
 - UV audit `max |delta C_match_mumu|`: 1.000000e-30
 
 ## Checks

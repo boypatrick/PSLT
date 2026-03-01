@@ -1,16 +1,16 @@
 {
-  "generated_at_utc": "2026-02-26T07:14:15Z",
-  "run_id": "20260226T071415Z_9ad9e92_prd_freeze",
+  "generated_at_utc": "2026-03-01T14:10:28Z",
+  "run_id": "20260301T140833Z_3e61a1a_prd_freeze",
   "git": {
     "branch": "main",
-    "commit": "9ad9e928816740a5839c6f840e6d9878c65fd5fc",
-    "dirty": false
+    "commit": "3e61a1a36ce55a0b811716757e95fdd9e3213e1d",
+    "dirty": true
   },
   "key_metrics": {
     "f_R3_gt_0p90_baseline": 0.9269444444444443,
     "f_chi2_le_4_mumu": 0.15,
     "best_chi2_mumu": 2.2079807637329057e-05,
-    "uv_max_abs_delta_mu_mumu": 0.008926408322622592,
+    "uv_max_abs_delta_mu_mumu": 0.009738090743724115,
     "uv_max_abs_delta_C_match_mumu": 1e-30
   },
   "checks": [
@@ -88,13 +88,13 @@
   "files": [
     {
       "path": "paper/main.tex",
-      "size_bytes": 123979,
-      "sha256": "318d15d7ce1e86b8fe7783bf3c64b8e363365b128961226d924e6b8e914e926d"
+      "size_bytes": 136166,
+      "sha256": "10afb9ee29b6982476361e81ea319f83615264fc74020cd8bcfc3db937bcdcf7"
     },
     {
       "path": "paper/main.pdf",
-      "size_bytes": 3477216,
-      "sha256": "9b1ef5413558987ba3c47b511ec530afc99b13be4b635f9742dfaf2c126c8648"
+      "size_bytes": 3493305,
+      "sha256": "59a3a603bf42fc070d5994a20789b98af2c93010463a2799e286757219217d3e"
     },
     {
       "path": "paper/hll_signal_strength_summary.csv",
@@ -103,23 +103,23 @@
     },
     {
       "path": "paper/hll_uv_to_eft_summary.csv",
-      "size_bytes": 1024,
-      "sha256": "1055d1049f5b89d6e4123b312690ff4c941641a2ab51db4d1a90b1769e7c1c29"
+      "size_bytes": 1059,
+      "sha256": "7f89ca54c39c7c0df0e60c39eb60193ab3628e658ea1abba6e76326b652a2244"
     },
     {
       "path": "paper/hll_rge_sensitivity.csv",
       "size_bytes": 582,
-      "sha256": "02c2438ed6ad7b5688f8afd29b3a53f817dfb8851c86b3cfe0913820e1fa82d6"
+      "sha256": "9411137ac04cac185994d582b9d8acf88b7f1cb64f663ec138bf728abf13f27a"
     },
     {
       "path": "output/first_principles_migration/first_principles_migration_summary.csv",
-      "size_bytes": 838,
-      "sha256": "99aeba08b159a1016ab9b5336c132c8ecd56ad8a8be0002aac0887b69cfe4e8e"
+      "size_bytes": 858,
+      "sha256": "88d3601b4e3cd6e990f4f9420343fc64a2b146521e82cc4319e832b954d7df81"
     },
     {
       "path": "output/hll_signal_strength/hll_signal_strength_run_meta_baseline.json",
-      "size_bytes": 373,
-      "sha256": "852d0acd14d5d05ab391716f7d5198f7d8f444040efc9db6c3215c05c97aa91c"
+      "size_bytes": 961,
+      "sha256": "8f858072e72597caff25ed1e79c247bed42697ae954b77cef45eab88734b7ec3"
     }
   ],
   "all_checks_passed": true

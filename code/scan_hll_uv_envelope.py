@@ -43,6 +43,21 @@ ROOT = Path(__file__).resolve().parent.parent
 OUTDIR = ROOT / "output" / "robustness"
 PAPER_DIR = ROOT / "paper"
 
+# Keep aligned with scan_hll_signal_strengths.py runtime-direct parser defaults.
+RUNTIME_DIRECT_DEFAULTS = {
+    "runtime_direct_force": False,
+    "runtime_direct_no_cache": False,
+    "runtime_direct_chi_rho_max": 3.0,
+    "runtime_direct_chi_z_margin": 6.0,
+    "runtime_direct_chi_n_mu": 120,
+    "runtime_direct_chi_tol": 1e-8,
+    "runtime_direct_chi_maxiter": 30000,
+    "runtime_direct_chi_sigma": 2.5,
+    "runtime_direct_superrad_zmax": 80.0,
+    "runtime_direct_superrad_ref_d": 12.0,
+    "runtime_direct_superrad_n_ref": 2,
+}
+
 
 @dataclass(frozen=True)
 class UVCase:
@@ -196,6 +211,17 @@ def evaluate_case(
         uv_rge_gamma_diag=float(case.uv_rge_gamma_diag),
         uv_rge_gamma_offdiag=float(case.uv_rge_gamma_offdiag),
         uv_rge_log_clip=float(PAPER_BASELINE["hll_uv_rge_log_clip"]),
+        runtime_direct_force=bool(RUNTIME_DIRECT_DEFAULTS["runtime_direct_force"]),
+        runtime_direct_no_cache=bool(RUNTIME_DIRECT_DEFAULTS["runtime_direct_no_cache"]),
+        runtime_direct_chi_rho_max=float(RUNTIME_DIRECT_DEFAULTS["runtime_direct_chi_rho_max"]),
+        runtime_direct_chi_z_margin=float(RUNTIME_DIRECT_DEFAULTS["runtime_direct_chi_z_margin"]),
+        runtime_direct_chi_n_mu=int(RUNTIME_DIRECT_DEFAULTS["runtime_direct_chi_n_mu"]),
+        runtime_direct_chi_tol=float(RUNTIME_DIRECT_DEFAULTS["runtime_direct_chi_tol"]),
+        runtime_direct_chi_maxiter=int(RUNTIME_DIRECT_DEFAULTS["runtime_direct_chi_maxiter"]),
+        runtime_direct_chi_sigma=float(RUNTIME_DIRECT_DEFAULTS["runtime_direct_chi_sigma"]),
+        runtime_direct_superrad_zmax=float(RUNTIME_DIRECT_DEFAULTS["runtime_direct_superrad_zmax"]),
+        runtime_direct_superrad_ref_d=float(RUNTIME_DIRECT_DEFAULTS["runtime_direct_superrad_ref_d"]),
+        runtime_direct_superrad_n_ref=int(RUNTIME_DIRECT_DEFAULTS["runtime_direct_superrad_n_ref"]),
     )
 
     d_vals = np.linspace(float(args.d_min), float(args.d_max), int(args.d_num))

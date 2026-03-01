@@ -5,8 +5,11 @@ paper/hll_uv_to_eft_summary.csv,canonical_baseline,uv_to_eft,Baseline UV-tree ->
 paper/core_param_robustness.csv,canonical_baseline,robustness,Main-text local one-at-a-time robustness table source.,True
 paper/hll_rge_sensitivity.csv,canonical_baseline,robustness,Main-text UV+LL-RG control sensitivity table source.,True
 paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41.csv,canonical_baseline,chain_mode_audit,Current strict chain_mode full_direct vs cell_direct_runtime audit source.,True
+paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21.csv,canonical_baseline,chain_mode_audit,Large-surface release gate: full_direct vs cell_direct_runtime parity audit.,True
+paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_extreme.csv,diagnostic_variant,chain_mode_audit,Large-surface stress gate: full_direct vs cell_direct_runtime_extreme all-direct audit.,True
 paper/chain_mode_uv_audit_Dgrid21_Egrid21.csv,canonical_baseline,chain_mode_audit,Current UV map parity audit source.,True
-paper/full_direct_map_release_summary.csv,canonical_baseline,chain_mode_audit,Integrated release summary: main full_direct map + small complete + large spot-check audits.,True
+paper/full_direct_map_release_summary.csv,canonical_baseline,chain_mode_audit,Integrated release summary: main full_direct map + direct-bias checks + large runtime/extreme chain gates.,True
+output/kinetic_action_chain/full_direct_map_release_meta.json,canonical_baseline,chain_mode_audit,Release gate metadata for full_direct_map summary assembly.,True
 paper/hll_uv_envelope_summary.csv,canonical_baseline,uv_envelope,UV control envelope summary (nonzero finite-match center).,True
 paper/hll_uv_envelope_cases.csv,canonical_baseline,uv_envelope,Per-case UV envelope run details.,True
 paper/hll_uv_envelope_map.csv,canonical_baseline,uv_envelope,Pointwise mu_mumu envelope bounds over the active grid.,True

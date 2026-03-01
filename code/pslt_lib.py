@@ -1070,7 +1070,11 @@ class PSLTKinetics:
         if float(D) > d_seed + 1e-12:
             d_warm = np.arange(d_seed, float(D), d_step, dtype=float)
             for d_val in d_warm:
+                if float(d_val) >= float(D) - 1e-10:
+                    continue
                 d_key = float(round(float(d_val), 8))
+                if d_key == key:
+                    continue
                 if d_key in self._b_runtime_direct_input_cache:
                     continue
                 self._runtime_direct_b_operator_inputs(d_key)

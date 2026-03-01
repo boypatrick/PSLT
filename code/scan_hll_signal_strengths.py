@@ -36,8 +36,14 @@ Chain profile selection:
                               build/rebuild active D-grid localized-direct
                               profiles at runtime, then run strict full_direct.
   - --chain-mode cell_direct_runtime:
-                              no profile object; evaluate g_N(D), chi_LR(D),
-                              A_l(D), and EFT operator inputs (g_{iN}, lambda_N)
+                              release-candidate per-cell direct kinetics path:
+                              chi_LR(D) and A_l(D) are evaluated by direct
+                              solvers inside scan cells; g_N/B_N stay on
+                              release profile closures.
+  - --chain-mode cell_direct_runtime_extreme:
+                              stress-only all-direct path with no profile
+                              object; evaluate g_N(D), chi_LR(D), A_l(D),
+                              and EFT operator inputs (g_{iN}, lambda_N)
                               by direct solvers inside scan cells.
 """
 
@@ -203,6 +209,19 @@ def make_baseline_kinetics(
     runtime_direct_superrad_n_ref: int,
 ) -> PSLTKinetics:
     d_scan = scan_d_values(float(d_min), float(d_max), int(d_num))
+    d_track_seed = float(d_scan[0]) if len(d_scan) > 0 else float(d_min)
+    if len(d_scan) > 1:
+        d_step_arr = np.diff(np.asarray(d_scan, dtype=float))
+        d_step_active = float(np.min(np.abs(d_step_arr)))
+    else:
+        d_step_active = 1.0
+    d_num_canonical = int(PAPER_BASELINE["D_num"])
+    if d_num_canonical > 1:
+        d_step_canonical = float(PAPER_BASELINE["D_max"] - PAPER_BASELINE["D_min"]) / float(d_num_canonical - 1)
+    else:
+        d_step_canonical = float(d_step_active)
+    d_track_step = min(float(d_step_active), float(d_step_canonical))
+    d_track_step = max(float(d_track_step), 1e-6)
     chain_mode_eff = str(chain_mode).strip().lower()
     selection_mode = "full_direct" if chain_mode_eff in {"full_direct", "full_direct_runtime"} else "auto"
 
@@ -238,6 +257,9 @@ def make_baseline_kinetics(
         chi_source = str(chi_prof["path"])
         gamma_source = str(superrad_prof["path"])
     elif chain_mode_eff == "cell_direct_runtime":
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+    elif chain_mode_eff == "cell_direct_runtime_extreme":
         g_mode = "fp_2d_full_runtime_direct"
         b_mode = "eft_operator_norm_runtime_direct"
         chi_mode = "localized_runtime_direct"
@@ -286,6 +308,8 @@ def make_baseline_kinetics(
         runtime_direct_superrad_zmax=float(runtime_direct_superrad_zmax),
         runtime_direct_superrad_ref_d=float(runtime_direct_superrad_ref_d),
         runtime_direct_superrad_n_ref=int(runtime_direct_superrad_n_ref),
+        runtime_direct_b_track_seed_D=float(d_track_seed),
+        runtime_direct_b_track_step=float(d_track_step),
         b_mode=str(b_mode),
         b_overlap_csv=None if b_mode == "eft_operator_norm_runtime_direct" else str(B_OVERLAP_CSV),
         b_n_power=PAPER_BASELINE["p_B"],
@@ -521,7 +545,11 @@ def plot_maps(
 
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Map-level PSLT predictions for H->ll channels.")
-    ap.add_argument("--chain-mode", choices=["auto", "full_direct", "full_direct_runtime", "cell_direct_runtime"], default="full_direct")
+    ap.add_argument(
+        "--chain-mode",
+        choices=["auto", "full_direct", "full_direct_runtime", "cell_direct_runtime", "cell_direct_runtime_extreme"],
+        default="full_direct",
+    )
     ap.add_argument("--ref-mode", choices=["fixed", "chi2_best", "robust_center"], default="fixed")
     ap.add_argument("--ref-d", type=float, default=float(PAPER_BASELINE["ref_D"]))
     ap.add_argument("--ref-eta", type=float, default=float(PAPER_BASELINE["ref_eta"]))
@@ -637,7 +665,7 @@ def resolve_reference_anchor(
 
 
 def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray) -> tuple[float, bool]:
-    if str(chain_mode) not in {"full_direct", "full_direct_runtime"}:
+    if str(chain_mode) not in {"full_direct", "full_direct_runtime", "cell_direct_runtime", "cell_direct_runtime_extreme"}:
         return float(ref_d), False
     if len(d_vals) == 0:
         return float(ref_d), False
@@ -706,7 +734,7 @@ def main() -> None:
     if snapped:
         old_ref_d = float(args.ref_d) if str(args.ref_mode) == "fixed" else float("nan")
         print(
-            "[info] chain_mode in {full_direct,full_direct_runtime} snapped ref_D to grid:",
+            "[info] chain_mode in {full_direct,full_direct_runtime,cell_direct_runtime,cell_direct_runtime_extreme} snapped ref_D to grid:",
             f"{old_ref_d if old_ref_d == old_ref_d else 'selector'} -> {ref_d:.6g}",
         )
         ref_source = f"{ref_source}+snap_refD_to_grid"

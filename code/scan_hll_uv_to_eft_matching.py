@@ -25,8 +25,14 @@ Chain profile selection:
                               build/rebuild active D-grid localized-direct
                               profiles at runtime, then run strict full_direct.
   - --chain-mode cell_direct_runtime:
-                              no profile object; evaluate g_N(D), chi_LR(D),
-                              and A_l(D) by direct solvers inside scan cells.
+                              release-candidate per-cell direct kinetics path:
+                              chi_LR(D) and A_l(D) are evaluated by direct
+                              solvers inside scan cells; g_N/B_N stay on
+                              release profile closures.
+  - --chain-mode cell_direct_runtime_extreme:
+                              stress-only all-direct path with no profile
+                              object; evaluate g_N(D), chi_LR(D), A_l(D),
+                              and EFT operator inputs by direct solvers.
 """
 
 from __future__ import annotations
@@ -104,7 +110,7 @@ def make_suffix(tag: str) -> str:
 
 
 def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray) -> tuple[float, bool]:
-    if str(chain_mode) not in {"full_direct", "full_direct_runtime"}:
+    if str(chain_mode) not in {"full_direct", "full_direct_runtime", "cell_direct_runtime", "cell_direct_runtime_extreme"}:
         return float(ref_d), False
     if len(d_vals) == 0:
         return float(ref_d), False
@@ -141,9 +147,23 @@ def make_baseline_kinetics(
     runtime_direct_superrad_n_ref: int,
 ) -> PSLTKinetics:
     d_scan = scan_d_values(d_min, d_max, d_num)
+    d_track_seed = float(d_scan[0]) if len(d_scan) > 0 else float(d_min)
+    if len(d_scan) > 1:
+        d_step_arr = np.diff(np.asarray(d_scan, dtype=float))
+        d_step_active = float(np.min(np.abs(d_step_arr)))
+    else:
+        d_step_active = 1.0
+    d_num_canonical = int(BASELINE["D_num"])
+    if d_num_canonical > 1:
+        d_step_canonical = float(BASELINE["D_max"] - BASELINE["D_min"]) / float(d_num_canonical - 1)
+    else:
+        d_step_canonical = float(d_step_active)
+    d_track_step = min(float(d_step_active), float(d_step_canonical))
+    d_track_step = max(float(d_track_step), 1e-6)
     chain_mode_eff = str(chain_mode).strip().lower()
     selection_mode = "full_direct" if chain_mode_eff in {"full_direct", "full_direct_runtime"} else "auto"
     g_mode = str(BASELINE["g_mode"])
+    b_mode = str(BASELINE["b_mode"])
     chi_prof = None
     superrad_prof = None
     chi_mode = "localized_grid"
@@ -174,7 +194,11 @@ def make_baseline_kinetics(
         chi_source = str(chi_prof["path"])
         gamma_source = str(superrad_prof["path"])
     elif chain_mode_eff == "cell_direct_runtime":
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+    elif chain_mode_eff == "cell_direct_runtime_extreme":
         g_mode = "fp_2d_full_runtime_direct"
+        b_mode = "eft_operator_norm_runtime_direct"
         chi_mode = "localized_runtime_direct"
         gamma_mode = "action_runtime_direct"
         g_source = "runtime_cell_solver"
@@ -221,8 +245,10 @@ def make_baseline_kinetics(
         runtime_direct_superrad_zmax=float(runtime_direct_superrad_zmax),
         runtime_direct_superrad_ref_d=float(runtime_direct_superrad_ref_d),
         runtime_direct_superrad_n_ref=int(runtime_direct_superrad_n_ref),
-        b_mode=BASELINE["b_mode"],
-        b_overlap_csv=str(B_OVERLAP_CSV),
+        runtime_direct_b_track_seed_D=float(d_track_seed),
+        runtime_direct_b_track_step=float(d_track_step),
+        b_mode=str(b_mode),
+        b_overlap_csv=None if b_mode == "eft_operator_norm_runtime_direct" else str(B_OVERLAP_CSV),
         b_n_power=BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
@@ -315,7 +341,11 @@ def plot_maps(
 
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="UV-to-EFT matching audit on PSLT scan grid")
-    ap.add_argument("--chain-mode", choices=["auto", "full_direct", "full_direct_runtime", "cell_direct_runtime"], default="full_direct")
+    ap.add_argument(
+        "--chain-mode",
+        choices=["auto", "full_direct", "full_direct_runtime", "cell_direct_runtime", "cell_direct_runtime_extreme"],
+        default="full_direct",
+    )
     ap.add_argument("--d-min", type=float, default=float(BASELINE["D_min"]))
     ap.add_argument("--d-max", type=float, default=float(BASELINE["D_max"]))
     ap.add_argument("--d-num", type=int, default=int(BASELINE["D_num"]))
@@ -389,7 +419,7 @@ def main() -> None:
     ref_d_eff, snapped_ref_d = snap_ref_d_for_full_direct(str(args.chain_mode), float(args.ref_d), d_vals)
     if snapped_ref_d:
         print(
-            "[info] chain_mode in {full_direct,full_direct_runtime} snapped ref_D to grid:",
+            "[info] chain_mode in {full_direct,full_direct_runtime,cell_direct_runtime,cell_direct_runtime_extreme} snapped ref_D to grid:",
             f"{float(args.ref_d):.6g} -> {ref_d_eff:.6g}",
         )
 

@@ -9,9 +9,9 @@ This script runs scan_hll_signal_strengths.py twice on the same grid:
 Then it compares map outputs and writes a compact summary table.
 
 Outputs:
-  - output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid{N}_Egrid{M}.csv
-  - output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid{N}_Egrid{M}.json
-  - paper/chain_mode_cell_direct_audit_Dgrid{N}_Egrid{M}.csv
+  - output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid{N}_Egrid{M}[_{mode}].csv
+  - output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid{N}_Egrid{M}[_{mode}].json
+  - paper/chain_mode_cell_direct_audit_Dgrid{N}_Egrid{M}[_{mode}].csv
 """
 
 from __future__ import annotations
@@ -234,7 +234,12 @@ def main() -> None:
         "delta_best_chi2_mumu": float(cell_mumu["best_chi2"] - full_mumu["best_chi2"]),
     }
 
-    tag = f"Dgrid{int(args.d_num)}_Egrid{int(args.eta_num)}"
+    tag_base = f"Dgrid{int(args.d_num)}_Egrid{int(args.eta_num)}"
+    tag = (
+        tag_base
+        if str(args.cell_chain_mode) == "cell_direct_runtime"
+        else f"{tag_base}_{str(args.cell_chain_mode)}"
+    )
     out_csv = OUTDIR / f"chain_mode_cell_direct_audit_{tag}.csv"
     out_json = OUTDIR / f"chain_mode_cell_direct_audit_{tag}.json"
     paper_csv = PAPER_DIR / out_csv.name

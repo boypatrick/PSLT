@@ -4,6 +4,8 @@
   "runtime_direct_force": false,
   "small_surface": "output/kinetic_action_chain/localized_direct_surface_summary_Dgrid21_Egrid41.csv",
   "large_surface": "output/kinetic_action_chain/localized_direct_surface_summary_Dgrid60_Egrid21.csv",
-  "chain_parity": "output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid21_Egrid41.csv",
+  "chain_parity_small_runtime": "output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid21_Egrid41.csv",
+  "chain_parity_large_runtime": "output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21.csv",
+  "chain_parity_large_extreme": "output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_extreme.csv",
   "summary_csv": "output/kinetic_action_chain/full_direct_map_release_summary.csv"
 }

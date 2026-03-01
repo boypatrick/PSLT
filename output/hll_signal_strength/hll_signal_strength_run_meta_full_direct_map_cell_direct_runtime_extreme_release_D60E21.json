@@ -1,11 +1,11 @@
 {
   "ref_mode": "fixed",
   "ref_D": 9.966101694915254,
-  "ref_D_input": 10.0,
-  "ref_D_snapped_to_grid": true,
+  "ref_D_input": 9.966101694915254,
+  "ref_D_snapped_to_grid": false,
   "ref_eta": 1.0,
-  "ref_source": "fixed_cli+snap_refD_to_grid",
-  "suffix": "_full_direct_map_release",
+  "ref_source": "fixed_cli",
+  "suffix": "_full_direct_map_cell_direct_runtime_extreme_release_D60E21",
   "observable_mode": "eft_wilson_uv_rge",
   "uv_blend": 0.0,
   "uv_m2_power": 1.0,
@@ -15,7 +15,7 @@
   "uv_rge_gamma_diag": 2.0,
   "uv_rge_gamma_offdiag": 1.0,
   "uv_rge_log_clip": 6.0,
-  "chain_mode": "full_direct",
+  "chain_mode": "cell_direct_runtime_extreme",
   "runtime_direct_force": false,
   "runtime_direct_no_cache": false,
   "runtime_direct_chi_rho_max": 3.0,
@@ -32,6 +32,6 @@
   "d_num": 60,
   "eta_min": 0.2,
   "eta_max": 4.0,
-  "eta_num": 60,
-  "tag": "full_direct_map_release"
+  "eta_num": 21,
+  "tag": "full_direct_map_cell_direct_runtime_extreme_release_D60E21"
 }

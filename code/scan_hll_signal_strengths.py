@@ -37,7 +37,8 @@ Chain profile selection:
                               profiles at runtime, then run strict full_direct.
   - --chain-mode cell_direct_runtime:
                               no profile object; evaluate g_N(D), chi_LR(D),
-                              and A_l(D) by direct solvers inside scan cells.
+                              A_l(D), and EFT operator inputs (g_{iN}, lambda_N)
+                              by direct solvers inside scan cells.
 """
 
 from __future__ import annotations
@@ -206,6 +207,7 @@ def make_baseline_kinetics(
     selection_mode = "full_direct" if chain_mode_eff in {"full_direct", "full_direct_runtime"} else "auto"
 
     g_mode = str(PAPER_BASELINE["g_mode"])
+    b_mode = str(PAPER_BASELINE["b_mode"])
     chi_mode = "localized_grid"
     gamma_mode = "action_grid"
     chi_prof = None
@@ -237,6 +239,7 @@ def make_baseline_kinetics(
         gamma_source = str(superrad_prof["path"])
     elif chain_mode_eff == "cell_direct_runtime":
         g_mode = "fp_2d_full_runtime_direct"
+        b_mode = "eft_operator_norm_runtime_direct"
         chi_mode = "localized_runtime_direct"
         gamma_mode = "action_runtime_direct"
         g_source = "runtime_cell_solver"
@@ -283,8 +286,8 @@ def make_baseline_kinetics(
         runtime_direct_superrad_zmax=float(runtime_direct_superrad_zmax),
         runtime_direct_superrad_ref_d=float(runtime_direct_superrad_ref_d),
         runtime_direct_superrad_n_ref=int(runtime_direct_superrad_n_ref),
-        b_mode=PAPER_BASELINE["b_mode"],
-        b_overlap_csv=str(B_OVERLAP_CSV),
+        b_mode=str(b_mode),
+        b_overlap_csv=None if b_mode == "eft_operator_norm_runtime_direct" else str(B_OVERLAP_CSV),
         b_n_power=PAPER_BASELINE["p_B"],
         b_n_mode="cumulative",
         b_n_tail_mode="saturate",
@@ -305,6 +308,7 @@ def make_baseline_kinetics(
         f"selection_mode={selection_mode},",
         f"g_mode={params.g_mode},",
         f"g_source={g_source},",
+        f"b_mode={params.b_mode},",
         f"chi_mode={params.chi_mode},",
         f"chi_source={chi_source},",
         f"gamma_mode={params.gamma_mode},",

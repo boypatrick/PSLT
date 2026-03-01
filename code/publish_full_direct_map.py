@@ -6,6 +6,7 @@ This release mode produces three reproducible artifacts:
   1) Main-map baseline in full_direct mode (D60 x E60)
   2) Small-surface complete localized-direct audit (D21 x E41)
   3) Large-surface spot-check localized-direct audit (D60 x E21)
+  4) Strict chain parity audit (full_direct vs cell_direct_runtime, D21 x E41)
 
 And aggregates them into one reviewer-facing summary table:
   - output/kinetic_action_chain/full_direct_map_release_summary.csv
@@ -32,7 +33,7 @@ PAPER = ROOT / "paper"
 
 SCAN_HLL = ROOT / "code" / "scan_hll_signal_strengths.py"
 SCAN_LOC_DIRECT = ROOT / "code" / "scan_localized_direct_surface_bias.py"
-SCAN_CHAIN_AUDIT = ROOT / "code" / "scan_chain_mode_full_direct_audit.py"
+SCAN_CHAIN_AUDIT = ROOT / "code" / "scan_chain_mode_cell_direct_audit.py"
 
 
 def run_cmd(name: str, cmd: List[str], expected: Path | None, force: bool) -> None:
@@ -57,7 +58,7 @@ def read_hll_mumu_summary(path: Path) -> Dict[str, float]:
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Publish full_direct map release summary.")
     ap.add_argument("--force", action="store_true", help="Recompute all steps even if outputs already exist.")
-    ap.add_argument("--main-chain-mode", choices=["full_direct", "full_direct_runtime"], default="full_direct_runtime")
+    ap.add_argument("--main-chain-mode", choices=["full_direct", "full_direct_runtime"], default="full_direct")
     ap.add_argument("--runtime-direct-force", action="store_true", help="When main-chain-mode=full_direct_runtime, force direct profile rebuild.")
     return ap.parse_args()
 
@@ -68,8 +69,8 @@ def main() -> None:
     PAPER.mkdir(parents=True, exist_ok=True)
 
     tag_main = "full_direct_map_release"
-    tag_auto = "full_direct_map_auto_release_D21E41"
     tag_full = "full_direct_map_full_release_D21E41"
+    tag_cell = "full_direct_map_cell_direct_runtime_release_D21E41"
 
     # 1) Main-map full_direct baseline.
     main_summary = OUT_HLL / f"hll_signal_strength_summary_{tag_main}.csv"
@@ -148,10 +149,10 @@ def main() -> None:
         force=bool(args.force),
     )
 
-    # 4) Strict chain-mode parity audit on small map.
-    parity_summary = OUT_KIN / "chain_mode_full_direct_audit_Dgrid21_Egrid41.csv"
+    # 4) Strict chain-mode parity audit on small map (full_direct vs cell_direct_runtime).
+    parity_summary = OUT_KIN / "chain_mode_cell_direct_audit_Dgrid21_Egrid41.csv"
     run_cmd(
-        name="chain_mode_auto_vs_full_direct_small",
+        name="chain_mode_full_vs_cell_direct_runtime_small",
         cmd=[
             sys.executable,
             str(SCAN_CHAIN_AUDIT),
@@ -167,10 +168,10 @@ def main() -> None:
             "4.0",
             "--eta-num",
             "41",
-            "--auto-tag",
-            tag_auto,
             "--full-direct-tag",
             tag_full,
+            "--cell-direct-tag",
+            tag_cell,
         ],
         expected=parity_summary,
         force=bool(args.force),
@@ -225,14 +226,14 @@ def main() -> None:
             "source": str(large_summary.relative_to(ROOT)),
         },
         {
-            "scenario": "chain_mode_parity_auto_vs_full_direct",
+            "scenario": "chain_mode_parity_full_direct_vs_cell_direct_runtime",
             "grid": "D21xE41",
             "n_points": int(parity["n_points"]),
             "f_chi2_mumu_le_4": float(parity["f_chi2_le_4_mumu_full_direct"]),
             "best_chi2_mumu": float(parity["best_chi2_mumu_full_direct"]),
             "best_D": "",
             "best_eta": "",
-            "frac_winner_mismatch": "",
+            "frac_winner_mismatch": float(parity["frac_acceptance_mismatch"]),
             "max_abs_delta_R3": "",
             "max_abs_delta_mu_mumu": float(parity["max_abs_delta_mu_mumu"]),
             "delta_f_chi2_mumu_le_4": float(parity["delta_f_chi2_le_4_mumu"]),

@@ -127,13 +127,33 @@ class PSLTParameters:
     eps: float = 0.2        # Core regulator length [Length] ~ 1/[Mass] (scaled)
     
     # Visibility Scaling (Yukawa-proportional with compressed hierarchy)
-    b_mode: str = "yukawa"  # "yukawa", "overlap_2d", or "eft_operator_norm"
+    b_mode: str = "yukawa"  # "yukawa", "overlap_2d", "eft_operator_norm", or "eft_operator_norm_runtime_direct"
     b_overlap_csv: Optional[str] = None
     b_overlap_floor: float = 1e-8
     b_n_mode: str = "cumulative"  # "cumulative" or "single" over lepton Yukawas
     b_n_power: float = 0.30       # Sublinear compression: B_gen ∝ (y_gen)^{b_n_power}
     b_n_tail_mode: str = "saturate"  # "saturate" (paper baseline) or "gaussian"
     b_n_tail_beta: float = 0.50   # Used only when b_n_tail_mode == "gaussian"
+    runtime_direct_b_rho_max: float = 3.0
+    runtime_direct_b_z_margin: float = 6.0
+    runtime_direct_b_dr: float = 0.06
+    runtime_direct_b_dz: float = 0.03
+    runtime_direct_b_n_eigs: int = 8
+    runtime_direct_b_tol: float = 1e-8
+    runtime_direct_b_maxiter: int = 30000
+    runtime_direct_b_sigma: float = 2.5
+    runtime_direct_b_sigma_l: float = 2.5
+    runtime_direct_b_sigma_r: float = 2.5
+    runtime_direct_b_frame_power: float = 0.0
+    runtime_direct_b_window_k: int = 1
+    runtime_direct_b_window_gap_scale: float = 1.0
+    runtime_direct_b_window_sigma_mult: float = 2.0
+    runtime_direct_b_window_floor: float = 0.05
+    runtime_direct_b_flavor_sigma_power: float = 0.08
+    runtime_direct_b_flavor_sigma_min_scale: float = 0.70
+    runtime_direct_b_flavor_sigma_max_scale: float = 1.50
+    runtime_direct_b_track_seed_D: float = 4.0
+    runtime_direct_b_track_step: float = 1.0
     hll_observable_mode: str = "eft_wilson_uv_rge"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
     hll_observable_nmax: int = 20
     hll_match_basis_mode: str = "sqrt_yraw"  # "sqrt_yraw" reproduces diagonal limit with mix_scale=0
@@ -243,10 +263,42 @@ class PSLTParameters:
             raise ValueError("runtime_direct_g_dr must be > 0.")
         if self.runtime_direct_g_dz <= 0.0:
             raise ValueError("runtime_direct_g_dz must be > 0.")
-        if self.b_mode not in {"yukawa", "overlap_2d", "eft_operator_norm"}:
+        if self.b_mode not in {"yukawa", "overlap_2d", "eft_operator_norm", "eft_operator_norm_runtime_direct"}:
             raise ValueError(f"Unsupported b_mode='{self.b_mode}'.")
         if self.b_overlap_floor <= 0:
             raise ValueError("b_overlap_floor must be > 0.")
+        if self.runtime_direct_b_rho_max <= 0.0:
+            raise ValueError("runtime_direct_b_rho_max must be > 0.")
+        if self.runtime_direct_b_z_margin <= 0.0:
+            raise ValueError("runtime_direct_b_z_margin must be > 0.")
+        if self.runtime_direct_b_dr <= 0.0:
+            raise ValueError("runtime_direct_b_dr must be > 0.")
+        if self.runtime_direct_b_dz <= 0.0:
+            raise ValueError("runtime_direct_b_dz must be > 0.")
+        if self.runtime_direct_b_n_eigs < 3:
+            raise ValueError("runtime_direct_b_n_eigs must be >= 3.")
+        if self.runtime_direct_b_tol <= 0.0:
+            raise ValueError("runtime_direct_b_tol must be > 0.")
+        if self.runtime_direct_b_maxiter < 1000:
+            raise ValueError("runtime_direct_b_maxiter must be >= 1000.")
+        if self.runtime_direct_b_sigma_l <= 0.0 or self.runtime_direct_b_sigma_r <= 0.0:
+            raise ValueError("runtime_direct_b_sigma_l and runtime_direct_b_sigma_r must be > 0.")
+        if self.runtime_direct_b_window_k < 0:
+            raise ValueError("runtime_direct_b_window_k must be >= 0.")
+        if self.runtime_direct_b_window_gap_scale <= 0.0:
+            raise ValueError("runtime_direct_b_window_gap_scale must be > 0.")
+        if self.runtime_direct_b_window_sigma_mult <= 0.0:
+            raise ValueError("runtime_direct_b_window_sigma_mult must be > 0.")
+        if self.runtime_direct_b_window_floor <= 0.0:
+            raise ValueError("runtime_direct_b_window_floor must be > 0.")
+        if self.runtime_direct_b_flavor_sigma_power < 0.0:
+            raise ValueError("runtime_direct_b_flavor_sigma_power must be >= 0.")
+        if self.runtime_direct_b_flavor_sigma_min_scale <= 0.0 or self.runtime_direct_b_flavor_sigma_max_scale <= 0.0:
+            raise ValueError("runtime_direct_b_flavor_sigma_min_scale and runtime_direct_b_flavor_sigma_max_scale must be > 0.")
+        if self.runtime_direct_b_flavor_sigma_min_scale > self.runtime_direct_b_flavor_sigma_max_scale:
+            raise ValueError("runtime_direct_b_flavor_sigma_min_scale cannot exceed runtime_direct_b_flavor_sigma_max_scale.")
+        if self.runtime_direct_b_track_step <= 0.0:
+            raise ValueError("runtime_direct_b_track_step must be > 0.")
         if self.hll_observable_mode not in {
             "proxy_wratio",
             "eft_wilson_diag",
@@ -395,6 +447,9 @@ class PSLTKinetics:
         self._b_mode_active: str = "yukawa"
         self._b_overlap_profile: Optional[Dict[str, np.ndarray]] = None
         self._b_eft_norm_cache: Dict[float, np.ndarray] = {}
+        self._b_runtime_direct_input_cache: Dict[float, Dict[str, np.ndarray]] = {}
+        self._runtime_b_level = None
+        self._runtime_b_params = None
         
         # Initialize Visibility Factors (Gen 1-3 from Yukawa, N>3 decouples)
         try:
@@ -969,6 +1024,11 @@ class PSLTKinetics:
         self._b_mode_active = "yukawa"
         self._b_overlap_profile = None
         self._b_eft_norm_cache.clear()
+        self._b_runtime_direct_input_cache.clear()
+
+        if mode == "eft_operator_norm_runtime_direct":
+            self._b_mode_active = mode
+            return
 
         if mode not in {"overlap_2d", "eft_operator_norm"}:
             return
@@ -979,7 +1039,7 @@ class PSLTKinetics:
             path = self._auto_find_b_overlap_csv()
 
         if path is None:
-            print("Warning: b_mode=overlap_2d requested but no overlap profile CSV was found. Falling back to yukawa.")
+            print(f"Warning: b_mode={mode} requested but no overlap profile CSV was found. Falling back to yukawa.")
             return
 
         prof = self._load_b_overlap_profile(path)
@@ -995,6 +1055,196 @@ class PSLTKinetics:
 
     def active_g_mode(self) -> str:
         return self._g_mode_active
+
+    def _runtime_direct_b_operator_inputs(self, D: float) -> Dict[str, np.ndarray]:
+        key = float(round(D, 8))
+        if self.params.runtime_direct_use_cache:
+            cached = self._b_runtime_direct_input_cache.get(key, None)
+            if cached is not None:
+                return {k: np.array(v, dtype=float, copy=True) for k, v in cached.items()}
+
+        # Deterministic mode-tracking warm path: always build the seed->target
+        # chain (filling only missing knots) to stabilize branch labels.
+        d_seed = float(self.params.runtime_direct_b_track_seed_D)
+        d_step = float(self.params.runtime_direct_b_track_step)
+        if float(D) > d_seed + 1e-12:
+            d_warm = np.arange(d_seed, float(D), d_step, dtype=float)
+            for d_val in d_warm:
+                d_key = float(round(float(d_val), 8))
+                if d_key in self._b_runtime_direct_input_cache:
+                    continue
+                self._runtime_direct_b_operator_inputs(d_key)
+
+        # Lazy imports to keep non-direct scan startup lightweight.
+        from extract_chi_localized_2d import Level as BLevel  # local import by design
+        from extract_chi_localized_2d import PhysicalParams as BParams  # local import by design
+        from extract_chi_localized_2d import omega_2center  # local import by design
+        from extract_y_eff_2d_three_channel import OverlapConfig as BOverlapConfig  # local import by design
+        from extract_y_eff_2d_three_channel import chirality_profiles as b_chirality_profiles  # local import by design
+        from extract_y_eff_2d_three_channel import mode_parity_indicators as b_mode_parity_indicators  # local import by design
+        from extract_y_eff_2d_three_channel import flavor_sigma_scales as b_flavor_sigma_scales  # local import by design
+        from extract_y_eff_2d_three_channel import assign_tracked_modes as b_assign_tracked_modes  # local import by design
+        from extract_y_eff_2d_three_channel import microcanonical_average as b_microcanonical_average  # local import by design
+        from extract_y_eff_2d_three_channel import mode_overlap_values as b_mode_overlap_values  # local import by design
+        from extract_y_eff_2d_three_channel import solve_modes as b_solve_modes  # local import by design
+
+        if self._runtime_b_level is None:
+            self._runtime_b_level = BLevel(
+                "fine",
+                dr=float(self.params.runtime_direct_b_dr),
+                dz=float(self.params.runtime_direct_b_dz),
+            )
+        if self._runtime_b_params is None:
+            self._runtime_b_params = BParams()
+
+        cfg = BOverlapConfig(
+            sigma_l=float(self.params.runtime_direct_b_sigma_l),
+            sigma_r=float(self.params.runtime_direct_b_sigma_r),
+            frame_power=float(self.params.runtime_direct_b_frame_power),
+            n_track=3,
+            n_eigs=max(int(self.params.runtime_direct_b_n_eigs), 3),
+            window_k=int(self.params.runtime_direct_b_window_k),
+            window_gap_scale=float(self.params.runtime_direct_b_window_gap_scale),
+            window_sigma_mult=float(self.params.runtime_direct_b_window_sigma_mult),
+            window_floor=float(self.params.runtime_direct_b_window_floor),
+            flavor_sigma_power=float(self.params.runtime_direct_b_flavor_sigma_power),
+            flavor_sigma_min_scale=float(self.params.runtime_direct_b_flavor_sigma_min_scale),
+            flavor_sigma_max_scale=float(self.params.runtime_direct_b_flavor_sigma_max_scale),
+        )
+
+        solved = b_solve_modes(
+            d_val=float(D),
+            level=self._runtime_b_level,
+            p=self._runtime_b_params,
+            rho_max=float(self.params.runtime_direct_b_rho_max),
+            z_margin=float(self.params.runtime_direct_b_z_margin),
+            tol=float(self.params.runtime_direct_b_tol),
+            maxiter=int(self.params.runtime_direct_b_maxiter),
+            sigma=None if float(self.params.runtime_direct_b_sigma) < 0.0 else float(self.params.runtime_direct_b_sigma),
+            n_eigs=int(cfg.n_eigs),
+        )
+        rho = np.asarray(solved["rho"], dtype=float)
+        rr = np.asarray(solved["rr"], dtype=float)
+        zz = np.asarray(solved["zz"], dtype=float)
+        psi = np.asarray(solved["psi"], dtype=float)
+        evals = np.asarray(solved["evals"], dtype=float)
+
+        f_l, f_r = b_chirality_profiles(
+            rr=rr,
+            zz=zz,
+            rho=rho,
+            dr=float(self._runtime_b_level.dr),
+            dz=float(self._runtime_b_level.dz),
+            d_val=float(D),
+            sigma_l=float(cfg.sigma_l),
+            sigma_r=float(cfg.sigma_r),
+        )
+        if abs(float(cfg.frame_power)) > 0.0:
+            frame = np.power(omega_2center(rr, zz, float(D), self._runtime_b_params), float(cfg.frame_power))
+        else:
+            frame = np.ones_like(rr)
+        kernel = f_l * f_r * frame
+        y_modes = b_mode_overlap_values(
+            psi=psi,
+            kernel=kernel,
+            rho=rho,
+            dr=float(self._runtime_b_level.dr),
+            dz=float(self._runtime_b_level.dz),
+        )
+        parity = b_mode_parity_indicators(
+            psi=psi,
+            rho=rho,
+            dr=float(self._runtime_b_level.dr),
+            dz=float(self._runtime_b_level.dz),
+        )
+
+        sigma_scales = b_flavor_sigma_scales(cfg)
+        y_modes_flavor: Dict[str, np.ndarray] = {}
+        for flavor in ("e", "mu", "tau"):
+            s = float(sigma_scales[flavor])
+            f_l_f, f_r_f = b_chirality_profiles(
+                rr=rr,
+                zz=zz,
+                rho=rho,
+                dr=float(self._runtime_b_level.dr),
+                dz=float(self._runtime_b_level.dz),
+                d_val=float(D),
+                sigma_l=float(cfg.sigma_l) * s,
+                sigma_r=float(cfg.sigma_r) * s,
+            )
+            kernel_f = f_l_f * f_r_f * frame
+            y_modes_flavor[flavor] = b_mode_overlap_values(
+                psi=psi,
+                kernel=kernel_f,
+                rho=rho,
+                dr=float(self._runtime_b_level.dr),
+                dz=float(self._runtime_b_level.dz),
+            )
+
+        y_raw = np.zeros(3, dtype=float)
+        y_flavor = {flavor: np.zeros(3, dtype=float) for flavor in ("e", "mu", "tau")}
+        track_idx = np.arange(3, dtype=int)
+        if self._b_runtime_direct_input_cache:
+            nearest_key = min(self._b_runtime_direct_input_cache.keys(), key=lambda dk: abs(float(dk) - float(key)))
+            prev = self._b_runtime_direct_input_cache[nearest_key]
+            prev_lam = np.asarray(prev.get("lambda", np.array([evals[0], evals[1], evals[2]], dtype=float)), dtype=float)
+            prev_y = np.asarray(prev.get("yraw", np.array([y_modes[0], y_modes[1], y_modes[2]], dtype=float)), dtype=float)
+            prev_parity = np.asarray(prev.get("parity", np.array([parity[0], parity[1], parity[2]], dtype=float)), dtype=float)
+            track_idx, _ = b_assign_tracked_modes(
+                evals=evals,
+                y_modes=y_modes,
+                parity=parity,
+                prev_lam=prev_lam,
+                prev_y=prev_y,
+                prev_parity=prev_parity,
+                cfg=cfg,
+            )
+        lam_track = np.asarray([evals[int(i)] for i in track_idx], dtype=float)
+        parity_track = np.asarray([parity[int(i)] for i in track_idx], dtype=float)
+
+        for i in range(3):
+            cidx = int(track_idx[i])
+            y_mc, _, _ = b_microcanonical_average(
+                evals=evals,
+                y_modes=y_modes,
+                center_idx=cidx,
+                cfg=cfg,
+            )
+            y_raw[i] = max(float(y_mc), self.params.b_overlap_floor)
+            for flavor in ("e", "mu", "tau"):
+                y_flv_mc, _, _ = b_microcanonical_average(
+                    evals=evals,
+                    y_modes=y_modes_flavor[flavor],
+                    center_idx=cidx,
+                    cfg=cfg,
+                )
+                y_flavor[flavor][i] = max(float(y_flv_mc), self.params.b_overlap_floor)
+
+        y_cum = np.cumsum(y_raw)
+        y3 = max(float(y_cum[2]), self.params.b_overlap_floor)
+        b123 = np.maximum(y_cum / y3, self.params.b_overlap_floor)
+        b123 /= max(float(b123[2]), self.params.b_overlap_floor)
+
+        g_uv = np.array(
+            [
+                np.sqrt(np.maximum(y_flavor["e"], self.params.hll_uv_coupling_floor)),
+                np.sqrt(np.maximum(y_flavor["mu"], self.params.hll_uv_coupling_floor)),
+                np.sqrt(np.maximum(y_flavor["tau"], self.params.hll_uv_coupling_floor)),
+            ],
+            dtype=float,
+        )
+        g_uv = np.maximum(g_uv, self.params.hll_uv_coupling_floor)
+
+        out = {
+            "yraw": np.maximum(y_raw, self.params.b_overlap_floor),
+            "lambda": np.maximum(np.abs(lam_track), self.params.hll_uv_m2_floor),
+            "g_uv": g_uv,
+            "b123": b123,
+            "parity": parity_track,
+        }
+        if self.params.runtime_direct_use_cache:
+            self._b_runtime_direct_input_cache[key] = {k: np.array(v, dtype=float, copy=True) for k, v in out.items()}
+        return out
 
     def _load_chi_open_profile(self, path: Path, prefer_micro: bool = False) -> Optional[Dict[str, np.ndarray]]:
         if not path.exists():
@@ -1595,9 +1845,14 @@ class PSLTKinetics:
 
     # --- Visibility ---
     def B_N(self, N: int, D: Optional[float] = None) -> float:
-        if self._b_mode_active == "eft_operator_norm" and self._b_overlap_profile is not None and N <= 3:
-            d_knots = self._b_overlap_profile["D"]
-            d_eval = float(np.mean(d_knots)) if D is None else float(D)
+        if self._b_mode_active in {"eft_operator_norm", "eft_operator_norm_runtime_direct"} and N <= 3:
+            if D is None:
+                if self._b_mode_active == "eft_operator_norm" and self._b_overlap_profile is not None:
+                    d_eval = float(np.mean(self._b_overlap_profile["D"]))
+                else:
+                    d_eval = float(self.params.runtime_direct_superrad_ref_d)
+            else:
+                d_eval = float(D)
             b_eft = self._b_eft_norm_vector(d_eval)
             if b_eft is not None:
                 return float(max(b_eft[N - 1], self.params.b_overlap_floor))
@@ -1629,7 +1884,7 @@ class PSLTKinetics:
           K_N^(IR) = LLRG( finite_match(K_N) )
           B_N^(eft) = Tr[K_N^(IR)] / Tr[K_3^(IR)].
         """
-        if self._b_overlap_profile is None:
+        if self._b_mode_active != "eft_operator_norm_runtime_direct" and self._b_overlap_profile is None:
             return None
 
         d_key = round(float(D), 6)
@@ -1666,6 +1921,11 @@ class PSLTKinetics:
         """
         if N <= 0:
             return 0.0
+
+        if self._b_mode_active == "eft_operator_norm_runtime_direct" and N <= 3:
+            d_eval = float(self.params.runtime_direct_superrad_ref_d) if D is None else float(D)
+            direct = self._runtime_direct_b_operator_inputs(d_eval)
+            return float(max(float(direct["yraw"][N - 1]), self.params.b_overlap_floor))
 
         if self._b_mode_active in {"overlap_2d", "eft_operator_norm"} and self._b_overlap_profile is not None and N <= 3:
             prof = self._b_overlap_profile
@@ -1776,6 +2036,13 @@ class PSLTKinetics:
 
     def _hll_g_uv_matrix(self, D: float) -> np.ndarray:
         diag = np.diag(np.sqrt(np.maximum(self._hll_yraw_vector(D), self.params.hll_uv_coupling_floor)))
+        if self._b_mode_active == "eft_operator_norm_runtime_direct":
+            direct = self._runtime_direct_b_operator_inputs(float(D))
+            g = np.asarray(direct["g_uv"], dtype=float)
+            blend = float(self.params.hll_uv_blend)
+            g_eff = blend * g + (1.0 - blend) * diag
+            return np.maximum(g_eff, self.params.hll_uv_coupling_floor)
+
         prof = self._b_overlap_profile
         if self._b_mode_active in {"overlap_2d", "eft_operator_norm"} and prof is not None and "GUV" in prof:
             d_knots = prof["D"]
@@ -1793,6 +2060,14 @@ class PSLTKinetics:
 
     def _hll_m2_vector(self, D: float) -> np.ndarray:
         pwr = float(self.params.hll_uv_m2_power)
+        if self._b_mode_active == "eft_operator_norm_runtime_direct":
+            direct = self._runtime_direct_b_operator_inputs(float(D))
+            lam = np.asarray(direct["lambda"], dtype=float)
+            m2 = np.maximum(np.abs(lam), self.params.hll_uv_m2_floor)
+            if pwr == 0.0:
+                return np.ones(3, dtype=float)
+            return np.maximum(m2 ** pwr, self.params.hll_uv_m2_floor)
+
         prof = self._b_overlap_profile
         if self._b_mode_active in {"overlap_2d", "eft_operator_norm"} and prof is not None and "LAMBDA123" in prof:
             d_knots = prof["D"]

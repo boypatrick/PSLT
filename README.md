@@ -114,18 +114,18 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - main-map strict full_direct baseline (`D60 x E60`)
   - small-surface complete localized-direct audit (`D21 x E41`)
   - large-surface spot-check localized-direct audit (`D60 x E21`)
-  - chain-mode parity audit (`auto` vs `full_direct`, `D21 x E41`)
+  - chain-mode parity audit (`full_direct` vs `cell_direct_runtime`, `D21 x E41`)
   and exports `output/kinetic_action_chain/full_direct_map_release_summary.csv` (mirrored to `paper/full_direct_map_release_summary.csv`).
   Baseline scan scripts now default to `chain_mode=full_direct` (`scan_hll_signal_strengths.py`, `scan_hll_uv_to_eft_matching.py`), while `auto` is retained for comparator audits.
   A runtime-direct extension is also available via `chain_mode=full_direct_runtime`, which builds/rebuilds active D-grid localized-direct profiles (`chi_LR(D)`, `A_l(D)`) inside the scan entrypoint before strict full-direct evaluation.
-  For an extreme per-cell direct path without D-grid profile objects, both scan scripts also expose `chain_mode=cell_direct_runtime`: `g_N(D)` (via `g_mode=fp_2d_full_runtime_direct`), `chi_LR(D)`, and `A_l(D)` are evaluated by direct solvers inside scan evaluation. With `--runtime-direct-no-cache`, this becomes a strict stress mode that recomputes direct solvers on every call (very expensive; intended for small-surface verification, not release baseline production runs).
+  For an extreme per-cell direct path without D-grid profile objects, both scan scripts also expose `chain_mode=cell_direct_runtime`: `g_N(D)` (via `g_mode=fp_2d_full_runtime_direct`), `chi_LR(D)`, `A_l(D)`, and EFT-operator visibility inputs `(g_{iN}(D), \lambda_N(D))` (via `b_mode=eft_operator_norm_runtime_direct`) are evaluated by direct solvers inside scan evaluation. With `--runtime-direct-no-cache`, this becomes a strict stress mode that recomputes direct solvers on every call (very expensive; intended for small-surface verification, not release baseline production runs).
 - **Core-parameter robustness table (B2):** `code/scan_core_param_robustness.py` exports local one-at-a-time windows for `c_eff`, `nu`, `p_B` and their map fractions:
   - `output/robustness/core_param_robustness_table.csv`
   - `output/robustness/core_param_robustness_cases.csv`
 - **Cross-module summary:** `code/scan_first_principles_migration_summary.py` aggregates baseline `fp_2d_full+localized` vs legacy `cardy+localized` vs `fp_2d_full+open_system` into:
   - `output/first_principles_migration/first_principles_migration_summary.csv`
   - `output/first_principles_migration/first_principles_migration_summary.png`
-- **Full-chain consistency comparator (kinetic unification audit):** `code/scan_action_chain_consistency.py` keeps a legacy surrogate-vs-action comparator run for historical context; the current strict chain-mode parity evidence is provided by `code/scan_chain_mode_full_direct_audit.py`. Comparator exports:
+- **Full-chain consistency comparator (kinetic unification audit):** `code/scan_action_chain_consistency.py` keeps a legacy surrogate-vs-action comparator run for historical context; the current strict chain-mode parity evidence is provided by `code/scan_chain_mode_cell_direct_audit.py`. Comparator exports:
   - `output/kinetic_action_chain/action_chain_consistency_summary.csv`
   - `output/kinetic_action_chain/action_chain_consistency.png`
 - **UV-to-EFT matching audit:** `code/scan_hll_uv_to_eft_matching.py` exports per-point UV-tree / finite-match / IR Wilson diagonals and running metadata on the same scan grid:

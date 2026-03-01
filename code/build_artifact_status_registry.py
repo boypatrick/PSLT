@@ -56,10 +56,10 @@ def rows() -> List[Dict[str, object]]:
             "note": "Main-text UV+LL-RG control sensitivity table source.",
         },
         {
-            "artifact_path": "paper/chain_mode_full_direct_audit_Dgrid21_Egrid41.csv",
+            "artifact_path": "paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41.csv",
             "status": "canonical_baseline",
             "category": "chain_mode_audit",
-            "note": "Current strict chain_mode auto vs full_direct audit source.",
+            "note": "Current strict chain_mode full_direct vs cell_direct_runtime audit source.",
         },
         {
             "artifact_path": "paper/chain_mode_uv_audit_Dgrid21_Egrid21.csv",

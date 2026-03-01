@@ -122,6 +122,13 @@ def main() -> None:
     ap.add_argument("--ref-eta", type=float, default=1.0)
     ap.add_argument("--full-direct-tag", type=str, default="chain_mode_full_direct")
     ap.add_argument("--cell-direct-tag", type=str, default="chain_mode_cell_direct_runtime")
+    ap.add_argument(
+        "--cell-chain-mode",
+        type=str,
+        default="cell_direct_runtime",
+        choices=["cell_direct_runtime", "cell_direct_runtime_extreme"],
+        help="Target chain mode to compare against full_direct.",
+    )
     args = ap.parse_args()
 
     if int(args.d_num) < 2 or int(args.eta_num) < 2:
@@ -160,7 +167,7 @@ def main() -> None:
         ref_eta=float(args.ref_eta),
     )
     _run_scan(
-        chain_mode="cell_direct_runtime",
+        chain_mode=str(args.cell_chain_mode),
         tag=str(args.cell_direct_tag),
         d_min=float(args.d_min),
         d_max=float(args.d_max),
@@ -208,6 +215,7 @@ def main() -> None:
         "ref_eta": float(args.ref_eta),
         "full_direct_tag": str(args.full_direct_tag),
         "cell_direct_tag": str(args.cell_direct_tag),
+        "cell_chain_mode": str(args.cell_chain_mode),
         "frac_acceptance_mismatch": float(np.mean(mismatch)),
         "n_acceptance_mismatch": int(np.sum(mismatch)),
         "max_abs_delta_mu_ee": float(np.max(np.abs(d_mu_ee))),
@@ -243,4 +251,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

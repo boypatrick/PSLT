@@ -36,10 +36,10 @@ Chain profile selection:
                               build/rebuild active D-grid localized-direct
                               profiles at runtime, then run strict full_direct.
   - --chain-mode cell_direct_runtime:
-                              release-candidate per-cell direct kinetics path:
-                              chi_LR(D) and A_l(D) are evaluated by direct
-                              solvers inside scan cells; g_N/B_N stay on
-                              release profile closures.
+                              release per-cell direct g+kinetics path:
+                              g_N(D), chi_LR(D), and A_l(D) are evaluated by
+                              direct solvers inside scan cells; B_N stays on
+                              release EFT-operator profile closure.
   - --chain-mode cell_direct_runtime_extreme:
                               stress-only all-direct path with no profile
                               object; evaluate g_N(D), chi_LR(D), A_l(D),
@@ -257,8 +257,10 @@ def make_baseline_kinetics(
         chi_source = str(chi_prof["path"])
         gamma_source = str(superrad_prof["path"])
     elif chain_mode_eff == "cell_direct_runtime":
+        g_mode = "fp_2d_full_runtime_direct"
         chi_mode = "localized_runtime_direct"
         gamma_mode = "action_runtime_direct"
+        g_source = "runtime_cell_solver"
     elif chain_mode_eff == "cell_direct_runtime_extreme":
         g_mode = "fp_2d_full_runtime_direct"
         b_mode = "eft_operator_norm_runtime_direct"

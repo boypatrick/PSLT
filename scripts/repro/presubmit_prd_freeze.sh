@@ -9,6 +9,7 @@ PYTHON_BIN="${PYTHON_BIN:-python3}"
 RUN_ID=""
 SKIP_RECOMPUTE=0
 DRY_RUN=0
+REQUIRE_GATE_MODE=""
 
 usage() {
   cat <<'EOF'
@@ -18,6 +19,9 @@ Usage:
 Options:
   --run-id <id>      Use explicit run id (default: UTC timestamp + git short sha + _prd_freeze).
   --skip-recompute   Skip scan recomputation; run compile/package/report only.
+  --require-gate-go <mode>
+                     Enforce release-gate decision after report build.
+                     mode in {full_direct,runtime_tuned,both}.
   --dry-run          Print steps without executing commands.
   -h, --help         Show this help message.
 EOF
@@ -33,6 +37,10 @@ while [[ $# -gt 0 ]]; do
       SKIP_RECOMPUTE=1
       shift
       ;;
+    --require-gate-go)
+      REQUIRE_GATE_MODE="${2:-}"
+      shift 2
+      ;;
     --dry-run)
       DRY_RUN=1
       shift
@@ -46,8 +54,19 @@ while [[ $# -gt 0 ]]; do
       usage
       exit 2
       ;;
-  esac
+esac
 done
+
+if [[ -n "$REQUIRE_GATE_MODE" ]]; then
+  case "$REQUIRE_GATE_MODE" in
+    full_direct|runtime_tuned|both)
+      ;;
+    *)
+      echo "[error] invalid --require-gate-go mode: $REQUIRE_GATE_MODE (expected: full_direct|runtime_tuned|both)" >&2
+      exit 2
+      ;;
+  esac
+fi
 
 if [[ -z "$RUN_ID" ]]; then
   stamp="$(date -u +%Y%m%dT%H%M%SZ)"
@@ -117,7 +136,8 @@ cat > "$RUN_META" <<EOF
   "run_id": "$RUN_ID",
   "repo_root": "$ROOT_DIR",
   "skip_recompute": $SKIP_RECOMPUTE,
-  "dry_run": $DRY_RUN
+  "dry_run": $DRY_RUN,
+  "require_gate_go_mode": "${REQUIRE_GATE_MODE}"
 }
 EOF
 
@@ -149,6 +169,44 @@ run_step "07" "build_presubmit_report" \
 
 run_step "08" "sync_report_to_paper" \
   "cp -f '$RUN_DIR/presubmit_prd_report.json' '$ROOT_DIR/paper/presubmit_prd_report_latest.json' && cp -f '$RUN_DIR/presubmit_prd_report.md' '$ROOT_DIR/paper/presubmit_prd_report_latest.md'"
+
+if [[ "$DRY_RUN" -eq 0 && -n "$REQUIRE_GATE_MODE" ]]; then
+  gate_full="$($PYTHON_BIN - <<PY
+import json
+from pathlib import Path
+p=Path(r"$RUN_DIR")/"presubmit_prd_report.json"
+data=json.loads(p.read_text())
+print(str(data.get("key_metrics",{}).get("gate_full_direct_release","")))
+PY
+)"
+  gate_tuned="$($PYTHON_BIN - <<PY
+import json
+from pathlib import Path
+p=Path(r"$RUN_DIR")/"presubmit_prd_report.json"
+data=json.loads(p.read_text())
+print(str(data.get("key_metrics",{}).get("gate_runtime_release_tuned_promotion","")))
+PY
+)"
+
+  gate_ok=0
+  case "$REQUIRE_GATE_MODE" in
+    full_direct)
+      [[ "$gate_full" == "GO" ]] && gate_ok=1
+      ;;
+    runtime_tuned)
+      [[ "$gate_tuned" == "GO" ]] && gate_ok=1
+      ;;
+    both)
+      [[ "$gate_full" == "GO" && "$gate_tuned" == "GO" ]] && gate_ok=1
+      ;;
+  esac
+
+  if [[ "$gate_ok" -ne 1 ]]; then
+    echo "[error] gate enforcement failed (mode=$REQUIRE_GATE_MODE): full_direct=$gate_full runtime_tuned=$gate_tuned" >&2
+    exit 3
+  fi
+  echo "[gate] enforcement passed (mode=$REQUIRE_GATE_MODE): full_direct=$gate_full runtime_tuned=$gate_tuned"
+fi
 
 if [[ "$DRY_RUN" -eq 0 ]]; then
   ln -sfn "runs/$RUN_ID" "$ROOT_DIR/repro/latest"

@@ -76,6 +76,17 @@ The presubmit report now includes explicit auto-gated release decisions:
 - `full_direct_release` (`GO/HOLD`) from direct-bias thresholds on `D21xE41` + `D60xE21`
 - `runtime_release_tuned_promotion` (`GO/HOLD`) from tuned-candidate parity thresholds on the same gates
 
+To enforce gate decisions as CI-style pass/fail:
+
+```bash
+bash scripts/repro/presubmit_prd_freeze.sh --skip-recompute --require-gate-go full_direct
+```
+
+Supported modes for `--require-gate-go` are:
+- `full_direct` (require `full_direct_release=GO`)
+- `runtime_tuned` (require `runtime_release_tuned_promotion=GO`)
+- `both` (require both gates are `GO`)
+
 ### 6. Artifact Status Registry (Reviewer Hygiene)
 To avoid misreading old comparator outputs as baseline claims:
 

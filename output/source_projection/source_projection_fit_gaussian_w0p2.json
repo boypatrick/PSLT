@@ -1,0 +1,17 @@
+{
+  "parent_model": "gaussian",
+  "parent_width": 0.2,
+  "z_max": 6.0,
+  "nz": 4001,
+  "r_max": 8.0,
+  "nr": 1600,
+  "eps_fit": 0.5564455569461827,
+  "rmse_linear": 0.06930700487745288,
+  "rmse_log_weighted": 1.0666638621775657,
+  "fit_eps_range": [
+    0.02,
+    0.6
+  ],
+  "fit_eps_grid": 800,
+  "projection_core_reg": 0.2
+}

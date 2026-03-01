@@ -4,13 +4,19 @@ paper/hll_signal_strength_summary.csv,canonical_baseline,observable_map,Baseline
 paper/hll_uv_to_eft_summary.csv,canonical_baseline,uv_to_eft,Baseline UV-tree -> finite-match -> LL-RG summary.,True
 paper/core_param_robustness.csv,canonical_baseline,robustness,Main-text local one-at-a-time robustness table source.,True
 paper/hll_rge_sensitivity.csv,canonical_baseline,robustness,Main-text UV+LL-RG control sensitivity table source.,True
-paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41.csv,canonical_baseline,chain_mode_audit,Current strict chain_mode full_direct vs cell_direct_runtime audit source.,True
-paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21.csv,canonical_baseline,chain_mode_audit,Large-surface release gate: full_direct vs cell_direct_runtime parity audit.,True
-paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release.csv,diagnostic_variant,chain_mode_audit,Small-surface release-candidate all-direct gate: full_direct vs cell_direct_runtime_release.,True
-paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release.csv,diagnostic_variant,chain_mode_audit,Large-surface release-candidate all-direct gate: full_direct vs cell_direct_runtime_release.,True
-paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_extreme.csv,diagnostic_variant,chain_mode_audit,Large-surface stress gate: full_direct vs cell_direct_runtime_extreme all-direct audit.,True
+paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41.csv,canonical_baseline,chain_mode_audit,Current strict chain_mode full_direct vs cell_direct_runtime (runtime_profile) audit source.,True
+paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21.csv,canonical_baseline,chain_mode_audit,Large-surface release gate: full_direct vs cell_direct_runtime (runtime_profile) parity audit.,True
+paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release.csv,diagnostic_variant,chain_mode_audit,Small-surface release-candidate all-direct gate: full_direct vs cell_direct_runtime_release (runtime_bnorm_release_candidate).,True
+paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release.csv,diagnostic_variant,chain_mode_audit,Large-surface release-candidate all-direct gate: full_direct vs cell_direct_runtime_release (runtime_bnorm_release_candidate).,True
+paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_extreme.csv,diagnostic_variant,chain_mode_audit,Large-surface stress gate: full_direct vs cell_direct_runtime_extreme (runtime_bnorm_extreme) all-direct audit.,True
+paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release_tuned.csv,diagnostic_variant,chain_mode_audit,Small-surface tuned release-candidate all-direct gate: full_direct vs cell_direct_runtime_release_tuned.,True
+paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release_tuned.csv,diagnostic_variant,chain_mode_audit,Large-surface tuned release-candidate all-direct gate: full_direct vs cell_direct_runtime_release_tuned.,True
 paper/chain_mode_uv_audit_Dgrid21_Egrid21.csv,canonical_baseline,chain_mode_audit,Current UV map parity audit source.,True
-paper/full_direct_map_release_summary.csv,canonical_baseline,chain_mode_audit,Integrated release summary: main full_direct map + direct-bias checks + runtime/release-candidate/extreme chain gates.,True
+paper/full_direct_map_release_summary.csv,canonical_baseline,chain_mode_audit,Integrated release summary: main full_direct map + direct-bias checks + runtime_profile / runtime_bnorm_release_candidate / runtime_bnorm_extreme chain gates.,True
+paper/full_direct_b_module_diagnostics_D60E21.csv,diagnostic_variant,chain_mode_audit,"B-module drift attribution table (B_N, y_raw, m2, width_ratio) at max-drift and anchor points.",True
+paper/runtime_direct_b_tuning_best.json,diagnostic_variant,chain_mode_audit,Two-stage runtime-direct B tuning winner (D21xE41 -> D60xE21 gate).,True
+paper/nonhermitian_rank2_diagnostic_D21E41_kdiag0p10.csv,diagnostic_variant,rank2_nonhermitian,Non-Hermitian rank-2 diagnostic map drift summary (kappa_diag_scale=0.10).,True
+output/source_projection/source_projection_fit_gaussian_w0p2.json,diagnostic_variant,source_projection,High-dimensional parent-profile to 3D projected-source fit summary (gaussian example).,True
 output/kinetic_action_chain/full_direct_map_release_meta.json,canonical_baseline,chain_mode_audit,Release gate metadata for full_direct_map summary assembly.,True
 paper/hll_uv_envelope_summary.csv,canonical_baseline,uv_envelope,UV control envelope summary (nonzero finite-match center).,True
 paper/hll_uv_envelope_cases.csv,canonical_baseline,uv_envelope,Per-case UV envelope run details.,True

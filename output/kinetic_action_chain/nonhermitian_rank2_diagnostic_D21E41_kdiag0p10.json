@@ -1,0 +1,15 @@
+{
+  "chain_mode": "full_direct",
+  "d_num": 21,
+  "eta_num": 41,
+  "kappa_diag_scale": 0.1,
+  "kappa_split": 0.0,
+  "frac_winner_mismatch": 0.0,
+  "max_abs_delta_R3": 2.9504176879413535e-12,
+  "p99_abs_delta_R3": 2.5605517706139825e-12,
+  "max_abs_delta_mu_mumu": 2.252327213625449e-10,
+  "p99_abs_delta_mu_mumu": 1.8650077038273584e-10,
+  "delta_f_R3_gt_0p90": 0.0,
+  "delta_f_chi2_le_4": 0.0,
+  "delta_f_winner_gt3": 0.0
+}

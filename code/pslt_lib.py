@@ -152,6 +152,7 @@ class PSLTParameters:
     runtime_direct_b_flavor_sigma_power: float = 0.08
     runtime_direct_b_flavor_sigma_min_scale: float = 0.70
     runtime_direct_b_flavor_sigma_max_scale: float = 1.50
+    runtime_direct_b_profile_blend: float = 0.0  # 0 => pure runtime-direct, 1 => pure profile anchor
     runtime_direct_b_track_seed_D: float = 4.0
     runtime_direct_b_track_step: float = 1.0
     hll_observable_mode: str = "eft_wilson_uv_rge"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
@@ -297,6 +298,8 @@ class PSLTParameters:
             raise ValueError("runtime_direct_b_flavor_sigma_min_scale and runtime_direct_b_flavor_sigma_max_scale must be > 0.")
         if self.runtime_direct_b_flavor_sigma_min_scale > self.runtime_direct_b_flavor_sigma_max_scale:
             raise ValueError("runtime_direct_b_flavor_sigma_min_scale cannot exceed runtime_direct_b_flavor_sigma_max_scale.")
+        if not (0.0 <= self.runtime_direct_b_profile_blend <= 1.0):
+            raise ValueError("runtime_direct_b_profile_blend must be in [0,1].")
         if self.runtime_direct_b_track_step <= 0.0:
             raise ValueError("runtime_direct_b_track_step must be > 0.")
         if self.hll_observable_mode not in {
@@ -1028,6 +1031,26 @@ class PSLTKinetics:
 
         if mode == "eft_operator_norm_runtime_direct":
             self._b_mode_active = mode
+            # Optional profile anchor for runtime-direct B closure.
+            if float(self.params.runtime_direct_b_profile_blend) > 0.0:
+                if self.params.b_overlap_csv:
+                    path = Path(self.params.b_overlap_csv)
+                else:
+                    path = self._auto_find_b_overlap_csv()
+                if path is not None:
+                    prof = self._load_b_overlap_profile(path)
+                    if prof is not None:
+                        self._b_overlap_profile = prof
+                    else:
+                        print(
+                            f"Warning: runtime_direct_b_profile_blend>0 but overlap profile at {path} "
+                            "could not be parsed. Falling back to pure runtime-direct B."
+                        )
+                else:
+                    print(
+                        "Warning: runtime_direct_b_profile_blend>0 but no overlap profile CSV was found. "
+                        "Falling back to pure runtime-direct B."
+                    )
             return
 
         if mode not in {"overlap_2d", "eft_operator_norm"}:
@@ -1238,6 +1261,34 @@ class PSLTKinetics:
             dtype=float,
         )
         g_uv = np.maximum(g_uv, self.params.hll_uv_coupling_floor)
+
+        # Optional stabilizer: blend runtime-direct B-operator inputs with
+        # profile-derived values to control map-level drift while preserving
+        # direct per-cell extraction as the primary branch.
+        alpha = float(self.params.runtime_direct_b_profile_blend)
+        if alpha > 0.0 and self._b_overlap_profile is not None:
+            prof = self._b_overlap_profile
+            d_knots = np.asarray(prof["D"], dtype=float)
+            yraw_prof = np.array(
+                [np.interp(float(D), d_knots, prof["YRAW123"][:, i]) for i in range(3)],
+                dtype=float,
+            )
+            lam_prof = np.array(
+                [np.interp(float(D), d_knots, prof["LAMBDA123"][:, i]) for i in range(3)],
+                dtype=float,
+            )
+            guv_prof = np.zeros((3, 3), dtype=float)
+            for i in range(3):
+                for j in range(3):
+                    guv_prof[i, j] = float(np.interp(float(D), d_knots, prof["GUV"][:, i, j]))
+
+            y_raw = (1.0 - alpha) * y_raw + alpha * np.maximum(yraw_prof, self.params.b_overlap_floor)
+            lam_track = (1.0 - alpha) * lam_track + alpha * np.maximum(np.abs(lam_prof), self.params.hll_uv_m2_floor)
+            g_uv = (1.0 - alpha) * g_uv + alpha * np.maximum(guv_prof, self.params.hll_uv_coupling_floor)
+            y_cum = np.cumsum(np.maximum(y_raw, self.params.b_overlap_floor))
+            y3 = max(float(y_cum[2]), self.params.b_overlap_floor)
+            b123 = np.maximum(y_cum / y3, self.params.b_overlap_floor)
+            b123 /= max(float(b123[2]), self.params.b_overlap_floor)
 
         out = {
             "yraw": np.maximum(y_raw, self.params.b_overlap_floor),
@@ -1912,6 +1963,21 @@ class PSLTKinetics:
 
         norm = max(float(strengths[2]), self.params.b_overlap_floor)
         b123 = np.maximum(strengths / norm, self.params.b_overlap_floor)
+
+        if self._b_mode_active == "eft_operator_norm_runtime_direct":
+            alpha = float(self.params.runtime_direct_b_profile_blend)
+            if alpha > 0.0 and self._b_overlap_profile is not None:
+                prof = self._b_overlap_profile
+                d_knots = np.asarray(prof["D"], dtype=float)
+                b_prof = np.array(
+                    [np.interp(float(D), d_knots, prof["B123"][:, i]) for i in range(3)],
+                    dtype=float,
+                )
+                b_prof = np.maximum(b_prof, self.params.b_overlap_floor)
+                b123 = (1.0 - alpha) * b123 + alpha * b_prof
+                b123 = np.maximum(b123, self.params.b_overlap_floor)
+                b123 /= max(float(b123[2]), self.params.b_overlap_floor)
+
         self._b_eft_norm_cache[d_key] = b123.copy()
         return b123
 

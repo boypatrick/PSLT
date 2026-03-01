@@ -126,7 +126,12 @@ def main() -> None:
         "--cell-chain-mode",
         type=str,
         default="cell_direct_runtime",
-        choices=["cell_direct_runtime", "cell_direct_runtime_release", "cell_direct_runtime_extreme"],
+        choices=[
+            "cell_direct_runtime",
+            "cell_direct_runtime_release",
+            "cell_direct_runtime_release_tuned",
+            "cell_direct_runtime_extreme",
+        ],
         help="Target chain mode to compare against full_direct.",
     )
     args = ap.parse_args()

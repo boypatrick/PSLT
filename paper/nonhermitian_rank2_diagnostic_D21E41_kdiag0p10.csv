@@ -1,0 +1,2 @@
+chain_mode,d_num,eta_num,kappa_diag_scale,kappa_split,frac_winner_mismatch,max_abs_delta_R3,p99_abs_delta_R3,max_abs_delta_mu_mumu,p99_abs_delta_mu_mumu,delta_f_R3_gt_0p90,delta_f_chi2_le_4,delta_f_winner_gt3
+full_direct,21,41,0.1,0.0,0.0,2.9504176879413535e-12,2.5605517706139825e-12,2.252327213625449e-10,1.8650077038273584e-10,0.0,0.0,0.0

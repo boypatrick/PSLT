@@ -86,6 +86,18 @@ def rows() -> List[Dict[str, object]]:
             "note": "Large-surface stress gate: full_direct vs cell_direct_runtime_extreme (runtime_bnorm_extreme) all-direct audit.",
         },
         {
+            "artifact_path": "paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release_tuned.csv",
+            "status": "diagnostic_variant",
+            "category": "chain_mode_audit",
+            "note": "Small-surface tuned release-candidate all-direct gate: full_direct vs cell_direct_runtime_release_tuned.",
+        },
+        {
+            "artifact_path": "paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release_tuned.csv",
+            "status": "diagnostic_variant",
+            "category": "chain_mode_audit",
+            "note": "Large-surface tuned release-candidate all-direct gate: full_direct vs cell_direct_runtime_release_tuned.",
+        },
+        {
             "artifact_path": "paper/chain_mode_uv_audit_Dgrid21_Egrid21.csv",
             "status": "canonical_baseline",
             "category": "chain_mode_audit",
@@ -102,6 +114,24 @@ def rows() -> List[Dict[str, object]]:
             "status": "diagnostic_variant",
             "category": "chain_mode_audit",
             "note": "B-module drift attribution table (B_N, y_raw, m2, width_ratio) at max-drift and anchor points.",
+        },
+        {
+            "artifact_path": "paper/runtime_direct_b_tuning_best.json",
+            "status": "diagnostic_variant",
+            "category": "chain_mode_audit",
+            "note": "Two-stage runtime-direct B tuning winner (D21xE41 -> D60xE21 gate).",
+        },
+        {
+            "artifact_path": "paper/nonhermitian_rank2_diagnostic_D21E41_kdiag0p10.csv",
+            "status": "diagnostic_variant",
+            "category": "rank2_nonhermitian",
+            "note": "Non-Hermitian rank-2 diagnostic map drift summary (kappa_diag_scale=0.10).",
+        },
+        {
+            "artifact_path": "output/source_projection/source_projection_fit_gaussian_w0p2.json",
+            "status": "diagnostic_variant",
+            "category": "source_projection",
+            "note": "High-dimensional parent-profile to 3D projected-source fit summary (gaussian example).",
         },
         {
             "artifact_path": "output/kinetic_action_chain/full_direct_map_release_meta.json",

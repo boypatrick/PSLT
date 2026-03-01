@@ -127,6 +127,16 @@ PAPER_BASELINE = {
     "hll_uv_rge_gamma_diag": 2.0,
     "hll_uv_rge_gamma_offdiag": 1.0,
     "hll_uv_rge_log_clip": 6.0,
+    # Tuned release-candidate knobs for runtime-direct B closure
+    # (selected by D21xE41 -> D60xE21 gate in tune_runtime_direct_b_drift.py).
+    "runtime_direct_b_release_window_k": 1,
+    "runtime_direct_b_release_window_gap_scale": 1.3710108878605995,
+    "runtime_direct_b_release_window_sigma_mult": 2.909910578680871,
+    "runtime_direct_b_release_window_floor": 0.027482271709233914,
+    "runtime_direct_b_release_flavor_sigma_power": 0.06392278249524226,
+    "runtime_direct_b_release_flavor_sigma_min_scale": 0.5757838511310751,
+    "runtime_direct_b_release_flavor_sigma_max_scale": 1.6994809620722757,
+    "runtime_direct_b_release_profile_blend": 0.9562056546695611,
     "D_min": 4.0,
     "D_max": 20.0,
     "D_num": 60,
@@ -240,6 +250,7 @@ def make_baseline_kinetics(
     g_source = "gn_profile_csv"
     chi_source = "runtime_cell_solver"
     gamma_source = "runtime_cell_solver"
+    runtime_b_overrides: Dict[str, float | int] = {}
 
     runtime_direct_no_cache_eff = bool(runtime_direct_no_cache)
 
@@ -276,6 +287,23 @@ def make_baseline_kinetics(
         gamma_mode = "action_runtime_direct"
         g_source = "runtime_cell_solver"
         runtime_direct_no_cache_eff = False
+    elif chain_mode_eff == "cell_direct_runtime_release_tuned":
+        g_mode = "fp_2d_full_runtime_direct"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = "runtime_cell_solver"
+        runtime_direct_no_cache_eff = False
+        runtime_b_overrides = {
+            "runtime_direct_b_window_k": int(PAPER_BASELINE["runtime_direct_b_release_window_k"]),
+            "runtime_direct_b_window_gap_scale": float(PAPER_BASELINE["runtime_direct_b_release_window_gap_scale"]),
+            "runtime_direct_b_window_sigma_mult": float(PAPER_BASELINE["runtime_direct_b_release_window_sigma_mult"]),
+            "runtime_direct_b_window_floor": float(PAPER_BASELINE["runtime_direct_b_release_window_floor"]),
+            "runtime_direct_b_flavor_sigma_power": float(PAPER_BASELINE["runtime_direct_b_release_flavor_sigma_power"]),
+            "runtime_direct_b_flavor_sigma_min_scale": float(PAPER_BASELINE["runtime_direct_b_release_flavor_sigma_min_scale"]),
+            "runtime_direct_b_flavor_sigma_max_scale": float(PAPER_BASELINE["runtime_direct_b_release_flavor_sigma_max_scale"]),
+            "runtime_direct_b_profile_blend": float(PAPER_BASELINE["runtime_direct_b_release_profile_blend"]),
+        }
     elif chain_mode_eff == "cell_direct_runtime_extreme":
         g_mode = "fp_2d_full_runtime_direct"
         b_mode = "eft_operator_norm_runtime_direct"
@@ -342,6 +370,7 @@ def make_baseline_kinetics(
         hll_uv_rge_gamma_diag=float(uv_rge_gamma_diag),
         hll_uv_rge_gamma_offdiag=float(uv_rge_gamma_offdiag),
         hll_uv_rge_log_clip=float(uv_rge_log_clip),
+        **runtime_b_overrides,
     )
     print(
         "[baseline]",
@@ -570,6 +599,7 @@ def parse_args() -> argparse.Namespace:
             "full_direct_runtime",
             "cell_direct_runtime",
             "cell_direct_runtime_release",
+            "cell_direct_runtime_release_tuned",
             "cell_direct_runtime_extreme",
         ],
         default="full_direct",
@@ -694,6 +724,7 @@ def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray
         "full_direct_runtime",
         "cell_direct_runtime",
         "cell_direct_runtime_release",
+        "cell_direct_runtime_release_tuned",
         "cell_direct_runtime_extreme",
     }:
         return float(ref_d), False
@@ -764,7 +795,7 @@ def main() -> None:
     if snapped:
         old_ref_d = float(args.ref_d) if str(args.ref_mode) == "fixed" else float("nan")
         print(
-            "[info] chain_mode in {full_direct,full_direct_runtime,cell_direct_runtime,cell_direct_runtime_release,cell_direct_runtime_extreme} snapped ref_D to grid:",
+            "[info] chain_mode in {full_direct,full_direct_runtime,cell_direct_runtime,cell_direct_runtime_release,cell_direct_runtime_release_tuned,cell_direct_runtime_extreme} snapped ref_D to grid:",
             f"{old_ref_d if old_ref_d == old_ref_d else 'selector'} -> {ref_d:.6g}",
         )
         ref_source = f"{ref_source}+snap_refD_to_grid"

@@ -12,7 +12,7 @@ paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_extreme.c
 paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release_tuned.csv,diagnostic_variant,chain_mode_audit,Small-surface tuned release-candidate all-direct gate: full_direct vs cell_direct_runtime_release_tuned.,True
 paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release_tuned.csv,diagnostic_variant,chain_mode_audit,Large-surface tuned release-candidate all-direct gate: full_direct vs cell_direct_runtime_release_tuned.,True
 paper/chain_mode_uv_audit_Dgrid21_Egrid21.csv,canonical_baseline,chain_mode_audit,Current UV map parity audit source.,True
-paper/full_direct_map_release_summary.csv,canonical_baseline,chain_mode_audit,Integrated release summary: main full_direct map + direct-bias checks + runtime_profile / runtime_bnorm_release_candidate / runtime_bnorm_extreme chain gates.,True
+paper/full_direct_map_release_summary.csv,canonical_baseline,chain_mode_audit,Integrated release summary: main full_direct map + direct-bias checks + runtime_profile / runtime_bnorm_release_tuned_candidate / runtime_bnorm_extreme chain gates.,True
 paper/full_direct_b_module_diagnostics_D60E21.csv,diagnostic_variant,chain_mode_audit,"B-module drift attribution table (B_N, y_raw, m2, width_ratio) at max-drift and anchor points.",True
 paper/runtime_direct_b_tuning_best.json,diagnostic_variant,chain_mode_audit,Two-stage runtime-direct B tuning winner (D21xE41 -> D60xE21 gate).,True
 paper/nonhermitian_rank2_diagnostic_D21E41_kdiag0p10.csv,diagnostic_variant,rank2_nonhermitian,Non-Hermitian rank-2 diagnostic map drift summary (kappa_diag_scale=0.10).,True

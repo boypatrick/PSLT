@@ -7,9 +7,9 @@ This release mode produces eight reproducible artifacts:
   2) Small-surface complete localized-direct audit (D21 x E41)
   3) Large-surface spot-check localized-direct audit (D60 x E21)
   4) Small-surface chain parity audit (full_direct vs cell_direct_runtime, D21 x E41)
-  5) Small-surface chain parity audit (full_direct vs cell_direct_runtime_release, D21 x E41)
+  5) Small-surface chain parity audit (full_direct vs cell_direct_runtime_release_tuned, D21 x E41)
   6) Large-surface chain parity audit (full_direct vs cell_direct_runtime, D60 x E21)
-  7) Large-surface chain parity audit (full_direct vs cell_direct_runtime_release, D60 x E21)
+  7) Large-surface chain parity audit (full_direct vs cell_direct_runtime_release_tuned, D60 x E21)
   8) Large-surface chain parity audit (full_direct vs cell_direct_runtime_extreme, D60 x E21)
 
 And aggregates them into one reviewer-facing summary table:
@@ -136,7 +136,7 @@ def _extract_b_metrics(kinetics, d_val: float, eta_val: float, ref_d: float, ref
 def build_b_module_diagnostics(
     tag_full_large: str,
     tag_cell_large_runtime: str,
-    tag_cell_large_release: str,
+    tag_cell_large_release_tuned: str,
     tag_cell_large_extreme: str,
 ) -> pd.DataFrame:
     full_map = pd.read_csv(_map_csv(tag_full_large))
@@ -174,7 +174,10 @@ def build_b_module_diagnostics(
     kinetics = {
         "full_direct": make_baseline_kinetics(chain_mode="full_direct", **common),
         "cell_direct_runtime": make_baseline_kinetics(chain_mode="cell_direct_runtime", **common),
-        "cell_direct_runtime_release": make_baseline_kinetics(chain_mode="cell_direct_runtime_release", **common),
+        "cell_direct_runtime_release_tuned": make_baseline_kinetics(
+            chain_mode="cell_direct_runtime_release_tuned",
+            **common,
+        ),
         "cell_direct_runtime_extreme": make_baseline_kinetics(chain_mode="cell_direct_runtime_extreme", **common),
     }
 
@@ -185,9 +188,9 @@ def build_b_module_diagnostics(
             "tag": tag_cell_large_runtime,
         },
         {
-            "scenario_label": "runtime_bnorm_release_candidate",
-            "chain_mode": "cell_direct_runtime_release",
-            "tag": tag_cell_large_release,
+            "scenario_label": "runtime_bnorm_release_tuned_candidate",
+            "chain_mode": "cell_direct_runtime_release_tuned",
+            "tag": tag_cell_large_release_tuned,
         },
         {
             "scenario_label": "runtime_bnorm_extreme",
@@ -264,10 +267,10 @@ def main() -> None:
     tag_main = "full_direct_map_release"
     tag_full_small = "full_direct_map_full_release_D21E41"
     tag_cell_small = "full_direct_map_cell_direct_runtime_release_D21E41"
-    tag_cell_small_release = "full_direct_map_cell_direct_runtime_release_candidate_D21E41"
+    tag_cell_small_release_tuned = "full_direct_map_cell_direct_runtime_release_tuned_candidate_D21E41"
     tag_full_large = "full_direct_map_full_release_D60E21"
     tag_cell_large_runtime = "full_direct_map_cell_direct_runtime_release_D60E21"
-    tag_cell_large_release = "full_direct_map_cell_direct_runtime_release_candidate_D60E21"
+    tag_cell_large_release_tuned = "full_direct_map_cell_direct_runtime_release_tuned_candidate_D60E21"
     tag_cell_large_extreme = "full_direct_map_cell_direct_runtime_extreme_release_D60E21"
 
     # 1) Main-map full_direct baseline.
@@ -375,10 +378,12 @@ def main() -> None:
         force=bool(args.force),
     )
 
-    # 5) Small-surface chain-mode parity audit (full_direct vs cell_direct_runtime_release).
-    parity_small_release_summary = OUT_KIN / "chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release.csv"
+    # 5) Small-surface chain-mode parity audit (full_direct vs cell_direct_runtime_release_tuned).
+    parity_small_release_summary = (
+        OUT_KIN / "chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release_tuned.csv"
+    )
     run_cmd(
-        name="chain_mode_full_vs_cell_direct_runtime_release_small_release",
+        name="chain_mode_full_vs_cell_direct_runtime_release_tuned_small_release",
         cmd=[
             sys.executable,
             str(SCAN_CHAIN_AUDIT),
@@ -397,9 +402,9 @@ def main() -> None:
             "--full-direct-tag",
             tag_full_small,
             "--cell-direct-tag",
-            tag_cell_small_release,
+            tag_cell_small_release_tuned,
             "--cell-chain-mode",
-            "cell_direct_runtime_release",
+            "cell_direct_runtime_release_tuned",
         ],
         expected=parity_small_release_summary,
         force=bool(args.force),
@@ -435,10 +440,12 @@ def main() -> None:
         force=bool(args.force),
     )
 
-    # 7) Large-surface chain-mode parity audit (full_direct vs cell_direct_runtime_release).
-    parity_large_release_summary = OUT_KIN / "chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release.csv"
+    # 7) Large-surface chain-mode parity audit (full_direct vs cell_direct_runtime_release_tuned).
+    parity_large_release_summary = (
+        OUT_KIN / "chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release_tuned.csv"
+    )
     run_cmd(
-        name="chain_mode_full_vs_cell_direct_runtime_release_large_release",
+        name="chain_mode_full_vs_cell_direct_runtime_release_tuned_large_release",
         cmd=[
             sys.executable,
             str(SCAN_CHAIN_AUDIT),
@@ -457,9 +464,9 @@ def main() -> None:
             "--full-direct-tag",
             tag_full_large,
             "--cell-direct-tag",
-            tag_cell_large_release,
+            tag_cell_large_release_tuned,
             "--cell-chain-mode",
-            "cell_direct_runtime_release",
+            "cell_direct_runtime_release_tuned",
         ],
         expected=parity_large_release_summary,
         force=bool(args.force),
@@ -508,7 +515,7 @@ def main() -> None:
     b_diag_df = build_b_module_diagnostics(
         tag_full_large=tag_full_large,
         tag_cell_large_runtime=tag_cell_large_runtime,
-        tag_cell_large_release=tag_cell_large_release,
+        tag_cell_large_release_tuned=tag_cell_large_release_tuned,
         tag_cell_large_extreme=tag_cell_large_extreme,
     )
     b_diag_csv = OUT_KIN / "full_direct_b_module_diagnostics_D60E21.csv"
@@ -588,7 +595,7 @@ def main() -> None:
             "source": str(parity_large_runtime_summary.relative_to(ROOT)),
         },
         {
-            "scenario": "chain_mode_parity_full_direct_vs_cell_direct_runtime_bnorm_release_candidate",
+            "scenario": "chain_mode_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_candidate",
             "grid": "D21xE41",
             "n_points": int(parity_small_release["n_points"]),
             "f_chi2_mumu_le_4": float(parity_small_release["f_chi2_le_4_mumu_full_direct"]),
@@ -602,7 +609,7 @@ def main() -> None:
             "source": str(parity_small_release_summary.relative_to(ROOT)),
         },
         {
-            "scenario": "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_release_candidate",
+            "scenario": "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_candidate",
             "grid": "D60xE21",
             "n_points": int(parity_large_release["n_points"]),
             "f_chi2_mumu_le_4": float(parity_large_release["f_chi2_le_4_mumu_full_direct"]),
@@ -663,9 +670,9 @@ def main() -> None:
                 "small_surface": str(small_summary.relative_to(ROOT)),
                 "large_surface": str(large_summary.relative_to(ROOT)),
                 "chain_parity_small_runtime": str(parity_small_summary.relative_to(ROOT)),
-                "chain_parity_small_release": str(parity_small_release_summary.relative_to(ROOT)),
+                "chain_parity_small_release_tuned": str(parity_small_release_summary.relative_to(ROOT)),
                 "chain_parity_large_runtime": str(parity_large_runtime_summary.relative_to(ROOT)),
-                "chain_parity_large_release": str(parity_large_release_summary.relative_to(ROOT)),
+                "chain_parity_large_release_tuned": str(parity_large_release_summary.relative_to(ROOT)),
                 "chain_parity_large_extreme": str(parity_large_extreme_summary.relative_to(ROOT)),
                 "b_module_diagnostics": str(b_diag_csv.relative_to(ROOT)),
                 "summary_csv": str(out_csv.relative_to(ROOT)),

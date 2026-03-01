@@ -107,7 +107,7 @@ def rows() -> List[Dict[str, object]]:
             "artifact_path": "paper/full_direct_map_release_summary.csv",
             "status": "canonical_baseline",
             "category": "chain_mode_audit",
-            "note": "Integrated release summary: main full_direct map + direct-bias checks + runtime_profile / runtime_bnorm_release_candidate / runtime_bnorm_extreme chain gates.",
+            "note": "Integrated release summary: main full_direct map + direct-bias checks + runtime_profile / runtime_bnorm_release_tuned_candidate / runtime_bnorm_extreme chain gates.",
         },
         {
             "artifact_path": "paper/full_direct_b_module_diagnostics_D60E21.csv",

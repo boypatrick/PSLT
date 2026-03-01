@@ -88,6 +88,21 @@ class BaselineConfig:
 CFG = BaselineConfig()
 
 
+def _parse_d_values_arg(raw: str) -> np.ndarray:
+    vals: List[float] = []
+    for tok in str(raw).split(","):
+        t = tok.strip()
+        if not t:
+            continue
+        vals.append(float(t))
+    if len(vals) < 2:
+        raise ValueError("--d-values requires at least two comma-separated values.")
+    arr = np.array(sorted(set(vals)), dtype=float)
+    if len(arr) < 2:
+        raise ValueError("--d-values must contain at least two unique values.")
+    return arr
+
+
 def _load_baseline_chi(path: Path) -> Tuple[np.ndarray, np.ndarray]:
     if not path.exists():
         raise FileNotFoundError(f"Baseline chi profile not found: {path}")
@@ -459,6 +474,13 @@ def main() -> None:
     ap.add_argument("--d-min", type=float, default=4.0)
     ap.add_argument("--d-max", type=float, default=20.0)
     ap.add_argument("--d-num", type=int, default=11, help="Small sampled D-grid size.")
+    ap.add_argument(
+        "--d-values",
+        type=str,
+        default="",
+        help="Optional comma-separated explicit D grid (overrides --d-min/--d-max/--d-num).",
+    )
+    ap.add_argument("--tag-suffix", type=str, default="", help="Optional suffix appended to output tag.")
     ap.add_argument("--eta-min", type=float, default=0.2)
     ap.add_argument("--eta-max", type=float, default=4.0)
     ap.add_argument("--eta-num", type=int, default=21, help="Small sampled eta-grid size.")
@@ -483,11 +505,22 @@ def main() -> None:
     OUTDIR.mkdir(parents=True, exist_ok=True)
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
 
-    d_vals = scan_d_values(args.d_min, args.d_max, args.d_num)
+    if str(args.d_values).strip():
+        d_vals = _parse_d_values_arg(str(args.d_values))
+        d_desc = f"explicit({len(d_vals)})"
+    else:
+        d_vals = scan_d_values(args.d_min, args.d_max, args.d_num)
+        d_desc = f"uniform({len(d_vals)})"
     eta_vals = np.linspace(float(args.eta_min), float(args.eta_max), int(args.eta_num))
     tag = f"Dgrid{len(d_vals)}_Egrid{len(eta_vals)}"
+    if str(args.tag_suffix).strip():
+        clean = str(args.tag_suffix).strip().replace(" ", "_")
+        tag = f"{tag}_{clean}"
 
-    print("[grid]", f"D:[{args.d_min},{args.d_max}] N={len(d_vals)}", f"eta:[{args.eta_min},{args.eta_max}] N={len(eta_vals)}")
+    if str(args.d_values).strip():
+        print("[grid]", f"D:{d_desc} values={','.join(f'{x:.6g}' for x in d_vals)}", f"eta:[{args.eta_min},{args.eta_max}] N={len(eta_vals)}")
+    else:
+        print("[grid]", f"D:[{args.d_min},{args.d_max}] N={len(d_vals)}", f"eta:[{args.eta_min},{args.eta_max}] N={len(eta_vals)}")
 
     chi_df = extract_direct_chi_profile(
         d_vals=d_vals,

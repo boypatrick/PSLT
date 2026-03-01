@@ -25,6 +25,7 @@ import json
 import os
 import subprocess
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List
 
@@ -70,6 +71,11 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--force", action="store_true", help="Recompute all steps even if outputs already exist.")
     ap.add_argument("--main-chain-mode", choices=["full_direct", "full_direct_runtime"], default="full_direct")
     ap.add_argument("--runtime-direct-force", action="store_true", help="When main-chain-mode=full_direct_runtime, force direct profile rebuild.")
+    ap.add_argument("--worst-delta-mu-threshold", type=float, default=0.5, help="Point-level |Δmu_mumu| threshold for worst-points table.")
+    ap.add_argument("--worst-top-k", type=int, default=50, help="Max number of rows kept in worst-points table.")
+    ap.add_argument("--release-gate-mismatch-max", type=float, default=0.01, help="Release gate max for acceptance mismatch fraction.")
+    ap.add_argument("--release-gate-delta-mu-max", type=float, default=1.0, help="Release gate max for max |Δmu_mumu|.")
+    ap.add_argument("--enforce-release-gate", action="store_true", help="Exit with failure when release gate is not satisfied.")
     return ap.parse_args()
 
 
@@ -87,6 +93,117 @@ def _snap_ref_d_to_grid(ref_d: float, d_values: np.ndarray) -> float:
 def _nearest_row_idx(df: pd.DataFrame, d_target: float, eta_target: float) -> int:
     dist = (df["D"].astype(float) - float(d_target)) ** 2 + (df["eta"].astype(float) - float(eta_target)) ** 2
     return int(dist.idxmin())
+
+
+@dataclass(frozen=True)
+class ReleaseGateStatus:
+    gate_pass: bool
+    worst_frac_acceptance_mismatch: float
+    worst_max_abs_delta_mu_mumu: float
+    small_frac_acceptance_mismatch: float
+    small_max_abs_delta_mu_mumu: float
+    large_frac_acceptance_mismatch: float
+    large_max_abs_delta_mu_mumu: float
+    mismatch_threshold: float
+    delta_mu_threshold: float
+
+
+def build_worst_points_table(
+    comparisons: List[Dict[str, str]],
+    delta_mu_threshold: float,
+    top_k: int,
+) -> pd.DataFrame:
+    rows: List[Dict[str, object]] = []
+    for comp in comparisons:
+        tag_full = str(comp["full_tag"])
+        tag_cmp = str(comp["cmp_tag"])
+        grid = str(comp["grid"])
+        scenario = str(comp["scenario"])
+
+        full_map = pd.read_csv(_map_csv(tag_full)).sort_values(["eta", "D"]).reset_index(drop=True)
+        cmp_map = pd.read_csv(_map_csv(tag_cmp)).sort_values(["eta", "D"]).reset_index(drop=True)
+        if len(full_map) != len(cmp_map):
+            raise RuntimeError(f"Worst-points map size mismatch for scenario={scenario}.")
+        if not np.allclose(full_map["D"].to_numpy(dtype=float), cmp_map["D"].to_numpy(dtype=float), rtol=0, atol=1e-12):
+            raise RuntimeError(f"Worst-points D-grid mismatch for scenario={scenario}.")
+        if not np.allclose(full_map["eta"].to_numpy(dtype=float), cmp_map["eta"].to_numpy(dtype=float), rtol=0, atol=1e-12):
+            raise RuntimeError(f"Worst-points eta-grid mismatch for scenario={scenario}.")
+
+        dmu = np.abs(full_map["mu_mumu"].to_numpy(dtype=float) - cmp_map["mu_mumu"].to_numpy(dtype=float))
+        chi2_full = full_map["chi2_mumu"].to_numpy(dtype=float)
+        chi2_cmp = cmp_map["chi2_mumu"].to_numpy(dtype=float)
+        acc_full = chi2_full <= 4.0
+        acc_cmp = chi2_cmp <= 4.0
+        mismatch = np.logical_xor(acc_full, acc_cmp)
+        sel = np.logical_or(mismatch, dmu > float(delta_mu_threshold))
+        idx = np.where(sel)[0]
+        if idx.size == 0:
+            continue
+        order = idx[np.argsort(-dmu[idx])]
+        order = order[: max(1, int(top_k))]
+        for k in order:
+            rows.append(
+                {
+                    "scenario": scenario,
+                    "grid": grid,
+                    "D": float(full_map.iloc[int(k)]["D"]),
+                    "eta": float(full_map.iloc[int(k)]["eta"]),
+                    "mu_mumu_full": float(full_map.iloc[int(k)]["mu_mumu"]),
+                    "mu_mumu_cmp": float(cmp_map.iloc[int(k)]["mu_mumu"]),
+                    "abs_delta_mu_mumu": float(dmu[int(k)]),
+                    "chi2_mumu_full": float(chi2_full[int(k)]),
+                    "chi2_mumu_cmp": float(chi2_cmp[int(k)]),
+                    "accept_full": bool(acc_full[int(k)]),
+                    "accept_cmp": bool(acc_cmp[int(k)]),
+                    "acceptance_mismatch": bool(mismatch[int(k)]),
+                }
+            )
+
+    if not rows:
+        return pd.DataFrame(
+            columns=[
+                "scenario",
+                "grid",
+                "D",
+                "eta",
+                "mu_mumu_full",
+                "mu_mumu_cmp",
+                "abs_delta_mu_mumu",
+                "chi2_mumu_full",
+                "chi2_mumu_cmp",
+                "accept_full",
+                "accept_cmp",
+                "acceptance_mismatch",
+            ]
+        )
+    df = pd.DataFrame(rows)
+    return df.sort_values(["acceptance_mismatch", "abs_delta_mu_mumu"], ascending=[False, False]).reset_index(drop=True)
+
+
+def evaluate_release_gate(
+    parity_small_release: Dict[str, float],
+    parity_large_release: Dict[str, float],
+    mismatch_threshold: float,
+    delta_mu_threshold: float,
+) -> ReleaseGateStatus:
+    small_mis = float(parity_small_release["frac_acceptance_mismatch"])
+    small_delta = float(parity_small_release["max_abs_delta_mu_mumu"])
+    large_mis = float(parity_large_release["frac_acceptance_mismatch"])
+    large_delta = float(parity_large_release["max_abs_delta_mu_mumu"])
+    worst_mis = max(small_mis, large_mis)
+    worst_delta = max(small_delta, large_delta)
+    gate_pass = bool(worst_mis <= float(mismatch_threshold) and worst_delta <= float(delta_mu_threshold))
+    return ReleaseGateStatus(
+        gate_pass=gate_pass,
+        worst_frac_acceptance_mismatch=worst_mis,
+        worst_max_abs_delta_mu_mumu=worst_delta,
+        small_frac_acceptance_mismatch=small_mis,
+        small_max_abs_delta_mu_mumu=small_delta,
+        large_frac_acceptance_mismatch=large_mis,
+        large_max_abs_delta_mu_mumu=large_delta,
+        mismatch_threshold=float(mismatch_threshold),
+        delta_mu_threshold=float(delta_mu_threshold),
+    )
 
 
 def _extract_b_metrics(kinetics, d_val: float, eta_val: float, ref_d: float, ref_eta: float) -> Dict[str, float]:
@@ -523,6 +640,75 @@ def main() -> None:
     b_diag_df.to_csv(b_diag_csv, index=False)
     b_diag_paper_csv.write_text(b_diag_csv.read_text())
 
+    # 10) Worst-points table for targeted local refinement.
+    worst_df = build_worst_points_table(
+        comparisons=[
+            {
+                "scenario": "small_full_vs_cell_direct_runtime",
+                "grid": "D21xE41",
+                "full_tag": tag_full_small,
+                "cmp_tag": tag_cell_small,
+            },
+            {
+                "scenario": "small_full_vs_cell_direct_runtime_release_tuned",
+                "grid": "D21xE41",
+                "full_tag": tag_full_small,
+                "cmp_tag": tag_cell_small_release_tuned,
+            },
+            {
+                "scenario": "large_full_vs_cell_direct_runtime",
+                "grid": "D60xE21",
+                "full_tag": tag_full_large,
+                "cmp_tag": tag_cell_large_runtime,
+            },
+            {
+                "scenario": "large_full_vs_cell_direct_runtime_release_tuned",
+                "grid": "D60xE21",
+                "full_tag": tag_full_large,
+                "cmp_tag": tag_cell_large_release_tuned,
+            },
+            {
+                "scenario": "large_full_vs_cell_direct_runtime_extreme",
+                "grid": "D60xE21",
+                "full_tag": tag_full_large,
+                "cmp_tag": tag_cell_large_extreme,
+            },
+        ],
+        delta_mu_threshold=float(args.worst_delta_mu_threshold),
+        top_k=int(args.worst_top_k),
+    )
+    worst_csv = OUT_KIN / "full_direct_worst_points_table.csv"
+    worst_paper_csv = PAPER / worst_csv.name
+    worst_df.to_csv(worst_csv, index=False)
+    worst_paper_csv.write_text(worst_csv.read_text())
+
+    # 11) Release gate status.
+    gate = evaluate_release_gate(
+        parity_small_release=parity_small_release,
+        parity_large_release=parity_large_release,
+        mismatch_threshold=float(args.release_gate_mismatch_max),
+        delta_mu_threshold=float(args.release_gate_delta_mu_max),
+    )
+    gate_csv = OUT_KIN / "full_direct_release_gate_status.csv"
+    gate_paper_csv = PAPER / gate_csv.name
+    pd.DataFrame(
+        [
+            {
+                "gate_pass": bool(gate.gate_pass),
+                "worst_frac_acceptance_mismatch": float(gate.worst_frac_acceptance_mismatch),
+                "worst_max_abs_delta_mu_mumu": float(gate.worst_max_abs_delta_mu_mumu),
+                "small_frac_acceptance_mismatch": float(gate.small_frac_acceptance_mismatch),
+                "small_max_abs_delta_mu_mumu": float(gate.small_max_abs_delta_mu_mumu),
+                "large_frac_acceptance_mismatch": float(gate.large_frac_acceptance_mismatch),
+                "large_max_abs_delta_mu_mumu": float(gate.large_max_abs_delta_mu_mumu),
+                "mismatch_threshold": float(gate.mismatch_threshold),
+                "delta_mu_threshold": float(gate.delta_mu_threshold),
+                "enforced": bool(args.enforce_release_gate),
+            }
+        ]
+    ).to_csv(gate_csv, index=False)
+    gate_paper_csv.write_text(gate_csv.read_text())
+
     rows: List[Dict[str, object]] = [
         {
             "scenario": "main_map_full_direct_baseline",
@@ -650,6 +836,34 @@ def main() -> None:
             "delta_f_chi2_mumu_le_4": "",
             "source": str(b_diag_csv.relative_to(ROOT)),
         },
+        {
+            "scenario": "release_gate_status",
+            "grid": "D21xE41 + D60xE21",
+            "n_points": int(parity_small_release["n_points"]) + int(parity_large_release["n_points"]),
+            "f_chi2_mumu_le_4": "",
+            "best_chi2_mumu": "",
+            "best_D": "",
+            "best_eta": "",
+            "frac_winner_mismatch": float(gate.worst_frac_acceptance_mismatch),
+            "max_abs_delta_R3": "",
+            "max_abs_delta_mu_mumu": float(gate.worst_max_abs_delta_mu_mumu),
+            "delta_f_chi2_mumu_le_4": "",
+            "source": str(gate_csv.relative_to(ROOT)),
+        },
+        {
+            "scenario": "worst_points_table",
+            "grid": "D21xE41 + D60xE21",
+            "n_points": int(len(worst_df)),
+            "f_chi2_mumu_le_4": "",
+            "best_chi2_mumu": "",
+            "best_D": "",
+            "best_eta": "",
+            "frac_winner_mismatch": "",
+            "max_abs_delta_R3": "",
+            "max_abs_delta_mu_mumu": float(worst_df["abs_delta_mu_mumu"].max()) if len(worst_df) > 0 else 0.0,
+            "delta_f_chi2_mumu_le_4": "",
+            "source": str(worst_csv.relative_to(ROOT)),
+        },
     ]
 
     out_csv = OUT_KIN / "full_direct_map_release_summary.csv"
@@ -675,6 +889,13 @@ def main() -> None:
                 "chain_parity_large_release_tuned": str(parity_large_release_summary.relative_to(ROOT)),
                 "chain_parity_large_extreme": str(parity_large_extreme_summary.relative_to(ROOT)),
                 "b_module_diagnostics": str(b_diag_csv.relative_to(ROOT)),
+                "worst_points_table": str(worst_csv.relative_to(ROOT)),
+                "release_gate_status": str(gate_csv.relative_to(ROOT)),
+                "release_gate_pass": bool(gate.gate_pass),
+                "release_gate_thresholds": {
+                    "mismatch_max": float(gate.mismatch_threshold),
+                    "max_abs_delta_mu_mumu_max": float(gate.delta_mu_threshold),
+                },
                 "summary_csv": str(out_csv.relative_to(ROOT)),
             },
             indent=2,
@@ -686,8 +907,28 @@ def main() -> None:
     print(f"[saved] {out_json}")
     print(f"[saved] {b_diag_csv}")
     print(f"[saved] {b_diag_paper_csv}")
+    print(f"[saved] {worst_csv}")
+    print(f"[saved] {worst_paper_csv}")
+    print(f"[saved] {gate_csv}")
+    print(f"[saved] {gate_paper_csv}")
+    print(
+        "[release gate]",
+        f"pass={gate.gate_pass}",
+        f"worst_mismatch={gate.worst_frac_acceptance_mismatch:.6f}",
+        f"worst_max_abs_delta_mu_mumu={gate.worst_max_abs_delta_mu_mumu:.6f}",
+        f"thresholds(mismatch<={gate.mismatch_threshold:.6f}, delta_mu<={gate.delta_mu_threshold:.6f})",
+    )
     for row in rows:
         print(row)
+
+    if bool(args.enforce_release_gate) and not bool(gate.gate_pass):
+        raise RuntimeError(
+            "Release gate failed: "
+            f"worst_frac_acceptance_mismatch={gate.worst_frac_acceptance_mismatch:.6f} "
+            f"(limit {gate.mismatch_threshold:.6f}), "
+            f"worst_max_abs_delta_mu_mumu={gate.worst_max_abs_delta_mu_mumu:.6f} "
+            f"(limit {gate.delta_mu_threshold:.6f})."
+        )
 
 
 if __name__ == "__main__":

@@ -8,3 +8,5 @@ chain_mode_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_candida
 chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_candidate,D60xE21,1260,0.15,0.0011768719604618,,,0.0071428571428571,,4.344757845278792,-0.0071428571428572,output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release_tuned.csv
 chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_extreme,D60xE21,1260,0.15,0.0011768719604618,,,0.0444444444444444,,55.030776134318785,-0.0444444444444444,output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_extreme.csv
 b_module_diagnostics_large_surface,D60xE21,6,,,,,,,,,output/kinetic_action_chain/full_direct_b_module_diagnostics_D60E21.csv
+release_gate_status,D21xE41 + D60xE21,2121,,,,,0.0290360046457607,,5.387299255939993,,output/kinetic_action_chain/full_direct_release_gate_status.csv
+worst_points_table,D21xE41 + D60xE21,250,,,,,,,55.030776134318785,,output/kinetic_action_chain/full_direct_worst_points_table.csv

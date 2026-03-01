@@ -10,5 +10,12 @@
   "chain_parity_large_release_tuned": "output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release_tuned.csv",
   "chain_parity_large_extreme": "output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_extreme.csv",
   "b_module_diagnostics": "output/kinetic_action_chain/full_direct_b_module_diagnostics_D60E21.csv",
+  "worst_points_table": "output/kinetic_action_chain/full_direct_worst_points_table.csv",
+  "release_gate_status": "output/kinetic_action_chain/full_direct_release_gate_status.csv",
+  "release_gate_pass": false,
+  "release_gate_thresholds": {
+    "mismatch_max": 0.01,
+    "max_abs_delta_mu_mumu_max": 1.0
+  },
   "summary_csv": "output/kinetic_action_chain/full_direct_map_release_summary.csv"
 }

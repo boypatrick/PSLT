@@ -72,6 +72,10 @@ This executes core UV/EFT scans, compiles `paper/main.tex`, packages reproducibi
 - `paper/presubmit_prd_report_latest.json`
 - `paper/presubmit_prd_report_latest.md`
 
+The presubmit report now includes explicit auto-gated release decisions:
+- `full_direct_release` (`GO/HOLD`) from direct-bias thresholds on `D21xE41` + `D60xE21`
+- `runtime_release_tuned_promotion` (`GO/HOLD`) from tuned-candidate parity thresholds on the same gates
+
 ### 6. Artifact Status Registry (Reviewer Hygiene)
 To avoid misreading old comparator outputs as baseline claims:
 

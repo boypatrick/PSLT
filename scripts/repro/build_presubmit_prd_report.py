@@ -70,6 +70,14 @@ def to_float(v: str | None, default: float = float("nan")) -> float:
         return default
 
 
+def fmt_num(v: float) -> str:
+    if v != v:  # NaN
+        return "NaN"
+    if abs(v) >= 1e-2:
+        return f"{v:.6f}"
+    return f"{v:.6e}"
+
+
 def build_report(root: Path, run_id: str) -> Tuple[Dict[str, object], str]:
     required_files = [
         root / "paper" / "main.tex",
@@ -77,6 +85,7 @@ def build_report(root: Path, run_id: str) -> Tuple[Dict[str, object], str]:
         root / "paper" / "hll_signal_strength_summary.csv",
         root / "paper" / "hll_uv_to_eft_summary.csv",
         root / "paper" / "hll_rge_sensitivity.csv",
+        root / "paper" / "full_direct_map_release_summary.csv",
         root / "output" / "first_principles_migration" / "first_principles_migration_summary.csv",
         root / "output" / "hll_signal_strength" / "hll_signal_strength_run_meta_baseline.json",
     ]
@@ -174,6 +183,110 @@ def build_report(root: Path, run_id: str) -> Tuple[Dict[str, object], str]:
         )
     )
 
+    release_rows = read_csv_rows(root / "paper" / "full_direct_map_release_summary.csv")
+    row_small_direct = find_row(release_rows, "scenario", "small_surface_complete_direct_bias")
+    row_large_direct = find_row(release_rows, "scenario", "large_surface_spotcheck_direct_bias")
+    row_small_tuned = find_row(
+        release_rows,
+        "scenario",
+        "chain_mode_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_candidate",
+    )
+    row_large_tuned = find_row(
+        release_rows,
+        "scenario",
+        "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_candidate",
+    )
+
+    checks.append(
+        CheckResult(
+            name="release_gate_rows_present",
+            ok=(
+                row_small_direct is not None
+                and row_large_direct is not None
+                and row_small_tuned is not None
+                and row_large_tuned is not None
+            ),
+            detail=(
+                "small/large direct-bias rows and tuned-candidate parity rows found"
+                if (
+                    row_small_direct is not None
+                    and row_large_direct is not None
+                    and row_small_tuned is not None
+                    and row_large_tuned is not None
+                )
+                else "missing one or more release-gate rows in paper/full_direct_map_release_summary.csv"
+            ),
+        )
+    )
+
+    full_direct_thresholds = {
+        "small_frac_winner_mismatch": 0.01,
+        "small_max_abs_delta_R3": 1e-3,
+        "small_max_abs_delta_mu_mumu": 0.10,
+        "large_frac_winner_mismatch": 0.01,
+        "large_max_abs_delta_R3": 1e-3,
+        "large_max_abs_delta_mu_mumu": 0.10,
+    }
+    tuned_promotion_thresholds = {
+        "small_frac_acceptance_mismatch": 0.01,
+        "small_max_abs_delta_mu_mumu": 1.0,
+        "large_frac_acceptance_mismatch": 0.01,
+        "large_max_abs_delta_mu_mumu": 1.0,
+    }
+
+    full_direct_metrics = {
+        "small_frac_winner_mismatch": to_float(row_small_direct.get("frac_winner_mismatch") if row_small_direct else None),
+        "small_max_abs_delta_R3": to_float(row_small_direct.get("max_abs_delta_R3") if row_small_direct else None),
+        "small_max_abs_delta_mu_mumu": to_float(row_small_direct.get("max_abs_delta_mu_mumu") if row_small_direct else None),
+        "large_frac_winner_mismatch": to_float(row_large_direct.get("frac_winner_mismatch") if row_large_direct else None),
+        "large_max_abs_delta_R3": to_float(row_large_direct.get("max_abs_delta_R3") if row_large_direct else None),
+        "large_max_abs_delta_mu_mumu": to_float(row_large_direct.get("max_abs_delta_mu_mumu") if row_large_direct else None),
+    }
+    tuned_promotion_metrics = {
+        "small_frac_acceptance_mismatch": to_float(row_small_tuned.get("frac_winner_mismatch") if row_small_tuned else None),
+        "small_max_abs_delta_mu_mumu": to_float(row_small_tuned.get("max_abs_delta_mu_mumu") if row_small_tuned else None),
+        "large_frac_acceptance_mismatch": to_float(row_large_tuned.get("frac_winner_mismatch") if row_large_tuned else None),
+        "large_max_abs_delta_mu_mumu": to_float(row_large_tuned.get("max_abs_delta_mu_mumu") if row_large_tuned else None),
+    }
+
+    full_direct_gate_ok = all(
+        (full_direct_metrics[k] == full_direct_metrics[k]) and (full_direct_metrics[k] <= v)
+        for k, v in full_direct_thresholds.items()
+    )
+    full_direct_gate_decision = "GO" if full_direct_gate_ok else "HOLD"
+    checks.append(
+        CheckResult(
+            name="gate_full_direct_release",
+            ok=full_direct_gate_ok,
+            detail=(
+                f"decision={full_direct_gate_decision}; "
+                + ", ".join(
+                    f"{k}={fmt_num(full_direct_metrics[k])}<= {fmt_num(v)}"
+                    for k, v in full_direct_thresholds.items()
+                )
+            ),
+        )
+    )
+
+    tuned_promotion_ok = all(
+        (tuned_promotion_metrics[k] == tuned_promotion_metrics[k]) and (tuned_promotion_metrics[k] <= v)
+        for k, v in tuned_promotion_thresholds.items()
+    )
+    tuned_promotion_decision = "GO" if tuned_promotion_ok else "HOLD"
+    checks.append(
+        CheckResult(
+            name="gate_runtime_release_tuned_promotion_rows",
+            ok=(row_small_tuned is not None and row_large_tuned is not None),
+            detail=(
+                f"decision={tuned_promotion_decision}; "
+                + ", ".join(
+                    f"{k}={fmt_num(tuned_promotion_metrics[k])}<= {fmt_num(v)}"
+                    for k, v in tuned_promotion_thresholds.items()
+                )
+            ),
+        )
+    )
+
     all_ok = all(c.ok for c in checks)
     commit = run_git(root, ["rev-parse", "HEAD"])
     branch = run_git(root, ["branch", "--show-current"])
@@ -193,6 +306,22 @@ def build_report(root: Path, run_id: str) -> Tuple[Dict[str, object], str]:
             "best_chi2_mumu": mumu_best,
             "uv_max_abs_delta_mu_mumu": uv_max_dmu,
             "uv_max_abs_delta_C_match_mumu": uv_max_dcmatch,
+            "gate_full_direct_release": full_direct_gate_decision,
+            "gate_runtime_release_tuned_promotion": tuned_promotion_decision,
+        },
+        "release_gates": {
+            "full_direct_release": {
+                "decision": full_direct_gate_decision,
+                "pass": full_direct_gate_ok,
+                "thresholds": full_direct_thresholds,
+                "metrics": full_direct_metrics,
+            },
+            "runtime_release_tuned_promotion": {
+                "decision": tuned_promotion_decision,
+                "pass": tuned_promotion_ok,
+                "thresholds": tuned_promotion_thresholds,
+                "metrics": tuned_promotion_metrics,
+            },
         },
         "checks": [{"name": c.name, "ok": c.ok, "detail": c.detail} for c in checks],
         "files": file_meta,
@@ -215,6 +344,31 @@ def build_report(root: Path, run_id: str) -> Tuple[Dict[str, object], str]:
     lines.append(f"- Best `chi2_mumu`: {mumu_best:.6e}" if mumu_best == mumu_best else "- Best `chi2_mumu`: NaN")
     lines.append(f"- UV audit `max |delta mu_mumu|`: {uv_max_dmu:.6e}" if uv_max_dmu == uv_max_dmu else "- UV audit `max |delta mu_mumu|`: NaN")
     lines.append(f"- UV audit `max |delta C_match_mumu|`: {uv_max_dcmatch:.6e}" if uv_max_dcmatch == uv_max_dcmatch else "- UV audit `max |delta C_match_mumu|`: NaN")
+    lines.append(f"- Full-direct release gate: **{full_direct_gate_decision}**")
+    lines.append(f"- Runtime-tuned promotion gate: **{tuned_promotion_decision}**")
+    lines.append("")
+    lines.append("## Release Gates")
+    lines.append("")
+    lines.append("| Gate | Decision | Pass | Key metrics vs thresholds |")
+    lines.append("|---|---|---|---|")
+    lines.append(
+        "| `full_direct_release` | "
+        f"{full_direct_gate_decision} | {'PASS' if full_direct_gate_ok else 'FAIL'} | "
+        + "; ".join(
+            f"{k}={fmt_num(full_direct_metrics[k])}<= {fmt_num(v)}"
+            for k, v in full_direct_thresholds.items()
+        )
+        + " |"
+    )
+    lines.append(
+        "| `runtime_release_tuned_promotion` | "
+        f"{tuned_promotion_decision} | {'PASS' if tuned_promotion_ok else 'FAIL'} | "
+        + "; ".join(
+            f"{k}={fmt_num(tuned_promotion_metrics[k])}<= {fmt_num(v)}"
+            for k, v in tuned_promotion_thresholds.items()
+        )
+        + " |"
+    )
     lines.append("")
     lines.append("## Checks")
     lines.append("")

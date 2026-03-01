@@ -1,9 +1,9 @@
 # PRD Pre-Submission Freeze Report
 
-- Generated (UTC): 2026-03-01T14:10:28Z
-- Run ID: 20260301T140833Z_3e61a1a_prd_freeze
+- Generated (UTC): 2026-03-01T15:31:59Z
+- Run ID: 20260301T153159Z_597d610_prd_freeze
 - Git branch: main
-- Git commit: 3e61a1a36ce55a0b811716757e95fdd9e3213e1d
+- Git commit: 597d610ee9835d9eb194ada9642202d3e7e28040
 - Git dirty at report time: True
 
 ## Key Metrics
@@ -13,6 +13,15 @@
 - Best `chi2_mumu`: 2.207981e-05
 - UV audit `max |delta mu_mumu|`: 9.738091e-03
 - UV audit `max |delta C_match_mumu|`: 1.000000e-30
+- Full-direct release gate: **GO**
+- Runtime-tuned promotion gate: **HOLD**
+
+## Release Gates
+
+| Gate | Decision | Pass | Key metrics vs thresholds |
+|---|---|---|---|
+| `full_direct_release` | GO | PASS | small_frac_winner_mismatch=0.000000e+00<= 0.010000; small_max_abs_delta_R3=1.788196e-05<= 1.000000e-03; small_max_abs_delta_mu_mumu=3.369519e-03<= 0.100000; large_frac_winner_mismatch=0.000000e+00<= 0.010000; large_max_abs_delta_R3=0.000000e+00<= 1.000000e-03; large_max_abs_delta_mu_mumu=0.000000e+00<= 0.100000 |
+| `runtime_release_tuned_promotion` | HOLD | FAIL | small_frac_acceptance_mismatch=0.029036<= 0.010000; small_max_abs_delta_mu_mumu=5.387299<= 1.000000; large_frac_acceptance_mismatch=7.142857e-03<= 0.010000; large_max_abs_delta_mu_mumu=4.344758<= 1.000000 |
 
 ## Checks
 
@@ -23,6 +32,7 @@
 | `file:paper/hll_signal_strength_summary.csv` | PASS | exists and non-empty |
 | `file:paper/hll_uv_to_eft_summary.csv` | PASS | exists and non-empty |
 | `file:paper/hll_rge_sensitivity.csv` | PASS | exists and non-empty |
+| `file:paper/full_direct_map_release_summary.csv` | PASS | exists and non-empty |
 | `file:output/first_principles_migration/first_principles_migration_summary.csv` | PASS | exists and non-empty |
 | `file:output/hll_signal_strength/hll_signal_strength_run_meta_baseline.json` | PASS | exists and non-empty |
 | `paper_sync` | PASS | main.pdf mtime >= main.tex mtime |
@@ -32,5 +42,8 @@
 | `rge_sensitivity_parameters` | PASS | found=['gamma_diag', 'gamma_offdiag', 'kappa_diag', 'kappa_offdiag', 'mu_low'] |
 | `baseline_migration_row` | PASS | baseline_fp2d_full_action_grid row found |
 | `run_meta_has_finite_match_knobs` | PASS | kappa_diag=0.0, kappa_offdiag=0.0 |
+| `release_gate_rows_present` | PASS | small/large direct-bias rows and tuned-candidate parity rows found |
+| `gate_full_direct_release` | PASS | decision=GO; small_frac_winner_mismatch=0.000000e+00<= 0.010000, small_max_abs_delta_R3=1.788196e-05<= 1.000000e-03, small_max_abs_delta_mu_mumu=3.369519e-03<= 0.100000, large_frac_winner_mismatch=0.000000e+00<= 0.010000, large_max_abs_delta_R3=0.000000e+00<= 1.000000e-03, large_max_abs_delta_mu_mumu=0.000000e+00<= 0.100000 |
+| `gate_runtime_release_tuned_promotion_rows` | PASS | decision=HOLD; small_frac_acceptance_mismatch=0.029036<= 0.010000, small_max_abs_delta_mu_mumu=5.387299<= 1.000000, large_frac_acceptance_mismatch=7.142857e-03<= 0.010000, large_max_abs_delta_mu_mumu=4.344758<= 1.000000 |
 
 **Overall:** PASS

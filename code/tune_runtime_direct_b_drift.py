@@ -258,13 +258,47 @@ def main() -> None:
         m = _metrics(full_large, cand_df)
         row = {"candidate_id": int(r["candidate_id"]), **cand, **m}
         row["objective"] = _objective(row)
+        row["small_frac_acceptance_mismatch"] = float(r["frac_acceptance_mismatch"])
+        row["small_max_abs_delta_mu_mumu"] = float(r["max_abs_delta_mu_mumu"])
+        row["small_p99_abs_delta_mu_mumu"] = float(r["p99_abs_delta_mu_mumu"])
+        row["small_delta_f_chi2_le_4"] = float(r["delta_f_chi2_le_4"])
+        row["small_objective"] = float(r["objective"])
+        row["large_frac_acceptance_mismatch"] = float(row["frac_acceptance_mismatch"])
+        row["large_max_abs_delta_mu_mumu"] = float(row["max_abs_delta_mu_mumu"])
+        row["large_p99_abs_delta_mu_mumu"] = float(row["p99_abs_delta_mu_mumu"])
+        row["large_delta_f_chi2_le_4"] = float(row["delta_f_chi2_le_4"])
+        row["large_objective"] = float(row["objective"])
+        row["worst_frac_acceptance_mismatch"] = max(
+            float(row["small_frac_acceptance_mismatch"]),
+            float(row["large_frac_acceptance_mismatch"]),
+        )
+        row["worst_max_abs_delta_mu_mumu"] = max(
+            float(row["small_max_abs_delta_mu_mumu"]),
+            float(row["large_max_abs_delta_mu_mumu"]),
+        )
+        row["worst_p99_abs_delta_mu_mumu"] = max(
+            float(row["small_p99_abs_delta_mu_mumu"]),
+            float(row["large_p99_abs_delta_mu_mumu"]),
+        )
+        row["objective_dual_gate"] = float(
+            row["worst_frac_acceptance_mismatch"] * 100.0 + row["worst_max_abs_delta_mu_mumu"]
+        )
         large_rows.append(row)
         print(
-            f"[large] id={int(r['candidate_id']):02d} obj={row['objective']:.4f} "
-            f"mismatch={row['frac_acceptance_mismatch']:.4f} maxΔμ={row['max_abs_delta_mu_mumu']:.4f}"
+            f"[large] id={int(r['candidate_id']):02d} "
+            f"obj_dual={row['objective_dual_gate']:.4f} "
+            f"small(mis={row['small_frac_acceptance_mismatch']:.4f},maxΔμ={row['small_max_abs_delta_mu_mumu']:.4f}) "
+            f"large(mis={row['large_frac_acceptance_mismatch']:.4f},maxΔμ={row['large_max_abs_delta_mu_mumu']:.4f})"
         )
 
-    large_df = pd.DataFrame(large_rows).sort_values(["objective", "max_abs_delta_mu_mumu"]).reset_index(drop=True)
+    large_df = (
+        pd.DataFrame(large_rows)
+        .sort_values(
+            ["objective_dual_gate", "worst_max_abs_delta_mu_mumu", "worst_frac_acceptance_mismatch"],
+            ascending=[True, True, True],
+        )
+        .reset_index(drop=True)
+    )
 
     small_csv = OUT_ROB / "runtime_direct_b_tuning_small_D21E41.csv"
     large_csv = OUT_ROB / "runtime_direct_b_tuning_large_D60E21.csv"

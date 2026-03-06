@@ -1,2 +1,2 @@
 gate_pass,worst_frac_acceptance_mismatch,worst_max_abs_delta_mu_mumu,small_frac_acceptance_mismatch,small_max_abs_delta_mu_mumu,large_frac_acceptance_mismatch,large_max_abs_delta_mu_mumu,mismatch_threshold,delta_mu_threshold,enforced
-False,0.0290360046457607,5.387299255939993,0.0290360046457607,5.387299255939993,0.0071428571428571,4.344757845278792,0.01,1.0,True
+False,0.0,2.935831757976203,0.0,0.36385689907313434,0.0,2.935831757976203,0.01,1.0,True

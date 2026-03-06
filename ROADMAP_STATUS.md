@@ -6,27 +6,28 @@ This file tracks roadmap items that are still open, partially promoted, or expli
 
 ## Current Release Gate Snapshot
 
-Source: `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/full_direct_release_gate_status.csv`
+Sources:
+- `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid21_Egrid41.csv`
+- `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21.csv`
+- `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release_tuned.csv`
+- `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release_tuned.csv`
 
-| Metric | Value | Release Threshold | Status |
-| --- | ---: | ---: | --- |
-| `worst_frac_acceptance_mismatch` | `0.029036` | `<= 0.010000` | HOLD |
-| `worst_max_abs_delta_mu_mumu` | `5.387299` | `<= 1.000000` | HOLD |
-| `small_frac_acceptance_mismatch` | `0.029036` | reference | above target |
-| `small_max_abs_delta_mu_mumu` | `5.387299` | reference | above target |
-| `large_frac_acceptance_mismatch` | `0.007143` | reference | within mismatch target |
-| `large_max_abs_delta_mu_mumu` | `4.344758` | reference | above target |
+| Branch | Gate | Acceptance mismatch | `max|Δμ_μμ|` | Release Threshold | Status |
+| --- | --- | ---: | ---: | --- | --- |
+| `cell_direct_runtime` | `D21xE41` | `0.000000` | `0.000000` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
+| `cell_direct_runtime` | `D60xE21` | `0.000000` | `0.000000` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
+| `cell_direct_runtime_release_tuned` | `D21xE41` | `0.000000` | `0.363857` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
+| `cell_direct_runtime_release_tuned` | `D60xE21` | `0.000000` | `2.935832` | mismatch `<=0.01`, `max|Δμ|<=1.0` | HOLD |
 
 Interpretation:
-- `full_direct` is the current release baseline.
-- `cell_direct_runtime_release_tuned` is still a candidate branch and has not passed promotion.
-- The dominant remaining drift is in the observable sector (`B_N` / EFT-operator runtime-direct branch), not in the localized-direct small-surface bias audit itself.
+- `full_direct` remains the release baseline.
+- `cell_direct_runtime` has now passed both release gates and is promoted as the release-production parity branch.
+- The only remaining release-gate blocker is `cell_direct_runtime_release_tuned`, and its residual drift is confined to the observable sector (`B_N` / EFT-operator runtime-direct branch) on the `D60xE21` gate.
 
 ## Open Roadmap Items
 
 | Priority | Item | Current State | Main Evidence | Next Gate / Requirement |
 | --- | --- | --- | --- | --- |
-| P0 | Promote per-cell direct production branch | Partial, not promoted | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:146`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:147`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:661` | Reduce parity drift so release gate passes on `D21xE41 + D60xE21` |
 | P0 | Promote all-direct visibility branch (`cell_direct_runtime_release_tuned`) | HOLD | `/Users/boypatrick/codex/PSLT_quantam/README.md:142`, `/Users/boypatrick/codex/PSLT_quantam/README.md:143`, `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/full_direct_release_gate_status.csv` | Bring `max|Δμ_μμ|` below `1.0` and mismatch below `0.01` |
 | P1 | Full UV-to-EFT matching from EYMH action | Partial: UV-tree + finite one-loop + LL-RG audit implemented | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:151`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:764`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:765` | Extend to explicit operator-basis and loop-level matching beyond scan-level closure |
 | P1 | Open-system promotion from diagnostic to baseline candidate | Partial: geometry + micro profiles implemented, not promoted | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:149`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:857`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:1526` | Derive microscopic EYMH bath `(L_k, gamma_k)` and rerun baseline-candidate gate |
@@ -47,6 +48,7 @@ These should not be re-listed as "not done":
 - Worst-point local refinement helper exists:
   - `/Users/boypatrick/codex/PSLT_quantam/code/run_localized_direct_refine_from_worst.py`
 - `open_system_micro` multi-anchor + holdout calibration is implemented.
+- `cell_direct_runtime` now passes both release gates exactly (`D21xE41` and `D60xE21`) and is promoted as the release-production parity branch.
 - Minimal Dirac-conformal Yukawa-overlap roadmap text is implemented in `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex`.
 
 ## Recommended Execution Order

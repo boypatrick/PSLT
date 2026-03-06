@@ -46,10 +46,10 @@
         "large_max_abs_delta_mu_mumu": 1.0
       },
       "metrics": {
-        "small_frac_acceptance_mismatch": 0.0290360046457607,
-        "small_max_abs_delta_mu_mumu": 5.387299255939993,
-        "large_frac_acceptance_mismatch": 0.0071428571428571,
-        "large_max_abs_delta_mu_mumu": 4.344757845278792
+        "small_frac_acceptance_mismatch": 0.0,
+        "small_max_abs_delta_mu_mumu": 0.36385689907313434,
+        "large_frac_acceptance_mismatch": 0.0,
+        "large_max_abs_delta_mu_mumu": 2.935831757976203
       }
     }
   },
@@ -142,7 +142,7 @@
     {
       "name": "gate_runtime_release_tuned_promotion_rows",
       "ok": true,
-      "detail": "decision=HOLD; small_frac_acceptance_mismatch=0.029036<= 0.010000, small_max_abs_delta_mu_mumu=5.387299<= 1.000000, large_frac_acceptance_mismatch=7.142857e-03<= 0.010000, large_max_abs_delta_mu_mumu=4.344758<= 1.000000"
+      "detail": "decision=HOLD; small_frac_acceptance_mismatch=0.000000<= 0.010000, small_max_abs_delta_mu_mumu=0.363857<= 1.000000, large_frac_acceptance_mismatch=0.000000<= 0.010000, large_max_abs_delta_mu_mumu=2.935832<= 1.000000"
     }
   ],
   "files": [

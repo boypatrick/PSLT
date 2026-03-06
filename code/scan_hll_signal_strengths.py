@@ -76,7 +76,7 @@ from hll_observable import HLLObservableConfig, HLLChannelPredictor  # noqa: E40
 from pslt_lib import PSLTKinetics, PSLTParameters  # noqa: E402
 from reference_anchor_utils import select_anchor_candidates_from_fixed_scan  # noqa: E402
 from action_grid_profile_utils import scan_d_values, select_chi_profile, select_superrad_profile  # noqa: E402
-from direct_chain_runtime import ensure_runtime_full_direct_profiles  # noqa: E402
+from direct_chain_runtime import ensure_runtime_full_direct_g_profiles, ensure_runtime_full_direct_profiles  # noqa: E402
 
 
 OUTDIR = ROOT / "output" / "hll_signal_strength"
@@ -253,7 +253,24 @@ def make_baseline_kinetics(
     runtime_b_overrides: Dict[str, float | int] = {}
 
     runtime_direct_no_cache_eff = bool(runtime_direct_no_cache)
+    g_fp_2d_csv = None
+    g_fp_2d_spectrum_csv = None
 
+    if chain_mode_eff in {"full_direct", "full_direct_runtime"}:
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force) if chain_mode_eff == "full_direct_runtime" else False,
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_source = str(g_fp_2d_spectrum_csv)
     if chain_mode_eff == "full_direct_runtime":
         ensure_runtime_full_direct_profiles(
             root=ROOT,
@@ -275,24 +292,70 @@ def make_baseline_kinetics(
         gamma_mode = str(superrad_prof["mode"])
         chi_source = str(chi_prof["path"])
         gamma_source = str(superrad_prof["path"])
+    elif chain_mode_eff == "full_direct":
+        chi_prof = select_chi_profile(ROOT, d_scan, selection_mode=selection_mode)
+        superrad_prof = select_superrad_profile(ROOT, d_scan, selection_mode=selection_mode)
+        chi_mode = str(chi_prof["mode"])
+        gamma_mode = str(superrad_prof["mode"])
+        chi_source = str(chi_prof["path"])
+        gamma_source = str(superrad_prof["path"])
     elif chain_mode_eff == "cell_direct_runtime":
-        g_mode = "fp_2d_full_runtime_direct"
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
         chi_mode = "localized_runtime_direct"
         gamma_mode = "action_runtime_direct"
-        g_source = "runtime_cell_solver"
+        g_source = str(g_fp_2d_spectrum_csv)
     elif chain_mode_eff == "cell_direct_runtime_release":
-        g_mode = "fp_2d_full_runtime_direct"
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
         b_mode = "eft_operator_norm_runtime_direct"
         chi_mode = "localized_runtime_direct"
         gamma_mode = "action_runtime_direct"
-        g_source = "runtime_cell_solver"
+        g_source = str(g_fp_2d_spectrum_csv)
         runtime_direct_no_cache_eff = False
     elif chain_mode_eff == "cell_direct_runtime_release_tuned":
-        g_mode = "fp_2d_full_runtime_direct"
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
         b_mode = "eft_operator_norm_runtime_direct"
         chi_mode = "localized_runtime_direct"
         gamma_mode = "action_runtime_direct"
-        g_source = "runtime_cell_solver"
+        g_source = str(g_fp_2d_spectrum_csv)
         runtime_direct_no_cache_eff = False
         runtime_b_overrides = {
             "runtime_direct_b_window_k": int(PAPER_BASELINE["runtime_direct_b_release_window_k"]),
@@ -323,6 +386,8 @@ def make_baseline_kinetics(
         nu=PAPER_BASELINE["nu"],
         kappa_g=PAPER_BASELINE["kappa_g"],
         g_mode=g_mode,
+        g_fp_2d_csv=(str(g_fp_2d_csv) if g_fp_2d_csv is not None else None),
+        g_fp_2d_spectrum_csv=(str(g_fp_2d_spectrum_csv) if g_fp_2d_spectrum_csv is not None else None),
         g_fp_norm_mode=PAPER_BASELINE["g_fp_norm_mode"],
         g_fp_full_window_blend=PAPER_BASELINE["g_fp_full_window_blend"],
         g_fp_full_tail_beta=PAPER_BASELINE["g_fp_full_tail_beta"],

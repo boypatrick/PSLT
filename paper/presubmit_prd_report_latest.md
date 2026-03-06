@@ -21,7 +21,7 @@
 | Gate | Decision | Pass | Key metrics vs thresholds |
 |---|---|---|---|
 | `full_direct_release` | GO | PASS | small_frac_winner_mismatch=0.000000e+00<= 0.010000; small_max_abs_delta_R3=1.788196e-05<= 1.000000e-03; small_max_abs_delta_mu_mumu=3.369519e-03<= 0.100000; large_frac_winner_mismatch=0.000000e+00<= 0.010000; large_max_abs_delta_R3=0.000000e+00<= 1.000000e-03; large_max_abs_delta_mu_mumu=0.000000e+00<= 0.100000 |
-| `runtime_release_tuned_promotion` | HOLD | FAIL | small_frac_acceptance_mismatch=0.029036<= 0.010000; small_max_abs_delta_mu_mumu=5.387299<= 1.000000; large_frac_acceptance_mismatch=7.142857e-03<= 0.010000; large_max_abs_delta_mu_mumu=4.344758<= 1.000000 |
+| `runtime_release_tuned_promotion` | HOLD | FAIL | small_frac_acceptance_mismatch=0.000000<= 0.010000; small_max_abs_delta_mu_mumu=0.363857<= 1.000000; large_frac_acceptance_mismatch=0.000000<= 0.010000; large_max_abs_delta_mu_mumu=2.935832<= 1.000000 |
 
 ## Checks
 
@@ -44,6 +44,6 @@
 | `run_meta_has_finite_match_knobs` | PASS | kappa_diag=0.0, kappa_offdiag=0.0 |
 | `release_gate_rows_present` | PASS | small/large direct-bias rows and tuned-candidate parity rows found |
 | `gate_full_direct_release` | PASS | decision=GO; small_frac_winner_mismatch=0.000000e+00<= 0.010000, small_max_abs_delta_R3=1.788196e-05<= 1.000000e-03, small_max_abs_delta_mu_mumu=3.369519e-03<= 0.100000, large_frac_winner_mismatch=0.000000e+00<= 0.010000, large_max_abs_delta_R3=0.000000e+00<= 1.000000e-03, large_max_abs_delta_mu_mumu=0.000000e+00<= 0.100000 |
-| `gate_runtime_release_tuned_promotion_rows` | PASS | decision=HOLD; small_frac_acceptance_mismatch=0.029036<= 0.010000, small_max_abs_delta_mu_mumu=5.387299<= 1.000000, large_frac_acceptance_mismatch=7.142857e-03<= 0.010000, large_max_abs_delta_mu_mumu=4.344758<= 1.000000 |
+| `gate_runtime_release_tuned_promotion_rows` | PASS | decision=HOLD; small_frac_acceptance_mismatch=0.000000<= 0.010000, small_max_abs_delta_mu_mumu=0.363857<= 1.000000, large_frac_acceptance_mismatch=0.000000<= 0.010000, large_max_abs_delta_mu_mumu=2.935832<= 1.000000 |
 
 **Overall:** PASS

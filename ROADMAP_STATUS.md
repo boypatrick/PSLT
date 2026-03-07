@@ -1,6 +1,6 @@
 # PSLT Roadmap Status
 
-Last updated: 2026-03-06
+Last updated: 2026-03-08
 
 This file tracks roadmap items that are still open, partially promoted, or explicitly held behind release gates. It is intended as an operational companion to `/Users/boypatrick/codex/PSLT_quantam/README.md` and `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex`.
 
@@ -22,6 +22,7 @@ Sources:
 Interpretation:
 - `full_direct` remains the release baseline.
 - `cell_direct_runtime` has now passed both release gates and is promoted as the release-production parity branch.
+- In physical terms, the promoted release-production parity branch closes the direct spectral-selection side of the chain (`g_N+\chi+A`) against `full_direct`, while the observable-side all-direct visibility closure (`B_N` / EFT-operator runtime-direct branch) is still not release-level.
 - The only remaining release-gate blocker is `cell_direct_runtime_release_tuned`, and its residual drift is confined to the observable sector (`B_N` / EFT-operator runtime-direct branch) on the `D60xE21` gate.
 
 ## Open Roadmap Items
@@ -31,7 +32,7 @@ Interpretation:
 | P0 | Promote all-direct visibility branch (`cell_direct_runtime_release_tuned`) | HOLD | `/Users/boypatrick/codex/PSLT_quantam/README.md:142`, `/Users/boypatrick/codex/PSLT_quantam/README.md:143`, `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/full_direct_release_gate_status.csv` | Bring `max|Δμ_μμ|` below `1.0` and mismatch below `0.01` |
 | P1 | Full UV-to-EFT matching from EYMH action | Partial: UV-tree + finite one-loop + LL-RG audit implemented | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:151`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:764`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:765` | Extend to explicit operator-basis and loop-level matching beyond scan-level closure |
 | P1 | Open-system promotion from diagnostic to baseline candidate | Partial: geometry + micro profiles implemented, not promoted | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:149`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:857`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:1526` | Derive microscopic EYMH bath `(L_k, gamma_k)` and rerun baseline-candidate gate |
-| P1 | Full `(D, eta, N)` localized projection / model-chain unification | Partial: direct branches exist, release baseline still profile-based for visibility | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:858` | Promote runtime-direct chain without failing parity gate |
+| P1 | Full `(D, eta, N)` localized projection / model-chain unification | Partial: direct branches exist; release-production parity is closed for `g_N+\chi+A`, but release baseline still profile-based in the visibility sector | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:858` | Promote runtime-direct chain without failing parity gate, especially on the observable-side `B_N` closure |
 | P2 | Propagate `t_coh` first-principles candidate into baseline | Benchmark only | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:865`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:1638` | Show map-level stability and replace control-parameter baseline if acceptable |
 | P2 | Propagate `eta_fp(D)` candidate into baseline | Benchmark only | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:866`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:1702` | Show stable impact and production-quality closure |
 | P2 | Fully localized channel-resolved barrier-leakage normalization | Partial: action-derived `A_l(D)` profile baseline exists | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:148`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:867`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:1777` | Replace profile-level insertion with full scan-grid localized extraction |

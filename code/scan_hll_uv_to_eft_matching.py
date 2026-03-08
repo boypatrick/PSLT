@@ -451,7 +451,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--uv-m2-power", type=float, default=float(BASELINE["hll_uv_m2_power"]))
     ap.add_argument("--uv-match-kappa-diag", type=float, default=float(BASELINE["hll_uv_match_kappa_diag"]))
     ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(BASELINE["hll_uv_match_kappa_offdiag"]))
-    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized"], default=str(BASELINE["hll_uv_match_mode"]))
+    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized", "action_absolute"], default=str(BASELINE["hll_uv_match_mode"]))
     ap.add_argument("--uv-match-input-diag-scale", type=float, default=float(BASELINE["hll_uv_match_input_diag_scale"]))
     ap.add_argument("--uv-match-input-offdiag-scale", type=float, default=float(BASELINE["hll_uv_match_input_offdiag_scale"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(BASELINE["hll_uv_rge_mu_low"]))
@@ -610,6 +610,11 @@ def main() -> None:
                     "pkin_entropy": float(meta.get("pkin_entropy", 0.0)),
                     "action_norm_diag": float(meta.get("action_norm_diag", 1.0)),
                     "action_norm_offdiag": float(meta.get("action_norm_offdiag", 1.0)),
+                    "coeff_l1": float(meta.get("coeff_l1", 0.0)),
+                    "coeff_l2": float(meta.get("coeff_l2", 0.0)),
+                    "coeff_align": float(meta.get("coeff_align", 0.0)),
+                    "action_abs_diag": float(meta.get("action_abs_diag", 0.0)),
+                    "action_abs_offdiag": float(meta.get("action_abs_offdiag", 0.0)),
                     "mu_mumu_uv_tree": float(mu_uv),
                     "mu_mumu_uv_rge": float(mu_ir),
                     "delta_mu_mumu": d_mu,

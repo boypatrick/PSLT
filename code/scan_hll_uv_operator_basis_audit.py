@@ -132,7 +132,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--uv-m2-power", type=float, default=float(BASELINE["hll_uv_m2_power"]))
     ap.add_argument("--uv-match-kappa-diag", type=float, default=float(BASELINE["hll_uv_match_kappa_diag"]))
     ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(BASELINE["hll_uv_match_kappa_offdiag"]))
-    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized"], default=str(BASELINE["hll_uv_match_mode"]))
+    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized", "action_absolute"], default=str(BASELINE["hll_uv_match_mode"]))
     ap.add_argument("--uv-match-input-diag-scale", type=float, default=float(BASELINE["hll_uv_match_input_diag_scale"]))
     ap.add_argument("--uv-match-input-offdiag-scale", type=float, default=float(BASELINE["hll_uv_match_input_offdiag_scale"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(BASELINE["hll_uv_rge_mu_low"]))
@@ -286,6 +286,11 @@ def main() -> None:
                     "pkin_entropy": float(np.asarray(wit["pkin_entropy"], dtype=float)[0]),
                     "action_norm_diag": float(np.asarray(wit["action_norm_diag"], dtype=float)[0]),
                     "action_norm_offdiag": float(np.asarray(wit["action_norm_offdiag"], dtype=float)[0]),
+                    "coeff_l1": float(np.asarray(wit["coeff_l1"], dtype=float)[0]),
+                    "coeff_l2": float(np.asarray(wit["coeff_l2"], dtype=float)[0]),
+                    "coeff_align": float(np.asarray(wit["coeff_align"], dtype=float)[0]),
+                    "action_abs_diag": float(np.asarray(wit["action_abs_diag"], dtype=float)[0]),
+                    "action_abs_offdiag": float(np.asarray(wit["action_abs_offdiag"], dtype=float)[0]),
                     "mu_mumu_tree_recon": mu_tree_recon,
                     "mu_mumu_ir_recon": mu_ir_recon,
                     "mu_mumu_ir_native": float(mu_ir_native),

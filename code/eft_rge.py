@@ -22,7 +22,7 @@ from eft_wilson_matching import decompose_diag_offdiag
 class EFTFiniteOneLoopMatchConfig:
     kappa_diag: float = 0.0
     kappa_offdiag: float = 0.0
-    mode: str = "constant"  # "constant", "input_tied", or "action_normalized"
+    mode: str = "constant"  # "constant", "input_tied", "action_normalized", or "action_absolute"
     input_diag_scale: float = 0.0
     input_offdiag_scale: float = 0.0
     floor: float = 1e-30
@@ -61,6 +61,11 @@ class FiniteOneLoopMatchWitness:
     pkin_entropy: float
     action_norm_diag: float
     action_norm_offdiag: float
+    coeff_l1: float
+    coeff_l2: float
+    coeff_align: float
+    action_abs_diag: float
+    action_abs_offdiag: float
 
 
 @dataclass(frozen=True)
@@ -148,7 +153,8 @@ def parent_action_invariants(
       - shell-gap dispersion in sqrt(M_N^2),
       - layer-coupling norm dispersion in g_uv,
       - diagonal block dispersion in C_tree,
-      - kinetic occupancy spread through normalized Shannon entropy.
+      - kinetic occupancy spread through normalized Shannon entropy,
+      - coefficient-alignment witnesses for absolute normalization.
     """
     g = np.asarray(g_uv, dtype=float)
     if g.shape != (3, 3):
@@ -178,6 +184,11 @@ def parent_action_invariants(
     p_norm = p / max(float(np.sum(p)), floor)
     pkin_entropy = float(-np.sum(p_norm * np.log(np.maximum(p_norm, floor))) / np.log(float(len(p_norm))))
 
+    coeff = p / m2v
+    coeff_l1 = float(np.sum(np.abs(coeff)))
+    coeff_l2 = float(np.linalg.norm(coeff))
+    coeff_align = float(coeff_l2 / max(coeff_l1, floor))
+
     # Structured normalization witnesses kept O(1) by construction.
     action_norm_diag = float(
         1.0
@@ -190,6 +201,8 @@ def parent_action_invariants(
         + 0.5 * gap_cv
         + 0.5 * gap_asym / max(1.0 + gap_asym, 1.0)
     )
+    action_abs_diag = float(pkin_entropy * coeff_align)
+    action_abs_offdiag = float(action_abs_diag * gap_cv / max(1.0 + gap_asym, 1.0))
 
     return {
         "gap_cv": float(gap_cv),
@@ -199,6 +212,11 @@ def parent_action_invariants(
         "pkin_entropy": float(pkin_entropy),
         "action_norm_diag": float(action_norm_diag),
         "action_norm_offdiag": float(action_norm_offdiag),
+        "coeff_l1": float(coeff_l1),
+        "coeff_l2": float(coeff_l2),
+        "coeff_align": float(coeff_align),
+        "action_abs_diag": float(action_abs_diag),
+        "action_abs_offdiag": float(action_abs_offdiag),
     }
 
 
@@ -210,7 +228,7 @@ def resolve_finite_match_kappas(
     c_tree: np.ndarray | None = None,
 ) -> dict[str, float]:
     mode = str(cfg.mode).strip().lower()
-    if mode not in {"constant", "input_tied", "action_normalized"}:
+    if mode not in {"constant", "input_tied", "action_normalized", "action_absolute"}:
         raise ValueError(f"Unsupported finite-match mode '{cfg.mode}'.")
 
     shell_spread = 0.0
@@ -223,14 +241,19 @@ def resolve_finite_match_kappas(
     pkin_entropy = 0.0
     action_norm_diag = 1.0
     action_norm_offdiag = 1.0
-    if mode in {"input_tied", "action_normalized"}:
+    coeff_l1 = 0.0
+    coeff_l2 = 0.0
+    coeff_align = 0.0
+    action_abs_diag = 0.0
+    action_abs_offdiag = 0.0
+    if mode in {"input_tied", "action_normalized", "action_absolute"}:
         if g_uv is None or p_kin is None or m2 is None or c_tree is None:
             raise ValueError(f"{mode} finite matching requires g_uv, p_kin, m2, and c_tree.")
         inv = finite_match_invariants(g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c_tree, floor=cfg.floor)
         shell_spread = float(inv["shell_spread"])
         coeff_cv = float(inv["coeff_cv"])
         offdiag_mix = float(inv["offdiag_mix"])
-    if mode == "action_normalized":
+    if mode in {"action_normalized", "action_absolute"}:
         a_inv = parent_action_invariants(g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c_tree, floor=cfg.floor)
         gap_cv = float(a_inv["gap_cv"])
         gap_asym = float(a_inv["gap_asym"])
@@ -239,6 +262,11 @@ def resolve_finite_match_kappas(
         pkin_entropy = float(a_inv["pkin_entropy"])
         action_norm_diag = float(a_inv["action_norm_diag"])
         action_norm_offdiag = float(a_inv["action_norm_offdiag"])
+        coeff_l1 = float(a_inv["coeff_l1"])
+        coeff_l2 = float(a_inv["coeff_l2"])
+        coeff_align = float(a_inv["coeff_align"])
+        action_abs_diag = float(a_inv["action_abs_diag"])
+        action_abs_offdiag = float(a_inv["action_abs_offdiag"])
 
     kappa_diag_eff = float(cfg.kappa_diag)
     kappa_offdiag_eff = float(cfg.kappa_offdiag)
@@ -258,6 +286,19 @@ def resolve_finite_match_kappas(
             * offdiag_mix
             * action_norm_offdiag
         )
+    elif mode == "action_absolute":
+        kappa_diag_eff += (
+            action_abs_diag
+            * shell_spread
+            * (1.0 + coeff_cv)
+            * action_norm_diag
+        )
+        kappa_offdiag_eff += (
+            action_abs_offdiag
+            * shell_spread
+            * offdiag_mix
+            * action_norm_offdiag
+        )
 
     return {
         "mode": mode,
@@ -273,6 +314,11 @@ def resolve_finite_match_kappas(
         "pkin_entropy": float(pkin_entropy),
         "action_norm_diag": float(action_norm_diag),
         "action_norm_offdiag": float(action_norm_offdiag),
+        "coeff_l1": float(coeff_l1),
+        "coeff_l2": float(coeff_l2),
+        "coeff_align": float(coeff_align),
+        "action_abs_diag": float(action_abs_diag),
+        "action_abs_offdiag": float(action_abs_offdiag),
     }
 
 
@@ -320,6 +366,11 @@ def apply_ceh_finite_one_loop(
         "pkin_entropy": float(resolved["pkin_entropy"]),
         "action_norm_diag": float(resolved["action_norm_diag"]),
         "action_norm_offdiag": float(resolved["action_norm_offdiag"]),
+        "coeff_l1": float(resolved["coeff_l1"]),
+        "coeff_l2": float(resolved["coeff_l2"]),
+        "coeff_align": float(resolved["coeff_align"]),
+        "action_abs_diag": float(resolved["action_abs_diag"]),
+        "action_abs_offdiag": float(resolved["action_abs_offdiag"]),
         "finite_fac_diag": float(fac_diag),
         "finite_fac_offdiag": float(fac_off),
     }
@@ -358,6 +409,11 @@ def finite_one_loop_witness(
         pkin_entropy=float(meta["pkin_entropy"]),
         action_norm_diag=float(meta["action_norm_diag"]),
         action_norm_offdiag=float(meta["action_norm_offdiag"]),
+        coeff_l1=float(meta["coeff_l1"]),
+        coeff_l2=float(meta["coeff_l2"]),
+        coeff_align=float(meta["coeff_align"]),
+        action_abs_diag=float(meta["action_abs_diag"]),
+        action_abs_offdiag=float(meta["action_abs_offdiag"]),
     )
 
 

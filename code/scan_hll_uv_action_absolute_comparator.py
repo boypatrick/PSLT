@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
 """
-Compare the three canonical UV finite-match modes on a common D21xE21 grid:
+Compare four canonical UV finite-match modes on a common D21xE21 grid:
 
   1. constant
-  2. input_tied (canonical diagonal-only witness)
-  3. action_normalized (parent-action-side normalized witness)
+  2. input_tied
+  3. action_normalized
+  4. action_absolute
 
-The script exports:
-  - per-mode summary table
-  - pairwise map-drift summary table
-  - a compact four-panel figure showing pairwise |Delta mu_mumu| maps
-    and the action-normalization witness map
-  - run metadata
+The goal is to test whether action_absolute can act as a parent-action-side
+absolute-normalization witness without losing map-level stability.
 """
 
 from __future__ import annotations
@@ -33,37 +30,15 @@ PAPER_DIR = ROOT / "paper"
 
 
 def parse_args() -> argparse.Namespace:
-    ap = argparse.ArgumentParser(description="Compare constant/input_tied/action_normalized UV matching modes")
-    ap.add_argument(
-        "--constant-map",
-        type=Path,
-        default=OUTDIR / "hll_uv_to_eft_map_uv_constant_refresh_D21E21.csv",
-    )
-    ap.add_argument(
-        "--input-map",
-        type=Path,
-        default=OUTDIR / "hll_uv_to_eft_map_uv_input_tied_D21E21.csv",
-    )
-    ap.add_argument(
-        "--action-map",
-        type=Path,
-        default=OUTDIR / "hll_uv_to_eft_map_uv_action_normalized_D21E21.csv",
-    )
-    ap.add_argument(
-        "--constant-basis-summary",
-        type=Path,
-        default=OUTDIR / "hll_uv_operator_basis_summary.csv",
-    )
-    ap.add_argument(
-        "--input-basis-summary",
-        type=Path,
-        default=OUTDIR / "hll_uv_operator_basis_summary_uv_input_tied_D21E21.csv",
-    )
-    ap.add_argument(
-        "--action-basis-summary",
-        type=Path,
-        default=OUTDIR / "hll_uv_operator_basis_summary_uv_action_normalized_D21E21.csv",
-    )
+    ap = argparse.ArgumentParser(description="Compare constant/input_tied/action_normalized/action_absolute UV matching modes")
+    ap.add_argument("--constant-map", type=Path, default=OUTDIR / "hll_uv_to_eft_map_uv_constant_refresh_D21E21.csv")
+    ap.add_argument("--input-map", type=Path, default=OUTDIR / "hll_uv_to_eft_map_uv_input_tied_D21E21.csv")
+    ap.add_argument("--action-map", type=Path, default=OUTDIR / "hll_uv_to_eft_map_uv_action_normalized_D21E21.csv")
+    ap.add_argument("--absolute-map", type=Path, default=OUTDIR / "hll_uv_to_eft_map_uv_action_absolute_D21E21.csv")
+    ap.add_argument("--constant-basis-summary", type=Path, default=OUTDIR / "hll_uv_operator_basis_summary.csv")
+    ap.add_argument("--input-basis-summary", type=Path, default=OUTDIR / "hll_uv_operator_basis_summary_uv_input_tied_D21E21.csv")
+    ap.add_argument("--action-basis-summary", type=Path, default=OUTDIR / "hll_uv_operator_basis_summary_uv_action_normalized_D21E21.csv")
+    ap.add_argument("--absolute-basis-summary", type=Path, default=OUTDIR / "hll_uv_operator_basis_summary_uv_action_absolute_D21E21.csv")
     ap.add_argument("--tag", type=str, default="D21E21")
     ap.add_argument("--skip-paper-copy", action="store_true")
     return ap.parse_args()
@@ -80,26 +55,13 @@ def load_map(path: Path, label: str) -> pd.DataFrame:
         "C_ir_mumu",
         "abs_delta_C_match_mumu",
         "chi2_uv_rge",
+        "action_norm_diag",
+        "action_abs_diag",
+        "coeff_align",
+        "kappa_diag_eff",
     ]
-    extra = [
-        c
-        for c in [
-            "action_norm_diag",
-            "action_norm_offdiag",
-            "gap_cv",
-            "gap_asym",
-            "g_col_norm_cv",
-            "c_tree_diag_cv",
-            "pkin_entropy",
-            "shell_spread",
-            "coeff_cv",
-            "offdiag_mix",
-            "kappa_diag_eff",
-            "kappa_offdiag_eff",
-        ]
-        if c in df.columns
-    ]
-    df = df[keep + extra]
+    extra = [c for c in keep if c in df.columns]
+    df = df[[c for c in extra if c in df.columns]]
     return df.rename(columns={c: f"{c}_{label}" for c in df.columns if c not in {"D", "eta"}})
 
 
@@ -123,10 +85,11 @@ def summarize_mode(df: pd.DataFrame, label: str, basis_summary_path: Path) -> di
         ]:
             if c in bs.index:
                 row[c] = float(bs[c])
-    action_col = f"action_norm_diag_{label}"
-    if action_col in df.columns:
-        row["action_norm_diag_p50"] = float(df[action_col].quantile(0.5))
-        row["action_norm_diag_p90"] = float(df[action_col].quantile(0.9))
+    for c in ["action_norm_diag", "action_abs_diag", "coeff_align", "kappa_diag_eff"]:
+        col = f"{c}_{label}"
+        if col in df.columns:
+            row[f"{c}_p50"] = float(df[col].quantile(0.5))
+            row[f"{c}_p90"] = float(df[col].quantile(0.9))
     return row
 
 
@@ -139,8 +102,6 @@ def summarize_pair(df: pd.DataFrame, a: str, b: str) -> dict[str, float | str]:
         "p95_abs_mapdiff": float(delta.quantile(0.95)),
         "max_abs_mapdiff": float(delta.max()),
         "acceptance_mismatch_fraction": float(mismatch.mean()),
-        f"f_chi2_le_4_{a}": float((df[f"chi2_uv_rge_{a}"] <= 4.0).mean()),
-        f"f_chi2_le_4_{b}": float((df[f"chi2_uv_rge_{b}"] <= 4.0).mean()),
     }
 
 
@@ -158,23 +119,10 @@ def plot_pairwise(out_png: Path, merged: pd.DataFrame) -> None:
         )
 
     panels = [
-        ("constant vs input_tied", arr_from_series((merged["mu_mumu_uv_rge_constant"] - merged["mu_mumu_uv_rge_input_tied"]).abs())),
-        (
-            "constant vs action_normalized",
-            arr_from_series((merged["mu_mumu_uv_rge_constant"] - merged["mu_mumu_uv_rge_action_normalized"]).abs()),
-        ),
-        (
-            "input_tied vs action_normalized",
-            arr_from_series((merged["mu_mumu_uv_rge_input_tied"] - merged["mu_mumu_uv_rge_action_normalized"]).abs()),
-        ),
-        (
-            "action_norm_diag",
-            arr_from_series(
-                merged["action_norm_diag_action_normalized"]
-                if "action_norm_diag_action_normalized" in merged.columns
-                else pd.Series(np.zeros(len(merged)))
-            ),
-        ),
+        ("const vs input_tied", arr_from_series((merged["mu_mumu_uv_rge_constant"] - merged["mu_mumu_uv_rge_input_tied"]).abs())),
+        ("const vs action_norm", arr_from_series((merged["mu_mumu_uv_rge_constant"] - merged["mu_mumu_uv_rge_action_normalized"]).abs())),
+        ("const vs action_abs", arr_from_series((merged["mu_mumu_uv_rge_constant"] - merged["mu_mumu_uv_rge_action_absolute"]).abs())),
+        ("action_abs_diag", arr_from_series(merged["action_abs_diag_action_absolute"] if "action_abs_diag_action_absolute" in merged.columns else pd.Series(np.zeros(len(merged))))),
     ]
 
     fig, axes = plt.subplots(2, 2, figsize=(12.0, 8.0), constrained_layout=True)
@@ -183,20 +131,12 @@ def plot_pairwise(out_png: Path, merged: pd.DataFrame) -> None:
         if p95 <= p05:
             p05 = float(np.min(arr))
             p95 = float(np.max(arr)) + 1e-12
-        im = ax.imshow(
-            arr,
-            origin="lower",
-            aspect="auto",
-            extent=extent,
-            cmap="viridis",
-            vmin=float(p05),
-            vmax=float(p95),
-        )
+        im = ax.imshow(arr, origin="lower", aspect="auto", extent=extent, cmap="viridis", vmin=float(p05), vmax=float(p95))
         ax.set_title(title)
         ax.set_xlabel("D")
         ax.set_ylabel("eta")
         fig.colorbar(im, ax=ax)
-    fig.suptitle("UV matching mode comparator", fontsize=13)
+    fig.suptitle("UV matching comparator including action_absolute", fontsize=13)
     fig.savefig(out_png, dpi=200)
     plt.close(fig)
 
@@ -209,27 +149,30 @@ def main() -> None:
     const = load_map(args.constant_map, "constant")
     inp = load_map(args.input_map, "input_tied")
     act = load_map(args.action_map, "action_normalized")
-    merged = const.merge(inp, on=["D", "eta"]).merge(act, on=["D", "eta"])
+    absv = load_map(args.absolute_map, "action_absolute")
+    merged = const.merge(inp, on=["D", "eta"]).merge(act, on=["D", "eta"]).merge(absv, on=["D", "eta"])
 
     mode_summary = pd.DataFrame(
         [
             summarize_mode(merged, "constant", args.constant_basis_summary),
             summarize_mode(merged, "input_tied", args.input_basis_summary),
             summarize_mode(merged, "action_normalized", args.action_basis_summary),
+            summarize_mode(merged, "action_absolute", args.absolute_basis_summary),
         ]
     )
     pair_summary = pd.DataFrame(
         [
             summarize_pair(merged, "constant", "input_tied"),
             summarize_pair(merged, "constant", "action_normalized"),
-            summarize_pair(merged, "input_tied", "action_normalized"),
+            summarize_pair(merged, "constant", "action_absolute"),
+            summarize_pair(merged, "action_normalized", "action_absolute"),
         ]
     )
 
-    out_mode = OUTDIR / f"hll_uv_action_normalized_mode_summary_{args.tag}.csv"
-    out_pair = OUTDIR / f"hll_uv_action_normalized_pairwise_summary_{args.tag}.csv"
-    out_fig = OUTDIR / f"hll_uv_action_normalized_comparator_{args.tag}.png"
-    out_meta = OUTDIR / f"hll_uv_action_normalized_comparator_run_meta_{args.tag}.json"
+    out_mode = OUTDIR / f"hll_uv_action_absolute_mode_summary_{args.tag}.csv"
+    out_pair = OUTDIR / f"hll_uv_action_absolute_pairwise_summary_{args.tag}.csv"
+    out_fig = OUTDIR / f"hll_uv_action_absolute_comparator_{args.tag}.png"
+    out_meta = OUTDIR / f"hll_uv_action_absolute_comparator_run_meta_{args.tag}.json"
 
     mode_summary.to_csv(out_mode, index=False)
     pair_summary.to_csv(out_pair, index=False)
@@ -240,6 +183,7 @@ def main() -> None:
                 "constant_map": str(args.constant_map),
                 "input_map": str(args.input_map),
                 "action_map": str(args.action_map),
+                "absolute_map": str(args.absolute_map),
                 "tag": args.tag,
                 "n_points": int(len(merged)),
             },

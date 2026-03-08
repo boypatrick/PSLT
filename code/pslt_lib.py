@@ -178,7 +178,7 @@ class PSLTParameters:
     hll_uv_m2_power: float = 1.0
     hll_uv_match_kappa_diag: float = 0.0
     hll_uv_match_kappa_offdiag: float = 0.0
-    hll_uv_match_mode: str = "constant"  # "constant", "input_tied", or "action_normalized"
+    hll_uv_match_mode: str = "constant"  # "constant", "input_tied", "action_normalized", or "action_absolute"
     hll_uv_match_input_diag_scale: float = 0.0
     hll_uv_match_input_offdiag_scale: float = 0.0
     hll_uv_rge_mu_low: float = 1.0
@@ -320,7 +320,7 @@ class PSLTParameters:
             raise ValueError(f"Unsupported hll_observable_mode='{self.hll_observable_mode}'.")
         if self.hll_observable_nmax < 3:
             raise ValueError("hll_observable_nmax must be >= 3.")
-        if self.hll_uv_match_mode not in {"constant", "input_tied", "action_normalized"}:
+        if self.hll_uv_match_mode not in {"constant", "input_tied", "action_normalized", "action_absolute"}:
             raise ValueError(f"Unsupported hll_uv_match_mode='{self.hll_uv_match_mode}'.")
         if self.hll_match_basis_mode not in {"sqrt_yraw", "yraw"}:
             raise ValueError(f"Unsupported hll_match_basis_mode='{self.hll_match_basis_mode}'.")
@@ -2354,7 +2354,18 @@ class PSLTKinetics:
             "kappa_offdiag": np.array([float(fin.kappa_offdiag)], dtype=float),
             "kappa_diag_eff": np.array([float(fin.kappa_diag_eff)], dtype=float),
             "kappa_offdiag_eff": np.array([float(fin.kappa_offdiag_eff)], dtype=float),
-            "finite_match_mode": np.array([0.0 if fin.mode == "constant" else 1.0], dtype=float),
+            "finite_match_mode": np.array(
+                [
+                    0.0
+                    if fin.mode == "constant"
+                    else 1.0
+                    if fin.mode == "input_tied"
+                    else 2.0
+                    if fin.mode == "action_normalized"
+                    else 3.0
+                ],
+                dtype=float,
+            ),
             "shell_spread": np.array([float(fin.shell_spread)], dtype=float),
             "coeff_cv": np.array([float(fin.coeff_cv)], dtype=float),
             "offdiag_mix": np.array([float(fin.offdiag_mix)], dtype=float),
@@ -2365,6 +2376,11 @@ class PSLTKinetics:
             "pkin_entropy": np.array([float(fin.pkin_entropy)], dtype=float),
             "action_norm_diag": np.array([float(fin.action_norm_diag)], dtype=float),
             "action_norm_offdiag": np.array([float(fin.action_norm_offdiag)], dtype=float),
+            "coeff_l1": np.array([float(fin.coeff_l1)], dtype=float),
+            "coeff_l2": np.array([float(fin.coeff_l2)], dtype=float),
+            "coeff_align": np.array([float(fin.coeff_align)], dtype=float),
+            "action_abs_diag": np.array([float(fin.action_abs_diag)], dtype=float),
+            "action_abs_offdiag": np.array([float(fin.action_abs_offdiag)], dtype=float),
             "gamma_diag": np.array([float(rge.gamma_diag)], dtype=float),
             "gamma_offdiag": np.array([float(rge.gamma_offdiag)], dtype=float),
             "finite_fac_diag": np.array([float(fin.finite_fac_diag)], dtype=float),
@@ -2438,6 +2454,11 @@ class PSLTKinetics:
             "pkin_entropy": float(fin_meta.get("pkin_entropy", 0.0)),
             "action_norm_diag": float(fin_meta.get("action_norm_diag", 1.0)),
             "action_norm_offdiag": float(fin_meta.get("action_norm_offdiag", 1.0)),
+            "coeff_l1": float(fin_meta.get("coeff_l1", 0.0)),
+            "coeff_l2": float(fin_meta.get("coeff_l2", 0.0)),
+            "coeff_align": float(fin_meta.get("coeff_align", 0.0)),
+            "action_abs_diag": float(fin_meta.get("action_abs_diag", 0.0)),
+            "action_abs_offdiag": float(fin_meta.get("action_abs_offdiag", 0.0)),
             "finite_fac_diag": float(fin_meta["finite_fac_diag"]),
             "finite_fac_offdiag": float(fin_meta["finite_fac_offdiag"]),
         }

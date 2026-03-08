@@ -1,0 +1,10 @@
+metric,constant_uv_full_direct_D21E21,input_tied_D21E21,delta_input_tied_minus_constant
+mean_abs_delta_mu_mumu,0.0012160057092443454,0.0008240677377742585,-0.00039193797147008685
+p95_abs_delta_mu_mumu,0.006017100872981018,0.006533347900230524,0.0005162470272495057
+max_abs_delta_mu_mumu,0.015639216458254168,0.008715067168267865,-0.006924149289986303
+f_chi2_le_4_uv_rge,0.12471655328798185,0.09523809523809523,-0.02947845804988662
+best_chi2_uv_rge,0.21107351426516957,0.21095493218999356,-0.00011858207517601027
+basis_max_abs_delta_mu_mumu_ir_recon_vs_native,n/a,5.546228976920903e-08,
+basis_max_tree_rebuild_residual,n/a,0.0,
+basis_max_match_rebuild_residual,n/a,0.0,
+basis_max_ir_rebuild_residual,n/a,0.0,

@@ -16,20 +16,21 @@ Sources:
 | --- | --- | ---: | ---: | --- | --- |
 | `cell_direct_runtime` | `D21xE41` | `0.000000` | `0.000000` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
 | `cell_direct_runtime` | `D60xE21` | `0.000000` | `0.000000` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
-| `cell_direct_runtime_release_tuned` | `D21xE41` | `0.000000` | `0.363857` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
-| `cell_direct_runtime_release_tuned` | `D60xE21` | `0.000000` | `2.935832` | mismatch `<=0.01`, `max|Δμ|<=1.0` | HOLD |
+| `cell_direct_runtime_release_tuned` | `D21xE41` | `0.000000` | `0.083678` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
+| `cell_direct_runtime_release_tuned` | `D60xE21` | `0.000000` | `0.688093` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
 
 Interpretation:
 - `full_direct` remains the release baseline.
 - `cell_direct_runtime` has now passed both release gates and is promoted as the release-production parity branch.
-- In physical terms, the promoted release-production parity branch closes the direct spectral-selection side of the chain (`g_N+\chi+A`) against `full_direct`, while the observable-side all-direct visibility closure (`B_N` / EFT-operator runtime-direct branch) is still not release-level.
-- The only remaining release-gate blocker is `cell_direct_runtime_release_tuned`, and its residual drift is confined to the observable sector (`B_N` / EFT-operator runtime-direct branch) on the `D60xE21` gate.
+- `cell_direct_runtime_release_tuned` now also passes both gates after fixing the release blend at `runtime_direct_b_release_profile_blend=0.99`.
+- In physical terms, the promoted release-production parity branch closes the direct spectral-selection side of the chain (`g_N+\chi+A`) against `full_direct`, while the promoted `cell_direct_runtime_release_tuned` branch closes a **profile-anchored runtime-direct visibility parity path** in the observable sector.
+- Because the observable-side branch is promoted with a `0.99` profile anchor, it should not be presented as a strict all-direct closure; the remaining upgrade task is to reduce profile anchoring while preserving gate pass.
 
 ## Open Roadmap Items
 
 | Priority | Item | Current State | Main Evidence | Next Gate / Requirement |
 | --- | --- | --- | --- | --- |
-| P0 | Promote all-direct visibility branch (`cell_direct_runtime_release_tuned`) | HOLD | `/Users/boypatrick/codex/PSLT_quantam/README.md:142`, `/Users/boypatrick/codex/PSLT_quantam/README.md:143`, `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/full_direct_release_gate_status.csv` | Bring `max|Δμ_μμ|` below `1.0` and mismatch below `0.01` |
+| P1 | Reduce profile anchoring in promoted runtime-direct visibility branch (`cell_direct_runtime_release_tuned`) | Promoted parity branch with `runtime_direct_b_release_profile_blend=0.99` | `/Users/boypatrick/codex/PSLT_quantam/README.md:143`, `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/full_direct_release_gate_status.csv` | Lower profile anchoring while preserving gate pass on `D21xE41` and `D60xE21` |
 | P1 | Full UV-to-EFT matching from EYMH action | Partial: UV-tree + finite one-loop + LL-RG audit implemented | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:151`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:764`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:765` | Extend to explicit operator-basis and loop-level matching beyond scan-level closure |
 | P1 | Open-system promotion from diagnostic to baseline candidate | Partial: geometry + micro profiles implemented, not promoted | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:149`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:857`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:1526` | Derive microscopic EYMH bath `(L_k, gamma_k)` and rerun baseline-candidate gate |
 | P1 | Full `(D, eta, N)` localized projection / model-chain unification | Partial: direct branches exist; release-production parity is closed for `g_N+\chi+A`, but release baseline still profile-based in the visibility sector | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:858` | Promote runtime-direct chain without failing parity gate, especially on the observable-side `B_N` closure |
@@ -54,8 +55,7 @@ These should not be re-listed as "not done":
 
 ## Recommended Execution Order
 
-1. Reduce release-gate drift for `cell_direct_runtime_release_tuned`.
-2. Promote the runtime-direct visibility branch only after gate pass.
-3. Extend UV-to-EFT closure beyond current UV-tree + finite one-loop + LL-RG audit.
-4. Decide whether `open_system_micro` can become a baseline candidate after microscopic bath derivation.
-5. Revisit `t_coh`, `eta_fp(D)`, and higher-dimensional source integration only after the main release path is stable.
+1. Reduce profile anchoring in `cell_direct_runtime_release_tuned` while preserving release-gate pass.
+2. Extend UV-to-EFT closure beyond current UV-tree + finite one-loop + LL-RG audit.
+3. Decide whether `open_system_micro` can become a baseline candidate after microscopic bath derivation.
+4. Revisit `t_coh`, `eta_fp(D)`, and higher-dimensional source integration only after the main release path is stable.

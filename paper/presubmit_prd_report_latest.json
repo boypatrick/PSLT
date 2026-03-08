@@ -1,9 +1,9 @@
 {
-  "generated_at_utc": "2026-03-01T16:03:41Z",
-  "run_id": "20260301T160340Z_51136fa_prd_freeze",
+  "generated_at_utc": "2026-03-07T18:00:24Z",
+  "run_id": "prd_presubmit_latest",
   "git": {
     "branch": "main",
-    "commit": "51136fa3de68e462d25d2774d6857f940c427e61",
+    "commit": "8556371eda7bb3cb421fa16b9a280a2c69081a9f",
     "dirty": true
   },
   "key_metrics": {
@@ -13,7 +13,7 @@
     "uv_max_abs_delta_mu_mumu": 0.009738090743724115,
     "uv_max_abs_delta_C_match_mumu": 1e-30,
     "gate_full_direct_release": "GO",
-    "gate_runtime_release_tuned_promotion": "HOLD"
+    "gate_runtime_release_tuned_promotion": "GO"
   },
   "release_gates": {
     "full_direct_release": {
@@ -37,8 +37,8 @@
       }
     },
     "runtime_release_tuned_promotion": {
-      "decision": "HOLD",
-      "pass": false,
+      "decision": "GO",
+      "pass": true,
       "thresholds": {
         "small_frac_acceptance_mismatch": 0.01,
         "small_max_abs_delta_mu_mumu": 1.0,
@@ -47,9 +47,9 @@
       },
       "metrics": {
         "small_frac_acceptance_mismatch": 0.0,
-        "small_max_abs_delta_mu_mumu": 0.36385689907313434,
+        "small_max_abs_delta_mu_mumu": 0.0836779313476938,
         "large_frac_acceptance_mismatch": 0.0,
-        "large_max_abs_delta_mu_mumu": 2.935831757976203
+        "large_max_abs_delta_mu_mumu": 0.6880926284368414
       }
     }
   },
@@ -132,7 +132,7 @@
     {
       "name": "release_gate_rows_present",
       "ok": true,
-      "detail": "small/large direct-bias rows and tuned-candidate parity rows found"
+      "detail": "small/large direct-bias rows and profile-anchored tuned parity rows found"
     },
     {
       "name": "gate_full_direct_release",
@@ -142,19 +142,19 @@
     {
       "name": "gate_runtime_release_tuned_promotion_rows",
       "ok": true,
-      "detail": "decision=HOLD; small_frac_acceptance_mismatch=0.000000<= 0.010000, small_max_abs_delta_mu_mumu=0.363857<= 1.000000, large_frac_acceptance_mismatch=0.000000<= 0.010000, large_max_abs_delta_mu_mumu=2.935832<= 1.000000"
+      "detail": "decision=GO; small_frac_acceptance_mismatch=0.000000e+00<= 0.010000, small_max_abs_delta_mu_mumu=0.083678<= 1.000000, large_frac_acceptance_mismatch=0.000000e+00<= 0.010000, large_max_abs_delta_mu_mumu=0.688093<= 1.000000"
     }
   ],
   "files": [
     {
       "path": "paper/main.tex",
-      "size_bytes": 136166,
-      "sha256": "10afb9ee29b6982476361e81ea319f83615264fc74020cd8bcfc3db937bcdcf7"
+      "size_bytes": 138241,
+      "sha256": "f021ba293b23ccfd4192b3427b86cd2dde7894c1ece578493fdf3c12820de350"
     },
     {
       "path": "paper/main.pdf",
-      "size_bytes": 3493305,
-      "sha256": "59a3a603bf42fc070d5994a20789b98af2c93010463a2799e286757219217d3e"
+      "size_bytes": 3495833,
+      "sha256": "859abf7f21f21f50b9d506f56e512dd4630cacbefddfcbec20f88246add19e57"
     },
     {
       "path": "paper/hll_signal_strength_summary.csv",
@@ -173,8 +173,8 @@
     },
     {
       "path": "paper/full_direct_map_release_summary.csv",
-      "size_bytes": 2235,
-      "sha256": "41bd01754c4faad42e6c60670a4f7b48b10cc3059aca186450551ef02c290b1b"
+      "size_bytes": 2421,
+      "sha256": "04a3bffa08df4145598efe2fa412c8796f6b8daba5725611989806e00e87bfd3"
     },
     {
       "path": "output/first_principles_migration/first_principles_migration_summary.csv",

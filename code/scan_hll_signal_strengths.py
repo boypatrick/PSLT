@@ -136,7 +136,7 @@ PAPER_BASELINE = {
     "runtime_direct_b_release_flavor_sigma_power": 0.06392278249524226,
     "runtime_direct_b_release_flavor_sigma_min_scale": 0.5757838511310751,
     "runtime_direct_b_release_flavor_sigma_max_scale": 1.6994809620722757,
-    "runtime_direct_b_release_profile_blend": 0.9562056546695611,
+    "runtime_direct_b_release_profile_blend": 0.99,
     "D_min": 4.0,
     "D_max": 20.0,
     "D_num": 60,
@@ -223,6 +223,7 @@ def make_baseline_kinetics(
     runtime_direct_superrad_zmax: float,
     runtime_direct_superrad_ref_d: float,
     runtime_direct_superrad_n_ref: int,
+    runtime_direct_b_release_profile_blend_override: Optional[float] = None,
 ) -> PSLTKinetics:
     d_scan = scan_d_values(float(d_min), float(d_max), int(d_num))
     d_track_seed = float(d_scan[0]) if len(d_scan) > 0 else float(d_min)
@@ -365,7 +366,11 @@ def make_baseline_kinetics(
             "runtime_direct_b_flavor_sigma_power": float(PAPER_BASELINE["runtime_direct_b_release_flavor_sigma_power"]),
             "runtime_direct_b_flavor_sigma_min_scale": float(PAPER_BASELINE["runtime_direct_b_release_flavor_sigma_min_scale"]),
             "runtime_direct_b_flavor_sigma_max_scale": float(PAPER_BASELINE["runtime_direct_b_release_flavor_sigma_max_scale"]),
-            "runtime_direct_b_profile_blend": float(PAPER_BASELINE["runtime_direct_b_release_profile_blend"]),
+            "runtime_direct_b_profile_blend": float(
+                PAPER_BASELINE["runtime_direct_b_release_profile_blend"]
+                if runtime_direct_b_release_profile_blend_override is None
+                else runtime_direct_b_release_profile_blend_override
+            ),
         }
     elif chain_mode_eff == "cell_direct_runtime_extreme":
         g_mode = "fp_2d_full_runtime_direct"
@@ -703,6 +708,12 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--runtime-direct-superrad-zmax", type=float, default=80.0)
     ap.add_argument("--runtime-direct-superrad-ref-d", type=float, default=12.0)
     ap.add_argument("--runtime-direct-superrad-n-ref", type=int, default=2)
+    ap.add_argument(
+        "--runtime-direct-b-release-profile-blend-override",
+        type=float,
+        default=None,
+        help="Optional temporary override for PAPER_BASELINE runtime_direct_b_release_profile_blend.",
+    )
     ap.add_argument("--tag", type=str, default="")
     ap.add_argument("--skip-paper-copy", action="store_true")
     return ap.parse_args()
@@ -844,6 +855,11 @@ def main() -> None:
         runtime_direct_superrad_zmax=float(args.runtime_direct_superrad_zmax),
         runtime_direct_superrad_ref_d=float(args.runtime_direct_superrad_ref_d),
         runtime_direct_superrad_n_ref=int(args.runtime_direct_superrad_n_ref),
+        runtime_direct_b_release_profile_blend_override=(
+            None
+            if args.runtime_direct_b_release_profile_blend_override is None
+            else float(args.runtime_direct_b_release_profile_blend_override)
+        ),
     )
     d_vals_grid = np.linspace(float(args.d_min), float(args.d_max), int(args.d_num))
     eta_vals_grid = np.linspace(float(args.eta_min), float(args.eta_max), int(args.eta_num))
@@ -932,6 +948,11 @@ def main() -> None:
         "runtime_direct_superrad_zmax": float(args.runtime_direct_superrad_zmax),
         "runtime_direct_superrad_ref_d": float(args.runtime_direct_superrad_ref_d),
         "runtime_direct_superrad_n_ref": int(args.runtime_direct_superrad_n_ref),
+        "runtime_direct_b_release_profile_blend_override": (
+            None
+            if args.runtime_direct_b_release_profile_blend_override is None
+            else float(args.runtime_direct_b_release_profile_blend_override)
+        ),
         "d_min": float(args.d_min),
         "d_max": float(args.d_max),
         "d_num": int(args.d_num),

@@ -305,7 +305,7 @@ def build_b_module_diagnostics(
             "tag": tag_cell_large_runtime,
         },
         {
-            "scenario_label": "runtime_bnorm_release_tuned_candidate",
+            "scenario_label": "runtime_bnorm_release_tuned_profile_anchored",
             "chain_mode": "cell_direct_runtime_release_tuned",
             "tag": tag_cell_large_release_tuned,
         },
@@ -384,10 +384,10 @@ def main() -> None:
     tag_main = "full_direct_map_release"
     tag_full_small = "full_direct_map_full_release_D21E41"
     tag_cell_small = "full_direct_map_cell_direct_runtime_release_D21E41"
-    tag_cell_small_release_tuned = "full_direct_map_cell_direct_runtime_release_tuned_candidate_D21E41"
+    tag_cell_small_release_tuned = "full_direct_map_cell_direct_runtime_release_tuned_profile_anchored_D21E41"
     tag_full_large = "full_direct_map_full_release_D60E21"
     tag_cell_large_runtime = "full_direct_map_cell_direct_runtime_release_D60E21"
-    tag_cell_large_release_tuned = "full_direct_map_cell_direct_runtime_release_tuned_candidate_D60E21"
+    tag_cell_large_release_tuned = "full_direct_map_cell_direct_runtime_release_tuned_profile_anchored_D60E21"
     tag_cell_large_extreme = "full_direct_map_cell_direct_runtime_extreme_release_D60E21"
 
     # 1) Main-map full_direct baseline.
@@ -781,7 +781,7 @@ def main() -> None:
             "source": str(parity_large_runtime_summary.relative_to(ROOT)),
         },
         {
-            "scenario": "chain_mode_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_candidate",
+            "scenario": "chain_mode_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_profile_anchored",
             "grid": "D21xE41",
             "n_points": int(parity_small_release["n_points"]),
             "f_chi2_mumu_le_4": float(parity_small_release["f_chi2_le_4_mumu_full_direct"]),
@@ -795,7 +795,7 @@ def main() -> None:
             "source": str(parity_small_release_summary.relative_to(ROOT)),
         },
         {
-            "scenario": "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_candidate",
+            "scenario": "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_profile_anchored",
             "grid": "D60xE21",
             "n_points": int(parity_large_release["n_points"]),
             "f_chi2_mumu_le_4": float(parity_large_release["f_chi2_le_4_mumu_full_direct"]),

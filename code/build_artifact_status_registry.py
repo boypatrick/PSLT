@@ -89,13 +89,13 @@ def rows() -> List[Dict[str, object]]:
             "artifact_path": "paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release_tuned.csv",
             "status": "diagnostic_variant",
             "category": "chain_mode_audit",
-            "note": "Small-surface tuned release-candidate all-direct gate: full_direct vs cell_direct_runtime_release_tuned.",
+            "note": "Small-surface profile-anchored runtime-direct visibility parity gate: full_direct vs cell_direct_runtime_release_tuned.",
         },
         {
             "artifact_path": "paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release_tuned.csv",
             "status": "diagnostic_variant",
             "category": "chain_mode_audit",
-            "note": "Large-surface tuned release-candidate all-direct gate: full_direct vs cell_direct_runtime_release_tuned.",
+            "note": "Large-surface profile-anchored runtime-direct visibility parity gate: full_direct vs cell_direct_runtime_release_tuned.",
         },
         {
             "artifact_path": "paper/chain_mode_uv_audit_Dgrid21_Egrid21.csv",
@@ -107,7 +107,7 @@ def rows() -> List[Dict[str, object]]:
             "artifact_path": "paper/full_direct_map_release_summary.csv",
             "status": "canonical_baseline",
             "category": "chain_mode_audit",
-            "note": "Integrated release summary: main full_direct map + direct-bias checks + runtime_profile / runtime_bnorm_release_tuned_candidate / runtime_bnorm_extreme chain gates.",
+            "note": "Integrated release summary: main full_direct map + direct-bias checks + runtime_profile / runtime_bnorm_release_tuned_profile_anchored / runtime_bnorm_extreme chain gates.",
         },
         {
             "artifact_path": "paper/full_direct_b_module_diagnostics_D60E21.csv",

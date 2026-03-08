@@ -189,12 +189,12 @@ def build_report(root: Path, run_id: str) -> Tuple[Dict[str, object], str]:
     row_small_tuned = find_row(
         release_rows,
         "scenario",
-        "chain_mode_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_candidate",
+        "chain_mode_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_profile_anchored",
     )
     row_large_tuned = find_row(
         release_rows,
         "scenario",
-        "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_candidate",
+        "chain_mode_large_parity_full_direct_vs_cell_direct_runtime_bnorm_release_tuned_profile_anchored",
     )
 
     checks.append(
@@ -207,7 +207,7 @@ def build_report(root: Path, run_id: str) -> Tuple[Dict[str, object], str]:
                 and row_large_tuned is not None
             ),
             detail=(
-                "small/large direct-bias rows and tuned-candidate parity rows found"
+                "small/large direct-bias rows and profile-anchored tuned parity rows found"
                 if (
                     row_small_direct is not None
                     and row_large_direct is not None

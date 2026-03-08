@@ -47,6 +47,7 @@ def _run_scan(
     ref_mode: str,
     ref_d: float,
     ref_eta: float,
+    runtime_direct_b_release_profile_blend_override: float | None = None,
 ) -> None:
     cmd = [
         sys.executable,
@@ -77,6 +78,13 @@ def _run_scan(
         str(float(ref_eta)),
         "--skip-paper-copy",
     ]
+    if runtime_direct_b_release_profile_blend_override is not None:
+        cmd.extend(
+            [
+                "--runtime-direct-b-release-profile-blend-override",
+                str(float(runtime_direct_b_release_profile_blend_override)),
+            ]
+        )
     subprocess.run(cmd, cwd=str(ROOT), check=True)
 
 
@@ -120,6 +128,12 @@ def main() -> None:
     ap.add_argument("--ref-mode", type=str, default="fixed")
     ap.add_argument("--ref-d", type=float, default=10.0)
     ap.add_argument("--ref-eta", type=float, default=1.0)
+    ap.add_argument(
+        "--runtime-direct-b-release-profile-blend-override",
+        type=float,
+        default=None,
+        help="Optional temporary override passed through to scan_hll_signal_strengths.py.",
+    )
     ap.add_argument("--full-direct-tag", type=str, default="chain_mode_full_direct")
     ap.add_argument("--cell-direct-tag", type=str, default="chain_mode_cell_direct_runtime")
     ap.add_argument(
@@ -170,6 +184,11 @@ def main() -> None:
         ref_mode=str(args.ref_mode),
         ref_d=float(ref_d_eff),
         ref_eta=float(args.ref_eta),
+        runtime_direct_b_release_profile_blend_override=(
+            None
+            if args.runtime_direct_b_release_profile_blend_override is None
+            else float(args.runtime_direct_b_release_profile_blend_override)
+        ),
     )
     _run_scan(
         chain_mode=str(args.cell_chain_mode),
@@ -184,6 +203,11 @@ def main() -> None:
         ref_mode=str(args.ref_mode),
         ref_d=float(ref_d_eff),
         ref_eta=float(args.ref_eta),
+        runtime_direct_b_release_profile_blend_override=(
+            None
+            if args.runtime_direct_b_release_profile_blend_override is None
+            else float(args.runtime_direct_b_release_profile_blend_override)
+        ),
     )
 
     full_map = _read_map(str(args.full_direct_tag))
@@ -218,6 +242,11 @@ def main() -> None:
         "ref_D_effective": float(ref_d_eff),
         "ref_D_snapped_to_grid": bool(ref_d_snapped),
         "ref_eta": float(args.ref_eta),
+        "runtime_direct_b_release_profile_blend_override": (
+            None
+            if args.runtime_direct_b_release_profile_blend_override is None
+            else float(args.runtime_direct_b_release_profile_blend_override)
+        ),
         "full_direct_tag": str(args.full_direct_tag),
         "cell_direct_tag": str(args.cell_direct_tag),
         "cell_chain_mode": str(args.cell_chain_mode),

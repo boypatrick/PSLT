@@ -1,0 +1,21 @@
+{
+  "summary": {
+    "kappa_env_calibrated": 430546.4345656163,
+    "canonical_kappa_scale": 1.0,
+    "candidate_window_min": 0.5,
+    "candidate_window_max": 1.0,
+    "stable_window_min": 0.25,
+    "stable_window_max": 1.5,
+    "holdout_threshold_rmse_candidate": 0.08,
+    "holdout_threshold_maxabs_candidate": 0.18,
+    "holdout_threshold_rmse_stable": 0.1,
+    "holdout_threshold_maxabs_stable": 0.22,
+    "base_holdout_rmse": 0.0694542033431657,
+    "base_holdout_max_abs_err": 0.1248712638192654
+  },
+  "notes": [
+    "kappa_scale uniformly rescales gamma_phi and gamma_mix while leaving delta fixed.",
+    "candidate window uses current baseline-candidate holdout thresholds plus map-level stability.",
+    "stable window relaxes holdout thresholds slightly while preserving the same map-level stability requirements."
+  ]
+}

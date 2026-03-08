@@ -1518,6 +1518,20 @@ with numerically negligible residuals:
 \]
 The corresponding bridge summary identifies the effective system as the localized two-level $(L/R)$ subspace, the current bath witness as a Gaussian Markov bath with Lorentzian PSD, and the coupling operators as the diagonal/off-diagonal pair $(\sigma_z,\sigma_x)$. This means the open-system gap is no longer in the system-to-Lindblad bookkeeping, but in the microscopic EYMH origin and normalization of the bath itself.
 
+We can therefore push the bath normalization one step further without over-claiming a full microscopic derivation. Using \texttt{scan\_chi\_open\_system\_micro\_kappa\_window.py}, we treat
+\[
+\kappa_{\rm env}\rightarrow \kappa_{\rm scale}\,\kappa_{\rm env}^{\rm(calib)}
+\]
+as a uniform bath-normalization susceptibility that rescales both $\gamma_\phi$ and $\gamma_{\rm mix}$ while leaving the localized two-level Hamiltonian $(\Delta E,\sigma_x)$ fixed. The resulting audit writes \texttt{paper/chi\_open\_system\_micro\_kappa\_window\_scan.csv}, \texttt{paper/chi\_open\_system\_micro\_kappa\_window\_summary.csv}, and \texttt{paper/chi\_open\_system\_micro\_kappa\_window.png}. On the current $D=4,\dots,20$ knot set, the calibration-consistent candidate window is
+\[
+\kappa_{\rm scale}\in[0.5,1.0],
+\]
+while a broader scan-stable window
+\[
+\kappa_{\rm scale}\in[0.25,1.5]
+\]
+keeps the map-level fractions $f(\mathcal R_3>0.90)$ and $f(\chi^2_{\mu\mu}\le 4)$ unchanged and only relaxes the holdout tolerance slightly. In this sense, $\kappa_{\rm env}$ is no longer just a single-point fit parameter: within the present witness it acts as a bounded bath-normalization susceptibility. What still remains open is the EYMH-side derivation of its absolute normalization and of the microscopic bath degrees of freedom themselves.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

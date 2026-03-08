@@ -130,6 +130,12 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/chi_open_system/chi_open_system_micro_bridge_summary.csv`
   - `output/chi_open_system/chi_open_system_micro_bridge.png`
   On the current calibrated `D=4..20` knot set, the bridge residuals are numerically negligible (`max |Δgamma_phi| = 2.03e-20`, `max |Δgamma_mix| = 4.40e-14`, `max |Δchi_eff(loader)| = 5.58e-17`), so the remaining missing piece is the bath-side EYMH derivation, not the system-to-Lindblad bookkeeping.
+  `code/scan_chi_open_system_micro_kappa_window.py` now adds a Phase-2 bath-normalization audit: treating `kappa_env` as a uniform susceptibility that rescales both `gamma_phi` and `gamma_mix` while leaving the localized two-level Hamiltonian fixed. The resulting canonical summaries are
+  - `output/chi_open_system/chi_open_system_micro_kappa_window_scan.csv`
+  - `output/chi_open_system/chi_open_system_micro_kappa_window_summary.csv`
+  - `output/chi_open_system/chi_open_system_micro_kappa_window_ratio_scan.csv`
+  - `output/chi_open_system/chi_open_system_micro_kappa_window.png`
+  For the current micro witness, the calibration-consistent candidate window is `kappa_scale in [0.5, 1.0]`, while a broader stable scan window `kappa_scale in [0.25, 1.5]` keeps the map-level fractions unchanged and only relaxes the holdout tolerance slightly. This promotes `kappa_env` from a single fitted constant to a bounded bath-normalization parameter with an explicit physical/stability interpretation.
 - **Surrogate-vs-direct chi transfer audit (B3):** `code/scan_surrogate_vs_action_points.py` reports point-level drift between interpolated `chi_LR(D)` and direct fine localized extraction injection, exporting:
   - `output/chi_fp_2d/surrogate_vs_action_points.csv`
   - `output/chi_fp_2d/surrogate_vs_action_points_summary.csv`

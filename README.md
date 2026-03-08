@@ -201,6 +201,13 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_input_tied_diag_window_scan_D21E21.csv`
   - `output/hll_uv_matching/hll_uv_input_tied_diag_window_D21E21.png`
   The resulting interpretation is: `diag_scale in [0.25, 1.0]` forms a conservative comparator window, `diag_scale in [0.25, 1.5]` is an extended stable window, and the canonical witness choice `diag_scale=1.0` sits at the top of the conservative range. Numerically, `offdiag_scale` remains inactive in the current basis, so the remaining missing ingredient is the parent-action normalization of the diagonal threshold susceptibility rather than any off-diagonal mixing closure.
+- **Action-normalized UV comparator:** the finite-match layer now also supports `--uv-match-mode action_normalized`, which multiplies the diagonal/off-diagonal input-tied witness by parent-action-side normalization factors built from localized shell-gap and UV-coefficient invariants (`gap_cv`, `gap_asym`, `g_col_norm_cv`, `c_tree_diag_cv`, `pkin_entropy`). Canonical `full_direct` D21×E21 outputs are:
+  - `output/hll_uv_matching/hll_uv_to_eft_summary_uv_action_normalized_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_operator_basis_summary_uv_action_normalized_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_normalized_mode_summary_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_normalized_pairwise_summary_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_normalized_comparator_D21E21.png`
+  The basis witness remains exact (`max |Δμ_{\mu\mu}^{\rm recon}| = 5.54e-08`, reconstruction residuals zero). Relative to the refreshed constant-threshold baseline, the action-normalized map still shows zero acceptance mismatch with small deformation (`mean |Δμ_{\mu\mu}| = 1.00e-3`, `p95 = 1.86e-3`, `max = 1.59e-2`), while its internal UV-tree→IR drift is smaller than the canonical input-tied comparator (`mean |Δμ_{\mu\mu}| = 3.65e-4`, `max = 5.93e-3`). We therefore interpret `action_normalized` as a stronger parent-action-side comparator, but not yet a baseline replacement: the normalization is now tied to action-derived invariants, yet still not fixed by a full EYMH loop calculation.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

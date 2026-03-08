@@ -132,7 +132,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--uv-m2-power", type=float, default=float(BASELINE["hll_uv_m2_power"]))
     ap.add_argument("--uv-match-kappa-diag", type=float, default=float(BASELINE["hll_uv_match_kappa_diag"]))
     ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(BASELINE["hll_uv_match_kappa_offdiag"]))
-    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied"], default=str(BASELINE["hll_uv_match_mode"]))
+    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized"], default=str(BASELINE["hll_uv_match_mode"]))
     ap.add_argument("--uv-match-input-diag-scale", type=float, default=float(BASELINE["hll_uv_match_input_diag_scale"]))
     ap.add_argument("--uv-match-input-offdiag-scale", type=float, default=float(BASELINE["hll_uv_match_input_offdiag_scale"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(BASELINE["hll_uv_rge_mu_low"]))
@@ -276,6 +276,16 @@ def main() -> None:
                     "log_ratio": float(np.asarray(wit["log_ratio"], dtype=float)[0]),
                     "finite_fac_diag": float(np.asarray(wit["finite_fac_diag"], dtype=float)[0]),
                     "finite_fac_offdiag": float(np.asarray(wit["finite_fac_offdiag"], dtype=float)[0]),
+                    "shell_spread": float(np.asarray(wit["shell_spread"], dtype=float)[0]),
+                    "coeff_cv": float(np.asarray(wit["coeff_cv"], dtype=float)[0]),
+                    "offdiag_mix": float(np.asarray(wit["offdiag_mix"], dtype=float)[0]),
+                    "gap_cv": float(np.asarray(wit["gap_cv"], dtype=float)[0]),
+                    "gap_asym": float(np.asarray(wit["gap_asym"], dtype=float)[0]),
+                    "g_col_norm_cv": float(np.asarray(wit["g_col_norm_cv"], dtype=float)[0]),
+                    "c_tree_diag_cv": float(np.asarray(wit["c_tree_diag_cv"], dtype=float)[0]),
+                    "pkin_entropy": float(np.asarray(wit["pkin_entropy"], dtype=float)[0]),
+                    "action_norm_diag": float(np.asarray(wit["action_norm_diag"], dtype=float)[0]),
+                    "action_norm_offdiag": float(np.asarray(wit["action_norm_offdiag"], dtype=float)[0]),
                     "mu_mumu_tree_recon": mu_tree_recon,
                     "mu_mumu_ir_recon": mu_ir_recon,
                     "mu_mumu_ir_native": float(mu_ir_native),

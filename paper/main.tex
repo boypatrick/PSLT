@@ -1504,6 +1504,19 @@ via \texttt{extract\_chi\_open\_system\_micro.py}. To avoid map-level fitting, w
 \label{eq:chi_open_micro_band}
 \end{equation}
 from \texttt{output/chi\_open\_system/chi\_open\_micro\_ratio\_band.csv}.
+To pin down the microscopic bookkeeping, we additionally export a bridge audit with \texttt{scan\_chi\_open\_system\_micro\_bridge.py}, writing \texttt{paper/chi\_open\_system\_micro\_bridge\_map.csv}, \texttt{paper/chi\_open\_system\_micro\_bridge\_summary.csv}, and \texttt{paper/chi\_open\_system\_micro\_bridge.png}. On the calibrated $D=4,\dots,20$ knot set, this audit reconstructs
+\[
+\gamma_\phi=\kappa_{\rm env}g_z^2S(0),\qquad
+\gamma_{\rm mix}=\kappa_{\rm env}g_x^2S(\Delta E),\qquad
+\chi_{\rm eff}^{\rm(micro)}=2\gamma_{\rm mix}C_{\max}/\Gamma_{\rm ref}
+\]
+with numerically negligible residuals:
+\[
+\max|\Delta\gamma_\phi|=2.03\times10^{-20},\quad
+\max|\Delta\gamma_{\rm mix}|=4.40\times10^{-14},\quad
+\max|\Delta\chi_{\rm eff}^{\rm(loader)}|=5.58\times10^{-17}.
+\]
+The corresponding bridge summary identifies the effective system as the localized two-level $(L/R)$ subspace, the current bath witness as a Gaussian Markov bath with Lorentzian PSD, and the coupling operators as the diagonal/off-diagonal pair $(\sigma_z,\sigma_x)$. This means the open-system gap is no longer in the system-to-Lindblad bookkeeping, but in the microscopic EYMH origin and normalization of the bath itself.
 
 \begin{table}[t]
 \centering

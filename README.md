@@ -119,7 +119,17 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
 - **g_N baseline cross-check:** `code/scan_gn_baseline_replacement.py` now uses baseline `fp_2d_full` and compares against legacy `cardy` reference, exporting:
   - `output/gn_fp_impact/gn_baseline_replacement.csv`
   - `output/gn_fp_impact/gn_baseline_replacement_nmax.csv`
-- **Open-system chi module (geometry + micro gate):** `code/scan_chi_open_system_sensitivity.py` keeps the geometry-only diagnostic band, while `extract_chi_open_system_micro.py` + `calibrate_kappa_env_micro_anchor.py` now run a **multi-anchor** calibration (default anchors `D={6,9,12,15,18}`) with explicit **holdout** validation (`kappa_env_anchor_holdout.csv`) before `assess_open_system_micro_baseline_candidate.py` evaluates baseline-candidate gates.
+- **Open-system chi module (geometry + micro gate):** `code/scan_chi_open_system_sensitivity.py` keeps the geometry-only diagnostic band, while `extract_chi_open_system_micro.py` + `calibrate_kappa_env_micro_anchor.py` now run a **multi-anchor** calibration (default anchors `D={6,9,12,15,18}`) with explicit **holdout** validation (`kappa_env_anchor_holdout.csv`) before `assess_open_system_micro_baseline_candidate.py` evaluates baseline-candidate gates. The new bridge audit `code/scan_chi_open_system_micro_bridge.py` aligns the microscopic chain as
+  - system: `delta_micro`
+  - localized couplings: `g_z_micro`, `g_x_micro`
+  - bath: `tau_env`, `Szz_0`, `Sxx_delta`
+  - rates: `gamma_phi_micro`, `gamma_mix_micro`
+  - observable: `chi_eff_micro`
+  and verifies exact formula/loader reconstruction through:
+  - `output/chi_open_system/chi_open_system_micro_bridge_map.csv`
+  - `output/chi_open_system/chi_open_system_micro_bridge_summary.csv`
+  - `output/chi_open_system/chi_open_system_micro_bridge.png`
+  On the current calibrated `D=4..20` knot set, the bridge residuals are numerically negligible (`max |Δgamma_phi| = 2.03e-20`, `max |Δgamma_mix| = 4.40e-14`, `max |Δchi_eff(loader)| = 5.58e-17`), so the remaining missing piece is the bath-side EYMH derivation, not the system-to-Lindblad bookkeeping.
 - **Surrogate-vs-direct chi transfer audit (B3):** `code/scan_surrogate_vs_action_points.py` reports point-level drift between interpolated `chi_LR(D)` and direct fine localized extraction injection, exporting:
   - `output/chi_fp_2d/surrogate_vs_action_points.csv`
   - `output/chi_fp_2d/surrogate_vs_action_points_summary.csv`

@@ -177,6 +177,9 @@ class PSLTParameters:
     hll_uv_m2_power: float = 1.0
     hll_uv_match_kappa_diag: float = 0.0
     hll_uv_match_kappa_offdiag: float = 0.0
+    hll_uv_match_mode: str = "constant"  # "constant" or "input_tied"
+    hll_uv_match_input_diag_scale: float = 0.0
+    hll_uv_match_input_offdiag_scale: float = 0.0
     hll_uv_rge_mu_low: float = 1.0
     hll_uv_rge_gamma_diag: float = 2.0
     hll_uv_rge_gamma_offdiag: float = 1.0
@@ -316,6 +319,8 @@ class PSLTParameters:
             raise ValueError(f"Unsupported hll_observable_mode='{self.hll_observable_mode}'.")
         if self.hll_observable_nmax < 3:
             raise ValueError("hll_observable_nmax must be >= 3.")
+        if self.hll_uv_match_mode not in {"constant", "input_tied"}:
+            raise ValueError(f"Unsupported hll_uv_match_mode='{self.hll_uv_match_mode}'.")
         if self.hll_match_basis_mode not in {"sqrt_yraw", "yraw"}:
             raise ValueError(f"Unsupported hll_match_basis_mode='{self.hll_match_basis_mode}'.")
         if self.hll_match_mix_scale < 0.0:
@@ -1961,7 +1966,15 @@ class PSLTKinetics:
         for idx in range(3):
             kernel = np.outer(g_uv[:, idx], g_uv[:, idx]) / max(float(m2[idx]), self.params.hll_uv_m2_floor)
             kernel = np.maximum(kernel, self.params.hll_uv_coupling_floor)
-            k_match, _ = apply_ceh_finite_one_loop(kernel, fin_cfg)
+            p_layer = np.zeros(3, dtype=float)
+            p_layer[idx] = 1.0
+            k_match, _ = apply_ceh_finite_one_loop(
+                kernel,
+                fin_cfg,
+                g_uv=g_uv,
+                p_kin=p_layer,
+                m2=m2,
+            )
             k_ir, _ = run_ceh_leading_log(k_match, mu_match, rge_cfg)
             strengths[idx] = max(float(np.trace(k_ir)), self.params.b_overlap_floor)
 
@@ -2078,6 +2091,9 @@ class PSLTKinetics:
         return EFTFiniteOneLoopMatchConfig(
             kappa_diag=self.params.hll_uv_match_kappa_diag,
             kappa_offdiag=self.params.hll_uv_match_kappa_offdiag,
+            mode=self.params.hll_uv_match_mode,
+            input_diag_scale=self.params.hll_uv_match_input_diag_scale,
+            input_offdiag_scale=self.params.hll_uv_match_input_offdiag_scale,
             floor=self.params.hll_uv_coupling_floor,
         )
 
@@ -2250,7 +2266,13 @@ class PSLTKinetics:
         basis = self.hll_uv_operator_basis_witness(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
         c_tree = np.asarray(basis["c_tree"], dtype=float)
         fin_cfg = self._hll_uv_finite_match_config()
-        fin = finite_one_loop_witness(c_tree=c_tree, cfg=fin_cfg)
+        fin = finite_one_loop_witness(
+            c_tree=c_tree,
+            cfg=fin_cfg,
+            g_uv=np.asarray(basis["g_uv"], dtype=float),
+            p_kin=np.asarray(basis["p_kin"], dtype=float),
+            m2=np.asarray(basis["m2"], dtype=float),
+        )
 
         rge_cfg = self._hll_uv_rge_config()
         mu_match = mu_match_from_m2(np.asarray(basis["m2"], dtype=float), floor=rge_cfg.floor)
@@ -2282,6 +2304,12 @@ class PSLTKinetics:
             "log_ratio": np.array([float(rge.log_ratio)], dtype=float),
             "kappa_diag": np.array([float(fin.kappa_diag)], dtype=float),
             "kappa_offdiag": np.array([float(fin.kappa_offdiag)], dtype=float),
+            "kappa_diag_eff": np.array([float(fin.kappa_diag_eff)], dtype=float),
+            "kappa_offdiag_eff": np.array([float(fin.kappa_offdiag_eff)], dtype=float),
+            "finite_match_mode": np.array([0.0 if fin.mode == "constant" else 1.0], dtype=float),
+            "shell_spread": np.array([float(fin.shell_spread)], dtype=float),
+            "coeff_cv": np.array([float(fin.coeff_cv)], dtype=float),
+            "offdiag_mix": np.array([float(fin.offdiag_mix)], dtype=float),
             "gamma_diag": np.array([float(rge.gamma_diag)], dtype=float),
             "gamma_offdiag": np.array([float(rge.gamma_offdiag)], dtype=float),
             "finite_fac_diag": np.array([float(fin.finite_fac_diag)], dtype=float),
@@ -2306,16 +2334,25 @@ class PSLTKinetics:
         """
         UV-tree matrix with minimal finite one-loop matching applied at mu_match.
         """
-        c_uv = self.compute_ceh_uv(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
+        g_uv = self._hll_g_uv_matrix(D)
+        p_kin = self._hll_pkin_vector(D, eta, t_coh, N_max=N_max)
+        m2 = self._hll_m2_vector(D)
+        c_uv = wilson_matrix_uv_tree(g_uv=g_uv, p_kin=p_kin, m2=m2, cfg=self._hll_uv_tree_config())
         cfg = self._hll_uv_finite_match_config()
-        c_match, meta = apply_ceh_finite_one_loop(c_tree=c_uv, cfg=cfg)
+        c_match, meta = apply_ceh_finite_one_loop(c_tree=c_uv, cfg=cfg, g_uv=g_uv, p_kin=p_kin, m2=m2)
         return c_match, meta
 
     def hll_wilson_matrix_uv_match(self, D: float, eta: float, t_coh: float, N_max: int = 20) -> np.ndarray:
         c_match, _ = self.hll_wilson_matrix_uv_match_with_meta(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
         return c_match
 
-    def run_ceh_llrg(self, c_uv: np.ndarray, m2: np.ndarray) -> tuple[np.ndarray, Dict[str, float]]:
+    def run_ceh_llrg(
+        self,
+        c_uv: np.ndarray,
+        m2: np.ndarray,
+        g_uv: Optional[np.ndarray] = None,
+        p_kin: Optional[np.ndarray] = None,
+    ) -> tuple[np.ndarray, Dict[str, float]]:
         """
         Run leading-log RGE from UV matching scale to the configured low scale.
 
@@ -2323,7 +2360,7 @@ class PSLTKinetics:
           (C_low, metadata) where metadata contains mu_match, mu_low, log_ratio.
         """
         fin_cfg = self._hll_uv_finite_match_config()
-        c_match, fin_meta = apply_ceh_finite_one_loop(c_tree=c_uv, cfg=fin_cfg)
+        c_match, fin_meta = apply_ceh_finite_one_loop(c_tree=c_uv, cfg=fin_cfg, g_uv=g_uv, p_kin=p_kin, m2=m2)
         cfg = self._hll_uv_rge_config()
         mu_match = mu_match_from_m2(m2, floor=cfg.floor)
         c_low, log_ratio = run_ceh_leading_log(c_match=c_match, mu_match=mu_match, cfg=cfg)
@@ -2331,8 +2368,14 @@ class PSLTKinetics:
             "mu_match": float(mu_match),
             "mu_low": float(cfg.mu_low),
             "log_ratio": float(log_ratio),
+            "finite_match_mode": str(fin_meta.get("mode", "constant")),
             "kappa_diag": float(fin_meta["kappa_diag"]),
             "kappa_offdiag": float(fin_meta["kappa_offdiag"]),
+            "kappa_diag_eff": float(fin_meta.get("kappa_diag_eff", fin_meta["kappa_diag"])),
+            "kappa_offdiag_eff": float(fin_meta.get("kappa_offdiag_eff", fin_meta["kappa_offdiag"])),
+            "shell_spread": float(fin_meta.get("shell_spread", 0.0)),
+            "coeff_cv": float(fin_meta.get("coeff_cv", 0.0)),
+            "offdiag_mix": float(fin_meta.get("offdiag_mix", 0.0)),
             "finite_fac_diag": float(fin_meta["finite_fac_diag"]),
             "finite_fac_offdiag": float(fin_meta["finite_fac_offdiag"]),
         }
@@ -2349,9 +2392,11 @@ class PSLTKinetics:
         UV-tree matrix followed by leading-log running to the low scale,
         with explicit running metadata.
         """
-        c_uv = self.compute_ceh_uv(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
+        g_uv = self._hll_g_uv_matrix(D)
+        p_kin = self._hll_pkin_vector(D, eta, t_coh, N_max=N_max)
         m2 = self._hll_m2_vector(D)
-        c_low, meta = self.run_ceh_llrg(c_uv=c_uv, m2=m2)
+        c_uv = wilson_matrix_uv_tree(g_uv=g_uv, p_kin=p_kin, m2=m2, cfg=self._hll_uv_tree_config())
+        c_low, meta = self.run_ceh_llrg(c_uv=c_uv, m2=m2, g_uv=g_uv, p_kin=p_kin)
         return c_low, meta
 
     def hll_wilson_coeff_uv_tree(self, layer_n: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:

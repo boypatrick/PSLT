@@ -132,6 +132,9 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--uv-m2-power", type=float, default=float(BASELINE["hll_uv_m2_power"]))
     ap.add_argument("--uv-match-kappa-diag", type=float, default=float(BASELINE["hll_uv_match_kappa_diag"]))
     ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(BASELINE["hll_uv_match_kappa_offdiag"]))
+    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied"], default=str(BASELINE["hll_uv_match_mode"]))
+    ap.add_argument("--uv-match-input-diag-scale", type=float, default=float(BASELINE["hll_uv_match_input_diag_scale"]))
+    ap.add_argument("--uv-match-input-offdiag-scale", type=float, default=float(BASELINE["hll_uv_match_input_offdiag_scale"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(BASELINE["hll_uv_rge_mu_low"]))
     ap.add_argument("--uv-rge-gamma-diag", type=float, default=float(BASELINE["hll_uv_rge_gamma_diag"]))
     ap.add_argument("--uv-rge-gamma-offdiag", type=float, default=float(BASELINE["hll_uv_rge_gamma_offdiag"]))
@@ -169,6 +172,9 @@ def main() -> None:
         uv_m2_power=float(args.uv_m2_power),
         uv_match_kappa_diag=float(args.uv_match_kappa_diag),
         uv_match_kappa_offdiag=float(args.uv_match_kappa_offdiag),
+        uv_match_mode=str(args.uv_match_mode),
+        uv_match_input_diag_scale=float(args.uv_match_input_diag_scale),
+        uv_match_input_offdiag_scale=float(args.uv_match_input_offdiag_scale),
         uv_rge_mu_low=float(args.uv_rge_mu_low),
         uv_rge_gamma_diag=float(args.uv_rge_gamma_diag),
         uv_rge_gamma_offdiag=float(args.uv_rge_gamma_offdiag),
@@ -303,6 +309,9 @@ def main() -> None:
         "chain_mode": str(args.chain_mode),
         "uv_match_kappa_diag": float(args.uv_match_kappa_diag),
         "uv_match_kappa_offdiag": float(args.uv_match_kappa_offdiag),
+        "uv_match_mode": str(args.uv_match_mode),
+        "uv_match_input_diag_scale": float(args.uv_match_input_diag_scale),
+        "uv_match_input_offdiag_scale": float(args.uv_match_input_offdiag_scale),
         "uv_rge_gamma_diag": float(args.uv_rge_gamma_diag),
         "uv_rge_gamma_offdiag": float(args.uv_rge_gamma_offdiag),
     }
@@ -334,6 +343,9 @@ def main() -> None:
         "ref_D_input": float(args.ref_d),
         "ref_D_effective": float(ref_d_eff),
         "ref_D_snapped_to_grid": bool(snapped_ref_d),
+        "uv_match_mode": str(args.uv_match_mode),
+        "uv_match_input_diag_scale": float(args.uv_match_input_diag_scale),
+        "uv_match_input_offdiag_scale": float(args.uv_match_input_offdiag_scale),
         "d_min": float(args.d_min),
         "d_max": float(args.d_max),
         "d_num": int(args.d_num),

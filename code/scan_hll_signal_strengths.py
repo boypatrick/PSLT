@@ -123,6 +123,9 @@ PAPER_BASELINE = {
     "hll_uv_m2_power": 1.00,
     "hll_uv_match_kappa_diag": 0.0,
     "hll_uv_match_kappa_offdiag": 0.0,
+    "hll_uv_match_mode": "constant",
+    "hll_uv_match_input_diag_scale": 0.0,
+    "hll_uv_match_input_offdiag_scale": 0.0,
     "hll_uv_rge_mu_low": 1.0,
     "hll_uv_rge_gamma_diag": 2.0,
     "hll_uv_rge_gamma_offdiag": 1.0,
@@ -208,21 +211,24 @@ def make_baseline_kinetics(
     uv_m2_power: float,
     uv_match_kappa_diag: float,
     uv_match_kappa_offdiag: float,
-    uv_rge_mu_low: float,
-    uv_rge_gamma_diag: float,
-    uv_rge_gamma_offdiag: float,
-    uv_rge_log_clip: float,
-    runtime_direct_force: bool,
-    runtime_direct_no_cache: bool,
-    runtime_direct_chi_rho_max: float,
-    runtime_direct_chi_z_margin: float,
-    runtime_direct_chi_n_mu: int,
-    runtime_direct_chi_tol: float,
-    runtime_direct_chi_maxiter: int,
-    runtime_direct_chi_sigma: float,
-    runtime_direct_superrad_zmax: float,
-    runtime_direct_superrad_ref_d: float,
-    runtime_direct_superrad_n_ref: int,
+    uv_match_mode: str = "constant",
+    uv_match_input_diag_scale: float = 0.0,
+    uv_match_input_offdiag_scale: float = 0.0,
+    uv_rge_mu_low: float = 1.0,
+    uv_rge_gamma_diag: float = 2.0,
+    uv_rge_gamma_offdiag: float = 1.0,
+    uv_rge_log_clip: float = 6.0,
+    runtime_direct_force: bool = False,
+    runtime_direct_no_cache: bool = False,
+    runtime_direct_chi_rho_max: float = 3.0,
+    runtime_direct_chi_z_margin: float = 6.0,
+    runtime_direct_chi_n_mu: int = 120,
+    runtime_direct_chi_tol: float = 1e-8,
+    runtime_direct_chi_maxiter: int = 30000,
+    runtime_direct_chi_sigma: float = 2.5,
+    runtime_direct_superrad_zmax: float = 80.0,
+    runtime_direct_superrad_ref_d: float = 12.0,
+    runtime_direct_superrad_n_ref: int = 2,
     runtime_direct_b_release_profile_blend_override: Optional[float] = None,
 ) -> PSLTKinetics:
     d_scan = scan_d_values(float(d_min), float(d_max), int(d_num))
@@ -436,6 +442,9 @@ def make_baseline_kinetics(
         hll_uv_m2_power=float(uv_m2_power),
         hll_uv_match_kappa_diag=float(uv_match_kappa_diag),
         hll_uv_match_kappa_offdiag=float(uv_match_kappa_offdiag),
+        hll_uv_match_mode=str(uv_match_mode),
+        hll_uv_match_input_diag_scale=float(uv_match_input_diag_scale),
+        hll_uv_match_input_offdiag_scale=float(uv_match_input_offdiag_scale),
         hll_uv_rge_mu_low=float(uv_rge_mu_low),
         hll_uv_rge_gamma_diag=float(uv_rge_gamma_diag),
         hll_uv_rge_gamma_offdiag=float(uv_rge_gamma_offdiag),
@@ -687,6 +696,9 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--uv-m2-power", type=float, default=float(PAPER_BASELINE["hll_uv_m2_power"]))
     ap.add_argument("--uv-match-kappa-diag", type=float, default=float(PAPER_BASELINE["hll_uv_match_kappa_diag"]))
     ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(PAPER_BASELINE["hll_uv_match_kappa_offdiag"]))
+    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied"], default=str(PAPER_BASELINE["hll_uv_match_mode"]))
+    ap.add_argument("--uv-match-input-diag-scale", type=float, default=float(PAPER_BASELINE["hll_uv_match_input_diag_scale"]))
+    ap.add_argument("--uv-match-input-offdiag-scale", type=float, default=float(PAPER_BASELINE["hll_uv_match_input_offdiag_scale"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(PAPER_BASELINE["hll_uv_rge_mu_low"]))
     ap.add_argument("--uv-rge-gamma-diag", type=float, default=float(PAPER_BASELINE["hll_uv_rge_gamma_diag"]))
     ap.add_argument("--uv-rge-gamma-offdiag", type=float, default=float(PAPER_BASELINE["hll_uv_rge_gamma_offdiag"]))
@@ -840,6 +852,9 @@ def main() -> None:
         uv_m2_power=float(args.uv_m2_power),
         uv_match_kappa_diag=float(args.uv_match_kappa_diag),
         uv_match_kappa_offdiag=float(args.uv_match_kappa_offdiag),
+        uv_match_mode=str(args.uv_match_mode),
+        uv_match_input_diag_scale=float(args.uv_match_input_diag_scale),
+        uv_match_input_offdiag_scale=float(args.uv_match_input_offdiag_scale),
         uv_rge_mu_low=float(args.uv_rge_mu_low),
         uv_rge_gamma_diag=float(args.uv_rge_gamma_diag),
         uv_rge_gamma_offdiag=float(args.uv_rge_gamma_offdiag),

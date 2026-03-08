@@ -1,9 +1,9 @@
 # PRD Pre-Submission Freeze Report
 
-- Generated (UTC): 2026-03-07T18:00:24Z
-- Run ID: prd_presubmit_latest
+- Generated (UTC): 2026-03-08T14:24:38Z
+- Run ID: presubmit
 - Git branch: main
-- Git commit: 8556371eda7bb3cb421fa16b9a280a2c69081a9f
+- Git commit: 5eed2289ebcb6f650c1cdf08fc8d2444e82a05e3
 - Git dirty at report time: True
 
 ## Key Metrics
@@ -21,7 +21,7 @@
 | Gate | Decision | Pass | Key metrics vs thresholds |
 |---|---|---|---|
 | `full_direct_release` | GO | PASS | small_frac_winner_mismatch=0.000000e+00<= 0.010000; small_max_abs_delta_R3=1.788196e-05<= 1.000000e-03; small_max_abs_delta_mu_mumu=3.369519e-03<= 0.100000; large_frac_winner_mismatch=0.000000e+00<= 0.010000; large_max_abs_delta_R3=0.000000e+00<= 1.000000e-03; large_max_abs_delta_mu_mumu=0.000000e+00<= 0.100000 |
-| `runtime_release_tuned_promotion` | GO | PASS | small_frac_acceptance_mismatch=0.000000e+00<= 0.010000; small_max_abs_delta_mu_mumu=0.083678<= 1.000000; large_frac_acceptance_mismatch=0.000000e+00<= 0.010000; large_max_abs_delta_mu_mumu=0.688093<= 1.000000 |
+| `runtime_release_tuned_promotion` | GO | PASS | small_frac_acceptance_mismatch=0.000000e+00<= 0.010000; small_max_abs_delta_mu_mumu=0.092481<= 1.000000; large_frac_acceptance_mismatch=0.000000e+00<= 0.010000; large_max_abs_delta_mu_mumu=0.837269<= 1.000000 |
 
 ## Checks
 
@@ -44,6 +44,6 @@
 | `run_meta_has_finite_match_knobs` | PASS | kappa_diag=0.0, kappa_offdiag=0.0 |
 | `release_gate_rows_present` | PASS | small/large direct-bias rows and profile-anchored tuned parity rows found |
 | `gate_full_direct_release` | PASS | decision=GO; small_frac_winner_mismatch=0.000000e+00<= 0.010000, small_max_abs_delta_R3=1.788196e-05<= 1.000000e-03, small_max_abs_delta_mu_mumu=3.369519e-03<= 0.100000, large_frac_winner_mismatch=0.000000e+00<= 0.010000, large_max_abs_delta_R3=0.000000e+00<= 1.000000e-03, large_max_abs_delta_mu_mumu=0.000000e+00<= 0.100000 |
-| `gate_runtime_release_tuned_promotion_rows` | PASS | decision=GO; small_frac_acceptance_mismatch=0.000000e+00<= 0.010000, small_max_abs_delta_mu_mumu=0.083678<= 1.000000, large_frac_acceptance_mismatch=0.000000e+00<= 0.010000, large_max_abs_delta_mu_mumu=0.688093<= 1.000000 |
+| `gate_runtime_release_tuned_promotion_rows` | PASS | decision=GO; small_frac_acceptance_mismatch=0.000000e+00<= 0.010000, small_max_abs_delta_mu_mumu=0.092481<= 1.000000, large_frac_acceptance_mismatch=0.000000e+00<= 0.010000, large_max_abs_delta_mu_mumu=0.837269<= 1.000000 |
 
 **Overall:** PASS

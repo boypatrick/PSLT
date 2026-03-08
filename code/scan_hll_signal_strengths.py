@@ -140,6 +140,9 @@ PAPER_BASELINE = {
     "runtime_direct_b_release_flavor_sigma_min_scale": 0.5757838511310751,
     "runtime_direct_b_release_flavor_sigma_max_scale": 1.6994809620722757,
     "runtime_direct_b_release_profile_blend": 0.99,
+    "runtime_direct_b_release_profile_blend_csv": str(
+        ROOT / "output" / "kinetic_action_chain" / "runtime_direct_visibility_alphaD_profile_release.csv"
+    ),
     "D_min": 4.0,
     "D_max": 20.0,
     "D_num": 60,
@@ -230,6 +233,7 @@ def make_baseline_kinetics(
     runtime_direct_superrad_ref_d: float = 12.0,
     runtime_direct_superrad_n_ref: int = 2,
     runtime_direct_b_release_profile_blend_override: Optional[float] = None,
+    runtime_direct_b_release_profile_blend_csv_override: Optional[str] = None,
 ) -> PSLTKinetics:
     d_scan = scan_d_values(float(d_min), float(d_max), int(d_num))
     d_track_seed = float(d_scan[0]) if len(d_scan) > 0 else float(d_min)
@@ -257,7 +261,7 @@ def make_baseline_kinetics(
     g_source = "gn_profile_csv"
     chi_source = "runtime_cell_solver"
     gamma_source = "runtime_cell_solver"
-    runtime_b_overrides: Dict[str, float | int] = {}
+    runtime_b_overrides: Dict[str, float | int | str] = {}
 
     runtime_direct_no_cache_eff = bool(runtime_direct_no_cache)
     g_fp_2d_csv = None
@@ -378,6 +382,13 @@ def make_baseline_kinetics(
                 else runtime_direct_b_release_profile_blend_override
             ),
         }
+        default_release_blend_csv = PAPER_BASELINE.get("runtime_direct_b_release_profile_blend_csv")
+        if runtime_direct_b_release_profile_blend_csv_override not in {None, ""}:
+            runtime_b_overrides["runtime_direct_b_profile_blend_csv"] = str(
+                runtime_direct_b_release_profile_blend_csv_override
+            )
+        elif default_release_blend_csv not in {None, ""}:
+            runtime_b_overrides["runtime_direct_b_profile_blend_csv"] = str(default_release_blend_csv)
     elif chain_mode_eff == "cell_direct_runtime_extreme":
         g_mode = "fp_2d_full_runtime_direct"
         b_mode = "eft_operator_norm_runtime_direct"
@@ -726,6 +737,12 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Optional temporary override for PAPER_BASELINE runtime_direct_b_release_profile_blend.",
     )
+    ap.add_argument(
+        "--runtime-direct-b-release-profile-blend-csv-override",
+        type=str,
+        default=None,
+        help="Optional D-profile CSV override for runtime_direct_b_profile_blend in release_tuned mode.",
+    )
     ap.add_argument("--tag", type=str, default="")
     ap.add_argument("--skip-paper-copy", action="store_true")
     return ap.parse_args()
@@ -875,6 +892,11 @@ def main() -> None:
             if args.runtime_direct_b_release_profile_blend_override is None
             else float(args.runtime_direct_b_release_profile_blend_override)
         ),
+        runtime_direct_b_release_profile_blend_csv_override=(
+            None
+            if args.runtime_direct_b_release_profile_blend_csv_override in {None, ""}
+            else str(args.runtime_direct_b_release_profile_blend_csv_override)
+        ),
     )
     d_vals_grid = np.linspace(float(args.d_min), float(args.d_max), int(args.d_num))
     eta_vals_grid = np.linspace(float(args.eta_min), float(args.eta_max), int(args.eta_num))
@@ -967,6 +989,11 @@ def main() -> None:
             None
             if args.runtime_direct_b_release_profile_blend_override is None
             else float(args.runtime_direct_b_release_profile_blend_override)
+        ),
+        "runtime_direct_b_release_profile_blend_csv_override": (
+            None
+            if args.runtime_direct_b_release_profile_blend_csv_override in {None, ""}
+            else str(args.runtime_direct_b_release_profile_blend_csv_override)
         ),
         "d_min": float(args.d_min),
         "d_max": float(args.d_max),

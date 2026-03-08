@@ -1,0 +1,25 @@
+{
+  "surfaces": {
+    "D21E41": {
+      "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_full_direct_map_full_release_D21E41.csv",
+      "rt_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_tuned_D21E41.csv"
+    },
+    "D60E21": {
+      "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_full_direct_map_full_release_D60E21.csv",
+      "rt_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_tuned_D60E21.csv"
+    }
+  },
+  "b_diag_csv": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/full_direct_b_module_diagnostics_D60E21.csv",
+  "risk_score": {
+    "weights": {
+      "abs_delta_mu_mumu": 0.5,
+      "grad_log_mu_rt": 0.25,
+      "curv_log_mu_rt": 0.15,
+      "boundary_proximity": 0.1,
+      "acceptance_flip": 1.0
+    },
+    "normalization": "per-surface p95 clip to [0,3]",
+    "high_anchor_candidate_rule": "risk_score >= per-surface p95"
+  },
+  "top_k": 12
+}

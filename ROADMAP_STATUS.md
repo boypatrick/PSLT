@@ -16,21 +16,21 @@ Sources:
 | --- | --- | ---: | ---: | --- | --- |
 | `cell_direct_runtime` | `D21xE41` | `0.000000` | `0.000000` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
 | `cell_direct_runtime` | `D60xE21` | `0.000000` | `0.000000` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
-| `cell_direct_runtime_release_tuned` | `D21xE41` | `0.000000` | `0.083678` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
-| `cell_direct_runtime_release_tuned` | `D60xE21` | `0.000000` | `0.688093` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
+| `cell_direct_runtime_release_tuned` | `D21xE41` | `0.000000` | `0.092481` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
+| `cell_direct_runtime_release_tuned` | `D60xE21` | `0.000000` | `0.837269` | mismatch `<=0.01`, `max|Δμ|<=1.0` | PASS |
 
 Interpretation:
 - `full_direct` remains the release baseline.
 - `cell_direct_runtime` has now passed both release gates and is promoted as the release-production parity branch.
-- `cell_direct_runtime_release_tuned` now also passes both gates after fixing the release blend at `runtime_direct_b_release_profile_blend=0.99`.
-- In physical terms, the promoted release-production parity branch closes the direct spectral-selection side of the chain (`g_N+\chi+A`) against `full_direct`, while the promoted `cell_direct_runtime_release_tuned` branch closes a **profile-anchored runtime-direct visibility parity path** in the observable sector.
-- Because the observable-side branch is promoted with a `0.99` profile anchor, it should not be presented as a strict all-direct closure; the remaining upgrade task is to reduce profile anchoring while preserving gate pass.
+- `cell_direct_runtime_release_tuned` now also passes both gates with a D-only risk-weighted profile anchor `alpha(D)` rather than a fixed `0.99` blend.
+- In physical terms, the promoted release-production parity branch closes the direct spectral-selection side of the chain (`g_N+\chi+A`) against `full_direct`, while the promoted `cell_direct_runtime_release_tuned` branch closes a **risk-weighted profile-anchored runtime-direct visibility parity path** in the observable sector.
+- The current canonical release profile is `output/kinetic_action_chain/runtime_direct_visibility_alphaD_profile_release.csv`, selected by minimum mean anchor among gate-passing candidates (`alpha_min=0.96`, `alpha_max=0.99`, `power=1.0`, `mean(alpha)=0.9637`, `p90(alpha)=0.9734`).
 
 ## Must-Have Before Stronger PRD Claim
 
 | Item | Current State | Main Evidence | Next Gate / Requirement |
 | --- | --- | --- | --- |
-| Reduce profile anchoring in promoted runtime-direct visibility branch (`cell_direct_runtime_release_tuned`) | Promoted parity branch with `runtime_direct_b_release_profile_blend=0.99` | `/Users/boypatrick/codex/PSLT_quantam/README.md:143`, `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/full_direct_release_gate_status.csv` | Lower profile anchoring while preserving gate pass on `D21xE41` and `D60xE21` |
+| Push risk-weighted `alpha(D)` anchoring closer to strict all-direct closure | Promoted parity branch now uses canonical D-only risk-weighted profile anchoring (`mean(alpha)=0.9637`) | `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/runtime_direct_visibility_alphaD_summary.json`, `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/runtime_direct_visibility_alphaD_scan.csv` | Further reduce mean anchoring below the current gate-passing `alpha(D)` profile without reopening parity drift on `D21xE41` and `D60xE21` |
 | Full UV-to-EFT matching from EYMH action | Partial++: UV-tree + finite one-loop + LL-RG audit, explicit layer-resolved operator-basis witness, refreshed input-tied finite-match comparator, and Phase-2 diagonal-threshold window audit implemented. The canonical diagonal-only witness `(diag_scale,offdiag_scale)=(1,0)` remains small-deformation (`max |Δμ_{\mu\mu}| = 7.87e-03`, zero acceptance mismatch), with a conservative comparator window `diag_scale in [0.25,1.0]` and an extended stable window `diag_scale in [0.25,1.5]`; off-diagonal tying remains numerically inactive | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:151`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:764`, `/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_operator_basis_summary.csv`, `/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_input_tied_vs_constant_refresh_mapdiff_D21E21.csv`, `/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_input_tied_vs_constant_refresh_scale_summary_D21E21.csv`, `/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_input_tied_diag_window_summary_D21E21.csv` | Derive or calibrate the diagonal threshold susceptibility from parent-action / loop-level matching, then decide whether the input-tied witness should become a baseline candidate; off-diagonal tying no longer appears to be the limiting gap in the current basis |
 | Open-system promotion from diagnostic to baseline candidate | Partial++: geometry + micro profiles implemented, multi-anchor + holdout gate closed, bridge audit verifies the microscopic system/bath/coupling chain (`delta_micro -> g_z/g_x -> tau_env/S(omega) -> gamma_phi/gamma_mix -> chi_eff`) together with exact `pslt_lib` loader reconstruction, and a Phase-2 `kappa_env` window audit now bounds the bath normalization as a uniform susceptibility on the localized two-level witness. Current windows: candidate `kappa_scale in [0.5,1.0]`, stable `kappa_scale in [0.25,1.5]` | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:149`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:857`, `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:1526`, `/Users/boypatrick/codex/PSLT_quantam/paper/chi_open_system_micro_bridge_summary.csv`, `/Users/boypatrick/codex/PSLT_quantam/paper/chi_open_system_micro_kappa_window_summary.csv` | Derive microscopic EYMH bath `(L_k, gamma_k)` and replace the phenomenological normalization of `kappa_env`; the bridge bookkeeping and bath-stability window are now established |
 | Full `(D, eta, N)` localized projection / model-chain unification | Partial: direct branches exist; release-production parity is closed for `g_N+\chi+A`, but release baseline still profile-based in the visibility sector | `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex:858` | Promote runtime-direct chain without failing parity gate, especially on the observable-side `B_N` closure |
@@ -65,7 +65,7 @@ These should not be re-listed as "not done":
 
 ## Recommended Execution Order
 
-1. Reduce profile anchoring in `cell_direct_runtime_release_tuned` while preserving release-gate pass.
+1. Push the risk-weighted `alpha(D)` anchoring in `cell_direct_runtime_release_tuned` closer to strict all-direct closure without reopening gate failures.
 2. Extend UV-to-EFT closure beyond current UV-tree + finite one-loop + LL-RG audit.
 3. Decide whether `open_system_micro` can become a baseline candidate after microscopic bath derivation.
 4. Revisit `t_coh`, `eta_fp(D)`, and fully localized barrier-leakage normalization after the main release path is stronger.

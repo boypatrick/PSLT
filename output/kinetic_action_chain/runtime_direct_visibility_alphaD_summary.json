@@ -1,0 +1,12 @@
+{
+  "alpha_max": 0.99,
+  "selection_rule": "minimum mean_alpha among gate-passing D-only risk-weighted profiles",
+  "best_label": "amin0p96_pow1p0",
+  "best_profile_csv": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/runtime_direct_visibility_alphaD_profile_release.csv",
+  "best_mean_alpha": 0.9637276693084226,
+  "best_p90_alpha": 0.9733869451670326,
+  "best_d21_max_abs_delta_mu_mumu": 0.09248147357842207,
+  "best_d60_max_abs_delta_mu_mumu": 0.8372691708785638,
+  "n_candidates": 4,
+  "n_gate_pass": 3
+}

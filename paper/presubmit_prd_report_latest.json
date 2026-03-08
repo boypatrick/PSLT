@@ -1,9 +1,9 @@
 {
-  "generated_at_utc": "2026-03-07T18:00:24Z",
-  "run_id": "prd_presubmit_latest",
+  "generated_at_utc": "2026-03-08T14:24:38Z",
+  "run_id": "presubmit",
   "git": {
     "branch": "main",
-    "commit": "8556371eda7bb3cb421fa16b9a280a2c69081a9f",
+    "commit": "5eed2289ebcb6f650c1cdf08fc8d2444e82a05e3",
     "dirty": true
   },
   "key_metrics": {
@@ -47,9 +47,9 @@
       },
       "metrics": {
         "small_frac_acceptance_mismatch": 0.0,
-        "small_max_abs_delta_mu_mumu": 0.0836779313476938,
+        "small_max_abs_delta_mu_mumu": 0.092481473578422,
         "large_frac_acceptance_mismatch": 0.0,
-        "large_max_abs_delta_mu_mumu": 0.6880926284368414
+        "large_max_abs_delta_mu_mumu": 0.8372691708785638
       }
     }
   },
@@ -142,19 +142,19 @@
     {
       "name": "gate_runtime_release_tuned_promotion_rows",
       "ok": true,
-      "detail": "decision=GO; small_frac_acceptance_mismatch=0.000000e+00<= 0.010000, small_max_abs_delta_mu_mumu=0.083678<= 1.000000, large_frac_acceptance_mismatch=0.000000e+00<= 0.010000, large_max_abs_delta_mu_mumu=0.688093<= 1.000000"
+      "detail": "decision=GO; small_frac_acceptance_mismatch=0.000000e+00<= 0.010000, small_max_abs_delta_mu_mumu=0.092481<= 1.000000, large_frac_acceptance_mismatch=0.000000e+00<= 0.010000, large_max_abs_delta_mu_mumu=0.837269<= 1.000000"
     }
   ],
   "files": [
     {
       "path": "paper/main.tex",
-      "size_bytes": 138241,
-      "sha256": "f021ba293b23ccfd4192b3427b86cd2dde7894c1ece578493fdf3c12820de350"
+      "size_bytes": 147484,
+      "sha256": "7d4632be06d24163fddf6096b86e1987a405ce907fe856f0fdbf758ab7850d94"
     },
     {
       "path": "paper/main.pdf",
-      "size_bytes": 3495833,
-      "sha256": "859abf7f21f21f50b9d506f56e512dd4630cacbefddfcbec20f88246add19e57"
+      "size_bytes": 3506954,
+      "sha256": "4f56b0005f6423764a9c40ab49c2df937eec33c3dc2a063fe41f0a50ec7f6955"
     },
     {
       "path": "paper/hll_signal_strength_summary.csv",
@@ -173,8 +173,8 @@
     },
     {
       "path": "paper/full_direct_map_release_summary.csv",
-      "size_bytes": 2421,
-      "sha256": "04a3bffa08df4145598efe2fa412c8796f6b8daba5725611989806e00e87bfd3"
+      "size_bytes": 2420,
+      "sha256": "c5cd438bca9a0f4bb930169ea16a53973a2c0d25417aa25829c3a6e641d789e9"
     },
     {
       "path": "output/first_principles_migration/first_principles_migration_summary.csv",

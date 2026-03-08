@@ -89,13 +89,13 @@ def rows() -> List[Dict[str, object]]:
             "artifact_path": "paper/chain_mode_cell_direct_audit_Dgrid21_Egrid41_cell_direct_runtime_release_tuned.csv",
             "status": "diagnostic_variant",
             "category": "chain_mode_audit",
-            "note": "Small-surface profile-anchored runtime-direct visibility parity gate: full_direct vs cell_direct_runtime_release_tuned.",
+            "note": "Small-surface risk-weighted profile-anchored runtime-direct visibility parity gate: full_direct vs cell_direct_runtime_release_tuned.",
         },
         {
             "artifact_path": "paper/chain_mode_cell_direct_audit_Dgrid60_Egrid21_cell_direct_runtime_release_tuned.csv",
             "status": "diagnostic_variant",
             "category": "chain_mode_audit",
-            "note": "Large-surface profile-anchored runtime-direct visibility parity gate: full_direct vs cell_direct_runtime_release_tuned.",
+            "note": "Large-surface risk-weighted profile-anchored runtime-direct visibility parity gate: full_direct vs cell_direct_runtime_release_tuned.",
         },
         {
             "artifact_path": "paper/chain_mode_uv_audit_Dgrid21_Egrid21.csv",

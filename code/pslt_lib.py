@@ -157,6 +157,7 @@ class PSLTParameters:
     runtime_direct_b_flavor_sigma_min_scale: float = 0.70
     runtime_direct_b_flavor_sigma_max_scale: float = 1.50
     runtime_direct_b_profile_blend: float = 0.0  # 0 => pure runtime-direct, 1 => pure profile anchor
+    runtime_direct_b_profile_blend_csv: Optional[str] = None
     runtime_direct_b_track_seed_D: float = 4.0
     runtime_direct_b_track_step: float = 1.0
     hll_observable_mode: str = "eft_wilson_uv_rge"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
@@ -458,6 +459,7 @@ class PSLTKinetics:
         self._tcoh_profile: Optional[Dict[str, np.ndarray]] = None
         self._b_mode_active: str = "yukawa"
         self._b_overlap_profile: Optional[Dict[str, np.ndarray]] = None
+        self._b_runtime_direct_blend_profile: Optional[Dict[str, np.ndarray]] = None
         self._b_eft_norm_cache: Dict[float, np.ndarray] = {}
         self._b_runtime_direct_input_cache: Dict[float, Dict[str, np.ndarray]] = {}
         self._runtime_b_level = None
@@ -1017,6 +1019,30 @@ class PSLTKinetics:
             "GUV": guv_sorted,
         }
 
+    def _load_runtime_direct_b_blend_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+        entries: Dict[float, float] = {}
+        for row in rows:
+            if row.get("D", "") in {"", None}:
+                continue
+            alpha_val = None
+            for key in ("alpha", "blend", "profile_blend"):
+                if row.get(key, "") not in {"", None}:
+                    alpha_val = float(row[key])
+                    break
+            if alpha_val is None:
+                continue
+            entries[float(row["D"])] = float(np.clip(alpha_val, 0.0, 1.0))
+        if not entries:
+            return None
+        d_sorted = np.array(sorted(entries.keys()), dtype=float)
+        a_sorted = np.array([entries[d] for d in d_sorted], dtype=float)
+        return {"D": d_sorted, "alpha": a_sorted}
+
     def _auto_find_b_overlap_csv(self) -> Optional[Path]:
         base = self.root_dir / "output" / "y_eff_2d"
         if not base.exists():
@@ -1035,13 +1061,18 @@ class PSLTKinetics:
         mode = self.params.b_mode
         self._b_mode_active = "yukawa"
         self._b_overlap_profile = None
+        self._b_runtime_direct_blend_profile = None
         self._b_eft_norm_cache.clear()
         self._b_runtime_direct_input_cache.clear()
 
         if mode == "eft_operator_norm_runtime_direct":
             self._b_mode_active = mode
             # Optional profile anchor for runtime-direct B closure.
-            if float(self.params.runtime_direct_b_profile_blend) > 0.0:
+            wants_anchor = (
+                float(self.params.runtime_direct_b_profile_blend) > 0.0
+                or bool(self.params.runtime_direct_b_profile_blend_csv)
+            )
+            if wants_anchor:
                 if self.params.b_overlap_csv:
                     path = Path(self.params.b_overlap_csv)
                 else:
@@ -1059,6 +1090,16 @@ class PSLTKinetics:
                     print(
                         "Warning: runtime_direct_b_profile_blend>0 but no overlap profile CSV was found. "
                         "Falling back to pure runtime-direct B."
+                    )
+            if self.params.runtime_direct_b_profile_blend_csv:
+                blend_path = Path(str(self.params.runtime_direct_b_profile_blend_csv))
+                prof = self._load_runtime_direct_b_blend_profile(blend_path)
+                if prof is not None:
+                    self._b_runtime_direct_blend_profile = prof
+                else:
+                    print(
+                        f"Warning: runtime_direct_b_profile_blend_csv={blend_path} could not be parsed. "
+                        "Falling back to scalar runtime_direct_b_profile_blend."
                     )
             return
 
@@ -1087,6 +1128,13 @@ class PSLTKinetics:
 
     def active_g_mode(self) -> str:
         return self._g_mode_active
+
+    def _runtime_direct_b_profile_blend_at(self, D: float) -> float:
+        alpha = float(self.params.runtime_direct_b_profile_blend)
+        prof = self._b_runtime_direct_blend_profile
+        if prof is not None:
+            alpha = float(np.interp(float(D), np.asarray(prof["D"], dtype=float), np.asarray(prof["alpha"], dtype=float)))
+        return float(np.clip(alpha, 0.0, 1.0))
 
     def _runtime_direct_b_operator_inputs(self, D: float) -> Dict[str, np.ndarray]:
         key = float(round(D, 8))
@@ -1274,7 +1322,7 @@ class PSLTKinetics:
         # Optional stabilizer: blend runtime-direct B-operator inputs with
         # profile-derived values to control map-level drift while preserving
         # direct per-cell extraction as the primary branch.
-        alpha = float(self.params.runtime_direct_b_profile_blend)
+        alpha = self._runtime_direct_b_profile_blend_at(float(D))
         if alpha > 0.0 and self._b_overlap_profile is not None:
             prof = self._b_overlap_profile
             d_knots = np.asarray(prof["D"], dtype=float)
@@ -1982,7 +2030,7 @@ class PSLTKinetics:
         b123 = np.maximum(strengths / norm, self.params.b_overlap_floor)
 
         if self._b_mode_active == "eft_operator_norm_runtime_direct":
-            alpha = float(self.params.runtime_direct_b_profile_blend)
+            alpha = self._runtime_direct_b_profile_blend_at(float(D))
             if alpha > 0.0 and self._b_overlap_profile is not None:
                 prof = self._b_overlap_profile
                 d_knots = np.asarray(prof["D"], dtype=float)

@@ -48,6 +48,7 @@ def _run_scan(
     ref_d: float,
     ref_eta: float,
     runtime_direct_b_release_profile_blend_override: float | None = None,
+    runtime_direct_b_release_profile_blend_csv_override: str | None = None,
 ) -> None:
     cmd = [
         sys.executable,
@@ -83,6 +84,13 @@ def _run_scan(
             [
                 "--runtime-direct-b-release-profile-blend-override",
                 str(float(runtime_direct_b_release_profile_blend_override)),
+            ]
+        )
+    if runtime_direct_b_release_profile_blend_csv_override not in {None, ""}:
+        cmd.extend(
+            [
+                "--runtime-direct-b-release-profile-blend-csv-override",
+                str(runtime_direct_b_release_profile_blend_csv_override),
             ]
         )
     subprocess.run(cmd, cwd=str(ROOT), check=True)
@@ -133,6 +141,12 @@ def main() -> None:
         type=float,
         default=None,
         help="Optional temporary override passed through to scan_hll_signal_strengths.py.",
+    )
+    ap.add_argument(
+        "--runtime-direct-b-release-profile-blend-csv-override",
+        type=str,
+        default=None,
+        help="Optional D-profile CSV override passed through to scan_hll_signal_strengths.py.",
     )
     ap.add_argument("--full-direct-tag", type=str, default="chain_mode_full_direct")
     ap.add_argument("--cell-direct-tag", type=str, default="chain_mode_cell_direct_runtime")
@@ -189,6 +203,11 @@ def main() -> None:
             if args.runtime_direct_b_release_profile_blend_override is None
             else float(args.runtime_direct_b_release_profile_blend_override)
         ),
+        runtime_direct_b_release_profile_blend_csv_override=(
+            None
+            if args.runtime_direct_b_release_profile_blend_csv_override in {None, ""}
+            else str(args.runtime_direct_b_release_profile_blend_csv_override)
+        ),
     )
     _run_scan(
         chain_mode=str(args.cell_chain_mode),
@@ -207,6 +226,11 @@ def main() -> None:
             None
             if args.runtime_direct_b_release_profile_blend_override is None
             else float(args.runtime_direct_b_release_profile_blend_override)
+        ),
+        runtime_direct_b_release_profile_blend_csv_override=(
+            None
+            if args.runtime_direct_b_release_profile_blend_csv_override in {None, ""}
+            else str(args.runtime_direct_b_release_profile_blend_csv_override)
         ),
     )
 
@@ -246,6 +270,11 @@ def main() -> None:
             None
             if args.runtime_direct_b_release_profile_blend_override is None
             else float(args.runtime_direct_b_release_profile_blend_override)
+        ),
+        "runtime_direct_b_release_profile_blend_csv_override": (
+            None
+            if args.runtime_direct_b_release_profile_blend_csv_override in {None, ""}
+            else str(args.runtime_direct_b_release_profile_blend_csv_override)
         ),
         "full_direct_tag": str(args.full_direct_tag),
         "cell_direct_tag": str(args.cell_direct_tag),

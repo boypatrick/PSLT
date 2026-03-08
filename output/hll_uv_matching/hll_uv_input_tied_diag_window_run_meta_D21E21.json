@@ -1,0 +1,17 @@
+{
+  "scale_summary": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_input_tied_vs_constant_refresh_scale_summary_D21E21.csv",
+  "scan_dir": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching",
+  "tag": "D21E21",
+  "conservative_rule": {
+    "offdiag_scale": 0.0,
+    "acceptance_mismatch_fraction": 0.0,
+    "max_abs_mapdiff_max": 0.01,
+    "rel_match_shift_diag_p90_max": 0.002
+  },
+  "extended_rule": {
+    "offdiag_scale": 0.0,
+    "acceptance_mismatch_fraction": 0.0,
+    "max_abs_mapdiff_max": 0.015,
+    "rel_match_shift_diag_p90_max": 0.0025
+  }
+}

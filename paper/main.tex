@@ -763,6 +763,14 @@ In the baseline \texttt{eft\_wilson\_uv\_rge} mode used for figures, we evaluate
 In the baseline figures we keep a fixed reference point $(D_0,\eta_0)=(10,1)$ for comparability across scan variants.
 Equation~\eqref{eq:mu_pred} is implemented in \texttt{pslt\_lib.py} with \texttt{hll\_observable\_mode=eft\_wilson\_uv\_rge}; it is still a scan-level EFT module (not yet a full UV-to-EFT derivation from loop-level EYMH matching).
 To push this interface toward UV-to-EFT matching, we additionally run a reproducible UV-tree $\rightarrow$ finite-one-loop-match $\rightarrow$ LL-RG audit with \texttt{scan\_hll\_uv\_to\_eft\_matching.py}, exporting per-point $C_{eH}^{\mu\mu,{\rm tree}}(\mu_{\rm match})$, $C_{eH}^{\mu\mu,{\rm match}}(\mu_{\rm match})$, $C_{eH}^{\mu\mu,{\rm IR}}(\mu_{\rm low})$, and running metadata over the same $(D,\eta)$ grid (\texttt{paper/hll\_uv\_to\_eft\_map.csv}, \texttt{paper/hll\_uv\_to\_eft\_summary.csv}). In the baseline UV settings used here ($\texttt{uv\_blend}=0$, $\texttt{uv\_m2\_power}=1$, $\kappa_{\rm diag}=\kappa_{\rm offdiag}=0$), the finite-match step is numerically null at map level ($\max |\Delta C_{\mu\mu}^{\rm match}|=10^{-30}$), while LL-RG drift remains bounded: $\langle |\Delta \mu_{\mu\mu}|\rangle \simeq 6.19\times10^{-4}$ with $\max |\Delta \mu_{\mu\mu}|\simeq 8.93\times10^{-3}$; $f(\chi^2_{\mu\mu}<4)$ is unchanged between UV-tree and UV+LL-RG in this scan.
+To make the matching chain explicit at the operator level, we additionally export a layer-resolved basis witness with \texttt{scan\_hll\_uv\_operator\_basis\_audit.py}, writing \texttt{paper/hll\_uv\_operator\_basis\_map.csv} and \texttt{paper/hll\_uv\_operator\_basis\_summary.csv}. There the UV-tree closure is reconstructed as
+\begin{equation}
+C_{eH}^{\rm tree}=\sum_{N=1}^{3}\left(\frac{P_N^{\rm kin}}{M_N^2}\right)\,B_N,
+\qquad
+B_N\equiv g_N g_N^T,
+\label{eq:ceh_operator_basis}
+\end{equation}
+with explicit blockwise witnesses for $\Delta C^{\rm match}$ and $\Delta C^{\rm RGE}$. On the baseline \texttt{full\_direct} $D60\times E60$ grid, the tree/match/IR reconstruction residuals are numerically zero at map level, while the $\mu_{\mu\mu}$ reconstructed from the operator-basis witness agrees with the native \texttt{eft\_wilson\_uv\_rge} observable to $\max |\Delta \mu_{\mu\mu}^{\rm recon}|=7.31\times 10^{-8}$. This does not yet constitute a full EYMH$\rightarrow$SMEFT derivation, but it upgrades the current closure from a black-box Wilson-map audit to an explicit basis-level EFT witness.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

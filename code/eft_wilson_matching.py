@@ -44,6 +44,36 @@ class UVTreeMatchConfig:
     coupling_floor: float = 1e-30
 
 
+@dataclass(frozen=True)
+class UVTreeOperatorBasisWitness:
+    g_uv: np.ndarray
+    p_kin: np.ndarray
+    m2: np.ndarray
+    coefficients: np.ndarray
+    basis_matrices: np.ndarray
+    c_tree: np.ndarray
+
+
+def decompose_diag_offdiag(cmat: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    c = np.asarray(cmat, dtype=float)
+    if c.shape != (3, 3):
+        raise ValueError(f"Matrix must have shape (3,3), got {c.shape}.")
+    diag = np.diag(np.diag(c))
+    off = c - diag
+    return diag, off
+
+
+def reconstruct_from_layer_basis(coefficients: np.ndarray, basis_matrices: np.ndarray) -> np.ndarray:
+    coeff = np.asarray(coefficients, dtype=float).reshape(3)
+    basis = np.asarray(basis_matrices, dtype=float)
+    if basis.shape != (3, 3, 3):
+        raise ValueError(f"basis_matrices must have shape (3,3,3), got {basis.shape}.")
+    c = np.zeros((3, 3), dtype=float)
+    for n in range(3):
+        c += float(coeff[n]) * basis[:, :, n]
+    return c
+
+
 def mixing_epsilon(chi_eff: float, eta_val: float, cfg: EFTWilsonMatchConfig) -> float:
     eta_ratio = max(float(eta_val), cfg.floor) / max(float(cfg.eta_ref), cfg.floor)
     eps = float(cfg.mix_scale) * max(float(chi_eff), 0.0) * (eta_ratio ** float(cfg.eta_power))
@@ -126,6 +156,48 @@ def wilson_matrix_uv_tree(
 
     g = np.maximum(g, cfg.coupling_floor)
     return g @ np.diag(p / m2v) @ g.T
+
+
+def uv_tree_operator_basis(
+    g_uv: np.ndarray,
+    p_kin: np.ndarray,
+    m2: np.ndarray,
+    cfg: UVTreeMatchConfig,
+) -> UVTreeOperatorBasisWitness:
+    """
+    Explicit layer-resolved operator-basis witness for the UV-tree closure:
+
+      C_{eH}^{tree} = sum_N c_N * B_N
+      c_N = P_N^(kin) / M_N^2
+      B_N = g_N g_N^T
+
+    where g_N is the N-th column of the overlap-extracted flavor-layer matrix.
+    """
+    g = np.asarray(g_uv, dtype=float)
+    if g.shape != (3, 3):
+        raise ValueError(f"g_uv must have shape (3,3), got {g.shape}.")
+
+    p = np.asarray(p_kin, dtype=float).reshape(3)
+    p = np.maximum(p, 0.0)
+    m2v = np.asarray(m2, dtype=float).reshape(3)
+    m2v = np.maximum(np.abs(m2v), cfg.m2_floor)
+    g = np.maximum(g, cfg.coupling_floor)
+
+    coeff = p / m2v
+    basis = np.zeros((3, 3, 3), dtype=float)
+    for n in range(3):
+        col = g[:, n]
+        basis[:, :, n] = np.outer(col, col)
+
+    c_tree = reconstruct_from_layer_basis(coefficients=coeff, basis_matrices=basis)
+    return UVTreeOperatorBasisWitness(
+        g_uv=g,
+        p_kin=p,
+        m2=m2v,
+        coefficients=coeff,
+        basis_matrices=basis,
+        c_tree=c_tree,
+    )
 
 
 def total_width_ratio(

@@ -33,7 +33,9 @@ from scipy.integrate import solve_ivp
 from eft_wilson_matching import (
     EFTWilsonMatchConfig,
     UVTreeMatchConfig,
+    decompose_diag_offdiag,
     mixing_epsilon,
+    uv_tree_operator_basis,
     wilson_matrix,
     wilson_matrix_uv_tree,
     total_width_ratio,
@@ -41,6 +43,8 @@ from eft_wilson_matching import (
 from eft_rge import (
     EFTFiniteOneLoopMatchConfig,
     EFTLeadingLogRGEConfig,
+    finite_one_loop_witness,
+    leading_log_witness,
     mu_match_from_m2,
     apply_ceh_finite_one_loop,
     run_ceh_leading_log,
@@ -2197,6 +2201,100 @@ class PSLTKinetics:
         Returns C_{eH}(mu_match) from the UV-tree closure.
         """
         return self.hll_wilson_matrix_uv_tree(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
+
+    def hll_uv_operator_basis_witness(
+        self,
+        D: float,
+        eta: float,
+        t_coh: float,
+        N_max: int = 20,
+    ) -> Dict[str, np.ndarray]:
+        """
+        Explicit operator-basis witness for the UV-tree closure:
+          C_tree = sum_N [P_N^(kin) / M_N^2] * (g_N g_N^T).
+        """
+        cfg = self._hll_uv_tree_config()
+        g_uv = self._hll_g_uv_matrix(D)
+        p_kin = self._hll_pkin_vector(D, eta, t_coh, N_max=N_max)
+        m2 = self._hll_m2_vector(D)
+        basis = uv_tree_operator_basis(g_uv=g_uv, p_kin=p_kin, m2=m2, cfg=cfg)
+        c_tree_direct = wilson_matrix_uv_tree(g_uv=g_uv, p_kin=p_kin, m2=m2, cfg=cfg)
+        tree_diag, tree_offdiag = decompose_diag_offdiag(basis.c_tree)
+        return {
+            "g_uv": basis.g_uv,
+            "p_kin": basis.p_kin,
+            "m2": basis.m2,
+            "coefficients": basis.coefficients,
+            "basis_matrices": basis.basis_matrices,
+            "c_tree": basis.c_tree,
+            "c_tree_diag": tree_diag,
+            "c_tree_offdiag": tree_offdiag,
+            "c_tree_direct": c_tree_direct,
+            "tree_rebuild_residual": np.array(
+                [float(np.max(np.abs(basis.c_tree - c_tree_direct)))],
+                dtype=float,
+            ),
+        }
+
+    def hll_uv_matching_witness(
+        self,
+        D: float,
+        eta: float,
+        t_coh: float,
+        N_max: int = 20,
+    ) -> Dict[str, np.ndarray]:
+        """
+        Full UV->finite-match->LL-RG witness with explicit operator-basis
+        reconstruction and blockwise diagonal/off-diagonal decomposition.
+        """
+        basis = self.hll_uv_operator_basis_witness(D=D, eta=eta, t_coh=t_coh, N_max=N_max)
+        c_tree = np.asarray(basis["c_tree"], dtype=float)
+        fin_cfg = self._hll_uv_finite_match_config()
+        fin = finite_one_loop_witness(c_tree=c_tree, cfg=fin_cfg)
+
+        rge_cfg = self._hll_uv_rge_config()
+        mu_match = mu_match_from_m2(np.asarray(basis["m2"], dtype=float), floor=rge_cfg.floor)
+        rge = leading_log_witness(c_match=fin.c_match, mu_match=mu_match, cfg=rge_cfg)
+        c_ir_diag, c_ir_offdiag = decompose_diag_offdiag(rge.c_low)
+
+        c_match_rebuild = (
+            fin.c_tree_diag
+            + fin.c_tree_offdiag
+            + fin.delta_match_diag
+            + fin.delta_match_offdiag
+        )
+        c_ir_rebuild = c_match_rebuild + rge.delta_rge_diag + rge.delta_rge_offdiag
+
+        return {
+            **basis,
+            "c_match": fin.c_match,
+            "c_match_diag": fin.c_tree_diag + fin.delta_match_diag,
+            "c_match_offdiag": fin.c_tree_offdiag + fin.delta_match_offdiag,
+            "delta_match_diag": fin.delta_match_diag,
+            "delta_match_offdiag": fin.delta_match_offdiag,
+            "c_ir": rge.c_low,
+            "c_ir_diag": c_ir_diag,
+            "c_ir_offdiag": c_ir_offdiag,
+            "delta_rge_diag": rge.delta_rge_diag,
+            "delta_rge_offdiag": rge.delta_rge_offdiag,
+            "mu_match": np.array([float(rge.mu_match)], dtype=float),
+            "mu_low": np.array([float(rge.mu_low)], dtype=float),
+            "log_ratio": np.array([float(rge.log_ratio)], dtype=float),
+            "kappa_diag": np.array([float(fin.kappa_diag)], dtype=float),
+            "kappa_offdiag": np.array([float(fin.kappa_offdiag)], dtype=float),
+            "gamma_diag": np.array([float(rge.gamma_diag)], dtype=float),
+            "gamma_offdiag": np.array([float(rge.gamma_offdiag)], dtype=float),
+            "finite_fac_diag": np.array([float(fin.finite_fac_diag)], dtype=float),
+            "finite_fac_offdiag": np.array([float(fin.finite_fac_offdiag)], dtype=float),
+            "match_rebuild_residual": np.array(
+                [float(np.max(np.abs(fin.c_match - c_match_rebuild)))],
+                dtype=float,
+            ),
+            "ir_rebuild_residual": np.array(
+                [float(np.max(np.abs(rge.c_low - c_ir_rebuild)))],
+                dtype=float,
+            ),
+        }
 
     def hll_wilson_matrix_uv_match_with_meta(
         self,

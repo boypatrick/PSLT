@@ -178,7 +178,7 @@ class PSLTParameters:
     hll_uv_m2_power: float = 1.0
     hll_uv_match_kappa_diag: float = 0.0
     hll_uv_match_kappa_offdiag: float = 0.0
-    hll_uv_match_mode: str = "constant"  # "constant", "input_tied", "action_normalized", or "action_absolute"
+    hll_uv_match_mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", or "action_loop_contrast"
     hll_uv_match_input_diag_scale: float = 0.0
     hll_uv_match_input_offdiag_scale: float = 0.0
     hll_uv_rge_mu_low: float = 1.0
@@ -320,7 +320,7 @@ class PSLTParameters:
             raise ValueError(f"Unsupported hll_observable_mode='{self.hll_observable_mode}'.")
         if self.hll_observable_nmax < 3:
             raise ValueError("hll_observable_nmax must be >= 3.")
-        if self.hll_uv_match_mode not in {"constant", "input_tied", "action_normalized", "action_absolute"}:
+        if self.hll_uv_match_mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast"}:
             raise ValueError(f"Unsupported hll_uv_match_mode='{self.hll_uv_match_mode}'.")
         if self.hll_match_basis_mode not in {"sqrt_yraw", "yraw"}:
             raise ValueError(f"Unsupported hll_match_basis_mode='{self.hll_match_basis_mode}'.")
@@ -2022,6 +2022,7 @@ class PSLTKinetics:
                 g_uv=g_uv,
                 p_kin=p_layer,
                 m2=m2,
+                D=float(D),
             )
             k_ir, _ = run_ceh_leading_log(k_match, mu_match, rge_cfg)
             strengths[idx] = max(float(np.trace(k_ir)), self.params.b_overlap_floor)
@@ -2320,6 +2321,7 @@ class PSLTKinetics:
             g_uv=np.asarray(basis["g_uv"], dtype=float),
             p_kin=np.asarray(basis["p_kin"], dtype=float),
             m2=np.asarray(basis["m2"], dtype=float),
+            D=float(D),
         )
 
         rge_cfg = self._hll_uv_rge_config()
@@ -2381,6 +2383,35 @@ class PSLTKinetics:
             "coeff_align": np.array([float(fin.coeff_align)], dtype=float),
             "action_abs_diag": np.array([float(fin.action_abs_diag)], dtype=float),
             "action_abs_offdiag": np.array([float(fin.action_abs_offdiag)], dtype=float),
+            "hk_omega_mid": np.array([float(fin.hk_omega_mid)], dtype=float),
+            "hk_R_mid": np.array([float(fin.hk_R_mid)], dtype=float),
+            "hk_X_mid": np.array([float(fin.hk_X_mid)], dtype=float),
+            "hk_a1_well": np.array([float(fin.hk_a1_well)], dtype=float),
+            "hk_a2_well": np.array([float(fin.hk_a2_well)], dtype=float),
+            "hk_a2_barrier": np.array([float(fin.hk_a2_barrier)], dtype=float),
+            "hk_diag_density": np.array([float(fin.hk_diag_density)], dtype=float),
+            "hk_barrier_density": np.array([float(fin.hk_barrier_density)], dtype=float),
+            "hk_abs_diag": np.array([float(fin.hk_abs_diag)], dtype=float),
+            "hk_abs_offdiag": np.array([float(fin.hk_abs_offdiag)], dtype=float),
+            "hk_barrier_ratio": np.array([float(fin.hk_barrier_ratio)], dtype=float),
+            "hk_a1_flat": np.array([float(fin.hk_a1_flat)], dtype=float),
+            "hk_a2_flat": np.array([float(fin.hk_a2_flat)], dtype=float),
+            "hk_a1_well_geom": np.array([float(fin.hk_a1_well_geom)], dtype=float),
+            "hk_a2_well_geom": np.array([float(fin.hk_a2_well_geom)], dtype=float),
+            "hk_a2_barrier_geom": np.array([float(fin.hk_a2_barrier_geom)], dtype=float),
+            "hk_diag_density_geom": np.array([float(fin.hk_diag_density_geom)], dtype=float),
+            "hk_barrier_density_geom": np.array([float(fin.hk_barrier_density_geom)], dtype=float),
+            "hk_abs_diag_geom": np.array([float(fin.hk_abs_diag_geom)], dtype=float),
+            "hk_abs_offdiag_geom": np.array([float(fin.hk_abs_offdiag_geom)], dtype=float),
+            "hk_barrier_ratio_geom": np.array([float(fin.hk_barrier_ratio_geom)], dtype=float),
+            "hk_R_well_abs": np.array([float(fin.hk_R_well_abs)], dtype=float),
+            "hk_R_barrier_abs": np.array([float(fin.hk_R_barrier_abs)], dtype=float),
+            "hk_X_well_abs": np.array([float(fin.hk_X_well_abs)], dtype=float),
+            "hk_X_barrier_abs": np.array([float(fin.hk_X_barrier_abs)], dtype=float),
+            "hk_gradX_barrier": np.array([float(fin.hk_gradX_barrier)], dtype=float),
+            "hk_curv_contrast_log": np.array([float(fin.hk_curv_contrast_log)], dtype=float),
+            "hk_curv_access": np.array([float(fin.hk_curv_access)], dtype=float),
+            "hk_barrier_stiffness_log": np.array([float(fin.hk_barrier_stiffness_log)], dtype=float),
             "gamma_diag": np.array([float(rge.gamma_diag)], dtype=float),
             "gamma_offdiag": np.array([float(rge.gamma_offdiag)], dtype=float),
             "finite_fac_diag": np.array([float(fin.finite_fac_diag)], dtype=float),
@@ -2410,7 +2441,7 @@ class PSLTKinetics:
         m2 = self._hll_m2_vector(D)
         c_uv = wilson_matrix_uv_tree(g_uv=g_uv, p_kin=p_kin, m2=m2, cfg=self._hll_uv_tree_config())
         cfg = self._hll_uv_finite_match_config()
-        c_match, meta = apply_ceh_finite_one_loop(c_tree=c_uv, cfg=cfg, g_uv=g_uv, p_kin=p_kin, m2=m2)
+        c_match, meta = apply_ceh_finite_one_loop(c_tree=c_uv, cfg=cfg, g_uv=g_uv, p_kin=p_kin, m2=m2, D=float(D))
         return c_match, meta
 
     def hll_wilson_matrix_uv_match(self, D: float, eta: float, t_coh: float, N_max: int = 20) -> np.ndarray:
@@ -2423,6 +2454,7 @@ class PSLTKinetics:
         m2: np.ndarray,
         g_uv: Optional[np.ndarray] = None,
         p_kin: Optional[np.ndarray] = None,
+        D: Optional[float] = None,
     ) -> tuple[np.ndarray, Dict[str, float]]:
         """
         Run leading-log RGE from UV matching scale to the configured low scale.
@@ -2431,7 +2463,7 @@ class PSLTKinetics:
           (C_low, metadata) where metadata contains mu_match, mu_low, log_ratio.
         """
         fin_cfg = self._hll_uv_finite_match_config()
-        c_match, fin_meta = apply_ceh_finite_one_loop(c_tree=c_uv, cfg=fin_cfg, g_uv=g_uv, p_kin=p_kin, m2=m2)
+        c_match, fin_meta = apply_ceh_finite_one_loop(c_tree=c_uv, cfg=fin_cfg, g_uv=g_uv, p_kin=p_kin, m2=m2, D=D)
         cfg = self._hll_uv_rge_config()
         mu_match = mu_match_from_m2(m2, floor=cfg.floor)
         c_low, log_ratio = run_ceh_leading_log(c_match=c_match, mu_match=mu_match, cfg=cfg)
@@ -2459,6 +2491,35 @@ class PSLTKinetics:
             "coeff_align": float(fin_meta.get("coeff_align", 0.0)),
             "action_abs_diag": float(fin_meta.get("action_abs_diag", 0.0)),
             "action_abs_offdiag": float(fin_meta.get("action_abs_offdiag", 0.0)),
+            "hk_omega_mid": float(fin_meta.get("hk_omega_mid", 0.0)),
+            "hk_R_mid": float(fin_meta.get("hk_R_mid", 0.0)),
+            "hk_X_mid": float(fin_meta.get("hk_X_mid", 0.0)),
+            "hk_a1_well": float(fin_meta.get("hk_a1_well", 0.0)),
+            "hk_a2_well": float(fin_meta.get("hk_a2_well", 0.0)),
+            "hk_a2_barrier": float(fin_meta.get("hk_a2_barrier", 0.0)),
+            "hk_diag_density": float(fin_meta.get("hk_diag_density", 0.0)),
+            "hk_barrier_density": float(fin_meta.get("hk_barrier_density", 0.0)),
+            "hk_abs_diag": float(fin_meta.get("hk_abs_diag", 0.0)),
+            "hk_abs_offdiag": float(fin_meta.get("hk_abs_offdiag", 0.0)),
+            "hk_barrier_ratio": float(fin_meta.get("hk_barrier_ratio", 0.0)),
+            "hk_a1_flat": float(fin_meta.get("hk_a1_flat", 0.0)),
+            "hk_a2_flat": float(fin_meta.get("hk_a2_flat", 0.0)),
+            "hk_a1_well_geom": float(fin_meta.get("hk_a1_well_geom", 0.0)),
+            "hk_a2_well_geom": float(fin_meta.get("hk_a2_well_geom", 0.0)),
+            "hk_a2_barrier_geom": float(fin_meta.get("hk_a2_barrier_geom", 0.0)),
+            "hk_diag_density_geom": float(fin_meta.get("hk_diag_density_geom", 0.0)),
+            "hk_barrier_density_geom": float(fin_meta.get("hk_barrier_density_geom", 0.0)),
+            "hk_abs_diag_geom": float(fin_meta.get("hk_abs_diag_geom", 0.0)),
+            "hk_abs_offdiag_geom": float(fin_meta.get("hk_abs_offdiag_geom", 0.0)),
+            "hk_barrier_ratio_geom": float(fin_meta.get("hk_barrier_ratio_geom", 0.0)),
+            "hk_R_well_abs": float(fin_meta.get("hk_R_well_abs", 0.0)),
+            "hk_R_barrier_abs": float(fin_meta.get("hk_R_barrier_abs", 0.0)),
+            "hk_X_well_abs": float(fin_meta.get("hk_X_well_abs", 0.0)),
+            "hk_X_barrier_abs": float(fin_meta.get("hk_X_barrier_abs", 0.0)),
+            "hk_gradX_barrier": float(fin_meta.get("hk_gradX_barrier", 0.0)),
+            "hk_curv_contrast_log": float(fin_meta.get("hk_curv_contrast_log", 0.0)),
+            "hk_curv_access": float(fin_meta.get("hk_curv_access", 0.0)),
+            "hk_barrier_stiffness_log": float(fin_meta.get("hk_barrier_stiffness_log", 0.0)),
             "finite_fac_diag": float(fin_meta["finite_fac_diag"]),
             "finite_fac_offdiag": float(fin_meta["finite_fac_offdiag"]),
         }
@@ -2479,7 +2540,7 @@ class PSLTKinetics:
         p_kin = self._hll_pkin_vector(D, eta, t_coh, N_max=N_max)
         m2 = self._hll_m2_vector(D)
         c_uv = wilson_matrix_uv_tree(g_uv=g_uv, p_kin=p_kin, m2=m2, cfg=self._hll_uv_tree_config())
-        c_low, meta = self.run_ceh_llrg(c_uv=c_uv, m2=m2, g_uv=g_uv, p_kin=p_kin)
+        c_low, meta = self.run_ceh_llrg(c_uv=c_uv, m2=m2, g_uv=g_uv, p_kin=p_kin, D=float(D))
         return c_low, meta
 
     def hll_wilson_coeff_uv_tree(self, layer_n: int, D: float, eta: float, t_coh: float, N_max: int = 20) -> float:

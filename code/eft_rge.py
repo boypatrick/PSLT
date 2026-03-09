@@ -12,20 +12,22 @@ with separate anomalous-dimension proxies for diagonal and off-diagonal blocks.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import numpy as np
 
 from eft_wilson_matching import decompose_diag_offdiag
+from heat_kernel import ConformalHeatKernelConfig, conformal_heat_kernel_witness
 
 
 @dataclass(frozen=True)
 class EFTFiniteOneLoopMatchConfig:
     kappa_diag: float = 0.0
     kappa_offdiag: float = 0.0
-    mode: str = "constant"  # "constant", "input_tied", "action_normalized", or "action_absolute"
+    mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", or "action_loop_contrast"
     input_diag_scale: float = 0.0
     input_offdiag_scale: float = 0.0
     floor: float = 1e-30
+    heat_kernel: ConformalHeatKernelConfig = field(default_factory=ConformalHeatKernelConfig)
 
 
 @dataclass(frozen=True)
@@ -66,6 +68,35 @@ class FiniteOneLoopMatchWitness:
     coeff_align: float
     action_abs_diag: float
     action_abs_offdiag: float
+    hk_omega_mid: float
+    hk_R_mid: float
+    hk_X_mid: float
+    hk_a1_well: float
+    hk_a2_well: float
+    hk_a2_barrier: float
+    hk_diag_density: float
+    hk_barrier_density: float
+    hk_abs_diag: float
+    hk_abs_offdiag: float
+    hk_barrier_ratio: float
+    hk_a1_flat: float
+    hk_a2_flat: float
+    hk_a1_well_geom: float
+    hk_a2_well_geom: float
+    hk_a2_barrier_geom: float
+    hk_diag_density_geom: float
+    hk_barrier_density_geom: float
+    hk_abs_diag_geom: float
+    hk_abs_offdiag_geom: float
+    hk_barrier_ratio_geom: float
+    hk_R_well_abs: float
+    hk_R_barrier_abs: float
+    hk_X_well_abs: float
+    hk_X_barrier_abs: float
+    hk_gradX_barrier: float
+    hk_curv_contrast_log: float
+    hk_curv_access: float
+    hk_barrier_stiffness_log: float
 
 
 @dataclass(frozen=True)
@@ -226,9 +257,10 @@ def resolve_finite_match_kappas(
     p_kin: np.ndarray | None = None,
     m2: np.ndarray | None = None,
     c_tree: np.ndarray | None = None,
+    D: float | None = None,
 ) -> dict[str, float]:
     mode = str(cfg.mode).strip().lower()
-    if mode not in {"constant", "input_tied", "action_normalized", "action_absolute"}:
+    if mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast"}:
         raise ValueError(f"Unsupported finite-match mode '{cfg.mode}'.")
 
     shell_spread = 0.0
@@ -246,14 +278,43 @@ def resolve_finite_match_kappas(
     coeff_align = 0.0
     action_abs_diag = 0.0
     action_abs_offdiag = 0.0
-    if mode in {"input_tied", "action_normalized", "action_absolute"}:
+    hk_omega_mid = 0.0
+    hk_R_mid = 0.0
+    hk_X_mid = 0.0
+    hk_a1_well = 0.0
+    hk_a2_well = 0.0
+    hk_a2_barrier = 0.0
+    hk_diag_density = 0.0
+    hk_barrier_density = 0.0
+    hk_abs_diag = 0.0
+    hk_abs_offdiag = 0.0
+    hk_barrier_ratio = 0.0
+    hk_a1_flat = 0.0
+    hk_a2_flat = 0.0
+    hk_a1_well_geom = 0.0
+    hk_a2_well_geom = 0.0
+    hk_a2_barrier_geom = 0.0
+    hk_diag_density_geom = 0.0
+    hk_barrier_density_geom = 0.0
+    hk_abs_diag_geom = 0.0
+    hk_abs_offdiag_geom = 0.0
+    hk_barrier_ratio_geom = 0.0
+    hk_R_well_abs = 0.0
+    hk_R_barrier_abs = 0.0
+    hk_X_well_abs = 0.0
+    hk_X_barrier_abs = 0.0
+    hk_gradX_barrier = 0.0
+    hk_curv_contrast_log = 0.0
+    hk_curv_access = 0.0
+    hk_barrier_stiffness_log = 0.0
+    if mode in {"input_tied", "action_normalized", "action_absolute", "action_loop_contrast"}:
         if g_uv is None or p_kin is None or m2 is None or c_tree is None:
             raise ValueError(f"{mode} finite matching requires g_uv, p_kin, m2, and c_tree.")
         inv = finite_match_invariants(g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c_tree, floor=cfg.floor)
         shell_spread = float(inv["shell_spread"])
         coeff_cv = float(inv["coeff_cv"])
         offdiag_mix = float(inv["offdiag_mix"])
-    if mode in {"action_normalized", "action_absolute"}:
+    if mode in {"action_normalized", "action_absolute", "action_loop_contrast"}:
         a_inv = parent_action_invariants(g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c_tree, floor=cfg.floor)
         gap_cv = float(a_inv["gap_cv"])
         gap_asym = float(a_inv["gap_asym"])
@@ -267,6 +328,37 @@ def resolve_finite_match_kappas(
         coeff_align = float(a_inv["coeff_align"])
         action_abs_diag = float(a_inv["action_abs_diag"])
         action_abs_offdiag = float(a_inv["action_abs_offdiag"])
+    if D is not None:
+        hk_inv = conformal_heat_kernel_witness(float(D), cfg.heat_kernel)
+        hk_omega_mid = float(hk_inv["hk_omega_mid"])
+        hk_R_mid = float(hk_inv["hk_R_mid"])
+        hk_X_mid = float(hk_inv["hk_X_mid"])
+        hk_a1_well = float(hk_inv["hk_a1_well"])
+        hk_a2_well = float(hk_inv["hk_a2_well"])
+        hk_a2_barrier = float(hk_inv["hk_a2_barrier"])
+        hk_diag_density = float(hk_inv["hk_diag_density"])
+        hk_barrier_density = float(hk_inv["hk_barrier_density"])
+        hk_abs_diag = float(hk_inv["hk_abs_diag"])
+        hk_abs_offdiag = float(hk_inv["hk_abs_offdiag"])
+        hk_barrier_ratio = float(hk_inv["hk_barrier_ratio"])
+        hk_a1_flat = float(hk_inv["hk_a1_flat"])
+        hk_a2_flat = float(hk_inv["hk_a2_flat"])
+        hk_a1_well_geom = float(hk_inv["hk_a1_well_geom"])
+        hk_a2_well_geom = float(hk_inv["hk_a2_well_geom"])
+        hk_a2_barrier_geom = float(hk_inv["hk_a2_barrier_geom"])
+        hk_diag_density_geom = float(hk_inv["hk_diag_density_geom"])
+        hk_barrier_density_geom = float(hk_inv["hk_barrier_density_geom"])
+        hk_abs_diag_geom = float(hk_inv["hk_abs_diag_geom"])
+        hk_abs_offdiag_geom = float(hk_inv["hk_abs_offdiag_geom"])
+        hk_barrier_ratio_geom = float(hk_inv["hk_barrier_ratio_geom"])
+        hk_R_well_abs = float(hk_inv["hk_R_well_abs"])
+        hk_R_barrier_abs = float(hk_inv["hk_R_barrier_abs"])
+        hk_X_well_abs = float(hk_inv["hk_X_well_abs"])
+        hk_X_barrier_abs = float(hk_inv["hk_X_barrier_abs"])
+        hk_gradX_barrier = float(hk_inv["hk_gradX_barrier"])
+        hk_curv_contrast_log = float(hk_inv["hk_curv_contrast_log"])
+        hk_curv_access = float(hk_inv["hk_curv_access"])
+        hk_barrier_stiffness_log = float(hk_inv["hk_barrier_stiffness_log"])
 
     kappa_diag_eff = float(cfg.kappa_diag)
     kappa_offdiag_eff = float(cfg.kappa_offdiag)
@@ -299,6 +391,19 @@ def resolve_finite_match_kappas(
             * offdiag_mix
             * action_norm_offdiag
         )
+    elif mode == "action_loop_contrast":
+        kappa_diag_eff += (
+            hk_curv_access
+            * shell_spread
+            * (1.0 + coeff_cv)
+            * action_norm_diag
+        )
+        kappa_offdiag_eff += (
+            (hk_barrier_ratio_geom / max(1.0 + hk_barrier_stiffness_log, cfg.floor))
+            * shell_spread
+            * offdiag_mix
+            * action_norm_offdiag
+        )
 
     return {
         "mode": mode,
@@ -319,6 +424,35 @@ def resolve_finite_match_kappas(
         "coeff_align": float(coeff_align),
         "action_abs_diag": float(action_abs_diag),
         "action_abs_offdiag": float(action_abs_offdiag),
+        "hk_omega_mid": float(hk_omega_mid),
+        "hk_R_mid": float(hk_R_mid),
+        "hk_X_mid": float(hk_X_mid),
+        "hk_a1_well": float(hk_a1_well),
+        "hk_a2_well": float(hk_a2_well),
+        "hk_a2_barrier": float(hk_a2_barrier),
+        "hk_diag_density": float(hk_diag_density),
+        "hk_barrier_density": float(hk_barrier_density),
+        "hk_abs_diag": float(hk_abs_diag),
+        "hk_abs_offdiag": float(hk_abs_offdiag),
+        "hk_barrier_ratio": float(hk_barrier_ratio),
+        "hk_a1_flat": float(hk_a1_flat),
+        "hk_a2_flat": float(hk_a2_flat),
+        "hk_a1_well_geom": float(hk_a1_well_geom),
+        "hk_a2_well_geom": float(hk_a2_well_geom),
+        "hk_a2_barrier_geom": float(hk_a2_barrier_geom),
+        "hk_diag_density_geom": float(hk_diag_density_geom),
+        "hk_barrier_density_geom": float(hk_barrier_density_geom),
+        "hk_abs_diag_geom": float(hk_abs_diag_geom),
+        "hk_abs_offdiag_geom": float(hk_abs_offdiag_geom),
+        "hk_barrier_ratio_geom": float(hk_barrier_ratio_geom),
+        "hk_R_well_abs": float(hk_R_well_abs),
+        "hk_R_barrier_abs": float(hk_R_barrier_abs),
+        "hk_X_well_abs": float(hk_X_well_abs),
+        "hk_X_barrier_abs": float(hk_X_barrier_abs),
+        "hk_gradX_barrier": float(hk_gradX_barrier),
+        "hk_curv_contrast_log": float(hk_curv_contrast_log),
+        "hk_curv_access": float(hk_curv_access),
+        "hk_barrier_stiffness_log": float(hk_barrier_stiffness_log),
     }
 
 
@@ -328,6 +462,7 @@ def apply_ceh_finite_one_loop(
     g_uv: np.ndarray | None = None,
     p_kin: np.ndarray | None = None,
     m2: np.ndarray | None = None,
+    D: float | None = None,
 ) -> tuple[np.ndarray, dict[str, float]]:
     """
     Minimal finite one-loop matching at mu_match:
@@ -340,7 +475,7 @@ def apply_ceh_finite_one_loop(
     if c.shape != (3, 3):
         raise ValueError(f"c_tree must have shape (3,3), got {c.shape}.")
 
-    resolved = resolve_finite_match_kappas(cfg=cfg, g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c)
+    resolved = resolve_finite_match_kappas(cfg=cfg, g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c, D=D)
 
     loop = 16.0 * np.pi * np.pi
     fac_diag = 1.0 + float(resolved["kappa_diag_eff"]) / loop
@@ -371,6 +506,35 @@ def apply_ceh_finite_one_loop(
         "coeff_align": float(resolved["coeff_align"]),
         "action_abs_diag": float(resolved["action_abs_diag"]),
         "action_abs_offdiag": float(resolved["action_abs_offdiag"]),
+        "hk_omega_mid": float(resolved["hk_omega_mid"]),
+        "hk_R_mid": float(resolved["hk_R_mid"]),
+        "hk_X_mid": float(resolved["hk_X_mid"]),
+        "hk_a1_well": float(resolved["hk_a1_well"]),
+        "hk_a2_well": float(resolved["hk_a2_well"]),
+        "hk_a2_barrier": float(resolved["hk_a2_barrier"]),
+        "hk_diag_density": float(resolved["hk_diag_density"]),
+        "hk_barrier_density": float(resolved["hk_barrier_density"]),
+        "hk_abs_diag": float(resolved["hk_abs_diag"]),
+        "hk_abs_offdiag": float(resolved["hk_abs_offdiag"]),
+        "hk_barrier_ratio": float(resolved["hk_barrier_ratio"]),
+        "hk_a1_flat": float(resolved["hk_a1_flat"]),
+        "hk_a2_flat": float(resolved["hk_a2_flat"]),
+        "hk_a1_well_geom": float(resolved["hk_a1_well_geom"]),
+        "hk_a2_well_geom": float(resolved["hk_a2_well_geom"]),
+        "hk_a2_barrier_geom": float(resolved["hk_a2_barrier_geom"]),
+        "hk_diag_density_geom": float(resolved["hk_diag_density_geom"]),
+        "hk_barrier_density_geom": float(resolved["hk_barrier_density_geom"]),
+        "hk_abs_diag_geom": float(resolved["hk_abs_diag_geom"]),
+        "hk_abs_offdiag_geom": float(resolved["hk_abs_offdiag_geom"]),
+        "hk_barrier_ratio_geom": float(resolved["hk_barrier_ratio_geom"]),
+        "hk_R_well_abs": float(resolved["hk_R_well_abs"]),
+        "hk_R_barrier_abs": float(resolved["hk_R_barrier_abs"]),
+        "hk_X_well_abs": float(resolved["hk_X_well_abs"]),
+        "hk_X_barrier_abs": float(resolved["hk_X_barrier_abs"]),
+        "hk_gradX_barrier": float(resolved["hk_gradX_barrier"]),
+        "hk_curv_contrast_log": float(resolved["hk_curv_contrast_log"]),
+        "hk_curv_access": float(resolved["hk_curv_access"]),
+        "hk_barrier_stiffness_log": float(resolved["hk_barrier_stiffness_log"]),
         "finite_fac_diag": float(fac_diag),
         "finite_fac_offdiag": float(fac_off),
     }
@@ -382,8 +546,9 @@ def finite_one_loop_witness(
     g_uv: np.ndarray | None = None,
     p_kin: np.ndarray | None = None,
     m2: np.ndarray | None = None,
+    D: float | None = None,
 ) -> FiniteOneLoopMatchWitness:
-    c_match, meta = apply_ceh_finite_one_loop(c_tree=c_tree, cfg=cfg, g_uv=g_uv, p_kin=p_kin, m2=m2)
+    c_match, meta = apply_ceh_finite_one_loop(c_tree=c_tree, cfg=cfg, g_uv=g_uv, p_kin=p_kin, m2=m2, D=D)
     c_tree_diag, c_tree_offdiag = decompose_diag_offdiag(c_tree)
     delta_diag, delta_offdiag = decompose_diag_offdiag(c_match - np.asarray(c_tree, dtype=float))
     return FiniteOneLoopMatchWitness(
@@ -414,6 +579,35 @@ def finite_one_loop_witness(
         coeff_align=float(meta["coeff_align"]),
         action_abs_diag=float(meta["action_abs_diag"]),
         action_abs_offdiag=float(meta["action_abs_offdiag"]),
+        hk_omega_mid=float(meta["hk_omega_mid"]),
+        hk_R_mid=float(meta["hk_R_mid"]),
+        hk_X_mid=float(meta["hk_X_mid"]),
+        hk_a1_well=float(meta["hk_a1_well"]),
+        hk_a2_well=float(meta["hk_a2_well"]),
+        hk_a2_barrier=float(meta["hk_a2_barrier"]),
+        hk_diag_density=float(meta["hk_diag_density"]),
+        hk_barrier_density=float(meta["hk_barrier_density"]),
+        hk_abs_diag=float(meta["hk_abs_diag"]),
+        hk_abs_offdiag=float(meta["hk_abs_offdiag"]),
+        hk_barrier_ratio=float(meta["hk_barrier_ratio"]),
+        hk_a1_flat=float(meta["hk_a1_flat"]),
+        hk_a2_flat=float(meta["hk_a2_flat"]),
+        hk_a1_well_geom=float(meta["hk_a1_well_geom"]),
+        hk_a2_well_geom=float(meta["hk_a2_well_geom"]),
+        hk_a2_barrier_geom=float(meta["hk_a2_barrier_geom"]),
+        hk_diag_density_geom=float(meta["hk_diag_density_geom"]),
+        hk_barrier_density_geom=float(meta["hk_barrier_density_geom"]),
+        hk_abs_diag_geom=float(meta["hk_abs_diag_geom"]),
+        hk_abs_offdiag_geom=float(meta["hk_abs_offdiag_geom"]),
+        hk_barrier_ratio_geom=float(meta["hk_barrier_ratio_geom"]),
+        hk_R_well_abs=float(meta["hk_R_well_abs"]),
+        hk_R_barrier_abs=float(meta["hk_R_barrier_abs"]),
+        hk_X_well_abs=float(meta["hk_X_well_abs"]),
+        hk_X_barrier_abs=float(meta["hk_X_barrier_abs"]),
+        hk_gradX_barrier=float(meta["hk_gradX_barrier"]),
+        hk_curv_contrast_log=float(meta["hk_curv_contrast_log"]),
+        hk_curv_access=float(meta["hk_curv_access"]),
+        hk_barrier_stiffness_log=float(meta["hk_barrier_stiffness_log"]),
     )
 
 

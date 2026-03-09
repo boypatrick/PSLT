@@ -1,0 +1,10 @@
+{
+  "d_min": 4.0,
+  "d_max": 20.0,
+  "d_num": 60,
+  "eta_min": 0.2,
+  "eta_max": 4.0,
+  "eta_num": 60,
+  "tag": "uv_heat_kernel_witness_D21E21",
+  "baseline_match_mode": "constant"
+}

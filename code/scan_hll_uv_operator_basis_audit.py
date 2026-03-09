@@ -132,7 +132,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--uv-m2-power", type=float, default=float(BASELINE["hll_uv_m2_power"]))
     ap.add_argument("--uv-match-kappa-diag", type=float, default=float(BASELINE["hll_uv_match_kappa_diag"]))
     ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(BASELINE["hll_uv_match_kappa_offdiag"]))
-    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized", "action_absolute"], default=str(BASELINE["hll_uv_match_mode"]))
+    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast"], default=str(BASELINE["hll_uv_match_mode"]))
     ap.add_argument("--uv-match-input-diag-scale", type=float, default=float(BASELINE["hll_uv_match_input_diag_scale"]))
     ap.add_argument("--uv-match-input-offdiag-scale", type=float, default=float(BASELINE["hll_uv_match_input_offdiag_scale"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(BASELINE["hll_uv_rge_mu_low"]))
@@ -152,6 +152,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--runtime-direct-superrad-n-ref", type=int, default=2)
     ap.add_argument("--tag", type=str, default="")
     ap.add_argument("--skip-paper-copy", action="store_true")
+    ap.add_argument("--skip-plot", action="store_true")
     return ap.parse_args()
 
 
@@ -291,6 +292,35 @@ def main() -> None:
                     "coeff_align": float(np.asarray(wit["coeff_align"], dtype=float)[0]),
                     "action_abs_diag": float(np.asarray(wit["action_abs_diag"], dtype=float)[0]),
                     "action_abs_offdiag": float(np.asarray(wit["action_abs_offdiag"], dtype=float)[0]),
+                    "hk_omega_mid": float(np.asarray(wit["hk_omega_mid"], dtype=float)[0]),
+                    "hk_R_mid": float(np.asarray(wit["hk_R_mid"], dtype=float)[0]),
+                    "hk_X_mid": float(np.asarray(wit["hk_X_mid"], dtype=float)[0]),
+                    "hk_a1_well": float(np.asarray(wit["hk_a1_well"], dtype=float)[0]),
+                    "hk_a2_well": float(np.asarray(wit["hk_a2_well"], dtype=float)[0]),
+                    "hk_a2_barrier": float(np.asarray(wit["hk_a2_barrier"], dtype=float)[0]),
+                    "hk_diag_density": float(np.asarray(wit["hk_diag_density"], dtype=float)[0]),
+                    "hk_barrier_density": float(np.asarray(wit["hk_barrier_density"], dtype=float)[0]),
+                    "hk_abs_diag": float(np.asarray(wit["hk_abs_diag"], dtype=float)[0]),
+                    "hk_abs_offdiag": float(np.asarray(wit["hk_abs_offdiag"], dtype=float)[0]),
+                    "hk_barrier_ratio": float(np.asarray(wit["hk_barrier_ratio"], dtype=float)[0]),
+                    "hk_a1_flat": float(np.asarray(wit["hk_a1_flat"], dtype=float)[0]),
+                    "hk_a2_flat": float(np.asarray(wit["hk_a2_flat"], dtype=float)[0]),
+                    "hk_a1_well_geom": float(np.asarray(wit["hk_a1_well_geom"], dtype=float)[0]),
+                    "hk_a2_well_geom": float(np.asarray(wit["hk_a2_well_geom"], dtype=float)[0]),
+                    "hk_a2_barrier_geom": float(np.asarray(wit["hk_a2_barrier_geom"], dtype=float)[0]),
+                    "hk_diag_density_geom": float(np.asarray(wit["hk_diag_density_geom"], dtype=float)[0]),
+                    "hk_barrier_density_geom": float(np.asarray(wit["hk_barrier_density_geom"], dtype=float)[0]),
+                    "hk_abs_diag_geom": float(np.asarray(wit["hk_abs_diag_geom"], dtype=float)[0]),
+                    "hk_abs_offdiag_geom": float(np.asarray(wit["hk_abs_offdiag_geom"], dtype=float)[0]),
+                    "hk_barrier_ratio_geom": float(np.asarray(wit["hk_barrier_ratio_geom"], dtype=float)[0]),
+                    "hk_R_well_abs": float(np.asarray(wit["hk_R_well_abs"], dtype=float)[0]),
+                    "hk_R_barrier_abs": float(np.asarray(wit["hk_R_barrier_abs"], dtype=float)[0]),
+                    "hk_X_well_abs": float(np.asarray(wit["hk_X_well_abs"], dtype=float)[0]),
+                    "hk_X_barrier_abs": float(np.asarray(wit["hk_X_barrier_abs"], dtype=float)[0]),
+                    "hk_gradX_barrier": float(np.asarray(wit["hk_gradX_barrier"], dtype=float)[0]),
+                    "hk_curv_contrast_log": float(np.asarray(wit["hk_curv_contrast_log"], dtype=float)[0]),
+                    "hk_curv_access": float(np.asarray(wit["hk_curv_access"], dtype=float)[0]),
+                    "hk_barrier_stiffness_log": float(np.asarray(wit["hk_barrier_stiffness_log"], dtype=float)[0]),
                     "mu_mumu_tree_recon": mu_tree_recon,
                     "mu_mumu_ir_recon": mu_ir_recon,
                     "mu_mumu_ir_native": float(mu_ir_native),
@@ -339,15 +369,16 @@ def main() -> None:
 
     write_map_csv(out_map, rows)
     write_summary_csv(out_summary, summary)
-    plot_maps(
-        out_png=out_fig,
-        d_vals=d_vals,
-        eta_vals=eta_vals,
-        c_tree_mumu=c_tree_mumu,
-        delta_match_mumu=delta_match_mumu,
-        delta_rge_mumu=delta_rge_mumu,
-        mu_recon_resid=mu_recon_resid,
-    )
+    if not bool(args.skip_plot):
+        plot_maps(
+            out_png=out_fig,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+            c_tree_mumu=c_tree_mumu,
+            delta_match_mumu=delta_match_mumu,
+            delta_rge_mumu=delta_rge_mumu,
+            mu_recon_resid=mu_recon_resid,
+        )
 
     run_meta = {
         "tag": str(args.tag),

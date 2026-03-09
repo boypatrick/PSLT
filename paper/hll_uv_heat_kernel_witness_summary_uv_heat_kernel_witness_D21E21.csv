@@ -1,0 +1,2 @@
+n_points,hk_abs_diag_p50,hk_abs_diag_p90,hk_abs_diag_max,hk_barrier_ratio_p50,hk_barrier_ratio_p90,hk_barrier_ratio_max,max_eta_spread_hk_diag_density,corr_hk_abs_diag_action_abs_diag
+3600.0,0.9184230308411643,0.9305753088095307,0.9319226237083965,0.04441531701259435,0.055387498792138765,0.056421822541586696,0.0,-0.10716218829349716

@@ -23,7 +23,7 @@ from heat_kernel import ConformalHeatKernelConfig, conformal_heat_kernel_witness
 class EFTFiniteOneLoopMatchConfig:
     kappa_diag: float = 0.0
     kappa_offdiag: float = 0.0
-    mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", or "action_loop_contrast"
+    mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", or "action_loop_absolute"
     input_diag_scale: float = 0.0
     input_offdiag_scale: float = 0.0
     floor: float = 1e-30
@@ -97,6 +97,8 @@ class FiniteOneLoopMatchWitness:
     hk_curv_contrast_log: float
     hk_curv_access: float
     hk_barrier_stiffness_log: float
+    hk_loop_prefactor_diag: float
+    hk_loop_prefactor_offdiag: float
 
 
 @dataclass(frozen=True)
@@ -260,7 +262,7 @@ def resolve_finite_match_kappas(
     D: float | None = None,
 ) -> dict[str, float]:
     mode = str(cfg.mode).strip().lower()
-    if mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast"}:
+    if mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute"}:
         raise ValueError(f"Unsupported finite-match mode '{cfg.mode}'.")
 
     shell_spread = 0.0
@@ -307,14 +309,16 @@ def resolve_finite_match_kappas(
     hk_curv_contrast_log = 0.0
     hk_curv_access = 0.0
     hk_barrier_stiffness_log = 0.0
-    if mode in {"input_tied", "action_normalized", "action_absolute", "action_loop_contrast"}:
+    hk_loop_prefactor_diag = 0.0
+    hk_loop_prefactor_offdiag = 0.0
+    if mode in {"input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute"}:
         if g_uv is None or p_kin is None or m2 is None or c_tree is None:
             raise ValueError(f"{mode} finite matching requires g_uv, p_kin, m2, and c_tree.")
         inv = finite_match_invariants(g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c_tree, floor=cfg.floor)
         shell_spread = float(inv["shell_spread"])
         coeff_cv = float(inv["coeff_cv"])
         offdiag_mix = float(inv["offdiag_mix"])
-    if mode in {"action_normalized", "action_absolute", "action_loop_contrast"}:
+    if mode in {"action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute"}:
         a_inv = parent_action_invariants(g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c_tree, floor=cfg.floor)
         gap_cv = float(a_inv["gap_cv"])
         gap_asym = float(a_inv["gap_asym"])
@@ -359,6 +363,8 @@ def resolve_finite_match_kappas(
         hk_curv_contrast_log = float(hk_inv["hk_curv_contrast_log"])
         hk_curv_access = float(hk_inv["hk_curv_access"])
         hk_barrier_stiffness_log = float(hk_inv["hk_barrier_stiffness_log"])
+        hk_loop_prefactor_diag = float(hk_inv["hk_loop_prefactor_diag"])
+        hk_loop_prefactor_offdiag = float(hk_inv["hk_loop_prefactor_offdiag"])
 
     kappa_diag_eff = float(cfg.kappa_diag)
     kappa_offdiag_eff = float(cfg.kappa_offdiag)
@@ -400,6 +406,21 @@ def resolve_finite_match_kappas(
         )
         kappa_offdiag_eff += (
             (hk_barrier_ratio_geom / max(1.0 + hk_barrier_stiffness_log, cfg.floor))
+            * shell_spread
+            * offdiag_mix
+            * action_norm_offdiag
+        )
+    elif mode == "action_loop_absolute":
+        kappa_diag_eff += (
+            action_abs_diag
+            * hk_loop_prefactor_diag
+            * shell_spread
+            * (1.0 + coeff_cv)
+            * action_norm_diag
+        )
+        kappa_offdiag_eff += (
+            action_abs_offdiag
+            * hk_loop_prefactor_offdiag
             * shell_spread
             * offdiag_mix
             * action_norm_offdiag
@@ -453,6 +474,8 @@ def resolve_finite_match_kappas(
         "hk_curv_contrast_log": float(hk_curv_contrast_log),
         "hk_curv_access": float(hk_curv_access),
         "hk_barrier_stiffness_log": float(hk_barrier_stiffness_log),
+        "hk_loop_prefactor_diag": float(hk_loop_prefactor_diag),
+        "hk_loop_prefactor_offdiag": float(hk_loop_prefactor_offdiag),
     }
 
 
@@ -535,6 +558,8 @@ def apply_ceh_finite_one_loop(
         "hk_curv_contrast_log": float(resolved["hk_curv_contrast_log"]),
         "hk_curv_access": float(resolved["hk_curv_access"]),
         "hk_barrier_stiffness_log": float(resolved["hk_barrier_stiffness_log"]),
+        "hk_loop_prefactor_diag": float(resolved["hk_loop_prefactor_diag"]),
+        "hk_loop_prefactor_offdiag": float(resolved["hk_loop_prefactor_offdiag"]),
         "finite_fac_diag": float(fac_diag),
         "finite_fac_offdiag": float(fac_off),
     }
@@ -608,6 +633,8 @@ def finite_one_loop_witness(
         hk_curv_contrast_log=float(meta["hk_curv_contrast_log"]),
         hk_curv_access=float(meta["hk_curv_access"]),
         hk_barrier_stiffness_log=float(meta["hk_barrier_stiffness_log"]),
+        hk_loop_prefactor_diag=float(meta["hk_loop_prefactor_diag"]),
+        hk_loop_prefactor_offdiag=float(meta["hk_loop_prefactor_offdiag"]),
     )
 
 

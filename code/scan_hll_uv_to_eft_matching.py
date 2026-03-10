@@ -451,7 +451,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--uv-m2-power", type=float, default=float(BASELINE["hll_uv_m2_power"]))
     ap.add_argument("--uv-match-kappa-diag", type=float, default=float(BASELINE["hll_uv_match_kappa_diag"]))
     ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(BASELINE["hll_uv_match_kappa_offdiag"]))
-    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast"], default=str(BASELINE["hll_uv_match_mode"]))
+    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute"], default=str(BASELINE["hll_uv_match_mode"]))
     ap.add_argument("--uv-match-input-diag-scale", type=float, default=float(BASELINE["hll_uv_match_input_diag_scale"]))
     ap.add_argument("--uv-match-input-offdiag-scale", type=float, default=float(BASELINE["hll_uv_match_input_offdiag_scale"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(BASELINE["hll_uv_rge_mu_low"]))
@@ -645,6 +645,8 @@ def main() -> None:
                     "hk_curv_contrast_log": float(meta.get("hk_curv_contrast_log", 0.0)),
                     "hk_curv_access": float(meta.get("hk_curv_access", 0.0)),
                     "hk_barrier_stiffness_log": float(meta.get("hk_barrier_stiffness_log", 0.0)),
+                    "hk_loop_prefactor_diag": float(meta.get("hk_loop_prefactor_diag", 0.0)),
+                    "hk_loop_prefactor_offdiag": float(meta.get("hk_loop_prefactor_offdiag", 0.0)),
                     "mu_mumu_uv_tree": float(mu_uv),
                     "mu_mumu_uv_rge": float(mu_ir),
                     "delta_mu_mumu": d_mu,
@@ -758,17 +760,20 @@ def main() -> None:
     if not args.skip_paper_copy:
         (PAPER_DIR / out_map.name).write_text(out_map.read_text())
         (PAPER_DIR / out_summary.name).write_text(out_summary.read_text())
-        (PAPER_DIR / out_fig.name).write_bytes(out_fig.read_bytes())
+        if out_fig.exists():
+            (PAPER_DIR / out_fig.name).write_bytes(out_fig.read_bytes())
         (PAPER_DIR / out_meta.name).write_text(out_meta.read_text())
 
     print(f"[saved] {out_map}")
     print(f"[saved] {out_summary}")
-    print(f"[saved] {out_fig}")
+    if out_fig.exists():
+        print(f"[saved] {out_fig}")
     print(f"[saved] {out_meta}")
     if not args.skip_paper_copy:
         print(f"[saved] {PAPER_DIR / out_map.name}")
         print(f"[saved] {PAPER_DIR / out_summary.name}")
-        print(f"[saved] {PAPER_DIR / out_fig.name}")
+        if out_fig.exists():
+            print(f"[saved] {PAPER_DIR / out_fig.name}")
         print(f"[saved] {PAPER_DIR / out_meta.name}")
     print("[summary]", json.dumps(summary, indent=2))
 

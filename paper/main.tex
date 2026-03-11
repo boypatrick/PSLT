@@ -807,6 +807,32 @@ To test whether this remaining prefactor can be pushed closer to a genuine curve
  \texttt{action\_norm\_offdiag}.
 \end{align}
 The canonical D21$\times$E21 artifacts are \texttt{paper/hll\_uv\_to\_eft\_summary\_uv\_action\_loop\_absolute\_D21E21.csv}, \texttt{paper/hll\_uv\_operator\_basis\_summary\_uv\_action\_loop\_absolute\_D21E21.csv}, and \texttt{paper/hll\_uv\_action\_loop\_absolute\_pairwise\_summary\_D21E21.csv}. This mode remains exact at the basis level ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.56\times10^{-8}$, zero reconstruction residuals) and keeps zero acceptance mismatch. Relative to the refreshed constant baseline it remains a small deformation ($\langle|\Delta\mu_{\mu\mu}|\rangle=3.37\times10^{-4}$, $p95=6.92\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=5.33\times10^{-3}$), while relative to \texttt{action\_loop\_contrast} it is smaller still ($\langle|\Delta\mu_{\mu\mu}|\rangle=1.53\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=2.35\times10^{-3}$). Crucially, the exported loop-prefactor witness is now nonzero and stable in the canonical map (\texttt{hk\_loop\_prefactor\_diag} median $=0.351$, $p90=0.404$). We therefore interpret \texttt{action\_loop\_absolute} as the current strongest \emph{comparator-only} bridge between the present parent-action witnesses and a future bona fide EYMH loop normalization: the remaining UV-to-EFT gap is no longer the existence of a stable absolute-prefactor comparator, but fixing its normalization from the parent action rather than from the present witness construction.
+We now add one further EYMH-side screening layer, \texttt{action\_loop\_eymh\_absolute}, which keeps the same contrast-based loop family but modulates it by local mass-access and curvature-screen factors together with shell-dispersion screening,
+\begin{align}
+\texttt{hk\_mass\_access\_diag} &=
+\sqrt{\frac{\texttt{hk\_X\_well\_abs}}{1+\texttt{hk\_X\_well\_abs}}},\qquad
+\texttt{hk\_curv\_screen\_diag} =
+\frac{1}{\sqrt{1+\texttt{hk\_R\_barrier\_abs}}},\\
+\texttt{eymh\_loop\_prefactor\_diag}
+&=
+\texttt{hk\_loop\_prefactor\_diag}\,
+\texttt{hk\_mass\_access\_diag}\,
+\texttt{hk\_curv\_screen\_diag}\,
+\sqrt{\frac{\texttt{shell\_spread}}{1+\texttt{shell\_spread}}}\,
+\sqrt{\texttt{coeff\_align}}\,
+\frac{1}{\sqrt{1+\texttt{gap\_cv}+\texttt{c\_tree\_diag\_cv}}}.
+\end{align}
+The canonical D21$\times$E21 artifacts are \texttt{paper/hll\_uv\_to\_eft\_summary\_uv\_action\_loop\_eymh\_absolute\_D21E21.csv}, \texttt{paper/hll\_uv\_operator\_basis\_summary\_uv\_action\_loop\_eymh\_absolute\_D21E21.csv}, and \texttt{paper/hll\_uv\_action\_loop\_eymh\_absolute\_pairwise\_summary\_D21E21.csv}. This mode remains exact at the basis level ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.56\times10^{-8}$, zero reconstruction residuals) and keeps zero acceptance mismatch. Relative to the refreshed constant baseline it becomes an even smaller deformation ($\langle|\Delta\mu_{\mu\mu}|\rangle=4.17\times10^{-5}$, $p95=7.63\times10^{-5}$, $\max|\Delta\mu_{\mu\mu}|=6.46\times10^{-4}$), while relative to \texttt{action\_loop\_absolute} it still stays in the small-deformation comparator class ($\langle|\Delta\mu_{\mu\mu}|\rangle=2.95\times10^{-4}$, $p95=6.16\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=4.68\times10^{-3}$). The EYMH-side screened prefactor is nonzero but significantly smaller (\texttt{eymh\_loop\_prefactor\_diag} median $=3.78\times10^{-2}$, $p90=4.38\times10^{-2}$), so \texttt{action\_loop\_eymh\_absolute} should be read as the current best \emph{EYMH-side absolute loop-prefactor comparator}. The remaining UV-to-EFT gap is now sharper still: not basis closure, not map stability, and not the existence of a stable absolute prefactor witness, but the bona fide parent-action loop normalization that would fix this EYMH-side screening factor without recourse to a witness construction.
+We now tighten this statement by decomposing the canonical EYMH-side prefactor itself. The exported audit \texttt{paper/hll\_uv\_action\_loop\_eymh\_prefactor\_decomposition\_summary\_D21E21.csv} verifies at numerical precision that
+\begin{align}
+\texttt{eymh\_loop\_prefactor\_diag}
+=
+\texttt{hk\_loop\_local\_prefactor\_diag}\,
+\texttt{shell\_access}\,
+\texttt{align\_access}\,
+\texttt{diag\_dispersion\_screen},
+\end{align}
+with $\max|\Delta_{\rm recon}|=9.71\times10^{-17}$ and $\max|\Delta_{\log_{10}}|=1.48\times10^{-15}$. More importantly, the decomposition shows which pieces actually dominate the EYMH-side normalization: the strongest positive correlation is now carried by \texttt{align\_access} ($0.9655$), while the leading suppression comes from \texttt{diag\_dispersion\_screen} ($-0.8774$); the local loop factor \texttt{hk\_loop\_local\_prefactor\_diag} remains relevant but secondary ($0.4675$). In practical terms, this means that the remaining UV-to-EFT gap has narrowed once more: the missing ingredient is no longer the existence, stability, or even the exact decomposition of an EYMH-side absolute prefactor, but the parent-action origin of the alignment and dispersion-screen factors that dominate it.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

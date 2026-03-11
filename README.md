@@ -229,6 +229,23 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_absolute_pairwise_summary_D21E21.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_absolute_comparator_D21E21.png`
   This mode remains exact at the basis level (`max |Δμ_{\mu\mu}^{\rm recon}| = 5.56e-08`, zero reconstruction residuals) and keeps zero acceptance mismatch. Relative to the refreshed constant baseline it remains a small deformation (`mean |Δ\mu_{\mu\mu}| = 3.37e-4`, `p95 = 6.92e-4`, `max = 5.33e-3`), while relative to `action_loop_contrast` it is smaller still (`mean = 1.53e-4`, `max = 2.35e-3`). The exported absolute loop-prefactor witness is now nonzero and stable (`hk_loop_prefactor_diag` median `= 0.351`, `p90 = 0.404`), so `action_loop_absolute` becomes the strongest comparator-only bridge between the current parent-action witnesses and a future bona fide EYMH loop normalization. It is still not a baseline replacement: the missing step is the actual loop-derived absolute normalization, not the existence of a stable absolute-prefactor comparator.
+- **EYMH-side absolute loop-prefactor comparator:** we then fold one more layer of EYMH-side structure into the loop prefactor, using a local mass-access factor, curvature screening, shell spread, and coefficient-alignment screens to build `--uv-match-mode action_loop_eymh_absolute`. Canonical D21×E21 outputs are:
+  - `output/hll_uv_matching/hll_uv_to_eft_summary_uv_action_loop_eymh_absolute_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_operator_basis_summary_uv_action_loop_eymh_absolute_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_absolute_mode_summary_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_absolute_pairwise_summary_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_absolute_comparator_D21E21.png`
+  This mode also remains exact at the basis level (`max |Δμ_{\mu\mu}^{\rm recon}| = 5.56e-08`, zero reconstruction residuals) and keeps zero acceptance mismatch. Relative to the refreshed constant baseline it is an even smaller deformation (`mean |Δ\mu_{\mu\mu}| = 4.17e-5`, `p95 = 7.63e-5`, `max = 6.46e-4`), while relative to `action_loop_absolute` it still stays in the small-deformation regime (`mean = 2.95e-4`, `max = 4.68e-3`). The EYMH-side absolute prefactor is nonzero but more strongly screened (`eymh_loop_prefactor_diag` median `= 0.0378`, `p90 = 0.0438`), so this mode should be read as the current best comparator-level proxy for an eventual EYMH absolute loop normalization, not yet as a baseline replacement.
+- **EYMH-prefactor decomposition audit:** to sharpen the remaining UV gap, we now explicitly decompose the canonical `action_loop_eymh_absolute` prefactor into
+  - `hk_loop_local_prefactor_diag`
+  - `shell_access`
+  - `align_access`
+  - `diag_dispersion_screen`
+  and export:
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_prefactor_decomposition_map_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_prefactor_decomposition_summary_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_prefactor_decomposition_D21E21.png`
+  The reconstruction residual is numerically zero (`max residual = 9.71e-17`, `max log-residual = 1.48e-15`). The dominant contributors are now explicit: `align_access` tracks the EYMH prefactor most strongly (`corr = 0.9655`), while `diag_dispersion_screen` supplies the leading suppression (`corr = -0.8774`). In other words, the remaining missing physics is no longer “whether a stable absolute prefactor exists”, but how the parent EYMH loop fixes coefficient alignment and dispersion screening in an absolute way.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

@@ -707,7 +707,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--uv-m2-power", type=float, default=float(PAPER_BASELINE["hll_uv_m2_power"]))
     ap.add_argument("--uv-match-kappa-diag", type=float, default=float(PAPER_BASELINE["hll_uv_match_kappa_diag"]))
     ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(PAPER_BASELINE["hll_uv_match_kappa_offdiag"]))
-    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized", "action_absolute"], default=str(PAPER_BASELINE["hll_uv_match_mode"]))
+    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute"], default=str(PAPER_BASELINE["hll_uv_match_mode"]))
     ap.add_argument("--uv-match-input-diag-scale", type=float, default=float(PAPER_BASELINE["hll_uv_match_input_diag_scale"]))
     ap.add_argument("--uv-match-input-offdiag-scale", type=float, default=float(PAPER_BASELINE["hll_uv_match_input_offdiag_scale"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(PAPER_BASELINE["hll_uv_rge_mu_low"]))

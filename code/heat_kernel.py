@@ -181,6 +181,22 @@ def conformal_heat_kernel_witness(D: float, cfg: ConformalHeatKernelConfig) -> D
     hk_loop_prefactor_offdiag = float(
         hk_barrier_ratio_geom / max(1.0 + hk_barrier_stiffness_log, cfg.floor)
     )
+    hk_mass_access_diag = float(
+        np.sqrt(max(well_X_abs, cfg.floor) / (1.0 + max(well_X_abs, cfg.floor)))
+    )
+    hk_mass_access_offdiag = float(
+        np.sqrt(max(barrier_X_abs, cfg.floor) / (1.0 + max(barrier_X_abs, cfg.floor)))
+    )
+    hk_curv_screen_diag = float(1.0 / np.sqrt(1.0 + max(barrier_R_abs, 0.0)))
+    hk_curv_screen_offdiag = float(
+        hk_curv_access / max(1.0 + hk_barrier_stiffness_log, cfg.floor)
+    )
+    hk_loop_local_prefactor_diag = float(
+        hk_loop_prefactor_diag * hk_mass_access_diag * hk_curv_screen_diag
+    )
+    hk_loop_local_prefactor_offdiag = float(
+        hk_loop_prefactor_offdiag * hk_mass_access_offdiag * hk_curv_screen_offdiag
+    )
 
     iz0 = int(np.argmin(np.abs(z)))
     ir0 = 0
@@ -214,6 +230,12 @@ def conformal_heat_kernel_witness(D: float, cfg: ConformalHeatKernelConfig) -> D
         "hk_curv_contrast_log": float(hk_curv_contrast_log),
         "hk_curv_access": float(hk_curv_access),
         "hk_barrier_stiffness_log": float(hk_barrier_stiffness_log),
+        "hk_mass_access_diag": float(hk_mass_access_diag),
+        "hk_mass_access_offdiag": float(hk_mass_access_offdiag),
+        "hk_curv_screen_diag": float(hk_curv_screen_diag),
+        "hk_curv_screen_offdiag": float(hk_curv_screen_offdiag),
         "hk_loop_prefactor_diag": float(hk_loop_prefactor_diag),
         "hk_loop_prefactor_offdiag": float(hk_loop_prefactor_offdiag),
+        "hk_loop_local_prefactor_diag": float(hk_loop_local_prefactor_diag),
+        "hk_loop_local_prefactor_offdiag": float(hk_loop_local_prefactor_offdiag),
     }

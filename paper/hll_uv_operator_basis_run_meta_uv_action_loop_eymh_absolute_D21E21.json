@@ -1,0 +1,19 @@
+{
+  "tag": "uv_action_loop_eymh_absolute_D21E21",
+  "chain_mode": "full_direct",
+  "summary_file": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_operator_basis_summary_uv_action_loop_eymh_absolute_D21E21.csv",
+  "map_file": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_operator_basis_map_uv_action_loop_eymh_absolute_D21E21.csv",
+  "figure_file": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_operator_basis_maps_uv_action_loop_eymh_absolute_D21E21.png",
+  "ref_D_input": 10.0,
+  "ref_D_effective": 9.600000000000001,
+  "ref_D_snapped_to_grid": true,
+  "uv_match_mode": "action_loop_eymh_absolute",
+  "uv_match_input_diag_scale": 0.0,
+  "uv_match_input_offdiag_scale": 0.0,
+  "d_min": 4.0,
+  "d_max": 20.0,
+  "d_num": 21,
+  "eta_min": 0.2,
+  "eta_max": 4.0,
+  "eta_num": 21
+}

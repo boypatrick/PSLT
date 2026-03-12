@@ -178,7 +178,7 @@ class PSLTParameters:
     hll_uv_m2_power: float = 1.0
     hll_uv_match_kappa_diag: float = 0.0
     hll_uv_match_kappa_offdiag: float = 0.0
-    hll_uv_match_mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", or "action_loop_absolute"
+    hll_uv_match_mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", or "action_loop_eymh_absolute"
     hll_uv_match_input_diag_scale: float = 0.0
     hll_uv_match_input_offdiag_scale: float = 0.0
     hll_uv_rge_mu_low: float = 1.0
@@ -320,7 +320,7 @@ class PSLTParameters:
             raise ValueError(f"Unsupported hll_observable_mode='{self.hll_observable_mode}'.")
         if self.hll_observable_nmax < 3:
             raise ValueError("hll_observable_nmax must be >= 3.")
-        if self.hll_uv_match_mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute"}:
+        if self.hll_uv_match_mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute"}:
             raise ValueError(f"Unsupported hll_uv_match_mode='{self.hll_uv_match_mode}'.")
         if self.hll_match_basis_mode not in {"sqrt_yraw", "yraw"}:
             raise ValueError(f"Unsupported hll_match_basis_mode='{self.hll_match_basis_mode}'.")
@@ -2369,6 +2369,10 @@ class PSLTKinetics:
                     else 4.0
                     if fin.mode == "action_loop_contrast"
                     else 5.0
+                    if fin.mode == "action_loop_absolute"
+                    else 6.0
+                    if fin.mode == "action_loop_eymh_absolute"
+                    else 7.0
                 ],
                 dtype=float,
             ),
@@ -2416,8 +2420,16 @@ class PSLTKinetics:
             "hk_curv_contrast_log": np.array([float(fin.hk_curv_contrast_log)], dtype=float),
             "hk_curv_access": np.array([float(fin.hk_curv_access)], dtype=float),
             "hk_barrier_stiffness_log": np.array([float(fin.hk_barrier_stiffness_log)], dtype=float),
+            "hk_mass_access_diag": np.array([float(fin.hk_mass_access_diag)], dtype=float),
+            "hk_mass_access_offdiag": np.array([float(fin.hk_mass_access_offdiag)], dtype=float),
+            "hk_curv_screen_diag": np.array([float(fin.hk_curv_screen_diag)], dtype=float),
+            "hk_curv_screen_offdiag": np.array([float(fin.hk_curv_screen_offdiag)], dtype=float),
             "hk_loop_prefactor_diag": np.array([float(fin.hk_loop_prefactor_diag)], dtype=float),
             "hk_loop_prefactor_offdiag": np.array([float(fin.hk_loop_prefactor_offdiag)], dtype=float),
+            "hk_loop_local_prefactor_diag": np.array([float(fin.hk_loop_local_prefactor_diag)], dtype=float),
+            "hk_loop_local_prefactor_offdiag": np.array([float(fin.hk_loop_local_prefactor_offdiag)], dtype=float),
+            "eymh_loop_prefactor_diag": np.array([float(fin.eymh_loop_prefactor_diag)], dtype=float),
+            "eymh_loop_prefactor_offdiag": np.array([float(fin.eymh_loop_prefactor_offdiag)], dtype=float),
             "gamma_diag": np.array([float(rge.gamma_diag)], dtype=float),
             "gamma_offdiag": np.array([float(rge.gamma_offdiag)], dtype=float),
             "finite_fac_diag": np.array([float(fin.finite_fac_diag)], dtype=float),
@@ -2526,8 +2538,16 @@ class PSLTKinetics:
             "hk_curv_contrast_log": float(fin_meta.get("hk_curv_contrast_log", 0.0)),
             "hk_curv_access": float(fin_meta.get("hk_curv_access", 0.0)),
             "hk_barrier_stiffness_log": float(fin_meta.get("hk_barrier_stiffness_log", 0.0)),
+            "hk_mass_access_diag": float(fin_meta.get("hk_mass_access_diag", 0.0)),
+            "hk_mass_access_offdiag": float(fin_meta.get("hk_mass_access_offdiag", 0.0)),
+            "hk_curv_screen_diag": float(fin_meta.get("hk_curv_screen_diag", 0.0)),
+            "hk_curv_screen_offdiag": float(fin_meta.get("hk_curv_screen_offdiag", 0.0)),
             "hk_loop_prefactor_diag": float(fin_meta.get("hk_loop_prefactor_diag", 0.0)),
             "hk_loop_prefactor_offdiag": float(fin_meta.get("hk_loop_prefactor_offdiag", 0.0)),
+            "hk_loop_local_prefactor_diag": float(fin_meta.get("hk_loop_local_prefactor_diag", 0.0)),
+            "hk_loop_local_prefactor_offdiag": float(fin_meta.get("hk_loop_local_prefactor_offdiag", 0.0)),
+            "eymh_loop_prefactor_diag": float(fin_meta.get("eymh_loop_prefactor_diag", 0.0)),
+            "eymh_loop_prefactor_offdiag": float(fin_meta.get("eymh_loop_prefactor_offdiag", 0.0)),
             "finite_fac_diag": float(fin_meta["finite_fac_diag"]),
             "finite_fac_offdiag": float(fin_meta["finite_fac_offdiag"]),
         }

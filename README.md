@@ -236,6 +236,17 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_absolute_pairwise_summary_D21E21.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_absolute_comparator_D21E21.png`
   This mode also remains exact at the basis level (`max |Δμ_{\mu\mu}^{\rm recon}| = 5.56e-08`, zero reconstruction residuals) and keeps zero acceptance mismatch. Relative to the refreshed constant baseline it is an even smaller deformation (`mean |Δ\mu_{\mu\mu}| = 4.17e-5`, `p95 = 7.63e-5`, `max = 6.46e-4`), while relative to `action_loop_absolute` it still stays in the small-deformation regime (`mean = 2.95e-4`, `max = 4.68e-3`). The EYMH-side absolute prefactor is nonzero but more strongly screened (`eymh_loop_prefactor_diag` median `= 0.0378`, `p90 = 0.0438`), so this mode should be read as the current best comparator-level proxy for an eventual EYMH absolute loop normalization, not yet as a baseline replacement.
+- **Source-informed EYMH comparator:** we then promote the two dominant source factors already isolated by the EYMH audits into a direct comparator mode, `--uv-match-mode action_loop_eymh_source_informed`, retaining only the source-informed diagonal prefactor
+  - `eymh_source_prefactor_diag`
+  - `coeff_participation_access`
+  - `tree_diag_compressibility`
+  Canonical refreshed D21×E21 outputs are:
+  - `output/hll_uv_matching/hll_uv_to_eft_summary_uv_action_loop_eymh_source_informed_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_operator_basis_summary_uv_action_loop_eymh_source_informed_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_source_informed_mode_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_source_informed_pairwise_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_source_informed_comparator_D21E21_fix.png`
+  This refreshed source-informed mode is again exact at the basis level (`max |Δμ_{\mu\mu}^{\rm recon}| = 5.56e-08`) and remains a small deformation relative both to the refreshed constant baseline (`mean |Δ\mu_{\mu\mu}| = 5.2e-5`, `p95 = 1.09e-4`, `max = 7.81e-4`, zero acceptance mismatch) and to `action_loop_eymh_absolute` (`mean = 1.0e-5`, `p95 = 3.8e-5`, `max = 1.34e-4`, zero acceptance mismatch). The resulting source-informed prefactor stays nonzero across the full D21×E21 map (`eymh_source_prefactor_diag` median `= 0.0435`, `p90 = 0.0580`) with a participation/coherence witness and tree-diagonal compressibility witness that also remain nonzero over the whole grid (`coeff_participation_access` median `= 0.816`, `tree_diag_compressibility` median `= 0.781`). This makes `action_loop_eymh_source_informed` the current best source-informed comparator below a full parent-action normalization.
 - **EYMH-prefactor decomposition audit:** to sharpen the remaining UV gap, we now explicitly decompose the canonical `action_loop_eymh_absolute` prefactor into
   - `hk_loop_local_prefactor_diag`
   - `shell_access`

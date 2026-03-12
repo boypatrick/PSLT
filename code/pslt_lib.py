@@ -178,7 +178,7 @@ class PSLTParameters:
     hll_uv_m2_power: float = 1.0
     hll_uv_match_kappa_diag: float = 0.0
     hll_uv_match_kappa_offdiag: float = 0.0
-    hll_uv_match_mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", or "action_loop_eymh_absolute"
+    hll_uv_match_mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", or "action_loop_eymh_source_informed"
     hll_uv_match_input_diag_scale: float = 0.0
     hll_uv_match_input_offdiag_scale: float = 0.0
     hll_uv_rge_mu_low: float = 1.0
@@ -320,7 +320,7 @@ class PSLTParameters:
             raise ValueError(f"Unsupported hll_observable_mode='{self.hll_observable_mode}'.")
         if self.hll_observable_nmax < 3:
             raise ValueError("hll_observable_nmax must be >= 3.")
-        if self.hll_uv_match_mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute"}:
+        if self.hll_uv_match_mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed"}:
             raise ValueError(f"Unsupported hll_uv_match_mode='{self.hll_uv_match_mode}'.")
         if self.hll_match_basis_mode not in {"sqrt_yraw", "yraw"}:
             raise ValueError(f"Unsupported hll_match_basis_mode='{self.hll_match_basis_mode}'.")
@@ -2548,6 +2548,11 @@ class PSLTKinetics:
             "hk_loop_local_prefactor_offdiag": float(fin_meta.get("hk_loop_local_prefactor_offdiag", 0.0)),
             "eymh_loop_prefactor_diag": float(fin_meta.get("eymh_loop_prefactor_diag", 0.0)),
             "eymh_loop_prefactor_offdiag": float(fin_meta.get("eymh_loop_prefactor_offdiag", 0.0)),
+            "eymh_source_prefactor_diag": float(fin_meta.get("eymh_source_prefactor_diag", 0.0)),
+            "eymh_source_prefactor_offdiag": float(fin_meta.get("eymh_source_prefactor_offdiag", 0.0)),
+            "coeff_participation_access": float(fin_meta.get("coeff_participation_access", 0.0)),
+            "tree_diag_susceptibility": float(fin_meta.get("tree_diag_susceptibility", 0.0)),
+            "tree_diag_compressibility": float(fin_meta.get("tree_diag_compressibility", 0.0)),
             "finite_fac_diag": float(fin_meta["finite_fac_diag"]),
             "finite_fac_offdiag": float(fin_meta["finite_fac_offdiag"]),
         }

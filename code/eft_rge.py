@@ -23,7 +23,7 @@ from heat_kernel import ConformalHeatKernelConfig, conformal_heat_kernel_witness
 class EFTFiniteOneLoopMatchConfig:
     kappa_diag: float = 0.0
     kappa_offdiag: float = 0.0
-    mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", or "action_loop_eymh_absolute"
+    mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", or "action_loop_eymh_source_informed"
     input_diag_scale: float = 0.0
     input_offdiag_scale: float = 0.0
     floor: float = 1e-30
@@ -296,6 +296,57 @@ def eymh_absolute_loop_prefactors(
     }
 
 
+def eymh_source_informed_loop_prefactors(
+    *,
+    shell_spread: float,
+    coeff_l1: float,
+    coeff_l2: float,
+    gap_cv: float,
+    c_tree_diag_cv: float,
+    hk_loop_local_prefactor_diag: float,
+    hk_loop_local_prefactor_offdiag: float,
+    floor: float = 1e-30,
+) -> dict[str, float]:
+    """
+    Source-informed EYMH absolute loop prefactors.
+
+    This mode keeps only the source factors that already have an explicit
+    parent-action-side interpretation from the source and tree-diagonal audits:
+
+      hk_loop_local_prefactor
+        * shell_access
+        * coeff_participation_access
+        * tree_diag_compressibility
+
+    where
+      coeff_participation_access = N_eff^(-1/4),
+      N_eff = (coeff_l1 / coeff_l2)^2,
+      tree_diag_compressibility = (1 + c_tree_diag_cv / (1 + gap_cv))^(-1/2).
+    """
+    shell_access = float(np.sqrt(max(shell_spread, floor) / (1.0 + max(shell_spread, floor))))
+    coeff_participation = ((max(coeff_l1, floor) / max(coeff_l2, floor)) ** 2)
+    coeff_participation_access = float(np.power(max(coeff_participation, floor), -0.25))
+    tree_diag_susceptibility = float(max(c_tree_diag_cv, 0.0) / max(1.0 + max(gap_cv, 0.0), floor))
+    tree_diag_compressibility = float(np.power(1.0 + tree_diag_susceptibility, -0.5))
+    return {
+        "eymh_source_prefactor_diag": float(
+            hk_loop_local_prefactor_diag
+            * shell_access
+            * coeff_participation_access
+            * tree_diag_compressibility
+        ),
+        "eymh_source_prefactor_offdiag": float(
+            hk_loop_local_prefactor_offdiag
+            * shell_access
+            * coeff_participation_access
+            * tree_diag_compressibility
+        ),
+        "coeff_participation_access": float(coeff_participation_access),
+        "tree_diag_susceptibility": float(tree_diag_susceptibility),
+        "tree_diag_compressibility": float(tree_diag_compressibility),
+    }
+
+
 def resolve_finite_match_kappas(
     cfg: EFTFiniteOneLoopMatchConfig,
     g_uv: np.ndarray | None = None,
@@ -305,7 +356,7 @@ def resolve_finite_match_kappas(
     D: float | None = None,
 ) -> dict[str, float]:
     mode = str(cfg.mode).strip().lower()
-    if mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute"}:
+    if mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed"}:
         raise ValueError(f"Unsupported finite-match mode '{cfg.mode}'.")
 
     shell_spread = 0.0
@@ -362,14 +413,19 @@ def resolve_finite_match_kappas(
     hk_loop_local_prefactor_offdiag = 0.0
     eymh_loop_prefactor_diag = 0.0
     eymh_loop_prefactor_offdiag = 0.0
-    if mode in {"input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute"}:
+    eymh_source_prefactor_diag = 0.0
+    eymh_source_prefactor_offdiag = 0.0
+    coeff_participation_access = 0.0
+    tree_diag_susceptibility = 0.0
+    tree_diag_compressibility = 0.0
+    if mode in {"input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed"}:
         if g_uv is None or p_kin is None or m2 is None or c_tree is None:
             raise ValueError(f"{mode} finite matching requires g_uv, p_kin, m2, and c_tree.")
         inv = finite_match_invariants(g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c_tree, floor=cfg.floor)
         shell_spread = float(inv["shell_spread"])
         coeff_cv = float(inv["coeff_cv"])
         offdiag_mix = float(inv["offdiag_mix"])
-    if mode in {"action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute"}:
+    if mode in {"action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed"}:
         a_inv = parent_action_invariants(g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c_tree, floor=cfg.floor)
         gap_cv = float(a_inv["gap_cv"])
         gap_asym = float(a_inv["gap_asym"])
@@ -422,7 +478,7 @@ def resolve_finite_match_kappas(
         hk_loop_prefactor_offdiag = float(hk_inv["hk_loop_prefactor_offdiag"])
         hk_loop_local_prefactor_diag = float(hk_inv["hk_loop_local_prefactor_diag"])
         hk_loop_local_prefactor_offdiag = float(hk_inv["hk_loop_local_prefactor_offdiag"])
-    if mode in {"action_loop_eymh_absolute"}:
+    if mode in {"action_loop_eymh_absolute", "action_loop_eymh_source_informed"}:
         eymh_inv = eymh_absolute_loop_prefactors(
             shell_spread=shell_spread,
             coeff_align=coeff_align,
@@ -435,6 +491,22 @@ def resolve_finite_match_kappas(
         )
         eymh_loop_prefactor_diag = float(eymh_inv["eymh_loop_prefactor_diag"])
         eymh_loop_prefactor_offdiag = float(eymh_inv["eymh_loop_prefactor_offdiag"])
+    if mode in {"action_loop_eymh_source_informed"}:
+        src_inv = eymh_source_informed_loop_prefactors(
+            shell_spread=shell_spread,
+            coeff_l1=coeff_l1,
+            coeff_l2=coeff_l2,
+            gap_cv=gap_cv,
+            c_tree_diag_cv=c_tree_diag_cv,
+            hk_loop_local_prefactor_diag=hk_loop_local_prefactor_diag,
+            hk_loop_local_prefactor_offdiag=hk_loop_local_prefactor_offdiag,
+            floor=cfg.floor,
+        )
+        eymh_source_prefactor_diag = float(src_inv["eymh_source_prefactor_diag"])
+        eymh_source_prefactor_offdiag = float(src_inv["eymh_source_prefactor_offdiag"])
+        coeff_participation_access = float(src_inv["coeff_participation_access"])
+        tree_diag_susceptibility = float(src_inv["tree_diag_susceptibility"])
+        tree_diag_compressibility = float(src_inv["tree_diag_compressibility"])
 
     kappa_diag_eff = float(cfg.kappa_diag)
     kappa_offdiag_eff = float(cfg.kappa_offdiag)
@@ -510,6 +582,21 @@ def resolve_finite_match_kappas(
             * offdiag_mix
             * action_norm_offdiag
         )
+    elif mode == "action_loop_eymh_source_informed":
+        kappa_diag_eff += (
+            action_abs_diag
+            * eymh_source_prefactor_diag
+            * shell_spread
+            * (1.0 + coeff_cv)
+            * action_norm_diag
+        )
+        kappa_offdiag_eff += (
+            action_abs_offdiag
+            * eymh_source_prefactor_offdiag
+            * shell_spread
+            * offdiag_mix
+            * action_norm_offdiag
+        )
 
     return {
         "mode": mode,
@@ -569,6 +656,11 @@ def resolve_finite_match_kappas(
         "hk_loop_local_prefactor_offdiag": float(hk_loop_local_prefactor_offdiag),
         "eymh_loop_prefactor_diag": float(eymh_loop_prefactor_diag),
         "eymh_loop_prefactor_offdiag": float(eymh_loop_prefactor_offdiag),
+        "eymh_source_prefactor_diag": float(eymh_source_prefactor_diag),
+        "eymh_source_prefactor_offdiag": float(eymh_source_prefactor_offdiag),
+        "coeff_participation_access": float(coeff_participation_access),
+        "tree_diag_susceptibility": float(tree_diag_susceptibility),
+        "tree_diag_compressibility": float(tree_diag_compressibility),
     }
 
 
@@ -661,6 +753,11 @@ def apply_ceh_finite_one_loop(
         "hk_loop_local_prefactor_offdiag": float(resolved["hk_loop_local_prefactor_offdiag"]),
         "eymh_loop_prefactor_diag": float(resolved["eymh_loop_prefactor_diag"]),
         "eymh_loop_prefactor_offdiag": float(resolved["eymh_loop_prefactor_offdiag"]),
+        "eymh_source_prefactor_diag": float(resolved["eymh_source_prefactor_diag"]),
+        "eymh_source_prefactor_offdiag": float(resolved["eymh_source_prefactor_offdiag"]),
+        "coeff_participation_access": float(resolved["coeff_participation_access"]),
+        "tree_diag_susceptibility": float(resolved["tree_diag_susceptibility"]),
+        "tree_diag_compressibility": float(resolved["tree_diag_compressibility"]),
         "finite_fac_diag": float(fac_diag),
         "finite_fac_offdiag": float(fac_off),
     }

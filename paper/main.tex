@@ -857,6 +857,16 @@ We can sharpen the second statement one step further by rewriting
 \chi_{\rm tree}\equiv \frac{\texttt{c\_tree\_diag\_cv}}{1+\texttt{gap\_cv}},
 \]
 so that the canonical screening factor is exactly the compressibility witness of a shell-background-normalized diagonal susceptibility. The corresponding audit closes identically ($\max|\Delta_{\rm tree}|=0$) and shows that the susceptibility itself is positively correlated with the EYMH prefactor ($\mathrm{corr}=0.7409$), while the compressibility carries the leading suppression ($\mathrm{corr}=-0.8226$). A complementary tree-diagonal pressure fraction, i.e.\ the fractional contribution of the tree-diagonal variance to the combined shell-plus-tree denominator, also correlates strongly with the prefactor ($\mathrm{corr}=0.8449$). Hence the unresolved parent-action question is now even narrower: one must explain not merely why tree-diagonal dispersion enters, but why a shell-normalized diagonal susceptibility/compressibility controls the dominant screening of the canonical EYMH loop prefactor.
+We can sharpen the source-side interpretation one step further by rewriting the participation block in the language of a two-mode loop trace,
+\[
+N_{\rm trace}=\frac{1}{p_1^2+p_2^2},
+\qquad
+S_{\rm trace}^{\rm norm}=
+\frac{-p_1\ln p_1-p_2\ln p_2}{\ln 2},
+\qquad
+p_{1,2}=\frac{\texttt{coeff}_{l1,l2}}{\texttt{coeff}_{l1}+\texttt{coeff}_{l2}}.
+\]
+The dedicated parent-source audit (\texttt{paper/hll\_uv\_action\_loop\_eymh\_parent\_source\_model\_summary\_D21E21.csv}) closes both rewrites to machine precision, with $\max|\Delta_{\rm part}|=2.22\times10^{-16}$ and $\max|\Delta_{\rm tree}|=1.11\times10^{-16}$. Numerically, the participation witness is strongly controlled by the effective loop-trace participation number and its entropy, $\mathrm{corr}(N_{\rm trace},\texttt{coeff\_participation\_access})=0.9608$ and $\mathrm{corr}(S_{\rm trace}^{\rm norm},\texttt{coeff\_participation\_access})=-0.9560$, while the shell-background-normalized pressure/compressibility block remains the leading source-side screen, $\mathrm{corr}(\texttt{tree\_diag\_pressure\_fraction},\texttt{eymh\_source\_prefactor\_diag})=-0.7213$ and $\mathrm{corr}(\texttt{tree\_diag\_compressibility},\texttt{eymh\_source\_prefactor\_diag})=0.7066$. This narrows the outstanding EYMH normalization problem again: the unresolved parent-action physics is no longer a generic alignment/dispersion question, but specifically why the loop trace concentrates into the observed two-mode participation structure and why a shell-background-normalized tree-diagonal pressure response fixes the surviving source-informed prefactor.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

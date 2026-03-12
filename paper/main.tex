@@ -847,6 +847,15 @@ with source-level reconstruction again closed to machine precision, $\max|\Delta
 \texttt{shell\_gap\_screen}\times \texttt{tree\_diag\_screen},
 \]
 where the shell-gap contribution is numerically weak ($\mathrm{corr}=0.0907$ with the EYMH prefactor), while the tree-diagonal screen carries the dominant suppression ($\mathrm{corr}=-0.8226$). Thus the remaining parent-action gap is now more specific than before: it is no longer ``why does an EYMH-side absolute prefactor exist?'', but rather ``why does coefficient participation control the alignment block, and why does tree-diagonal dispersion dominate the screening of the canonical prefactor?''.
+We can sharpen the second statement one step further by rewriting
+\[
+\texttt{tree\_diag\_screen}
+=
+\left(1+\chi_{\rm tree}\right)^{-1/2},
+\qquad
+\chi_{\rm tree}\equiv \frac{\texttt{c\_tree\_diag\_cv}}{1+\texttt{gap\_cv}},
+\]
+so that the canonical screening factor is exactly the compressibility witness of a shell-background-normalized diagonal susceptibility. The corresponding audit closes identically ($\max|\Delta_{\rm tree}|=0$) and shows that the susceptibility itself is positively correlated with the EYMH prefactor ($\mathrm{corr}=0.7409$), while the compressibility carries the leading suppression ($\mathrm{corr}=-0.8226$). A complementary tree-diagonal pressure fraction, i.e.\ the fractional contribution of the tree-diagonal variance to the combined shell-plus-tree denominator, also correlates strongly with the prefactor ($\mathrm{corr}=0.8449$). Hence the unresolved parent-action question is now even narrower: one must explain not merely why tree-diagonal dispersion enters, but why a shell-normalized diagonal susceptibility/compressibility controls the dominant screening of the canonical EYMH loop prefactor.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

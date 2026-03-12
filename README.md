@@ -254,6 +254,14 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_source_audit_summary_D21E21.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_source_audit_D21E21.png`
   This source-level reconstruction remains exact (`max residual = 9.71e-17`), and it sharpens the physical interpretation: `coeff_participation_access` now matches `align_access` identically (`corr = 1.0`) and inherits the same strong correlation with the EYMH prefactor (`0.9655`), while the suppression factor splits into a weak shell-gap screen (`corr = 0.0907`) and a much stronger tree-diagonal screen (`corr = -0.8226`). The remaining parent-action gap is therefore even narrower: the unresolved normalization is no longer a generic “alignment + dispersion” block, but specifically the action-side origin of coefficient participation coherence and tree-diagonal dispersion screening.
+- **Tree-diagonal susceptibility/compressibility audit:** we now rewrite the dominant screening term as
+  - `tree_diag_susceptibility = c_tree_diag_cv / (1 + gap_cv)`
+  - `tree_diag_compressibility = (1 + tree_diag_susceptibility)^(-1/2) = tree_diag_screen`
+  and export
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_tree_diag_audit_map_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_tree_diag_audit_summary_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_tree_diag_audit_D21E21.png`
+  The rewrite is exact (`max residual = 0`). Numerically, the susceptibility itself tracks the EYMH prefactor positively (`corr = 0.7409`), while the compressibility witness carries the same leading suppression as `tree_diag_screen` (`corr = -0.8226`). A complementary pressure-style ratio built from the tree-diagonal contribution to the total shell+tree denominator is also strongly correlated (`corr = 0.8449`). This sharpens the remaining UV gap one step further: the unresolved parent-action physics is no longer a generic dispersion block, but specifically the origin of tree-level diagonal susceptibility/compressibility in the loop-prefactor screening.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

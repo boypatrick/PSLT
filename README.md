@@ -246,6 +246,14 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_prefactor_decomposition_summary_D21E21.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_prefactor_decomposition_D21E21.png`
   The reconstruction residual is numerically zero (`max residual = 9.71e-17`, `max log-residual = 1.48e-15`). The dominant contributors are now explicit: `align_access` tracks the EYMH prefactor most strongly (`corr = 0.9655`), while `diag_dispersion_screen` supplies the leading suppression (`corr = -0.8774`). In other words, the remaining missing physics is no longer “whether a stable absolute prefactor exists”, but how the parent EYMH loop fixes coefficient alignment and dispersion screening in an absolute way.
+- **EYMH-prefactor source audit:** we then resolve those two dominant pieces one level deeper into source factors tied to the canonical map itself:
+  - `align_access = coeff_participation_access = N_eff^{-1/4}` with `N_eff = (coeff_l1 / coeff_l2)^2`
+  - `diag_dispersion_screen = shell_gap_screen × tree_diag_screen`
+  and export
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_source_audit_map_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_source_audit_summary_D21E21.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_source_audit_D21E21.png`
+  This source-level reconstruction remains exact (`max residual = 9.71e-17`), and it sharpens the physical interpretation: `coeff_participation_access` now matches `align_access` identically (`corr = 1.0`) and inherits the same strong correlation with the EYMH prefactor (`0.9655`), while the suppression factor splits into a weak shell-gap screen (`corr = 0.0907`) and a much stronger tree-diagonal screen (`corr = -0.8226`). The remaining parent-action gap is therefore even narrower: the unresolved normalization is no longer a generic “alignment + dispersion” block, but specifically the action-side origin of coefficient participation coherence and tree-diagonal dispersion screening.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

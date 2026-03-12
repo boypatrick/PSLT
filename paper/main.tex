@@ -833,6 +833,20 @@ We now tighten this statement by decomposing the canonical EYMH-side prefactor i
 \texttt{diag\_dispersion\_screen},
 \end{align}
 with $\max|\Delta_{\rm recon}|=9.71\times10^{-17}$ and $\max|\Delta_{\log_{10}}|=1.48\times10^{-15}$. More importantly, the decomposition shows which pieces actually dominate the EYMH-side normalization: the strongest positive correlation is now carried by \texttt{align\_access} ($0.9655$), while the leading suppression comes from \texttt{diag\_dispersion\_screen} ($-0.8774$); the local loop factor \texttt{hk\_loop\_local\_prefactor\_diag} remains relevant but secondary ($0.4675$). In practical terms, this means that the remaining UV-to-EFT gap has narrowed once more: the missing ingredient is no longer the existence, stability, or even the exact decomposition of an EYMH-side absolute prefactor, but the parent-action origin of the alignment and dispersion-screen factors that dominate it.
+
+To sharpen that statement further, we resolved the two dominant factors one level deeper in a source audit on the same canonical map. The alignment block is not an opaque extra screen: it is exactly the coefficient-participation access
+\[
+\texttt{align\_access}=\texttt{coeff\_participation\_access}=N_{\rm eff}^{-1/4},
+\qquad
+N_{\rm eff}=\left(\frac{\texttt{coeff\_l1}}{\texttt{coeff\_l2}}\right)^2,
+\]
+with source-level reconstruction again closed to machine precision, $\max|\Delta_{\rm source}|=9.71\times10^{-17}$. Likewise, the diagonal screening factor splits as
+\[
+\texttt{diag\_dispersion\_screen}
+=
+\texttt{shell\_gap\_screen}\times \texttt{tree\_diag\_screen},
+\]
+where the shell-gap contribution is numerically weak ($\mathrm{corr}=0.0907$ with the EYMH prefactor), while the tree-diagonal screen carries the dominant suppression ($\mathrm{corr}=-0.8226$). Thus the remaining parent-action gap is now more specific than before: it is no longer ``why does an EYMH-side absolute prefactor exist?'', but rather ``why does coefficient participation control the alignment block, and why does tree-diagonal dispersion dominate the screening of the canonical prefactor?''.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

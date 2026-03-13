@@ -1,0 +1,6 @@
+pair,mean_abs_mapdiff,p95_abs_mapdiff,max_abs_mapdiff,acceptance_mismatch_fraction
+constant_vs_action_loop_eymh_absolute,4.173570150171025e-05,7.632275229951802e-05,0.0006464360367814947,0.0
+constant_vs_action_loop_eymh_source_informed,5.166083535743539e-05,0.00010888351282556386,0.0007806162774457448,0.0
+constant_vs_action_loop_eymh_parented,5.166083535743539e-05,0.00010888351282556386,0.0007806162774457448,0.0
+action_loop_eymh_absolute_vs_action_loop_eymh_source_informed,1.047586872944638e-05,3.817507148751176e-05,0.00013418024066425005,0.0
+action_loop_eymh_source_informed_vs_action_loop_eymh_parented,0.0,0.0,0.0,0.0

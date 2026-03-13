@@ -23,7 +23,7 @@ from heat_kernel import ConformalHeatKernelConfig, conformal_heat_kernel_witness
 class EFTFiniteOneLoopMatchConfig:
     kappa_diag: float = 0.0
     kappa_offdiag: float = 0.0
-    mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", or "action_loop_eymh_source_informed"
+    mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed", or "action_loop_eymh_parented"
     input_diag_scale: float = 0.0
     input_offdiag_scale: float = 0.0
     floor: float = 1e-30
@@ -107,6 +107,21 @@ class FiniteOneLoopMatchWitness:
     hk_loop_local_prefactor_offdiag: float
     eymh_loop_prefactor_diag: float
     eymh_loop_prefactor_offdiag: float
+    eymh_source_prefactor_diag: float
+    eymh_source_prefactor_offdiag: float
+    eymh_parented_prefactor_diag: float
+    eymh_parented_prefactor_offdiag: float
+    loop_trace_p1: float
+    loop_trace_p2: float
+    loop_trace_neff: float
+    loop_trace_entropy_norm: float
+    coeff_participation_access: float
+    tree_diag_susceptibility: float
+    tree_diag_compressibility: float
+    coeff_participation_access_parented: float
+    tree_diag_susceptibility_parented: float
+    tree_diag_compressibility_parented: float
+    tree_diag_pressure_fraction_parented: float
 
 
 @dataclass(frozen=True)
@@ -347,6 +362,77 @@ def eymh_source_informed_loop_prefactors(
     }
 
 
+def eymh_parented_loop_prefactors(
+    *,
+    shell_spread: float,
+    coeff_l1: float,
+    coeff_l2: float,
+    gap_cv: float,
+    c_tree_diag_cv: float,
+    hk_loop_local_prefactor_diag: float,
+    hk_loop_local_prefactor_offdiag: float,
+    floor: float = 1e-30,
+) -> dict[str, float]:
+    """
+    Parent-action rewrite of the EYMH source-informed prefactor.
+
+    The participation block is expressed through normalized two-mode
+    loop-trace probabilities and their effective participation number / entropy,
+    while the screening block remains the shell-background-normalized diagonal
+    compressibility.
+    """
+    shell_access = float(np.sqrt(max(shell_spread, floor) / (1.0 + max(shell_spread, floor))))
+
+    c1 = float(max(coeff_l1, 0.0))
+    c2 = float(max(coeff_l2, 0.0))
+    csum = c1 + c2
+    if csum <= floor:
+        p1 = p2 = 0.5
+        loop_trace_neff = 2.0
+        loop_trace_entropy_norm = 1.0
+        coeff_participation_access = 1.0
+    else:
+        p1 = c1 / csum
+        p2 = c2 / csum
+        loop_trace_neff = float(1.0 / max(p1 * p1 + p2 * p2, floor))
+        loop_trace_entropy_norm = float(
+            -(
+                p1 * np.log(max(p1, floor))
+                + p2 * np.log(max(p2, floor))
+            ) / np.log(2.0)
+        )
+        p_hi = max(p1, p2)
+        p_lo = min(p1, p2)
+        coeff_participation_access = float(np.sqrt(max(p_lo, floor) / max(p_hi, floor)))
+
+    tree_diag_susceptibility = float(max(c_tree_diag_cv, 0.0) / max(1.0 + max(gap_cv, 0.0), floor))
+    tree_diag_compressibility = float(np.power(1.0 + tree_diag_susceptibility, -0.5))
+    tree_diag_pressure_fraction = float(tree_diag_susceptibility / (1.0 + tree_diag_susceptibility))
+
+    return {
+        "eymh_parented_prefactor_diag": float(
+            hk_loop_local_prefactor_diag
+            * shell_access
+            * coeff_participation_access
+            * tree_diag_compressibility
+        ),
+        "eymh_parented_prefactor_offdiag": float(
+            hk_loop_local_prefactor_offdiag
+            * shell_access
+            * coeff_participation_access
+            * tree_diag_compressibility
+        ),
+        "loop_trace_p1": float(p1),
+        "loop_trace_p2": float(p2),
+        "loop_trace_neff": float(loop_trace_neff),
+        "loop_trace_entropy_norm": float(loop_trace_entropy_norm),
+        "coeff_participation_access_parented": float(coeff_participation_access),
+        "tree_diag_susceptibility_parented": float(tree_diag_susceptibility),
+        "tree_diag_compressibility_parented": float(tree_diag_compressibility),
+        "tree_diag_pressure_fraction_parented": float(tree_diag_pressure_fraction),
+    }
+
+
 def resolve_finite_match_kappas(
     cfg: EFTFiniteOneLoopMatchConfig,
     g_uv: np.ndarray | None = None,
@@ -356,7 +442,7 @@ def resolve_finite_match_kappas(
     D: float | None = None,
 ) -> dict[str, float]:
     mode = str(cfg.mode).strip().lower()
-    if mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed"}:
+    if mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed", "action_loop_eymh_parented"}:
         raise ValueError(f"Unsupported finite-match mode '{cfg.mode}'.")
 
     shell_spread = 0.0
@@ -418,14 +504,24 @@ def resolve_finite_match_kappas(
     coeff_participation_access = 0.0
     tree_diag_susceptibility = 0.0
     tree_diag_compressibility = 0.0
-    if mode in {"input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed"}:
+    eymh_parented_prefactor_diag = 0.0
+    eymh_parented_prefactor_offdiag = 0.0
+    loop_trace_p1 = 0.0
+    loop_trace_p2 = 0.0
+    loop_trace_neff = 0.0
+    loop_trace_entropy_norm = 0.0
+    coeff_participation_access_parented = 0.0
+    tree_diag_susceptibility_parented = 0.0
+    tree_diag_compressibility_parented = 0.0
+    tree_diag_pressure_fraction_parented = 0.0
+    if mode in {"input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed", "action_loop_eymh_parented"}:
         if g_uv is None or p_kin is None or m2 is None or c_tree is None:
             raise ValueError(f"{mode} finite matching requires g_uv, p_kin, m2, and c_tree.")
         inv = finite_match_invariants(g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c_tree, floor=cfg.floor)
         shell_spread = float(inv["shell_spread"])
         coeff_cv = float(inv["coeff_cv"])
         offdiag_mix = float(inv["offdiag_mix"])
-    if mode in {"action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed"}:
+    if mode in {"action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed", "action_loop_eymh_parented"}:
         a_inv = parent_action_invariants(g_uv=g_uv, p_kin=p_kin, m2=m2, c_tree=c_tree, floor=cfg.floor)
         gap_cv = float(a_inv["gap_cv"])
         gap_asym = float(a_inv["gap_asym"])
@@ -478,7 +574,7 @@ def resolve_finite_match_kappas(
         hk_loop_prefactor_offdiag = float(hk_inv["hk_loop_prefactor_offdiag"])
         hk_loop_local_prefactor_diag = float(hk_inv["hk_loop_local_prefactor_diag"])
         hk_loop_local_prefactor_offdiag = float(hk_inv["hk_loop_local_prefactor_offdiag"])
-    if mode in {"action_loop_eymh_absolute", "action_loop_eymh_source_informed"}:
+    if mode in {"action_loop_eymh_absolute", "action_loop_eymh_source_informed", "action_loop_eymh_parented"}:
         eymh_inv = eymh_absolute_loop_prefactors(
             shell_spread=shell_spread,
             coeff_align=coeff_align,
@@ -507,6 +603,27 @@ def resolve_finite_match_kappas(
         coeff_participation_access = float(src_inv["coeff_participation_access"])
         tree_diag_susceptibility = float(src_inv["tree_diag_susceptibility"])
         tree_diag_compressibility = float(src_inv["tree_diag_compressibility"])
+    if mode in {"action_loop_eymh_parented"}:
+        parent_inv = eymh_parented_loop_prefactors(
+            shell_spread=shell_spread,
+            coeff_l1=coeff_l1,
+            coeff_l2=coeff_l2,
+            gap_cv=gap_cv,
+            c_tree_diag_cv=c_tree_diag_cv,
+            hk_loop_local_prefactor_diag=hk_loop_local_prefactor_diag,
+            hk_loop_local_prefactor_offdiag=hk_loop_local_prefactor_offdiag,
+            floor=cfg.floor,
+        )
+        eymh_parented_prefactor_diag = float(parent_inv["eymh_parented_prefactor_diag"])
+        eymh_parented_prefactor_offdiag = float(parent_inv["eymh_parented_prefactor_offdiag"])
+        loop_trace_p1 = float(parent_inv["loop_trace_p1"])
+        loop_trace_p2 = float(parent_inv["loop_trace_p2"])
+        loop_trace_neff = float(parent_inv["loop_trace_neff"])
+        loop_trace_entropy_norm = float(parent_inv["loop_trace_entropy_norm"])
+        coeff_participation_access_parented = float(parent_inv["coeff_participation_access_parented"])
+        tree_diag_susceptibility_parented = float(parent_inv["tree_diag_susceptibility_parented"])
+        tree_diag_compressibility_parented = float(parent_inv["tree_diag_compressibility_parented"])
+        tree_diag_pressure_fraction_parented = float(parent_inv["tree_diag_pressure_fraction_parented"])
 
     kappa_diag_eff = float(cfg.kappa_diag)
     kappa_offdiag_eff = float(cfg.kappa_offdiag)
@@ -597,6 +714,21 @@ def resolve_finite_match_kappas(
             * offdiag_mix
             * action_norm_offdiag
         )
+    elif mode == "action_loop_eymh_parented":
+        kappa_diag_eff += (
+            action_abs_diag
+            * eymh_parented_prefactor_diag
+            * shell_spread
+            * (1.0 + coeff_cv)
+            * action_norm_diag
+        )
+        kappa_offdiag_eff += (
+            action_abs_offdiag
+            * eymh_parented_prefactor_offdiag
+            * shell_spread
+            * offdiag_mix
+            * action_norm_offdiag
+        )
 
     return {
         "mode": mode,
@@ -661,6 +793,16 @@ def resolve_finite_match_kappas(
         "coeff_participation_access": float(coeff_participation_access),
         "tree_diag_susceptibility": float(tree_diag_susceptibility),
         "tree_diag_compressibility": float(tree_diag_compressibility),
+        "eymh_parented_prefactor_diag": float(eymh_parented_prefactor_diag),
+        "eymh_parented_prefactor_offdiag": float(eymh_parented_prefactor_offdiag),
+        "loop_trace_p1": float(loop_trace_p1),
+        "loop_trace_p2": float(loop_trace_p2),
+        "loop_trace_neff": float(loop_trace_neff),
+        "loop_trace_entropy_norm": float(loop_trace_entropy_norm),
+        "coeff_participation_access_parented": float(coeff_participation_access_parented),
+        "tree_diag_susceptibility_parented": float(tree_diag_susceptibility_parented),
+        "tree_diag_compressibility_parented": float(tree_diag_compressibility_parented),
+        "tree_diag_pressure_fraction_parented": float(tree_diag_pressure_fraction_parented),
     }
 
 
@@ -758,6 +900,16 @@ def apply_ceh_finite_one_loop(
         "coeff_participation_access": float(resolved["coeff_participation_access"]),
         "tree_diag_susceptibility": float(resolved["tree_diag_susceptibility"]),
         "tree_diag_compressibility": float(resolved["tree_diag_compressibility"]),
+        "eymh_parented_prefactor_diag": float(resolved["eymh_parented_prefactor_diag"]),
+        "eymh_parented_prefactor_offdiag": float(resolved["eymh_parented_prefactor_offdiag"]),
+        "loop_trace_p1": float(resolved["loop_trace_p1"]),
+        "loop_trace_p2": float(resolved["loop_trace_p2"]),
+        "loop_trace_neff": float(resolved["loop_trace_neff"]),
+        "loop_trace_entropy_norm": float(resolved["loop_trace_entropy_norm"]),
+        "coeff_participation_access_parented": float(resolved["coeff_participation_access_parented"]),
+        "tree_diag_susceptibility_parented": float(resolved["tree_diag_susceptibility_parented"]),
+        "tree_diag_compressibility_parented": float(resolved["tree_diag_compressibility_parented"]),
+        "tree_diag_pressure_fraction_parented": float(resolved["tree_diag_pressure_fraction_parented"]),
         "finite_fac_diag": float(fac_diag),
         "finite_fac_offdiag": float(fac_off),
     }
@@ -841,6 +993,21 @@ def finite_one_loop_witness(
         hk_loop_local_prefactor_offdiag=float(meta["hk_loop_local_prefactor_offdiag"]),
         eymh_loop_prefactor_diag=float(meta["eymh_loop_prefactor_diag"]),
         eymh_loop_prefactor_offdiag=float(meta["eymh_loop_prefactor_offdiag"]),
+        eymh_source_prefactor_diag=float(meta["eymh_source_prefactor_diag"]),
+        eymh_source_prefactor_offdiag=float(meta["eymh_source_prefactor_offdiag"]),
+        eymh_parented_prefactor_diag=float(meta["eymh_parented_prefactor_diag"]),
+        eymh_parented_prefactor_offdiag=float(meta["eymh_parented_prefactor_offdiag"]),
+        loop_trace_p1=float(meta["loop_trace_p1"]),
+        loop_trace_p2=float(meta["loop_trace_p2"]),
+        loop_trace_neff=float(meta["loop_trace_neff"]),
+        loop_trace_entropy_norm=float(meta["loop_trace_entropy_norm"]),
+        coeff_participation_access=float(meta["coeff_participation_access"]),
+        tree_diag_susceptibility=float(meta["tree_diag_susceptibility"]),
+        tree_diag_compressibility=float(meta["tree_diag_compressibility"]),
+        coeff_participation_access_parented=float(meta["coeff_participation_access_parented"]),
+        tree_diag_susceptibility_parented=float(meta["tree_diag_susceptibility_parented"]),
+        tree_diag_compressibility_parented=float(meta["tree_diag_compressibility_parented"]),
+        tree_diag_pressure_fraction_parented=float(meta["tree_diag_pressure_fraction_parented"]),
     )
 
 

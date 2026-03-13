@@ -178,7 +178,7 @@ class PSLTParameters:
     hll_uv_m2_power: float = 1.0
     hll_uv_match_kappa_diag: float = 0.0
     hll_uv_match_kappa_offdiag: float = 0.0
-    hll_uv_match_mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", or "action_loop_eymh_source_informed"
+    hll_uv_match_mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed", or "action_loop_eymh_parented"
     hll_uv_match_input_diag_scale: float = 0.0
     hll_uv_match_input_offdiag_scale: float = 0.0
     hll_uv_rge_mu_low: float = 1.0
@@ -320,7 +320,7 @@ class PSLTParameters:
             raise ValueError(f"Unsupported hll_observable_mode='{self.hll_observable_mode}'.")
         if self.hll_observable_nmax < 3:
             raise ValueError("hll_observable_nmax must be >= 3.")
-        if self.hll_uv_match_mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed"}:
+        if self.hll_uv_match_mode not in {"constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed", "action_loop_eymh_parented"}:
             raise ValueError(f"Unsupported hll_uv_match_mode='{self.hll_uv_match_mode}'.")
         if self.hll_match_basis_mode not in {"sqrt_yraw", "yraw"}:
             raise ValueError(f"Unsupported hll_match_basis_mode='{self.hll_match_basis_mode}'.")
@@ -2373,6 +2373,10 @@ class PSLTKinetics:
                     else 6.0
                     if fin.mode == "action_loop_eymh_absolute"
                     else 7.0
+                    if fin.mode == "action_loop_eymh_source_informed"
+                    else 8.0
+                    if fin.mode == "action_loop_eymh_parented"
+                    else 9.0
                 ],
                 dtype=float,
             ),
@@ -2430,6 +2434,21 @@ class PSLTKinetics:
             "hk_loop_local_prefactor_offdiag": np.array([float(fin.hk_loop_local_prefactor_offdiag)], dtype=float),
             "eymh_loop_prefactor_diag": np.array([float(fin.eymh_loop_prefactor_diag)], dtype=float),
             "eymh_loop_prefactor_offdiag": np.array([float(fin.eymh_loop_prefactor_offdiag)], dtype=float),
+            "eymh_source_prefactor_diag": np.array([float(fin.eymh_source_prefactor_diag)], dtype=float),
+            "eymh_source_prefactor_offdiag": np.array([float(fin.eymh_source_prefactor_offdiag)], dtype=float),
+            "eymh_parented_prefactor_diag": np.array([float(fin.eymh_parented_prefactor_diag)], dtype=float),
+            "eymh_parented_prefactor_offdiag": np.array([float(fin.eymh_parented_prefactor_offdiag)], dtype=float),
+            "loop_trace_p1": np.array([float(fin.loop_trace_p1)], dtype=float),
+            "loop_trace_p2": np.array([float(fin.loop_trace_p2)], dtype=float),
+            "loop_trace_neff": np.array([float(fin.loop_trace_neff)], dtype=float),
+            "loop_trace_entropy_norm": np.array([float(fin.loop_trace_entropy_norm)], dtype=float),
+            "coeff_participation_access": np.array([float(fin.coeff_participation_access)], dtype=float),
+            "tree_diag_susceptibility": np.array([float(fin.tree_diag_susceptibility)], dtype=float),
+            "tree_diag_compressibility": np.array([float(fin.tree_diag_compressibility)], dtype=float),
+            "coeff_participation_access_parented": np.array([float(fin.coeff_participation_access_parented)], dtype=float),
+            "tree_diag_susceptibility_parented": np.array([float(fin.tree_diag_susceptibility_parented)], dtype=float),
+            "tree_diag_compressibility_parented": np.array([float(fin.tree_diag_compressibility_parented)], dtype=float),
+            "tree_diag_pressure_fraction_parented": np.array([float(fin.tree_diag_pressure_fraction_parented)], dtype=float),
             "gamma_diag": np.array([float(rge.gamma_diag)], dtype=float),
             "gamma_offdiag": np.array([float(rge.gamma_offdiag)], dtype=float),
             "finite_fac_diag": np.array([float(fin.finite_fac_diag)], dtype=float),
@@ -2553,6 +2572,16 @@ class PSLTKinetics:
             "coeff_participation_access": float(fin_meta.get("coeff_participation_access", 0.0)),
             "tree_diag_susceptibility": float(fin_meta.get("tree_diag_susceptibility", 0.0)),
             "tree_diag_compressibility": float(fin_meta.get("tree_diag_compressibility", 0.0)),
+            "eymh_parented_prefactor_diag": float(fin_meta.get("eymh_parented_prefactor_diag", 0.0)),
+            "eymh_parented_prefactor_offdiag": float(fin_meta.get("eymh_parented_prefactor_offdiag", 0.0)),
+            "loop_trace_p1": float(fin_meta.get("loop_trace_p1", 0.0)),
+            "loop_trace_p2": float(fin_meta.get("loop_trace_p2", 0.0)),
+            "loop_trace_neff": float(fin_meta.get("loop_trace_neff", 0.0)),
+            "loop_trace_entropy_norm": float(fin_meta.get("loop_trace_entropy_norm", 0.0)),
+            "coeff_participation_access_parented": float(fin_meta.get("coeff_participation_access_parented", 0.0)),
+            "tree_diag_susceptibility_parented": float(fin_meta.get("tree_diag_susceptibility_parented", 0.0)),
+            "tree_diag_compressibility_parented": float(fin_meta.get("tree_diag_compressibility_parented", 0.0)),
+            "tree_diag_pressure_fraction_parented": float(fin_meta.get("tree_diag_pressure_fraction_parented", 0.0)),
             "finite_fac_diag": float(fin_meta["finite_fac_diag"]),
             "finite_fac_offdiag": float(fin_meta["finite_fac_offdiag"]),
         }

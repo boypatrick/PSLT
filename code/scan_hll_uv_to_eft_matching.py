@@ -451,7 +451,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--uv-m2-power", type=float, default=float(BASELINE["hll_uv_m2_power"]))
     ap.add_argument("--uv-match-kappa-diag", type=float, default=float(BASELINE["hll_uv_match_kappa_diag"]))
     ap.add_argument("--uv-match-kappa-offdiag", type=float, default=float(BASELINE["hll_uv_match_kappa_offdiag"]))
-    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed"], default=str(BASELINE["hll_uv_match_mode"]))
+    ap.add_argument("--uv-match-mode", choices=["constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed", "action_loop_eymh_parented"], default=str(BASELINE["hll_uv_match_mode"]))
     ap.add_argument("--uv-match-input-diag-scale", type=float, default=float(BASELINE["hll_uv_match_input_diag_scale"]))
     ap.add_argument("--uv-match-input-offdiag-scale", type=float, default=float(BASELINE["hll_uv_match_input_offdiag_scale"]))
     ap.add_argument("--uv-rge-mu-low", type=float, default=float(BASELINE["hll_uv_rge_mu_low"]))
@@ -660,6 +660,16 @@ def main() -> None:
                     "coeff_participation_access": float(meta.get("coeff_participation_access", 0.0)),
                     "tree_diag_susceptibility": float(meta.get("tree_diag_susceptibility", 0.0)),
                     "tree_diag_compressibility": float(meta.get("tree_diag_compressibility", 0.0)),
+                    "eymh_parented_prefactor_diag": float(meta.get("eymh_parented_prefactor_diag", 0.0)),
+                    "eymh_parented_prefactor_offdiag": float(meta.get("eymh_parented_prefactor_offdiag", 0.0)),
+                    "loop_trace_p1": float(meta.get("loop_trace_p1", 0.0)),
+                    "loop_trace_p2": float(meta.get("loop_trace_p2", 0.0)),
+                    "loop_trace_neff": float(meta.get("loop_trace_neff", 0.0)),
+                    "loop_trace_entropy_norm": float(meta.get("loop_trace_entropy_norm", 0.0)),
+                    "coeff_participation_access_parented": float(meta.get("coeff_participation_access_parented", 0.0)),
+                    "tree_diag_susceptibility_parented": float(meta.get("tree_diag_susceptibility_parented", 0.0)),
+                    "tree_diag_compressibility_parented": float(meta.get("tree_diag_compressibility_parented", 0.0)),
+                    "tree_diag_pressure_fraction_parented": float(meta.get("tree_diag_pressure_fraction_parented", 0.0)),
                     "mu_mumu_uv_tree": float(mu_uv),
                     "mu_mumu_uv_rge": float(mu_ir),
                     "delta_mu_mumu": d_mu,

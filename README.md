@@ -247,6 +247,17 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_source_informed_pairwise_summary_D21E21_fix.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_source_informed_comparator_D21E21_fix.png`
   This refreshed source-informed mode is again exact at the basis level (`max |Δμ_{\mu\mu}^{\rm recon}| = 5.56e-08`) and remains a small deformation relative both to the refreshed constant baseline (`mean |Δ\mu_{\mu\mu}| = 5.2e-5`, `p95 = 1.09e-4`, `max = 7.81e-4`, zero acceptance mismatch) and to `action_loop_eymh_absolute` (`mean = 1.0e-5`, `p95 = 3.8e-5`, `max = 1.34e-4`, zero acceptance mismatch). The resulting source-informed prefactor stays nonzero across the full D21×E21 map (`eymh_source_prefactor_diag` median `= 0.0435`, `p90 = 0.0580`) with a participation/coherence witness and tree-diagonal compressibility witness that also remain nonzero over the whole grid (`coeff_participation_access` median `= 0.816`, `tree_diag_compressibility` median `= 0.781`). This makes `action_loop_eymh_source_informed` the current best source-informed comparator below a full parent-action normalization.
+- **Parented EYMH comparator:** we then rewrite the same source-informed block in explicit parent-action language via `--uv-match-mode action_loop_eymh_parented`, exposing
+  - `eymh_parented_prefactor_diag`
+  - `coeff_participation_access_parented`
+  - `tree_diag_compressibility_parented`
+  Canonical D21×E21 fix outputs are:
+  - `output/hll_uv_matching/hll_uv_to_eft_summary_uv_action_loop_eymh_parented_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_operator_basis_summary_uv_action_loop_eymh_parented_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parented_mode_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parented_pairwise_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parented_comparator_D21E21_fix.png`
+  This parented rewrite remains exact at the basis level (`max |Δμ_{\mu\mu}^{\rm recon}| = 5.56e-08`) and, on the canonical D21×E21 fix grid, is map-identical to `action_loop_eymh_source_informed` (`mean/p95/max pairwise |Δ\mu_{\mu\mu}| = 0`, zero acceptance mismatch). Relative to the refreshed constant baseline it therefore inherits the same small-deformation scale (`mean |Δ\mu_{\mu\mu}| = 5.2e-5`, `p95 = 1.09e-4`, `max = 7.81e-4`). We interpret `action_loop_eymh_parented` as the current best parent-action participation/compressibility rewrite of the EYMH source-informed comparator: it does not introduce a new numerical baseline, but it sharpens the physical reading of the same comparator in loop-trace participation and shell-background compressibility language.
 - **EYMH-prefactor decomposition audit:** to sharpen the remaining UV gap, we now explicitly decompose the canonical `action_loop_eymh_absolute` prefactor into
   - `hk_loop_local_prefactor_diag`
   - `shell_access`

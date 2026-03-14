@@ -351,6 +351,23 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_response_action_audit_summary_D21E21_fix.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_response_action_audit_D21E21_fix.png`
   The closure is again exact to machine precision (`max response-weight residual = 2.22e-16`, `max parented-prefactor residual = 9.71e-17`). This is the cleanest mother-action reading so far: coefficient-norm tilt and tree-diagonal compressibility do not merely co-occur, they enter additively in a single projected response action whose exponential fixes the canonical parented prefactor.
+- **EYMH projected log-det / Schur audit:** this same response action now admits a more explicit kernel reading. Writing
+  \[
+  K_{\rm part}=\frac{\|c\|_1}{\|c\|_2},
+  \qquad
+  G_{\rm Schur}=\frac{1+\mathrm{gap}_{\rm cv}+c_{{\rm tree},{\rm diag},{\rm cv}}}{1+\mathrm{gap}_{\rm cv}}=1+\chi_{\rm tree},
+  \]
+  gives
+  \[
+  S_{\rm resp}=\log\det K_{\rm part}+\log G_{\rm Schur},
+  \qquad
+  A_{\rm resp}=e^{-S_{\rm resp}/2}.
+  \]
+  The audit exports
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_logdet_schur_audit_map_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_logdet_schur_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_logdet_schur_audit_D21E21_fix.png`
+  and again closes both the response weight and the canonical parented prefactor to machine precision (`max logdet/Schur weight residual = 2.22e-16`, `max parented-prefactor residual = 9.71e-17`). This is the strongest parent-action reading so far: the surviving EYMH normalization block can now be read as an exact projected log-det participation kernel plus a shell-normalized Schur-kernel response.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

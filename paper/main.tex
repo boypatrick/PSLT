@@ -913,6 +913,17 @@ A_{\rm shell}\,
 A_{\rm resp},
 \]
 with $\max|\Delta A_{\rm resp}|=2.22\times10^{-16}$ and $\max|\Delta\Pi_{\rm parent}^{\rm resp}|=9.71\times10^{-17}$. In other words, the coefficient-norm tilt coherence and the shell-background-normalized tree-diagonal compressibility are not merely parallel witnesses; they enter additively in the same projected response action whose exponential fixes the canonical parented prefactor. The remaining EYMH normalization gap is therefore narrower again: explain why the fluctuation operator dynamically selects this exact projected response action rather than only its separate tilt and compressibility components.
+We can sharpen this once more by identifying the two terms in $S_{\rm resp}$ with the most direct projected kernel objects currently available in the code. The log-det / Schur audit stored under \path{paper/hll_uv_*logdet_schur_audit*_D21E21_fix.*} defines
+\[
+K_{\rm part}=\frac{\|c\|_1}{\|c\|_2},
+\qquad
+G_{\rm Schur}=\frac{1+\mathrm{gap}_{\rm cv}+c_{{\rm tree},{\rm diag},{\rm cv}}}{1+\mathrm{gap}_{\rm cv}}=1+\chi_{\rm tree},
+\]
+so that
+\[
+S_{\rm resp}=\log\det K_{\rm part}+\log G_{\rm Schur}.
+\]
+On the canonical D21$\times$E21 fix grid this log-det / Schur rewriting again reconstructs the full response weight and parented prefactor to machine precision, with $\max|\Delta A_{\rm resp}^{\rm logdet}|=2.22\times10^{-16}$ and $\max|\Delta\Pi_{\rm parent}^{\rm logdet}|=9.71\times10^{-17}$. The surviving EYMH normalization block can therefore be read as an exact projected log-det participation kernel together with a shell-background-normalized Schur response. The remaining gap is now narrower still: explain why the fluctuation operator dynamically selects precisely this projected log-det / Schur structure.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

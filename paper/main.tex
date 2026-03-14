@@ -866,6 +866,15 @@ S_{\rm trace}^{\rm norm}=
 p_{1,2}=\frac{c_{l1,l2}}{c_{l1}+c_{l2}}.
 \]
 The dedicated parent-source audit (summary under \path{paper/hll_uv_*parent_source_model*}) closes both rewrites to machine precision, with $\max|\Delta_{\rm part}|=2.22\times10^{-16}$ and $\max|\Delta_{\rm tree}|=1.11\times10^{-16}$. Numerically, the participation witness is strongly controlled by the effective loop-trace participation number and its entropy, $\mathrm{corr}(N_{\rm trace},A_{\rm part})=0.9608$ and $\mathrm{corr}(S_{\rm trace}^{\rm norm},A_{\rm part})=-0.9560$, while the shell-background-normalized pressure/compressibility block remains the leading source-side screen, $\mathrm{corr}(P_{\rm tree},\Pi_{\rm src})=-0.7213$ and $\mathrm{corr}(S_{\rm tree},\Pi_{\rm src})=0.7066$. This narrows the outstanding EYMH normalization problem again: the unresolved parent-action physics is no longer a generic alignment/dispersion question, but specifically why the loop trace concentrates into the observed two-mode participation structure and why a shell-background-normalized tree-diagonal pressure response fixes the surviving source-informed prefactor.
+We can now close the participation side one step further with the exact audit stored under \path{paper/hll_uv_*participation_exact_audit*_D21E21_fix.*}. Writing the projected two-mode participation number as
+\[
+N_{\rm eff}=\frac{1}{p_1^2+p_2^2},
+\qquad
+d=\sqrt{\frac{2}{N_{\rm eff}}-1},
+\qquad
+A_{\rm part}^{\rm exact}=\sqrt{\frac{1-d}{1+d}},
+\]
+we reconstruct \texttt{coeff\_participation\_access\_parented} to machine precision, with $\max|\Delta_{\rm part}^{\rm exact}|=9.99\times10^{-16}$. The participation block is therefore no longer just strongly correlated with a projected response; it is exactly fixed by the two-mode loop-trace imbalance implied by the parented map. At this stage the remaining EYMH normalization gap has narrowed again: what remains to be explained from the parent action is why the fluctuation operator dynamically selects this exact two-mode participation closure together with the shell-background-normalized tree-diagonal pressure/compressibility response.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

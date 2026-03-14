@@ -293,6 +293,17 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_source_model_summary_D21E21.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_source_model_D21E21.png`
   This parent-source rewrite remains exact to machine precision (`max coeff-participation residual = 2.22e-16`, `max tree-diagonal residual = 1.11e-16`). The participation side is now readable as a loop-trace concentration witness (`corr(loop_trace_neff, coeff_participation_access) = 0.9608`, `corr(loop_trace_entropy_norm, coeff_participation_access) = -0.9560`), while the tree-diagonal side is readable as a susceptibility/compressibility response with a correlated pressure fraction (`corr(tree_diag_pressure_fraction, eymh_source_prefactor_diag) = -0.7213`, `corr(tree_diag_compressibility, eymh_source_prefactor_diag) = 0.7066`). This narrows the remaining EYMH normalization gap again: the unresolved physics is now why the parent action fixes loop-trace participation coherence and shell-background-normalized tree-diagonal pressure/compressibility in precisely this combination.
+- **EYMH exact participation audit:** the projected two-mode participation block can now be closed one step further. Using the canonical parented map, we reconstruct `coeff_participation_access_parented` exactly from the projected loop-trace participation number,
+  \[
+  N_{\rm eff}=\frac{1}{p_1^2+p_2^2},\qquad
+  d=\sqrt{\frac{2}{N_{\rm eff}}-1},\qquad
+  A_{\rm part}^{\rm exact}=\sqrt{\frac{1-d}{1+d}},
+  \]
+  and export
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_participation_exact_audit_map_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_participation_exact_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_participation_exact_audit_D21E21_fix.png`
+  The residual is now at machine precision (`max exact participation residual = 9.99e-16`). This improves the previous Hessian-response reading: the participation side is no longer merely strongly correlated with a projected response, but exactly determined by the two-mode participation imbalance implied by the loop trace. The remaining parent-action gap is therefore pushed onto an even narrower question: why the parent EYMH fluctuation operator dynamically selects this two-mode participation structure in the first place.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

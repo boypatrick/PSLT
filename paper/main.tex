@@ -884,6 +884,21 @@ N_{\rm eff}^{\rm norm}=\frac{\|c\|_1^2}{\|c\|_2^2},
 A_{\rm part}^{\rm norm}=Q_2^{1/4}=\sqrt{\frac{\|c\|_2}{\|c\|_1}}
 \]
 reconstructs \texttt{coeff\_participation\_access\_parented} to machine precision, with $\max|\Delta_{\rm part}^{\rm norm}|=2.22\times10^{-16}$. The participation block can therefore be read directly as an exact norm-ratio coherence of the projected parent-action coefficient block. Numerically, this norm coherence remains correlated with the canonical parented prefactor, $\mathrm{corr}(A_{\rm part}^{\rm norm},\Pi_{\rm parent})=0.7129$, while staying essentially orthogonal to the residual map deformation relative to the refreshed constant baseline. The remaining normalization gap is now narrower once again: explain why the parent EYMH fluctuation operator fixes this exact projected coefficient-norm participation closure together with the shell-background-normalized tree-diagonal pressure/compressibility response.
+The new coefficient-norm tilt audit stored under \path{paper/hll_uv_*participation_tilt_audit*_D21E21_fix.*} removes even the explicit norm-ratio intermediate and rewrites the same participation block as an exact projected free-energy tilt,
+\[
+\Delta F_{\rm norm}=\log\frac{\|c\|_1}{\|c\|_2},
+\qquad
+A_{\rm part}^{\rm tilt}=e^{-\Delta F_{\rm norm}/2}=\sqrt{\frac{\|c\|_2}{\|c\|_1}}.
+\]
+On the canonical D21$\times$E21 fix grid this tilt coherence reconstructs \texttt{coeff\_participation\_access\_parented} with $\max|\Delta_{\rm part}^{\rm tilt}|=2.22\times10^{-16}$ and, together with the shell access and tree-diagonal compressibility blocks, closes the full parented prefactor exactly as
+\[
+\Pi_{\rm parent}
+=\Pi_{\rm hk,local}\,
+A_{\rm shell}\,
+A_{\rm part}^{\rm tilt}\,
+S_{\rm tree},
+\]
+with $\max|\Delta\Pi_{\rm parent}|=9.02\times10^{-17}$. In this language the surviving EYMH normalization gap is narrower again: what remains is to explain why the fluctuation operator dynamically fixes this exact projected coefficient-norm tilt coherence together with the shell-background-normalized tree-diagonal pressure/compressibility response.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

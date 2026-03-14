@@ -946,6 +946,14 @@ J(1,1,\lambda)=C_4\,\lambda^4+\mathcal{O}(\lambda^6),
 C_4=1.4974\times10^{-3}.
 \]
 For the concrete probe $\lambda=0.1$, this quartic law predicts an RMSE of $3.8696\times10^{-4}$, matching the directly evaluated $3.8734\times10^{-4}$. The projected EYMH selection principle can therefore be stated more sharply than before: the canonical log-det / Schur kernel is not only the best nearby fit, it is an exact stationary point with quadratic stability in the log-det / Schur weights and quartic suppression of explicit participation--tree mixing.
+We can package the same statement into a local projected effective-action gap. The variational-selection audit stored under \path{paper/hll_uv_*variational_selection*_D21E21_fix.*} defines
+\[
+\Delta\Gamma_{\rm sel}(\delta\alpha,\delta\beta,\lambda)
+=\frac12\,\delta\theta^T H\,\delta\theta + C_4\,\lambda^4,
+\qquad
+\delta\theta=(\delta\alpha,\delta\beta),
+\]
+using the exact quadratic stationarity matrix $H$ from the $(\alpha,\beta)$ block and the exact quartic coefficient $C_4$ from the mixing direction. On a local grid around the canonical point, this variational gap and the exact mismatch functional have the same minimum at $(1,1,0)$, and the agreement is already very strong: $\mathrm{corr}(J_{\rm exact},\Delta\Gamma_{\rm sel})=0.9894$, the pure-$\lambda$ slice is reproduced to within $1.88\times10^{-8}$ in absolute gap, and even the $\lambda=0$ $(\alpha,\beta)$ plane remains controlled at p95 absolute gap $2.97\times10^{-5}$. This is the cleanest projected effective-action statement so far: near the canonical point, the fluctuation operator selects the log-det / Schur kernel by minimizing a local effective action whose quadratic log-det/Schur sector and quartic mixing sector reproduce the observed selection landscape.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

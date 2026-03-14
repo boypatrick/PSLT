@@ -397,6 +397,18 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   C_4=1.4974\times10^{-3}.
   \]
   At `lambda=0.1` the predicted RMSE from this quartic law is `3.8696e-04`, matching the directly evaluated `3.8734e-04`. This is the cleanest stationarity reading so far: the projected fluctuation operator selects the canonical log-det / Schur kernel by exact first-variation closure, quadratic stability in the log-det / Schur weights, and quartic suppression of explicit participation-tree mixing.
+- **EYMH projected variational-selection audit:** the same local stationarity data can now be packaged into an explicit projected effective-action gap,
+  \[
+  \Delta\Gamma_{\rm sel}(\delta\alpha,\delta\beta,\lambda)
+  =\frac12\,\delta\theta^T H\,\delta\theta + C_4\,\lambda^4,
+  \qquad
+  \delta\theta=(\delta\alpha,\delta\beta).
+  \]
+  The audit under
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_variational_selection_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_variational_selection_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_variational_selection_audit_D21E21_fix.png`
+  compares this variational gap directly against the exact mismatch functional on a local grid around the canonical point. The minima coincide exactly (`best_exact = best_var = (1,1,0)`), and the local surrogate tracks the exact objective very well (`corr(J_exact, DeltaGamma_sel) = 0.9894`). The match is especially tight on the pure mixing slice (`lambda` slice max gap `= 1.88e-08`), while the `lambda=0` alpha/beta plane remains controlled at small absolute error (`p95 |J-DeltaGamma_sel| = 2.97e-05`). This is the strongest selection statement so far: near the canonical point, the projected EYMH kernel is not only stationary but governed by a local effective action whose quadratic `(\alpha,\beta)` sector and quartic `\lambda` sector reproduce the observed selection landscape.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

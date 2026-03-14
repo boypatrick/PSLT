@@ -924,6 +924,17 @@ so that
 S_{\rm resp}=\log\det K_{\rm part}+\log G_{\rm Schur}.
 \]
 On the canonical D21$\times$E21 fix grid this log-det / Schur rewriting again reconstructs the full response weight and parented prefactor to machine precision, with $\max|\Delta A_{\rm resp}^{\rm logdet}|=2.22\times10^{-16}$ and $\max|\Delta\Pi_{\rm parent}^{\rm logdet}|=9.71\times10^{-17}$. The surviving EYMH normalization block can therefore be read as an exact projected log-det participation kernel together with a shell-background-normalized Schur response. The remaining gap is now narrower still: explain why the fluctuation operator dynamically selects precisely this projected log-det / Schur structure.
+We can now phrase that remaining question as a genuine kernel-selection test rather than a bookkeeping issue. The audit stored under \path{paper/hll_uv_*kernel_selection*_D21E21_fix.*} probes the minimal deformed projected family
+\[
+K_{\rm sel}=
+\begin{pmatrix}
+e^{\alpha S_{\rm part}} &
+\lambda\sqrt{(e^{\alpha S_{\rm part}}-1)(e^{\beta S_{\rm schur}}-1)} \\
+\lambda\sqrt{(e^{\alpha S_{\rm part}}-1)(e^{\beta S_{\rm schur}}-1)} &
+e^{\beta S_{\rm schur}}
+\end{pmatrix},
+\]
+whose canonical parented point is $(\alpha,\beta,\lambda)=(1,1,0)$. On the D21$\times$E21 fix grid the response-weight and prefactor residuals are uniquely minimized there: the first nontrivial runner-up occurs at $(1,1,-0.1)$ but already opens an RMSE gap of $2.67\times10^{-5}$ in the parented prefactor. A finite-difference stationarity test at the canonical point yields nearly vanishing gradients, $\partial_\alpha J=-3.00\times10^{-9}$, $\partial_\beta J=-6.34\times10^{-9}$, $\partial_\lambda J=0$, together with non-negative Hessian eigenvalues $(2.99\times10^{-9},\,1.33\times10^{-3},\,7.59\times10^{-2})$. Within this minimal projected kernel family, the fluctuation operator therefore selects unit log-det / Schur weights and suppresses explicit participation--tree cross-coupling.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

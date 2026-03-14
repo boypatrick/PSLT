@@ -875,6 +875,15 @@ d=\sqrt{\frac{2}{N_{\rm eff}}-1},
 A_{\rm part}^{\rm exact}=\sqrt{\frac{1-d}{1+d}},
 \]
 we reconstruct \texttt{coeff\_participation\_access\_parented} to machine precision, with $\max|\Delta_{\rm part}^{\rm exact}|=9.99\times10^{-16}$. The participation block is therefore no longer just strongly correlated with a projected response; it is exactly fixed by the two-mode loop-trace imbalance implied by the parented map. At this stage the remaining EYMH normalization gap has narrowed again: what remains to be explained from the parent action is why the fluctuation operator dynamically selects this exact two-mode participation closure together with the shell-background-normalized tree-diagonal pressure/compressibility response.
+We can sharpen this parent-action reading once more by eliminating the intermediate two-mode probabilities altogether and working directly with the projected coefficient vector $c_N=P_N^{\rm kin}/M_N^2$. The coefficient-norm audit stored under \path{paper/hll_uv_*participation_norm_audit*_D21E21_fix.*} shows that
+\[
+Q_2=\frac{\|c\|_2^2}{\|c\|_1^2},
+\qquad
+N_{\rm eff}^{\rm norm}=\frac{\|c\|_1^2}{\|c\|_2^2},
+\qquad
+A_{\rm part}^{\rm norm}=Q_2^{1/4}=\sqrt{\frac{\|c\|_2}{\|c\|_1}}
+\]
+reconstructs \texttt{coeff\_participation\_access\_parented} to machine precision, with $\max|\Delta_{\rm part}^{\rm norm}|=2.22\times10^{-16}$. The participation block can therefore be read directly as an exact norm-ratio coherence of the projected parent-action coefficient block. Numerically, this norm coherence remains correlated with the canonical parented prefactor, $\mathrm{corr}(A_{\rm part}^{\rm norm},\Pi_{\rm parent})=0.7129$, while staying essentially orthogonal to the residual map deformation relative to the refreshed constant baseline. The remaining normalization gap is now narrower once again: explain why the parent EYMH fluctuation operator fixes this exact projected coefficient-norm participation closure together with the shell-background-normalized tree-diagonal pressure/compressibility response.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

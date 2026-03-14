@@ -304,6 +304,17 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_participation_exact_audit_summary_D21E21_fix.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_participation_exact_audit_D21E21_fix.png`
   The residual is now at machine precision (`max exact participation residual = 9.99e-16`). This improves the previous Hessian-response reading: the participation side is no longer merely strongly correlated with a projected response, but exactly determined by the two-mode participation imbalance implied by the loop trace. The remaining parent-action gap is therefore pushed onto an even narrower question: why the parent EYMH fluctuation operator dynamically selects this two-mode participation structure in the first place.
+- **EYMH coefficient-norm participation audit:** we can push that closure one step closer to the parent-action coefficient block itself. Writing the projected coefficient vector as `c_N = P_N^kin / M_N^2`, the canonical parented participation factor is reconstructed exactly from its norm ratio,
+  \[
+  Q_2=\frac{\|c\|_2^2}{\|c\|_1^2},\qquad
+  N_{\rm eff}^{\rm norm}=\frac{\|c\|_1^2}{\|c\|_2^2},\qquad
+  A_{\rm part}^{\rm norm}=Q_2^{1/4}=\sqrt{\frac{\|c\|_2}{\|c\|_1}},
+  \]
+  and export
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_participation_norm_audit_map_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_participation_norm_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_participation_norm_audit_D21E21_fix.png`
+  The reconstruction is again exact to machine precision (`max norm-participation residual = 2.22e-16`). This is a cleaner parent-action reading than the loop-trace rewrite alone: the participation side can now be read directly as a projected coefficient-vector coherence, with `corr(A_part^norm, eymh_parented_prefactor_diag) = 0.7129`. The remaining gap is narrower still: explain why the EYMH fluctuation operator fixes this exact projected norm-ratio coherence together with the shell-background-normalized tree-diagonal compressibility response.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

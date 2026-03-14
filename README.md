@@ -383,6 +383,20 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   \end{pmatrix}.
   \]
   On the canonical D21xE21 fix grid the unique best-fit point is exactly the parented kernel, `(\alpha,\beta,\lambda)=(1,1,0)`. The first nontrivial runner-up is `(\alpha,\beta,\lambda)=(1,1,-0.1)`, but it already opens a prefactor RMSE gap of `2.67e-05`. The finite-difference stationarity test at the canonical point gives vanishing gradients (`∂J/∂\alpha=-3.00e-09`, `∂J/∂\beta=-6.34e-09`, `∂J/∂\lambda=0`) and non-negative Hessian eigenvalues `(2.99e-09, 1.33e-03, 7.59e-02)`. This is the strongest dynamic-selection statement so far: the projected fluctuation operator selects unit log-det / Schur weights and suppresses projected participation-tree cross-coupling.
+- **EYMH projected stationarity audit:** we can sharpen the same claim into a local stationarity principle for the projected mismatch functional
+  \[
+  J(\alpha,\beta,\lambda)=\left\langle \left(A(\alpha,\beta,\lambda)-A_{\rm ref}\right)^2 \right\rangle .
+  \]
+  The audit under
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_stationarity_audit_map_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_stationarity_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_stationarity_audit_D21E21_fix.png`
+  shows that the canonical point has exact first-variation closure (`grad_alpha=grad_beta=grad_lambda=0`). More strongly, the `(\alpha,\beta)` block has a positive-semidefinite exact quadratic stationarity matrix with eigenvalues `(1.33e-03, 7.59e-02)`, while the cross-coupling direction is not quadratic at all but quartically stabilized:
+  \[
+  J(1,1,\lambda)=C_4\,\lambda^4+\mathcal{O}(\lambda^6),\qquad
+  C_4=1.4974\times10^{-3}.
+  \]
+  At `lambda=0.1` the predicted RMSE from this quartic law is `3.8696e-04`, matching the directly evaluated `3.8734e-04`. This is the cleanest stationarity reading so far: the projected fluctuation operator selects the canonical log-det / Schur kernel by exact first-variation closure, quadratic stability in the log-det / Schur weights, and quartic suppression of explicit participation-tree mixing.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

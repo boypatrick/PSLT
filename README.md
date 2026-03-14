@@ -333,6 +333,24 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_participation_tilt_audit_summary_D21E21_fix.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_participation_tilt_audit_D21E21_fix.png`
   The residuals remain at machine precision (`max tilt-participation residual = 2.22e-16`, `max parented-prefactor residual = 9.02e-17`). This is the strongest parent-action reading so far: the canonical participation/compressibility block can now be read as a projected coefficient-norm free-energy tilt multiplied by shell access and tree-diagonal compressibility. The remaining gap is now very narrow: explain why the EYMH fluctuation operator dynamically fixes this exact norm-tilt coherence and the accompanying shell-background-normalized tree-diagonal pressure/compressibility response.
+- **EYMH projected response-action audit:** the same parented block now admits a single projected response-action rewrite. Defining
+  \[
+  S_{\rm resp}=\Delta F_{\rm norm}+\log(1+\chi_{\rm tree}),
+  \qquad
+  A_{\rm resp}=e^{-S_{\rm resp}/2},
+  \]
+  we reconstruct the canonical parented response factor and full prefactor exactly as
+  \[
+  \Pi_{\rm parent}
+  = \Pi_{\rm hk,local}\;
+    A_{\rm shell}\;
+    A_{\rm resp},
+  \]
+  and export
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_response_action_audit_map_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_response_action_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_response_action_audit_D21E21_fix.png`
+  The closure is again exact to machine precision (`max response-weight residual = 2.22e-16`, `max parented-prefactor residual = 9.71e-17`). This is the cleanest mother-action reading so far: coefficient-norm tilt and tree-diagonal compressibility do not merely co-occur, they enter additively in a single projected response action whose exponential fixes the canonical parented prefactor.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

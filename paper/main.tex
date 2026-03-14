@@ -954,6 +954,23 @@ We can package the same statement into a local projected effective-action gap. T
 \delta\theta=(\delta\alpha,\delta\beta),
 \]
 using the exact quadratic stationarity matrix $H$ from the $(\alpha,\beta)$ block and the exact quartic coefficient $C_4$ from the mixing direction. On a local grid around the canonical point, this variational gap and the exact mismatch functional have the same minimum at $(1,1,0)$, and the agreement is already very strong: $\mathrm{corr}(J_{\rm exact},\Delta\Gamma_{\rm sel})=0.9894$, the pure-$\lambda$ slice is reproduced to within $1.88\times10^{-8}$ in absolute gap, and even the $\lambda=0$ $(\alpha,\beta)$ plane remains controlled at p95 absolute gap $2.97\times10^{-5}$. This is the cleanest projected effective-action statement so far: near the canonical point, the fluctuation operator selects the log-det / Schur kernel by minimizing a local effective action whose quadratic log-det/Schur sector and quartic mixing sector reproduce the observed selection landscape.
+We can push the same statement one step closer to a parent-action kernel form. The audit stored under \path{paper/hll_uv_*parent_kernel_statement*_D21E21_fix.*} rewrites the deformed projected kernel family as
+\[
+K_{11}=e^{\alpha S_{\rm part}},\qquad
+K_{22}=e^{\beta S_{\rm schur}},\qquad
+K_{12}=\lambda\sqrt{(K_{11}-1)(K_{22}-1)},
+\]
+and then expresses the deformed response weight exactly as
+\[
+A(\alpha,\beta,\lambda)=A_{\rm ref}\exp\!\left[-\frac12\Delta S_{\rm kernel}\right],
+\]
+with
+\[
+\Delta S_{\rm kernel}
+=(\alpha-1)S_{\rm part}+(\beta-1)S_{\rm schur}
++\log\!\bigl(1-\lambda^2\xi_{\rm cross}\bigr).
+\]
+The corresponding parent-kernel objective reproduces the direct mismatch functional to machine precision on the full local scan, with $\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}$ and $\max|A_{\rm direct}-A_{\rm parent}|=3.33\times10^{-16}$. The same exact functional is minimized again at the canonical point $(1,1,0)$. This is the strongest mother-action statement so far: the canonical log-det / Schur kernel is not only stationary and variationally preferred in a local surrogate sense, but is selected by an exact projected parent-kernel excess functional in which log-det and Schur deformations enter linearly while explicit participation--tree mixing appears only through an even determinant factor.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

@@ -409,6 +409,28 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_variational_selection_audit_summary_D21E21_fix.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_variational_selection_audit_D21E21_fix.png`
   compares this variational gap directly against the exact mismatch functional on a local grid around the canonical point. The minima coincide exactly (`best_exact = best_var = (1,1,0)`), and the local surrogate tracks the exact objective very well (`corr(J_exact, DeltaGamma_sel) = 0.9894`). The match is especially tight on the pure mixing slice (`lambda` slice max gap `= 1.88e-08`), while the `lambda=0` alpha/beta plane remains controlled at small absolute error (`p95 |J-DeltaGamma_sel| = 2.97e-05`). This is the strongest selection statement so far: near the canonical point, the projected EYMH kernel is not only stationary but governed by a local effective action whose quadratic `(\alpha,\beta)` sector and quartic `\lambda` sector reproduce the observed selection landscape.
+- **EYMH projected parent-kernel statement audit:** we can now push the same result into an exact parent-kernel excess functional. For the deformed family
+  \[
+  K_{11}=e^{\alpha S_{\rm part}},\qquad
+  K_{22}=e^{\beta S_{\rm schur}},\qquad
+  K_{12}=\lambda\sqrt{(K_{11}-1)(K_{22}-1)},
+  \]
+  the canonical response weight obeys the exact identity
+  \[
+  A(\alpha,\beta,\lambda)
+  =A_{\rm ref}\exp\!\left[-\frac12\Delta S_{\rm kernel}\right],
+  \]
+  with
+  \[
+  \Delta S_{\rm kernel}
+  =(\alpha-1)S_{\rm part}+(\beta-1)S_{\rm schur}
+  +\log\!\bigl(1-\lambda^2\xi_{\rm cross}\bigr).
+  \]
+  The audit under
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_kernel_statement_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_kernel_statement_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_kernel_statement_D21E21_fix.png`
+  verifies that the resulting parent-kernel objective is exactly the direct mismatch functional (`max objective identity residual = 1.30e-18`, `max weight identity residual = 3.33e-16`) and is minimized at the same canonical point `(1,1,0)`. This is the strongest mother-action statement so far: the canonical `logdet + Schur` selection is no longer only a local surrogate or a best-fit scan result, but an exact projected parent-kernel excess functional in which log-det and Schur deformations enter linearly while explicit participation/tree mixing enters only through an even determinant factor.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

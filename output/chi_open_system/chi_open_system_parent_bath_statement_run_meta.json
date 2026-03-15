@@ -1,0 +1,13 @@
+{
+  "factor_map_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_bath_factorization_map.csv",
+  "statement": {
+    "K_sys": "diag(g_z^2, g_x^2)",
+    "K_spec": "diag(Szz_0, Sxx_delta)",
+    "K_bath": "kappa_env * sqrt(K_sys) K_spec sqrt(K_sys)",
+    "observable": "chi_eff = (2 Cmax / gamma_ref) * (K_bath)22"
+  },
+  "notes": [
+    "Anisotropy statement is evaluated on the phi-identifiable subset only.",
+    "The parent bath block is diagonal in the localized sigma_z / sigma_x basis used by the micro extraction."
+  ]
+}

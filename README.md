@@ -431,6 +431,50 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_kernel_statement_summary_D21E21_fix.csv`
   - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_kernel_statement_D21E21_fix.png`
   verifies that the resulting parent-kernel objective is exactly the direct mismatch functional (`max objective identity residual = 1.30e-18`, `max weight identity residual = 3.33e-16`) and is minimized at the same canonical point `(1,1,0)`. This is the strongest mother-action statement so far: the canonical `logdet + Schur` selection is no longer only a local surrogate or a best-fit scan result, but an exact projected parent-kernel excess functional in which log-det and Schur deformations enter linearly while explicit participation/tree mixing enters only through an even determinant factor.
+- **EYMH projected block-split audit:** we can now make the operator split itself explicit. The audit under
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_block_split_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_block_split_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_block_split_audit_D21E21_fix.png`
+  writes the canonical projected fluctuation kernel as a participation block `K_part = ||c||_1 / ||c||_2`, a shell-background/tree block `G_schur = (1 + gap_cv + c_tree_diag_cv)/(1 + gap_cv)`, and a mixed scale `C_mix = sqrt((K_part-1)(G_schur-1))`. On the canonical map the response action closes exactly as `S_part + S_schur` (`corr = 1.0`, `max canonical action residual = 7.77e-16`), while the deformed determinant identity
+  \[
+  \det K_{\rm sel}=K_{\rm part}G_{\rm schur}(1-\lambda^2\xi_{\rm cross})
+  \]
+  also closes to machine precision (`scan max determinant residual = 4.44e-16`). This is a cleaner structural statement than the parent-kernel excess form alone: the canonical projected fluctuation operator is block-diagonal in the participation and tree/background sectors, and explicit participation-tree mixing survives only as an even determinant-level penalty.
+- **EYMH projected parent block-determinant / Schur audit:** we can push the same statement one level closer to a derivation by embedding it into a background-normalized parent block under
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_blockdet_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_blockdet_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_blockdet_audit_D21E21_fix.png`
+  Writing
+  \[
+  K_{11}=e^{\alpha S_{\rm part}},\qquad
+  K_{\rm bg}=1+\mathrm{gap}_{\rm cv},\qquad
+  K_{22}=K_{\rm bg}e^{\beta S_{\rm schur}},
+  \]
+  and
+  \[
+  C_{\rm parent}=\sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})},
+  \]
+  the projected parent block
+  \[
+  \mathcal K_{\rm parent}=
+  \begin{pmatrix}
+  K_{11} & \lambda C_{\rm parent}\\
+  \lambda C_{\rm parent} & K_{22}
+  \end{pmatrix}
+  \]
+  obeys
+  \[
+  \frac{\det \mathcal K_{\rm parent}}{K_{\rm bg}}
+  =
+  K_{11}G_\beta(1-\lambda^2\xi_{\rm cross}),
+  \qquad
+  \widehat G_{\rm Schur}
+  =
+  \frac{K_{22}-K_{12}^2/K_{11}}{K_{\rm bg}}
+  =
+  G_\beta(1-\lambda^2\xi_{\rm cross}).
+  \]
+  On the D21xE21 fix grid this closes to machine precision (`max canonical action residual = 5.55e-16`, `scan max determinant-ratio residual = 1.33e-15`, `scan max Schur residual = 6.66e-16`, `corr(j_direct,j_blockdet) = 1.0`). This is the strongest derivation statement so far: the canonical response weight is the inverse square root of a background-normalized projected parent block determinant, and the `logdet + Schur` form is exactly its block-determinant / Schur-complement factorization.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

@@ -971,6 +971,66 @@ with
 +\log\!\bigl(1-\lambda^2\xi_{\rm cross}\bigr).
 \]
 The corresponding parent-kernel objective reproduces the direct mismatch functional to machine precision on the full local scan, with $\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}$ and $\max|A_{\rm direct}-A_{\rm parent}|=3.33\times10^{-16}$. The same exact functional is minimized again at the canonical point $(1,1,0)$. This is the strongest mother-action statement so far: the canonical log-det / Schur kernel is not only stationary and variationally preferred in a local surrogate sense, but is selected by an exact projected parent-kernel excess functional in which log-det and Schur deformations enter linearly while explicit participation--tree mixing appears only through an even determinant factor.
+We can now make the block structure behind that statement explicit. The audit stored under \path{paper/hll_uv_*block_split*_D21E21_fix.*} writes the canonical projected fluctuation kernel in terms of a participation block
+\[
+K_{\rm part}=\frac{\|c\|_1}{\|c\|_2},
+\]
+a shell-background/tree block
+\[
+G_{\rm Schur}=\frac{1+\mathrm{gap}_{\rm cv}+c_{{\rm tree},{\rm diag},{\rm cv}}}{1+\mathrm{gap}_{\rm cv}},
+\]
+and a mixed scale
+\[
+C_{\rm mix}=\sqrt{(K_{\rm part}-1)(G_{\rm Schur}-1)}.
+\]
+On the canonical map the response action closes exactly as $S_{\rm part}+S_{\rm schur}$, with $\mathrm{corr}(S_{\rm split},S_{\rm resp})=1.0$ and $\max|S_{\rm split}-S_{\rm resp}|=7.77\times10^{-16}$. For the deformed family
+\[
+K_{\rm sel}=
+\begin{pmatrix}
+K_{\rm part} & \lambda C_{\rm mix}\\
+\lambda C_{\rm mix} & G_{\rm Schur}
+\end{pmatrix},
+\]
+the determinant factorization
+\[
+\det K_{\rm sel}=K_{\rm part}G_{\rm Schur}\bigl(1-\lambda^2\xi_{\rm cross}\bigr)
+\]
+also closes to machine precision on the full scan, with $\max|\Delta\det|=4.44\times10^{-16}$ and $\max|\Delta S|=3.33\times10^{-16}$. This is the clearest structural statement so far: the canonical projected fluctuation operator is block-diagonal in the participation and shell-background/tree sectors, and explicit participation--tree mixing survives only as an even determinant-level penalty.
+We can sharpen the same statement one step further by embedding it into a background-normalized parent block determinant. The audit stored under \path{paper/hll_uv_*parent_blockdet*_D21E21_fix.*} defines
+\[
+K_{11}=e^{\alpha S_{\rm part}},\qquad
+K_{\rm bg}=1+\mathrm{gap}_{\rm cv},\qquad
+K_{22}=K_{\rm bg}e^{\beta S_{\rm schur}},
+\]
+with parent mixing scale
+\[
+C_{\rm parent}=\sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})},
+\qquad
+\mathcal K_{\rm parent}=
+\begin{pmatrix}
+K_{11} & \lambda C_{\rm parent}\\
+\lambda C_{\rm parent} & K_{22}
+\end{pmatrix}.
+\]
+The normalized determinant and Schur factor then satisfy the exact identities
+\[
+\frac{\det\mathcal K_{\rm parent}}{K_{\rm bg}}
+=
+K_{11}G_\beta\bigl(1-\lambda^2\xi_{\rm cross}\bigr),
+\qquad
+\widehat G_{\rm Schur}
+=
+\frac{K_{22}-K_{12}^2/K_{11}}{K_{\rm bg}}
+=
+G_\beta\bigl(1-\lambda^2\xi_{\rm cross}\bigr),
+\]
+so the response action is literally the block-determinant / Schur-complement factorization
+\[
+S_{\rm parent}
+=
+\log K_{11}+\log \widehat G_{\rm Schur}.
+\]
+On the D21$\times$E21 fix grid this closes to machine precision, with $\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}$, $\max|\Delta(\det/K_{\rm bg})|=1.33\times10^{-15}$, $\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}$, and $\mathrm{corr}(J_{\rm direct},J_{\rm blockdet})=1.0$. This is the strongest derivation statement so far: the canonical response weight is the inverse square root of a background-normalized projected parent block determinant, rather than merely a convenient response-action rewrite.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

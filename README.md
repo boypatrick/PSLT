@@ -539,6 +539,35 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   (q_{ss},q_{dd},q_{sd})=(0,0,0),
   \]
   meaning that the projected parent action selects a locally affine log-generator in the excess coordinates themselves. The first nontrivial runner-up `(0,-0.0125,0.0125)` already opens visible errors (`max det residual = 2.76e-04`, `max Schur residual = 1.98e-04`, `max weight residual = 2.62e-05`, `max xi residual = 2.23e-03`). This is the narrowest structural statement so far: after fixing symmetry/normalization, the low-mode parent action also rejects the first local log-curvature corrections, so the surviving canonical block lies in the local multiplicative excess class itself.
+- **EYMH excess-coordinate audit:** we then tested whether the projected parent action naturally uses the canonical excess coordinates themselves,
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_excess_coordinate_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_excess_coordinate_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_excess_coordinate_audit_D21E21_fix.png`
+  through the minimal reference-offset family
+  \[
+  E_{\rm part}^{(r)}=K_{11}-r_{\rm part},
+  \qquad
+  E_{\rm tree}^{(r)}=K_{22}-r_{\rm tree}K_{\rm bg}.
+  \]
+  The unique exact point is
+  \[
+  (r_{\rm part},r_{\rm tree})=(1,1),
+  \]
+  with exact determinant/Schur/weight closure and zero anchor leakage. More importantly, the first nontrivial runner-up `(1,1.05)` already distorts the first nonzero-response slices even though the strict anchor leakage still vanishes: `part onset residual = 4.53e-02`, `tree onset residual = 9.78e-02`, together with `max det residual = 1.08e-03`, `max Schur residual = 7.02e-04`, `max weight residual = 2.48e-04`, and `max xi residual = 1.61e-02`. This is the sharpest fixed-point statement so far: the canonical excess coordinates are uniquely selected as deviations from the identity participation block and the shell/background tree block, not just as a convenient subtraction convention.
+- **EYMH fixed-point Box-Cox audit:** we then tightened the same proof obligation by allowing the excess coordinates to vary inside the smallest smooth family that preserves both fixed points and tangent normalization,
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_fixedpoint_boxcox_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_fixedpoint_boxcox_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_fixedpoint_boxcox_audit_D21E21_fix.png`
+  through
+  \[
+  E_{\rm part}^{(p)}=\mathrm{BC}_p(K_{11}),\qquad
+  E_{\rm tree}^{(q)}=K_{\rm bg}\,\mathrm{BC}_q(K_{22}/K_{\rm bg}),
+  \]
+  where `BC_p` is the Box-Cox / q-log family and every member obeys `BC_p(1)=0` and `BC'_p(1)=1`. On the canonical D21xE21 fix grid the unique exact point is again the linear additive excess choice
+  \[
+  (p_{\rm part},p_{\rm tree})=(1,1),
+  \]
+  with machine-precision determinant/Schur/weight closure (`max det residual = 4.44e-16`, `max Schur residual = 4.44e-16`, `max weight residual = 1.11e-16`, `max xi residual = 8.33e-17`) and vanishing anchor/onset residuals. The first nontrivial runner-up `(0.75,1.0)` already opens visible first-slice distortions (`part onset residual = 2.02e-03`, `tree onset residual = 8.23e-03`) together with `max det residual = 8.25e-04`, `max Schur residual = 5.51e-04`, `max weight residual = 9.80e-05`, and `max xi residual = 7.85e-03`. This is the narrowest coordinate statement so far: even after fixing the same fixed points and the same tangent normalization, the projected parent action still uniquely selects the linear excess coordinates themselves.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

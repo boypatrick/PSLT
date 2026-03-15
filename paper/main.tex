@@ -1084,6 +1084,28 @@ with $L_{\rm sum}=\log(E_{\rm part}E_{\rm tree})$ and $L_{\rm diff}=\log(E_{\rm 
 (q_{ss},q_{dd},q_{sd})=(0,0,0),
 \]
 for which the determinant, Schur, weight, and normalized cross-ratio residuals again collapse to machine precision. The first nontrivial runner-up, $(0,-0.0125,0.0125)$, already opens visible residuals, with $\max|\Delta(\det/K_{\rm bg})|=2.76\times10^{-4}$, $\max|\Delta \widehat G_{\rm Schur}|=1.98\times10^{-4}$, $\max|\Delta A|=2.62\times10^{-5}$, and $\max|\Delta \xi|=2.23\times10^{-3}$. This is the narrowest structural statement so far: once symmetry and normalization have been fixed, the low-mode projected parent action also rejects the first local log-curvature corrections, so the surviving canonical parent block lies in the locally affine multiplicative excess class itself.
+The remaining coordinate-level ambiguity is whether the projected parent action genuinely uses the canonical excess variables themselves, or whether another local subtraction point could play the same role. The audit stored under \path{paper/hll\_uv\_*excess\_coordinate*_D21E21\_fix.*} probes the minimal reference-offset family
+\[
+E_{\rm part}^{(r)}=K_{11}-r_{\rm part},
+\qquad
+E_{\rm tree}^{(r)}=K_{22}-r_{\rm tree}K_{\rm bg}.
+\]
+On the same D21$\times$E21 fix grid the unique exact point is
+\[
+(r_{\rm part},r_{\rm tree})=(1,1),
+\]
+for which the determinant, Schur, weight, normalized cross-ratio, and strict anchor-leakage residuals all vanish identically. The first nontrivial runner-up, $(1,1.05)$, already opens visible errors, with $\max|\Delta(\det/K_{\rm bg})|=1.08\times10^{-3}$, $\max|\Delta \widehat G_{\rm Schur}|=7.02\times10^{-4}$, $\max|\Delta A|=2.48\times10^{-4}$, and $\max|\Delta \xi|=1.61\times10^{-2}$. More importantly, it distorts the first nonzero-response slices even though the strict anchor leakage still vanishes, with onset mismatches $4.53\times10^{-2}$ in the participation direction and $9.78\times10^{-2}$ in the tree/background direction. This is the sharpest fixed-point statement so far: the projected parent action naturally organizes the mixed block as a deviation from the identity participation block and the shell/background tree block themselves, rather than from an arbitrary nearby subtraction point.
+We then tightened the same statement by allowing the excess coordinates to vary inside the smallest smooth family that preserves both the fixed points and the tangent normalization there,
+\[
+E_{\rm part}^{(p)}=\mathrm{BC}_p(K_{11}),
+\qquad
+E_{\rm tree}^{(q)}=K_{\rm bg}\,\mathrm{BC}_q(K_{22}/K_{\rm bg}),
+\]
+where $\mathrm{BC}_p(x)=(x^p-1)/p$ for $p\neq 0$ and $\mathrm{BC}_0(x)=\log x$, so every member obeys $\mathrm{BC}_p(1)=0$ and $\mathrm{BC}'_p(1)=1$. On the same D21$\times$E21 fix grid the unique exact point is again the linear additive excess choice
+\[
+(p_{\rm part},p_{\rm tree})=(1,1),
+\]
+for which the determinant, Schur, weight, cross-ratio, anchor, and onset residuals all vanish to machine precision. The first nontrivial runner-up, $(0.75,1.0)$, already opens visible first-slice distortions, with onset mismatches $2.02\times10^{-3}$ and $8.23\times10^{-3}$ together with $\max|\Delta(\det/K_{\rm bg})|=8.25\times10^{-4}$, $\max|\Delta \widehat G_{\rm Schur}|=5.51\times10^{-4}$, $\max|\Delta A|=9.80\times10^{-5}$, and $\max|\Delta \xi|=7.85\times10^{-3}$. This is the narrowest coordinate statement so far: even after fixing the same low-mode fixed points and the same tangent normalization, the projected parent action still uniquely selects the linear excess variables themselves.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

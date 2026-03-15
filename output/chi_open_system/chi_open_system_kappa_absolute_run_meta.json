@@ -1,0 +1,47 @@
+{
+  "factor_map_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_bath_factorization_map.csv",
+  "calibration_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/kappa_env_anchor_calibration.csv",
+  "holdout_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/kappa_env_anchor_holdout.csv",
+  "micro_source_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_micro_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
+  "target_source_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_geometry_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
+  "kappa_ref": 430546.4345656163,
+  "kappa_src": 430546.4345656163,
+  "families": [
+    "bath_shape",
+    "response_linear",
+    "system_total",
+    "uniform"
+  ],
+  "exponents": [
+    -0.5,
+    -0.25,
+    0.0,
+    0.25,
+    0.5
+  ],
+  "anchor_D_list": [
+    6.0,
+    9.0,
+    12.0,
+    15.0,
+    18.0
+  ],
+  "holdout_D_list": [
+    4.0,
+    5.0,
+    7.0,
+    8.0,
+    10.0,
+    11.0,
+    13.0,
+    14.0,
+    16.0,
+    17.0,
+    19.0,
+    20.0
+  ],
+  "overall_best_holdout_family": "response_linear",
+  "overall_best_holdout_p_exponent": -0.5,
+  "overall_best_holdout_scale": 1.9653542406425373,
+  "canonical_locked_holdout_rmse": 0.06945420275471413
+}

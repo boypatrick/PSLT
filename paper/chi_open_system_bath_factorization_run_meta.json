@@ -1,0 +1,6 @@
+{
+  "bridge_map": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_micro_bridge_map.csv",
+  "calib_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/kappa_env_anchor_calibration.csv",
+  "holdout_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/kappa_env_anchor_holdout.csv",
+  "tag": ""
+}

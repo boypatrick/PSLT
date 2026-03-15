@@ -1870,6 +1870,12 @@ while a broader scan-stable window
 \]
 keeps the map-level fractions $f(\mathcal R_3>0.90)$ and $f(\chi^2_{\mu\mu}\le 4)$ unchanged and only relaxes the holdout tolerance slightly. In this sense, $\kappa_{\rm env}$ is no longer just a single-point fit parameter: within the present witness it acts as a bounded bath-normalization susceptibility. What still remains open is the EYMH-side derivation of its absolute normalization and of the microscopic bath degrees of freedom themselves.
 
+The newer parent-bath audits sharpen this statement. First, \texttt{scan\_chi\_open\_system\_bath\_factorization.py} and \texttt{scan\_chi\_open\_system\_kappa\_absolute\_audit.py} show that the witness already factorizes into a system block $(g_z^2,g_x^2)$, a bath-shape block $(S_{zz}(0),S_{xx}(\Delta E))$, and an amplitude block $\kappa_{\rm env}$, with the canonical constant normalization remaining the unique exact amplitude choice. Second, \texttt{scan\_chi\_open\_system\_parent\_bath\_statement.py} rewrites the rates as the projected bath block
+\[
+K_{\rm bath}=\kappa_{\rm env}\sqrt{K_{\rm sys}}\,K_{\rm spec}\,\sqrt{K_{\rm sys}},
+\]
+and the subsequent family, log-coordinate, normal-coordinate, and generator-affinity audits show that the canonical projected bath class is uniquely selected on the current knot set: $(m,u,v)=(0,0,0)$, $(p_{\rm sys},p_{\rm spec})=(0,0)$, $(\zeta_{\rm sys},\zeta_{\rm spec})=(0,0)$, and $(q_{ss},q_{bb},q_{sb})=(0,0,0)$. Thus the remaining open-system gap is no longer bookkeeping or nearby-family ambiguity; it is the final parent-action statement for why the projected bath generator itself naturally lives in this affine log class.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

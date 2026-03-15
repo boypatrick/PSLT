@@ -136,6 +136,11 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/chi_open_system/chi_open_system_micro_kappa_window_ratio_scan.csv`
   - `output/chi_open_system/chi_open_system_micro_kappa_window.png`
   For the current micro witness, the calibration-consistent candidate window is `kappa_scale in [0.5, 1.0]`, while a broader stable scan window `kappa_scale in [0.25, 1.5]` keeps the map-level fractions unchanged and only relaxes the holdout tolerance slightly. This promotes `kappa_env` from a single fitted constant to a bounded bath-normalization parameter with an explicit physical/stability interpretation.
+  The newer parent-bath audits then push this further. `code/scan_chi_open_system_bath_factorization.py` and `code/scan_chi_open_system_kappa_absolute_audit.py` show that the current witness already factorizes into a system block (`g_z^2,g_x^2`), a bath-shape block (`S_{zz}(0),S_{xx}(\Delta E)`), and an amplitude block (`kappa_env`), with canonical constant normalization remaining the unique exact amplitude choice. `code/scan_chi_open_system_parent_bath_statement.py` rewrites the rates as the projected bath block
+  \[
+  K_{\rm bath}=\kappa_{\rm env}\sqrt{K_{\rm sys}}\,K_{\rm spec}\,\sqrt{K_{\rm sys}},
+  \]
+  while the subsequent family, log-coordinate, normal-coordinate, and generator-affinity audits (`code/scan_chi_open_system_parent_bath_family_audit.py`, `code/scan_chi_open_system_parent_bath_log_coordinate_audit.py`, `code/scan_chi_open_system_parent_bath_normal_coordinate_audit.py`, `code/scan_chi_open_system_parent_bath_generator_affinity_audit.py`) all uniquely return the canonical point (`m=u=v=0`, `p_{\rm sys}=p_{\rm spec}=0`, `\zeta_{\rm sys}=\zeta_{\rm spec}=0`, `q_{ss}=q_{bb}=q_{sb}=0`) on the current `D=4..20` knot set. At this point the remaining open-system gap is no longer bookkeeping or nearby-family ambiguity; it is the final parent-action statement for why the projected bath generator itself naturally lives in this affine log class.
 - **Surrogate-vs-direct chi transfer audit (B3):** `code/scan_surrogate_vs_action_points.py` reports point-level drift between interpolated `chi_LR(D)` and direct fine localized extraction injection, exporting:
   - `output/chi_fp_2d/surrogate_vs_action_points.csv`
   - `output/chi_fp_2d/surrogate_vs_action_points_summary.csv`

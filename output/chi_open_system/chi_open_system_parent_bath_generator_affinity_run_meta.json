@@ -1,0 +1,37 @@
+{
+  "factor_map_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_bath_factorization_map.csv",
+  "calibration_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/kappa_env_anchor_calibration.csv",
+  "statement": {
+    "canonical_generator": "G = L_sys + L_spec",
+    "non_affine_family": "G -> G + q_ss L_sys^2 + q_bb L_spec^2 + q_sb L_sys L_spec"
+  },
+  "grids": {
+    "q_ss": [
+      -0.125,
+      -0.0625,
+      0.0,
+      0.0625,
+      0.125
+    ],
+    "q_bb": [
+      -0.125,
+      -0.0625,
+      0.0,
+      0.0625,
+      0.125
+    ],
+    "q_sb": [
+      -0.125,
+      -0.0625,
+      0.0,
+      0.0625,
+      0.125
+    ]
+  },
+  "references": {
+    "sys_phi_ref": 9.511900271602018e-33,
+    "sys_mix_ref": 2.131865833003157e-08,
+    "spec_phi_ref": 1.1119059294765243,
+    "spec_mix_ref": 1.0688289091107648
+  }
+}

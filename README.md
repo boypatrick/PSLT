@@ -475,6 +475,21 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   G_\beta(1-\lambda^2\xi_{\rm cross}).
   \]
   On the D21xE21 fix grid this closes to machine precision (`max canonical action residual = 5.55e-16`, `scan max determinant-ratio residual = 1.33e-15`, `scan max Schur residual = 6.66e-16`, `corr(j_direct,j_blockdet) = 1.0`). This is the strongest derivation statement so far: the canonical response weight is the inverse square root of a background-normalized projected parent block determinant, and the `logdet + Schur` form is exactly its block-determinant / Schur-complement factorization.
+- **EYMH parent mixing geometric-mean audit:** the remaining ambiguity in the parent block is then the mixed entry. The audit under
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_mix_geomean_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_mix_geomean_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_mix_geomean_audit_D21E21_fix.png`
+  tests the smallest symmetric-excess family
+  \[
+  C_{\rm gen}=\kappa\,(K_{11}-1)^u (K_{22}-K_{\rm bg})^v.
+  \]
+  On the local D21xE21 fix scan the unique exact point is the geometric-mean choice
+  \[
+  (u,v,\kappa)=\left(\tfrac12,\tfrac12,1\right),
+  \qquad
+  C_{\rm parent}=\sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})}.
+  \]
+  At this point the determinant, Schur, weight, and normalized cross-ratio residuals all collapse to machine precision (`max det residual = 4.44e-16`, `max Schur residual = 4.44e-16`, `max weight residual = 1.11e-16`, `max xi residual = 1.11e-16`), while the first nontrivial runner-up `(u,v,\kappa)=(0.625,0.625,1.1)` already opens visible errors (`max det residual = 1.32e-03`, `max Schur residual = 9.78e-04`, `max weight residual = 2.18e-04`). This is the clearest naturality statement so far: once the parent kernel is required to couple the participation and tree/background sectors through a minimal symmetric excess family, the geometric-mean mixed block is uniquely selected.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

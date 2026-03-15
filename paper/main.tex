@@ -1031,6 +1031,24 @@ S_{\rm parent}
 \log K_{11}+\log \widehat G_{\rm Schur}.
 \]
 On the D21$\times$E21 fix grid this closes to machine precision, with $\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}$, $\max|\Delta(\det/K_{\rm bg})|=1.33\times10^{-15}$, $\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}$, and $\mathrm{corr}(J_{\rm direct},J_{\rm blockdet})=1.0$. This is the strongest derivation statement so far: the canonical response weight is the inverse square root of a background-normalized projected parent block determinant, rather than merely a convenient response-action rewrite.
+The only remaining structural ambiguity in that parent block is the mixed entry. To test whether the geometric-mean choice is merely convenient or actually selected, the audit stored under \path{paper/hll_uv_*parent_mix_geomean*_D21E21_fix.*} scans the smallest symmetric-excess family
+\[
+C_{\rm gen}=\kappa\,(K_{11}-1)^u (K_{22}-K_{\rm bg})^v.
+\]
+On the local D21$\times$E21 fix grid the unique exact point is
+\[
+(u,v,\kappa)=\left(\tfrac12,\tfrac12,1\right),
+\qquad
+C_{\rm parent}=\sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})},
+\]
+for which the determinant, Schur, weight, and normalized cross-ratio residuals all collapse to machine precision:
+\[
+\max|\Delta(\det/K_{\rm bg})|=4.44\times10^{-16},\quad
+\max|\Delta \widehat G_{\rm Schur}|=4.44\times10^{-16},\quad
+\max|\Delta A|=1.11\times10^{-16},\quad
+\max|\Delta\xi|=1.11\times10^{-16}.
+\]
+The first nontrivial runner-up, $(u,v,\kappa)=(0.625,0.625,1.1)$, already opens visible residuals, with $\max|\Delta(\det/K_{\rm bg})|=1.32\times10^{-3}$ and $\max|\Delta A|=2.18\times10^{-4}$. This is the strongest naturality statement so far: once the projected parent kernel is required to couple the participation and tree/background sectors through a minimal symmetric excess family, the geometric-mean mixed block is uniquely selected.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

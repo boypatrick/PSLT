@@ -1,0 +1,37 @@
+{
+  "factor_map_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_bath_factorization_map.csv",
+  "calibration_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/kappa_env_anchor_calibration.csv",
+  "statement": {
+    "canonical_family": "gamma_a = kappa_env * K_sys,a * K_spec,a",
+    "deformation": "exp(m) * (K_sys,a/K_sys,a^ref)^u * (K_spec,a/K_spec,a^ref)^v"
+  },
+  "grids": {
+    "m": [
+      -0.1,
+      -0.05,
+      0.0,
+      0.05,
+      0.1
+    ],
+    "u": [
+      -0.25,
+      -0.125,
+      0.0,
+      0.125,
+      0.25
+    ],
+    "v": [
+      -0.25,
+      -0.125,
+      0.0,
+      0.125,
+      0.25
+    ]
+  },
+  "references": {
+    "sys_phi_ref": 1.0055551822318595e-30,
+    "sys_mix_ref": 2.131865833003157e-08,
+    "spec_phi_ref": 1.1119059294765243,
+    "spec_mix_ref": 1.0688289091107648
+  }
+}

@@ -490,6 +490,21 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   C_{\rm parent}=\sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})}.
   \]
   At this point the determinant, Schur, weight, and normalized cross-ratio residuals all collapse to machine precision (`max det residual = 4.44e-16`, `max Schur residual = 4.44e-16`, `max weight residual = 1.11e-16`, `max xi residual = 1.11e-16`), while the first nontrivial runner-up `(u,v,\kappa)=(0.625,0.625,1.1)` already opens visible errors (`max det residual = 1.32e-03`, `max Schur residual = 9.78e-04`, `max weight residual = 2.18e-04`). This is the clearest naturality statement so far: once the parent kernel is required to couple the participation and tree/background sectors through a minimal symmetric excess family, the geometric-mean mixed block is uniquely selected.
+- **EYMH parent ratio-warp audit:** we then tested the nearest non-minimal extension, namely a ratio-dependent warp of the geometric mean under
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_ratio_warp_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_ratio_warp_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_ratio_warp_audit_D21E21_fix.png`
+  of the form
+  \[
+  C_{\rm warp}=\kappa\,C_{\rm parent}\exp\!\left[\delta L+\nu L^2\right],
+  \qquad
+  L=\tfrac12\log(E_{\rm part}/E_{\rm tree}).
+  \]
+  On the canonical D21xE21 fix grid the unique exact point is again the unwarped kernel:
+  \[
+  (\kappa,\delta,\nu)=(1,0,0).
+  \]
+  At that point all residuals vanish exactly, while the first nontrivial runner-up `(1,0,-0.05)` already opens visible errors (`max det residual = 7.18e-04`, `max Schur residual = 5.39e-04`, `max weight residual = 7.14e-05`, `max xi residual = 6.08e-03`). This is the strongest minimality statement so far: the low-mode parent block not only selects the geometric-mean mixed sector inside the minimal symmetric-excess family, it also rejects the first ratio-warped extension of that family.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

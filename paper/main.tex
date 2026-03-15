@@ -1049,6 +1049,15 @@ for which the determinant, Schur, weight, and normalized cross-ratio residuals a
 \max|\Delta\xi|=1.11\times10^{-16}.
 \]
 The first nontrivial runner-up, $(u,v,\kappa)=(0.625,0.625,1.1)$, already opens visible residuals, with $\max|\Delta(\det/K_{\rm bg})|=1.32\times10^{-3}$ and $\max|\Delta A|=2.18\times10^{-4}$. This is the strongest naturality statement so far: once the projected parent kernel is required to couple the participation and tree/background sectors through a minimal symmetric excess family, the geometric-mean mixed block is uniquely selected.
+We can push that one step further by testing the nearest non-minimal extension: a ratio-dependent warp of the geometric mean. The audit stored under \path{paper/hll_uv_*parent_ratio_warp*_D21E21_fix.*} probes
+\[
+C_{\rm warp}
+=
+\kappa\,C_{\rm parent}\exp\!\left[\delta L+\nu L^2\right],
+\qquad
+L=\frac12\log(E_{\rm part}/E_{\rm tree}),
+\]
+with $E_{\rm part}=K_{11}-1$ and $E_{\rm tree}=K_{22}-K_{\rm bg}$. On the same D21$\times$E21 fix grid the unique exact point is again the unwarped kernel, $(\kappa,\delta,\nu)=(1,0,0)$, for which the determinant, Schur, weight, and normalized cross-ratio residuals all vanish exactly. The first nontrivial runner-up, $(1,0,-0.05)$, already opens visible residuals, with $\max|\Delta(\det/K_{\rm bg})|=7.18\times10^{-4}$, $\max|\Delta \widehat G_{\rm Schur}|=5.39\times10^{-4}$, $\max|\Delta A|=7.14\times10^{-5}$, and $\max|\Delta \xi|=6.08\times10^{-3}$. This is the strongest minimality statement so far: the low-mode parent block not only selects the geometric-mean mixed sector inside the minimal symmetric-excess family, it also rejects the first ratio-warped extension of that family.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

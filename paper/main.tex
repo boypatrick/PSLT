@@ -1058,6 +1058,18 @@ C_{\rm warp}
 L=\frac12\log(E_{\rm part}/E_{\rm tree}),
 \]
 with $E_{\rm part}=K_{11}-1$ and $E_{\rm tree}=K_{22}-K_{\rm bg}$. On the same D21$\times$E21 fix grid the unique exact point is again the unwarped kernel, $(\kappa,\delta,\nu)=(1,0,0)$, for which the determinant, Schur, weight, and normalized cross-ratio residuals all vanish exactly. The first nontrivial runner-up, $(1,0,-0.05)$, already opens visible residuals, with $\max|\Delta(\det/K_{\rm bg})|=7.18\times10^{-4}$, $\max|\Delta \widehat G_{\rm Schur}|=5.39\times10^{-4}$, $\max|\Delta A|=7.14\times10^{-5}$, and $\max|\Delta \xi|=6.08\times10^{-3}$. This is the strongest minimality statement so far: the low-mode parent block not only selects the geometric-mean mixed sector inside the minimal symmetric-excess family, it also rejects the first ratio-warped extension of that family.
+We can then reparameterize the same local family in the coordinates that most directly match the remaining proof obligation, namely an overall normalization shift $m$, a symmetric homogeneity degree $s$, and an antisymmetric participation/tree tilt $a$:
+\[
+C_{\rm gen}
+=
+\exp(m)\exp\!\left[\frac{s}{2}\log(E_{\rm part}E_{\rm tree})
++\frac{a}{2}\log(E_{\rm part}/E_{\rm tree})\right].
+\]
+The audit stored under \path{paper/hll\_uv\_*parent\_symnorm*_D21E21\_fix.*} shows that on the same D21$\times$E21 fix grid the unique exact point is
+\[
+(m,s,a)=(0,1,0),
+\]
+for which the determinant, Schur, weight, and normalized cross-ratio residuals again collapse to machine precision. The first nontrivial runner-up, $(0.05,1.125,0)$, already opens visible residuals, with $\max|\Delta(\det/K_{\rm bg})|=6.61\times10^{-4}$, $\max|\Delta \widehat G_{\rm Schur}|=4.72\times10^{-4}$, $\max|\Delta A|=1.09\times10^{-4}$, and $\max|\Delta \xi|=7.73\times10^{-3}$. This is the cleanest structural statement so far: once the parent block is written in symmetry/normalization coordinates, the low-mode projected parent action selects the canonical family by enforcing zero normalization shift, unit symmetric degree, and zero antisymmetric tilt.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

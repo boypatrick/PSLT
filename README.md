@@ -505,6 +505,22 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   (\kappa,\delta,\nu)=(1,0,0).
   \]
   At that point all residuals vanish exactly, while the first nontrivial runner-up `(1,0,-0.05)` already opens visible errors (`max det residual = 7.18e-04`, `max Schur residual = 5.39e-04`, `max weight residual = 7.14e-05`, `max xi residual = 6.08e-03`). This is the strongest minimality statement so far: the low-mode parent block not only selects the geometric-mean mixed sector inside the minimal symmetric-excess family, it also rejects the first ratio-warped extension of that family.
+- **EYMH parent symmetry/normalization audit:** we then reparameterized the same local parent family in the coordinates that most directly match the remaining proof obligation,
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_symnorm_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_symnorm_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_symnorm_audit_D21E21_fix.png`
+  through
+  \[
+  C_{\rm gen}
+  =
+  \exp(m)\exp\!\left[\frac{s}{2}\log(E_{\rm part}E_{\rm tree})
+  +\frac{a}{2}\log(E_{\rm part}/E_{\rm tree})\right],
+  \]
+  where `m` is the overall normalization shift, `s` is the symmetric homogeneity degree, and `a` is the antisymmetric participation/tree tilt. On the canonical D21xE21 fix grid the unique exact point is
+  \[
+  (m,s,a)=(0,1,0),
+  \]
+  so the projected parent block is selected by zero normalization shift, unit symmetric degree, and zero antisymmetric tilt. The first nontrivial runner-up `(0.05,1.125,0)` already opens visible errors (`max det residual = 6.61e-04`, `max Schur residual = 4.72e-04`, `max weight residual = 1.09e-04`, `max xi residual = 7.73e-03`). This is the cleanest structural statement so far: once the parent block is written in symmetry/normalization coordinates, the low-mode projection selects the canonical family by setting normalization, homogeneity, and asymmetry to their unique exact values.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

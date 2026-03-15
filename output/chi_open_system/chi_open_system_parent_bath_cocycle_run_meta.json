@@ -1,0 +1,10 @@
+{
+  "factor_map": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_bath_factorization_map.csv",
+  "calibration_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/kappa_env_anchor_calibration.csv",
+  "out_map": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_parent_bath_cocycle_map.csv",
+  "out_pairs": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_parent_bath_cocycle_pair_scan.csv",
+  "out_triples": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_parent_bath_cocycle_triangle_scan.csv",
+  "out_summary": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_parent_bath_cocycle_summary.csv",
+  "out_png": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_parent_bath_cocycle.png",
+  "tag": ""
+}

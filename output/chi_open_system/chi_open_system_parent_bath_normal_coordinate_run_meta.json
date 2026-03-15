@@ -1,0 +1,30 @@
+{
+  "factor_map_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_bath_factorization_map.csv",
+  "calibration_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/kappa_env_anchor_calibration.csv",
+  "statement": {
+    "canonical_coordinates": "L_sys, L_spec linear log coordinates",
+    "normal_coordinate_family": "L -> L + zeta * L^2 with fixed point and unit tangent preserved"
+  },
+  "grids": {
+    "zeta_sys": [
+      -0.25,
+      -0.125,
+      0.0,
+      0.125,
+      0.25
+    ],
+    "zeta_spec": [
+      -0.25,
+      -0.125,
+      0.0,
+      0.125,
+      0.25
+    ]
+  },
+  "references": {
+    "sys_phi_ref": 9.511900271602018e-33,
+    "sys_mix_ref": 2.131865833003157e-08,
+    "spec_phi_ref": 1.1119059294765243,
+    "spec_mix_ref": 1.0688289091107648
+  }
+}

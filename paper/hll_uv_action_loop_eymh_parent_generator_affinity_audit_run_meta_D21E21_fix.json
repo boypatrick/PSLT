@@ -1,0 +1,42 @@
+{
+  "alpha_grid": [
+    0.9,
+    1.0,
+    1.1
+  ],
+  "beta_grid": [
+    0.9,
+    1.0,
+    1.1
+  ],
+  "lambda_grid": [
+    -0.2,
+    -0.1,
+    0.0,
+    0.1,
+    0.2
+  ],
+  "parented_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_map_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "qdd_grid": [
+    -0.025,
+    -0.0125,
+    0.0,
+    0.0125,
+    0.025
+  ],
+  "qsd_grid": [
+    -0.025,
+    -0.0125,
+    0.0,
+    0.0125,
+    0.025
+  ],
+  "qss_grid": [
+    -0.025,
+    -0.0125,
+    0.0,
+    0.0125,
+    0.025
+  ],
+  "tag": "D21E21_fix"
+}

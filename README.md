@@ -521,6 +521,24 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   (m,s,a)=(0,1,0),
   \]
   so the projected parent block is selected by zero normalization shift, unit symmetric degree, and zero antisymmetric tilt. The first nontrivial runner-up `(0.05,1.125,0)` already opens visible errors (`max det residual = 6.61e-04`, `max Schur residual = 4.72e-04`, `max weight residual = 1.09e-04`, `max xi residual = 7.73e-03`). This is the cleanest structural statement so far: once the parent block is written in symmetry/normalization coordinates, the low-mode projection selects the canonical family by setting normalization, homogeneity, and asymmetry to their unique exact values.
+- **EYMH parent generator-affinity audit:** finally, we tested the first local non-affine extension of the parent-block generator,
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_generator_affinity_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_generator_affinity_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_parent_generator_affinity_audit_D21E21_fix.png`
+  using
+  \[
+  \log C_{\rm gen}
+  =
+  \tfrac12 L_{\rm sum}
+  + q_{ss} L_{\rm sum}^2
+  + q_{dd} L_{\rm diff}^2
+  + q_{sd} L_{\rm sum}L_{\rm diff}.
+  \]
+  The unique exact point is
+  \[
+  (q_{ss},q_{dd},q_{sd})=(0,0,0),
+  \]
+  meaning that the projected parent action selects a locally affine log-generator in the excess coordinates themselves. The first nontrivial runner-up `(0,-0.0125,0.0125)` already opens visible errors (`max det residual = 2.76e-04`, `max Schur residual = 1.98e-04`, `max weight residual = 2.62e-05`, `max xi residual = 2.23e-03`). This is the narrowest structural statement so far: after fixing symmetry/normalization, the low-mode parent action also rejects the first local log-curvature corrections, so the surviving canonical block lies in the local multiplicative excess class itself.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

@@ -1070,6 +1070,20 @@ The audit stored under \path{paper/hll\_uv\_*parent\_symnorm*_D21E21\_fix.*} sho
 (m,s,a)=(0,1,0),
 \]
 for which the determinant, Schur, weight, and normalized cross-ratio residuals again collapse to machine precision. The first nontrivial runner-up, $(0.05,1.125,0)$, already opens visible residuals, with $\max|\Delta(\det/K_{\rm bg})|=6.61\times10^{-4}$, $\max|\Delta \widehat G_{\rm Schur}|=4.72\times10^{-4}$, $\max|\Delta A|=1.09\times10^{-4}$, and $\max|\Delta \xi|=7.73\times10^{-3}$. This is the cleanest structural statement so far: once the parent block is written in symmetry/normalization coordinates, the low-mode projected parent action selects the canonical family by enforcing zero normalization shift, unit symmetric degree, and zero antisymmetric tilt.
+The last nearby structural ambiguity is whether the parent action truly selects a locally affine generator in these excess coordinates, or whether small log-curvature terms survive. The audit stored under \path{paper/hll\_uv\_*parent\_generator\_affinity*_D21E21\_fix.*} probes the first non-affine local extension,
+\[
+\log C_{\rm gen}
+=
+\frac12 L_{\rm sum}
++q_{ss}L_{\rm sum}^2
++q_{dd}L_{\rm diff}^2
++q_{sd}L_{\rm sum}L_{\rm diff},
+\]
+with $L_{\rm sum}=\log(E_{\rm part}E_{\rm tree})$ and $L_{\rm diff}=\log(E_{\rm part}/E_{\rm tree})$. On the same D21$\times$E21 fix grid the unique exact point is
+\[
+(q_{ss},q_{dd},q_{sd})=(0,0,0),
+\]
+for which the determinant, Schur, weight, and normalized cross-ratio residuals again collapse to machine precision. The first nontrivial runner-up, $(0,-0.0125,0.0125)$, already opens visible residuals, with $\max|\Delta(\det/K_{\rm bg})|=2.76\times10^{-4}$, $\max|\Delta \widehat G_{\rm Schur}|=1.98\times10^{-4}$, $\max|\Delta A|=2.62\times10^{-5}$, and $\max|\Delta \xi|=2.23\times10^{-3}$. This is the narrowest structural statement so far: once symmetry and normalization have been fixed, the low-mode projected parent action also rejects the first local log-curvature corrections, so the surviving canonical parent block lies in the locally affine multiplicative excess class itself.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

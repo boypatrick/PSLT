@@ -568,6 +568,21 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   (p_{\rm part},p_{\rm tree})=(1,1),
   \]
   with machine-precision determinant/Schur/weight closure (`max det residual = 4.44e-16`, `max Schur residual = 4.44e-16`, `max weight residual = 1.11e-16`, `max xi residual = 8.33e-17`) and vanishing anchor/onset residuals. The first nontrivial runner-up `(0.75,1.0)` already opens visible first-slice distortions (`part onset residual = 2.02e-03`, `tree onset residual = 8.23e-03`) together with `max det residual = 8.25e-04`, `max Schur residual = 5.51e-04`, `max weight residual = 9.80e-05`, and `max xi residual = 7.85e-03`. This is the narrowest coordinate statement so far: even after fixing the same fixed points and the same tangent normalization, the projected parent action still uniquely selects the linear excess coordinates themselves.
+- **EYMH normal-coordinate audit:** we then recast the same result in positive local-coordinate language by probing the first nonlinear jet family that preserves the same fixed points and the same unit tangent normalization,
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_normal_coordinate_scan_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_normal_coordinate_audit_summary_D21E21_fix.csv`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_normal_coordinate_audit_D21E21_fix.png`
+  using
+  \[
+  E_{\rm part}^{(\zeta_p)}=E_{\rm part}+\zeta_p E_{\rm part}^2,
+  \qquad
+  E_{\rm tree}^{(\zeta_t)}=E_{\rm tree}+\zeta_t E_{\rm tree}^2/K_{\rm bg}.
+  \]
+  The unique exact point is
+  \[
+  (\zeta_p,\zeta_t)=(0,0),
+  \]
+  with exact determinant/Schur/weight/xi closure and zero anchor/onset residuals. The first nontrivial runner-up `(0.125,0.0)` already opens visible distortions (`part onset residual = 2.10e-03`, `tree onset residual = 9.63e-03`, `max det residual = 9.90e-04`, `max Schur residual = 6.59e-04`, `max weight residual = 1.18e-04`, `max xi residual = 9.47e-03`). This is the cleanest positive local statement so far: the natural projected parent-action variables are the zero-second-jet normal coordinates around the identity/background fixed points, and those normal coordinates are exactly the linear excess variables.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

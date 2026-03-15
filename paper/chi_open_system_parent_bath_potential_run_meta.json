@@ -1,0 +1,10 @@
+{
+  "factor_map": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_bath_factorization_map.csv",
+  "calibration_csv": "/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/kappa_env_anchor_calibration.csv",
+  "statement": {
+    "B_a": "gamma_a / kappa_env",
+    "Phi_a": "log(B_a / B_a_ref)",
+    "Phi_decomposition": "L_sys,a + L_spec,a",
+    "DeltaGamma_a": "-Phi_a"
+  }
+}

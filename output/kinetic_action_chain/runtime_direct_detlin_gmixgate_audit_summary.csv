@@ -1,0 +1,2 @@
+rows,best_beta,best_norm_lo,best_norm_hi,best_side_lo,best_side_hi,best_objective,best_d4p8_max_abs_delta_mu_mumu,best_d6p4_max_abs_delta_mu_mumu,best_d7p2_max_abs_delta_mu_mumu,best_d8p0_max_abs_delta_mu_mumu,best_d4p0_acceptance_mismatch,num_constrained_candidates
+36,0.15,0.8,1.2,0.02,0.12,71.166517748727,106.09235690795059,11.552547774642058,1.4225558630165218,1.9888941834723983,0.6097560975609756,0

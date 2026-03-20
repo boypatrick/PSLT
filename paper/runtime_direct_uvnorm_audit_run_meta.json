@@ -1,0 +1,18 @@
+{
+  "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41.csv",
+  "tail_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_tailm2_D21E41.csv",
+  "rows": 21,
+  "eta_count": 41,
+  "summary": {
+    "ref_D": 10.0,
+    "worst_D": 6.4,
+    "worst_slice_max_abs_delta_mu_mumu": 9.98569946539893,
+    "worst_slice_acceptance_mismatch": 0.0,
+    "p95_abs_delta_log_gnorm": 0.2533933108445776,
+    "p95_abs_delta_log_g2_anchor": 0.4783667257802642,
+    "p95_abs_delta_log_side_anchor": 0.36619953127415067,
+    "corr_abs_mu_vs_abs_delta_log_gnorm": 0.2868678085358344,
+    "corr_abs_mu_vs_abs_delta_log_g2_anchor": -0.03094940903484209,
+    "corr_abs_mu_vs_abs_delta_log_side_anchor": -0.025254989573611032
+  }
+}

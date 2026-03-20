@@ -1,0 +1,6 @@
+{
+  "eta_probe": 0.2,
+  "ref_d": 9.6,
+  "ref_eta": 1.0,
+  "statement": "In the D~7.2-8.0 mid-band, the band-limited branch changes B2 strongly but leaves width_ratio and mu_mumu essentially unchanged, so the residual acceptance mismatch is not controlled by the current B self-blend path."
+}

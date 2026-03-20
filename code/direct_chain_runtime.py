@@ -45,7 +45,7 @@ def _read_d_column(path: Path, value_col: str) -> np.ndarray | None:
             vals.append(float(d_raw))
     if len(vals) < 2:
         return None
-    arr = np.array(sorted(vals), dtype=float)
+    arr = np.array(sorted(set(vals)), dtype=float)
     return arr
 
 

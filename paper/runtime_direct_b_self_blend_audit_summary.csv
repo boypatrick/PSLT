@@ -1,0 +1,2 @@
+combo_tag,max_blend_metric,max_blend_beta,num_beta_gt0,current_metric_lo,current_metric_hi,current_beta_max,worst_slice_D,worst_slice_max_abs_delta_mu_mumu,worst_slice_p95_abs_delta_mu_mumu,worst_slice_acceptance_mismatch,worst_slice_blend_metric,worst_slice_blend_beta,corr_metric_vs_slice_max_abs_delta,corr_metric_vs_slice_acceptance_mismatch
+chain_mode_cell_direct_runtime_release_combo_D21E41,0.7422223836830136,0.0,0,0.9,1.5,0.98,4.8,94.91652857147065,94.86837476423258,0.0,0.04486799188937018,0.0,-0.29585259113750645,0.3158985807604809

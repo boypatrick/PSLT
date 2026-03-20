@@ -1,0 +1,2 @@
+ref_D,worst_D,worst_slice_max_abs_delta_mu_mumu,worst_slice_acceptance_mismatch,p95_abs_delta_log_gnorm,p95_abs_delta_log_g2_anchor,p95_abs_delta_log_side_anchor,corr_abs_mu_vs_abs_delta_log_gnorm,corr_abs_mu_vs_abs_delta_log_g2_anchor,corr_abs_mu_vs_abs_delta_log_side_anchor
+10.0,6.4,9.98569946539893,0.0,0.2533933108445776,0.4783667257802642,0.36619953127415067,0.2868678085358344,-0.03094940903484209,-0.025254989573611032

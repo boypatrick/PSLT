@@ -1,0 +1,9 @@
+{
+  "midband_D": [
+    7.2,
+    8.0
+  ],
+  "ref_D": 9.6,
+  "ref_eta": 1.0,
+  "statement": "The mid-band D~7.2-8.0 residual is decomposed on the actual mu path: delta log mu = 2(delta log UV + delta log finite + delta log RGE) + delta log width. Counterfactual UV swaps isolate whether the UV-tree drift is driven primarily by g_uv, p_kin, or m2."
+}

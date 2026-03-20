@@ -46,6 +46,43 @@ Chain profile selection:
                               operator visibility inputs (g_{iN}, lambda_N)
                               by direct solvers inside scan cells, with cache
                               enabled as the production default.
+  - --chain-mode cell_direct_runtime_release_widthstable:
+                              strict all-direct width-stabilized candidate:
+                              keep the release path fully direct, but replace
+                              the raw leptonic total-width denominator by a
+                              direct-only anisotropy-triggered stabilization
+                              in runaway width bands, with no profile anchor.
+  - --chain-mode cell_direct_runtime_release_combo:
+                              strict all-direct combination candidate:
+                              keep the width-stabilized direct release path,
+                              and add a direct-only B visibility consistency
+                              blend from EFT-operator normalization toward the
+                              raw direct overlap fixed point in inflated bands.
+  - --chain-mode cell_direct_runtime_release_bandcombo:
+                              strict all-direct band-limited combo candidate:
+                              keep the direct-only B consistency blend, but
+                              replace the monotone width stabilization by a
+                              band-limited runaway-width activation that turns
+                              back off in the extreme low-D width tail.
+  - --chain-mode cell_direct_runtime_release_bandm2:
+                              strict all-direct band-limited m2 candidate:
+                              keep the band-limited width stabilization, but
+                              replace the inert B blend by a direct-only
+                              crossing-aware compression on lambda_2 along the
+                              UV m2 path when the runtime-direct middle mode
+                              overtakes lambda_1.
+  - --chain-mode cell_direct_runtime_release_tailm2:
+                              strict all-direct tail-aware m2 candidate:
+                              keep the direct-only m2 crossing correction, but
+                              replace the width branch by a tail-aware version
+                              that turns down the mid-tail compression while
+                              reboosting extreme anisotropy tails.
+  - --chain-mode cell_direct_runtime_release_tailm2gnorm:
+                              strict all-direct tail-aware m2+gnorm candidate:
+                              keep the tail-aware width and direct-only m2
+                              correction, then add a narrow g-matrix blend only
+                              when both side layers sit above the direct fixed
+                              point, targeting the remaining D≈6.4 UV residual.
   - --chain-mode cell_direct_runtime_extreme:
                               stress-only all-direct path with no profile
                               object; evaluate g_N(D), chi_LR(D), A_l(D),
@@ -348,6 +385,126 @@ def make_baseline_kinetics(
         gamma_mode = "action_runtime_direct"
         g_source = str(g_fp_2d_spectrum_csv)
         runtime_direct_no_cache_eff = False
+    elif chain_mode_eff == "cell_direct_runtime_release_widthstable":
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
+    elif chain_mode_eff == "cell_direct_runtime_release_combo":
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
+    elif chain_mode_eff == "cell_direct_runtime_release_bandcombo":
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
+    elif chain_mode_eff == "cell_direct_runtime_release_bandm2":
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
+    elif chain_mode_eff == "cell_direct_runtime_release_tailm2":
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
+    elif chain_mode_eff == "cell_direct_runtime_release_tailm2gnorm":
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
     elif chain_mode_eff == "cell_direct_runtime_release_tuned":
         g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
             root=ROOT,
@@ -460,6 +617,146 @@ def make_baseline_kinetics(
         hll_uv_rge_gamma_diag=float(uv_rge_gamma_diag),
         hll_uv_rge_gamma_offdiag=float(uv_rge_gamma_offdiag),
         hll_uv_rge_log_clip=float(uv_rge_log_clip),
+        hll_match_width_mode=(
+            (
+                "sm_leptonic_aniso_band_reboost"
+                if chain_mode_eff == "cell_direct_runtime_release_tailm2"
+                else (
+                    "sm_leptonic_aniso_band_power"
+                    if chain_mode_eff in {"cell_direct_runtime_release_bandcombo", "cell_direct_runtime_release_bandm2"}
+                    else "sm_leptonic_aniso_power"
+                )
+            )
+            if chain_mode_eff
+            in {
+                "cell_direct_runtime_release_widthstable",
+                "cell_direct_runtime_release_combo",
+                "cell_direct_runtime_release_bandcombo",
+                "cell_direct_runtime_release_bandm2",
+                "cell_direct_runtime_release_tailm2",
+                "cell_direct_runtime_release_tailm2gnorm",
+            }
+            else PAPER_BASELINE.get("hll_match_width_mode", "sm_leptonic")
+        ),
+        hll_match_width_scale=float(PAPER_BASELINE.get("hll_match_width_scale", 1.0)),
+        hll_match_width_power_base=(
+            0.75
+            if chain_mode_eff
+            in {
+                "cell_direct_runtime_release_widthstable",
+                "cell_direct_runtime_release_combo",
+                "cell_direct_runtime_release_bandcombo",
+                "cell_direct_runtime_release_bandm2",
+                "cell_direct_runtime_release_tailm2",
+                "cell_direct_runtime_release_tailm2gnorm",
+            }
+            else 1.0
+        ),
+        hll_match_width_power_log_ratio_coeff=(
+            0.15
+            if chain_mode_eff
+            in {
+                "cell_direct_runtime_release_widthstable",
+                "cell_direct_runtime_release_combo",
+                "cell_direct_runtime_release_bandcombo",
+                "cell_direct_runtime_release_bandm2",
+                "cell_direct_runtime_release_tailm2",
+                "cell_direct_runtime_release_tailm2gnorm",
+            }
+            else 0.0
+        ),
+        hll_match_width_power_min=(
+            0.60
+            if chain_mode_eff
+            in {
+                "cell_direct_runtime_release_widthstable",
+                "cell_direct_runtime_release_combo",
+                "cell_direct_runtime_release_bandcombo",
+                "cell_direct_runtime_release_bandm2",
+                "cell_direct_runtime_release_tailm2",
+                "cell_direct_runtime_release_tailm2gnorm",
+            }
+            else 1.0
+        ),
+        hll_match_width_power_max=(
+            0.85
+            if chain_mode_eff
+            in {
+                "cell_direct_runtime_release_widthstable",
+                "cell_direct_runtime_release_combo",
+                "cell_direct_runtime_release_bandcombo",
+                "cell_direct_runtime_release_bandm2",
+                "cell_direct_runtime_release_tailm2",
+                "cell_direct_runtime_release_tailm2gnorm",
+            }
+            else 1.0
+        ),
+        hll_match_width_power_trigger_lo=(
+            5.0
+            if chain_mode_eff
+            in {
+                "cell_direct_runtime_release_widthstable",
+                "cell_direct_runtime_release_combo",
+                "cell_direct_runtime_release_bandcombo",
+                "cell_direct_runtime_release_bandm2",
+                "cell_direct_runtime_release_tailm2",
+                "cell_direct_runtime_release_tailm2gnorm",
+            }
+            else 1.0
+        ),
+        hll_match_width_power_trigger_hi=(
+            20.0
+            if chain_mode_eff
+            in {
+                "cell_direct_runtime_release_widthstable",
+                "cell_direct_runtime_release_combo",
+                "cell_direct_runtime_release_bandcombo",
+                "cell_direct_runtime_release_bandm2",
+                "cell_direct_runtime_release_tailm2",
+                "cell_direct_runtime_release_tailm2gnorm",
+            }
+            else 1.0
+        ),
+        hll_match_width_power_turnoff_lo=(
+            70.0
+            if chain_mode_eff in {"cell_direct_runtime_release_tailm2", "cell_direct_runtime_release_tailm2gnorm"}
+            else (80.0 if chain_mode_eff in {"cell_direct_runtime_release_bandcombo", "cell_direct_runtime_release_bandm2"} else 1.0)
+        ),
+        hll_match_width_power_turnoff_hi=(
+            140.0
+            if chain_mode_eff in {"cell_direct_runtime_release_tailm2", "cell_direct_runtime_release_tailm2gnorm"}
+            else (160.0 if chain_mode_eff in {"cell_direct_runtime_release_bandcombo", "cell_direct_runtime_release_bandm2"} else 1.0)
+        ),
+        hll_match_width_power_tail_logratio_lo=(
+            1.5 if chain_mode_eff in {"cell_direct_runtime_release_tailm2", "cell_direct_runtime_release_tailm2gnorm"} else 0.0
+        ),
+        hll_match_width_power_tail_logratio_hi=(
+            2.5 if chain_mode_eff in {"cell_direct_runtime_release_tailm2", "cell_direct_runtime_release_tailm2gnorm"} else 0.0
+        ),
+        hll_match_width_power_tail_reboost_max=(
+            0.15 if chain_mode_eff in {"cell_direct_runtime_release_tailm2", "cell_direct_runtime_release_tailm2gnorm"} else 0.0
+        ),
+        runtime_direct_b_self_blend_max=(
+            0.98 if chain_mode_eff in {"cell_direct_runtime_release_combo", "cell_direct_runtime_release_bandcombo"} else 0.0
+        ),
+        runtime_direct_b_self_blend_metric_lo=(
+            0.9 if chain_mode_eff in {"cell_direct_runtime_release_combo", "cell_direct_runtime_release_bandcombo"} else 0.0
+        ),
+        runtime_direct_b_self_blend_metric_hi=(
+            1.5 if chain_mode_eff in {"cell_direct_runtime_release_combo", "cell_direct_runtime_release_bandcombo"} else 1.0
+        ),
+        hll_uv_runtime_direct_m2_cross_blend=(
+            0.75 if chain_mode_eff in {"cell_direct_runtime_release_bandm2", "cell_direct_runtime_release_tailm2", "cell_direct_runtime_release_tailm2gnorm"} else 0.0
+        ),
+        hll_uv_runtime_direct_gnorm_blend_max=(
+            0.20 if chain_mode_eff == "cell_direct_runtime_release_tailm2gnorm" else 0.0
+        ),
+        hll_uv_runtime_direct_gnorm_metric_lo=(
+            0.64 if chain_mode_eff == "cell_direct_runtime_release_tailm2gnorm" else 0.0
+        ),
+        hll_uv_runtime_direct_gnorm_metric_hi=(
+            0.72 if chain_mode_eff == "cell_direct_runtime_release_tailm2gnorm" else 1.0
+        ),
         **runtime_b_overrides,
     )
     print(
@@ -689,6 +986,12 @@ def parse_args() -> argparse.Namespace:
             "full_direct_runtime",
             "cell_direct_runtime",
             "cell_direct_runtime_release",
+            "cell_direct_runtime_release_widthstable",
+            "cell_direct_runtime_release_combo",
+            "cell_direct_runtime_release_bandcombo",
+            "cell_direct_runtime_release_bandm2",
+            "cell_direct_runtime_release_tailm2",
+            "cell_direct_runtime_release_tailm2gnorm",
             "cell_direct_runtime_release_tuned",
             "cell_direct_runtime_extreme",
         ],
@@ -829,6 +1132,12 @@ def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray
         "full_direct_runtime",
         "cell_direct_runtime",
         "cell_direct_runtime_release",
+        "cell_direct_runtime_release_widthstable",
+        "cell_direct_runtime_release_combo",
+        "cell_direct_runtime_release_bandcombo",
+        "cell_direct_runtime_release_bandm2",
+        "cell_direct_runtime_release_tailm2",
+        "cell_direct_runtime_release_tailm2gnorm",
         "cell_direct_runtime_release_tuned",
         "cell_direct_runtime_extreme",
     }:
@@ -913,7 +1222,7 @@ def main() -> None:
     if snapped:
         old_ref_d = float(args.ref_d) if str(args.ref_mode) == "fixed" else float("nan")
         print(
-            "[info] chain_mode in {full_direct,full_direct_runtime,cell_direct_runtime,cell_direct_runtime_release,cell_direct_runtime_release_tuned,cell_direct_runtime_extreme} snapped ref_D to grid:",
+            "[info] chain_mode in {full_direct,full_direct_runtime,cell_direct_runtime,cell_direct_runtime_release,cell_direct_runtime_release_widthstable,cell_direct_runtime_release_combo,cell_direct_runtime_release_bandcombo,cell_direct_runtime_release_bandm2,cell_direct_runtime_release_tailm2,cell_direct_runtime_release_tailm2gnorm,cell_direct_runtime_release_tuned,cell_direct_runtime_extreme} snapped ref_D to grid:",
             f"{old_ref_d if old_ref_d == old_ref_d else 'selector'} -> {ref_d:.6g}",
         )
         ref_source = f"{ref_source}+snap_refD_to_grid"

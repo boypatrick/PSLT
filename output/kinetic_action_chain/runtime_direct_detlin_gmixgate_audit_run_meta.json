@@ -1,0 +1,25 @@
+{
+  "summary": {
+    "rows": 36,
+    "best_beta": 0.15,
+    "best_norm_lo": 0.8,
+    "best_norm_hi": 1.2,
+    "best_side_lo": 0.02,
+    "best_side_hi": 0.12,
+    "best_objective": 71.166517748727,
+    "best_d4p8_max_abs_delta_mu_mumu": 106.09235690795059,
+    "best_d6p4_max_abs_delta_mu_mumu": 11.552547774642058,
+    "best_d7p2_max_abs_delta_mu_mumu": 1.4225558630165218,
+    "best_d8p0_max_abs_delta_mu_mumu": 1.9888941834723983,
+    "best_d4p0_acceptance_mismatch": 0.6097560975609756,
+    "num_constrained_candidates": 0
+  },
+  "focus_D": [
+    4.0,
+    4.8,
+    6.4,
+    7.2,
+    8.0
+  ],
+  "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41.csv"
+}

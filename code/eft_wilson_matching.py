@@ -30,8 +30,19 @@ class EFTWilsonMatchConfig:
     mix_max: float = 0.25
     eta_power: float = 1.0
     eta_ref: float = 1.0
-    width_mode: str = "sm_leptonic"  # "none" or "sm_leptonic"
+    width_mode: str = "sm_leptonic"  # "none", "sm_leptonic", "sm_leptonic_aniso_power", "sm_leptonic_aniso_band_power", or "sm_leptonic_aniso_band_reboost"
     width_scale: float = 1.0
+    width_power_base: float = 1.0
+    width_power_log_ratio_coeff: float = 0.0
+    width_power_min: float = 1.0
+    width_power_max: float = 1.0
+    width_power_trigger_lo: float = 1.0
+    width_power_trigger_hi: float = 1.0
+    width_power_turnoff_lo: float = 1.0
+    width_power_turnoff_hi: float = 1.0
+    width_power_tail_logratio_lo: float = 0.0
+    width_power_tail_logratio_hi: float = 0.0
+    width_power_tail_reboost_max: float = 0.0
     br_ee: float = 5.0e-9
     br_mumu: float = 2.2e-4
     br_tautau: float = 6.3e-2
@@ -207,14 +218,73 @@ def total_width_ratio(
 ) -> float:
     if cfg.width_mode == "none":
         return 1.0
-    if cfg.width_mode != "sm_leptonic":
+    if cfg.width_mode not in {
+        "sm_leptonic",
+        "sm_leptonic_aniso_power",
+        "sm_leptonic_aniso_band_power",
+        "sm_leptonic_aniso_band_reboost",
+    }:
         raise ValueError(f"Unsupported width_mode='{cfg.width_mode}'.")
 
     c = np.maximum(np.asarray(c_diag, dtype=float).reshape(3), cfg.floor)
     c_ref = np.maximum(np.asarray(c_diag_ref, dtype=float).reshape(3), cfg.floor)
     partial = (c / c_ref) ** 2
-
     br = np.array([cfg.br_ee, cfg.br_mumu, cfg.br_tautau], dtype=float)
+    if cfg.width_mode in {
+        "sm_leptonic_aniso_power",
+        "sm_leptonic_aniso_band_power",
+        "sm_leptonic_aniso_band_reboost",
+    }:
+        raw_delta = float(np.sum(br * (partial - 1.0)))
+        raw_ratio = 1.0 + float(cfg.width_scale) * raw_delta
+        log_partial_ratio = float(np.log(max(float(partial[1]), cfg.floor) / max(float(partial[2]), cfg.floor)))
+        rho_target = float(cfg.width_power_base) + float(cfg.width_power_log_ratio_coeff) * log_partial_ratio
+        rho_target = float(np.clip(rho_target, float(cfg.width_power_min), float(cfg.width_power_max)))
+        lo = max(float(cfg.width_power_trigger_lo), 1.0 + cfg.floor)
+        hi = max(float(cfg.width_power_trigger_hi), lo + cfg.floor)
+        if hi <= lo * (1.0 + 1e-12):
+            activation = 1.0 if raw_ratio > lo else 0.0
+        else:
+            activation = float(
+                np.clip(
+                    np.log(max(raw_ratio, 1.0 + cfg.floor) / lo) / np.log(hi / lo),
+                    0.0,
+                    1.0,
+                )
+            )
+        activation_raw = activation
+        if cfg.width_mode in {"sm_leptonic_aniso_band_power", "sm_leptonic_aniso_band_reboost"}:
+            turnoff_lo = max(float(cfg.width_power_turnoff_lo), hi)
+            turnoff_hi = max(float(cfg.width_power_turnoff_hi), turnoff_lo + cfg.floor)
+            if raw_ratio <= turnoff_lo:
+                suppression = 1.0
+            elif turnoff_hi <= turnoff_lo * (1.0 + 1e-12):
+                suppression = 0.0 if raw_ratio > turnoff_lo else 1.0
+            else:
+                suppression = 1.0 - float(
+                    np.clip(
+                        np.log(max(raw_ratio, turnoff_lo) / turnoff_lo) / np.log(turnoff_hi / turnoff_lo),
+                        0.0,
+                        1.0,
+                    )
+                )
+            activation *= suppression
+            if cfg.width_mode == "sm_leptonic_aniso_band_reboost":
+                tail_lo = max(float(cfg.width_power_tail_logratio_lo), 0.0)
+                tail_hi = max(float(cfg.width_power_tail_logratio_hi), tail_lo + cfg.floor)
+                log_ratio_mag = abs(log_partial_ratio)
+                if log_ratio_mag <= tail_lo:
+                    tail_reboost = 0.0
+                elif tail_hi <= tail_lo + cfg.floor:
+                    tail_reboost = float(cfg.width_power_tail_reboost_max)
+                else:
+                    tail_reboost = float(cfg.width_power_tail_reboost_max) * float(
+                        np.clip((log_ratio_mag - tail_lo) / (tail_hi - tail_lo), 0.0, 1.0)
+                    )
+                activation += activation_raw * (1.0 - suppression) * tail_reboost
+        rho = 1.0 - activation * (1.0 - rho_target)
+        partial = np.maximum(partial, cfg.floor) ** rho
+
     delta = float(np.sum(br * (partial - 1.0)))
     ratio = 1.0 + float(cfg.width_scale) * delta
     return float(max(ratio, cfg.floor))

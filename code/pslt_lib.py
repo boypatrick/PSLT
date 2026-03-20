@@ -158,6 +158,9 @@ class PSLTParameters:
     runtime_direct_b_flavor_sigma_max_scale: float = 1.50
     runtime_direct_b_profile_blend: float = 0.0  # 0 => pure runtime-direct, 1 => pure profile anchor
     runtime_direct_b_profile_blend_csv: Optional[str] = None
+    runtime_direct_b_self_blend_max: float = 0.0  # 0 => disabled; direct-only operator/raw consistency blend
+    runtime_direct_b_self_blend_metric_lo: float = 0.0
+    runtime_direct_b_self_blend_metric_hi: float = 1.0
     runtime_direct_b_track_seed_D: float = 4.0
     runtime_direct_b_track_step: float = 1.0
     hll_observable_mode: str = "eft_wilson_uv_rge"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
@@ -167,8 +170,19 @@ class PSLTParameters:
     hll_match_mix_max: float = 0.25
     hll_match_eta_power: float = 1.0
     hll_match_eta_ref: float = 1.0
-    hll_match_width_mode: str = "sm_leptonic"  # "none" or "sm_leptonic"
+    hll_match_width_mode: str = "sm_leptonic"  # "none", "sm_leptonic", "sm_leptonic_aniso_power", "sm_leptonic_aniso_band_power", or "sm_leptonic_aniso_band_reboost"
     hll_match_width_scale: float = 1.0
+    hll_match_width_power_base: float = 1.0
+    hll_match_width_power_log_ratio_coeff: float = 0.0
+    hll_match_width_power_min: float = 1.0
+    hll_match_width_power_max: float = 1.0
+    hll_match_width_power_trigger_lo: float = 1.0
+    hll_match_width_power_trigger_hi: float = 1.0
+    hll_match_width_power_turnoff_lo: float = 1.0
+    hll_match_width_power_turnoff_hi: float = 1.0
+    hll_match_width_power_tail_logratio_lo: float = 0.0
+    hll_match_width_power_tail_logratio_hi: float = 0.0
+    hll_match_width_power_tail_reboost_max: float = 0.0
     hll_match_br_ee: float = 5.0e-9
     hll_match_br_mumu: float = 2.2e-4
     hll_match_br_tautau: float = 6.3e-2
@@ -176,6 +190,10 @@ class PSLTParameters:
     hll_uv_coupling_floor: float = 1e-30
     hll_uv_blend: float = 0.0
     hll_uv_m2_power: float = 1.0
+    hll_uv_runtime_direct_m2_cross_blend: float = 0.0
+    hll_uv_runtime_direct_gnorm_blend_max: float = 0.0
+    hll_uv_runtime_direct_gnorm_metric_lo: float = 0.0
+    hll_uv_runtime_direct_gnorm_metric_hi: float = 1.0
     hll_uv_match_kappa_diag: float = 0.0
     hll_uv_match_kappa_offdiag: float = 0.0
     hll_uv_match_mode: str = "constant"  # "constant", "input_tied", "action_normalized", "action_absolute", "action_loop_contrast", "action_loop_absolute", "action_loop_eymh_absolute", "action_loop_eymh_source_informed", or "action_loop_eymh_parented"
@@ -308,6 +326,13 @@ class PSLTParameters:
             raise ValueError("runtime_direct_b_flavor_sigma_min_scale cannot exceed runtime_direct_b_flavor_sigma_max_scale.")
         if not (0.0 <= self.runtime_direct_b_profile_blend <= 1.0):
             raise ValueError("runtime_direct_b_profile_blend must be in [0,1].")
+        if not (0.0 <= self.runtime_direct_b_self_blend_max <= 1.0):
+            raise ValueError("runtime_direct_b_self_blend_max must be in [0,1].")
+        if self.runtime_direct_b_self_blend_metric_hi < self.runtime_direct_b_self_blend_metric_lo:
+            raise ValueError(
+                "runtime_direct_b_self_blend_metric_hi cannot be smaller than "
+                "runtime_direct_b_self_blend_metric_lo."
+            )
         if self.runtime_direct_b_track_step <= 0.0:
             raise ValueError("runtime_direct_b_track_step must be > 0.")
         if self.hll_observable_mode not in {
@@ -330,10 +355,34 @@ class PSLTParameters:
             raise ValueError("hll_match_mix_max must be in [0, 0.49].")
         if self.hll_match_eta_ref <= 0.0:
             raise ValueError("hll_match_eta_ref must be > 0.")
-        if self.hll_match_width_mode not in {"none", "sm_leptonic"}:
+        if self.hll_match_width_mode not in {
+            "none",
+            "sm_leptonic",
+            "sm_leptonic_aniso_power",
+            "sm_leptonic_aniso_band_power",
+            "sm_leptonic_aniso_band_reboost",
+        }:
             raise ValueError(f"Unsupported hll_match_width_mode='{self.hll_match_width_mode}'.")
         if self.hll_match_width_scale < 0.0:
             raise ValueError("hll_match_width_scale must be >= 0.")
+        if self.hll_match_width_power_min <= 0.0 or self.hll_match_width_power_max <= 0.0:
+            raise ValueError("hll_match_width_power_min and hll_match_width_power_max must be > 0.")
+        if self.hll_match_width_power_min > self.hll_match_width_power_max:
+            raise ValueError("hll_match_width_power_min cannot exceed hll_match_width_power_max.")
+        if self.hll_match_width_power_trigger_lo < 1.0 or self.hll_match_width_power_trigger_hi < 1.0:
+            raise ValueError("hll_match_width_power_trigger_lo and hll_match_width_power_trigger_hi must be >= 1.")
+        if self.hll_match_width_power_trigger_lo > self.hll_match_width_power_trigger_hi:
+            raise ValueError("hll_match_width_power_trigger_lo cannot exceed hll_match_width_power_trigger_hi.")
+        if self.hll_match_width_power_turnoff_lo < 1.0 or self.hll_match_width_power_turnoff_hi < 1.0:
+            raise ValueError("hll_match_width_power_turnoff_lo and hll_match_width_power_turnoff_hi must be >= 1.")
+        if self.hll_match_width_power_turnoff_lo > self.hll_match_width_power_turnoff_hi:
+            raise ValueError("hll_match_width_power_turnoff_lo cannot exceed hll_match_width_power_turnoff_hi.")
+        if self.hll_match_width_power_tail_logratio_lo < 0.0 or self.hll_match_width_power_tail_logratio_hi < 0.0:
+            raise ValueError("hll_match_width_power_tail_logratio_lo and _hi must be >= 0.")
+        if self.hll_match_width_power_tail_logratio_lo > self.hll_match_width_power_tail_logratio_hi:
+            raise ValueError("hll_match_width_power_tail_logratio_lo cannot exceed _hi.")
+        if not (0.0 <= self.hll_match_width_power_tail_reboost_max <= 1.0):
+            raise ValueError("hll_match_width_power_tail_reboost_max must lie in [0,1].")
         if min(self.hll_match_br_ee, self.hll_match_br_mumu, self.hll_match_br_tautau) < 0.0:
             raise ValueError("hll_match_br_* must be >= 0.")
         if self.hll_uv_m2_floor <= 0.0:
@@ -344,10 +393,18 @@ class PSLTParameters:
             raise ValueError("hll_uv_blend must be in [0,1].")
         if self.hll_uv_m2_power < 0.0:
             raise ValueError("hll_uv_m2_power must be >= 0.")
+        if not (0.0 <= self.hll_uv_runtime_direct_gnorm_blend_max <= 1.0):
+            raise ValueError("hll_uv_runtime_direct_gnorm_blend_max must lie in [0,1].")
+        if self.hll_uv_runtime_direct_gnorm_metric_lo < 0.0 or self.hll_uv_runtime_direct_gnorm_metric_hi < 0.0:
+            raise ValueError("hll_uv_runtime_direct_gnorm_metric_lo and _hi must be >= 0.")
+        if self.hll_uv_runtime_direct_gnorm_metric_lo > self.hll_uv_runtime_direct_gnorm_metric_hi:
+            raise ValueError("hll_uv_runtime_direct_gnorm_metric_lo cannot exceed _hi.")
         if self.hll_uv_rge_mu_low <= 0.0:
             raise ValueError("hll_uv_rge_mu_low must be > 0.")
         if self.hll_uv_rge_log_clip <= 0.0:
             raise ValueError("hll_uv_rge_log_clip must be > 0.")
+        if not (0.0 <= self.hll_uv_runtime_direct_m2_cross_blend <= 1.0):
+            raise ValueError("hll_uv_runtime_direct_m2_cross_blend must lie in [0,1].")
 
 # =============================================================================
 # 2. Yukawa Visibility Module
@@ -1136,18 +1193,74 @@ class PSLTKinetics:
             alpha = float(np.interp(float(D), np.asarray(prof["D"], dtype=float), np.asarray(prof["alpha"], dtype=float)))
         return float(np.clip(alpha, 0.0, 1.0))
 
-    def _runtime_direct_b_operator_inputs(self, D: float) -> Dict[str, np.ndarray]:
+    def _runtime_direct_b_self_blend_weight(
+        self,
+        operator_b123: np.ndarray,
+        direct_b123: np.ndarray,
+    ) -> float:
+        beta_max = float(self.params.runtime_direct_b_self_blend_max)
+        if beta_max <= 0.0:
+            return 0.0
+
+        floor = float(self.params.b_overlap_floor)
+        op = np.maximum(np.asarray(operator_b123, dtype=float).reshape(3), floor)
+        dr = np.maximum(np.asarray(direct_b123, dtype=float).reshape(3), floor)
+        # We only want to compress direct EFT visibility when it inflates
+        # above the raw direct overlap fixed point in the observable bands.
+        metric = float(np.max(np.maximum(np.log(op[:2] / dr[:2]), 0.0)))
+        lo = float(self.params.runtime_direct_b_self_blend_metric_lo)
+        hi = float(self.params.runtime_direct_b_self_blend_metric_hi)
+        if hi <= lo + 1e-12:
+            activation = 1.0 if metric > lo else 0.0
+        else:
+            activation = float(np.clip((metric - lo) / (hi - lo), 0.0, 1.0))
+        return float(beta_max * activation)
+
+    def _runtime_direct_gnorm_blend_weight(
+        self,
+        hll_diag: np.ndarray,
+        direct_diag: np.ndarray,
+        direct_b123: np.ndarray,
+    ) -> float:
+        beta_max = float(self.params.hll_uv_runtime_direct_gnorm_blend_max)
+        if beta_max <= 0.0:
+            return 0.0
+
+        floor = float(self.params.hll_uv_coupling_floor)
+        h = np.maximum(np.asarray(hll_diag, dtype=float).reshape(3), floor)
+        d = np.maximum(np.asarray(direct_diag, dtype=float).reshape(3), floor)
+        # Only activate when both side layers sit above their direct fixed point.
+        metric = float(max(min(np.log(h[0] / d[0]), np.log(h[2] / d[2])), 0.0))
+        b = np.maximum(np.asarray(direct_b123, dtype=float).reshape(3), float(self.params.b_overlap_floor))
+        b2_gate = float(np.clip((float(b[1]) - 0.75) / 0.10, 0.0, 1.0))
+        lo = float(self.params.hll_uv_runtime_direct_gnorm_metric_lo)
+        hi = float(self.params.hll_uv_runtime_direct_gnorm_metric_hi)
+        if hi <= lo + 1e-12:
+            activation = 1.0 if metric > lo else 0.0
+        else:
+            activation = float(np.clip((metric - lo) / (hi - lo), 0.0, 1.0))
+        return float(beta_max * activation * b2_gate)
+
+    def _runtime_direct_b_operator_inputs(
+        self,
+        D: float,
+        _track_prev: Optional[Dict[str, np.ndarray]] = None,
+    ) -> Dict[str, np.ndarray]:
         key = float(round(D, 8))
-        if self.params.runtime_direct_use_cache:
+        if self.params.runtime_direct_use_cache and _track_prev is None:
             cached = self._b_runtime_direct_input_cache.get(key, None)
             if cached is not None:
                 return {k: np.array(v, dtype=float, copy=True) for k, v in cached.items()}
 
-        # Deterministic mode-tracking warm path: always build the seed->target
-        # chain (filling only missing knots) to stabilize branch labels.
+        # Deterministic mode-tracking warm path: when no predecessor state is
+        # provided, build the seed->target chain once and pass the tracked
+        # state forward linearly. If a predecessor is already provided, use it
+        # directly for the target solve rather than recursively rebuilding the
+        # full warm chain again.
         d_seed = float(self.params.runtime_direct_b_track_seed_D)
         d_step = float(self.params.runtime_direct_b_track_step)
-        if float(D) > d_seed + 1e-12:
+        prev = None if _track_prev is None else {k: np.array(v, dtype=float, copy=True) for k, v in _track_prev.items()}
+        if prev is None and float(D) > d_seed + 1e-12:
             d_warm = np.arange(d_seed, float(D), d_step, dtype=float)
             for d_val in d_warm:
                 if float(d_val) >= float(D) - 1e-10:
@@ -1155,9 +1268,12 @@ class PSLTKinetics:
                 d_key = float(round(float(d_val), 8))
                 if d_key == key:
                     continue
-                if d_key in self._b_runtime_direct_input_cache:
-                    continue
-                self._runtime_direct_b_operator_inputs(d_key)
+                if self.params.runtime_direct_use_cache:
+                    cached = self._b_runtime_direct_input_cache.get(d_key, None)
+                    if cached is not None:
+                        prev = {k: np.array(v, dtype=float, copy=True) for k, v in cached.items()}
+                        continue
+                prev = self._runtime_direct_b_operator_inputs(d_key, _track_prev=prev)
 
         # Lazy imports to keep non-direct scan startup lightweight.
         from extract_chi_localized_2d import Level as BLevel  # local import by design
@@ -1268,9 +1384,7 @@ class PSLTKinetics:
         y_raw = np.zeros(3, dtype=float)
         y_flavor = {flavor: np.zeros(3, dtype=float) for flavor in ("e", "mu", "tau")}
         track_idx = np.arange(3, dtype=int)
-        if self._b_runtime_direct_input_cache:
-            nearest_key = min(self._b_runtime_direct_input_cache.keys(), key=lambda dk: abs(float(dk) - float(key)))
-            prev = self._b_runtime_direct_input_cache[nearest_key]
+        if prev is not None:
             prev_lam = np.asarray(prev.get("lambda", np.array([evals[0], evals[1], evals[2]], dtype=float)), dtype=float)
             prev_y = np.asarray(prev.get("yraw", np.array([y_modes[0], y_modes[1], y_modes[2]], dtype=float)), dtype=float)
             prev_parity = np.asarray(prev.get("parity", np.array([parity[0], parity[1], parity[2]], dtype=float)), dtype=float)
@@ -2031,6 +2145,16 @@ class PSLTKinetics:
         b123 = np.maximum(strengths / norm, self.params.b_overlap_floor)
 
         if self._b_mode_active == "eft_operator_norm_runtime_direct":
+            direct = self._runtime_direct_b_operator_inputs(float(D))
+            direct_b123 = np.maximum(np.asarray(direct["b123"], dtype=float), self.params.b_overlap_floor)
+            beta = self._runtime_direct_b_self_blend_weight(b123, direct_b123)
+            if beta > 0.0:
+                b123 = np.exp(
+                    (1.0 - beta) * np.log(np.maximum(b123, self.params.b_overlap_floor))
+                    + beta * np.log(direct_b123)
+                )
+                b123 = np.maximum(b123, self.params.b_overlap_floor)
+                b123 /= max(float(b123[2]), self.params.b_overlap_floor)
             alpha = self._runtime_direct_b_profile_blend_at(float(D))
             if alpha > 0.0 and self._b_overlap_profile is not None:
                 prof = self._b_overlap_profile
@@ -2124,6 +2248,17 @@ class PSLTKinetics:
             eta_ref=self.params.hll_match_eta_ref,
             width_mode=self.params.hll_match_width_mode,
             width_scale=self.params.hll_match_width_scale,
+            width_power_base=self.params.hll_match_width_power_base,
+            width_power_log_ratio_coeff=self.params.hll_match_width_power_log_ratio_coeff,
+            width_power_min=self.params.hll_match_width_power_min,
+            width_power_max=self.params.hll_match_width_power_max,
+            width_power_trigger_lo=self.params.hll_match_width_power_trigger_lo,
+            width_power_trigger_hi=self.params.hll_match_width_power_trigger_hi,
+            width_power_turnoff_lo=self.params.hll_match_width_power_turnoff_lo,
+            width_power_turnoff_hi=self.params.hll_match_width_power_turnoff_hi,
+            width_power_tail_logratio_lo=self.params.hll_match_width_power_tail_logratio_lo,
+            width_power_tail_logratio_hi=self.params.hll_match_width_power_tail_logratio_hi,
+            width_power_tail_reboost_max=self.params.hll_match_width_power_tail_reboost_max,
             br_ee=self.params.hll_match_br_ee,
             br_mumu=self.params.hll_match_br_mumu,
             br_tautau=self.params.hll_match_br_tautau,
@@ -2180,6 +2315,13 @@ class PSLTKinetics:
             g = np.asarray(direct["g_uv"], dtype=float)
             blend = float(self.params.hll_uv_blend)
             g_eff = blend * g + (1.0 - blend) * diag
+            gnorm_blend = self._runtime_direct_gnorm_blend_weight(
+                np.diag(g_eff),
+                np.diag(g),
+                np.asarray(direct["b123"], dtype=float),
+            )
+            if gnorm_blend > 0.0:
+                g_eff = (1.0 - gnorm_blend) * g_eff + gnorm_blend * g
             return np.maximum(g_eff, self.params.hll_uv_coupling_floor)
 
         prof = self._b_overlap_profile
@@ -2202,6 +2344,18 @@ class PSLTKinetics:
         if self._b_mode_active == "eft_operator_norm_runtime_direct":
             direct = self._runtime_direct_b_operator_inputs(float(D))
             lam = np.asarray(direct["lambda"], dtype=float)
+            cross_blend = float(np.clip(self.params.hll_uv_runtime_direct_m2_cross_blend, 0.0, 1.0))
+            if cross_blend > 0.0 and lam.shape[0] >= 2 and float(lam[1]) > float(lam[0]):
+                lam0 = max(abs(float(lam[0])), self.params.hll_uv_m2_floor)
+                lam1 = max(abs(float(lam[1])), self.params.hll_uv_m2_floor)
+                target = float(np.sqrt(lam0 * lam1))
+                lam = np.array(lam, dtype=float, copy=True)
+                lam[1] = float(
+                    np.exp(
+                        (1.0 - cross_blend) * np.log(lam1)
+                        + cross_blend * np.log(target)
+                    )
+                )
             m2 = np.maximum(np.abs(lam), self.params.hll_uv_m2_floor)
             if pwr == 0.0:
                 return np.ones(3, dtype=float)
@@ -2634,8 +2788,8 @@ class PSLTKinetics:
         N_max: int = 20,
     ) -> float:
         cfg = self._hll_match_config()
-        c = self.hll_wilson_matrix_matched(D, eta, t_coh, N_max=N_max)
         c_ref = self.hll_wilson_matrix_matched(ref_D, ref_eta, t_coh, N_max=N_max)
+        c = self.hll_wilson_matrix_matched(D, eta, t_coh, N_max=N_max)
         c_diag = np.diag(c)
         c_ref_diag = np.diag(c_ref)
         return total_width_ratio(c_diag=c_diag, c_diag_ref=c_ref_diag, cfg=cfg)
@@ -2650,8 +2804,8 @@ class PSLTKinetics:
         N_max: int = 20,
     ) -> float:
         cfg = self._hll_match_config()
-        c = self.hll_wilson_matrix_uv_tree(D, eta, t_coh, N_max=N_max)
         c_ref = self.hll_wilson_matrix_uv_tree(ref_D, ref_eta, t_coh, N_max=N_max)
+        c = self.hll_wilson_matrix_uv_tree(D, eta, t_coh, N_max=N_max)
         c_diag = np.diag(c)
         c_ref_diag = np.diag(c_ref)
         return total_width_ratio(c_diag=c_diag, c_diag_ref=c_ref_diag, cfg=cfg)
@@ -2666,8 +2820,8 @@ class PSLTKinetics:
         N_max: int = 20,
     ) -> float:
         cfg = self._hll_match_config()
-        c = self.hll_wilson_matrix_uv_rge(D, eta, t_coh, N_max=N_max)
         c_ref = self.hll_wilson_matrix_uv_rge(ref_D, ref_eta, t_coh, N_max=N_max)
+        c = self.hll_wilson_matrix_uv_rge(D, eta, t_coh, N_max=N_max)
         c_diag = np.diag(c)
         c_ref_diag = np.diag(c_ref)
         return total_width_ratio(c_diag=c_diag, c_diag_ref=c_ref_diag, cfg=cfg)
@@ -2706,8 +2860,8 @@ class PSLTKinetics:
     ) -> float:
         mode = self.params.hll_observable_mode if observable_mode is None else observable_mode
         nmax = self.params.hll_observable_nmax if N_max is None else int(N_max)
-        amp = self.hll_channel_amplitude(layer_n, D, eta, t_coh, observable_mode=mode, N_max=nmax)
         amp_ref = self.hll_channel_amplitude(layer_n, ref_D, ref_eta, t_coh, observable_mode=mode, N_max=nmax)
+        amp = self.hll_channel_amplitude(layer_n, D, eta, t_coh, observable_mode=mode, N_max=nmax)
         ratio = float(amp / max(amp_ref, 1e-30))
         if mode == "proxy_wratio":
             return ratio

@@ -157,6 +157,12 @@ def main() -> None:
         choices=[
             "cell_direct_runtime",
             "cell_direct_runtime_release",
+            "cell_direct_runtime_release_widthstable",
+            "cell_direct_runtime_release_combo",
+            "cell_direct_runtime_release_bandcombo",
+            "cell_direct_runtime_release_bandm2",
+            "cell_direct_runtime_release_tailm2",
+            "cell_direct_runtime_release_tailm2gnorm",
             "cell_direct_runtime_release_tuned",
             "cell_direct_runtime_extreme",
         ],

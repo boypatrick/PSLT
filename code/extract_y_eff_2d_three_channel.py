@@ -89,6 +89,12 @@ HIGGS_RESCALING_POWER = -1.0
 YUKAWA_NET_OMEGA_POWER = 4.0 + DIRAC_RESCALING_POWER + HIGGS_RESCALING_POWER + DIRAC_RESCALING_POWER
 
 
+def _deterministic_v0(n_dim: int) -> np.ndarray:
+    v0 = np.linspace(1.0, 2.0, int(n_dim), dtype=float)
+    v0 /= max(float(np.linalg.norm(v0)), 1e-30)
+    return v0
+
+
 def flavor_sigma_scales(cfg: OverlapConfig) -> Dict[str, float]:
     y_ref = YUKAWA_LEPTON["mu"]
     scales: Dict[str, float] = {}
@@ -146,6 +152,7 @@ def solve_modes(
     t_build = time.time() - t0
 
     t1 = time.time()
+    v0 = _deterministic_v0(k_mat.shape[0])
     if sigma is None:
         evals, evecs = eigsh(
             k_mat,
@@ -154,6 +161,7 @@ def solve_modes(
             which="SA",
             tol=tol,
             maxiter=maxiter,
+            v0=v0,
         )
     else:
         evals, evecs = eigsh(
@@ -164,6 +172,7 @@ def solve_modes(
             which="LM",
             tol=tol,
             maxiter=maxiter,
+            v0=v0,
         )
     t_solve = time.time() - t1
 

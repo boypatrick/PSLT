@@ -1,0 +1,8 @@
+{
+  "full_tag": "chain_mode_full_direct_D21E41",
+  "release_map": "hll_signal_strength_map_full_direct_map_cell_direct_runtime_release_D21E41.csv",
+  "combo_tag": "chain_mode_cell_direct_runtime_release_combo_D21E41",
+  "eta_probe": 0.2,
+  "ref_d": 9.6,
+  "ref_eta": 1.0
+}

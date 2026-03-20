@@ -1,0 +1,11 @@
+{
+  "low_d": [
+    4.0,
+    4.8,
+    5.6,
+    6.4
+  ],
+  "ref_D": 9.6,
+  "ref_eta": 1.0,
+  "statement": "Low-D residuals are decomposed on the actual mu path: delta log mu = 2(delta log UV + delta log finite + delta log RGE) + delta log width. The audit compares release, band-limited width, and band-limited width + m2 crossing correction against full-direct on the same D21xE41 grid."
+}

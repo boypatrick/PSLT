@@ -41,6 +41,12 @@ ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTDIR = ROOT / "output" / "chi_fp_2d"
 
 
+def _deterministic_v0(n_dim: int) -> np.ndarray:
+    v0 = np.linspace(1.0, 2.0, int(n_dim), dtype=float)
+    v0 /= max(float(np.linalg.norm(v0)), 1e-30)
+    return v0
+
+
 @dataclass(frozen=True)
 class PhysicalParams:
     a: float = 0.04
@@ -151,6 +157,7 @@ def run_case(
     t_build = time.time() - t0
 
     t1 = time.time()
+    v0 = _deterministic_v0(k_mat.shape[0])
     if sigma is None:
         evals, evecs = eigsh(
             k_mat,
@@ -159,6 +166,7 @@ def run_case(
             which="SA",
             tol=tol,
             maxiter=maxiter,
+            v0=v0,
         )
     else:
         evals, evecs = eigsh(
@@ -169,6 +177,7 @@ def run_case(
             which="LM",
             tol=tol,
             maxiter=maxiter,
+            v0=v0,
         )
     t_solve = time.time() - t1
 

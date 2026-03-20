@@ -39,6 +39,12 @@ ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTDIR = ROOT / "output" / "gn_fp_2d"
 
 
+def _deterministic_v0(n_dim: int) -> np.ndarray:
+    v0 = np.linspace(1.0, 2.0, int(n_dim), dtype=float)
+    v0 /= max(float(np.linalg.norm(v0)), 1e-30)
+    return v0
+
+
 @dataclass(frozen=True)
 class SolveConfig:
     tol: float
@@ -53,6 +59,7 @@ def solve_low_modes(K, M, cfg: SolveConfig) -> np.ndarray:
     k_eff = min(k_req, max(2, n_dim - 2))
     if k_eff < 3:
         raise RuntimeError(f"Operator dimension too small for 3 low modes (dim={n_dim}).")
+    v0 = _deterministic_v0(n_dim)
 
     if cfg.sigma is None:
         vals, _ = eigsh(
@@ -62,6 +69,7 @@ def solve_low_modes(K, M, cfg: SolveConfig) -> np.ndarray:
             which="SA",
             tol=cfg.tol,
             maxiter=cfg.maxiter,
+            v0=v0,
         )
     else:
         vals, _ = eigsh(
@@ -72,6 +80,7 @@ def solve_low_modes(K, M, cfg: SolveConfig) -> np.ndarray:
             which="LM",
             tol=cfg.tol,
             maxiter=cfg.maxiter,
+            v0=v0,
         )
     vals = np.sort(np.real(vals))
     return vals

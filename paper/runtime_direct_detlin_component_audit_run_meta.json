@@ -1,0 +1,11 @@
+{
+  "focus_D": [
+    4.0,
+    4.8,
+    6.4,
+    7.2
+  ],
+  "eta_grid_size": 41,
+  "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41.csv",
+  "detlin_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_tailm2_detlin_D21E41.csv"
+}

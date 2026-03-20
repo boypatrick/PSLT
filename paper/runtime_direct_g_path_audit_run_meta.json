@@ -1,0 +1,9 @@
+{
+  "focus_D": [
+    6.4,
+    7.2
+  ],
+  "ref_D": 9.6,
+  "ref_eta": 1.0,
+  "statement": "Decompose the remaining UV residual into overall g-norm drift, middle-layer shape drift, and m2_2 drift around the D~6.4-7.2 band."
+}

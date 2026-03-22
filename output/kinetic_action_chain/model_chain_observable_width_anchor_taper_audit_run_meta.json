@@ -1,0 +1,19 @@
+{
+  "width_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/model_chain_full_direct_width_profile_Dgrid21_Egrid5.csv",
+  "alpha_centers": [
+    0.8,
+    0.8125,
+    0.825
+  ],
+  "tapers": [
+    0.0,
+    0.01,
+    0.02,
+    0.03,
+    0.04
+  ],
+  "taper_center_D": 6.0,
+  "taper_sigma_D": 0.4,
+  "ref_D": 9.6,
+  "ref_eta": 1.0
+}

@@ -1,0 +1,29 @@
+{
+  "focus_D": [
+    4.8,
+    5.6,
+    6.4,
+    7.2
+  ],
+  "eta_grid": [
+    0.2,
+    0.6,
+    1.0,
+    2.0,
+    4.0
+  ],
+  "alpha_center": 0.825,
+  "taper": 0.01,
+  "families": [
+    "point_amp_blend",
+    "ref_amp_blend",
+    "partial_blend"
+  ],
+  "betas": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ]
+}

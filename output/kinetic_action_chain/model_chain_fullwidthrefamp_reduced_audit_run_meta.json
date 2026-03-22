@@ -1,0 +1,10 @@
+{
+  "modes": [
+    "full_direct",
+    "release_fullsumanchor",
+    "release_fullwidthrefamp"
+  ],
+  "observable_mode": "eft_wilson_uv_rge",
+  "ref_D": 9.6,
+  "ref_eta": 1.0
+}

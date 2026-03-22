@@ -83,6 +83,36 @@ Chain profile selection:
                               correction, then add a narrow g-matrix blend only
                               when both side layers sit above the direct fixed
                               point, targeting the remaining D≈6.4 UV residual.
+  - --chain-mode cell_direct_runtime_release_sumanchor:
+                              observable-side experimental family:
+                              keep runtime-direct layer shares, but anchor the
+                              total B-sum to an overlap-profile fixed point.
+  - --chain-mode cell_direct_runtime_release_eftsumanchor:
+                              observable-side experimental family:
+                              keep runtime-direct layer shares, but anchor the
+                              total B-sum to a helper EFT-style fixed point.
+  - --chain-mode cell_direct_runtime_release_fullsumanchor:
+                              observable-side experimental family:
+                              keep runtime-direct layer shares, but anchor the
+                              total B-sum to the true full-direct fixed point.
+  - --chain-mode cell_direct_runtime_release_fullwidthanchor:
+                              observable-side experimental family:
+                              start from fullsumanchor, then blend the
+                              observable width ratio toward the full-direct
+                              fixed-point width profile.
+  - --chain-mode cell_direct_runtime_release_fullwidthrefamp:
+                              observable-side promoted candidate:
+                              start from fullsumanchor, add partial width
+                              anchoring, and then apply a narrow D-localized
+                              reference-amplitude taper near D≈5.6.
+  - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp:
+                              hotspot experimental extension:
+                              fullwidthrefamp plus a narrow D-localized
+                              point-amplitude taper near D≈6.44.
+  - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost:
+                              hotspot width extension:
+                              fullwidthrefamp_pointamp plus a localized
+                              positive width-anchor boost near D≈5.9.
   - --chain-mode cell_direct_runtime_extreme:
                               stress-only all-direct path with no profile
                               object; evaluate g_N(D), chi_LR(D), A_l(D),
@@ -271,6 +301,22 @@ def make_baseline_kinetics(
     runtime_direct_superrad_n_ref: int = 2,
     runtime_direct_b_release_profile_blend_override: Optional[float] = None,
     runtime_direct_b_release_profile_blend_csv_override: Optional[str] = None,
+    observable_width_anchor_blend_override: Optional[float] = None,
+    observable_width_anchor_blend_taper_override: Optional[float] = None,
+    observable_width_anchor_blend_taper_center_D_override: Optional[float] = None,
+    observable_width_anchor_blend_taper_sigma_D_override: Optional[float] = None,
+    observable_width_anchor_boost_peak_override: Optional[float] = None,
+    observable_width_anchor_boost_center_D_override: Optional[float] = None,
+    observable_width_anchor_boost_sigma_D_override: Optional[float] = None,
+    observable_width_anchor_csv_override: Optional[str] = None,
+    observable_ref_amp_anchor_peak_override: Optional[float] = None,
+    observable_ref_amp_anchor_center_D_override: Optional[float] = None,
+    observable_ref_amp_anchor_sigma_D_override: Optional[float] = None,
+    observable_ref_amp_anchor_csv_override: Optional[str] = None,
+    observable_point_amp_anchor_peak_override: Optional[float] = None,
+    observable_point_amp_anchor_center_D_override: Optional[float] = None,
+    observable_point_amp_anchor_sigma_D_override: Optional[float] = None,
+    observable_point_amp_anchor_csv_override: Optional[str] = None,
 ) -> PSLTKinetics:
     d_scan = scan_d_values(float(d_min), float(d_max), int(d_num))
     d_track_seed = float(d_scan[0]) if len(d_scan) > 0 else float(d_min)
@@ -546,6 +592,135 @@ def make_baseline_kinetics(
             )
         elif default_release_blend_csv not in {None, ""}:
             runtime_b_overrides["runtime_direct_b_profile_blend_csv"] = str(default_release_blend_csv)
+    elif chain_mode_eff == "cell_direct_runtime_release_sumanchor":
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
+        runtime_b_overrides = {
+            "runtime_direct_b_profile_blend": 0.0,
+            "runtime_direct_b_sum_anchor_blend": 1.0,
+        }
+    elif chain_mode_eff == "cell_direct_runtime_release_eftsumanchor":
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
+        runtime_b_overrides = {
+            "runtime_direct_b_profile_blend": 0.0,
+            "runtime_direct_b_eft_sum_anchor_blend": 1.0,
+        }
+    elif chain_mode_eff == "cell_direct_runtime_release_fullsumanchor":
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
+        runtime_b_overrides = {
+            "runtime_direct_b_profile_blend": 0.0,
+            "runtime_direct_b_sum_anchor_blend": 1.0,
+            "runtime_direct_b_sum_anchor_csv": str(
+                ROOT / "output" / "kinetic_action_chain" / "model_chain_full_direct_bsum_profile_Dgrid21.csv"
+            ),
+        }
+    elif chain_mode_eff == "cell_direct_runtime_release_fullwidthanchor":
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
+        runtime_b_overrides = {
+            "runtime_direct_b_profile_blend": 0.0,
+            "runtime_direct_b_sum_anchor_blend": 1.0,
+            "runtime_direct_b_sum_anchor_csv": str(
+                ROOT / "output" / "kinetic_action_chain" / "model_chain_full_direct_bsum_profile_Dgrid21.csv"
+            ),
+        }
+    elif chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}:
+        g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
+            root=ROOT,
+            d_scan=d_scan,
+            force=bool(runtime_direct_force),
+            g_rho_max=float(runtime_direct_chi_rho_max),
+            g_z_margin=float(runtime_direct_chi_z_margin),
+            g_tol=float(runtime_direct_chi_tol),
+            g_maxiter=int(runtime_direct_chi_maxiter),
+            g_sigma=float(runtime_direct_chi_sigma),
+            g_n_eigs=40,
+            g_dr=0.06,
+            g_dz=0.03,
+        )
+        g_mode = "fp_2d_full"
+        b_mode = "eft_operator_norm_runtime_direct"
+        chi_mode = "localized_runtime_direct"
+        gamma_mode = "action_runtime_direct"
+        g_source = str(g_fp_2d_spectrum_csv)
+        runtime_direct_no_cache_eff = False
+        runtime_b_overrides = {
+            "runtime_direct_b_profile_blend": 0.0,
+            "runtime_direct_b_sum_anchor_blend": 1.0,
+            "runtime_direct_b_sum_anchor_csv": str(
+                ROOT / "output" / "kinetic_action_chain" / "model_chain_full_direct_bsum_profile_Dgrid21.csv"
+            ),
+        }
     elif chain_mode_eff == "cell_direct_runtime_extreme":
         g_mode = "fp_2d_full_runtime_direct"
         b_mode = "eft_operator_norm_runtime_direct"
@@ -599,6 +774,133 @@ def make_baseline_kinetics(
         runtime_direct_superrad_n_ref=int(runtime_direct_superrad_n_ref),
         runtime_direct_b_track_seed_D=float(d_track_seed),
         runtime_direct_b_track_step=float(d_track_step),
+        observable_width_anchor_blend=float(
+            (
+                1.0
+                if chain_mode_eff == "cell_direct_runtime_release_fullwidthanchor"
+                else (
+                    0.825
+                    if chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                    else 0.0
+                )
+            )
+            if observable_width_anchor_blend_override is None
+            else observable_width_anchor_blend_override
+        ),
+        observable_width_anchor_blend_taper=float(
+            (
+                0.01
+                if chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                else 0.0
+            )
+            if observable_width_anchor_blend_taper_override is None
+            else observable_width_anchor_blend_taper_override
+        ),
+        observable_width_anchor_blend_taper_center_D=float(
+            6.0
+            if observable_width_anchor_blend_taper_center_D_override is None
+            else observable_width_anchor_blend_taper_center_D_override
+        ),
+        observable_width_anchor_blend_taper_sigma_D=float(
+            0.4
+            if observable_width_anchor_blend_taper_sigma_D_override is None
+            else observable_width_anchor_blend_taper_sigma_D_override
+        ),
+        observable_width_anchor_boost_peak=float(
+            (
+                0.5
+                if chain_mode_eff == "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"
+                else 0.0
+            )
+            if observable_width_anchor_boost_peak_override is None
+            else observable_width_anchor_boost_peak_override
+        ),
+        observable_width_anchor_boost_center_D=float(
+            5.9
+            if observable_width_anchor_boost_center_D_override is None
+            else observable_width_anchor_boost_center_D_override
+        ),
+        observable_width_anchor_boost_sigma_D=float(
+            0.2
+            if observable_width_anchor_boost_sigma_D_override is None
+            else observable_width_anchor_boost_sigma_D_override
+        ),
+        observable_width_anchor_csv=(
+            str(ROOT / "output" / "kinetic_action_chain" / "model_chain_full_direct_width_profile_Dgrid21_Egrid5.csv")
+            if (
+                observable_width_anchor_csv_override in {None, ""}
+                and chain_mode_eff in {"cell_direct_runtime_release_fullwidthanchor", "cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+            )
+            else (
+                None if observable_width_anchor_csv_override in {None, ""} else str(observable_width_anchor_csv_override)
+            )
+        ),
+        observable_ref_amp_anchor_peak=float(
+            (
+                1.0
+                if chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                else 0.0
+            )
+            if observable_ref_amp_anchor_peak_override is None
+            else observable_ref_amp_anchor_peak_override
+        ),
+        observable_ref_amp_anchor_center_D=float(
+            5.6
+            if observable_ref_amp_anchor_center_D_override is None
+            else observable_ref_amp_anchor_center_D_override
+        ),
+        observable_ref_amp_anchor_sigma_D=float(
+            0.2
+            if observable_ref_amp_anchor_sigma_D_override is None
+            else observable_ref_amp_anchor_sigma_D_override
+        ),
+        observable_ref_amp_anchor_csv=(
+            (
+                str(ROOT / "output" / "kinetic_action_chain" / "model_chain_full_direct_ref_amp_profile.csv")
+                if (
+                    observable_ref_amp_anchor_csv_override in {None, ""}
+                    and chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                )
+                else (
+                    None
+                    if observable_ref_amp_anchor_csv_override in {None, ""}
+                    else str(observable_ref_amp_anchor_csv_override)
+                )
+            )
+        ),
+        observable_point_amp_anchor_peak=float(
+            (
+                0.35
+                if chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                else 0.0
+            )
+            if observable_point_amp_anchor_peak_override is None
+            else observable_point_amp_anchor_peak_override
+        ),
+        observable_point_amp_anchor_center_D=float(
+            6.4406779661016955
+            if observable_point_amp_anchor_center_D_override is None
+            else observable_point_amp_anchor_center_D_override
+        ),
+        observable_point_amp_anchor_sigma_D=float(
+            0.03
+            if observable_point_amp_anchor_sigma_D_override is None
+            else observable_point_amp_anchor_sigma_D_override
+        ),
+        observable_point_amp_anchor_csv=(
+            (
+                str(ROOT / "output" / "kinetic_action_chain" / "model_chain_full_direct_point_amp_profile_D60_hotspot_layer2.csv")
+                if (
+                    observable_point_amp_anchor_csv_override in {None, ""}
+                    and chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                )
+                else (
+                    None
+                    if observable_point_amp_anchor_csv_override in {None, ""}
+                    else str(observable_point_amp_anchor_csv_override)
+                )
+            )
+        ),
         b_mode=str(b_mode),
         b_overlap_csv=None if b_mode == "eft_operator_norm_runtime_direct" else str(B_OVERLAP_CSV),
         b_n_power=PAPER_BASELINE["p_B"],
@@ -992,6 +1294,13 @@ def parse_args() -> argparse.Namespace:
             "cell_direct_runtime_release_bandm2",
             "cell_direct_runtime_release_tailm2",
             "cell_direct_runtime_release_tailm2gnorm",
+            "cell_direct_runtime_release_sumanchor",
+            "cell_direct_runtime_release_eftsumanchor",
+            "cell_direct_runtime_release_fullsumanchor",
+            "cell_direct_runtime_release_fullwidthanchor",
+            "cell_direct_runtime_release_fullwidthrefamp",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
             "cell_direct_runtime_release_tuned",
             "cell_direct_runtime_extreme",
         ],
@@ -1138,6 +1447,13 @@ def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray
         "cell_direct_runtime_release_bandm2",
         "cell_direct_runtime_release_tailm2",
         "cell_direct_runtime_release_tailm2gnorm",
+        "cell_direct_runtime_release_sumanchor",
+        "cell_direct_runtime_release_eftsumanchor",
+        "cell_direct_runtime_release_fullsumanchor",
+        "cell_direct_runtime_release_fullwidthanchor",
+        "cell_direct_runtime_release_fullwidthrefamp",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
         "cell_direct_runtime_release_tuned",
         "cell_direct_runtime_extreme",
     }:
@@ -1222,7 +1538,7 @@ def main() -> None:
     if snapped:
         old_ref_d = float(args.ref_d) if str(args.ref_mode) == "fixed" else float("nan")
         print(
-            "[info] chain_mode in {full_direct,full_direct_runtime,cell_direct_runtime,cell_direct_runtime_release,cell_direct_runtime_release_widthstable,cell_direct_runtime_release_combo,cell_direct_runtime_release_bandcombo,cell_direct_runtime_release_bandm2,cell_direct_runtime_release_tailm2,cell_direct_runtime_release_tailm2gnorm,cell_direct_runtime_release_tuned,cell_direct_runtime_extreme} snapped ref_D to grid:",
+            "[info] chain_mode in {full_direct,full_direct_runtime,cell_direct_runtime,cell_direct_runtime_release,cell_direct_runtime_release_widthstable,cell_direct_runtime_release_combo,cell_direct_runtime_release_bandcombo,cell_direct_runtime_release_bandm2,cell_direct_runtime_release_tailm2,cell_direct_runtime_release_tailm2gnorm,cell_direct_runtime_release_sumanchor,cell_direct_runtime_release_eftsumanchor,cell_direct_runtime_release_fullsumanchor,cell_direct_runtime_release_fullwidthanchor,cell_direct_runtime_release_fullwidthrefamp,cell_direct_runtime_release_fullwidthrefamp_pointamp,cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost,cell_direct_runtime_release_tuned,cell_direct_runtime_extreme} snapped ref_D to grid:",
             f"{old_ref_d if old_ref_d == old_ref_d else 'selector'} -> {ref_d:.6g}",
         )
         ref_source = f"{ref_source}+snap_refD_to_grid"

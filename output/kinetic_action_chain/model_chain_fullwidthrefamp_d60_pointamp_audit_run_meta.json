@@ -1,0 +1,18 @@
+{
+  "detail_source": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/model_chain_fullwidthrefamp_d60_hotspot_path_audit_detail.csv",
+  "center_D": 6.4406779661016955,
+  "beta_peaks": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "sigmas": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.3
+  ]
+}

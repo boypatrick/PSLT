@@ -1,0 +1,13 @@
+{
+  "detail_source": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/model_chain_observable_path_audit_detail.csv",
+  "focus_modes": [
+    "release_tuned",
+    "release_fullsumanchor",
+    "tailm2_detlin"
+  ],
+  "families": [
+    "current",
+    "width_anchor",
+    "partial_anchor"
+  ]
+}

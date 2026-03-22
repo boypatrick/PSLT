@@ -1,0 +1,35 @@
+{
+  "focus_D": [
+    4.0,
+    4.8,
+    5.6,
+    6.4,
+    7.2,
+    8.0
+  ],
+  "eta_grid": [
+    0.2,
+    0.6,
+    1.0,
+    2.0,
+    4.0
+  ],
+  "alpha_center": 0.825,
+  "width_taper": 0.01,
+  "beta_peaks": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "sigmas": [
+    0.2,
+    0.3,
+    0.4,
+    0.6,
+    0.8
+  ],
+  "width_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/model_chain_full_direct_width_profile_Dgrid21_Egrid5.csv",
+  "refamp_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/model_chain_full_direct_ref_amp_profile.csv"
+}

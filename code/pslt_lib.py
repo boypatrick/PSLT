@@ -159,10 +159,29 @@ class PSLTParameters:
     runtime_direct_b_profile_blend: float = 0.0  # 0 => pure runtime-direct, 1 => pure profile anchor
     runtime_direct_b_profile_blend_csv: Optional[str] = None
     runtime_direct_b_self_blend_max: float = 0.0  # 0 => disabled; direct-only operator/raw consistency blend
+    runtime_direct_b_sum_anchor_blend: float = 0.0  # 0 => keep runtime-direct sum, 1 => anchor sum(B_N) to overlap fixed point
+    runtime_direct_b_sum_anchor_csv: Optional[str] = None
+    runtime_direct_b_eft_sum_anchor_blend: float = 0.0  # 0 => keep runtime-direct sum, 1 => anchor sum(B_N) to EFT operator-norm fixed point
     runtime_direct_b_self_blend_metric_lo: float = 0.0
     runtime_direct_b_self_blend_metric_hi: float = 1.0
     runtime_direct_b_track_seed_D: float = 4.0
     runtime_direct_b_track_step: float = 1.0
+    observable_width_anchor_blend: float = 0.0  # 0 => keep native width ratio, 1 => anchor width ratio to explicit profile
+    observable_width_anchor_blend_taper: float = 0.0  # localized D-skew around center_D to trade D≈5.6 against D≈6.4
+    observable_width_anchor_blend_taper_center_D: float = 6.0
+    observable_width_anchor_blend_taper_sigma_D: float = 0.4
+    observable_width_anchor_boost_peak: float = 0.0  # localized positive boost of width anchor alpha around hotspot center_D
+    observable_width_anchor_boost_center_D: float = 5.9
+    observable_width_anchor_boost_sigma_D: float = 0.2
+    observable_width_anchor_csv: Optional[str] = None
+    observable_ref_amp_anchor_peak: float = 0.0  # localized blend of amp_ref toward explicit full-direct anchor
+    observable_ref_amp_anchor_center_D: float = 5.6
+    observable_ref_amp_anchor_sigma_D: float = 0.2
+    observable_ref_amp_anchor_csv: Optional[str] = None
+    observable_point_amp_anchor_peak: float = 0.0  # localized blend of point amp toward explicit full-direct anchor
+    observable_point_amp_anchor_center_D: float = 6.4406779661016955
+    observable_point_amp_anchor_sigma_D: float = 0.03
+    observable_point_amp_anchor_csv: Optional[str] = None
     hll_observable_mode: str = "eft_wilson_uv_rge"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
     hll_observable_nmax: int = 20
     hll_match_basis_mode: str = "sqrt_yraw"  # "sqrt_yraw" reproduces diagonal limit with mix_scale=0
@@ -328,6 +347,15 @@ class PSLTParameters:
             raise ValueError("runtime_direct_b_profile_blend must be in [0,1].")
         if not (0.0 <= self.runtime_direct_b_self_blend_max <= 1.0):
             raise ValueError("runtime_direct_b_self_blend_max must be in [0,1].")
+        if not (0.0 <= self.runtime_direct_b_sum_anchor_blend <= 1.0):
+            raise ValueError("runtime_direct_b_sum_anchor_blend must be in [0,1].")
+        if self.runtime_direct_b_sum_anchor_csv not in {None, ""}:
+            try:
+                Path(str(self.runtime_direct_b_sum_anchor_csv))
+            except Exception as exc:
+                raise ValueError("runtime_direct_b_sum_anchor_csv must be a valid path-like string.") from exc
+        if not (0.0 <= self.runtime_direct_b_eft_sum_anchor_blend <= 1.0):
+            raise ValueError("runtime_direct_b_eft_sum_anchor_blend must be in [0,1].")
         if self.runtime_direct_b_self_blend_metric_hi < self.runtime_direct_b_self_blend_metric_lo:
             raise ValueError(
                 "runtime_direct_b_self_blend_metric_hi cannot be smaller than "
@@ -335,6 +363,37 @@ class PSLTParameters:
             )
         if self.runtime_direct_b_track_step <= 0.0:
             raise ValueError("runtime_direct_b_track_step must be > 0.")
+        if not (0.0 <= self.observable_width_anchor_blend <= 1.0):
+            raise ValueError("observable_width_anchor_blend must be in [0,1].")
+        if self.observable_width_anchor_blend_taper_sigma_D <= 0.0:
+            raise ValueError("observable_width_anchor_blend_taper_sigma_D must be > 0.")
+        if not (0.0 <= self.observable_width_anchor_boost_peak <= 1.0):
+            raise ValueError("observable_width_anchor_boost_peak must be in [0,1].")
+        if self.observable_width_anchor_boost_sigma_D <= 0.0:
+            raise ValueError("observable_width_anchor_boost_sigma_D must be > 0.")
+        if self.observable_width_anchor_csv not in {None, ""}:
+            try:
+                Path(str(self.observable_width_anchor_csv))
+            except Exception as exc:
+                raise ValueError("observable_width_anchor_csv must be a valid path-like string.") from exc
+        if not (0.0 <= self.observable_ref_amp_anchor_peak <= 1.0):
+            raise ValueError("observable_ref_amp_anchor_peak must be in [0,1].")
+        if self.observable_ref_amp_anchor_sigma_D <= 0.0:
+            raise ValueError("observable_ref_amp_anchor_sigma_D must be > 0.")
+        if self.observable_ref_amp_anchor_csv not in {None, ""}:
+            try:
+                Path(str(self.observable_ref_amp_anchor_csv))
+            except Exception as exc:
+                raise ValueError("observable_ref_amp_anchor_csv must be a valid path-like string.") from exc
+        if not (0.0 <= self.observable_point_amp_anchor_peak <= 1.0):
+            raise ValueError("observable_point_amp_anchor_peak must be in [0,1].")
+        if self.observable_point_amp_anchor_sigma_D <= 0.0:
+            raise ValueError("observable_point_amp_anchor_sigma_D must be > 0.")
+        if self.observable_point_amp_anchor_csv not in {None, ""}:
+            try:
+                Path(str(self.observable_point_amp_anchor_csv))
+            except Exception as exc:
+                raise ValueError("observable_point_amp_anchor_csv must be a valid path-like string.") from exc
         if self.hll_observable_mode not in {
             "proxy_wratio",
             "eft_wilson_diag",
@@ -517,7 +576,12 @@ class PSLTKinetics:
         self._b_mode_active: str = "yukawa"
         self._b_overlap_profile: Optional[Dict[str, np.ndarray]] = None
         self._b_runtime_direct_blend_profile: Optional[Dict[str, np.ndarray]] = None
+        self._b_runtime_direct_sum_anchor_profile: Optional[Dict[str, np.ndarray]] = None
+        self._observable_width_anchor_profile: Optional[Dict[str, np.ndarray]] = None
+        self._observable_ref_amp_anchor_profile: Optional[Dict[str, np.ndarray]] = None
+        self._observable_point_amp_anchor_profile: Optional[Dict[Tuple[str, int], Dict[str, np.ndarray]]] = None
         self._b_eft_norm_cache: Dict[float, np.ndarray] = {}
+        self._b_eft_profile_anchor_cache: Dict[float, np.ndarray] = {}
         self._b_runtime_direct_input_cache: Dict[float, Dict[str, np.ndarray]] = {}
         self._runtime_b_level = None
         self._runtime_b_params = None
@@ -538,6 +602,7 @@ class PSLTKinetics:
         self._init_g_profiles()
         self._init_chi_profiles()
         self._init_gamma_profiles()
+        self._init_observable_anchor_profiles()
 
     def _guess_d_from_filename(self, path: Path) -> Optional[float]:
         m = re.search(r"_D([0-9]+(?:\.[0-9]+)?)", path.stem)
@@ -1119,7 +1184,9 @@ class PSLTKinetics:
         self._b_mode_active = "yukawa"
         self._b_overlap_profile = None
         self._b_runtime_direct_blend_profile = None
+        self._b_runtime_direct_sum_anchor_profile = None
         self._b_eft_norm_cache.clear()
+        self._b_eft_profile_anchor_cache.clear()
         self._b_runtime_direct_input_cache.clear()
 
         if mode == "eft_operator_norm_runtime_direct":
@@ -1127,6 +1194,8 @@ class PSLTKinetics:
             # Optional profile anchor for runtime-direct B closure.
             wants_anchor = (
                 float(self.params.runtime_direct_b_profile_blend) > 0.0
+                or float(self.params.runtime_direct_b_sum_anchor_blend) > 0.0
+                or float(self.params.runtime_direct_b_eft_sum_anchor_blend) > 0.0
                 or bool(self.params.runtime_direct_b_profile_blend_csv)
             )
             if wants_anchor:
@@ -1157,6 +1226,16 @@ class PSLTKinetics:
                     print(
                         f"Warning: runtime_direct_b_profile_blend_csv={blend_path} could not be parsed. "
                         "Falling back to scalar runtime_direct_b_profile_blend."
+                    )
+            if self.params.runtime_direct_b_sum_anchor_csv:
+                sum_path = Path(str(self.params.runtime_direct_b_sum_anchor_csv))
+                prof = self._load_runtime_direct_b_sum_anchor_profile(sum_path)
+                if prof is not None:
+                    self._b_runtime_direct_sum_anchor_profile = prof
+                else:
+                    print(
+                        f"Warning: runtime_direct_b_sum_anchor_csv={sum_path} could not be parsed. "
+                        "Falling back to local overlap sum anchor."
                     )
             return
 
@@ -1192,6 +1271,335 @@ class PSLTKinetics:
         if prof is not None:
             alpha = float(np.interp(float(D), np.asarray(prof["D"], dtype=float), np.asarray(prof["alpha"], dtype=float)))
         return float(np.clip(alpha, 0.0, 1.0))
+
+    def _load_runtime_direct_b_sum_anchor_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        entries: Dict[float, float] = {}
+        for row in rows:
+            if row.get("D", "") in {"", None}:
+                continue
+            sval = row.get("Bsum", row.get("B_sum", row.get("bsum", "")))
+            if sval in {"", None}:
+                continue
+            entries[float(row["D"])] = max(float(sval), self.params.b_overlap_floor)
+
+        if len(entries) < 2:
+            return None
+
+        d_sorted = np.array(sorted(entries.keys()), dtype=float)
+        sums = np.array([entries[d] for d in d_sorted], dtype=float)
+        return {"D": d_sorted, "Bsum": np.maximum(sums, self.params.b_overlap_floor)}
+
+    def _runtime_direct_b_sum_anchor_target(self, D: float) -> Optional[float]:
+        prof = self._b_runtime_direct_sum_anchor_profile
+        if prof is not None:
+            return float(
+                max(
+                    np.interp(float(D), np.asarray(prof["D"], dtype=float), np.asarray(prof["Bsum"], dtype=float)),
+                    self.params.b_overlap_floor,
+                )
+            )
+
+        if self._b_overlap_profile is not None:
+            d_knots = np.asarray(self._b_overlap_profile["D"], dtype=float)
+            b_prof = np.array(
+                [np.interp(float(D), d_knots, self._b_overlap_profile["B123"][:, i]) for i in range(3)],
+                dtype=float,
+            )
+            return float(max(np.sum(np.maximum(b_prof, self.params.b_overlap_floor)), self.params.b_overlap_floor))
+
+        return None
+
+    def _init_observable_anchor_profiles(self) -> None:
+        self._observable_width_anchor_profile = None
+        self._observable_ref_amp_anchor_profile = None
+        self._observable_point_amp_anchor_profile = None
+        if self.params.observable_width_anchor_csv not in {None, ""}:
+            path = Path(str(self.params.observable_width_anchor_csv))
+            prof = self._load_observable_width_anchor_profile(path)
+            if prof is not None:
+                self._observable_width_anchor_profile = prof
+            else:
+                print(
+                    f"Warning: observable_width_anchor_csv={path} could not be parsed. "
+                    "Falling back to native width ratio."
+                )
+        if self.params.observable_ref_amp_anchor_csv not in {None, ""}:
+            path = Path(str(self.params.observable_ref_amp_anchor_csv))
+            prof = self._load_observable_ref_amp_anchor_profile(path)
+            if prof is not None:
+                self._observable_ref_amp_anchor_profile = prof
+            else:
+                print(
+                    f"Warning: observable_ref_amp_anchor_csv={path} could not be parsed. "
+                    "Falling back to native reference amplitude."
+                )
+        if self.params.observable_point_amp_anchor_csv not in {None, ""}:
+            path = Path(str(self.params.observable_point_amp_anchor_csv))
+            prof = self._load_observable_point_amp_anchor_profile(path)
+            if prof is not None:
+                self._observable_point_amp_anchor_profile = prof
+            else:
+                print(
+                    f"Warning: observable_point_amp_anchor_csv={path} could not be parsed. "
+                    "Falling back to native point amplitude."
+                )
+
+    def _load_observable_width_anchor_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        entries: Dict[Tuple[float, float], float] = {}
+        d_vals: set[float] = set()
+        eta_vals: set[float] = set()
+        for row in rows:
+            if row.get("D", "") in {"", None} or row.get("eta", "") in {"", None}:
+                continue
+            wval = row.get("width_ratio", row.get("width", row.get("width_uv_rge", "")))
+            if wval in {"", None}:
+                continue
+            d_key = float(row["D"])
+            eta_key = float(row["eta"])
+            entries[(d_key, eta_key)] = max(float(wval), self.params.b_overlap_floor)
+            d_vals.add(d_key)
+            eta_vals.add(eta_key)
+
+        if len(d_vals) < 2 or len(eta_vals) < 2:
+            return None
+
+        d_sorted = np.array(sorted(d_vals), dtype=float)
+        eta_sorted = np.array(sorted(eta_vals), dtype=float)
+        grid = np.full((len(d_sorted), len(eta_sorted)), np.nan, dtype=float)
+        d_index = {float(v): i for i, v in enumerate(d_sorted)}
+        eta_index = {float(v): i for i, v in enumerate(eta_sorted)}
+        for (d_key, eta_key), wval in entries.items():
+            grid[d_index[d_key], eta_index[eta_key]] = wval
+
+        if np.isnan(grid).any():
+            return None
+        return {"D": d_sorted, "eta": eta_sorted, "width_ratio": grid}
+
+    def _observable_width_anchor_target(self, D: float, eta: float) -> Optional[float]:
+        prof = self._observable_width_anchor_profile
+        if prof is None:
+            return None
+        d_knots = np.asarray(prof["D"], dtype=float)
+        eta_knots = np.asarray(prof["eta"], dtype=float)
+        grid = np.asarray(prof["width_ratio"], dtype=float)
+        eta_slice = np.array(
+            [np.interp(float(eta), eta_knots, grid[i, :]) for i in range(len(d_knots))],
+            dtype=float,
+        )
+        return float(max(np.interp(float(D), d_knots, eta_slice), self.params.b_overlap_floor))
+
+    def _load_observable_ref_amp_anchor_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        entries: Dict[Tuple[str, int], float] = {}
+        for row in rows:
+            mode = str(row.get("observable_mode", "")).strip()
+            layer_raw = row.get("layer", "")
+            aval = row.get("amp_ref", row.get("amp", ""))
+            if mode in {"", "None"} or layer_raw in {"", None} or aval in {"", None}:
+                continue
+            entries[(mode, int(layer_raw))] = max(float(aval), self.params.b_overlap_floor)
+
+        if not entries:
+            return None
+
+        return {
+            "observable_mode": np.array([key[0] for key in entries.keys()], dtype=object),
+            "layer": np.array([key[1] for key in entries.keys()], dtype=int),
+            "amp_ref": np.array([entries[key] for key in entries.keys()], dtype=float),
+        }
+
+    def _observable_ref_amp_anchor_target(self, layer_n: int, observable_mode: str) -> Optional[float]:
+        prof = self._observable_ref_amp_anchor_profile
+        if prof is None:
+            return None
+        modes = np.asarray(prof["observable_mode"], dtype=object)
+        layers = np.asarray(prof["layer"], dtype=int)
+        amps = np.asarray(prof["amp_ref"], dtype=float)
+        mask = (layers == int(layer_n)) & (modes == str(observable_mode))
+        if not np.any(mask):
+            return None
+        return float(max(amps[np.nonzero(mask)[0][0]], self.params.b_overlap_floor))
+
+    def _load_observable_point_amp_anchor_profile(
+        self,
+        path: Path,
+    ) -> Optional[Dict[Tuple[str, int], Dict[str, np.ndarray]]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        grouped: Dict[Tuple[str, int], Dict[Tuple[float, float], float]] = {}
+        d_sets: Dict[Tuple[str, int], set[float]] = {}
+        eta_sets: Dict[Tuple[str, int], set[float]] = {}
+        for row in rows:
+            mode = str(row.get("observable_mode", "")).strip()
+            layer_raw = row.get("layer", "")
+            d_raw = row.get("D", "")
+            eta_raw = row.get("eta", "")
+            aval = row.get("amp", "")
+            if (
+                mode in {"", "None"}
+                or layer_raw in {"", None}
+                or d_raw in {"", None}
+                or eta_raw in {"", None}
+                or aval in {"", None}
+            ):
+                continue
+            key = (mode, int(layer_raw))
+            grouped.setdefault(key, {})[(float(d_raw), float(eta_raw))] = max(float(aval), self.params.b_overlap_floor)
+            d_sets.setdefault(key, set()).add(float(d_raw))
+            eta_sets.setdefault(key, set()).add(float(eta_raw))
+
+        if not grouped:
+            return None
+
+        prof: Dict[Tuple[str, int], Dict[str, np.ndarray]] = {}
+        for key, entries in grouped.items():
+            d_sorted = np.array(sorted(d_sets[key]), dtype=float)
+            eta_sorted = np.array(sorted(eta_sets[key]), dtype=float)
+            if len(d_sorted) < 2 or len(eta_sorted) < 2:
+                continue
+            grid = np.full((len(d_sorted), len(eta_sorted)), np.nan, dtype=float)
+            d_index = {float(v): i for i, v in enumerate(d_sorted)}
+            eta_index = {float(v): i for i, v in enumerate(eta_sorted)}
+            for (d_key, eta_key), aval in entries.items():
+                grid[d_index[d_key], eta_index[eta_key]] = aval
+            if np.isnan(grid).any():
+                continue
+            prof[key] = {"D": d_sorted, "eta": eta_sorted, "amp": grid}
+
+        return prof or None
+
+    def _observable_point_amp_anchor_target(
+        self,
+        layer_n: int,
+        observable_mode: str,
+        D: float,
+        eta: float,
+    ) -> Optional[float]:
+        prof = self._observable_point_amp_anchor_profile
+        if prof is None:
+            return None
+        key = (str(observable_mode), int(layer_n))
+        if key not in prof:
+            return None
+        entry = prof[key]
+        d_knots = np.asarray(entry["D"], dtype=float)
+        eta_knots = np.asarray(entry["eta"], dtype=float)
+        grid = np.asarray(entry["amp"], dtype=float)
+        eta_slice = np.array(
+            [np.interp(float(eta), eta_knots, grid[i, :]) for i in range(len(d_knots))],
+            dtype=float,
+        )
+        return float(max(np.interp(float(D), d_knots, eta_slice), self.params.b_overlap_floor))
+
+    def _observable_width_anchor_effective_alpha(self, D: float) -> float:
+        base = float(np.clip(self.params.observable_width_anchor_blend, 0.0, 1.0))
+        taper = float(self.params.observable_width_anchor_blend_taper)
+        alpha = float(base)
+        if abs(taper) > 0.0:
+            center = float(self.params.observable_width_anchor_blend_taper_center_D)
+            sigma = max(float(self.params.observable_width_anchor_blend_taper_sigma_D), 1e-9)
+            x = (float(D) - center) / sigma
+            # Normalized odd local skew: +1 at D=center-sigma, -1 at D=center+sigma, ~0 away from the band.
+            local_skew = float(-x * np.exp(0.5 - 0.5 * x * x))
+            alpha += float(taper * local_skew)
+        boost_peak = float(np.clip(self.params.observable_width_anchor_boost_peak, 0.0, 1.0))
+        if boost_peak > 0.0:
+            center = float(self.params.observable_width_anchor_boost_center_D)
+            sigma = max(float(self.params.observable_width_anchor_boost_sigma_D), 1e-9)
+            alpha += float(boost_peak * np.exp(-0.5 * ((float(D) - center) / sigma) ** 2))
+        return float(np.clip(alpha, 0.0, 1.0))
+
+    def _observable_ref_amp_anchor_effective_beta(self, D: float) -> float:
+        beta_peak = float(np.clip(self.params.observable_ref_amp_anchor_peak, 0.0, 1.0))
+        if beta_peak <= 0.0:
+            return 0.0
+        center = float(self.params.observable_ref_amp_anchor_center_D)
+        sigma = max(float(self.params.observable_ref_amp_anchor_sigma_D), 1e-9)
+        return float(beta_peak * np.exp(-0.5 * ((float(D) - center) / sigma) ** 2))
+
+    def _observable_point_amp_anchor_effective_beta(self, D: float) -> float:
+        beta_peak = float(np.clip(self.params.observable_point_amp_anchor_peak, 0.0, 1.0))
+        if beta_peak <= 0.0:
+            return 0.0
+        center = float(self.params.observable_point_amp_anchor_center_D)
+        sigma = max(float(self.params.observable_point_amp_anchor_sigma_D), 1e-9)
+        return float(beta_peak * np.exp(-0.5 * ((float(D) - center) / sigma) ** 2))
+
+    def _blend_observable_width_ratio(self, width_ratio: float, D: float, eta: float) -> float:
+        alpha = self._observable_width_anchor_effective_alpha(float(D))
+        if alpha <= 0.0:
+            return float(width_ratio)
+        target = self._observable_width_anchor_target(float(D), float(eta))
+        if target is None:
+            return float(width_ratio)
+        return float(
+            np.exp(
+                (1.0 - alpha) * np.log(max(float(width_ratio), self.params.b_overlap_floor))
+                + alpha * np.log(max(float(target), self.params.b_overlap_floor))
+            )
+        )
+
+    def _blend_observable_ref_amp(
+        self,
+        amp_ref: float,
+        layer_n: int,
+        observable_mode: str,
+        D: float,
+    ) -> float:
+        beta = self._observable_ref_amp_anchor_effective_beta(float(D))
+        if beta <= 0.0:
+            return float(amp_ref)
+        target = self._observable_ref_amp_anchor_target(int(layer_n), str(observable_mode))
+        if target is None:
+            return float(amp_ref)
+        return float(
+            np.exp(
+                (1.0 - beta) * np.log(max(float(amp_ref), self.params.b_overlap_floor))
+                + beta * np.log(max(float(target), self.params.b_overlap_floor))
+            )
+        )
+
+    def _blend_observable_point_amp(
+        self,
+        amp: float,
+        layer_n: int,
+        observable_mode: str,
+        D: float,
+        eta: float,
+    ) -> float:
+        beta = self._observable_point_amp_anchor_effective_beta(float(D))
+        if beta <= 0.0:
+            return float(amp)
+        target = self._observable_point_amp_anchor_target(int(layer_n), str(observable_mode), float(D), float(eta))
+        if target is None:
+            return float(amp)
+        return float(
+            np.exp(
+                (1.0 - beta) * np.log(max(float(amp), self.params.b_overlap_floor))
+                + beta * np.log(max(float(target), self.params.b_overlap_floor))
+            )
+        )
 
     def _runtime_direct_b_self_blend_weight(
         self,
@@ -2168,7 +2576,80 @@ class PSLTKinetics:
                 b123 = np.maximum(b123, self.params.b_overlap_floor)
                 b123 /= max(float(b123[2]), self.params.b_overlap_floor)
 
+            sum_alpha = float(np.clip(self.params.runtime_direct_b_sum_anchor_blend, 0.0, 1.0))
+            if sum_alpha > 0.0:
+                target_sum = self._runtime_direct_b_sum_anchor_target(float(D))
+                if target_sum is not None:
+                    cur_sum = max(float(np.sum(b123)), self.params.b_overlap_floor)
+                    scale = float(np.exp(sum_alpha * np.log(target_sum / cur_sum)))
+                    b123 = np.maximum(scale * b123, self.params.b_overlap_floor)
+
+            eft_sum_alpha = float(np.clip(self.params.runtime_direct_b_eft_sum_anchor_blend, 0.0, 1.0))
+            if eft_sum_alpha > 0.0:
+                b_anchor = self._b_eft_profile_anchor_vector(float(D))
+                if b_anchor is not None:
+                    cur_sum = max(float(np.sum(b123)), self.params.b_overlap_floor)
+                    tgt_sum = max(float(np.sum(b_anchor)), self.params.b_overlap_floor)
+                    scale = float(np.exp(eft_sum_alpha * np.log(tgt_sum / cur_sum)))
+                    b123 = np.maximum(scale * b123, self.params.b_overlap_floor)
+
         self._b_eft_norm_cache[d_key] = b123.copy()
+        return b123
+
+    def _b_eft_profile_anchor_vector(self, D: float) -> Optional[np.ndarray]:
+        if self._b_overlap_profile is None:
+            return None
+
+        d_key = round(float(D), 6)
+        cached = self._b_eft_profile_anchor_cache.get(d_key)
+        if cached is not None:
+            return cached.copy()
+
+        prof = self._b_overlap_profile
+        d_knots = np.asarray(prof.get("D", np.array([], dtype=float)), dtype=float)
+        g_knots = prof.get("GUV", None)
+        lam_knots = prof.get("LAMBDA123", None)
+        if g_knots is None or lam_knots is None or d_knots.size == 0:
+            return None
+
+        g_uv = np.zeros((3, 3), dtype=float)
+        for i in range(3):
+            for j in range(3):
+                g_uv[i, j] = float(np.interp(float(D), d_knots, g_knots[:, i, j]))
+        g_uv = np.maximum(g_uv, self.params.hll_uv_coupling_floor)
+
+        lam = np.array([np.interp(float(D), d_knots, lam_knots[:, i]) for i in range(3)], dtype=float)
+        m2 = np.maximum(np.abs(lam), self.params.hll_uv_m2_floor)
+        pwr = float(self.params.hll_uv_m2_power)
+        if pwr == 0.0:
+            m2 = np.ones(3, dtype=float)
+        else:
+            m2 = np.maximum(m2 ** pwr, self.params.hll_uv_m2_floor)
+
+        fin_cfg = self._hll_uv_finite_match_config()
+        rge_cfg = self._hll_uv_rge_config()
+        mu_match = mu_match_from_m2(m2, floor=rge_cfg.floor)
+
+        strengths = np.zeros(3, dtype=float)
+        for idx in range(3):
+            kernel = np.outer(g_uv[:, idx], g_uv[:, idx]) / max(float(m2[idx]), self.params.hll_uv_m2_floor)
+            kernel = np.maximum(kernel, self.params.hll_uv_coupling_floor)
+            p_layer = np.zeros(3, dtype=float)
+            p_layer[idx] = 1.0
+            k_match, _ = apply_ceh_finite_one_loop(
+                kernel,
+                fin_cfg,
+                g_uv=g_uv,
+                p_kin=p_layer,
+                m2=m2,
+                D=float(D),
+            )
+            k_ir, _ = run_ceh_leading_log(k_match, mu_match, rge_cfg)
+            strengths[idx] = max(float(np.trace(k_ir)), self.params.b_overlap_floor)
+
+        norm = max(float(strengths[2]), self.params.b_overlap_floor)
+        b123 = np.maximum(strengths / norm, self.params.b_overlap_floor)
+        self._b_eft_profile_anchor_cache[d_key] = b123.copy()
         return b123
 
     def y_eff_raw_N(self, N: int, D: Optional[float] = None) -> float:
@@ -2824,7 +3305,8 @@ class PSLTKinetics:
         c = self.hll_wilson_matrix_uv_rge(D, eta, t_coh, N_max=N_max)
         c_diag = np.diag(c)
         c_ref_diag = np.diag(c_ref)
-        return total_width_ratio(c_diag=c_diag, c_diag_ref=c_ref_diag, cfg=cfg)
+        width_ratio = total_width_ratio(c_diag=c_diag, c_diag_ref=c_ref_diag, cfg=cfg)
+        return self._blend_observable_width_ratio(width_ratio=width_ratio, D=D, eta=eta)
 
     def hll_channel_amplitude(
         self,
@@ -2861,7 +3343,20 @@ class PSLTKinetics:
         mode = self.params.hll_observable_mode if observable_mode is None else observable_mode
         nmax = self.params.hll_observable_nmax if N_max is None else int(N_max)
         amp_ref = self.hll_channel_amplitude(layer_n, ref_D, ref_eta, t_coh, observable_mode=mode, N_max=nmax)
+        amp_ref = self._blend_observable_ref_amp(
+            amp_ref=amp_ref,
+            layer_n=int(layer_n),
+            observable_mode=str(mode),
+            D=float(D),
+        )
         amp = self.hll_channel_amplitude(layer_n, D, eta, t_coh, observable_mode=mode, N_max=nmax)
+        amp = self._blend_observable_point_amp(
+            amp=amp,
+            layer_n=int(layer_n),
+            observable_mode=str(mode),
+            D=float(D),
+            eta=float(eta),
+        )
         ratio = float(amp / max(amp_ref, 1e-30))
         if mode == "proxy_wratio":
             return ratio

@@ -1,0 +1,53 @@
+{
+  "focus_D": [
+    4.813559322033898,
+    5.3559322033898304,
+    5.627118644067797,
+    5.898305084745763,
+    6.169491525423728,
+    6.4406779661016955,
+    6.711864406779661,
+    7.254237288135593,
+    8.067796610169491
+  ],
+  "eta_grid": [
+    0.2,
+    0.39,
+    0.5800000000000001,
+    0.77,
+    0.96,
+    1.15,
+    1.34,
+    1.53,
+    1.72,
+    1.91,
+    2.1,
+    2.29,
+    2.4800000000000004,
+    2.6700000000000004,
+    2.8600000000000003,
+    3.0500000000000003,
+    3.24,
+    3.43,
+    3.62,
+    3.81,
+    4.0
+  ],
+  "alpha_center": 0.825,
+  "width_taper": 0.01,
+  "width_taper_center_D": 6.0,
+  "width_taper_sigma_D": 0.4,
+  "refamp_peak": 1.0,
+  "center_grid": [
+    5.8,
+    6.0,
+    6.2
+  ],
+  "sigma_grid": [
+    0.1,
+    0.15,
+    0.2
+  ],
+  "width_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/model_chain_full_direct_width_profile_Dgrid21_Egrid5.csv",
+  "refamp_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/model_chain_full_direct_ref_amp_profile.csv"
+}

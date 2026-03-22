@@ -1,0 +1,11 @@
+{
+  "chain_mode": "full_direct",
+  "observable_mode": "eft_wilson_uv_rge",
+  "ref_D": 9.6,
+  "ref_eta": 1.0,
+  "layers": [
+    1,
+    2,
+    3
+  ]
+}

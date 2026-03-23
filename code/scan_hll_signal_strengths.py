@@ -113,6 +113,11 @@ Chain profile selection:
                               hotspot width extension:
                               fullwidthrefamp_pointamp plus a localized
                               positive width-anchor boost near D≈5.9.
+  - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint:
+                              reviewer-hotspot joint extension:
+                              fullwidthrefamp_pointamp_widthboost plus a
+                              localized width+ref-amp joint boost centered
+                              near D≈5.898.
   - --chain-mode cell_direct_runtime_extreme:
                               stress-only all-direct path with no profile
                               object; evaluate g_N(D), chi_LR(D), A_l(D),
@@ -694,7 +699,12 @@ def make_baseline_kinetics(
                 ROOT / "output" / "kinetic_action_chain" / "model_chain_full_direct_bsum_profile_Dgrid21.csv"
             ),
         }
-    elif chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}:
+    elif chain_mode_eff in {
+        "cell_direct_runtime_release_fullwidthrefamp",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint",
+    }:
         g_fp_2d_csv, g_fp_2d_spectrum_csv = ensure_runtime_full_direct_g_profiles(
             root=ROOT,
             d_scan=d_scan,
@@ -780,7 +790,12 @@ def make_baseline_kinetics(
                 if chain_mode_eff == "cell_direct_runtime_release_fullwidthanchor"
                 else (
                     0.825
-                    if chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                    if chain_mode_eff in {
+                        "cell_direct_runtime_release_fullwidthrefamp",
+                        "cell_direct_runtime_release_fullwidthrefamp_pointamp",
+                        "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
+                        "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint",
+                    }
                     else 0.0
                 )
             )
@@ -790,7 +805,12 @@ def make_baseline_kinetics(
         observable_width_anchor_blend_taper=float(
             (
                 0.01
-                if chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                if chain_mode_eff in {
+                    "cell_direct_runtime_release_fullwidthrefamp",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint",
+                }
                 else 0.0
             )
             if observable_width_anchor_blend_taper_override is None
@@ -808,15 +828,23 @@ def make_baseline_kinetics(
         ),
         observable_width_anchor_boost_peak=float(
             (
-                0.5
-                if chain_mode_eff == "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"
-                else 0.0
+                1.0
+                if chain_mode_eff == "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint"
+                else (
+                    0.5
+                    if chain_mode_eff == "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"
+                    else 0.0
+                )
             )
             if observable_width_anchor_boost_peak_override is None
             else observable_width_anchor_boost_peak_override
         ),
         observable_width_anchor_boost_center_D=float(
-            5.9
+            (
+                5.898305084745763
+                if chain_mode_eff == "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint"
+                else 5.9
+            )
             if observable_width_anchor_boost_center_D_override is None
             else observable_width_anchor_boost_center_D_override
         ),
@@ -829,7 +857,13 @@ def make_baseline_kinetics(
             str(ROOT / "output" / "kinetic_action_chain" / "model_chain_full_direct_width_profile_Dgrid21_Egrid5.csv")
             if (
                 observable_width_anchor_csv_override in {None, ""}
-                and chain_mode_eff in {"cell_direct_runtime_release_fullwidthanchor", "cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                and chain_mode_eff in {
+                    "cell_direct_runtime_release_fullwidthanchor",
+                    "cell_direct_runtime_release_fullwidthrefamp",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint",
+                }
             )
             else (
                 None if observable_width_anchor_csv_override in {None, ""} else str(observable_width_anchor_csv_override)
@@ -838,14 +872,23 @@ def make_baseline_kinetics(
         observable_ref_amp_anchor_peak=float(
             (
                 1.0
-                if chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                if chain_mode_eff in {
+                    "cell_direct_runtime_release_fullwidthrefamp",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint",
+                }
                 else 0.0
             )
             if observable_ref_amp_anchor_peak_override is None
             else observable_ref_amp_anchor_peak_override
         ),
         observable_ref_amp_anchor_center_D=float(
-            5.6
+            (
+                5.898305084745763
+                if chain_mode_eff == "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint"
+                else 5.6
+            )
             if observable_ref_amp_anchor_center_D_override is None
             else observable_ref_amp_anchor_center_D_override
         ),
@@ -859,7 +902,12 @@ def make_baseline_kinetics(
                 str(ROOT / "output" / "kinetic_action_chain" / "model_chain_full_direct_ref_amp_profile.csv")
                 if (
                     observable_ref_amp_anchor_csv_override in {None, ""}
-                    and chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                    and chain_mode_eff in {
+                        "cell_direct_runtime_release_fullwidthrefamp",
+                        "cell_direct_runtime_release_fullwidthrefamp_pointamp",
+                        "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
+                        "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint",
+                    }
                 )
                 else (
                     None
@@ -871,7 +919,11 @@ def make_baseline_kinetics(
         observable_point_amp_anchor_peak=float(
             (
                 0.35
-                if chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                if chain_mode_eff in {
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
+                    "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint",
+                }
                 else 0.0
             )
             if observable_point_amp_anchor_peak_override is None
@@ -892,7 +944,11 @@ def make_baseline_kinetics(
                 str(ROOT / "output" / "kinetic_action_chain" / "model_chain_full_direct_point_amp_profile_D60_hotspot_layer2.csv")
                 if (
                     observable_point_amp_anchor_csv_override in {None, ""}
-                    and chain_mode_eff in {"cell_direct_runtime_release_fullwidthrefamp_pointamp", "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost"}
+                    and chain_mode_eff in {
+                        "cell_direct_runtime_release_fullwidthrefamp_pointamp",
+                        "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
+                        "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint",
+                    }
                 )
                 else (
                     None
@@ -1301,6 +1357,7 @@ def parse_args() -> argparse.Namespace:
             "cell_direct_runtime_release_fullwidthrefamp",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint",
             "cell_direct_runtime_release_tuned",
             "cell_direct_runtime_extreme",
         ],
@@ -1454,6 +1511,7 @@ def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray
         "cell_direct_runtime_release_fullwidthrefamp",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp_widthboost_joint",
         "cell_direct_runtime_release_tuned",
         "cell_direct_runtime_extreme",
     }:

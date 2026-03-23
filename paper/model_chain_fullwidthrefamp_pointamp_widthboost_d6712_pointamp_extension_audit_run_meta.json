@@ -1,0 +1,26 @@
+{
+  "detail_source": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/model_chain_fullwidthrefamp_pointamp_widthboost_d60_reviewer_hotspot_audit_detail.csv",
+  "focus_D": [
+    5.898305084745763,
+    6.4406779661016955,
+    6.711864406779661,
+    6.983050847457627
+  ],
+  "centers": [
+    6.68,
+    6.71,
+    6.74
+  ],
+  "sigmas": [
+    0.03,
+    0.05,
+    0.08,
+    0.1
+  ],
+  "betas": [
+    0.2,
+    0.35,
+    0.5,
+    0.65
+  ]
+}

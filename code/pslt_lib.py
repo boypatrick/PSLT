@@ -181,6 +181,9 @@ class PSLTParameters:
     observable_point_amp_anchor_peak: float = 0.0  # localized blend of point amp toward explicit full-direct anchor
     observable_point_amp_anchor_center_D: float = 6.4406779661016955
     observable_point_amp_anchor_sigma_D: float = 0.03
+    observable_point_amp_anchor_peak2: float = 0.0  # optional second localized point-amp blend for finer-grid hotspot cleanup
+    observable_point_amp_anchor_center_D2: float = 6.711864406779661
+    observable_point_amp_anchor_sigma_D2: float = 0.10
     observable_point_amp_anchor_csv: Optional[str] = None
     hll_observable_mode: str = "eft_wilson_uv_rge"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
     hll_observable_nmax: int = 20
@@ -389,6 +392,10 @@ class PSLTParameters:
             raise ValueError("observable_point_amp_anchor_peak must be in [0,1].")
         if self.observable_point_amp_anchor_sigma_D <= 0.0:
             raise ValueError("observable_point_amp_anchor_sigma_D must be > 0.")
+        if not (0.0 <= self.observable_point_amp_anchor_peak2 <= 1.0):
+            raise ValueError("observable_point_amp_anchor_peak2 must be in [0,1].")
+        if self.observable_point_amp_anchor_sigma_D2 <= 0.0:
+            raise ValueError("observable_point_amp_anchor_sigma_D2 must be > 0.")
         if self.observable_point_amp_anchor_csv not in {None, ""}:
             try:
                 Path(str(self.observable_point_amp_anchor_csv))
@@ -1539,12 +1546,18 @@ class PSLTKinetics:
         return float(beta_peak * np.exp(-0.5 * ((float(D) - center) / sigma) ** 2))
 
     def _observable_point_amp_anchor_effective_beta(self, D: float) -> float:
-        beta_peak = float(np.clip(self.params.observable_point_amp_anchor_peak, 0.0, 1.0))
-        if beta_peak <= 0.0:
-            return 0.0
-        center = float(self.params.observable_point_amp_anchor_center_D)
-        sigma = max(float(self.params.observable_point_amp_anchor_sigma_D), 1e-9)
-        return float(beta_peak * np.exp(-0.5 * ((float(D) - center) / sigma) ** 2))
+        beta1_peak = float(np.clip(self.params.observable_point_amp_anchor_peak, 0.0, 1.0))
+        beta2_peak = float(np.clip(self.params.observable_point_amp_anchor_peak2, 0.0, 1.0))
+        beta = 0.0
+        if beta1_peak > 0.0:
+            center1 = float(self.params.observable_point_amp_anchor_center_D)
+            sigma1 = max(float(self.params.observable_point_amp_anchor_sigma_D), 1e-9)
+            beta += float(beta1_peak * np.exp(-0.5 * ((float(D) - center1) / sigma1) ** 2))
+        if beta2_peak > 0.0:
+            center2 = float(self.params.observable_point_amp_anchor_center_D2)
+            sigma2 = max(float(self.params.observable_point_amp_anchor_sigma_D2), 1e-9)
+            beta += float(beta2_peak * np.exp(-0.5 * ((float(D) - center2) / sigma2) ** 2))
+        return float(np.clip(beta, 0.0, 1.0))
 
     def _blend_observable_width_ratio(self, width_ratio: float, D: float, eta: float) -> float:
         alpha = self._observable_width_anchor_effective_alpha(float(D))

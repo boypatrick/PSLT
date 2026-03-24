@@ -188,6 +188,9 @@ class PSLTParameters:
     observable_point_amp_anchor_center_D2: float = 6.711864406779661
     observable_point_amp_anchor_sigma_D2: float = 0.10
     observable_point_amp_anchor_csv: Optional[str] = None
+    observable_partial_anchor_peak: float = 0.0  # localized blend of partial ratio toward full-direct point/ref anchor ratio
+    observable_partial_anchor_center_D: float = 5.90
+    observable_partial_anchor_sigma_D: float = 0.20
     hll_observable_mode: str = "eft_wilson_uv_rge"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
     hll_observable_nmax: int = 20
     hll_match_basis_mode: str = "sqrt_yraw"  # "sqrt_yraw" reproduces diagonal limit with mix_scale=0
@@ -1572,6 +1575,15 @@ class PSLTKinetics:
             beta += float(beta2_peak * np.exp(-0.5 * ((float(D) - center2) / sigma2) ** 2))
         return float(np.clip(beta, 0.0, 1.0))
 
+    def _observable_partial_anchor_effective_beta(self, D: float) -> float:
+        beta_peak = float(np.clip(self.params.observable_partial_anchor_peak, 0.0, 1.0))
+        if beta_peak <= 0.0:
+            return 0.0
+        center = float(self.params.observable_partial_anchor_center_D)
+        sigma = max(float(self.params.observable_partial_anchor_sigma_D), 1e-9)
+        beta = float(beta_peak * np.exp(-0.5 * ((float(D) - center) / sigma) ** 2))
+        return float(np.clip(beta, 0.0, 1.0))
+
     def _blend_observable_width_ratio(self, width_ratio: float, D: float, eta: float) -> float:
         alpha = self._observable_width_anchor_effective_alpha(float(D))
         if alpha <= 0.0:
@@ -1623,6 +1635,29 @@ class PSLTKinetics:
         return float(
             np.exp(
                 (1.0 - beta) * np.log(max(float(amp), self.params.b_overlap_floor))
+                + beta * np.log(max(float(target), self.params.b_overlap_floor))
+            )
+        )
+
+    def _blend_observable_partial_ratio(
+        self,
+        partial_ratio: float,
+        layer_n: int,
+        observable_mode: str,
+        D: float,
+        eta: float,
+    ) -> float:
+        beta = self._observable_partial_anchor_effective_beta(float(D))
+        if beta <= 0.0:
+            return float(partial_ratio)
+        amp_target = self._observable_point_amp_anchor_target(int(layer_n), str(observable_mode), float(D), float(eta))
+        amp_ref_target = self._observable_ref_amp_anchor_target(int(layer_n), str(observable_mode))
+        if amp_target is None or amp_ref_target is None:
+            return float(partial_ratio)
+        target = float((max(float(amp_target), self.params.b_overlap_floor) / max(float(amp_ref_target), self.params.b_overlap_floor)) ** 2)
+        return float(
+            np.exp(
+                (1.0 - beta) * np.log(max(float(partial_ratio), self.params.b_overlap_floor))
                 + beta * np.log(max(float(target), self.params.b_overlap_floor))
             )
         )
@@ -3387,6 +3422,13 @@ class PSLTKinetics:
         if mode == "proxy_wratio":
             return ratio
         partial_ratio = ratio * ratio
+        partial_ratio = self._blend_observable_partial_ratio(
+            partial_ratio=partial_ratio,
+            layer_n=int(layer_n),
+            observable_mode=str(mode),
+            D=float(D),
+            eta=float(eta),
+        )
         if mode == "eft_wilson_matched":
             width_ratio = self.hll_total_width_ratio_matched(
                 D=D,

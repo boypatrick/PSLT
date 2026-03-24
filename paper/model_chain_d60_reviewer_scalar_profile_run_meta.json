@@ -1,0 +1,9 @@
+{
+  "ref_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D60E21_tuned.csv",
+  "cur_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21.csv",
+  "hotspot_centers": [
+    5.627118644067797,
+    5.898305084745763,
+    6.4406779661016955
+  ]
+}

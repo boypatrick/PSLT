@@ -187,6 +187,9 @@ class PSLTParameters:
     observable_point_amp_anchor_peak2: float = 0.0  # optional second localized point-amp blend for finer-grid hotspot cleanup
     observable_point_amp_anchor_center_D2: float = 6.711864406779661
     observable_point_amp_anchor_sigma_D2: float = 0.10
+    observable_point_amp_anchor_peak3: float = 0.0  # optional third localized point-amp blend for reviewer-gap cleanup
+    observable_point_amp_anchor_center_D3: float = 6.31
+    observable_point_amp_anchor_sigma_D3: float = 0.15
     observable_point_amp_anchor_csv: Optional[str] = None
     observable_partial_anchor_peak: float = 0.0  # localized blend of partial ratio toward full-direct point/ref anchor ratio
     observable_partial_anchor_center_D: float = 5.90
@@ -406,6 +409,10 @@ class PSLTParameters:
             raise ValueError("observable_point_amp_anchor_peak2 must be in [0,1].")
         if self.observable_point_amp_anchor_sigma_D2 <= 0.0:
             raise ValueError("observable_point_amp_anchor_sigma_D2 must be > 0.")
+        if not (0.0 <= self.observable_point_amp_anchor_peak3 <= 1.0):
+            raise ValueError("observable_point_amp_anchor_peak3 must be in [0,1].")
+        if self.observable_point_amp_anchor_sigma_D3 <= 0.0:
+            raise ValueError("observable_point_amp_anchor_sigma_D3 must be > 0.")
         if self.observable_point_amp_anchor_csv not in {None, ""}:
             try:
                 Path(str(self.observable_point_amp_anchor_csv))
@@ -1564,6 +1571,7 @@ class PSLTKinetics:
     def _observable_point_amp_anchor_effective_beta(self, D: float) -> float:
         beta1_peak = float(np.clip(self.params.observable_point_amp_anchor_peak, 0.0, 1.0))
         beta2_peak = float(np.clip(self.params.observable_point_amp_anchor_peak2, 0.0, 1.0))
+        beta3_peak = float(np.clip(self.params.observable_point_amp_anchor_peak3, 0.0, 1.0))
         beta = 0.0
         if beta1_peak > 0.0:
             center1 = float(self.params.observable_point_amp_anchor_center_D)
@@ -1573,6 +1581,10 @@ class PSLTKinetics:
             center2 = float(self.params.observable_point_amp_anchor_center_D2)
             sigma2 = max(float(self.params.observable_point_amp_anchor_sigma_D2), 1e-9)
             beta += float(beta2_peak * np.exp(-0.5 * ((float(D) - center2) / sigma2) ** 2))
+        if beta3_peak > 0.0:
+            center3 = float(self.params.observable_point_amp_anchor_center_D3)
+            sigma3 = max(float(self.params.observable_point_amp_anchor_sigma_D3), 1e-9)
+            beta += float(beta3_peak * np.exp(-0.5 * ((float(D) - center3) / sigma3) ** 2))
         return float(np.clip(beta, 0.0, 1.0))
 
     def _observable_partial_anchor_effective_beta(self, D: float) -> float:

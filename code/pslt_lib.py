@@ -177,6 +177,9 @@ class PSLTParameters:
     observable_ref_amp_anchor_peak: float = 0.0  # localized blend of amp_ref toward explicit full-direct anchor
     observable_ref_amp_anchor_center_D: float = 5.6
     observable_ref_amp_anchor_sigma_D: float = 0.2
+    observable_ref_amp_anchor_peak2: float = 0.0  # optional second localized ref-amp blend for reviewer/same-ref hotspot cleanup
+    observable_ref_amp_anchor_center_D2: float = 5.898305084745763
+    observable_ref_amp_anchor_sigma_D2: float = 0.2
     observable_ref_amp_anchor_csv: Optional[str] = None
     observable_point_amp_anchor_peak: float = 0.0  # localized blend of point amp toward explicit full-direct anchor
     observable_point_amp_anchor_center_D: float = 6.4406779661016955
@@ -383,6 +386,10 @@ class PSLTParameters:
             raise ValueError("observable_ref_amp_anchor_peak must be in [0,1].")
         if self.observable_ref_amp_anchor_sigma_D <= 0.0:
             raise ValueError("observable_ref_amp_anchor_sigma_D must be > 0.")
+        if not (0.0 <= self.observable_ref_amp_anchor_peak2 <= 1.0):
+            raise ValueError("observable_ref_amp_anchor_peak2 must be in [0,1].")
+        if self.observable_ref_amp_anchor_sigma_D2 <= 0.0:
+            raise ValueError("observable_ref_amp_anchor_sigma_D2 must be > 0.")
         if self.observable_ref_amp_anchor_csv not in {None, ""}:
             try:
                 Path(str(self.observable_ref_amp_anchor_csv))
@@ -1538,12 +1545,18 @@ class PSLTKinetics:
         return float(np.clip(alpha, 0.0, 1.0))
 
     def _observable_ref_amp_anchor_effective_beta(self, D: float) -> float:
-        beta_peak = float(np.clip(self.params.observable_ref_amp_anchor_peak, 0.0, 1.0))
-        if beta_peak <= 0.0:
-            return 0.0
-        center = float(self.params.observable_ref_amp_anchor_center_D)
-        sigma = max(float(self.params.observable_ref_amp_anchor_sigma_D), 1e-9)
-        return float(beta_peak * np.exp(-0.5 * ((float(D) - center) / sigma) ** 2))
+        beta1_peak = float(np.clip(self.params.observable_ref_amp_anchor_peak, 0.0, 1.0))
+        beta2_peak = float(np.clip(self.params.observable_ref_amp_anchor_peak2, 0.0, 1.0))
+        beta = 0.0
+        if beta1_peak > 0.0:
+            center1 = float(self.params.observable_ref_amp_anchor_center_D)
+            sigma1 = max(float(self.params.observable_ref_amp_anchor_sigma_D), 1e-9)
+            beta += float(beta1_peak * np.exp(-0.5 * ((float(D) - center1) / sigma1) ** 2))
+        if beta2_peak > 0.0:
+            center2 = float(self.params.observable_ref_amp_anchor_center_D2)
+            sigma2 = max(float(self.params.observable_ref_amp_anchor_sigma_D2), 1e-9)
+            beta += float(beta2_peak * np.exp(-0.5 * ((float(D) - center2) / sigma2) ** 2))
+        return float(np.clip(beta, 0.0, 1.0))
 
     def _observable_point_amp_anchor_effective_beta(self, D: float) -> float:
         beta1_peak = float(np.clip(self.params.observable_point_amp_anchor_peak, 0.0, 1.0))

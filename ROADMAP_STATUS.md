@@ -1,6 +1,6 @@
 # PSLT Roadmap Status
 
-Last updated: 2026-03-20
+Last updated: 2026-03-26
 
 This file tracks roadmap items that are still open, partially promoted, or explicitly held behind release gates. It is intended as an operational companion to `/Users/boypatrick/codex/PSLT_quantam/README.md` and `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex`.
 
@@ -26,6 +26,7 @@ Interpretation:
 - In physical terms, the promoted release-production parity branch closes the direct spectral-selection side of the chain (`g_N+\chi+A`) against `full_direct`, while the promoted `cell_direct_runtime_release_tuned` branch closes a **risk-weighted profile-anchored runtime-direct visibility parity path** in the observable sector.
 - The current canonical release profile is `output/kinetic_action_chain/runtime_direct_visibility_alphaD_profile_release.csv`, selected by minimum mean anchor among gate-passing candidates (`alpha_min=0.96`, `alpha_max=0.99`, `power=1.0`, `mean(alpha)=0.9637`, `p90(alpha)=0.9734`).
 - A post-promotion de-anchoring probe is now recorded in `/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/runtime_direct_visibility_alphaD_deanchoring_probe_summary.csv`. In the tested neighborhood, every lower-anchoring candidate re-opened the `D60xE21` gate through either acceptance mismatch (`alpha_min < 0.96`) or `max|Δμ_{\mu\mu}| > 1` (`alpha_max < 0.99`). The current canonical `alpha(D)` should therefore be treated as **close to the minimal necessary anchoring** for the present runtime-direct visibility implementation.
+- The reviewer-side model-chain mainline is currently frozen on `cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost`; recent cross-grid families (`pointamp3`, `widthband`, `partialguard`, reviewer-scalar, reviewer ref-handoff) are retained as diagnostic negatives rather than promotion paths because they either reopen the `D21 D=6.4` guard or fail to beat the main candidate on true `D60xE21` reviewer maps.
 
 ## Must-Have Before Stronger PRD Claim
 
@@ -67,7 +68,7 @@ These should not be re-listed as "not done":
 ## Recommended Execution Order
 
 1. Treat strict all-direct visibility closure as an active blocker with known limits: the deterministic bug is now fixed, but the current width+UV direct-only family does not close the remaining `D=4.8/6.4/7.2` residual structure.
-2. Promote full `(D, eta, N)` localized projection / model-chain unification by strengthening the observable-side `B_N` runtime-direct family, not by further `alpha(D)` retuning inside the present release-qualified anchored branch.
+2. Keep the reviewer mainline frozen on `cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost` unless a substantially different cross-grid guard mechanism can lower the D60 partial/point-amp band (`D≈6.169/6.441`) without reopening the D21 `D=6.4` guard.
 3. Keep EYMH projected parent-kernel derivation on the board as a soft-open conceptual proof obligation, but do not treat it as the immediate engineering blocker unless a stronger parent-action statement becomes strategically necessary.
 4. Keep `open_system_micro` promotion on the board as a soft-open conceptual proof obligation, but do not treat it as the immediate engineering blocker unless microscopic bath-origin wording becomes strategically necessary.
 5. Revisit `t_coh`, `eta_fp(D)`, and fully localized barrier-leakage normalization after the main release path is stronger.

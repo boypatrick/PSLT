@@ -1,0 +1,32 @@
+{
+  "schur_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_action_loop_eymh_logdet_schur_audit_map_D21E21_fix.csv",
+  "parent_blockdet_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_action_loop_eymh_parent_blockdet_audit_map_D21E21_fix.csv",
+  "d60_ref_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D60E21_refresh_20260324.csv",
+  "d60_cur_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21_refresh_20260324.csv",
+  "d21_ref_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41_refresh_20260324.csv",
+  "d21_cur_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D21E41.csv",
+  "d60_pointamp_band": [
+    6.169492525423729,
+    6.4406779661016955
+  ],
+  "d60_width_band": [
+    4.813559322033898,
+    5.627118644067797,
+    6.711864406779661
+  ],
+  "d21_guard": 6.4,
+  "features": {
+    "projected_logdet_part_kernel": "logdet_part_kernel",
+    "projected_logdet_part_action": "logdet_part_action",
+    "projected_schur_gain": "schur_gain",
+    "projected_schur_action": "schur_action",
+    "projected_logdet_schur_response_action": "logdet_schur_action",
+    "projected_logdet_schur_response_weight": "logdet_schur_weight",
+    "projected_logdet_part_share": "logdet_part_share",
+    "projected_schur_share": "schur_share",
+    "eymh_parented_prefactor_diag": "eymh_prefactor_diag",
+    "parent_blockdet_det_ratio": "blockdet_det_ratio",
+    "parent_blockdet_schur_norm": "blockdet_schur_norm",
+    "parent_blockdet_action": "blockdet_action"
+  }
+}

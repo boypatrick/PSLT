@@ -1,0 +1,63 @@
+{
+  "families": {
+    "uniform_family": {
+      "chi_LR": [
+        "uniform",
+        "delta_omega12"
+      ],
+      "Gamma_ref": [
+        "uniform",
+        "omega1"
+      ],
+      "g2_raw": [
+        "uniform",
+        "omega3"
+      ],
+      "g3_raw": [
+        "uniform",
+        "omega3"
+      ]
+    },
+    "prolate_family": {
+      "chi_LR": [
+        "prolate",
+        "gap_fraction"
+      ],
+      "Gamma_ref": [
+        "prolate",
+        "omega1"
+      ],
+      "g2_raw": [
+        "prolate",
+        "omega2"
+      ],
+      "g3_raw": [
+        "prolate",
+        "omega2"
+      ]
+    },
+    "hybrid_family": {
+      "chi_LR": [
+        "prolate",
+        "gap_fraction"
+      ],
+      "Gamma_ref": [
+        "uniform",
+        "omega1"
+      ],
+      "g2_raw": [
+        "prolate",
+        "omega2"
+      ],
+      "g3_raw": [
+        "prolate",
+        "omega2"
+      ]
+    }
+  },
+  "hotspot_band": [
+    5.6,
+    6.5
+  ],
+  "notes": "Hybrid audit keeps Gamma_ref on uniform auxiliary proxy while routing chi_LR and raw g witnesses through calibrated prolate-compatible proxies. This remains extraction-side only."
+}

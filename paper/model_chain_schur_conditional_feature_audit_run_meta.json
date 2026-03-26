@@ -1,0 +1,40 @@
+{
+  "positive_d60": [
+    6.169492525423729,
+    6.4406779661016955
+  ],
+  "guard_d60": [
+    4.813559322033898,
+    5.627118644067797,
+    6.711864406779661
+  ],
+  "guard_d21": [
+    4.0,
+    6.4,
+    8.0
+  ],
+  "features": [
+    "projected_logdet_part_kernel",
+    "projected_logdet_part_action",
+    "projected_schur_gain",
+    "projected_schur_action",
+    "projected_logdet_schur_response_action",
+    "projected_logdet_schur_response_weight",
+    "projected_logdet_part_share",
+    "projected_schur_share",
+    "eymh_parented_prefactor_diag",
+    "parent_blockdet_det_ratio",
+    "parent_blockdet_schur_norm",
+    "parent_blockdet_action"
+  ],
+  "base_families": [
+    "pointamp_leverage",
+    "family_score"
+  ],
+  "source_files": {
+    "d60_summary": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/model_chain_fullwidthrefamp_pointamp2_widthboost_d60_reviewerref_hotspot_audit_summary.csv",
+    "d21_summary": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/model_chain_fullwidthrefamp_pointamp2_widthboost_d21_reviewer_hotspot_audit_summary.csv",
+    "schur_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_action_loop_eymh_logdet_schur_audit_map_D21E21_fix.csv",
+    "blockdet_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_action_loop_eymh_parent_blockdet_audit_map_D21E21_fix.csv"
+  }
+}

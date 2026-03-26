@@ -1,0 +1,15 @@
+{
+  "calibrated_profile": {
+    "n_inner": 401,
+    "eta_power": 0.75,
+    "xi_power": 2.0
+  },
+  "witness_path": "/Users/boypatrick/codex/PSLT_quantam/output/chi_fp_2d/localized_chi_Dgrid60_fine.csv",
+  "gn_path": "/Users/boypatrick/codex/PSLT_quantam/output/gn_fp_2d/gn_phase_space_2d_Dgrid60.csv",
+  "n_points": 60,
+  "hotspot_band": [
+    5.6,
+    6.5
+  ],
+  "notes": "Compatibility audit compares calibrated prolate auxiliary extraction against uniform auxiliary extraction using chi/g witnesses as trend references; witnesses are not the same eigenproblem."
+}

@@ -1,0 +1,10 @@
+summary_type,metric,uniform_reference,p95_rel_bias,max_rel_bias,uniform_anchor_l1,prolate_anchor_l1,better_method,case,f_R3_gt_0p90,f_R3_gt_0p95,f_hmumu_chi2_le_4,best_chi2
+profile_bias,delta_omega12,uniform_fine_tcoh_profile,0.01707379362778958,0.01884433125889757,,,,,,,,
+profile_bias,t_coh_deph,uniform_fine_tcoh_profile,0.017371198141619436,0.019206260391968495,,,,,,,,
+trend_witness,chi_LR,,,,1.0672553949278472,1.0673400769626862,uniform_aux,,,,,
+trend_witness,g2_raw,,,,1.8856729902727107,1.88575767230755,uniform_aux,,,,,
+trend_witness,g3_raw,,,,1.5770726475476704,1.5771573295825094,uniform_aux,,,,,
+map_impact,,,,,,,,constant_tcoh_1,1.0,0.9833333333333333,0.08333333333333333,0.09617793435554889
+map_impact,,,,,,,,uniform_dephasing_profile,1.0,0.9833333333333333,0.08333333333333333,0.09617763464801482
+map_impact,,,,,,,,prolate_dephasing_profile,1.0,0.9833333333333333,0.08333333333333333,0.09617763052705182
+map_impact,,,,,,,,prolate_dephasing_capped_1e4,1.0,0.9833333333333333,0.08333333333333333,0.09617763052705182

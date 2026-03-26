@@ -1,0 +1,43 @@
+{
+  "D_grid": [
+    5.4,
+    5.627118644067797,
+    5.8,
+    6.0,
+    6.169492525423729,
+    6.3,
+    6.4406779661016955,
+    6.6,
+    6.8
+  ],
+  "levels": [
+    {
+      "level": "coarse",
+      "uniform_n_total": 401,
+      "prolate_n_total": 401,
+      "prolate_n_inner": 121
+    },
+    {
+      "level": "mid",
+      "uniform_n_total": 801,
+      "prolate_n_total": 801,
+      "prolate_n_inner": 241
+    },
+    {
+      "level": "fine",
+      "uniform_n_total": 1201,
+      "prolate_n_total": 1201,
+      "prolate_n_inner": 401
+    }
+  ],
+  "z_max": 80.0,
+  "mesh_profile": "calibrated",
+  "eta_power": 0.75,
+  "xi_power": 2.0,
+  "physical_params": {
+    "a": 0.04,
+    "eps": 0.1,
+    "m0": 1.0,
+    "xi": 0.14
+  }
+}

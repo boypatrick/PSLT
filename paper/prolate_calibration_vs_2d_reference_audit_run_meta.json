@@ -1,0 +1,31 @@
+{
+  "D_grid": [
+    6.0,
+    12.0,
+    18.0
+  ],
+  "auxiliary_mesh": {
+    "uniform_n_total": 1201,
+    "prolate_n_total": 1201,
+    "prolate_n_inner": 401,
+    "prolate_n_outer_each": 400,
+    "z_max": 80.0
+  },
+  "physical_params": {
+    "a": 0.04,
+    "eps": 0.1,
+    "m0": 1.0,
+    "xi": 0.14
+  },
+  "targets": {
+    "absolute_target": "/Users/boypatrick/codex/PSLT_quantam/output/omega_fp_1d/omega_exact_D6-12-18.csv",
+    "witnesses": [
+      "/Users/boypatrick/codex/PSLT_quantam/output/chi_fp_2d/localized_chi_D6-12-18.csv",
+      "/Users/boypatrick/codex/PSLT_quantam/output/chi_fp_2d/chi_fp2d_D6-12-18.csv"
+    ]
+  },
+  "notes": [
+    "omega_exact_D6-12-18 fine is the only absolute calibration target.",
+    "localized_chi and chi_fp2d are witness-only trend references, not the same eigenproblem as bound-state omega."
+  ]
+}

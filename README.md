@@ -180,6 +180,23 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
 - **Full-chain consistency comparator (kinetic unification audit):** `code/scan_action_chain_consistency.py` keeps a legacy surrogate-vs-action comparator run for historical context; the current strict chain-mode parity evidence is provided by `code/scan_chain_mode_cell_direct_audit.py`. Comparator exports:
   - `output/kinetic_action_chain/action_chain_consistency_summary.csv`
   - `output/kinetic_action_chain/action_chain_consistency.png`
+  The current reviewer-mainline observable candidate is `chain_mode=cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost`. On refreshed baselines it reaches:
+  - `D60 x E21`: mismatch `0.042857`, `max |Delta mu_mumu| = 31.29`, `p95 = 8.96`
+  - `D21 x E41`: mismatch `0.090592`, `max |Delta mu_mumu| = 2.10`, `p95 = 0.914`
+  Canonical refreshed evidence is exported as:
+  - `output/hll_signal_strength/hll_signal_strength_summary_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21_refresh_20260324.csv`
+  - `output/hll_signal_strength/hll_signal_strength_summary_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D21E41.csv`
+  - `output/kinetic_action_chain/model_chain_fullwidthrefamp_pointamp2_widthboost_d60_reviewerref_hotspot_audit_summary.csv`
+  The refreshed D60 reviewer gap now splits cleanly into a partial/point-amplitude band at `D≈6.169/6.441` and a width band at `D≈4.814/5.627/6.712`, while `D=6.4` is the dominant D21 guard. Recent cross-grid follow-ups are therefore recorded as negative candidate families rather than promotion paths:
+  - `pointamp3`: improves the D60 `D≈6.169/6.441` band but reopens `D21 D=6.4`
+  - `widthband`: improves D60 width hotspots but again reopens `D21 D=6.4`
+  - `partialguard`: helps hotspot shortlist metrics but does not beat the reviewer-mainline candidate on true D60 reviewer maps
+  Supporting summaries are exported as:
+  - `output/hll_signal_strength/hll_signal_strength_summary_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost_D60E21_refresh_20260324.csv`
+  - `output/hll_signal_strength/hll_signal_strength_summary_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost_D21E41_refresh_20260324.csv`
+  - `output/hll_signal_strength/hll_signal_strength_summary_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband_D60E21_refresh_20260325.csv`
+  - `output/hll_signal_strength/hll_signal_strength_summary_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband_D21E41_refresh_20260325.csv`
+  - `output/hll_signal_strength/hll_signal_strength_summary_chain_mode_cell_direct_runtime_release_fullwidthrefamp_partialguard_pointamp2_widthboost_D60E21_refresh_20260326.csv`
 - **UV-to-EFT matching audit:** `code/scan_hll_uv_to_eft_matching.py` exports per-point UV-tree / finite-match / IR Wilson diagonals and running metadata on the same scan grid:
   - `output/hll_uv_matching/hll_uv_to_eft_map.csv`
   - `output/hll_uv_matching/hll_uv_to_eft_summary.csv`

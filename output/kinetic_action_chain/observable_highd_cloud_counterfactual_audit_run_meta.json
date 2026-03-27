@@ -1,0 +1,297 @@
+{
+  "chain_mode": "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost",
+  "observable_mode": "eft_wilson_uv_rge",
+  "layer": 2,
+  "combos": [
+    {
+      "combo_id": 1,
+      "mode": "partial_cloud",
+      "peak": 0.5,
+      "center_D": 6.169492525423729,
+      "width_D": 0.05,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 2,
+      "mode": "partial_cloud",
+      "peak": 0.5,
+      "center_D": 6.169492525423729,
+      "width_D": 0.05,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 3,
+      "mode": "partial_cloud",
+      "peak": 0.5,
+      "center_D": 6.169492525423729,
+      "width_D": 0.12,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 4,
+      "mode": "partial_cloud",
+      "peak": 0.5,
+      "center_D": 6.169492525423729,
+      "width_D": 0.12,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 5,
+      "mode": "partial_cloud",
+      "peak": 0.5,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.05,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 6,
+      "mode": "partial_cloud",
+      "peak": 0.5,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.05,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 7,
+      "mode": "partial_cloud",
+      "peak": 0.5,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.12,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 8,
+      "mode": "partial_cloud",
+      "peak": 0.5,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.12,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 9,
+      "mode": "partial_cloud",
+      "peak": 1.0,
+      "center_D": 6.169492525423729,
+      "width_D": 0.05,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 10,
+      "mode": "partial_cloud",
+      "peak": 1.0,
+      "center_D": 6.169492525423729,
+      "width_D": 0.05,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 11,
+      "mode": "partial_cloud",
+      "peak": 1.0,
+      "center_D": 6.169492525423729,
+      "width_D": 0.12,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 12,
+      "mode": "partial_cloud",
+      "peak": 1.0,
+      "center_D": 6.169492525423729,
+      "width_D": 0.12,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 13,
+      "mode": "partial_cloud",
+      "peak": 1.0,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.05,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 14,
+      "mode": "partial_cloud",
+      "peak": 1.0,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.05,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 15,
+      "mode": "partial_cloud",
+      "peak": 1.0,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.12,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 16,
+      "mode": "partial_cloud",
+      "peak": 1.0,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.12,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 17,
+      "mode": "pointamp_cloud",
+      "peak": 0.5,
+      "center_D": 6.169492525423729,
+      "width_D": 0.05,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 18,
+      "mode": "pointamp_cloud",
+      "peak": 0.5,
+      "center_D": 6.169492525423729,
+      "width_D": 0.05,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 19,
+      "mode": "pointamp_cloud",
+      "peak": 0.5,
+      "center_D": 6.169492525423729,
+      "width_D": 0.12,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 20,
+      "mode": "pointamp_cloud",
+      "peak": 0.5,
+      "center_D": 6.169492525423729,
+      "width_D": 0.12,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 21,
+      "mode": "pointamp_cloud",
+      "peak": 0.5,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.05,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 22,
+      "mode": "pointamp_cloud",
+      "peak": 0.5,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.05,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 23,
+      "mode": "pointamp_cloud",
+      "peak": 0.5,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.12,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 24,
+      "mode": "pointamp_cloud",
+      "peak": 0.5,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.12,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 25,
+      "mode": "pointamp_cloud",
+      "peak": 1.0,
+      "center_D": 6.169492525423729,
+      "width_D": 0.05,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 26,
+      "mode": "pointamp_cloud",
+      "peak": 1.0,
+      "center_D": 6.169492525423729,
+      "width_D": 0.05,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 27,
+      "mode": "pointamp_cloud",
+      "peak": 1.0,
+      "center_D": 6.169492525423729,
+      "width_D": 0.12,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 28,
+      "mode": "pointamp_cloud",
+      "peak": 1.0,
+      "center_D": 6.169492525423729,
+      "width_D": 0.12,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 29,
+      "mode": "pointamp_cloud",
+      "peak": 1.0,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.05,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 30,
+      "mode": "pointamp_cloud",
+      "peak": 1.0,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.05,
+      "s_min": 0.75,
+      "power": 2.0
+    },
+    {
+      "combo_id": 31,
+      "mode": "pointamp_cloud",
+      "peak": 1.0,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.12,
+      "s_min": 0.6,
+      "power": 2.0
+    },
+    {
+      "combo_id": 32,
+      "mode": "pointamp_cloud",
+      "peak": 1.0,
+      "center_D": 6.4406779661016955,
+      "width_D": 0.12,
+      "s_min": 0.75,
+      "power": 2.0
+    }
+  ],
+  "cloud_side": 7,
+  "notes": "Counterfactual high-D cloud audit on current reviewer mainline. The cloud acts only on the observable point-amplitude or partial path, using localized Gaussian gates and parabolic-style local D averaging. Width and Gamma_ref remain unchanged."
+}

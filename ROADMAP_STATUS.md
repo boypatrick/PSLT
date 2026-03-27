@@ -2,7 +2,9 @@
 
 Last updated: 2026-03-26
 
-This file tracks roadmap items that are still open, partially promoted, or explicitly held behind release gates. It is intended as an operational companion to `/Users/boypatrick/codex/PSLT_quantam/README.md` and `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex`.
+This file tracks roadmap items that are still open, partially promoted, or explicitly held behind release gates. It is intended as an operational companion to `/Users/boypatrick/codex/PSLT_quantam/README.md`, `/Users/boypatrick/codex/PSLT_quantam/FAMILY_DECISION_TABLE.md`, and `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex`.
+
+For a one-page summary of which reviewer families are canonical, closed-negative, or still worth keeping as research ingredients, see `/Users/boypatrick/codex/PSLT_quantam/FAMILY_DECISION_TABLE.md`.
 
 ## Current Release Gate Snapshot
 

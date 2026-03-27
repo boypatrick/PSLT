@@ -1,0 +1,33 @@
+{
+  "chain_mode": "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost",
+  "observable_mode": "eft_wilson_uv_rge",
+  "d_ref": 12.0,
+  "eta_grid": [
+    0.2,
+    0.6,
+    1.0,
+    2.0,
+    4.0
+  ],
+  "layers": [
+    1,
+    2,
+    3
+  ],
+  "n_max": 20,
+  "hotspot_band": [
+    5.6,
+    6.5
+  ],
+  "hybrid_assignment": {
+    "chi_LR": "prolate_gap_fraction anchored at D_ref",
+    "g2_raw": "prolate_omega2 anchored at D_ref",
+    "g3_raw": "prolate_omega2 anchored at D_ref",
+    "Gamma_ref": "uniform baseline retained"
+  },
+  "generated_profiles": {
+    "chi_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/prolate_hybrid_chain_propagation_audit_chi_profile_Dgrid60.csv",
+    "gn_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/prolate_hybrid_chain_propagation_audit_gn_profile_Dgrid60.csv",
+    "gn_spectrum": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/prolate_hybrid_chain_propagation_audit_gn_spectrum_Dgrid60.csv"
+  }
+}

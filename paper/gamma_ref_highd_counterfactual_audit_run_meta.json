@@ -1,0 +1,55 @@
+{
+  "regions": {
+    "D60_hotspot": {
+      "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D60E21_refresh_20260324.csv",
+      "base_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21_refresh_20260324.csv",
+      "ref_D": 9.966101694915254,
+      "ref_eta": 1.0,
+      "D_targets": [
+        4.813559322033898,
+        5.627118644067797,
+        6.169492525423729,
+        6.4406779661016955,
+        6.711864406779661
+      ]
+    },
+    "D21_guard": {
+      "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41_refresh_20260324.csv",
+      "base_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D21E41.csv",
+      "ref_D": 9.6,
+      "ref_eta": 1.0,
+      "D_targets": [
+        4.0,
+        6.4,
+        8.0
+      ]
+    }
+  },
+  "scan": {
+    "mode": [
+      "gamma_ref_enhance",
+      "gamma_ref_suppress"
+    ],
+    "kappa": [
+      0.05,
+      0.1,
+      0.15,
+      0.2
+    ],
+    "center_D": [
+      6.1,
+      6.25,
+      6.4,
+      6.55
+    ],
+    "width_D": [
+      0.12,
+      0.2,
+      0.3
+    ],
+    "power": [
+      0.5
+    ]
+  },
+  "notes": "Reviewer-level counterfactual for a Gamma_ref-like high-D gate. The current mainline does not route through open-system Gamma_ref, so this audit treats Gamma_ref enhancement/suppression as a direct multiplicative denominator-like correction on mu."
+}

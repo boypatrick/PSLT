@@ -1,0 +1,42 @@
+{
+  "input_detail": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/uniform_lorentz_hybrid_reviewer_counterfactual_audit_detail.csv",
+  "input_summary": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/uniform_lorentz_hybrid_reviewer_counterfactual_audit_summary.csv",
+  "scan": {
+    "beta": 0.4,
+    "omega": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "m": [
+      1.0,
+      2.0,
+      4.0,
+      8.0
+    ],
+    "phase": [
+      0.0,
+      0.7853981633974483,
+      1.5707963267948966,
+      2.356194490192345
+    ],
+    "center_D": [
+      5.9,
+      6.1,
+      6.3
+    ],
+    "width_D": [
+      0.05,
+      0.1,
+      0.2
+    ],
+    "eta_couple": [
+      0.0,
+      0.5,
+      1.0
+    ]
+  },
+  "notes": "Counterfactual helical extension on top of the uniform Lorentz hybrid reviewer audit. The tested effect is a gated multiplicative damping exp(-omega * gate(D_eff) * notch), where notch = (1 - cos(m*(D_eff-center_D) + phase + eta_couple*pi*eta/4))/2. This probes whether a non-monotone helical phase can keep the D21-friendly Lorentz signal while carving out the D60 hotspot."
+}

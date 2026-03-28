@@ -1,0 +1,48 @@
+{
+  "input_detail": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/uniform_lorentz_hybrid_reviewer_counterfactual_audit_detail.csv",
+  "scan": {
+    "beta": 0.4,
+    "omega": [
+      0.7,
+      0.8,
+      0.9,
+      1.0,
+      1.1,
+      1.2
+    ],
+    "m": [
+      4.0,
+      6.0,
+      8.0,
+      10.0,
+      12.0
+    ],
+    "phase": [
+      0.4353981633974483,
+      0.5853981633974483,
+      0.6853981633974483,
+      0.7853981633974483,
+      0.8853981633974483,
+      0.9853981633974482,
+      1.1353981633974484
+    ],
+    "center_D": [
+      5.8,
+      5.9,
+      6.0,
+      6.1
+    ],
+    "width_D": [
+      0.03,
+      0.05,
+      0.07,
+      0.1
+    ],
+    "eta_couple": [
+      0.0,
+      0.15,
+      0.3
+    ]
+  },
+  "notes": "Narrow shortlist around the promising Lorentz helical notch region. The goal is to improve the D60 hotspot while keeping D21 guard below current mainline. This focuses on phase ~ pi/4, moderate-to-high m, and narrow windows."
+}

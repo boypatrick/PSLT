@@ -1,0 +1,35 @@
+{
+  "observable_mode": "eft_wilson_uv_rge",
+  "regions": {
+    "D60_hotspot": {
+      "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D60E21_refresh_20260324.csv",
+      "base_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21_refresh_20260324.csv",
+      "ref_D": 9.966101694915254,
+      "ref_eta": 1.0,
+      "D_targets": [
+        4.813559322033898,
+        5.627118644067797,
+        6.169492525423729,
+        6.4406779661016955,
+        6.711864406779661
+      ]
+    },
+    "D21_guard": {
+      "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41_refresh_20260324.csv",
+      "base_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D21E41.csv",
+      "ref_D": 9.6,
+      "ref_eta": 1.0,
+      "D_targets": [
+        4.0,
+        6.4,
+        8.0
+      ]
+    }
+  },
+  "hybrid_source_profiles": {
+    "chi_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/uniform_lorentz_hybrid_chain_propagation_audit_chi_profile_Dgrid60.csv",
+    "gn_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/uniform_lorentz_hybrid_chain_propagation_audit_gn_profile_Dgrid60.csv",
+    "gn_spectrum": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/uniform_lorentz_hybrid_chain_propagation_audit_gn_spectrum_Dgrid60.csv"
+  },
+  "notes": "Counterfactual reviewer audit for the uniform Lorentz hybrid family. The current mainline map is kept unchanged; only the Lorentz-hybrid chi/g observable effect is injected when recomputing mu_mumu."
+}

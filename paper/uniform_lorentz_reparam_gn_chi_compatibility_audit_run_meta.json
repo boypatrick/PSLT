@@ -1,0 +1,18 @@
+{
+  "method_specs": {
+    "uniform_aux": null,
+    "lorentz_boosted_aux": {
+      "mode": "boosted_frame",
+      "beta": 0.6
+    },
+    "lorentz_contract_aux": {
+      "mode": "length_contraction",
+      "beta": 0.4
+    }
+  },
+  "witness_paths": {
+    "chi": "/Users/boypatrick/codex/PSLT_quantam/output/chi_fp_2d/localized_chi_Dgrid60_fine.csv",
+    "gn": "/Users/boypatrick/codex/PSLT_quantam/output/gn_fp_2d/gn_phase_space_2d_Dgrid60.csv"
+  },
+  "notes": "Compatibility audit for the two best Lorentz-like D reparameterization candidates discovered in the uniform extraction audit. This remains an extraction-side numerical ansatz test."
+}

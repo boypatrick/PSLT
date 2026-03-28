@@ -1,0 +1,27 @@
+{
+  "observable_mode": "eft_wilson_uv_rge",
+  "ref_D": 12.0,
+  "eta_grid": [
+    0.2,
+    0.6,
+    1.0,
+    2.0,
+    4.0
+  ],
+  "layers": [
+    1,
+    2,
+    3
+  ],
+  "n_max": 20,
+  "hotspot_band": [
+    5.6,
+    6.5
+  ],
+  "hybrid_source_profiles": {
+    "chi_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/uniform_lorentz_hybrid_chain_propagation_audit_chi_profile_Dgrid60.csv",
+    "gn_profile": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/uniform_lorentz_hybrid_chain_propagation_audit_gn_profile_Dgrid60.csv",
+    "gn_spectrum": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/uniform_lorentz_hybrid_chain_propagation_audit_gn_spectrum_Dgrid60.csv"
+  },
+  "notes": "Uniform Lorentz hybrid chain audit. Only chi_LR and g3_raw/higher raw-g tower are substituted using the length_contraction beta=0.4 extraction candidate; Gamma_ref and g2_raw remain uniform."
+}

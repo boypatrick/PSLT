@@ -1,0 +1,38 @@
+{
+  "D_calibration": [
+    6.0,
+    12.0,
+    18.0
+  ],
+  "D_hotspot": [
+    5.4,
+    5.627118644067797,
+    5.8,
+    6.0,
+    6.169492525423729,
+    6.3,
+    6.4406779661016955,
+    6.6,
+    6.8
+  ],
+  "z_max": 80.0,
+  "n_total": 1201,
+  "mode_grid": [
+    "length_contraction",
+    "boosted_frame"
+  ],
+  "beta_grid": [
+    0.2,
+    0.4,
+    0.6,
+    0.8
+  ],
+  "t_coh": 1.0,
+  "physical_params": {
+    "a": 0.04,
+    "eps": 0.1,
+    "m0": 1.0,
+    "xi": 0.14
+  },
+  "notes": "Lorentz-like reparameterization audit on the current uniform 1D extraction. This is treated as a numerical D->D_eff ansatz, not as a promoted physical Lorentz claim."
+}

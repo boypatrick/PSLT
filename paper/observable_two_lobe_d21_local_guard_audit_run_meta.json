@@ -1,0 +1,33 @@
+{
+  "candidate_maps": {
+    "D60_hotspot": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_D60E21_runtime_20260328.csv",
+    "D21_guard": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_D21E41_runtime_20260328.csv"
+  },
+  "scan": {
+    "peak": [
+      0.85,
+      0.9,
+      0.93,
+      0.95,
+      0.97,
+      0.99
+    ],
+    "center_D": [
+      6.39,
+      6.395,
+      6.4,
+      6.405,
+      6.41
+    ],
+    "width_D": [
+      0.003,
+      0.005,
+      0.0075,
+      0.01,
+      0.015,
+      0.02,
+      0.03
+    ]
+  },
+  "notes": "Counterfactual narrow local guard applied on top of the true runtime two-lobe mode. The guard scales the extra runtime shift back toward the mainline only in a very narrow band around D=6.4. This tests whether the runtime failure is a repairable local overshoot rather than a global two-lobe mechanism failure."
+}

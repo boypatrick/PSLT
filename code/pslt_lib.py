@@ -194,6 +194,16 @@ class PSLTParameters:
     observable_partial_anchor_peak: float = 0.0  # localized blend of partial ratio toward full-direct point/ref anchor ratio
     observable_partial_anchor_center_D: float = 5.90
     observable_partial_anchor_sigma_D: float = 0.20
+    observable_two_lobe_mode: str = "none"  # "none", "partial_two_lobe", or "pointamp_two_lobe"
+    observable_two_lobe_beta: float = 0.0
+    observable_two_lobe_omega: float = 0.0
+    observable_two_lobe_m: float = 0.0
+    observable_two_lobe_phase: float = 0.0
+    observable_two_lobe_center_D: float = 5.8
+    observable_two_lobe_width_D: float = 0.07
+    observable_two_lobe_boost: float = 0.0
+    observable_two_lobe_boost_center: float = 5.86
+    observable_two_lobe_boost_width: float = 0.05
     hll_observable_mode: str = "eft_wilson_uv_rge"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
     hll_observable_nmax: int = 20
     hll_match_basis_mode: str = "sqrt_yraw"  # "sqrt_yraw" reproduces diagonal limit with mix_scale=0
@@ -418,6 +428,14 @@ class PSLTParameters:
                 Path(str(self.observable_point_amp_anchor_csv))
             except Exception as exc:
                 raise ValueError("observable_point_amp_anchor_csv must be a valid path-like string.") from exc
+        if self.observable_two_lobe_mode not in {"none", "partial_two_lobe", "pointamp_two_lobe"}:
+            raise ValueError("observable_two_lobe_mode must be one of {'none','partial_two_lobe','pointamp_two_lobe'}.")
+        if not (0.0 <= self.observable_two_lobe_beta < 1.0):
+            raise ValueError("observable_two_lobe_beta must be in [0,1).")
+        if self.observable_two_lobe_width_D <= 0.0:
+            raise ValueError("observable_two_lobe_width_D must be > 0.")
+        if self.observable_two_lobe_boost_width <= 0.0:
+            raise ValueError("observable_two_lobe_boost_width must be > 0.")
         if self.hll_observable_mode not in {
             "proxy_wratio",
             "eft_wilson_diag",
@@ -1639,17 +1657,41 @@ class PSLTKinetics:
         eta: float,
     ) -> float:
         beta = self._observable_point_amp_anchor_effective_beta(float(D))
-        if beta <= 0.0:
-            return float(amp)
-        target = self._observable_point_amp_anchor_target(int(layer_n), str(observable_mode), float(D), float(eta))
-        if target is None:
-            return float(amp)
-        return float(
-            np.exp(
-                (1.0 - beta) * np.log(max(float(amp), self.params.b_overlap_floor))
-                + beta * np.log(max(float(target), self.params.b_overlap_floor))
+        amp_eff = float(amp)
+        if beta > 0.0:
+            target = self._observable_point_amp_anchor_target(int(layer_n), str(observable_mode), float(D), float(eta))
+            if target is not None:
+                amp_eff = float(
+                    np.exp(
+                        (1.0 - beta) * np.log(max(float(amp_eff), self.params.b_overlap_floor))
+                        + beta * np.log(max(float(target), self.params.b_overlap_floor))
+                    )
+                )
+        if str(self.params.observable_two_lobe_mode) == "pointamp_two_lobe":
+            amp_eff = float(amp_eff * math.sqrt(max(self._observable_two_lobe_factor(float(D)), 0.0)))
+        return float(amp_eff)
+
+    def _observable_two_lobe_factor(self, D: float) -> float:
+        if str(self.params.observable_two_lobe_mode) == "none":
+            return 1.0
+        beta = float(self.params.observable_two_lobe_beta)
+        gamma = 1.0 / math.sqrt(max(1.0 - beta * beta, 1.0e-12))
+        d_eff = float(D) / gamma
+        width = max(float(self.params.observable_two_lobe_width_D), 1.0e-9)
+        z = (d_eff - float(self.params.observable_two_lobe_center_D)) / width
+        gate = 1.0 / (1.0 + math.exp(-z))
+        notch = 0.5 * (
+            1.0
+            - math.cos(
+                float(self.params.observable_two_lobe_m) * (d_eff - float(self.params.observable_two_lobe_center_D))
+                + float(self.params.observable_two_lobe_phase)
             )
         )
+        suppress = math.exp(-float(self.params.observable_two_lobe_omega) * gate * notch)
+        boost_width = max(float(self.params.observable_two_lobe_boost_width), 1.0e-9)
+        boost_z = (d_eff - float(self.params.observable_two_lobe_boost_center)) / boost_width
+        compensate = math.exp(float(self.params.observable_two_lobe_boost) * math.exp(-0.5 * boost_z * boost_z))
+        return float(suppress * compensate)
 
     def _blend_observable_partial_ratio(
         self,
@@ -1660,19 +1702,23 @@ class PSLTKinetics:
         eta: float,
     ) -> float:
         beta = self._observable_partial_anchor_effective_beta(float(D))
-        if beta <= 0.0:
-            return float(partial_ratio)
-        amp_target = self._observable_point_amp_anchor_target(int(layer_n), str(observable_mode), float(D), float(eta))
-        amp_ref_target = self._observable_ref_amp_anchor_target(int(layer_n), str(observable_mode))
-        if amp_target is None or amp_ref_target is None:
-            return float(partial_ratio)
-        target = float((max(float(amp_target), self.params.b_overlap_floor) / max(float(amp_ref_target), self.params.b_overlap_floor)) ** 2)
-        return float(
-            np.exp(
-                (1.0 - beta) * np.log(max(float(partial_ratio), self.params.b_overlap_floor))
-                + beta * np.log(max(float(target), self.params.b_overlap_floor))
-            )
-        )
+        partial_eff = float(partial_ratio)
+        if beta > 0.0:
+            amp_target = self._observable_point_amp_anchor_target(int(layer_n), str(observable_mode), float(D), float(eta))
+            amp_ref_target = self._observable_ref_amp_anchor_target(int(layer_n), str(observable_mode))
+            if amp_target is not None and amp_ref_target is not None:
+                target = float(
+                    (max(float(amp_target), self.params.b_overlap_floor) / max(float(amp_ref_target), self.params.b_overlap_floor)) ** 2
+                )
+                partial_eff = float(
+                    np.exp(
+                        (1.0 - beta) * np.log(max(float(partial_eff), self.params.b_overlap_floor))
+                        + beta * np.log(max(float(target), self.params.b_overlap_floor))
+                    )
+                )
+        if str(self.params.observable_two_lobe_mode) == "partial_two_lobe":
+            partial_eff = float(partial_eff * self._observable_two_lobe_factor(float(D)))
+        return float(partial_eff)
 
     def _runtime_direct_b_self_blend_weight(
         self,

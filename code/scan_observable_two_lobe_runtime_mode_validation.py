@@ -25,21 +25,22 @@ MAP_DIR = ROOT / "output" / "hll_signal_strength"
 STEM = "observable_two_lobe_runtime_mode_validation"
 
 CHAIN_MODE = "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe"
+TAG_SUFFIX = "20260329_refsnapfix"
 
 CASE_CONFIG = {
     "D60_hotspot": {
-        "tag": f"chain_mode_{CHAIN_MODE}_D60E21_runtime_20260328",
+        "tag": f"chain_mode_{CHAIN_MODE}_D60E21_runtime_{TAG_SUFFIX}",
         "d_num": 60,
         "eta_num": 21,
         "full_map": MAP_DIR / "hll_signal_strength_map_chain_mode_full_direct_D60E21_refresh_20260324.csv",
         "base_map": MAP_DIR / "hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21_refresh_20260324.csv",
     },
     "D21_guard": {
-        "tag": f"chain_mode_{CHAIN_MODE}_D21E41_runtime_20260328",
+        "tag": f"chain_mode_{CHAIN_MODE}_D21E41_runtime_{TAG_SUFFIX}",
         "d_num": 21,
         "eta_num": 41,
         "full_map": MAP_DIR / "hll_signal_strength_map_chain_mode_full_direct_D21E41_refresh_20260324.csv",
-        "base_map": MAP_DIR / "hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D21E41.csv",
+        "base_map": MAP_DIR / "hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_currentbase_D21E41_20260329.csv",
     },
 }
 

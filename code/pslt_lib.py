@@ -204,6 +204,13 @@ class PSLTParameters:
     observable_two_lobe_boost: float = 0.0
     observable_two_lobe_boost_center: float = 5.86
     observable_two_lobe_boost_width: float = 0.05
+    observable_two_lobe_local_guard_peak: float = 0.0
+    observable_two_lobe_local_guard_center_D: float = 6.4
+    observable_two_lobe_local_guard_width_D: float = 0.003
+    observable_late_dstrip_mode: str = "none"  # "none", "mu_linear", "mu_log", "mu_exp"
+    observable_late_dstrip_peak: float = 0.0
+    observable_late_dstrip_center_D: float = 6.4
+    observable_late_dstrip_width_D: float = 0.003
     hll_observable_mode: str = "eft_wilson_uv_rge"  # "proxy_wratio", "eft_wilson_diag", "eft_wilson_matched", "eft_wilson_uv_tree", or "eft_wilson_uv_rge"
     hll_observable_nmax: int = 20
     hll_match_basis_mode: str = "sqrt_yraw"  # "sqrt_yraw" reproduces diagonal limit with mix_scale=0
@@ -436,6 +443,16 @@ class PSLTParameters:
             raise ValueError("observable_two_lobe_width_D must be > 0.")
         if self.observable_two_lobe_boost_width <= 0.0:
             raise ValueError("observable_two_lobe_boost_width must be > 0.")
+        if not (0.0 <= self.observable_two_lobe_local_guard_peak <= 1.0):
+            raise ValueError("observable_two_lobe_local_guard_peak must be in [0,1].")
+        if self.observable_two_lobe_local_guard_width_D <= 0.0:
+            raise ValueError("observable_two_lobe_local_guard_width_D must be > 0.")
+        if self.observable_late_dstrip_mode not in {"none", "mu_linear", "mu_log", "mu_exp"}:
+            raise ValueError("observable_late_dstrip_mode must be one of {'none','mu_linear','mu_log','mu_exp'}.")
+        if not (0.0 <= self.observable_late_dstrip_peak <= 1.0):
+            raise ValueError("observable_late_dstrip_peak must be in [0,1].")
+        if self.observable_late_dstrip_width_D <= 0.0:
+            raise ValueError("observable_late_dstrip_width_D must be > 0.")
         if self.hll_observable_mode not in {
             "proxy_wratio",
             "eft_wilson_diag",
@@ -1691,7 +1708,15 @@ class PSLTKinetics:
         boost_width = max(float(self.params.observable_two_lobe_boost_width), 1.0e-9)
         boost_z = (d_eff - float(self.params.observable_two_lobe_boost_center)) / boost_width
         compensate = math.exp(float(self.params.observable_two_lobe_boost) * math.exp(-0.5 * boost_z * boost_z))
-        return float(suppress * compensate)
+        factor = float(suppress * compensate)
+        guard_peak = float(self.params.observable_two_lobe_local_guard_peak)
+        if guard_peak > 0.0:
+            guard_width = max(float(self.params.observable_two_lobe_local_guard_width_D), 1.0e-9)
+            guard_z = (float(D) - float(self.params.observable_two_lobe_local_guard_center_D)) / guard_width
+            guard_gaussian = math.exp(-0.5 * guard_z * guard_z)
+            residual_frac = max(1.0 - guard_peak * guard_gaussian, 0.0)
+            factor = 1.0 + (factor - 1.0) * residual_frac
+        return float(factor)
 
     def _blend_observable_partial_ratio(
         self,
@@ -1700,6 +1725,7 @@ class PSLTKinetics:
         observable_mode: str,
         D: float,
         eta: float,
+        apply_two_lobe: bool = True,
     ) -> float:
         beta = self._observable_partial_anchor_effective_beta(float(D))
         partial_eff = float(partial_ratio)
@@ -1716,9 +1742,34 @@ class PSLTKinetics:
                         + beta * np.log(max(float(target), self.params.b_overlap_floor))
                     )
                 )
-        if str(self.params.observable_two_lobe_mode) == "partial_two_lobe":
+        if apply_two_lobe and str(self.params.observable_two_lobe_mode) == "partial_two_lobe":
             partial_eff = float(partial_eff * self._observable_two_lobe_factor(float(D)))
         return float(partial_eff)
+
+    def _apply_observable_late_dstrip(self, mu_base: float, mu_runtime: float, D: float) -> float:
+        mode = str(self.params.observable_late_dstrip_mode)
+        if mode == "none":
+            return float(mu_runtime)
+        peak = float(self.params.observable_late_dstrip_peak)
+        if peak <= 0.0:
+            return float(mu_runtime)
+        width = max(float(self.params.observable_late_dstrip_width_D), 1.0e-9)
+        z = (float(D) - float(self.params.observable_late_dstrip_center_D)) / width
+        gaussian = math.exp(-0.5 * z * z)
+        residual_frac = max(1.0 - peak * gaussian, 0.0)
+        floor = 1.0e-30
+        if mode == "mu_linear":
+            return float(mu_base + (mu_runtime - mu_base) * residual_frac)
+        if mode == "mu_log":
+            return float(
+                math.exp(
+                    (1.0 - residual_frac) * math.log(max(mu_base, floor))
+                    + residual_frac * math.log(max(mu_runtime, floor))
+                )
+            )
+        if mode == "mu_exp":
+            return float(mu_runtime * math.exp(-peak * gaussian))
+        return float(mu_runtime)
 
     def _runtime_direct_b_self_blend_weight(
         self,
@@ -3479,9 +3530,17 @@ class PSLTKinetics:
         ratio = float(amp / max(amp_ref, 1e-30))
         if mode == "proxy_wratio":
             return ratio
-        partial_ratio = ratio * ratio
+        partial_ratio_raw = ratio * ratio
+        partial_ratio_base = self._blend_observable_partial_ratio(
+            partial_ratio=partial_ratio_raw,
+            layer_n=int(layer_n),
+            observable_mode=str(mode),
+            D=float(D),
+            eta=float(eta),
+            apply_two_lobe=False,
+        )
         partial_ratio = self._blend_observable_partial_ratio(
-            partial_ratio=partial_ratio,
+            partial_ratio=partial_ratio_raw,
             layer_n=int(layer_n),
             observable_mode=str(mode),
             D=float(D),
@@ -3496,7 +3555,9 @@ class PSLTKinetics:
                 ref_eta=ref_eta,
                 N_max=nmax,
             )
-            return float(partial_ratio / max(width_ratio, 1e-30))
+            mu_base = float(partial_ratio_base / max(width_ratio, 1e-30))
+            mu_runtime = float(partial_ratio / max(width_ratio, 1e-30))
+            return self._apply_observable_late_dstrip(mu_base=mu_base, mu_runtime=mu_runtime, D=float(D))
         if mode == "eft_wilson_uv_tree":
             width_ratio = self.hll_total_width_ratio_uv_tree(
                 D=D,
@@ -3506,7 +3567,9 @@ class PSLTKinetics:
                 ref_eta=ref_eta,
                 N_max=nmax,
             )
-            return float(partial_ratio / max(width_ratio, 1e-30))
+            mu_base = float(partial_ratio_base / max(width_ratio, 1e-30))
+            mu_runtime = float(partial_ratio / max(width_ratio, 1e-30))
+            return self._apply_observable_late_dstrip(mu_base=mu_base, mu_runtime=mu_runtime, D=float(D))
         if mode == "eft_wilson_uv_rge":
             width_ratio = self.hll_total_width_ratio_uv_rge(
                 D=D,
@@ -3516,7 +3579,9 @@ class PSLTKinetics:
                 ref_eta=ref_eta,
                 N_max=nmax,
             )
-            return float(partial_ratio / max(width_ratio, 1e-30))
+            mu_base = float(partial_ratio_base / max(width_ratio, 1e-30))
+            mu_runtime = float(partial_ratio / max(width_ratio, 1e-30))
+            return self._apply_observable_late_dstrip(mu_base=mu_base, mu_runtime=mu_runtime, D=float(D))
         return partial_ratio
 
     def _interp_scalar(self, D: float, d_knots: np.ndarray, y_knots: np.ndarray) -> float:

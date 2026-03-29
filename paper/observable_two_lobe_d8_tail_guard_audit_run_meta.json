@@ -1,0 +1,42 @@
+{
+  "runtime_maps": {
+    "D60_hotspot": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_D60E21_runtime_20260329_refsnapfix.csv",
+    "D21_guard": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_D21E41_runtime_20260329_refsnapfix.csv"
+  },
+  "base_maps": {
+    "D60_hotspot": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21_refresh_20260324.csv",
+    "D21_guard": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_currentbase_D21E41_20260329.csv"
+  },
+  "full_maps": {
+    "D60_hotspot": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D60E21_refresh_20260324.csv",
+    "D21_guard": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41_refresh_20260324.csv"
+  },
+  "placements": [
+    "mu_linear_blend",
+    "mu_log_blend",
+    "mu_exp_notch"
+  ],
+  "peak_grid": [
+    0.5,
+    0.7,
+    0.85,
+    0.93,
+    0.97,
+    0.99,
+    1.0
+  ],
+  "center_grid": [
+    7.95,
+    8.0,
+    8.05
+  ],
+  "width_grid": [
+    0.01,
+    0.02,
+    0.05,
+    0.1,
+    0.2,
+    0.4
+  ],
+  "notes": "Narrow late-guard shortlist targeting the corrected raw twolobe D=8.0 tail and D21 acceptance flips."
+}

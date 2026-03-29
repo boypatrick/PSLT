@@ -1,0 +1,46 @@
+{
+  "chain_mode": "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
+  "candidate_maps": {
+    "D60E21_fullmap": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D60E21_runtime_20260330_refsnapfix_d8comp_r1.csv",
+    "D21E41_fullmap": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D21E41_runtime_20260330_refsnapfix_d8comp_r1.csv"
+  },
+  "cases": {
+    "D60E21_fullmap": {
+      "region_key": "D60_hotspot",
+      "tag": "chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D60E21_runtime_20260330_refsnapfix_d8comp_r1",
+      "d_num": 60,
+      "eta_num": 21,
+      "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D60E21_refresh_20260324.csv",
+      "base_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21_refresh_20260324.csv",
+      "parent_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D60E21_runtime_20260329_refsnapfix_d8maplate_r3.csv"
+    },
+    "D21E41_fullmap": {
+      "region_key": "D21_guard",
+      "tag": "chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D21E41_runtime_20260330_refsnapfix_d8comp_r1",
+      "d_num": 21,
+      "eta_num": 41,
+      "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41_refresh_20260324.csv",
+      "base_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_currentbase_D21E41_20260329.csv",
+      "parent_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D21E41_runtime_20260329_refsnapfix_d8maplate_r3.csv"
+    }
+  },
+  "reviewer_regions": {
+    "D60_hotspot": {
+      "D_targets": [
+        4.813559322033898,
+        5.627118644067797,
+        6.169492525423729,
+        6.4406779661016955,
+        6.711864406779661
+      ]
+    },
+    "D21_guard": {
+      "D_targets": [
+        4.0,
+        6.4,
+        8.0
+      ]
+    }
+  },
+  "notes": "Formal full-map validation for twolobe_d8compmaplate against current mainline base and the twolobe_d8maplate parent. The candidate keeps D60 fixed to the repaired parent while applying late map-layer complement-strip blends at D=7.2 and D=9.6."
+}

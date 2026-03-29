@@ -134,6 +134,10 @@ Chain profile selection:
                               runtime two-lobe D-phase extension with the
                               D=6.4 late-strip correction applied at the
                               final map-layer after mu_mumu construction.
+  - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate:
+                              runtime two-lobe D-phase extension with the
+                              D=8.0 tail repair plus late map-layer
+                              complement-strip corrections at D=7.2/9.6.
   - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband:
                               hotspot width-band extension:
                               fullwidthrefamp_pointamp2_widthboost with a
@@ -766,6 +770,7 @@ def make_baseline_kinetics(
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
         "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -872,6 +877,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
                         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
                         "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
                         "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -898,6 +904,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
                     "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -934,6 +941,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
                         "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
                         "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
                         "cell_direct_runtime_release_fullwidthrefamp_refamp2_pointamp2_widthboost",
@@ -977,6 +985,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
                     "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -1002,6 +1011,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
                     "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -1062,6 +1072,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
                         "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
                         "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -1093,6 +1104,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
                     "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -1125,6 +1137,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
                     "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -1179,6 +1192,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
                     "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
                         "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
                         "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -1233,6 +1247,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
             }
             else "none"
         ),
@@ -1246,6 +1261,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
             }
             else 0.0
         ),
@@ -1258,6 +1274,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
             }
             else 0.0
         ),
@@ -1270,6 +1287,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
             }
             else 0.0
         ),
@@ -1282,6 +1300,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
             }
             else 5.8
         ),
@@ -1294,6 +1313,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
             }
             else 0.07
         ),
@@ -1306,6 +1326,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
             }
             else 0.0
         ),
@@ -1318,6 +1339,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
             }
             else 5.86
         ),
@@ -1330,6 +1352,7 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
             }
             else 0.05
         ),
@@ -1624,6 +1647,31 @@ def _apply_maplate_mu_blend_patch(
     maps["mumu"] = base_map + (maps["mumu"] - base_map) * residual_frac[np.newaxis, :]
 
 
+def _apply_maplate_multi_blend_patch(
+    kinetics: PSLTKinetics,
+    ref_d: float,
+    ref_eta: float,
+    observable_mode: str,
+    d_vals: np.ndarray,
+    eta_vals: np.ndarray,
+    maps: Dict[str, np.ndarray],
+    strips: list[tuple[float, float, float]],
+) -> None:
+    for peak, center_d, width_d in strips:
+        _apply_maplate_mu_blend_patch(
+            kinetics,
+            ref_d=ref_d,
+            ref_eta=ref_eta,
+            observable_mode=observable_mode,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+            maps=maps,
+            peak=float(peak),
+            center_d=float(center_d),
+            width_d=float(width_d),
+        )
+
+
 def write_map_csv(
     out_csv: Path,
     d_vals: np.ndarray,
@@ -1811,6 +1859,7 @@ def parse_args() -> argparse.Namespace:
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
             "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -1976,6 +2025,7 @@ def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
         "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -2109,6 +2159,21 @@ def main() -> None:
             peak=0.70,
             center_d=7.95,
             width_d=0.10,
+        )
+    elif str(args.chain_mode) == "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate":
+        _apply_maplate_multi_blend_patch(
+            kinetics,
+            ref_d=ref_d,
+            ref_eta=ref_eta,
+            observable_mode=observable_mode,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+            maps=maps,
+            strips=[
+                (0.70, 7.95, 0.10),
+                (1.00, 7.20, 0.02),
+                (0.30, 9.60, 0.02),
+            ],
         )
     print(
         "[info] observable mode:",

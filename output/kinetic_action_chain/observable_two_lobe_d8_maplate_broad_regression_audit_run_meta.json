@@ -1,0 +1,37 @@
+{
+  "cases": {
+    "D60E21_fullmap": {
+      "region_key": "D60_hotspot",
+      "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D60E21_refresh_20260324.csv",
+      "base_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21_refresh_20260324.csv",
+      "runtime_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_D60E21_runtime_20260329_refsnapfix.csv",
+      "candidate_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D60E21_runtime_20260329_refsnapfix_d8maplate_r3.csv"
+    },
+    "D21E41_fullmap": {
+      "region_key": "D21_guard",
+      "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41_refresh_20260324.csv",
+      "base_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_currentbase_D21E41_20260329.csv",
+      "runtime_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_D21E41_runtime_20260329_refsnapfix.csv",
+      "candidate_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D21E41_runtime_20260329_refsnapfix_d8maplate_r3.csv"
+    }
+  },
+  "reviewer_regions": {
+    "D60_hotspot": {
+      "D_targets": [
+        4.813559322033898,
+        5.627118644067797,
+        6.169492525423729,
+        6.4406779661016955,
+        6.711864406779661
+      ]
+    },
+    "D21_guard": {
+      "D_targets": [
+        4.0,
+        6.4,
+        8.0
+      ]
+    }
+  },
+  "notes": "Broad full-map regression check for twolobe_d8maplate against current mainline base and corrected raw twolobe, including reviewer-target and non-reviewer complement subsets."
+}

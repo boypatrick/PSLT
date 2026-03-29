@@ -1,0 +1,7 @@
+{
+  "parent_candidate": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D21E41_runtime_20260329_refsnapfix_d8maplate_r3.csv",
+  "base_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_currentbase_D21E41_20260329.csv",
+  "full_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41_refresh_20260324.csv",
+  "d60_reference": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D60E21_runtime_20260329_refsnapfix_d8maplate_r3.csv",
+  "notes": "Late map-layer two-strip repair on top of twolobe_d8maplate. Only D21 complement strips around D=7.2 and D=9.6 are retouched; D60 is kept equal to d8maplate."
+}

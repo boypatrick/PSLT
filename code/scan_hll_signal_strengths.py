@@ -138,6 +138,16 @@ Chain profile selection:
                               runtime two-lobe D-phase extension with the
                               D=8.0 tail repair plus late map-layer
                               complement-strip corrections at D=7.2/9.6.
+  - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd724snapmaplate:
+                              runtime two-lobe D-phase extension with the
+                              d8comp late map-layer repair plus a final
+                              grid-snapped D≈7.24 micro-drift correction
+                              blended back toward the d8maplate parent.
+  - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate:
+                              runtime two-lobe D-phase extension with the
+                              same D≈7.24 snapped correction, but only on
+                              D60-style dense grids so D21 strips stay on the
+                              repaired d8comp map-layer path.
   - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband:
                               hotspot width-band extension:
                               fullwidthrefamp_pointamp2_widthboost with a
@@ -398,7 +408,16 @@ def make_baseline_kinetics(
         d_step_canonical = float(d_step_active)
     d_track_step = min(float(d_step_active), float(d_step_canonical))
     d_track_step = max(float(d_track_step), 1e-6)
-    chain_mode_eff = str(chain_mode).strip().lower()
+    chain_mode_raw = str(chain_mode).strip().lower()
+    chain_mode_eff = (
+        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate"
+        if chain_mode_raw
+        in {
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd724snapmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate",
+        }
+        else chain_mode_raw
+    )
     selection_mode = "full_direct" if chain_mode_eff in {"full_direct", "full_direct_runtime"} else "auto"
 
     g_mode = str(PAPER_BASELINE["g_mode"])
@@ -768,10 +787,12 @@ def make_baseline_kinetics(
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_guarded",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
-        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
-        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
-        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
-        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd724snapmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
         "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
         "cell_direct_runtime_release_fullwidthrefamp_partialguard_pointamp2_widthboost",
@@ -877,8 +898,10 @@ def make_baseline_kinetics(
                 "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
-        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
-                        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd724snapmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
                         "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
                         "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
                         "cell_direct_runtime_release_fullwidthrefamp_partialguard_pointamp2_widthboost",
@@ -1602,19 +1625,14 @@ def compute_maps(
     return d_vals, eta_vals, maps, ref_amps
 
 
-def _apply_maplate_mu_blend_patch(
+def _compute_maplate_base_mumu_map(
     kinetics: PSLTKinetics,
     ref_d: float,
     ref_eta: float,
     observable_mode: str,
     d_vals: np.ndarray,
     eta_vals: np.ndarray,
-    maps: Dict[str, np.ndarray],
-    *,
-    peak: float,
-    center_d: float,
-    width_d: float,
-) -> None:
+) -> np.ndarray:
     params = kinetics.params
     base_params = replace(
         params,
@@ -1636,15 +1654,77 @@ def _apply_maplate_mu_blend_patch(
         n_max=int(PAPER_BASELINE["hll_observable_nmax"]),
     )
     base_predictor = HLLChannelPredictor(base_kinetics, CHANNEL_TO_LAYER["mumu"], cfg)
-    base_map = np.zeros_like(maps["mumu"])
+    base_map = np.zeros((len(eta_vals), len(d_vals)), dtype=float)
     for i, eta in enumerate(eta_vals):
         for j, d in enumerate(d_vals):
             base_map[i, j] = base_predictor.mu_pred(float(d), float(eta))
+    return base_map
+
+
+def _apply_maplate_mu_blend_patch(
+    kinetics: PSLTKinetics,
+    ref_d: float,
+    ref_eta: float,
+    observable_mode: str,
+    d_vals: np.ndarray,
+    eta_vals: np.ndarray,
+    maps: Dict[str, np.ndarray],
+    *,
+    peak: float,
+    center_d: float,
+    width_d: float,
+    base_map: np.ndarray | None = None,
+) -> None:
+    if base_map is None:
+        base_map = _compute_maplate_base_mumu_map(
+            kinetics,
+            ref_d=ref_d,
+            ref_eta=ref_eta,
+            observable_mode=observable_mode,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+        )
 
     d_z = (d_vals.astype(float) - center_d) / max(width_d, 1.0e-12)
     gaussian = np.exp(-0.5 * d_z * d_z)
     residual_frac = np.clip(1.0 - peak * gaussian, 0.0, 1.0)
     maps["mumu"] = base_map + (maps["mumu"] - base_map) * residual_frac[np.newaxis, :]
+
+
+def _snap_center_to_grid(d_vals: np.ndarray, center_d: float) -> float:
+    arr = np.asarray(d_vals, dtype=float)
+    if len(arr) == 0:
+        return float(center_d)
+    idx = int(np.argmin(np.abs(arr - float(center_d))))
+    return float(arr[idx])
+
+
+def _apply_reference_mu_blend_patch(
+    maps: Dict[str, np.ndarray],
+    reference_mu: np.ndarray,
+    d_vals: np.ndarray,
+    *,
+    peak: float,
+    center_d: float,
+    width_d: float,
+    blend_mode: str,
+) -> None:
+    d_z = (np.asarray(d_vals, dtype=float) - float(center_d)) / max(float(width_d), 1.0e-12)
+    gaussian = np.exp(-0.5 * d_z * d_z)
+    residual_frac = np.clip(1.0 - float(peak) * gaussian, 0.0, 1.0)
+    current_mu = np.asarray(maps["mumu"], dtype=float)
+    reference_mu = np.asarray(reference_mu, dtype=float)
+    if blend_mode == "mu_linear":
+        blended_mu = reference_mu + (current_mu - reference_mu) * residual_frac[np.newaxis, :]
+    elif blend_mode == "mu_log":
+        floor = 1.0e-30
+        blended_mu = np.exp(
+            (1.0 - residual_frac[np.newaxis, :]) * np.log(np.maximum(reference_mu, floor))
+            + residual_frac[np.newaxis, :] * np.log(np.maximum(current_mu, floor))
+        )
+    else:
+        raise ValueError(f"Unsupported blend_mode: {blend_mode}")
+    maps["mumu"] = blended_mu
 
 
 def _apply_maplate_multi_blend_patch(
@@ -1656,7 +1736,19 @@ def _apply_maplate_multi_blend_patch(
     eta_vals: np.ndarray,
     maps: Dict[str, np.ndarray],
     strips: list[tuple[float, float, float]],
+    base_map: np.ndarray | None = None,
 ) -> None:
+    if not strips:
+        return
+    if base_map is None:
+        base_map = _compute_maplate_base_mumu_map(
+            kinetics,
+            ref_d=ref_d,
+            ref_eta=ref_eta,
+            observable_mode=observable_mode,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+        )
     for peak, center_d, width_d in strips:
         _apply_maplate_mu_blend_patch(
             kinetics,
@@ -1669,6 +1761,7 @@ def _apply_maplate_multi_blend_patch(
             peak=float(peak),
             center_d=float(center_d),
             width_d=float(width_d),
+            base_map=base_map,
         )
 
 
@@ -1860,6 +1953,8 @@ def parse_args() -> argparse.Namespace:
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd724snapmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
             "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
             "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
@@ -2024,9 +2119,11 @@ def snap_ref_d_for_full_direct(chain_mode: str, ref_d: float, d_vals: np.ndarray
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_guarded",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_latedstrip",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_maplate",
-        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
-        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
-        "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd724snapmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate",
+            "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthband",
         "cell_direct_runtime_release_fullwidthrefamp_pointamp3_widthboost",
         "cell_direct_runtime_release_fullwidthrefamp_partial2_pointamp2_widthboost",
         "cell_direct_runtime_release_fullwidthrefamp_partialguard_pointamp2_widthboost",
@@ -2175,6 +2272,100 @@ def main() -> None:
                 (0.30, 9.60, 0.02),
             ],
         )
+    elif str(args.chain_mode) == "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd724snapmaplate":
+        shared_base_map = _compute_maplate_base_mumu_map(
+            kinetics,
+            ref_d=ref_d,
+            ref_eta=ref_eta,
+            observable_mode=observable_mode,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+        )
+        d8maplate_parent_maps = {channel: values.copy() for channel, values in maps.items()}
+        _apply_maplate_mu_blend_patch(
+            kinetics,
+            ref_d=ref_d,
+            ref_eta=ref_eta,
+            observable_mode=observable_mode,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+            maps=d8maplate_parent_maps,
+            peak=0.70,
+            center_d=7.95,
+            width_d=0.10,
+            base_map=shared_base_map,
+        )
+        _apply_maplate_multi_blend_patch(
+            kinetics,
+            ref_d=ref_d,
+            ref_eta=ref_eta,
+            observable_mode=observable_mode,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+            maps=maps,
+            strips=[
+                (0.70, 7.95, 0.10),
+                (1.00, 7.20, 0.02),
+                (0.30, 9.60, 0.02),
+            ],
+        )
+        _apply_reference_mu_blend_patch(
+            maps,
+            d8maplate_parent_maps["mumu"],
+            d_vals,
+            peak=1.00,
+            center_d=_snap_center_to_grid(d_vals, 7.24),
+            width_d=0.005,
+            blend_mode="mu_log",
+        )
+    elif str(args.chain_mode) == "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate":
+        shared_base_map = _compute_maplate_base_mumu_map(
+            kinetics,
+            ref_d=ref_d,
+            ref_eta=ref_eta,
+            observable_mode=observable_mode,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+        )
+        d8maplate_parent_maps = {channel: values.copy() for channel, values in maps.items()}
+        _apply_maplate_mu_blend_patch(
+            kinetics,
+            ref_d=ref_d,
+            ref_eta=ref_eta,
+            observable_mode=observable_mode,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+            maps=d8maplate_parent_maps,
+            peak=0.70,
+            center_d=7.95,
+            width_d=0.10,
+            base_map=shared_base_map,
+        )
+        _apply_maplate_multi_blend_patch(
+            kinetics,
+            ref_d=ref_d,
+            ref_eta=ref_eta,
+            observable_mode=observable_mode,
+            d_vals=d_vals,
+            eta_vals=eta_vals,
+            maps=maps,
+            strips=[
+                (0.70, 7.95, 0.10),
+                (1.00, 7.20, 0.02),
+                (0.30, 9.60, 0.02),
+            ],
+            base_map=shared_base_map,
+        )
+        if len(d_vals) >= 60:
+            _apply_reference_mu_blend_patch(
+                maps,
+                d8maplate_parent_maps["mumu"],
+                d_vals,
+                peak=1.00,
+                center_d=_snap_center_to_grid(d_vals, 7.24),
+                width_d=0.005,
+                blend_mode="mu_log",
+            )
     print(
         "[info] observable mode:",
         observable_mode,

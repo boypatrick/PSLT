@@ -1,0 +1,72 @@
+{
+  "drift_target_D": 7.24,
+  "placements": [
+    "mu_linear_blend",
+    "mu_log_blend"
+  ],
+  "peak_grid": [
+    0.3,
+    0.5,
+    0.7,
+    0.85,
+    1.0
+  ],
+  "center_grid": [
+    7.232323,
+    7.24,
+    7.248,
+    7.254237
+  ],
+  "width_grid": [
+    0.005,
+    0.01,
+    0.015,
+    0.02,
+    0.03
+  ],
+  "cases": {
+    "D60E21_monitor": {
+      "region_key": "D60_hotspot",
+      "full": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D60E21_20260330_d60_micro_monitor_r1.csv",
+      "base": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21_20260330_d60_micro_monitor_r1.csv",
+      "parent": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D60E21_20260330_d60_micro_monitor_r1.csv",
+      "candidate": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D60E21_20260330_d60_micro_monitor_r1.csv"
+    },
+    "D60E41_monitor": {
+      "region_key": "D60_hotspot",
+      "full": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D60E41_20260330_d60_micro_monitor_r1.csv",
+      "base": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E41_20260330_d60_micro_monitor_r1.csv",
+      "parent": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D60E41_20260330_d60_micro_monitor_r1.csv",
+      "candidate": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D60E41_20260330_d60_micro_monitor_r1.csv"
+    },
+    "D80E41_monitor": {
+      "region_key": "D60_hotspot",
+      "full": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D80E41_20260330_d60_micro_monitor_r1.csv",
+      "base": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D80E41_20260330_d60_micro_monitor_r1.csv",
+      "parent": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D80E41_20260330_d60_micro_monitor_r1.csv",
+      "candidate": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D80E41_20260330_d60_micro_monitor_r1.csv"
+    },
+    "D100E41_monitor": {
+      "region_key": "D60_hotspot",
+      "full": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D100E41_20260330_d60_micro_monitor_r1.csv",
+      "base": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D100E41_20260330_d60_micro_monitor_r1.csv",
+      "parent": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D100E41_20260330_d60_micro_monitor_r1.csv",
+      "candidate": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D100E41_20260330_d60_micro_monitor_r1.csv"
+    },
+    "D21E41_canonical": {
+      "region_key": "D21_guard",
+      "full": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E41_refresh_20260324.csv",
+      "base": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_currentbase_D21E41_20260329.csv",
+      "parent": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D21E41_runtime_20260329_refsnapfix_d8maplate_r3.csv",
+      "candidate": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D21E41_runtime_20260330_refsnapfix_d8comp_r1.csv"
+    },
+    "D21E21_holdout": {
+      "region_key": "D21_guard",
+      "full": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D21E21_20260330_crossgrid_holdout_r1.csv",
+      "base": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D21E21_20260330_crossgrid_holdout_r1.csv",
+      "parent": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D21E21_20260330_crossgrid_holdout_r1.csv",
+      "candidate": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D21E21_20260330_crossgrid_holdout_r1.csv"
+    }
+  },
+  "notes": "Narrow D\u22487.24 strip repair audit on top of twolobe_d8compmaplate. The repair blends candidate back toward d8maplate parent only in a very narrow D-only band, with D60 micro-drift elimination prioritized and D21 regression guarded."
+}

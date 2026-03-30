@@ -1,0 +1,21 @@
+gate,passed,actual,threshold,relation,note,margin
+Preserve D60 canonical reviewer,1,3.197442310920451e-14,1e-09,<=,D60E21_fullmap/reviewer_targets candidate p95 should not exceed parent p95,9.999680255768909e-10
+Preserve D60 holdout reviewer,1,3.907985046680551e-14,1e-09,<=,D60E41_holdout/reviewer_targets candidate p95 should not exceed parent p95,9.999609201495333e-10
+Preserve D21 canonical reviewer,1,0.0,1e-09,<=,D21E41_fullmap/reviewer_targets candidate p95 should not exceed parent p95,1e-09
+Preserve D21 holdout reviewer,1,0.0,1e-09,<=,D21E21_holdout/reviewer_targets candidate p95 should not exceed parent p95,1e-09
+Preserve D21 canonical complement,1,0.0,1e-09,<=,D21E41_fullmap/nonreviewer_complement candidate p95 should not exceed parent p95,1e-09
+Preserve D21 holdout complement,1,0.0,1e-09,<=,D21E21_holdout/nonreviewer_complement candidate p95 should not exceed parent p95,1e-09
+Preserve D21 canonical all-points,1,0.0,1e-09,<=,D21E41_fullmap/all_points candidate p95 should not exceed parent p95,1e-09
+Preserve D21 holdout all-points,1,0.0,1e-09,<=,D21E21_holdout/all_points candidate p95 should not exceed parent p95,1e-09
+Improve D60 canonical drift strip,1,0.0023116940287390975,1e-06,>=,D60E21_fullmap/drift_strip candidate should improve parent drift p95,0.0023106940287390973
+Improve D60 holdout drift strip,1,0.0023116940287390975,1e-06,>=,D60E41_holdout/drift_strip candidate should improve parent drift p95,0.0023106940287390973
+Improve D80 holdout drift strip,1,0.037889781888191365,1e-06,>=,D80E41_monitor/drift_strip candidate should improve parent drift p95,0.037888781888191364
+Improve D100 holdout drift strip,1,0.10698572921252403,1e-06,>=,D100E41_monitor/drift_strip candidate should improve parent drift p95,0.10698472921252403
+No new D60 canonical complement regression,1,-2.8421709430404014e-14,-1e-09,>=,D60E21_fullmap/nonreviewer_complement worst point should stay within parent-regression tolerance,9.999715782905697e-10
+No new D60 holdout complement regression,1,-2.8421709430404014e-14,-1e-09,>=,D60E41_holdout/nonreviewer_complement worst point should stay within parent-regression tolerance,9.999715782905697e-10
+No new D80 holdout complement regression,1,-4.263256414560601e-14,-1e-09,>=,D80E41_monitor/nonreviewer_complement worst point should stay within parent-regression tolerance,9.999573674358545e-10
+No new D100 holdout complement regression,1,-4.263256414560601e-14,-1e-09,>=,D100E41_monitor/nonreviewer_complement worst point should stay within parent-regression tolerance,9.999573674358545e-10
+No new D21 canonical acceptance flips,1,0.0,0.0,==,D21E41_fullmap/all_points acceptance flips vs base must stay zero,-0.0
+No new D21 holdout acceptance flips,1,0.0,0.0,==,D21E21_holdout/all_points acceptance flips vs base must stay zero,-0.0
+No new D60 canonical reviewer flips,1,0.0,0.0,==,D60E21_fullmap/reviewer_targets acceptance flips vs base must stay zero,-0.0
+No new D60 holdout reviewer flips,1,0.0,0.0,==,D60E41_holdout/reviewer_targets acceptance flips vs base must stay zero,-0.0

@@ -1,0 +1,182 @@
+{
+  "summary": {
+    "candidate_mode": "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate",
+    "parent_mode": "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate",
+    "decision": "GO_promotion_gate_closed",
+    "go_flag": 1,
+    "n_gates": 20,
+    "n_passed": 20,
+    "n_failed": 0,
+    "tol_preserve": 1e-09,
+    "tol_parent_regression": 1e-09,
+    "min_drift_improvement": 1e-06,
+    "d60e21_drift_parent": 1.205126924785977,
+    "d60e21_drift_candidate": 1.202815230757238,
+    "d100e41_drift_parent": 1.041924642067773,
+    "d100e41_drift_candidate": 0.934938912855249,
+    "d21e41_complement_parent": 0.7569947064696276,
+    "d21e41_complement_candidate": 0.7569947064696276
+  },
+  "gates": [
+    {
+      "gate": "Preserve D60 canonical reviewer",
+      "passed": 1,
+      "actual": 3.197442310920451e-14,
+      "threshold": 1e-09,
+      "relation": "<=",
+      "note": "D60E21_fullmap/reviewer_targets candidate p95 should not exceed parent p95"
+    },
+    {
+      "gate": "Preserve D60 holdout reviewer",
+      "passed": 1,
+      "actual": 3.907985046680551e-14,
+      "threshold": 1e-09,
+      "relation": "<=",
+      "note": "D60E41_holdout/reviewer_targets candidate p95 should not exceed parent p95"
+    },
+    {
+      "gate": "Preserve D21 canonical reviewer",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 1e-09,
+      "relation": "<=",
+      "note": "D21E41_fullmap/reviewer_targets candidate p95 should not exceed parent p95"
+    },
+    {
+      "gate": "Preserve D21 holdout reviewer",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 1e-09,
+      "relation": "<=",
+      "note": "D21E21_holdout/reviewer_targets candidate p95 should not exceed parent p95"
+    },
+    {
+      "gate": "Preserve D21 canonical complement",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 1e-09,
+      "relation": "<=",
+      "note": "D21E41_fullmap/nonreviewer_complement candidate p95 should not exceed parent p95"
+    },
+    {
+      "gate": "Preserve D21 holdout complement",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 1e-09,
+      "relation": "<=",
+      "note": "D21E21_holdout/nonreviewer_complement candidate p95 should not exceed parent p95"
+    },
+    {
+      "gate": "Preserve D21 canonical all-points",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 1e-09,
+      "relation": "<=",
+      "note": "D21E41_fullmap/all_points candidate p95 should not exceed parent p95"
+    },
+    {
+      "gate": "Preserve D21 holdout all-points",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 1e-09,
+      "relation": "<=",
+      "note": "D21E21_holdout/all_points candidate p95 should not exceed parent p95"
+    },
+    {
+      "gate": "Improve D60 canonical drift strip",
+      "passed": 1,
+      "actual": 0.0023116940287390975,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D60E21_fullmap/drift_strip candidate should improve parent drift p95"
+    },
+    {
+      "gate": "Improve D60 holdout drift strip",
+      "passed": 1,
+      "actual": 0.0023116940287390975,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D60E41_holdout/drift_strip candidate should improve parent drift p95"
+    },
+    {
+      "gate": "Improve D80 holdout drift strip",
+      "passed": 1,
+      "actual": 0.037889781888191365,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D80E41_monitor/drift_strip candidate should improve parent drift p95"
+    },
+    {
+      "gate": "Improve D100 holdout drift strip",
+      "passed": 1,
+      "actual": 0.10698572921252403,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D100E41_monitor/drift_strip candidate should improve parent drift p95"
+    },
+    {
+      "gate": "No new D60 canonical complement regression",
+      "passed": 1,
+      "actual": -2.8421709430404014e-14,
+      "threshold": -1e-09,
+      "relation": ">=",
+      "note": "D60E21_fullmap/nonreviewer_complement worst point should stay within parent-regression tolerance"
+    },
+    {
+      "gate": "No new D60 holdout complement regression",
+      "passed": 1,
+      "actual": -2.8421709430404014e-14,
+      "threshold": -1e-09,
+      "relation": ">=",
+      "note": "D60E41_holdout/nonreviewer_complement worst point should stay within parent-regression tolerance"
+    },
+    {
+      "gate": "No new D80 holdout complement regression",
+      "passed": 1,
+      "actual": -4.263256414560601e-14,
+      "threshold": -1e-09,
+      "relation": ">=",
+      "note": "D80E41_monitor/nonreviewer_complement worst point should stay within parent-regression tolerance"
+    },
+    {
+      "gate": "No new D100 holdout complement regression",
+      "passed": 1,
+      "actual": -4.263256414560601e-14,
+      "threshold": -1e-09,
+      "relation": ">=",
+      "note": "D100E41_monitor/nonreviewer_complement worst point should stay within parent-regression tolerance"
+    },
+    {
+      "gate": "No new D21 canonical acceptance flips",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 0.0,
+      "relation": "==",
+      "note": "D21E41_fullmap/all_points acceptance flips vs base must stay zero"
+    },
+    {
+      "gate": "No new D21 holdout acceptance flips",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 0.0,
+      "relation": "==",
+      "note": "D21E21_holdout/all_points acceptance flips vs base must stay zero"
+    },
+    {
+      "gate": "No new D60 canonical reviewer flips",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 0.0,
+      "relation": "==",
+      "note": "D60E21_fullmap/reviewer_targets acceptance flips vs base must stay zero"
+    },
+    {
+      "gate": "No new D60 holdout reviewer flips",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 0.0,
+      "relation": "==",
+      "note": "D60E41_holdout/reviewer_targets acceptance flips vs base must stay zero"
+    }
+  ]
+}

@@ -18,12 +18,17 @@
     "D60E41_monitor": {
       "d_num": 60,
       "eta_num": 41
+    },
+    "D80E41_monitor": {
+      "d_num": 80,
+      "eta_num": 41
+    },
+    "D100E41_monitor": {
+      "d_num": 100,
+      "eta_num": 41
     }
   },
-  "skipped_cases": {
-    "D80E41_monitor": "missing localized_direct_profiles_chi_Dgrid80.csv or localized_direct_profiles_superrad_Dgrid80.csv",
-    "D100E41_monitor": "missing localized_direct_profiles_chi_Dgrid100.csv or localized_direct_profiles_superrad_Dgrid100.csv"
-  },
+  "skipped_cases": {},
   "paths": {
     "D60E21_monitor": {
       "full": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D60E21_20260330_d60_micro_monitor_r1.csv",
@@ -36,6 +41,18 @@
       "base": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E41_20260330_d60_micro_monitor_r1.csv",
       "parent": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D60E41_20260330_d60_micro_monitor_r1.csv",
       "candidate": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D60E41_20260330_d60_micro_monitor_r1.csv"
+    },
+    "D80E41_monitor": {
+      "full": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D80E41_20260330_d60_micro_monitor_r1.csv",
+      "base": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D80E41_20260330_d60_micro_monitor_r1.csv",
+      "parent": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D80E41_20260330_d60_micro_monitor_r1.csv",
+      "candidate": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D80E41_20260330_d60_micro_monitor_r1.csv"
+    },
+    "D100E41_monitor": {
+      "full": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_full_direct_D100E41_20260330_d60_micro_monitor_r1.csv",
+      "base": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D100E41_20260330_d60_micro_monitor_r1.csv",
+      "parent": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8maplate_D100E41_20260330_d60_micro_monitor_r1.csv",
+      "candidate": "/Users/boypatrick/codex/PSLT_quantam/output/hll_signal_strength/hll_signal_strength_map_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compmaplate_D100E41_20260330_d60_micro_monitor_r1.csv"
     }
   },
   "notes": "Production-style D60 monitoring focused on the residual d8comp non-reviewer micro-drift band near D\u22487.254."

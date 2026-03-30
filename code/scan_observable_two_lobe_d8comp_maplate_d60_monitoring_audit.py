@@ -97,10 +97,26 @@ def _load_case(case_name: str, paths: dict[str, Path]) -> pd.DataFrame:
     return merged
 
 
-def _monitor_mask(df: pd.DataFrame, subset: str, drift_d: float, neighbor_ds: list[float]) -> pd.Series:
+def _snap_targets_to_grid(unique_ds: np.ndarray, targets: list[float]) -> list[float]:
+    snapped: list[float] = []
+    for target in targets:
+        idx = int(np.argmin(np.abs(unique_ds - float(target))))
+        d_val = float(unique_ds[idx])
+        if not any(np.isclose(d_val, prev, atol=1.0e-9) for prev in snapped):
+            snapped.append(d_val)
+    return snapped
+
+
+def _monitor_mask(
+    df: pd.DataFrame,
+    subset: str,
+    reviewer_ds: list[float],
+    drift_d: float,
+    neighbor_ds: list[float],
+) -> pd.Series:
     dvals = df["D"].to_numpy(dtype=float)
     reviewer_mask = np.zeros(len(df), dtype=bool)
-    for target in D60_TARGETS:
+    for target in reviewer_ds:
         reviewer_mask |= np.isclose(dvals, target, atol=1.0e-9)
     drift_mask = np.isclose(dvals, drift_d, atol=1.0e-9)
     neighbor_mask = np.zeros(len(df), dtype=bool)
@@ -119,7 +135,37 @@ def _monitor_mask(df: pd.DataFrame, subset: str, drift_d: float, neighbor_ds: li
     raise ValueError(subset)
 
 
-def _summarize_subset(case_name: str, subset: str, df: pd.DataFrame, drift_d: float) -> dict[str, float | str | int]:
+def _summarize_subset(
+    case_name: str,
+    subset: str,
+    df: pd.DataFrame,
+    reviewer_ds: list[float],
+    drift_d: float,
+) -> dict[str, float | str | int]:
+    if df.empty:
+        return {
+            "case": case_name,
+            "subset": subset,
+            "count_points": 0,
+            "reviewer_grid_targets": "|".join(f"{x:.6f}" for x in reviewer_ds),
+            "drift_target_D": float(DRIFT_TARGET_D),
+            "drift_grid_D": float(drift_d),
+            "p95_abs_delta_base": np.nan,
+            "p95_abs_delta_parent": np.nan,
+            "p95_abs_delta_cf": np.nan,
+            "max_abs_delta_base": np.nan,
+            "max_abs_delta_parent": np.nan,
+            "max_abs_delta_cf": np.nan,
+            "mean_abs_improvement_vs_parent": np.nan,
+            "median_abs_improvement_vs_parent": np.nan,
+            "acceptance_flip_fraction_vs_base": np.nan,
+            "best_point_D": np.nan,
+            "best_point_eta": np.nan,
+            "best_point_improvement_vs_parent": np.nan,
+            "worst_point_D": np.nan,
+            "worst_point_eta": np.nan,
+            "worst_point_improvement_vs_parent": np.nan,
+        }
     worst_idx = df["abs_improvement_vs_parent"].idxmin()
     best_idx = df["abs_improvement_vs_parent"].idxmax()
     worst = df.loc[worst_idx]
@@ -128,6 +174,7 @@ def _summarize_subset(case_name: str, subset: str, df: pd.DataFrame, drift_d: fl
         "case": case_name,
         "subset": subset,
         "count_points": int(len(df)),
+        "reviewer_grid_targets": "|".join(f"{x:.6f}" for x in reviewer_ds),
         "drift_target_D": float(DRIFT_TARGET_D),
         "drift_grid_D": float(drift_d),
         "p95_abs_delta_base": float(np.percentile(df["abs_delta_base"], 95.0)),
@@ -148,14 +195,14 @@ def _summarize_subset(case_name: str, subset: str, df: pd.DataFrame, drift_d: fl
     }
 
 
-def _slice_rows(case_name: str, df: pd.DataFrame, drift_d: float) -> pd.DataFrame:
+def _slice_rows(case_name: str, df: pd.DataFrame, reviewer_ds: list[float], drift_d: float) -> pd.DataFrame:
     rows = []
     for d_val, grp in df.groupby("D", sort=True):
         d_float = float(d_val)
         rows.append({
             "case": case_name,
             "D": d_float,
-            "is_reviewer_target": float(any(np.isclose(d_float, t, atol=1.0e-9) for t in D60_TARGETS)),
+            "is_reviewer_target": float(any(np.isclose(d_float, t, atol=1.0e-9) for t in reviewer_ds)),
             "is_drift_strip": float(np.isclose(d_float, drift_d, atol=1.0e-9)),
             "slice_p95_abs_delta_parent": float(np.percentile(grp["abs_delta_parent"], 95.0)),
             "slice_p95_abs_delta_cf": float(np.percentile(grp["abs_delta_cf"], 95.0)),
@@ -244,6 +291,7 @@ def main() -> None:
     for case_name in active_cases:
         detail = _load_case(case_name, path_table[case_name])
         unique_ds = np.sort(detail["D"].unique().astype(float))
+        reviewer_ds = _snap_targets_to_grid(unique_ds, D60_TARGETS)
         drift_idx = int(np.argmin(np.abs(unique_ds - DRIFT_TARGET_D)))
         drift_d = float(unique_ds[drift_idx])
         neighbor_ds = []
@@ -254,9 +302,9 @@ def main() -> None:
         detail["drift_grid_D"] = drift_d
         detail_frames.append(detail)
         for subset in ["all_points", "reviewer_targets", "nonreviewer_complement", "drift_strip", "drift_band"]:
-            sub = detail.loc[_monitor_mask(detail, subset, drift_d, neighbor_ds)].copy()
-            summary_rows.append(_summarize_subset(case_name, subset, sub, drift_d))
-        slice_frames.append(_slice_rows(case_name, detail, drift_d))
+            sub = detail.loc[_monitor_mask(detail, subset, reviewer_ds, drift_d, neighbor_ds)].copy()
+            summary_rows.append(_summarize_subset(case_name, subset, sub, reviewer_ds, drift_d))
+        slice_frames.append(_slice_rows(case_name, detail, reviewer_ds, drift_d))
         eta_frames.append(_eta_rows(case_name, detail.loc[np.isclose(detail["D"], drift_d, atol=1.0e-9)].copy()))
 
     summary = pd.DataFrame(summary_rows)

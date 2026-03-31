@@ -1189,19 +1189,40 @@ Stationarity of the localized background removes the linear term. Restricting to
 \[
 \delta\Psi=a_{\rm part}u_{\rm part}+a_{\rm tree}u_{\rm tree}
 \]
-defines projected Hessian entries
+and introducing the column matrix \(U=(u_{\rm part},u_{\rm tree})\) together with the amplitude vector \(a=(a_{\rm part},a_{\rm tree})^T\), the projected Hessian is
+\[
+\mathcal K_{\rm parent}:=U^\dagger\mathcal H_{\rm EYMH}U.
+\]
+After Gram normalization of the projected basis, \(U^\dagger U=\mathbf 1_2\), this reduces to the matrix of projected Hessian entries
 \[
 H_{ij}=\langle u_i,\mathcal H_{\rm EYMH}u_j\rangle,
 \qquad
 i,j\in\{{\rm part},{\rm tree}\},
 \]
-and therefore a positive \(2\times2\) projected kernel. At the canonical point the diagonal entries reduce to the canonical split blocks,
+and therefore to a positive \(2\times2\) projected kernel on the localized low-mode sector. At the canonical point the diagonal entries reduce to the canonical split blocks,
 \[
 K_{11}=K_{\rm part}=e^{S_{\rm part}},
 \qquad
 \frac{K_{22}}{K_{\rm bg}}=G_{\rm Schur}=e^{S_{\rm schur}}.
 \]
-The Gaussian fluctuation integral of the projected block is proportional to \((\det \mathcal K_{\rm parent})^{-1/2}\). Dividing out the shell-background reference determinant produces the normalized response factor, and the Schur identity
+The projected Gaussian fluctuation integral is therefore
+\[
+Z_{\rm proj}
+\propto
+\int_{\mathbb R^2} d^2a\,
+\exp\!\left[
+-\frac12 a^T\mathcal K_{\rm parent}a
+\right]
+\propto
+\left(\det \mathcal K_{\rm parent}\right)^{-1/2}.
+\]
+Dividing out the shell-background reference determinant \(Z_{\rm bg}\propto K_{\rm bg}^{-1/2}\) produces the normalized response factor
+\[
+A_{\rm resp}\propto \frac{Z_{\rm proj}}{Z_{\rm bg}}
+\propto
+\left(\frac{\det\mathcal K_{\rm parent}}{K_{\rm bg}}\right)^{-1/2},
+\]
+and the Schur identity
 \[
 \frac{\det\mathcal K_{\rm parent}}{K_{\rm bg}}
 =
@@ -1214,7 +1235,7 @@ immediately yields
 S_{\rm parent}=\log K_{11}+\log\widehat G_{\rm Schur}.
 \]
 \emph{Audit closure.}
-The numerical closures already identify this factorization unambiguously: the `logdet + Schur' witness reconstructs the response weight and parented prefactor to machine precision, with \(\max|\Delta A_{\rm resp}^{\rm logdet}|=2.22\times10^{-16}\) and \(\max|\Delta\Pi_{\rm parent}^{\rm logdet}|=9.71\times10^{-17}\); the background-normalized parent block-determinant / Schur audit gives \(\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}\), \(\max|\Delta(\det/K_{\rm bg})|=1.33\times10^{-15}\), and \(\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}\); and the exact parent-kernel excess functional reproduces the direct mismatch functional with \(\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}\). Lemma~1 therefore reduces the remaining work to an explicit parent-action account of a structure that is already exact numerically.
+The exact audits verify each algebraic step appearing in the theorem statement: the `logdet + Schur' witness reconstructs the response weight and parented prefactor to machine precision, with \(\max|\Delta A_{\rm resp}^{\rm logdet}|=2.22\times10^{-16}\) and \(\max|\Delta\Pi_{\rm parent}^{\rm logdet}|=9.71\times10^{-17}\); the background-normalized parent block-determinant / Schur audit gives \(\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}\), \(\max|\Delta(\det/K_{\rm bg})|=1.33\times10^{-15}\), and \(\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}\); and the exact parent-kernel excess functional reproduces the direct mismatch functional with \(\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}\). Lemma~1 therefore reduces the remaining work to making the projected-Hessian construction from the parent action explicit enough that this already-exact numerical structure can be read as a genuine Gaussian fluctuation theorem on the localized two-mode sector.
 
 \noindent\textbf{Lemma 2 (Geometric-mean mixed entry).}
 With the diagonal sectors fixed as in Lemma~1, define the anchored excess variables

@@ -114,7 +114,7 @@ Chain profile selection:
                               fullwidthrefamp_pointamp plus a localized
                               positive width-anchor boost near D≈5.9.
   - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost:
-                              hotspot dual-pointamp extension:
+                              historical reviewer baseline:
                               fullwidthrefamp_pointamp_widthboost plus a
                               second narrow point-amplitude taper near D≈6.712.
   - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe:
@@ -144,6 +144,7 @@ Chain profile selection:
                               grid-snapped D≈7.24 micro-drift correction
                               blended back toward the d8maplate parent.
   - --chain-mode cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate:
+                              current canonical reviewer mainline:
                               runtime two-lobe D-phase extension with the
                               same D≈7.24 snapped correction, but only on
                               D60-style dense grids so D21 strips stay on the

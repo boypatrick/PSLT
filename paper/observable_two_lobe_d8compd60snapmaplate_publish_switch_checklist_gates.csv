@@ -1,0 +1,23 @@
+gate,passed,actual,threshold,relation,note
+Upstream promotion gate already closed,1,1.0,1.0,==,Previous explicit promotion gate should already be GO before publish-switch assessment.
+Improve D60 canonical all-points vs canonical,1,2.7457123709808924,1e-06,>=,D60E21_fullmap/all_points: candidate should beat canonical p95 by a non-zero margin.
+Improve D60 canonical reviewer vs canonical,1,12.710149607409043,1e-06,>=,D60E21_fullmap/reviewer_targets: candidate should beat canonical p95 by a non-zero margin.
+Preserve D60 canonical complement vs canonical,1,7.29680535815902e-06,1e-05,<=,D60E21_fullmap/nonreviewer_complement: candidate p95 should stay within publish no-worsen tolerance.
+Improve D21 canonical all-points vs canonical,1,0.03510460390545367,1e-06,>=,D21E41_fullmap/all_points: candidate should beat canonical p95 by a non-zero margin.
+Improve D21 canonical reviewer vs canonical,1,1.2111935195244845,1e-06,>=,D21E41_fullmap/reviewer_targets: candidate should beat canonical p95 by a non-zero margin.
+Preserve D21 canonical complement vs canonical,1,0.0,1e-05,<=,D21E41_fullmap/nonreviewer_complement: candidate p95 should stay within publish no-worsen tolerance.
+Improve D60 holdout reviewer vs canonical,1,12.709880074886339,1e-06,>=,D60E41_holdout/reviewer_targets: candidate should beat canonical p95 by a non-zero margin.
+Preserve D60 holdout complement vs canonical,1,7.295515642269379e-06,1e-05,<=,D60E41_holdout/nonreviewer_complement: candidate p95 should stay within publish no-worsen tolerance.
+Improve D21 holdout all-points vs canonical,1,0.03510460390545367,1e-06,>=,D21E21_holdout/all_points: candidate should beat canonical p95 by a non-zero margin.
+Improve D21 holdout reviewer vs canonical,1,1.2117617205482267,1e-06,>=,D21E21_holdout/reviewer_targets: candidate should beat canonical p95 by a non-zero margin.
+Preserve D21 holdout complement vs canonical,1,0.0,1e-05,<=,D21E21_holdout/nonreviewer_complement: candidate p95 should stay within publish no-worsen tolerance.
+No new D21 canonical acceptance flips,1,0.0,0.0,==,D21E41_fullmap/all_points: acceptance flips vs canonical base must stay zero.
+No new D21 holdout acceptance flips,1,0.0,0.0,==,D21E21_holdout/all_points: acceptance flips vs canonical base must stay zero.
+No new D60 canonical reviewer flips,1,0.0,0.0,==,D60E21_fullmap/reviewer_targets: acceptance flips vs canonical base must stay zero.
+No new D60 holdout reviewer flips,1,0.0,0.0,==,D60E41_holdout/reviewer_targets: acceptance flips vs canonical base must stay zero.
+Improve D60 canonical drift strip vs parent,1,0.0023116940287390975,1e-06,>=,D60E21_fullmap/drift_strip: candidate should improve parent drift on the monitored strip.
+Improve D60 holdout drift strip vs parent,1,0.0023116940287390975,1e-06,>=,D60E41_holdout/drift_strip: candidate should improve parent drift on the monitored strip.
+Improve D80 dense-grid drift strip vs parent,1,0.037889781888191365,1e-06,>=,D80E41_monitor/drift_strip: candidate should improve parent drift on the monitored strip.
+Improve D100 dense-grid drift strip vs parent,1,0.10698572921252403,1e-06,>=,D100E41_monitor/drift_strip: candidate should improve parent drift on the monitored strip.
+No new D80 complement regression vs parent,1,-4.263256414560601e-14,-1e-09,>=,D80E41_monitor/nonreviewer_complement: worst-point parent-relative regression must remain negligible.
+No new D100 complement regression vs parent,1,-4.263256414560601e-14,-1e-09,>=,D100E41_monitor/nonreviewer_complement: worst-point parent-relative regression must remain negligible.

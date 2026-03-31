@@ -181,14 +181,25 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
 - **Full-chain consistency comparator (kinetic unification audit):** `code/scan_action_chain_consistency.py` keeps a legacy surrogate-vs-action comparator run for historical context; the current strict chain-mode parity evidence is provided by `code/scan_chain_mode_cell_direct_audit.py`. Comparator exports:
   - `output/kinetic_action_chain/action_chain_consistency_summary.csv`
   - `output/kinetic_action_chain/action_chain_consistency.png`
-  The current reviewer-mainline observable candidate is `chain_mode=cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost`. On refreshed baselines it reaches:
+  The canonical reviewer-mainline observable branch is now `chain_mode=cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate`. Relative to the historical refreshed reviewer baseline `cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost`, it preserves the repaired `D21` structure while improving the dense-grid `D60` micro-drift:
+  - `D60 reviewer p95 |Delta mu_mumu|`: `31.29 -> 18.58`
+  - `D21 reviewer p95 |Delta mu_mumu|`: `2.10 -> 0.891`
+  - `D21 complement p95 |Delta mu_mumu|`: `0.7570 -> 0.7570` (preserved)
+  - `D100 dense-grid drift strip`: `1.0419 -> 0.9349` vs the repaired parent `twolobe_d8compmaplate`
+  The switch evidence is exported as:
+  - `output/kinetic_action_chain/observable_two_lobe_d8compd60snapmaplate_runtime_validation_summary.csv`
+  - `output/kinetic_action_chain/observable_two_lobe_d8compd60snapmaplate_promotion_gate_checklist.csv`
+  - `output/kinetic_action_chain/observable_two_lobe_d8compd60snapmaplate_promotion_gate_checklist_gates.csv`
+  - `output/kinetic_action_chain/observable_two_lobe_d8compd60snapmaplate_publish_switch_checklist.csv`
+  - `output/kinetic_action_chain/observable_two_lobe_d8compd60snapmaplate_publish_switch_checklist_gates.csv`
+  The final publish smoke/regression checklist closes `22/22` gates with `GO_branch_switch_recommended`, so the previous branch `cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost` is now best treated as the historical comparator baseline rather than the live reviewer mainline. Its refreshed reviewer gap still records the original hotspot geometry:
   - `D60 x E21`: mismatch `0.042857`, `max |Delta mu_mumu| = 31.29`, `p95 = 8.96`
   - `D21 x E41`: mismatch `0.090592`, `max |Delta mu_mumu| = 2.10`, `p95 = 0.914`
-  Canonical refreshed evidence is exported as:
+  Historical refreshed evidence remains exported as:
   - `output/hll_signal_strength/hll_signal_strength_summary_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D60E21_refresh_20260324.csv`
   - `output/hll_signal_strength/hll_signal_strength_summary_chain_mode_cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_D21E41.csv`
   - `output/kinetic_action_chain/model_chain_fullwidthrefamp_pointamp2_widthboost_d60_reviewerref_hotspot_audit_summary.csv`
-  The refreshed D60 reviewer gap now splits cleanly into a partial/point-amplitude band at `D≈6.169/6.441` and a width band at `D≈4.814/5.627/6.712`, while `D=6.4` is the dominant D21 guard. Recent cross-grid follow-ups are therefore recorded as negative candidate families rather than promotion paths:
+  The original D60 reviewer gap splits cleanly into a partial/point-amplitude band at `D≈6.169/6.441` and a width band at `D≈4.814/5.627/6.712`, while `D=6.4` is the dominant D21 guard. Recent cross-grid follow-ups remain recorded as negative candidate families rather than promotion paths:
   - `pointamp3`: improves the D60 `D≈6.169/6.441` band but reopens `D21 D=6.4`
   - `widthband`: improves D60 width hotspots but again reopens `D21 D=6.4`
   - `partialguard`: helps hotspot shortlist metrics but does not beat the reviewer-mainline candidate on true D60 reviewer maps

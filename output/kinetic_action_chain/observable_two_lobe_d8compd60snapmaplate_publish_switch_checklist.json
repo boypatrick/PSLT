@@ -1,0 +1,197 @@
+{
+  "summary": {
+    "candidate_mode": "cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate",
+    "decision": "GO_branch_switch_recommended",
+    "go_flag": 1,
+    "n_gates": 22,
+    "n_passed": 22,
+    "n_failed": 0,
+    "promotion_gate_go_flag": 1,
+    "d60e21_reviewer_base": 31.28593012120719,
+    "d60e21_reviewer_candidate": 18.575780513798147,
+    "d21e41_reviewer_base": 2.102217055050133,
+    "d21e41_reviewer_candidate": 0.8910235355256485,
+    "d21e41_complement_base": 0.7569947064696276,
+    "d21e41_complement_candidate": 0.7569947064696276,
+    "d100e41_drift_parent": 1.041924642067773,
+    "d100e41_drift_candidate": 0.934938912855249
+  },
+  "gates": [
+    {
+      "gate": "Upstream promotion gate already closed",
+      "passed": 1,
+      "actual": 1.0,
+      "threshold": 1.0,
+      "relation": "==",
+      "note": "Previous explicit promotion gate should already be GO before publish-switch assessment."
+    },
+    {
+      "gate": "Improve D60 canonical all-points vs canonical",
+      "passed": 1,
+      "actual": 2.7457123709808924,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D60E21_fullmap/all_points: candidate should beat canonical p95 by a non-zero margin."
+    },
+    {
+      "gate": "Improve D60 canonical reviewer vs canonical",
+      "passed": 1,
+      "actual": 12.710149607409043,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D60E21_fullmap/reviewer_targets: candidate should beat canonical p95 by a non-zero margin."
+    },
+    {
+      "gate": "Preserve D60 canonical complement vs canonical",
+      "passed": 1,
+      "actual": 7.29680535815902e-06,
+      "threshold": 1e-05,
+      "relation": "<=",
+      "note": "D60E21_fullmap/nonreviewer_complement: candidate p95 should stay within publish no-worsen tolerance."
+    },
+    {
+      "gate": "Improve D21 canonical all-points vs canonical",
+      "passed": 1,
+      "actual": 0.03510460390545367,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D21E41_fullmap/all_points: candidate should beat canonical p95 by a non-zero margin."
+    },
+    {
+      "gate": "Improve D21 canonical reviewer vs canonical",
+      "passed": 1,
+      "actual": 1.2111935195244845,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D21E41_fullmap/reviewer_targets: candidate should beat canonical p95 by a non-zero margin."
+    },
+    {
+      "gate": "Preserve D21 canonical complement vs canonical",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 1e-05,
+      "relation": "<=",
+      "note": "D21E41_fullmap/nonreviewer_complement: candidate p95 should stay within publish no-worsen tolerance."
+    },
+    {
+      "gate": "Improve D60 holdout reviewer vs canonical",
+      "passed": 1,
+      "actual": 12.709880074886339,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D60E41_holdout/reviewer_targets: candidate should beat canonical p95 by a non-zero margin."
+    },
+    {
+      "gate": "Preserve D60 holdout complement vs canonical",
+      "passed": 1,
+      "actual": 7.295515642269379e-06,
+      "threshold": 1e-05,
+      "relation": "<=",
+      "note": "D60E41_holdout/nonreviewer_complement: candidate p95 should stay within publish no-worsen tolerance."
+    },
+    {
+      "gate": "Improve D21 holdout all-points vs canonical",
+      "passed": 1,
+      "actual": 0.03510460390545367,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D21E21_holdout/all_points: candidate should beat canonical p95 by a non-zero margin."
+    },
+    {
+      "gate": "Improve D21 holdout reviewer vs canonical",
+      "passed": 1,
+      "actual": 1.2117617205482267,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D21E21_holdout/reviewer_targets: candidate should beat canonical p95 by a non-zero margin."
+    },
+    {
+      "gate": "Preserve D21 holdout complement vs canonical",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 1e-05,
+      "relation": "<=",
+      "note": "D21E21_holdout/nonreviewer_complement: candidate p95 should stay within publish no-worsen tolerance."
+    },
+    {
+      "gate": "No new D21 canonical acceptance flips",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 0.0,
+      "relation": "==",
+      "note": "D21E41_fullmap/all_points: acceptance flips vs canonical base must stay zero."
+    },
+    {
+      "gate": "No new D21 holdout acceptance flips",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 0.0,
+      "relation": "==",
+      "note": "D21E21_holdout/all_points: acceptance flips vs canonical base must stay zero."
+    },
+    {
+      "gate": "No new D60 canonical reviewer flips",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 0.0,
+      "relation": "==",
+      "note": "D60E21_fullmap/reviewer_targets: acceptance flips vs canonical base must stay zero."
+    },
+    {
+      "gate": "No new D60 holdout reviewer flips",
+      "passed": 1,
+      "actual": 0.0,
+      "threshold": 0.0,
+      "relation": "==",
+      "note": "D60E41_holdout/reviewer_targets: acceptance flips vs canonical base must stay zero."
+    },
+    {
+      "gate": "Improve D60 canonical drift strip vs parent",
+      "passed": 1,
+      "actual": 0.0023116940287390975,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D60E21_fullmap/drift_strip: candidate should improve parent drift on the monitored strip."
+    },
+    {
+      "gate": "Improve D60 holdout drift strip vs parent",
+      "passed": 1,
+      "actual": 0.0023116940287390975,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D60E41_holdout/drift_strip: candidate should improve parent drift on the monitored strip."
+    },
+    {
+      "gate": "Improve D80 dense-grid drift strip vs parent",
+      "passed": 1,
+      "actual": 0.037889781888191365,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D80E41_monitor/drift_strip: candidate should improve parent drift on the monitored strip."
+    },
+    {
+      "gate": "Improve D100 dense-grid drift strip vs parent",
+      "passed": 1,
+      "actual": 0.10698572921252403,
+      "threshold": 1e-06,
+      "relation": ">=",
+      "note": "D100E41_monitor/drift_strip: candidate should improve parent drift on the monitored strip."
+    },
+    {
+      "gate": "No new D80 complement regression vs parent",
+      "passed": 1,
+      "actual": -4.263256414560601e-14,
+      "threshold": -1e-09,
+      "relation": ">=",
+      "note": "D80E41_monitor/nonreviewer_complement: worst-point parent-relative regression must remain negligible."
+    },
+    {
+      "gate": "No new D100 complement regression vs parent",
+      "passed": 1,
+      "actual": -4.263256414560601e-14,
+      "threshold": -1e-09,
+      "relation": ">=",
+      "note": "D100E41_monitor/nonreviewer_complement: worst-point parent-relative regression must remain negligible."
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+n_points,positive_cone_fraction,positive_q_fraction,max_abs_q_residual,p95_abs_q_residual,max_abs_rho_residual,p95_abs_rho_residual,median_rho_inferred,p10_rho_inferred,p90_rho_inferred,"corr(q_inferred, q_geomean)",max_abs_schur_identity_residual,p95_abs_schur_identity_residual,max_abs_det_identity_residual,max_negative_q_magnitude
+441,1.0,1.0,0.46097013330682163,0.45877998023759,1.0000000000000064,1.0000000000000024,0.0,-1.935957236322746e-15,2.453597683648498e-15,,1.1102230246251565e-15,4.440892098500626e-16,0.0,2.220446049250313e-15

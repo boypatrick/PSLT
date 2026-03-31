@@ -1,0 +1,7 @@
+family_label,worst_D_by_quartic_p95,worst_D_quartic_p95,mean_D_quartic_p95
+single::hk_curv_screen_offdiag:over_diag,4.0,0.0014667639187297737,0.0005706386142308113
+single::hk_abs_offdiag:over_diag,18.4,0.0013579293025751846,0.0005404817013240342
+single::action_abs_offdiag:over_diag,5.6,0.0015595300441174362,0.000672847336333997
+blend::hk_curv_screen_offdiag:over_diag+hk_abs_offdiag:over_diag,18.4,0.0013447545784601952,0.0005425392082564497
+blend::hk_curv_screen_offdiag:over_diag+action_abs_offdiag:over_diag,4.0,0.0014713904266000334,0.0005091437137928303
+blend::hk_abs_offdiag:over_diag+action_abs_offdiag:over_diag,5.6,0.000982904084119037,0.00047225200601942583

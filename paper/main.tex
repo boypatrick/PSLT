@@ -1139,7 +1139,7 @@ K_{22}=K_{\rm bg}G_{\rm Schur}=K_{\rm bg}e^{S_{\rm schur}},
 \]
 
 \noindent\textbf{Lemma 1 (Projected \(2\times2\) Hessian reduction).}
-Let \(\Psi_0\) be a localized stationary background of the projected EYMH parent action, and let \(\mathcal H_{\rm EYMH}\) denote its quadratic fluctuation Hessian. After restriction to the two dominant low-mode directions \(u_{\rm part}\) and \(u_{\rm tree}\), and after Gram normalization of that projected subspace, the quadratic fluctuation form can be written as
+Let \(\Psi_0\) be a localized stationary background of the projected EYMH parent action, and let \(\mathcal H_{\rm EYMH}\) denote its quadratic fluctuation Hessian. Assume that the quadratic form induced by \(\mathcal H_{\rm EYMH}\) is locally positive on the projected two-mode sector spanned by the dominant low-mode directions \(u_{\rm part}\) and \(u_{\rm tree}\). After restriction to that sector, and after Gram normalization of the projected subspace, the quadratic fluctuation form can be written as
 \[
 \delta^2 S_{\rm EYMH}\big|_{\rm proj}
 =
@@ -1199,7 +1199,7 @@ H_{ij}=\langle u_i,\mathcal H_{\rm EYMH}u_j\rangle,
 \qquad
 i,j\in\{{\rm part},{\rm tree}\},
 \]
-and therefore to a positive \(2\times2\) projected kernel on the localized low-mode sector. At the canonical point the diagonal entries reduce to the canonical split blocks,
+and therefore to a positive \(2\times2\) projected kernel on the localized low-mode sector. Here positivity comes from the projected local-stability assumption, not from stationarity alone. At the canonical point the diagonal entries reduce to the canonical split blocks,
 \[
 K_{11}=K_{\rm part}=e^{S_{\rm part}},
 \qquad
@@ -1246,7 +1246,7 @@ E_{\rm part}=K_{11}-1,
 \qquad
 E_{\rm tree}=K_{22}-K_{\rm bg}.
 \]
-Among positive mixed couplings that vanish at either fixed point, remain symmetric after shell-background normalization, and are locally affine in the logarithms of the excess variables, the projected parent block uniquely selects
+On the local positive cone \(E_{\rm part}\ge 0\), \(E_{\rm tree}\ge 0\), with the positive square-root branch fixed by continuity from the canonical point, consider positive mixed couplings that vanish at either fixed point, remain symmetric after shell-background normalization, and are locally affine in the logarithms of the excess variables. Within that class, the projected parent block uniquely selects
 \[
 C_{\rm parent}=\sqrt{E_{\rm part}E_{\rm tree}}
 =
@@ -1298,7 +1298,7 @@ E_{\rm part}=K_{11}-1,
 \qquad
 E_{\rm tree}=K_{22}-K_{\rm bg},
 \]
-in the sense that they are simultaneously the unique anchor-preserving coordinates, the unique unit-tangent-normalized coordinates, and the unique zero-second-jet coordinates compatible with exact determinant / Schur / weight closure.
+within the audited local coordinate families, in the sense that they are simultaneously the unique anchor-preserving coordinates, the unique unit-tangent-normalized coordinates, and the unique zero-second-jet coordinates compatible with exact determinant / Schur / weight closure.
 \emph{Proof sketch.}
 Let \(E=(E_{\rm part},E_{\rm tree})\) and let \(\widetilde E=\Phi(E)\) be any local reparameterization of the projected parent block near the fixed point \(E=0\). In this language a normal-form coordinate system is characterized by
 \[
@@ -1335,7 +1335,7 @@ The first nontrivial deviation from each of \(\Phi(0)=0\), \(D\Phi(0)=I\), and \
 Together, Lemmas~1--3 successively eliminate the three remaining ambiguities of the parent-kernel bridge: first the projected block structure, then the mixed coupling, and finally the local coordinate chart. The corollary is therefore not an informal restatement of the exact audits, but the compact parent-action statement that remains once those three choices have been fixed.
 
 \noindent\textbf{Corollary (Projected EYMH parent kernel).}
-Combining Lemmas~1--3, the localized low-mode EYMH fluctuation operator projects to a background-normalized \(2\times2\) parent kernel which, in the canonical excess coordinates, takes the explicit form
+Combining Lemmas~1--3, the localized low-mode EYMH fluctuation operator projects to a background-normalized \(2\times2\) parent kernel which, on the same local positive cone and in the canonical excess coordinates, takes the explicit form
 \[
 \mathcal K_{\rm parent}
 =

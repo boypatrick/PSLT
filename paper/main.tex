@@ -1269,7 +1269,7 @@ one may write the most general nearby positive homogeneous coupling as
 =
 m+s\,\Sigma+a\,\Delta+\mathcal O(\Sigma^2,\Sigma\Delta,\Delta^2),
 \]
-where \(m\) is an overall normalization shift, \(s\) is the symmetric homogeneity degree, and \(a\) is the antisymmetric tilt. The exact audit under \path{paper/hll_uv_*parent_mix_geomean*_D21E21_fix.*} closes uniquely at
+where \(m\) is an overall normalization shift, \(s\) is the symmetric homogeneity degree, and \(a\) is the antisymmetric tilt. Homogeneity of degree one in the excess amplitudes forces \(u+v=1\), equivalently \(s=1\) in the logarithmic generator, while symmetry under interchange of the two anchored excess sectors forces \(u=v\), equivalently \(a=0\). The remaining freedom is the overall normalization \(\kappa=e^m\), which is fixed by the canonical anchor normalization. The exact audit under \path{paper/hll_uv_*parent_mix_geomean*_D21E21_fix.*} closes uniquely at
 \[
 (u,v,\kappa)=\left(\tfrac12,\tfrac12,1\right),
 \]
@@ -1335,7 +1335,43 @@ The first nontrivial deviation from each of \(\Phi(0)=0\), \(D\Phi(0)=I\), and \
 Together, Lemmas~1--3 successively eliminate the three remaining ambiguities of the parent-kernel bridge: first the projected block structure, then the mixed coupling, and finally the local coordinate chart. The corollary is therefore not an informal restatement of the exact audits, but the compact parent-action statement that remains once those three choices have been fixed.
 
 \noindent\textbf{Corollary (Projected EYMH parent kernel).}
-Combining Lemmas~1--3, the localized low-mode EYMH fluctuation operator projects to a background-normalized \(2\times2\) parent kernel whose diagonal blocks are the participation and shell-background tree/background sectors, whose mixed entry is the geometric mean of their linear excess coordinates, and whose response weight is the inverse square root of the associated normalized determinant / Schur factorization. This corollary is the precise parent-action statement that remains after the exact audit closures.
+Combining Lemmas~1--3, the localized low-mode EYMH fluctuation operator projects to a background-normalized \(2\times2\) parent kernel which, in the canonical excess coordinates, takes the explicit form
+\[
+\mathcal K_{\rm parent}
+=
+\begin{pmatrix}
+1+E_{\rm part} & \sqrt{E_{\rm part}E_{\rm tree}}\\
+\sqrt{E_{\rm part}E_{\rm tree}} & K_{\rm bg}+E_{\rm tree}
+\end{pmatrix}.
+\]
+Its normalized determinant and response weight are therefore
+\[
+\frac{\det\mathcal K_{\rm parent}}{K_{\rm bg}}
+=
+\frac{(1+E_{\rm part})(K_{\rm bg}+E_{\rm tree})-E_{\rm part}E_{\rm tree}}{K_{\rm bg}}
+=
+1+E_{\rm part}+\frac{E_{\rm tree}}{K_{\rm bg}},
+\]
+\[
+A_{\rm resp}
+\propto
+\left(\frac{\det\mathcal K_{\rm parent}}{K_{\rm bg}}\right)^{-1/2}
+=
+\left(1+E_{\rm part}+\frac{E_{\rm tree}}{K_{\rm bg}}\right)^{-1/2}.
+\]
+Equivalently, the same determinant may be read in Schur form as
+\[
+\frac{\det\mathcal K_{\rm parent}}{K_{\rm bg}}
+=
+K_{11}\widehat G_{\rm Schur},
+\qquad
+\widehat G_{\rm Schur}
+=
+\frac{K_{22}-K_{12}^2/K_{11}}{K_{\rm bg}}
+=
+1+\frac{E_{\rm tree}}{K_{\rm bg}(1+E_{\rm part})}.
+\]
+This corollary is the compact parent-action statement that remains after the exact audit closures: the parent block is fixed by its two canonical diagonal sectors, the unique geometric-mean mixed coupling, and the unique linear zero-second-jet excess coordinates.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

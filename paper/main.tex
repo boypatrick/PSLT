@@ -1251,15 +1251,35 @@ C_{\rm parent}=\sqrt{E_{\rm part}E_{\rm tree}}
 \sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})}.
 \]
 \emph{Proof sketch.}
-Once the diagonal blocks are fixed, the mixed entry is the only remaining structural freedom. The smallest multiplicative excess family compatible with the anchor and positivity constraints is
+Once the diagonal blocks are fixed, the mixed entry is the only remaining structural freedom. The smallest positive multiplicative excess family compatible with the anchor constraints is
 \[
 C_{\rm gen}=\kappa\,E_{\rm part}^uE_{\rm tree}^v.
 \]
-The exact audit under \path{paper/hll_uv_*parent_mix_geomean*_D21E21_fix.*} closes uniquely at
+Equivalently, in logarithmic excess variables
+\[
+\Sigma=\frac12\log(E_{\rm part}E_{\rm tree}),
+\qquad
+\Delta=\frac12\log(E_{\rm part}/E_{\rm tree}),
+\]
+one may write the most general nearby positive homogeneous coupling as
+\[
+\log C_{\rm gen}
+=
+m+s\,\Sigma+a\,\Delta+\mathcal O(\Sigma^2,\Sigma\Delta,\Delta^2),
+\]
+where \(m\) is an overall normalization shift, \(s\) is the symmetric homogeneity degree, and \(a\) is the antisymmetric tilt. The exact audit under \path{paper/hll_uv_*parent_mix_geomean*_D21E21_fix.*} closes uniquely at
 \[
 (u,v,\kappa)=\left(\tfrac12,\tfrac12,1\right),
 \]
-which is precisely the geometric mean. In particular, the closure forces the symmetry condition \(u=v\) rather than assuming it a priori. The nearby deformations then show that this is structural, not accidental: the first ratio-warped extension is rejected at \((\kappa,\delta,\nu)=(1,0,0)\), the symmetry/normalization coordinates close only at \((m,s,a)=(0,1,0)\), and the first local generator-curvature corrections are rejected at \((q_{ss},q_{dd},q_{sd})=(0,0,0)\). Thus, once the diagonal sectors, anchors, and local multiplicative structure are fixed, only one positive homogeneous mixed coupling survives.
+which is precisely the geometric mean. In particular, the closure forces the symmetry condition \(u=v\) rather than assuming it a priori. The nearby deformations then show that this is structural, not accidental: the first ratio-warped extension is rejected at \((\kappa,\delta,\nu)=(1,0,0)\), the symmetry/normalization audit closes only at \((m,s,a)=(0,1,0)\), and the first local generator-curvature corrections are rejected at \((q_{ss},q_{dd},q_{sd})=(0,0,0)\). The combined effect is to set the logarithmic generator exactly to
+\[
+\log C_{\rm parent}=\Sigma=\frac12\log(E_{\rm part}E_{\rm tree}),
+\]
+and hence
+\[
+C_{\rm parent}=\sqrt{E_{\rm part}E_{\rm tree}}.
+\]
+Thus, once the diagonal sectors, anchors, and local multiplicative structure are fixed, only one positive homogeneous mixed coupling survives.
 \emph{Audit closure.}
 The first nontrivial runner-ups already open visible residuals at every stage: the geomean runner-up gives \(\max|\Delta(\det/K_{\rm bg})|=1.32\times10^{-3}\) and \(\max|\Delta A|=2.18\times10^{-4}\); the first ratio warp gives \(\max|\Delta(\det/K_{\rm bg})|=7.18\times10^{-4}\) and \(\max|\Delta \xi|=6.08\times10^{-3}\); the first symmetry/normalization deformation gives \(\max|\Delta(\det/K_{\rm bg})|=6.61\times10^{-4}\) and \(\max|\Delta A|=1.09\times10^{-4}\); and the first local generator-curvature deformation gives \(\max|\Delta(\det/K_{\rm bg})|=2.76\times10^{-4}\) and \(\max|\Delta \xi|=2.23\times10^{-3}\). After Lemma~1 has fixed the diagonal sectors, Lemma~2 therefore leaves a single symmetry-respecting, anchor-vanishing mixed coupling: the geometric mean.
 

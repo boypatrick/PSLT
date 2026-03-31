@@ -1003,6 +1003,12 @@ K_{11}=e^{\alpha S_{\rm part}},\qquad
 K_{\rm bg}=1+\mathrm{gap}_{\rm cv},\qquad
 K_{22}=K_{\rm bg}e^{\beta S_{\rm schur}},
 \]
+and it is convenient to abbreviate the deformed normalized tree/background block as
+\[
+G_\beta:=\frac{K_{22}}{K_{\rm bg}}=e^{\beta S_{\rm schur}},
+\qquad
+G_{\rm Schur}=G_\beta\big|_{\beta=1}.
+\]
 with parent mixing scale
 \[
 C_{\rm parent}=\sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})},
@@ -1118,15 +1124,26 @@ On the same D21$\times$E21 fix grid the unique exact point is
 (\zeta_p,\zeta_t)=(0,0),
 \]
 for which the determinant, Schur, weight, cross-ratio, anchor, and onset residuals again vanish identically. The first nontrivial runner-up, $(0.125,0)$, already opens visible distortions, with onset mismatches $2.10\times10^{-3}$ and $9.63\times10^{-3}$ together with $\max|\Delta(\det/K_{\rm bg})|=9.90\times10^{-4}$, $\max|\Delta \widehat G_{\rm Schur}|=6.59\times10^{-4}$, $\max|\Delta A|=1.18\times10^{-4}$, and $\max|\Delta \xi|=9.47\times10^{-3}$. This is the strongest positive coordinate statement so far: the projected parent action naturally uses the zero-second-jet normal coordinates around the identity/background fixed points, and those normal coordinates are exactly the linear excess variables.
-\subsection{Projected Parent-Kernel Derivation Roadmap}
+\subsection{Projected Parent-Kernel Derivation}
 \label{sec:eymh_parent_kernel_roadmap}
 
-At this stage the structural ambiguity of the projected EYMH parent kernel is closed numerically. The bridge checklist under \path{paper/eymh_parent_kernel_bridge_status_summary.csv} and \path{paper/eymh_parent_kernel_bridge_status_gates.csv} closes all current structural gates: the projected response action is exactly a ``logdet + Schur'' object, the same object equals an exact parent-kernel excess functional, the participation/tree split and the background-normalized parent block-determinant / Schur factorization both close to machine precision, the mixed block is uniquely selected as the geometric mean inside the minimal symmetric-excess family, and the excess-coordinate / Box--Cox / normal-coordinate audits uniquely return the identity/background anchors together with the zero-second-jet linear excess variables. What remains open is therefore no longer another family search, but the parent-action derivation of why this exact projected structure is natural.
+At this stage the structural ambiguity of the projected EYMH parent kernel is closed numerically. The bridge checklist under \path{paper/eymh_parent_kernel_bridge_status_summary.csv} and \path{paper/eymh_parent_kernel_bridge_status_gates.csv} closes all current structural gates: the projected response action is exactly a ``logdet + Schur'' object, the same object equals an exact parent-kernel excess functional, the participation/tree split and the background-normalized parent block-determinant / Schur factorization both close to machine precision, the mixed block is uniquely selected as the geometric mean inside the minimal symmetric-excess family, and the excess-coordinate / Box--Cox / normal-coordinate audits uniquely return the identity/background anchors together with the zero-second-jet linear excess variables. What remains is therefore not another family search, but a theorem-level parent-action explanation of why this exact projected structure is natural.
 
-The remaining derivation task can be organized into three lemmas. \textbf{Lemma 1 (projected Hessian reduction)} should show that, after expanding the EYMH parent action to quadratic order around the localized background and projecting to the two dominant low-mode directions, the fluctuation operator reduces to a positive $2\times2$ kernel
+To keep the notation tight, we reserve \(K_{\rm part}\) and \(G_{\rm Schur}\) for the canonical undeformed split blocks already identified in the earlier exact audits, \(G_\beta\) for the one-parameter deformed normalized tree/background block of the parent-block determinant family, and \(K_{11}\), \(K_{22}\), and \(\widehat G_{\rm Schur}\) for the entries and Schur complement of the generic projected parent kernel. At the canonical point these objects coincide through
+\[
+K_{11}=K_{\rm part}=e^{S_{\rm part}},
+\qquad
+K_{22}=K_{\rm bg}G_{\rm Schur}=K_{\rm bg}e^{S_{\rm schur}},
+\qquad
+\widehat G_{\rm Schur}=G_{\rm Schur}.
+\]
+
+\noindent\textbf{Lemma 1 (Projected \(2\times2\) Hessian reduction).}
+Let \(\Psi_0\) be a localized stationary background of the projected EYMH parent action, and let \(\mathcal H_{\rm EYMH}\) denote its quadratic fluctuation Hessian. After restriction to the two dominant low-mode directions \(u_{\rm part}\) and \(u_{\rm tree}\), and after Gram normalization of that projected subspace, the quadratic fluctuation form can be written as
 \[
 \delta^2 S_{\rm EYMH}\big|_{\rm proj}
 =
+\frac12
 \begin{pmatrix}
 a_{\rm part} & a_{\rm tree}
 \end{pmatrix}
@@ -1136,135 +1153,119 @@ a_{\rm part} \\
 a_{\rm tree}
 \end{pmatrix},
 \]
-whose diagonal entries are precisely the participation block $K_{11}=e^{S_{\rm part}}$ and the shell-background-normalized tree block $K_{22}=K_{\rm bg}e^{S_{\rm schur}}$, and whose response weight is the inverse square root of the normalized determinant / Schur factorization,
+with positive background-normalized kernel
+\[
+\mathcal K_{\rm parent}
+=
+\begin{pmatrix}
+K_{11} & K_{12}\\
+K_{12} & K_{22}
+\end{pmatrix},
+\qquad
+K_{\rm bg}=1+\mathrm{gap}_{\rm cv},
+\]
+and with response weight
 \[
 A_{\rm resp}\propto
 \left(\frac{\det\mathcal K_{\rm parent}}{K_{\rm bg}}\right)^{-1/2}
 =
-\left(K_{11}\widehat G_{\rm Schur}\right)^{-1/2}.
+\left(K_{11}\widehat G_{\rm Schur}\right)^{-1/2},
+\qquad
+\widehat G_{\rm Schur}
+=
+\frac{K_{22}-K_{12}^2/K_{11}}{K_{\rm bg}}.
 \]
-This is the main remaining parent-action bridge: it upgrades the exact audit identities above into a direct projected-Hessian statement.
-
-A first derivation-level realization of this lemma can already be stated without reopening any nearby-family ambiguity. Writing the collective EYMH fields schematically as $\Psi=\Psi_0+\delta\Psi$ around the localized background $\Psi_0$, the parent action admits the standard quadratic expansion
+\emph{Proof sketch.}
+Writing the collective fields as \(\Psi=\Psi_0+\delta\Psi\), the parent action expands as
 \[
 S[\Psi_0+\delta\Psi]
 =
 S[\Psi_0]
 +\delta S[\Psi_0;\delta\Psi]
 +\frac12\langle \delta\Psi,\mathcal H_{\rm EYMH}\delta\Psi\rangle
-+\mathcal O(\delta\Psi^3),
++\mathcal O(\delta\Psi^3).
 \]
-where $\mathcal H_{\rm EYMH}$ is the fluctuation Hessian. On the projected background, the linear term vanishes, so the normalization problem is carried entirely by the quadratic form. If we now restrict to the two dominant low-mode directions isolated by the existing audit chain,
+Stationarity of the localized background removes the linear term. Restricting to
 \[
-\delta\Psi
-=
-a_{\rm part}\,u_{\rm part}
-+
-a_{\rm tree}\,u_{\rm tree},
+\delta\Psi=a_{\rm part}u_{\rm part}+a_{\rm tree}u_{\rm tree}
 \]
-then the projected Hessian entries
+defines projected Hessian entries
 \[
 H_{ij}=\langle u_i,\mathcal H_{\rm EYMH}u_j\rangle,
 \qquad
 i,j\in\{{\rm part},{\rm tree}\},
 \]
-define a positive $2\times2$ kernel after Gram normalization of the projected basis. In this language the diagonal blocks are read directly as the participation and shell-background-normalized tree sectors already isolated numerically,
+and therefore a positive \(2\times2\) projected kernel. At the canonical point the diagonal entries reproduce the split blocks already fixed by the exact audits,
 \[
-K_{11}=e^{S_{\rm part}},
+K_{11}=K_{\rm part}=e^{S_{\rm part}},
 \qquad
-K_{22}=K_{\rm bg}e^{S_{\rm schur}},
-\qquad
-K_{\rm bg}=1+\mathrm{gap}_{\rm cv},
+\frac{K_{22}}{K_{\rm bg}}=G_{\rm Schur}=e^{S_{\rm schur}}.
 \]
-so the projected parent block is no longer an abstract witness but the normalized quadratic fluctuation form of the parent action on the two-mode subspace.
-
-The corresponding response weight is then the Gaussian fluctuation determinant of this projected block. After dividing out the shell-background reference factor one obtains
-\[
-A_{\rm resp}
-\propto
-\left(\frac{\det\mathcal K_{\rm parent}}{K_{\rm bg}}\right)^{-1/2},
-\]
-and the Schur identity immediately gives
+The Gaussian fluctuation integral of this block is proportional to \((\det \mathcal K_{\rm parent})^{-1/2}\), and after dividing out the shell-background reference block one obtains the normalized response factor above. The Schur identity
 \[
 \frac{\det\mathcal K_{\rm parent}}{K_{\rm bg}}
 =
-K_{11}\,
-\frac{K_{22}-K_{12}^2/K_{11}}{K_{\rm bg}}
+K_{11}\frac{K_{22}-K_{12}^2/K_{11}}{K_{\rm bg}}
 =
-K_{11}\widehat G_{\rm Schur}.
+K_{11}\widehat G_{\rm Schur}
 \]
-Hence the projected response action is forced into the same normalized block-determinant / Schur-complement form already observed in the exact audits,
+then yields
 \[
-S_{\rm parent}
-=
-\log K_{11}+\log\widehat G_{\rm Schur}.
+S_{\rm parent}=\log K_{11}+\log\widehat G_{\rm Schur}.
 \]
-This Gaussian determinant reading is exactly what the strongest parent-kernel audits already close numerically. The direct `logdet + Schur' witness reconstructs both the response weight and the parented prefactor to machine precision on the full D21$\times$E21 fix grid, with $\max|\Delta A_{\rm resp}^{\rm logdet}|=2.22\times10^{-16}$ and $\max|\Delta\Pi_{\rm parent}^{\rm logdet}|=9.71\times10^{-17}$. The background-normalized parent block-determinant / Schur audit then closes the same projected action factorization with $\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}$, $\max|\Delta(\det/K_{\rm bg})|=1.33\times10^{-15}$, $\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}$, and $\mathrm{corr}(J_{\rm direct},J_{\rm blockdet})=1.0$. Finally, the exact parent-kernel excess functional reproduces the direct mismatch functional itself, with $\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}$, $\max|A_{\rm direct}-A_{\rm parent}|=3.33\times10^{-16}$, and the same canonical minimizer $(\alpha,\beta,\lambda)=(1,1,0)$. In other words, once the localized EYMH fluctuation operator is projected to the two dominant modes and normalized by the shell-background block, its Gaussian determinant is not merely compatible with the observed response weight; it is numerically identical to the canonical block-determinant / Schur response already isolated by the exact audits. The remaining work in Lemma~1 is therefore not to discover a new kernel family, but to make this projected-Hessian reduction explicit enough that the exact `logdet + Schur' closure can be read directly as a parent-action Gaussian fluctuation theorem.
+\emph{Audit closure.}
+This reading is exactly what the strongest parent-kernel audits already close numerically: the `logdet + Schur' witness reconstructs the response weight and parented prefactor to machine precision, with \(\max|\Delta A_{\rm resp}^{\rm logdet}|=2.22\times10^{-16}\) and \(\max|\Delta\Pi_{\rm parent}^{\rm logdet}|=9.71\times10^{-17}\); the background-normalized parent block-determinant / Schur audit gives \(\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}\), \(\max|\Delta(\det/K_{\rm bg})|=1.33\times10^{-15}\), and \(\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}\); and the exact parent-kernel excess functional reproduces the direct mismatch functional with \(\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}\). Thus the remaining work in Lemma~1 is not to search for a new kernel family, but to make the projected-Hessian reduction explicit enough that the exact closure can be read as a parent-action Gaussian fluctuation theorem.
 
-\textbf{Lemma 2 (geometric-mean mixed entry)} should then explain why the mixed block is forced to be
-\[
-C_{\rm parent}=\sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})}.
-\]
-The relevant input is already on record: the geometric-mean family is uniquely exact, the first ratio warp is rejected, symmetry/normalization coordinates fix $(m,s,a)=(0,1,0)$, and the first local generator-curvature terms are rejected at $(q_{ss},q_{dd},q_{sd})=(0,0,0)$. The proof target is therefore not another scan result, but a compact naturality statement: once positivity, vanishing at the identity/background fixed points, symmetry between the two excess sectors, and local affine multiplicative behavior are imposed, the geometric mean is the unique surviving mixed bilinear.
-
-A first derivation-level reading of this lemma can already be made explicit. After Lemma~1, the mixed entry is not an arbitrary off-diagonal witness; it is the only remaining freedom in a positive background-normalized $2\times2$ parent kernel whose diagonal blocks are already fixed to the participation and tree/background excess sectors
+\noindent\textbf{Lemma 2 (Geometric-mean mixed entry).}
+With the diagonal sectors fixed as in Lemma~1, define the anchored excess variables
 \[
 E_{\rm part}=K_{11}-1,
 \qquad
 E_{\rm tree}=K_{22}-K_{\rm bg}.
 \]
-At the parent-action level, the mixed block must therefore satisfy four minimal requirements: it must vanish at either fixed point, remain positive on the accepted projected domain, treat the two excess sectors symmetrically after the shell-background normalization has been extracted, and reduce locally to an affine multiplicative generator in the excess variables themselves. The smallest class compatible with these requirements is exactly the symmetric-excess family
-\[
-C_{\rm gen}=\kappa\,E_{\rm part}^uE_{\rm tree}^v,
-\]
-and the exact audit under \path{paper/hll_uv_*parent_mix_geomean*_D21E21_fix.*} closes uniquely at
-\[
-(u,v,\kappa)=\left(\tfrac12,\tfrac12,1\right),
-\]
-with machine-precision determinant, Schur, weight, and normalized cross-ratio residuals. In other words, once the projected kernel is required to couple the two diagonal sectors only through their anchored excess magnitudes, the geometric mean is already the unique exact symmetric bilinear.
-
-The nearby deformations then show why this uniqueness is structural rather than accidental. A ratio-dependent warp
-\[
-C_{\rm warp}
-=
-\kappa\,C_{\rm parent}\exp\!\left[\delta L+\nu L^2\right],
-\qquad
-L=\frac12\log(E_{\rm part}/E_{\rm tree}),
-\]
-is uniquely rejected at the unwarped point $(\kappa,\delta,\nu)=(1,0,0)$; symmetry/normalization coordinates force $(m,s,a)=(0,1,0)$; and the first local generator-curvature corrections are rejected at $(q_{ss},q_{dd},q_{sd})=(0,0,0)$. Numerically, the first nontrivial runner-ups already open visible residuals at each stage: the geomean runner-up gives $\max|\Delta(\det/K_{\rm bg})|=1.32\times10^{-3}$ and $\max|\Delta A|=2.18\times10^{-4}$, the first ratio warp gives $\max|\Delta(\det/K_{\rm bg})|=7.18\times10^{-4}$ and $\max|\Delta \xi|=6.08\times10^{-3}$, the first symmetry/normalization deformation gives $\max|\Delta(\det/K_{\rm bg})|=6.61\times10^{-4}$ and $\max|\Delta A|=1.09\times10^{-4}$, and the first local generator-curvature deformation gives $\max|\Delta(\det/K_{\rm bg})|=2.76\times10^{-4}$ and $\max|\Delta \xi|=2.23\times10^{-3}$. The derivation-level conclusion is therefore the same one selected numerically: after the diagonal blocks and fixed-point anchors are fixed, the parent action leaves only one locally affine, symmetry-respecting, anchor-vanishing mixed bilinear, namely
+Among positive mixed couplings that vanish at either fixed point, remain symmetric after shell-background normalization, and are locally affine in the logarithms of the excess variables, the projected parent block uniquely selects
 \[
 C_{\rm parent}=\sqrt{E_{\rm part}E_{\rm tree}}
 =
 \sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})}.
 \]
+\emph{Proof sketch.}
+Once the diagonal blocks are fixed, the mixed entry is the only remaining structural freedom. The smallest multiplicative excess family compatible with the anchor and positivity constraints is
+\[
+C_{\rm gen}=\kappa\,E_{\rm part}^uE_{\rm tree}^v.
+\]
+The exact audit under \path{paper/hll_uv_*parent_mix_geomean*_D21E21_fix.*} closes uniquely at
+\[
+(u,v,\kappa)=\left(\tfrac12,\tfrac12,1\right),
+\]
+which is precisely the geometric mean. In particular, the exact closure forces the symmetry condition \(u=v\) rather than assuming it a priori. The nearby deformations then establish structural uniqueness rather than accidental fit quality: the first ratio-warped extension is rejected at \((\kappa,\delta,\nu)=(1,0,0)\), the symmetry/normalization coordinates close only at \((m,s,a)=(0,1,0)\), and the first local generator-curvature corrections are rejected at \((q_{ss},q_{dd},q_{sd})=(0,0,0)\). In this sense the geometric mean is not being chosen from a large unrelated family; it is the unique surviving positive homogeneous mixed coupling after the diagonal sectors, anchors, and local multiplicative structure are fixed.
+\emph{Audit closure.}
+The first nontrivial runner-ups already open visible residuals at every stage: the geomean runner-up gives \(\max|\Delta(\det/K_{\rm bg})|=1.32\times10^{-3}\) and \(\max|\Delta A|=2.18\times10^{-4}\); the first ratio warp gives \(\max|\Delta(\det/K_{\rm bg})|=7.18\times10^{-4}\) and \(\max|\Delta \xi|=6.08\times10^{-3}\); the first symmetry/normalization deformation gives \(\max|\Delta(\det/K_{\rm bg})|=6.61\times10^{-4}\) and \(\max|\Delta A|=1.09\times10^{-4}\); and the first local generator-curvature deformation gives \(\max|\Delta(\det/K_{\rm bg})|=2.76\times10^{-4}\) and \(\max|\Delta \xi|=2.23\times10^{-3}\). So after the diagonal blocks and fixed-point anchors are fixed, the parent action leaves only one symmetry-respecting, anchor-vanishing mixed coupling: the geometric mean.
 
-\textbf{Lemma 3 (linear excess variables as normal coordinates)} should finally explain why the natural local coordinates of the projected parent block are the anchored linear excess variables
+\noindent\textbf{Lemma 3 (Linear excess variables as normal coordinates).}
+Near the fixed point
+\[
+(K_{11},K_{22})=(1,K_{\rm bg}),
+\]
+the natural local coordinates of the projected parent block are exactly
 \[
 E_{\rm part}=K_{11}-1,
 \qquad
 E_{\rm tree}=K_{22}-K_{\rm bg},
 \]
-rather than any nearby warped coordinates. Here the excess-coordinate, fixed-point Box--Cox, and normal-coordinate audits already provide the exact selection statement: the identity participation block and shell/background tree block are the unique fixed points, the unique tangent-normalized coordinate choice is the linear additive excess family, and the first nonlinear jets are rejected at zero second jet. The parent-action derivation still needed is therefore a short normal-coordinate argument showing that the localized projected EYMH kernel naturally organizes around these fixed points in zero-second-jet tangent-normalized coordinates.
-
-A first derivation-level reading of this final lemma is also already available. Once Lemmas~1 and~2 are fixed, the projected parent block is naturally organized around the two reference points
-\[
-K_{11}=1,
-\qquad
-K_{22}=K_{\rm bg},
-\]
-so any admissible local coordinate system must preserve these fixed points and keep the same unit tangent normalization there. The minimal anchor family
+in the sense that they are simultaneously the unique anchor-preserving coordinates, the unique unit-tangent-normalized coordinates, and the unique zero-second-jet coordinates compatible with exact determinant / Schur / weight closure.
+\emph{Proof sketch.}
+The anchor family
 \[
 E_{\rm part}^{(r)}=K_{11}-r_{\rm part},
 \qquad
 E_{\rm tree}^{(r)}=K_{22}-r_{\rm tree}K_{\rm bg}
 \]
-already closes uniquely at $(r_{\rm part},r_{\rm tree})=(1,1)$, with exact determinant, Schur, weight, and cross-ratio closure together with zero anchor leakage. More importantly, the first nontrivial runner-up keeps the same strict anchor leakage yet immediately opens visible onset distortions, with participation/tree onset residuals $4.53\times10^{-2}$ and $9.78\times10^{-2}$. Thus the anchor choice is not merely conventional: the projected parent action is genuinely centered on the identity participation block and the shell/background tree block themselves.
-
-Among coordinate families that preserve those fixed points and keep the same unit tangent normalization, the Box--Cox audit then shows that the unique exact point is the linear additive excess choice
+already closes uniquely at \((r_{\rm part},r_{\rm tree})=(1,1)\), so the projected parent block is genuinely centered on the identity participation block and the shell/background tree block themselves. Among coordinate families that preserve those fixed points and keep the same unit tangent normalization, the fixed-point Box--Cox audit then closes uniquely at
 \[
 (p_{\rm part},p_{\rm tree})=(1,1),
 \]
-while the first nearby tangent-normalized runner-up already opens visible distortions, with onset residuals $2.02\times10^{-3}$ and $8.23\times10^{-3}$ together with $\max|\Delta(\det/K_{\rm bg})|=8.25\times10^{-4}$ and $\max|\Delta \xi|=7.85\times10^{-3}$. The normal-coordinate audit sharpens the same statement into positive local-coordinate language: the first nonlinear jet family
+which is precisely the linear additive excess choice. Finally, the nonlinear-jet family
 \[
 E_{\rm part}^{(\zeta_p)}=E_{\rm part}+\zeta_p E_{\rm part}^2,
 \qquad
@@ -1274,16 +1275,12 @@ closes uniquely at
 \[
 (\zeta_p,\zeta_t)=(0,0),
 \]
-and the first nontrivial runner-up already opens onset residuals $2.10\times10^{-3}$ and $9.63\times10^{-3}$ with \(\max|\Delta(\det/K_{\rm bg})|=9.90\times10^{-4}\) and \(\max|\Delta \xi|=9.47\times10^{-3}\). The derivation-level conclusion is therefore the same one selected numerically: once the projected parent block is anchored at the identity/background fixed points and normalized to unit tangent there, its natural local coordinates are exactly the zero-second-jet linear excess variables
-\[
-E_{\rm part}=K_{11}-1,
-\qquad
-E_{\rm tree}=K_{22}-K_{\rm bg},
-\]
-rather than any nearby warped coordinates.
-At the level of the present bridge, the exact closures in \path{paper/hll_uv_*excess_coordinate*_D21E21_fix.*}, \path{paper/hll_uv_*fixedpoint_boxcox*_D21E21_fix.*}, and \path{paper/hll_uv_*normal_coordinate*_D21E21_fix.*} therefore play the role of a normal-form theorem: moving the anchor, changing the unit tangent normalization, or turning on a nonzero second jet each immediately opens visible determinant, Schur, weight, and onset residuals.
+so the same coordinates are also zero-second-jet normal coordinates. The three exact closures therefore read together as a normal-form statement: moving the anchor, changing the unit tangent normalization, or turning on a nonzero second jet each destroys exact determinant / Schur / weight closure.
+\emph{Audit closure.}
+The first nontrivial runner-up in the anchor audit already opens onset residuals \(4.53\times10^{-2}\) and \(9.78\times10^{-2}\) together with \(\max|\Delta(\det/K_{\rm bg})|=1.08\times10^{-3}\) and \(\max|\Delta \xi|=1.61\times10^{-2}\). The first tangent-normalized Box--Cox runner-up opens onset residuals \(2.02\times10^{-3}\) and \(8.23\times10^{-3}\) with \(\max|\Delta(\det/K_{\rm bg})|=8.25\times10^{-4}\) and \(\max|\Delta \xi|=7.85\times10^{-3}\). The first nonlinear-jet runner-up opens onset residuals \(2.10\times10^{-3}\) and \(9.63\times10^{-3}\) with \(\max|\Delta(\det/K_{\rm bg})|=9.90\times10^{-4}\) and \(\max|\Delta \xi|=9.47\times10^{-3}\). Hence the natural local variables are exactly the zero-second-jet linear excess coordinates.
 
-Once these three lemmas are written, the present audit chain upgrades to a compact corollary: the localized low-mode EYMH fluctuation operator projects to a background-normalized $2\times2$ parent kernel whose diagonal blocks are the participation and shell-background tree/background sectors, whose mixed entry is the geometric mean of their linear excess coordinates, and whose response weight is the inverse square root of the associated normalized determinant / Schur factorization. This is the remaining conceptual bridge from exact audit closure to a direct parent-action statement.
+\noindent\textbf{Corollary (Projected EYMH parent kernel).}
+Under Lemmas~1--3, the localized low-mode EYMH fluctuation operator projects to a background-normalized \(2\times2\) parent kernel whose diagonal blocks are the participation and shell-background tree/background sectors, whose mixed entry is the geometric mean of their linear excess coordinates, and whose response weight is the inverse square root of the associated normalized determinant / Schur factorization. This is the remaining conceptual bridge from exact audit closure to a direct parent-action statement.
 \begin{equation}
 \left(D_0,\eta_0\right)_{\chi^2\text{-best}}
 \equiv

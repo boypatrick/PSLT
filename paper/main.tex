@@ -1296,17 +1296,25 @@ E_{\rm tree}=K_{22}-K_{\rm bg},
 \]
 in the sense that they are simultaneously the unique anchor-preserving coordinates, the unique unit-tangent-normalized coordinates, and the unique zero-second-jet coordinates compatible with exact determinant / Schur / weight closure.
 \emph{Proof sketch.}
-The anchor family
+Let \(E=(E_{\rm part},E_{\rm tree})\) and let \(\widetilde E=\Phi(E)\) be any local reparameterization of the projected parent block near the fixed point \(E=0\). In this language a normal-form coordinate system is characterized by
+\[
+\Phi(0)=0,
+\qquad
+D\Phi(0)=I,
+\qquad
+D^2\Phi(0)=0,
+\]
+namely exact anchoring at the fixed point, unit tangent normalization there, and vanishing quadratic jet. The three exact coordinate audits test these three conditions in sequence. The anchor family
 \[
 E_{\rm part}^{(r)}=K_{11}-r_{\rm part},
 \qquad
 E_{\rm tree}^{(r)}=K_{22}-r_{\rm tree}K_{\rm bg}
 \]
-already closes uniquely at \((r_{\rm part},r_{\rm tree})=(1,1)\), so the projected parent block is genuinely centered on the identity participation block and the shell/background tree block themselves. Among coordinate families that preserve those fixed points and keep the same unit tangent normalization, the fixed-point Box--Cox audit then closes uniquely at
+already closes uniquely at \((r_{\rm part},r_{\rm tree})=(1,1)\), so \(\Phi(0)=0\) is forced at the identity participation block and the shell/background tree block. Among coordinate families that preserve those fixed points, the fixed-point Box--Cox audit then closes uniquely at
 \[
 (p_{\rm part},p_{\rm tree})=(1,1),
 \]
-which is precisely the linear additive excess choice. Finally, the nonlinear-jet family
+which is precisely the linear additive excess choice and therefore fixes \(D\Phi(0)=I\). Finally, the nonlinear-jet family
 \[
 E_{\rm part}^{(\zeta_p)}=E_{\rm part}+\zeta_p E_{\rm part}^2,
 \qquad
@@ -1316,9 +1324,9 @@ closes uniquely at
 \[
 (\zeta_p,\zeta_t)=(0,0),
 \]
-so the same coordinates are also zero-second-jet normal coordinates. The three exact closures therefore read together as a normal-form statement: moving the anchor, changing the unit tangent normalization, or turning on a nonzero second jet each destroys exact determinant / Schur / weight closure. Lemma~3 is thus the coordinate counterpart of Lemmas~1 and 2: once the block structure and mixed entry are fixed, the local variables are fixed as well.
+so the same coordinates are also zero-second-jet normal coordinates, i.e.\ \(D^2\Phi(0)=0\). The three exact closures therefore read together as a local normal-form statement: moving the anchor, changing the unit tangent normalization, or turning on a nonzero second jet each destroys exact determinant / Schur / weight closure. Equivalently, within the audited coordinate families, the identity map in the excess variables is the unique local chart that agrees with the projected parent block to quadratic order. Lemma~3 is thus the coordinate counterpart of Lemmas~1 and 2: once the block structure and mixed entry are fixed, the local variables are fixed as well.
 \emph{Audit closure.}
-The first nontrivial runner-up in the anchor audit already opens onset residuals \(4.53\times10^{-2}\) and \(9.78\times10^{-2}\) together with \(\max|\Delta(\det/K_{\rm bg})|=1.08\times10^{-3}\) and \(\max|\Delta \xi|=1.61\times10^{-2}\). The first tangent-normalized Box--Cox runner-up opens onset residuals \(2.02\times10^{-3}\) and \(8.23\times10^{-3}\) with \(\max|\Delta(\det/K_{\rm bg})|=8.25\times10^{-4}\) and \(\max|\Delta \xi|=7.85\times10^{-3}\). The first nonlinear-jet runner-up opens onset residuals \(2.10\times10^{-3}\) and \(9.63\times10^{-3}\) with \(\max|\Delta(\det/K_{\rm bg})|=9.90\times10^{-4}\) and \(\max|\Delta \xi|=9.47\times10^{-3}\). Hence the natural local variables are exactly the zero-second-jet linear excess coordinates.
+The first nontrivial deviation from each of \(\Phi(0)=0\), \(D\Phi(0)=I\), and \(D^2\Phi(0)=0\) already opens visible residuals. In the anchor audit the first runner-up produces onset residuals \(4.53\times10^{-2}\) and \(9.78\times10^{-2}\) together with \(\max|\Delta(\det/K_{\rm bg})|=1.08\times10^{-3}\) and \(\max|\Delta \xi|=1.61\times10^{-2}\). The first tangent-normalized Box--Cox runner-up produces onset residuals \(2.02\times10^{-3}\) and \(8.23\times10^{-3}\) with \(\max|\Delta(\det/K_{\rm bg})|=8.25\times10^{-4}\) and \(\max|\Delta \xi|=7.85\times10^{-3}\). The first nonlinear-jet runner-up produces onset residuals \(2.10\times10^{-3}\) and \(9.63\times10^{-3}\) with \(\max|\Delta(\det/K_{\rm bg})|=9.90\times10^{-4}\) and \(\max|\Delta \xi|=9.47\times10^{-3}\). Hence the natural local variables are exactly the zero-second-jet linear excess coordinates.
 
 \noindent\textbf{Corollary (Projected EYMH parent kernel).}
 Combining Lemmas~1--3, the localized low-mode EYMH fluctuation operator projects to a background-normalized \(2\times2\) parent kernel whose diagonal blocks are the participation and shell-background tree/background sectors, whose mixed entry is the geometric mean of their linear excess coordinates, and whose response weight is the inverse square root of the associated normalized determinant / Schur factorization. This corollary is the precise parent-action statement that remains after the exact audit closures.

@@ -1,0 +1,162 @@
+{
+  "summary": {
+    "decision": "STRUCTURAL_BRIDGE_CLOSED_DERIVATION_LEMMA_PENDING",
+    "go_flag": 1,
+    "n_gates": 10,
+    "n_passed": 10,
+    "n_failed": 0,
+    "max_structural_residual": 7.771561172376096e-16,
+    "min_selection_gap": 1.5003288724437651e-07,
+    "open_derivation_gaps": 3,
+    "next_lemma": "Derive the projected 2x2 kernel from the EYMH fluctuation Hessian",
+    "next_lemma_gap_id": "derive_projected_hessian"
+  },
+  "gates": [
+    {
+      "gate": "Exact parent-kernel excess functional",
+      "passed": 1,
+      "max_residual": 1.3010426069826053e-18,
+      "residual_threshold": 1e-12,
+      "selection_gap": 1.5003288724438247e-07,
+      "selection_gap_threshold": 1e-07,
+      "corr_value": NaN,
+      "corr_threshold": "",
+      "note": "The mismatch functional is reproduced exactly by the projected parent-kernel excess objective.",
+      "source_csv": "paper/hll_uv_action_loop_eymh_parent_kernel_statement_summary_D21E21_fix.csv"
+    },
+    {
+      "gate": "Participation/tree block split",
+      "passed": 1,
+      "max_residual": 7.771561172376096e-16,
+      "residual_threshold": 1e-12,
+      "selection_gap": NaN,
+      "selection_gap_threshold": NaN,
+      "corr_value": 1.0,
+      "corr_threshold": 0.999999999999,
+      "note": "The response action closes as an exact split between participation and shell-background/tree sectors.",
+      "source_csv": "paper/hll_uv_action_loop_eymh_block_split_audit_summary_D21E21_fix.csv"
+    },
+    {
+      "gate": "Background-normalized parent block determinant",
+      "passed": 1,
+      "max_residual": 5.551115123125783e-16,
+      "residual_threshold": 1e-12,
+      "selection_gap": 1.5003288724437651e-07,
+      "selection_gap_threshold": 1e-07,
+      "corr_value": NaN,
+      "corr_threshold": "",
+      "note": "The response action equals a block-determinant / Schur-complement factorization to machine precision.",
+      "source_csv": "paper/hll_uv_action_loop_eymh_parent_blockdet_audit_summary_D21E21_fix.csv"
+    },
+    {
+      "gate": "Geometric-mean mixed block",
+      "passed": 1,
+      "max_residual": 4.440892098500626e-16,
+      "residual_threshold": 1e-12,
+      "selection_gap": 0.001315712442470307,
+      "selection_gap_threshold": 1e-07,
+      "corr_value": NaN,
+      "corr_threshold": "",
+      "note": "The symmetric excess family uniquely selects the geometric-mean mixed entry.",
+      "source_csv": "paper/hll_uv_action_loop_eymh_parent_mix_geomean_audit_summary_D21E21_fix.csv"
+    },
+    {
+      "gate": "Reject ratio-warp extension",
+      "passed": 1,
+      "max_residual": 0.0,
+      "residual_threshold": 1e-12,
+      "selection_gap": 0.000717730490718882,
+      "selection_gap_threshold": 1e-07,
+      "corr_value": NaN,
+      "corr_threshold": "",
+      "note": "The first ratio-warped deformation of the mixed block is rejected.",
+      "source_csv": "paper/hll_uv_action_loop_eymh_parent_ratio_warp_audit_summary_D21E21_fix.csv"
+    },
+    {
+      "gate": "Symmetry/normalization coordinates fixed",
+      "passed": 1,
+      "max_residual": 4.440892098500626e-16,
+      "residual_threshold": 1e-12,
+      "selection_gap": 0.0006609429764630192,
+      "selection_gap_threshold": 1e-07,
+      "corr_value": NaN,
+      "corr_threshold": "",
+      "note": "The canonical point enforces zero normalization shift, unit symmetric degree, and zero tilt.",
+      "source_csv": "paper/hll_uv_action_loop_eymh_parent_symnorm_audit_summary_D21E21_fix.csv"
+    },
+    {
+      "gate": "Local generator-affinity closed",
+      "passed": 1,
+      "max_residual": 4.440892098500626e-16,
+      "residual_threshold": 1e-12,
+      "selection_gap": 0.00027577096730446726,
+      "selection_gap_threshold": 1e-07,
+      "corr_value": NaN,
+      "corr_threshold": "",
+      "note": "First local log-curvature corrections are rejected; the surviving class is locally affine.",
+      "source_csv": "paper/hll_uv_action_loop_eymh_parent_generator_affinity_audit_summary_D21E21_fix.csv"
+    },
+    {
+      "gate": "Reference offsets fixed at identity/background",
+      "passed": 1,
+      "max_residual": 0.0,
+      "residual_threshold": 1e-12,
+      "selection_gap": 0.045273863863531494,
+      "selection_gap_threshold": 0.001,
+      "corr_value": NaN,
+      "corr_threshold": "",
+      "note": "The excess variables are anchored exactly on the identity participation block and shell-background tree block.",
+      "source_csv": "paper/hll_uv_action_loop_eymh_excess_coordinate_audit_summary_D21E21_fix.csv"
+    },
+    {
+      "gate": "Linear excess variables selected",
+      "passed": 1,
+      "max_residual": 4.440892098500626e-16,
+      "residual_threshold": 1e-12,
+      "selection_gap": 0.0020213272973224478,
+      "selection_gap_threshold": 0.001,
+      "corr_value": NaN,
+      "corr_threshold": "",
+      "note": "Even within tangent-normalized Box-Cox warps, the linear additive excess coordinates remain uniquely exact.",
+      "source_csv": "paper/hll_uv_action_loop_eymh_fixedpoint_boxcox_audit_summary_D21E21_fix.csv"
+    },
+    {
+      "gate": "Zero-second-jet normal coordinates",
+      "passed": 1,
+      "max_residual": 0.0,
+      "residual_threshold": 1e-12,
+      "selection_gap": 0.0020994781304852217,
+      "selection_gap_threshold": 0.001,
+      "corr_value": NaN,
+      "corr_threshold": "",
+      "note": "The normal-coordinate audit selects zero second jet, i.e. the linear excess variables themselves.",
+      "source_csv": "paper/hll_uv_action_loop_eymh_normal_coordinate_audit_summary_D21E21_fix.csv"
+    }
+  ],
+  "derivation_gaps": [
+    {
+      "gap_id": "derive_projected_hessian",
+      "status": "OPEN",
+      "priority": 1,
+      "label": "Derive the projected 2x2 kernel from the EYMH fluctuation Hessian",
+      "why_open": "The audits show the projected log-det / Schur form is exact and uniquely selected, but they still start from exported witnesses rather than a parent-action-side Hessian reduction.",
+      "target_statement": "Show that the low-mode projected fluctuation operator of the parent EYMH action reduces to the observed participation block, shell-background/tree block, and background-normalized Schur response."
+    },
+    {
+      "gap_id": "derive_geomean_mixed_entry",
+      "status": "OPEN",
+      "priority": 2,
+      "label": "Explain the geometric-mean mixed block from symmetry/minimality",
+      "why_open": "The geometric-mean mixed entry is uniquely selected by the minimal symmetric-excess and ratio-warp rejection audits, but it is not yet derived as the unavoidable mixed bilinear of the parent action.",
+      "target_statement": "Derive why the mixed block must scale as sqrt((K11-1)(K22-Kbg)) once the parent block is projected and normalized."
+    },
+    {
+      "gap_id": "derive_linear_excess_coordinates",
+      "status": "OPEN",
+      "priority": 3,
+      "label": "Derive linear excess variables as natural fixed-point normal coordinates",
+      "why_open": "The excess-coordinate, Box-Cox, and normal-coordinate audits uniquely select the identity/background anchors and zero-second-jet coordinates, but this remains an exact selection statement rather than a parent-action derivation.",
+      "target_statement": "Show that the parent action naturally organizes the projected kernel around identity/background fixed points in zero-second-jet tangent-normalized linear excess coordinates."
+    }
+  ]
+}

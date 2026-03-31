@@ -1,0 +1,18 @@
+{
+  "script": "code/assess_eymh_parent_kernel_bridge_status.py",
+  "structural_eps": 1e-12,
+  "selection_gap_min": 1e-07,
+  "onset_gap_min": 0.001,
+  "audits": [
+    "hll_uv_action_loop_eymh_parent_kernel_statement_summary_D21E21_fix.csv",
+    "hll_uv_action_loop_eymh_block_split_audit_summary_D21E21_fix.csv",
+    "hll_uv_action_loop_eymh_parent_blockdet_audit_summary_D21E21_fix.csv",
+    "hll_uv_action_loop_eymh_parent_mix_geomean_audit_summary_D21E21_fix.csv",
+    "hll_uv_action_loop_eymh_parent_ratio_warp_audit_summary_D21E21_fix.csv",
+    "hll_uv_action_loop_eymh_parent_symnorm_audit_summary_D21E21_fix.csv",
+    "hll_uv_action_loop_eymh_parent_generator_affinity_audit_summary_D21E21_fix.csv",
+    "hll_uv_action_loop_eymh_excess_coordinate_audit_summary_D21E21_fix.csv",
+    "hll_uv_action_loop_eymh_fixedpoint_boxcox_audit_summary_D21E21_fix.csv",
+    "hll_uv_action_loop_eymh_normal_coordinate_audit_summary_D21E21_fix.csv"
+  ]
+}

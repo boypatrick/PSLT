@@ -1,0 +1,2 @@
+decision,go_flag,n_gates,n_passed,n_failed,max_structural_residual,min_selection_gap,open_derivation_gaps,next_lemma,next_lemma_gap_id
+STRUCTURAL_BRIDGE_CLOSED_DERIVATION_LEMMA_PENDING,1,10,10,0,7.771561172376096e-16,1.5003288724437651e-07,3,Derive the projected 2x2 kernel from the EYMH fluctuation Hessian,derive_projected_hessian

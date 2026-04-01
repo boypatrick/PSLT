@@ -1,0 +1,10 @@
+{
+  "input_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_map_uv_action_loop_eymh_parented_D41E21_targetdense.csv",
+  "best_etree_model": "piecewise",
+  "best_xi_reconstruction": "piecewise",
+  "piecewise_split_D": 14.4,
+  "global_twofreq_gain_over_smooth": 0.07371989226767832,
+  "piecewise_gain_over_smooth": 0.09766258953156415,
+  "xi_piecewise_gain_over_smooth": 0.006636527316008605,
+  "xi_twofreq_gain_over_smooth": 0.005169368317831353
+}

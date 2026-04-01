@@ -1,0 +1,9 @@
+{
+  "high_functionalization": "0.857050 * action_abs_offdiag / diag",
+  "high_split_D": 16.8,
+  "low_cut_D": 9.6,
+  "low_functionalization": "0.231819 * hk_abs_offdiag / diag",
+  "note": "Low-D and high-D regime visualization built from current best regime-specific curvature witnesses.",
+  "parented_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_map_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "tag": "D21E21_fix"
+}

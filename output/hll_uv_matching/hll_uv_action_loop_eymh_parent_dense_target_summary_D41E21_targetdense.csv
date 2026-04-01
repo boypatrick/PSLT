@@ -1,0 +1,2 @@
+n_points,n_D,n_eta,D_min,D_max,eta_min,eta_max,xi_target_max,quartic_target_max,selected_eta_slices
+861,41,21,4.0,20.0,0.2,4.0,0.14847929277041305,0.0020320795294173064,"0.20, 1.15, 2.10, 3.05, 4.00"

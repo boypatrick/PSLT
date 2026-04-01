@@ -1,0 +1,30 @@
+{
+  "families": {
+    "best_blend_curv_action": [
+      "hk_curv_screen_over_diag",
+      "action_abs_over_diag"
+    ],
+    "runnerup_blend_abs_action": [
+      "hk_abs_over_diag",
+      "action_abs_over_diag"
+    ]
+  },
+  "note": "Piecewise D-split audit for shortlisted EYMH curvature blends.",
+  "parented_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_map_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "tag": "D21E21_fix",
+  "thresholds": [
+    7.2,
+    8.0,
+    8.8,
+    9.6,
+    10.4,
+    11.2,
+    12.0,
+    12.8,
+    13.6,
+    14.4,
+    15.2,
+    16.0,
+    16.8
+  ]
+}

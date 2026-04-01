@@ -1,0 +1,25 @@
+{
+  "blend_families": {
+    "best_blend_curv_action": [
+      "hk_curv_screen_over_diag",
+      "action_abs_over_diag"
+    ],
+    "runnerup_blend_abs_action": [
+      "hk_abs_over_diag",
+      "action_abs_over_diag"
+    ]
+  },
+  "holdout_splits": [
+    "D_low",
+    "D_high",
+    "D_even_index",
+    "D_odd_index",
+    "eta_low",
+    "eta_high",
+    "eta_even_index",
+    "eta_odd_index"
+  ],
+  "note": "Within-map blocked holdout audit because only one canonical EYMH parented map is currently available.",
+  "parented_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_map_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "tag": "D21E21_fix"
+}

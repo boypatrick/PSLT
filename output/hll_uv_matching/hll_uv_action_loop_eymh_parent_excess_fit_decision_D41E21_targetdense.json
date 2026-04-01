@@ -1,0 +1,11 @@
+{
+  "input_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_map_uv_action_loop_eymh_parented_D41E21_targetdense.csv",
+  "interpretation": "Test whether E_part needs oscillation and whether E_tree carries the oscillation/cutoff structure.",
+  "best_xi_reconstruction": "other",
+  "part_osc_gain_over_smooth": 0.0012390762511829967,
+  "tree_osc_gain_over_smooth": -0.024748088995927925,
+  "xi_gain_tree_osc_over_all_smooth": -0.013677289647822026,
+  "tree_osc_gain_over_smooth_support_only": -0.028699175890602058,
+  "xi_gain_tree_osc_over_all_smooth_support_only": -0.014206927828843563,
+  "tree_osc_refit_gain_over_smooth_refit_support_only": -0.03327672124446257
+}

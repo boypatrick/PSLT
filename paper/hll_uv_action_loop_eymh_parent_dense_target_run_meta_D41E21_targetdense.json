@@ -1,0 +1,16 @@
+{
+  "note": "Dense-D EYMH parented target visualization for xi_target and quartic target.",
+  "parented_map": "/Users/boypatrick/codex/PSLT_quantam/output/hll_uv_matching/hll_uv_to_eft_map_uv_action_loop_eymh_parented_D41E21_targetdense.csv",
+  "regime_marks": [
+    9.6,
+    16.8
+  ],
+  "selected_eta_slices": [
+    0.2,
+    1.15,
+    2.1,
+    3.0500000000000003,
+    4.0
+  ],
+  "tag": "D41E21_targetdense"
+}

@@ -1,0 +1,4 @@
+regime,D_condition,functionalization,corr_xi,corr_quartic,p95_abs_xi_resid,p95_abs_quartic_resid
+low,D <= 9.6,xi_low = 0.231819 * hk_abs_offdiag / diag,0.9728735769994129,0.13334919212345756,0.024870093581884536,0.0006019353552105698
+high,D > 16.8,xi_high = 0.857050 * action_abs_offdiag / diag,0.9966956785844774,0.9871312292033873,0.013502482653574163,0.00033731667991547163
+transition,9.6 < D <= 16.8,No stable single-regime witness yet,,,,

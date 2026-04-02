@@ -1,0 +1,56 @@
+{
+  "focus_D": [
+    4.0,
+    4.8,
+    6.4,
+    7.2,
+    8.0
+  ],
+  "width_fix": {
+    "width_power_base": 0.8,
+    "width_power_log_ratio_coeff": 0.15,
+    "width_power_min": 0.6,
+    "width_power_max": 0.85,
+    "width_power_trigger_lo": 2.5,
+    "width_power_trigger_hi": 5.0,
+    "width_power_turnoff_lo": 10.0,
+    "width_power_turnoff_hi": 20.0,
+    "width_power_tail_logratio_lo": 1.5,
+    "width_power_tail_logratio_hi": 2.5,
+    "width_power_tail_reboost_max": 0.15
+  },
+  "metric_windows": [
+    [
+      0.58,
+      0.62
+    ],
+    [
+      0.6,
+      0.64
+    ],
+    [
+      0.62,
+      0.66
+    ],
+    [
+      0.64,
+      0.68
+    ],
+    [
+      0.66,
+      0.7
+    ],
+    [
+      0.68,
+      0.72
+    ]
+  ],
+  "beta_values": [
+    0.02,
+    0.04,
+    0.06,
+    0.08,
+    0.1,
+    0.12
+  ]
+}

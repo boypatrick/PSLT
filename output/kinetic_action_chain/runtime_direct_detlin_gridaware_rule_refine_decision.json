@@ -1,0 +1,6 @@
+{
+  "best_zero_mismatch_candidate": "v3_case_specific",
+  "best_zero_mismatch_worst_case_p95": 5.390051749025451,
+  "best_zero_mismatch_complexity": 6,
+  "best_d60_d64_candidate": "v3_case_specific"
+}

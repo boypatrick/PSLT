@@ -1,0 +1,61 @@
+candidate,label,complexity,case,case_label,target_D,acceptance_mismatch,p95_abs_delta_mu_mumu,max_abs_delta_mu_mumu
+v3_case_specific,v3 case-specific,6,D21E21_holdout,D21 x E21 holdout,4.0,0.0,1.31625515880312,1.3414196903804836
+v3_case_specific,v3 case-specific,6,D21E21_holdout,D21 x E21 holdout,4.8,0.0,1.7221990709067132,1.7278372466307577
+v3_case_specific,v3 case-specific,6,D21E21_holdout,D21 x E21 holdout,6.4,0.0,0.584503983963188,0.5847296668955835
+v3_case_specific,v3 case-specific,6,D21E21_holdout,D21 x E21 holdout,7.2,0.0,0.0013228962170495073,0.0013240551344191331
+v3_case_specific,v3 case-specific,6,D21E21_holdout,D21 x E21 holdout,8.0,0.0,0.020225035942566194,0.02022508487722874
+v3_case_specific,v3 case-specific,6,D60E21_release,D60 x E21 release,4.0,0.0,0.07080901190221578,0.07523344917187558
+v3_case_specific,v3 case-specific,6,D60E21_release,D60 x E21 release,4.8,0.0,2.8939043041095758,2.907318402349574
+v3_case_specific,v3 case-specific,6,D60E21_release,D60 x E21 release,6.4,0.0,5.390764571662515,5.390934293700056
+v3_case_specific,v3 case-specific,6,D60E21_release,D60 x E21 release,7.2,0.0,0.28706979832161394,0.28707081192518746
+v3_case_specific,v3 case-specific,6,D60E21_release,D60 x E21 release,8.0,0.0,0.23056999754572605,0.23057001943564126
+shared_geom_casebeta,shared geom + case beta,4,D21E21_holdout,D21 x E21 holdout,4.0,0.0,1.3213070820932087,1.346537023436949
+shared_geom_casebeta,shared geom + case beta,4,D21E21_holdout,D21 x E21 holdout,4.8,0.0,1.7526148728577393,1.758283666120315
+shared_geom_casebeta,shared geom + case beta,4,D21E21_holdout,D21 x E21 holdout,6.4,0.0,3.2177563528535984,3.217976228968041
+shared_geom_casebeta,shared geom + case beta,4,D21E21_holdout,D21 x E21 holdout,7.2,0.0,0.02100443251833406,0.021005575100377705
+shared_geom_casebeta,shared geom + case beta,4,D21E21_holdout,D21 x E21 holdout,8.0,0.0,0.01857948139680854,0.018579529957207352
+shared_geom_casebeta,shared geom + case beta,4,D60E21_release,D60 x E21 release,4.0,0.0,0.07047018557763951,0.07490364953546469
+shared_geom_casebeta,shared geom + case beta,4,D60E21_release,D60 x E21 release,4.8,0.0,2.915336631847806,2.928747333169186
+shared_geom_casebeta,shared geom + case beta,4,D60E21_release,D60 x E21 release,6.4,0.0,6.25419381848765,6.254366856865651
+shared_geom_casebeta,shared geom + case beta,4,D60E21_release,D60 x E21 release,7.2,0.0,0.30958736507732265,0.30958838867166216
+shared_geom_casebeta,shared geom + case beta,4,D60E21_release,D60 x E21 release,8.0,0.0,0.23762040438968723,0.2376204265805386
+shared_center_casebeta,shared center + case beta/width,5,D21E21_holdout,D21 x E21 holdout,4.0,0.0,1.3261678125137326,1.351466226682767
+shared_center_casebeta,shared center + case beta/width,5,D21E21_holdout,D21 x E21 holdout,4.8,0.0,1.7740438480848457,1.779735606890803
+shared_center_casebeta,shared center + case beta/width,5,D21E21_holdout,D21 x E21 holdout,6.4,0.0,2.769751429012672,2.769972392508187
+shared_center_casebeta,shared center + case beta/width,5,D21E21_holdout,D21 x E21 holdout,7.2,0.0,0.02640607193442035,0.026407208990529174
+shared_center_casebeta,shared center + case beta/width,5,D21E21_holdout,D21 x E21 holdout,8.0,0.0,0.019622759109403365,0.019622807571117562
+shared_center_casebeta,shared center + case beta/width,5,D60E21_release,D60 x E21 release,4.0,0.0,0.06826243652117592,0.07273558594784935
+shared_center_casebeta,shared center + case beta/width,5,D60E21_release,D60 x E21 release,4.8,0.0,2.9231700217992937,2.9365756145065554
+shared_center_casebeta,shared center + case beta/width,5,D60E21_release,D60 x E21 release,6.4,0.0,5.916310822676152,5.916482487934651
+shared_center_casebeta,shared center + case beta/width,5,D60E21_release,D60 x E21 release,7.2,0.0,0.3138631979686419,0.31386422164672556
+shared_center_casebeta,shared center + case beta/width,5,D60E21_release,D60 x E21 release,8.0,0.0,0.2407235454437182,0.2407235676709445
+shared_width_casebeta,shared width + case beta/center,5,D21E21_holdout,D21 x E21 holdout,4.0,0.0,1.3221487619922812,1.3474011399942603
+shared_width_casebeta,shared width + case beta/center,5,D21E21_holdout,D21 x E21 holdout,4.8,0.0,1.7413760148152804,1.747036408110839
+shared_width_casebeta,shared width + case beta/center,5,D21E21_holdout,D21 x E21 holdout,6.4,0.0,0.8801072779526535,0.8803323391128473
+shared_width_casebeta,shared width + case beta/center,5,D21E21_holdout,D21 x E21 holdout,7.2,0.0,0.008575179945404798,0.008576340761482282
+shared_width_casebeta,shared width + case beta/center,5,D21E21_holdout,D21 x E21 holdout,8.0,0.0,0.023785353521846186,0.02378540256349293
+shared_width_casebeta,shared width + case beta/center,5,D60E21_release,D60 x E21 release,4.0,0.0,0.07047764375849752,0.07490781630627774
+shared_width_casebeta,shared width + case beta/center,5,D60E21_release,D60 x E21 release,4.8,0.0,2.8935637104325735,2.9069772358021595
+shared_width_casebeta,shared width + case beta/center,5,D60E21_release,D60 x E21 release,6.4,0.0,5.641426828780162,5.641597634406914
+shared_width_casebeta,shared width + case beta/center,5,D60E21_release,D60 x E21 release,7.2,0.0,0.2860749327334111,0.28607594560463756
+shared_width_casebeta,shared width + case beta/center,5,D60E21_release,D60 x E21 release,8.0,0.0,0.23054076283213387,0.23054078470533534
+d60_beta024,v3 + D60 beta 0.24,6,D21E21_holdout,D21 x E21 holdout,4.0,0.0,1.31625515880312,1.3414196903804836
+d60_beta024,v3 + D60 beta 0.24,6,D21E21_holdout,D21 x E21 holdout,4.8,0.0,1.7221990709067132,1.7278372466307577
+d60_beta024,v3 + D60 beta 0.24,6,D21E21_holdout,D21 x E21 holdout,6.4,0.0,0.584503983963188,0.5847296668955835
+d60_beta024,v3 + D60 beta 0.24,6,D21E21_holdout,D21 x E21 holdout,7.2,0.0,0.0013228962170495073,0.0013240551344191331
+d60_beta024,v3 + D60 beta 0.24,6,D21E21_holdout,D21 x E21 holdout,8.0,0.0,0.020225035942566194,0.02022508487722874
+d60_beta024,v3 + D60 beta 0.24,6,D60E21_release,D60 x E21 release,4.0,0.0,0.07236736359077023,0.076765099822665
+d60_beta024,v3 + D60 beta 0.24,6,D60E21_release,D60 x E21 release,4.8,0.0,2.8973802153036505,2.910796767025362
+d60_beta024,v3 + D60 beta 0.24,6,D60E21_release,D60 x E21 release,6.4,0.0,5.40259223353101,5.402761962601623
+d60_beta024,v3 + D60 beta 0.24,6,D60E21_release,D60 x E21 release,7.2,0.0,0.29378243995164155,0.2937834579311751
+d60_beta024,v3 + D60 beta 0.24,6,D60E21_release,D60 x E21 release,8.0,0.0,0.23131431287671766,0.23131433487260677
+d60_beta023,v3 + D60 beta 0.23,6,D21E21_holdout,D21 x E21 holdout,4.0,0.0,1.31625515880312,1.3414196903804836
+d60_beta023,v3 + D60 beta 0.23,6,D21E21_holdout,D21 x E21 holdout,4.8,0.0,1.7221990709067132,1.7278372466307577
+d60_beta023,v3 + D60 beta 0.23,6,D21E21_holdout,D21 x E21 holdout,6.4,0.0,0.584503983963188,0.5847296668955835
+d60_beta023,v3 + D60 beta 0.23,6,D21E21_holdout,D21 x E21 holdout,7.2,0.0,0.0013228962170495073,0.0013240551344191331
+d60_beta023,v3 + D60 beta 0.23,6,D21E21_holdout,D21 x E21 holdout,8.0,0.0,0.020225035942566194,0.02022508487722874
+d60_beta023,v3 + D60 beta 0.23,6,D60E21_release,D60 x E21 release,4.0,0.0,0.0726412272023349,0.07703497034480389
+d60_beta023,v3 + D60 beta 0.23,6,D60E21_release,D60 x E21 release,4.8,0.0,2.9028186175544555,2.9162349762887345
+d60_beta023,v3 + D60 beta 0.23,6,D60E21_release,D60 x E21 release,6.4,0.0,5.409763333743278,5.409933037143638
+d60_beta023,v3 + D60 beta 0.23,6,D60E21_release,D60 x E21 release,7.2,0.0,0.30018395536177245,0.3001849764965425
+d60_beta023,v3 + D60 beta 0.23,6,D60E21_release,D60 x E21 release,8.0,0.0,0.23301151200288217,0.2330115340878547

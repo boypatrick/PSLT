@@ -1,0 +1,7 @@
+candidate,label,complexity,acceptance_mismatch_D21E21_holdout,acceptance_mismatch_D60E21_release,p95_abs_delta_mu_mumu_D21E21_holdout,p95_abs_delta_mu_mumu_D60E21_release,all_cases_zero_mismatch,worst_case_p95_abs_delta_mu_mumu
+v3_case_specific,v3 case-specific,6,0.0,0.0,1.6985945559423512,5.390051749025451,True,5.390051749025451
+d60_beta024,v3 + D60 beta 0.24,6,0.0,0.0,1.6985945559423512,5.4018793813632,True,5.4018793813632
+d60_beta023,v3 + D60 beta 0.23,6,0.0,0.0,1.6985945559423512,5.409050589396308,True,5.409050589396308
+shared_width_casebeta,shared width + case beta/center,5,0.0,0.0,1.7176783134070839,5.640709455057885,True,5.640709455057885
+shared_center_casebeta,shared center + case beta/width,5,0.0,0.0,2.7688233645023077,5.91558983851255,True,5.91558983851255
+shared_geom_casebeta,shared geom + case beta,4,0.0,0.0,3.216832855361267,6.253467067223902,True,6.253467067223902

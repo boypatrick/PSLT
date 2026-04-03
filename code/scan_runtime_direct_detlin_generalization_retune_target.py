@@ -24,6 +24,7 @@ import os
 
 RETUNE_TARGET = float(os.environ.get("RETUNE_TARGET", "4.8"))
 BASE_D48_BETA = float(os.environ.get("BASE_D48_BETA", "0.75"))
+BASE_D40_BETA = float(os.environ.get("BASE_D40_BETA", "1.309"))
 RAW_CASE_FILTER = os.environ.get("CASE_FILTER", "").strip()
 RAW_OUT_TAG = os.environ.get("OUT_TAG", "").strip()
 RAW_ETA_VALUES = os.environ.get("ETA_VALUES", "").strip()
@@ -50,7 +51,7 @@ WIDTH_FIX = {
 }
 
 WIDTH_BANDS = [
-    {"beta": 1.309, "center": 4.0, "half_width": 0.40},
+    {"beta": BASE_D40_BETA, "center": 4.0, "half_width": 0.40},
     {"beta": BASE_D48_BETA, "center": 4.8, "half_width": 0.40},
     {"beta": 0.35, "center": 7.2, "half_width": 0.40},
     {"beta": 1.20, "center": 8.0, "half_width": 0.40},

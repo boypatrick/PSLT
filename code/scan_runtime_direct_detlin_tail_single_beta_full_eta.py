@@ -26,12 +26,9 @@ PAPERDIR = ROOT / "paper"
 MAPDIR = ROOT / "output" / "hll_signal_strength"
 
 FULL_MAP = MAPDIR / "hll_signal_strength_map_chain_mode_full_direct_D21E41.csv"
-OUT_SUMMARY = OUTDIR / "runtime_direct_detlin_combined_focus_compare_summary.csv"
-OUT_DETAIL = OUTDIR / "runtime_direct_detlin_combined_focus_compare_detail.csv"
-OUT_PNG = OUTDIR / "runtime_direct_detlin_combined_focus_compare.png"
-OUT_META = OUTDIR / "runtime_direct_detlin_combined_focus_compare_run_meta.json"
+OUT_PREFIX = "runtime_direct_detlin_tail_single_beta_full_eta"
 
-FOCUS_D = [4.0, 4.8, 6.4, 7.2, 8.0]
+FOCUS_D = float(os.environ.get("TAIL_D", "7.2"))
 REF_D = float(PAPER_BASELINE["ref_D"])
 REF_ETA = float(PAPER_BASELINE["ref_eta"])
 T_COH = float(PAPER_BASELINE["t_coh"])
@@ -50,24 +47,11 @@ WIDTH_FIX = {
     "width_power_tail_reboost_max": 0.15,
 }
 GNORM_BANDPASS = {"beta": 0.25, "center": 0.06, "half_width": 0.04}
-D4P8_WIDTH = {
-    "beta": float(os.environ.get("D4P8_BETA", "0.40")),
-    "center": 4.8,
-    "half_width": 0.40,
-}
-D4P0_WIDTH = {
-    "beta": float(os.environ.get("D4P0_BETA", "1.30")),
-    "center": 4.0,
-    "half_width": 0.40,
-}
-D7P2_WIDTH = {
-    "beta": float(os.environ.get("D7P2_BETA", "0.00")),
-    "center": 7.2,
-    "half_width": 0.40,
-}
-D8P0_WIDTH = {
-    "beta": float(os.environ.get("D8P0_BETA", "0.00")),
-    "center": 8.0,
+D4P8_WIDTH = {"beta": 0.75, "center": 4.8, "half_width": 0.40}
+D4P0_WIDTH = {"beta": 1.30, "center": 4.0, "half_width": 0.40}
+TAIL_WIDTH = {
+    "beta": float(os.environ.get("TAIL_BETA", "0.20")),
+    "center": FOCUS_D,
     "half_width": 0.40,
 }
 
@@ -131,141 +115,146 @@ def _patch_gnorm_bandpass(kin) -> None:
     kin._runtime_direct_gnorm_blend_weight = types.MethodType(patched, kin)
 
 
-def _patch_width_bands(kin, *, include_d4p0: bool, include_tails: bool) -> None:
+def _patch_width_bands(kin, *, include_tail: bool) -> None:
     original = kin._blend_observable_width_ratio
 
     def patched(self, width_ratio: float, D: float, eta: float) -> float:
         base = float(original(width_ratio=width_ratio, D=D, eta=eta))
         floor = float(self.params.b_overlap_floor)
         positive_log_width = float(max(np.log(max(base, floor)), 0.0))
+        exponent = np.log(max(base, floor))
 
+        act40 = float(max(0.0, 1.0 - abs(float(D) - float(D4P0_WIDTH["center"])) / float(D4P0_WIDTH["half_width"])))
+        exponent += float(D4P0_WIDTH["beta"]) * act40 * positive_log_width
         act48 = float(max(0.0, 1.0 - abs(float(D) - float(D4P8_WIDTH["center"])) / float(D4P8_WIDTH["half_width"])))
-        exponent = np.log(max(base, floor)) + float(D4P8_WIDTH["beta"]) * act48 * positive_log_width
-        if include_d4p0:
-            act40 = float(max(0.0, 1.0 - abs(float(D) - float(D4P0_WIDTH["center"])) / float(D4P0_WIDTH["half_width"])))
-            exponent += float(D4P0_WIDTH["beta"]) * act40 * positive_log_width
-        if include_tails:
-            act72 = float(max(0.0, 1.0 - abs(float(D) - float(D7P2_WIDTH["center"])) / float(D7P2_WIDTH["half_width"])))
-            act80 = float(max(0.0, 1.0 - abs(float(D) - float(D8P0_WIDTH["center"])) / float(D8P0_WIDTH["half_width"])))
-            exponent += float(D7P2_WIDTH["beta"]) * act72 * positive_log_width
-            exponent += float(D8P0_WIDTH["beta"]) * act80 * positive_log_width
+        exponent += float(D4P8_WIDTH["beta"]) * act48 * positive_log_width
+
+        if include_tail:
+            act_tail = float(max(0.0, 1.0 - abs(float(D) - float(TAIL_WIDTH["center"])) / float(TAIL_WIDTH["half_width"])))
+            exponent += float(TAIL_WIDTH["beta"]) * act_tail * positive_log_width
         return float(np.exp(exponent))
 
     kin._blend_observable_width_ratio = types.MethodType(patched, kin)
 
 
-def _evaluate(label: str, *, include_d4p0: bool, include_tails: bool, full_map, eta_grid, mu_obs: float, sigma_obs: float) -> pd.DataFrame:
+def _evaluate(label: str, *, include_tail: bool, full_map, eta_grid, mu_obs: float, sigma_obs: float) -> pd.DataFrame:
     kin = _build_kinetics()
     _set_width_fix(kin)
     _patch_gnorm_bandpass(kin)
-    _patch_width_bands(kin, include_d4p0=include_d4p0, include_tails=include_tails)
+    _patch_width_bands(kin, include_tail=include_tail)
 
     rows = []
-    for D in FOCUS_D:
-        for eta in eta_grid:
-            ref = full_map[(float(D), float(eta))]
-            mu = float(
-                kin.hll_mu_pred(
-                    2,
-                    D=float(D),
-                    eta=float(eta),
-                    t_coh=T_COH,
-                    ref_D=REF_D,
-                    ref_eta=REF_ETA,
-                    observable_mode="eft_wilson_uv_rge",
-                    N_max=kin.params.hll_observable_nmax,
-                )
+    for eta in eta_grid:
+        ref = full_map[(FOCUS_D, float(eta))]
+        mu = float(
+            kin.hll_mu_pred(
+                2,
+                D=FOCUS_D,
+                eta=float(eta),
+                t_coh=T_COH,
+                ref_D=REF_D,
+                ref_eta=REF_ETA,
+                observable_mode="eft_wilson_uv_rge",
+                N_max=kin.params.hll_observable_nmax,
             )
-            chi2 = float(((mu - mu_obs) / sigma_obs) ** 2)
-            rows.append(
-                {
-                    "label": label,
-                    "D": float(D),
-                    "eta": float(eta),
-                    "mu_candidate": float(mu),
-                    "mu_full": float(ref["mu_mumu"]),
-                    "chi2_candidate": float(chi2),
-                    "chi2_full": float(ref["chi2_mumu"]),
-                    "abs_delta_mu_mumu": float(abs(mu - ref["mu_mumu"])),
-                    "acceptance_mismatch": float((ref["chi2_mumu"] <= 4.0) != (chi2 <= 4.0)),
-                }
-            )
+        )
+        chi2 = float(((mu - mu_obs) / sigma_obs) ** 2)
+        rows.append(
+            {
+                "label": label,
+                "eta": float(eta),
+                "mu_candidate": float(mu),
+                "mu_full": float(ref["mu_mumu"]),
+                "chi2_candidate": float(chi2),
+                "chi2_full": float(ref["chi2_mumu"]),
+                "abs_delta_mu_mumu": float(abs(mu - ref["mu_mumu"])),
+                "acceptance_mismatch": float((ref["chi2_mumu"] <= 4.0) != (chi2 <= 4.0)),
+            }
+        )
     return pd.DataFrame(rows)
 
 
 def main() -> None:
     OUTDIR.mkdir(parents=True, exist_ok=True)
     PAPERDIR.mkdir(parents=True, exist_ok=True)
+    dtag = str(FOCUS_D).replace(".", "p")
+    btag = str(TAIL_WIDTH["beta"]).replace(".", "p")
+    out_summary = OUTDIR / f"{OUT_PREFIX}_D{dtag}_summary_beta{btag}.csv"
+    out_detail = OUTDIR / f"{OUT_PREFIX}_D{dtag}_detail_beta{btag}.csv"
+    out_png = OUTDIR / f"{OUT_PREFIX}_D{dtag}_beta{btag}.png"
+    out_meta = OUTDIR / f"{OUT_PREFIX}_D{dtag}_run_meta_beta{btag}.json"
+
     full_map = _load_map(FULL_MAP)
     eta_grid = sorted({float(key[1]) for key in full_map})
     obs = load_observations()["mumu"]
     mu_obs = float(obs.mu_obs)
     sigma_obs = max(float(obs.sigma_obs), 1e-12)
 
-    base_df = _evaluate("baseline_d4p8_d6p4", include_d4p0=False, include_tails=False, full_map=full_map, eta_grid=eta_grid, mu_obs=mu_obs, sigma_obs=sigma_obs)
-    cand_df = _evaluate("candidate_d4p0_d4p8_d6p4_d7p2_d8p0", include_d4p0=True, include_tails=True, full_map=full_map, eta_grid=eta_grid, mu_obs=mu_obs, sigma_obs=sigma_obs)
+    base_df = _evaluate("baseline_local_closures", include_tail=False, full_map=full_map, eta_grid=eta_grid, mu_obs=mu_obs, sigma_obs=sigma_obs)
+    cand_df = _evaluate(f"candidate_tail_beta{btag}", include_tail=True, full_map=full_map, eta_grid=eta_grid, mu_obs=mu_obs, sigma_obs=sigma_obs)
     detail_df = pd.concat([base_df, cand_df], ignore_index=True)
 
-    rows = []
-    for D in FOCUS_D:
-        b = base_df[base_df["D"] == float(D)]
-        c = cand_df[cand_df["D"] == float(D)]
-        rows.append(
+    summary_df = pd.DataFrame(
+        [
             {
-                "D": float(D),
-                "baseline_p95_abs_delta_mu_mumu": float(np.percentile(b["abs_delta_mu_mumu"], 95.0)),
-                "baseline_max_abs_delta_mu_mumu": float(b["abs_delta_mu_mumu"].max()),
-                "baseline_acceptance_mismatch": float(b["acceptance_mismatch"].mean()),
-                "candidate_p95_abs_delta_mu_mumu": float(np.percentile(c["abs_delta_mu_mumu"], 95.0)),
-                "candidate_max_abs_delta_mu_mumu": float(c["abs_delta_mu_mumu"].max()),
-                "candidate_acceptance_mismatch": float(c["acceptance_mismatch"].mean()),
-                "delta_p95_abs_delta_mu_mumu": float(np.percentile(c["abs_delta_mu_mumu"], 95.0) - np.percentile(b["abs_delta_mu_mumu"], 95.0)),
-                "delta_max_abs_delta_mu_mumu": float(c["abs_delta_mu_mumu"].max() - b["abs_delta_mu_mumu"].max()),
+                "focus_D": FOCUS_D,
+                "tail_beta": float(TAIL_WIDTH["beta"]),
+                "baseline_p95_abs_delta_mu_mumu": float(np.percentile(base_df["abs_delta_mu_mumu"], 95.0)),
+                "baseline_max_abs_delta_mu_mumu": float(base_df["abs_delta_mu_mumu"].max()),
+                "baseline_acceptance_mismatch": float(base_df["acceptance_mismatch"].mean()),
+                "candidate_p95_abs_delta_mu_mumu": float(np.percentile(cand_df["abs_delta_mu_mumu"], 95.0)),
+                "candidate_max_abs_delta_mu_mumu": float(cand_df["abs_delta_mu_mumu"].max()),
+                "candidate_acceptance_mismatch": float(cand_df["acceptance_mismatch"].mean()),
+                "candidate_mu_min": float(cand_df["mu_candidate"].min()),
+                "candidate_mu_max": float(cand_df["mu_candidate"].max()),
+                "candidate_chi2_min": float(cand_df["chi2_candidate"].min()),
+                "candidate_chi2_max": float(cand_df["chi2_candidate"].max()),
             }
-        )
-    summary_df = pd.DataFrame(rows)
+        ]
+    )
 
     fig, axes = plt.subplots(1, 2, figsize=(10.0, 4.0))
-    axes[0].plot(summary_df["D"], summary_df["baseline_p95_abs_delta_mu_mumu"], marker="o", linewidth=2.0, label="baseline_d4p8_d6p4")
-    axes[0].plot(summary_df["D"], summary_df["candidate_p95_abs_delta_mu_mumu"], marker="s", linewidth=2.0, label="candidate_d4p0_d4p8_d6p4")
-    axes[0].set_xlabel("D")
-    axes[0].set_ylabel("p95 |Δmu_mumu| across eta")
-    axes[0].set_title("strict all-direct combined exact compare")
+    axes[0].plot(base_df["eta"], base_df["mu_candidate"], marker="o", linewidth=1.8, label="baseline")
+    axes[0].plot(cand_df["eta"], cand_df["mu_candidate"], marker="s", linewidth=1.8, label="candidate")
+    axes[0].plot(base_df["eta"], base_df["mu_full"], linestyle="--", color="black", linewidth=1.2, label="full_direct")
+    axes[0].set_xlabel("eta")
+    axes[0].set_ylabel("mu_mumu")
+    axes[0].set_title(f"D={FOCUS_D:.1f} tail compare (beta={TAIL_WIDTH['beta']:.2f})")
     axes[0].grid(alpha=0.25)
     axes[0].legend(loc="upper right", fontsize=8)
 
-    axes[1].plot(summary_df["D"], summary_df["baseline_acceptance_mismatch"], marker="o", linewidth=2.0, label="baseline")
-    axes[1].plot(summary_df["D"], summary_df["candidate_acceptance_mismatch"], marker="s", linewidth=2.0, label="candidate")
-    axes[1].set_xlabel("D")
-    axes[1].set_ylabel("acceptance mismatch")
-    axes[1].set_title("Acceptance compare")
+    axes[1].plot(base_df["eta"], base_df["chi2_candidate"], marker="o", linewidth=1.8, label="baseline")
+    axes[1].plot(cand_df["eta"], cand_df["chi2_candidate"], marker="s", linewidth=1.8, label="candidate")
+    axes[1].plot(base_df["eta"], base_df["chi2_full"], linestyle="--", color="black", linewidth=1.2, label="full_direct")
+    axes[1].set_xlabel("eta")
+    axes[1].set_ylabel("chi2_mumu")
+    axes[1].set_title("Residual-side compare")
     axes[1].grid(alpha=0.25)
     axes[1].legend(loc="upper right", fontsize=8)
     fig.tight_layout()
-    fig.savefig(OUT_PNG, dpi=200)
+    fig.savefig(out_png, dpi=200)
     plt.close(fig)
 
-    summary_df.to_csv(OUT_SUMMARY, index=False)
-    detail_df.to_csv(OUT_DETAIL, index=False)
-    OUT_META.write_text(
+    summary_df.to_csv(out_summary, index=False)
+    detail_df.to_csv(out_detail, index=False)
+    out_meta.write_text(
         json.dumps(
             {
                 "focus_D": FOCUS_D,
                 "eta_grid": eta_grid,
                 "gnorm_bandpass": GNORM_BANDPASS,
-                "d4p8_width": D4P8_WIDTH,
                 "d4p0_width": D4P0_WIDTH,
-                "d7p2_width": D7P2_WIDTH,
-                "d8p0_width": D8P0_WIDTH,
+                "d4p8_width": D4P8_WIDTH,
+                "tail_width": TAIL_WIDTH,
                 "width_fix": WIDTH_FIX,
             },
             indent=2,
         )
     )
-    for path in [OUT_SUMMARY, OUT_DETAIL, OUT_PNG, OUT_META]:
+    for path in [out_summary, out_detail, out_png, out_meta]:
         (PAPERDIR / path.name).write_bytes(path.read_bytes())
 
-    print(f"[saved] {OUT_SUMMARY}")
+    print(f"[saved] {out_summary}")
     print(summary_df.to_dict(orient="records"))
 
 

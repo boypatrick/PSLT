@@ -64,6 +64,16 @@
     "center": 4.0,
     "half_width": 0.4
   },
+  "d7p2_width": {
+    "beta": 0.35,
+    "center": 7.2,
+    "half_width": 0.4
+  },
+  "d8p0_width": {
+    "beta": 1.2,
+    "center": 8.0,
+    "half_width": 0.4
+  },
   "width_fix": {
     "width_power_base": 0.8,
     "width_power_log_ratio_coeff": 0.15,

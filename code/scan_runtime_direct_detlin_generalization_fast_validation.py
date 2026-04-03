@@ -42,6 +42,18 @@ GNORM_BANDPASS = {
     'center': float(os.environ.get('STRICT_GNORM_CENTER', '0.06')),
     'half_width': float(os.environ.get('STRICT_GNORM_HALF_WIDTH', '0.04')),
 }
+CASE_GNORM_BANDPASS = {
+    'D21E21_holdout': {
+        'beta': float(os.environ.get('STRICT_GNORM_BETA_D21', str(GNORM_BANDPASS['beta']))),
+        'center': float(os.environ.get('STRICT_GNORM_CENTER_D21', str(GNORM_BANDPASS['center']))),
+        'half_width': float(os.environ.get('STRICT_GNORM_HALF_WIDTH_D21', str(GNORM_BANDPASS['half_width']))),
+    },
+    'D60E21_release': {
+        'beta': float(os.environ.get('STRICT_GNORM_BETA_D60', str(GNORM_BANDPASS['beta']))),
+        'center': float(os.environ.get('STRICT_GNORM_CENTER_D60', str(GNORM_BANDPASS['center']))),
+        'half_width': float(os.environ.get('STRICT_GNORM_HALF_WIDTH_D60', str(GNORM_BANDPASS['half_width']))),
+    },
+}
 WIDTH_BANDS = [
     {'beta': 1.309, 'center': 4.0, 'half_width': 0.40},
     {'beta': float(os.environ.get('STRICT_D48_BETA', '0.75')), 'center': 4.8, 'half_width': 0.40},
@@ -56,7 +68,7 @@ OUT_DETAIL = OUTDIR / f'runtime_direct_detlin_generalization_fast_detail{SUFFIX}
 OUT_DECISION = OUTDIR / f'runtime_direct_detlin_generalization_fast_decision{SUFFIX}.json'
 
 
-def build_kinetics(d_min: float, d_max: float, d_num: int):
+def build_kinetics(case: str, d_min: float, d_max: float, d_num: int):
     kin = make_baseline_kinetics(
         observable_mode='eft_wilson_uv_rge',
         chain_mode='cell_direct_runtime_release_tailm2gnorm',
@@ -73,9 +85,10 @@ def build_kinetics(d_min: float, d_max: float, d_num: int):
         setattr(p, f'hll_match_{k}', float(v))
     p.hll_uv_runtime_direct_m2_cross_blend = 0.75
 
-    beta = float(GNORM_BANDPASS['beta'])
-    center = float(GNORM_BANDPASS['center'])
-    half_width = float(GNORM_BANDPASS['half_width'])
+    gspec = dict(CASE_GNORM_BANDPASS.get(case, GNORM_BANDPASS))
+    beta = float(gspec['beta'])
+    center = float(gspec['center'])
+    half_width = float(gspec['half_width'])
     def patched_gnorm(self, hll_diag, direct_diag, direct_b123):
         floor = float(self.params.hll_uv_coupling_floor)
         h = np.maximum(np.asarray(hll_diag, dtype=float).reshape(3), floor)
@@ -116,7 +129,7 @@ def main() -> None:
         df['eta'] = df['eta'].astype(float)
         d_grid = sorted(df['D'].unique())
         slice_ds = sorted({float(d_grid[int(np.argmin(np.abs(np.asarray(d_grid) - t)))]) for t in TARGETS})
-        kin = build_kinetics(min(d_grid), max(d_grid), len(d_grid))
+        kin = build_kinetics(case, min(d_grid), max(d_grid), len(d_grid))
         for D in slice_ds:
             sub = df[np.isclose(df['D'], D)]
             for row in sub.itertuples(index=False):

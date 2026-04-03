@@ -1,0 +1,71 @@
+{
+  "current_reference": {
+    "g_beta": 0.243,
+    "g_center": 0.049,
+    "g_half_width": 0.023
+  },
+  "bounds": {
+    "g_beta": [
+      0.238,
+      0.248
+    ],
+    "g_center": [
+      0.046,
+      0.052
+    ],
+    "g_half_width": [
+      0.02,
+      0.028
+    ]
+  },
+  "n_samples": 16,
+  "best_observed": {
+    "sample_id": 16.0,
+    "g_beta": 0.24371892948821186,
+    "g_center": 0.049282424042001366,
+    "g_half_width": 0.0247454799041152,
+    "p95_abs_delta_mu_mumu": 5.220206949119586,
+    "max_abs_delta_mu_mumu": 5.220375998619822,
+    "mismatch": 0.0,
+    "score": 5.220206949119586
+  },
+  "top_effects": [
+    {
+      "term": "g_center2",
+      "coef": 10251.189268613763,
+      "abs_coef": 10251.189268613763
+    },
+    {
+      "term": "g_center:g_half_width",
+      "coef": 5004.849079083504,
+      "abs_coef": 5004.849079083504
+    },
+    {
+      "term": "g_half_width2",
+      "coef": 3194.8523218012892,
+      "abs_coef": 3194.8523218012892
+    },
+    {
+      "term": "g_center",
+      "coef": -1004.777895523506,
+      "abs_coef": 1004.777895523506
+    },
+    {
+      "term": "g_beta:g_center",
+      "coef": -460.4876286365061,
+      "abs_coef": 460.4876286365061
+    },
+    {
+      "term": "g_beta2",
+      "coef": 410.0064007117753,
+      "abs_coef": 410.0064007117753
+    }
+  ],
+  "predicted_next_best": {
+    "g_beta": 0.24460729336540357,
+    "g_center": 0.04887922611385474,
+    "g_half_width": 0.02349639209433233,
+    "pred_p95": 5.214044732085863
+  },
+  "recommendation": "validate_predicted_next_best_exactly_if_predicted_gain_exceeds_noise"
+}

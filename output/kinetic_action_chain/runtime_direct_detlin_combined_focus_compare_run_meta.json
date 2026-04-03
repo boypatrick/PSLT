@@ -55,7 +55,7 @@
     "half_width": 0.04
   },
   "d4p8_width": {
-    "beta": 0.4,
+    "beta": 0.75,
     "center": 4.8,
     "half_width": 0.4
   },

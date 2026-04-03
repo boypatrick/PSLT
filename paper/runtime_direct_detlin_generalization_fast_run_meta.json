@@ -1,0 +1,27 @@
+{
+  "summary_rows": [
+    {
+      "case": "D21E21_holdout",
+      "case_label": "D21 x E21 holdout",
+      "n_points": 105,
+      "acceptance_mismatch": 0.1238095238095238,
+      "p95_abs_delta_mu_mumu": 2.9184602000620843,
+      "max_abs_delta_mu_mumu": 2.919606006749362
+    },
+    {
+      "case": "D60E21_release",
+      "case_label": "D60 x E21 release",
+      "n_points": 105,
+      "acceptance_mismatch": 0.0095238095238095,
+      "p95_abs_delta_mu_mumu": 7.3561851960779,
+      "max_abs_delta_mu_mumu": 7.357102968681566
+    }
+  ],
+  "target_order": [
+    4.0,
+    4.8,
+    6.4,
+    7.2,
+    8.0
+  ]
+}

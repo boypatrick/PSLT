@@ -1,0 +1,64 @@
+{
+  "rows": [
+    {
+      "D": 4.0,
+      "mechanism": "local width gate",
+      "parameter": "beta=1.309",
+      "step_baseline_p95_abs_delta_mu_mumu": 106.57226942269449,
+      "step_candidate_p95_abs_delta_mu_mumu": 0.0642712874089486,
+      "step_baseline_acceptance_mismatch": 0.6097560975609756,
+      "step_candidate_acceptance_mismatch": 0.0,
+      "combined_p95_abs_delta_mu_mumu": 0.0642712874089486,
+      "combined_max_abs_delta_mu_mumu": 0.0688045636278487,
+      "combined_acceptance_mismatch": 0.0
+    },
+    {
+      "D": 4.8,
+      "mechanism": "local width gate",
+      "parameter": "beta=0.75",
+      "step_baseline_p95_abs_delta_mu_mumu": 93.35339736683233,
+      "step_candidate_p95_abs_delta_mu_mumu": 0.1151603111737351,
+      "step_baseline_acceptance_mismatch": 0.0,
+      "step_candidate_acceptance_mismatch": 0.0,
+      "combined_p95_abs_delta_mu_mumu": 0.1151603111737351,
+      "combined_max_abs_delta_mu_mumu": 0.1190882307926042,
+      "combined_acceptance_mismatch": 0.0
+    },
+    {
+      "D": 6.4,
+      "mechanism": "band-pass g_norm",
+      "parameter": "beta=0.25, center=0.06, hw=0.04",
+      "step_baseline_p95_abs_delta_mu_mumu": 5.795074563005095,
+      "step_candidate_p95_abs_delta_mu_mumu": 0.8396709108690743,
+      "step_baseline_acceptance_mismatch": 0.0,
+      "step_candidate_acceptance_mismatch": 0.0,
+      "combined_p95_abs_delta_mu_mumu": 0.8396709108690743,
+      "combined_max_abs_delta_mu_mumu": 0.839887784811225,
+      "combined_acceptance_mismatch": 0.0
+    },
+    {
+      "D": 7.2,
+      "mechanism": "tail width gate",
+      "parameter": "beta=0.35",
+      "step_baseline_p95_abs_delta_mu_mumu": 1.4086274638246463,
+      "step_candidate_p95_abs_delta_mu_mumu": 0.0677059109669899,
+      "step_baseline_acceptance_mismatch": 0.0,
+      "step_candidate_acceptance_mismatch": 0.0,
+      "combined_p95_abs_delta_mu_mumu": 0.0677059109669899,
+      "combined_max_abs_delta_mu_mumu": 0.0677070698802171,
+      "combined_acceptance_mismatch": 0.0
+    },
+    {
+      "D": 8.0,
+      "mechanism": "tail width gate",
+      "parameter": "beta=1.2",
+      "step_baseline_p95_abs_delta_mu_mumu": 1.729344945573399,
+      "step_candidate_p95_abs_delta_mu_mumu": 0.0417313780644388,
+      "step_baseline_acceptance_mismatch": 0.0,
+      "step_candidate_acceptance_mismatch": 0.0,
+      "combined_p95_abs_delta_mu_mumu": 0.0417313780644388,
+      "combined_max_abs_delta_mu_mumu": 0.0417314271190694,
+      "combined_acceptance_mismatch": 0.0
+    }
+  ]
+}

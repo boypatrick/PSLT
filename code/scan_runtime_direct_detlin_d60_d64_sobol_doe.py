@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -32,19 +33,36 @@ WIDTH_FIX = {
     'width_power_tail_reboost_max': 0.15,
 }
 
-D40_BETA = 1.304
-D48_BETA = 0.65
-D72_BETA = 0.35
-D80_BETA = 1.20
-D21_G = (0.30, 0.06, 0.04)
-CURRENT = (0.243, 0.049, 0.023)
+D40_BETA = float(os.environ.get("D40_BETA", "1.304"))
+D48_BETA = float(os.environ.get("D48_BETA", "0.65"))
+D72_BETA = float(os.environ.get("D72_BETA", "0.35"))
+D80_BETA = float(os.environ.get("D80_BETA", "1.20"))
+D21_G = (
+    float(os.environ.get("D21_G_BETA", "0.30")),
+    float(os.environ.get("D21_G_CENTER", "0.06")),
+    float(os.environ.get("D21_G_HALF_WIDTH", "0.04")),
+)
+CURRENT = (
+    float(os.environ.get("CURRENT_G_BETA", "0.243")),
+    float(os.environ.get("CURRENT_G_CENTER", "0.049")),
+    float(os.environ.get("CURRENT_G_HALF_WIDTH", "0.023")),
+)
 BOUNDS = {
-    'g_beta': (0.238, 0.248),
-    'g_center': (0.046, 0.052),
-    'g_half_width': (0.020, 0.028),
+    'g_beta': (
+        float(os.environ.get("G_BETA_MIN", "0.238")),
+        float(os.environ.get("G_BETA_MAX", "0.248")),
+    ),
+    'g_center': (
+        float(os.environ.get("G_CENTER_MIN", "0.046")),
+        float(os.environ.get("G_CENTER_MAX", "0.052")),
+    ),
+    'g_half_width': (
+        float(os.environ.get("G_WIDTH_MIN", "0.020")),
+        float(os.environ.get("G_WIDTH_MAX", "0.028")),
+    ),
 }
-N_SAMPLES = 16
-OUT_TAG = 'd60_d64_sobol_doe_v1'
+N_SAMPLES = int(os.environ.get("N_SAMPLES", "16"))
+OUT_TAG = os.environ.get("OUT_TAG", "d60_d64_sobol_doe_v1")
 OUT_SAMPLES = OUTDIR / f'runtime_direct_detlin_{OUT_TAG}_samples.csv'
 OUT_EFFECTS = OUTDIR / f'runtime_direct_detlin_{OUT_TAG}_effects.csv'
 OUT_DECISION = OUTDIR / f'runtime_direct_detlin_{OUT_TAG}_summary.json'
@@ -140,7 +158,10 @@ def main() -> None:
     _patch_width_bands(kin_base)
 
     sampler = qmc.Sobol(d=3, scramble=True, seed=64)
-    unit = sampler.random_base2(m=4)
+    m = int(np.log2(N_SAMPLES))
+    if 2 ** m != N_SAMPLES:
+        raise SystemExit("N_SAMPLES must be a power of two for Sobol random_base2")
+    unit = sampler.random_base2(m=m)
     lowers = np.array([BOUNDS['g_beta'][0], BOUNDS['g_center'][0], BOUNDS['g_half_width'][0]])
     uppers = np.array([BOUNDS['g_beta'][1], BOUNDS['g_center'][1], BOUNDS['g_half_width'][1]])
     pts = qmc.scale(unit, lowers, uppers)

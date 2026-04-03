@@ -1,0 +1,3 @@
+case,case_label,n_points,acceptance_mismatch,p95_abs_delta_mu_mumu,max_abs_delta_mu_mumu
+D21E21_holdout,D21 x E21 holdout,105,0.12380952380952381,3.8828872982729266,3.8840213738806213
+D60E21_release,D60 x E21 release,105,0.009523809523809525,6.452761114057526,6.45366531548764

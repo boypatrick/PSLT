@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 import types
 from pathlib import Path
 
@@ -36,17 +37,23 @@ WIDTH_FIX = {
     'width_power_tail_logratio_hi': 2.5,
     'width_power_tail_reboost_max': 0.15,
 }
-GNORM_BANDPASS = {'beta': 0.25, 'center': 0.06, 'half_width': 0.04}
+GNORM_BANDPASS = {
+    'beta': float(os.environ.get('STRICT_GNORM_BETA', '0.25')),
+    'center': float(os.environ.get('STRICT_GNORM_CENTER', '0.06')),
+    'half_width': float(os.environ.get('STRICT_GNORM_HALF_WIDTH', '0.04')),
+}
 WIDTH_BANDS = [
     {'beta': 1.309, 'center': 4.0, 'half_width': 0.40},
-    {'beta': 0.75, 'center': 4.8, 'half_width': 0.40},
+    {'beta': float(os.environ.get('STRICT_D48_BETA', '0.75')), 'center': 4.8, 'half_width': 0.40},
     {'beta': 0.35, 'center': 7.2, 'half_width': 0.40},
     {'beta': 1.20, 'center': 8.0, 'half_width': 0.40},
 ]
 
-OUT_SUMMARY = OUTDIR / 'runtime_direct_detlin_generalization_fast_summary.csv'
-OUT_DETAIL = OUTDIR / 'runtime_direct_detlin_generalization_fast_detail.csv'
-OUT_DECISION = OUTDIR / 'runtime_direct_detlin_generalization_fast_decision.json'
+TAG = os.environ.get('STRICT_GENERALIZATION_TAG', '').strip()
+SUFFIX = f"_{TAG}" if TAG else ""
+OUT_SUMMARY = OUTDIR / f'runtime_direct_detlin_generalization_fast_summary{SUFFIX}.csv'
+OUT_DETAIL = OUTDIR / f'runtime_direct_detlin_generalization_fast_detail{SUFFIX}.csv'
+OUT_DECISION = OUTDIR / f'runtime_direct_detlin_generalization_fast_decision{SUFFIX}.json'
 
 
 def build_kinetics(d_min: float, d_max: float, d_num: int):

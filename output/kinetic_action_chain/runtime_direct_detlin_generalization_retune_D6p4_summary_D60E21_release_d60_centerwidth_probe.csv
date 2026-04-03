@@ -1,0 +1,3 @@
+target_D,eval_D,case,case_label,g_beta,g_center,g_half_width,mismatch,p95_abs_delta_mu_mumu,max_abs_delta_mu_mumu,score
+6.4,6.4406779661016955,D60E21_release,D60 x E21 release,0.25,0.05,0.03,0.0,5.390764573454147,5.390934293700056,5.390764573454147
+6.4,6.4406779661016955,D60E21_release,D60 x E21 release,0.25,0.06,0.03,0.0,6.6379193756854535,6.638093260763142,6.6379193756854535

@@ -1,0 +1,52 @@
+{
+  "target_D": 6.4,
+  "completed_rows": 5,
+  "completed_candidates": 5,
+  "top": [
+    {
+      "g_beta": 0.3,
+      "g_center": 0.06,
+      "g_half_width": 0.04,
+      "worst_score": 0.584503983963188,
+      "mean_score": 0.584503983963188,
+      "worst_p95": 0.584503983963188,
+      "worst_mismatch": 0.0
+    },
+    {
+      "g_beta": 0.3,
+      "g_center": 0.06,
+      "g_half_width": 0.03,
+      "worst_score": 1.282788122931649,
+      "mean_score": 1.282788122931649,
+      "worst_p95": 1.282788122931649,
+      "worst_mismatch": 0.0
+    },
+    {
+      "g_beta": 0.3,
+      "g_center": 0.05,
+      "g_half_width": 0.05,
+      "worst_score": 3.736432948858841,
+      "mean_score": 3.736432948858841,
+      "worst_p95": 3.736432948858841,
+      "worst_mismatch": 0.0
+    },
+    {
+      "g_beta": 0.3,
+      "g_center": 0.05,
+      "g_half_width": 0.04,
+      "worst_score": 4.576385740482081,
+      "mean_score": 4.576385740482081,
+      "worst_p95": 4.576385740482081,
+      "worst_mismatch": 0.0
+    },
+    {
+      "g_beta": 0.3,
+      "g_center": 0.05,
+      "g_half_width": 0.03,
+      "worst_score": 5.677042762834837,
+      "mean_score": 5.677042762834837,
+      "worst_p95": 5.677042762834837,
+      "worst_mismatch": 0.0
+    }
+  ]
+}

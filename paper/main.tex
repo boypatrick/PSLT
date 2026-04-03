@@ -1198,7 +1198,7 @@ and introducing the column matrix \(U=(u_{\rm part},u_{\rm tree})\) together wit
 \[
 P:=UU^\dagger,
 \qquad
-V_2:=P\mathcal H,
+V_2:=\operatorname{im}P,
 \]
 so that after Gram normalization of the projected basis one has
 \[
@@ -1264,6 +1264,66 @@ The exact audits verify each algebraic step appearing in the theorem statement a
 \emph{Local truncation remark.}
 What is still \emph{not} claimed here is a global spectral-completeness theorem for the full EYMH fluctuation operator. The current statement is local to the audited low-mode sector and assumes that the complement does not reorganize the projected closure at leading order. A stronger theorem would require an explicit control of the complement remainder, for example through a Feshbach/Schur estimate on the off-sector couplings \(H_{PQ},H_{QP}\) relative to the complement block \(H_{QQ}\), or an equivalent local spectral-separation bound. At present we use the exact bridge residuals as the empirical evidence that this remainder is negligible on the localized parented map, while leaving the fully quantified truncation bound as part of the remaining proof-level tightening.
 
+\noindent\textbf{Corollary 1 (Local complement remainder form).}
+Let \(Q:=I-P\), and write the quadratic fluctuation operator in \(P/Q\) block form
+\[
+\mathcal H_{\rm EYMH}
+=
+\begin{pmatrix}
+H_{PP} & H_{PQ}\\
+H_{QP} & H_{QQ}
+\end{pmatrix},
+\qquad
+H_{PP}=P\mathcal H_{\rm EYMH}P\big|_{V_2}.
+\]
+Assume in the same localized regime that \(H_{QQ}\) is invertible on the complement and that the off-sector coupling is small enough that
+\[
+A:=
+H_{PP}^{-1/2}H_{PQ}H_{QQ}^{-1}H_{QP}H_{PP}^{-1/2}
+\]
+satisfies \(\|A\|<1\). Then integrating out the complement produces the effective low-mode operator
+\[
+H_{\rm eff}
+=
+H_{PP}-H_{PQ}H_{QQ}^{-1}H_{QP},
+\]
+and its determinant differs from the projected determinant by
+\[
+\det H_{\rm eff}
+=
+\det H_{PP}\,\det(I-A),
+\qquad
+\left|\log\det H_{\rm eff}-\log\det H_{PP}\right|
+\le
+\frac{2\|A\|}{1-\|A\|}.
+\]
+\emph{Proof sketch.}
+The Schur/Feshbach reduction on the complement gives the exact identity
+\[
+H_{\rm eff}
+=
+H_{PP}^{1/2}(I-A)H_{PP}^{1/2},
+\]
+so
+\[
+\det H_{\rm eff}
+=
+\det H_{PP}\,\det(I-A).
+\]
+Because \(H_{PP}\) is \(2\times2\), the eigenvalues \(\alpha_1,\alpha_2\) of \(A\) obey \(|\alpha_i|\le \|A\|<1\), hence
+\[
+\log\det(I-A)=\log(1-\alpha_1)+\log(1-\alpha_2),
+\]
+and the elementary bound \(|\log(1-x)|\le |x|/(1-|x|)\) for \(|x|<1\) yields
+\[
+\left|\log\det(I-A)\right|
+\le
+\frac{|\alpha_1|}{1-|\alpha_1|}+\frac{|\alpha_2|}{1-|\alpha_2|}
+\le
+\frac{2\|A\|}{1-\|A\|}.
+\]
+Thus the remaining truncation error is controlled by the product of the off-sector couplings with the complement resolvent, which is exactly the quantity that the current theorem chain leaves as an audited local remainder rather than a global spectral statement.
+
 Once that projected block structure is fixed, all diagonal ambiguity is gone and only one matrix-level choice survives: the off-diagonal coupling between the participation sector and the shell/background sector. Lemma~2 addresses exactly that remaining freedom. Its role is narrower than Lemma~1, but also sharper: after the block decomposition has been fixed at the parent-action level, the mixed entry must still be chosen, and the claim is that only one positive homogeneous anchored coupling remains compatible with the same local symmetry and normalization structure.
 
 \noindent\textbf{Lemma 2 (Geometric-mean mixed entry).}
@@ -1280,7 +1340,27 @@ C_{\rm parent}=\sqrt{E_{\rm part}E_{\rm tree}}
 \sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})}.
 \]
 \emph{Proof sketch.}
-Once the diagonal blocks are fixed, the mixed entry is the only remaining structural freedom. The generator-class hypothesis is not inserted ad hoc at this point: on the interior of the local positive cone, any positive mixed entry may be written locally as \(C=\exp g(\log E_{\rm part},\log E_{\rm tree})\), and the resulting expression is extended to the anchored boundary by continuity from the canonical point. Local multiplicative reweightings of the two anchored excess amplitudes then act by translations in the logarithmic variables. The natural residual class is therefore the one whose generator is stable under those local translations to first nontrivial order, namely the locally affine class already isolated by the earlier generator-affinity closure. Within that class, the smallest positive multiplicative excess family compatible with the anchor constraints is
+Once the diagonal blocks are fixed, the mixed entry is the only remaining structural freedom. The generator-class hypothesis is not inserted ad hoc at this point: on the interior of the local positive cone, any positive mixed entry may be written locally as \(C=\exp g(\log E_{\rm part},\log E_{\rm tree})\), and the resulting expression is extended to the anchored boundary by continuity from the canonical point. Local multiplicative reweightings of the two anchored excess amplitudes,
+\[
+(E_{\rm part},E_{\rm tree})\mapsto (\rho E_{\rm part},\sigma E_{\rm tree}),
+\qquad
+(\rho,\sigma)>0,
+\]
+act by translations in logarithmic variables,
+\[
+(\log E_{\rm part},\log E_{\rm tree})
+\mapsto
+(\log E_{\rm part}+\log\rho,\log E_{\rm tree}+\log\sigma),
+\]
+or equivalently
+\[
+(\Sigma,\Delta)\mapsto
+\left(
+\Sigma+\frac12(\log\rho+\log\sigma),
+\Delta+\frac12(\log\rho-\log\sigma)
+\right).
+\]
+The natural residual class is therefore the one whose generator is stable under these local translations to first nontrivial order, namely the locally affine class already isolated by the earlier generator-affinity closure. Within that class, the smallest positive multiplicative excess family compatible with the anchor constraints is
 \[
 C_{\rm gen}=\kappa\,E_{\rm part}^uE_{\rm tree}^v.
 \]

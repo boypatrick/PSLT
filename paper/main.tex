@@ -1194,11 +1194,29 @@ Stationarity of the localized background removes the linear term. Restricting to
 \[
 \delta\Psi=a_{\rm part}u_{\rm part}+a_{\rm tree}u_{\rm tree}
 \]
-and introducing the column matrix \(U=(u_{\rm part},u_{\rm tree})\) together with the amplitude vector \(a=(a_{\rm part},a_{\rm tree})^T\), the projected Hessian is
+and introducing the column matrix \(U=(u_{\rm part},u_{\rm tree})\) together with the amplitude vector \(a=(a_{\rm part},a_{\rm tree})^T\), define the orthogonal projector onto the localized two-mode sector by
+\[
+P:=UU^\dagger,
+\qquad
+V_2:=P\mathcal H,
+\]
+so that after Gram normalization of the projected basis one has
+\[
+U^\dagger U=\mathbf 1_2,
+\qquad
+P^\dagger=P,
+\qquad
+P^2=P.
+\]
+On that projected sector, \(\delta\Psi=P\delta\Psi\), and the projected Hessian operator is
+\[
+H_P:=P\mathcal H_{\rm EYMH}P\big|_{V_2}.
+\]
+Its matrix representation in the basis \((u_{\rm part},u_{\rm tree})\) is
 \[
 \mathcal K_{\rm parent}:=U^\dagger\mathcal H_{\rm EYMH}U.
 \]
-After Gram normalization of the projected basis, \(U^\dagger U=\mathbf 1_2\), this reduces to the matrix of projected Hessian entries
+Thus \(\mathcal K_{\rm parent}\) is the projected Hessian block itself, not an inverse propagator inserted by hand. After Gram normalization this reduces to the matrix of projected Hessian entries
 \[
 H_{ij}=\langle u_i,\mathcal H_{\rm EYMH}u_j\rangle,
 \qquad
@@ -1242,6 +1260,9 @@ S_{\rm parent}=\log K_{11}+\log\widehat G_{\rm Schur}.
 \]
 \emph{Audit closure.}
 The exact audits verify each algebraic step appearing in the theorem statement and support the canonical sector assignment used above: the earlier block-split closure identifies the participation and shell/tree diagonals themselves as the canonical projected sectors; the `logdet + Schur' witness reconstructs the response weight and parented prefactor to machine precision, with \(\max|\Delta A_{\rm resp}^{\rm logdet}|=2.22\times10^{-16}\) and \(\max|\Delta\Pi_{\rm parent}^{\rm logdet}|=9.71\times10^{-17}\); the background-normalized parent block-determinant / Schur audit gives \(\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}\), \(\max|\Delta(\det/K_{\rm bg})|=1.33\times10^{-15}\), and \(\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}\); and the exact parent-kernel excess functional reproduces the direct mismatch functional with \(\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}\). Lemma~1 therefore reduces the remaining work to making the projected-Hessian construction from the parent action explicit enough that this already-exact numerical structure can be read as a genuine Gaussian fluctuation theorem on the localized two-mode sector.
+
+\emph{Local truncation remark.}
+What is still \emph{not} claimed here is a global spectral-completeness theorem for the full EYMH fluctuation operator. The current statement is local to the audited low-mode sector and assumes that the complement does not reorganize the projected closure at leading order. A stronger theorem would require an explicit control of the complement remainder, for example through a Feshbach/Schur estimate on the off-sector couplings \(H_{PQ},H_{QP}\) relative to the complement block \(H_{QQ}\), or an equivalent local spectral-separation bound. At present we use the exact bridge residuals as the empirical evidence that this remainder is negligible on the localized parented map, while leaving the fully quantified truncation bound as part of the remaining proof-level tightening.
 
 Once that projected block structure is fixed, all diagonal ambiguity is gone and only one matrix-level choice survives: the off-diagonal coupling between the participation sector and the shell/background sector. Lemma~2 addresses exactly that remaining freedom. Its role is narrower than Lemma~1, but also sharper: after the block decomposition has been fixed at the parent-action level, the mixed entry must still be chosen, and the claim is that only one positive homogeneous anchored coupling remains compatible with the same local symmetry and normalization structure.
 

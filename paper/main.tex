@@ -1322,7 +1322,7 @@ and the elementary bound \(|\log(1-x)|\le |x|/(1-|x|)\) for \(|x|<1\) yields
 \le
 \frac{2\|A\|}{1-\|A\|}.
 \]
-Thus the remaining truncation error is controlled by the product of the off-sector couplings with the complement resolvent, which is exactly the quantity that the current theorem chain leaves as an audited local remainder rather than a global spectral statement.
+If, in addition, \(H_{QQ}\) is positive on the complement, then \(A\) is positive semidefinite and \(\|A\|<1\) implies \(I-A>0\); hence \(H_{\rm eff}\) is positive on the projected low-mode sector as well. Thus the remaining truncation error is controlled by the product of the off-sector couplings with the complement resolvent, which is exactly the quantity that the current theorem chain leaves as an audited local remainder rather than a global spectral statement.
 
 Once that projected block structure is fixed, all diagonal ambiguity is gone and only one matrix-level choice survives: the off-diagonal coupling between the participation sector and the shell/background sector. Lemma~2 addresses exactly that remaining freedom. Its role is narrower than Lemma~1, but also sharper: after the block decomposition has been fixed at the parent-action level, the mixed entry must still be chosen, and the claim is that only one positive homogeneous anchored coupling remains compatible with the same local symmetry and normalization structure.
 
@@ -1360,7 +1360,26 @@ or equivalently
 \Delta+\frac12(\log\rho-\log\sigma)
 \right).
 \]
-The natural residual class is therefore the one whose generator is stable under these local translations to first nontrivial order, namely the locally affine class already isolated by the earlier generator-affinity closure. Within that class, the smallest positive multiplicative excess family compatible with the anchor constraints is
+Writing \(z=(\Sigma,\Delta)\) and \(\tau=(\tau_\Sigma,\tau_\Delta)\) for a small local translation in these logarithmic coordinates, Taylor's theorem gives
+\[
+g(z+\tau)=g(z)+Dg(z)\tau+\frac12\tau^T\bigl[D^2g(z+\theta\tau)\bigr]\tau,
+\qquad
+0<\theta<1.
+\]
+Thus the first obstruction to pure 1-jet translation stability is exactly the quadratic jet \(D^2g\). Within the audited local family, those quadratic corrections are parametrized by the generator-curvature coefficients \((q_{ss},q_{dd},q_{sd})\), so the curvature audit is testing the first non-affine term in the local logarithmic normal form rather than an unrelated ad hoc deformation. Consequently one may write
+\[
+g(\Sigma,\Delta)
+=
+m+s\,\Sigma+a\,\Delta+R_2(\Sigma,\Delta),
+\]
+with the local remainder bounded by
+\[
+|R_2(\Sigma,\Delta)|
+\le
+\frac12
+\sup_{\zeta\in\mathcal N}\|D^2g(\zeta)\|\,\|(\Sigma,\Delta)\|^2
+\]
+on a sufficiently small neighborhood \(\mathcal N\) of the canonical point. The natural residual class is therefore the one whose generator is stable under these local translations to first nontrivial order, namely the locally affine class already isolated by the earlier generator-affinity closure. Within that class, the smallest positive multiplicative excess family compatible with the anchor constraints is
 \[
 C_{\rm gen}=\kappa\,E_{\rm part}^uE_{\rm tree}^v.
 \]

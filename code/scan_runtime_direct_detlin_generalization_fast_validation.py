@@ -20,6 +20,7 @@ CASES = [
     ('D21E21_holdout', 'D21 x E21 holdout', MAPDIR / 'hll_signal_strength_map_chain_mode_full_direct_D21E21_20260330_crossgrid_holdout_r1.csv'),
     ('D60E21_release', 'D60 x E21 release', MAPDIR / 'hll_signal_strength_map_chain_mode_full_direct_D60E21_refresh_20260324.csv'),
 ]
+CASE_FILTER = {s.strip() for s in os.environ.get('CASE_FILTER', '').split(',') if s.strip()}
 TARGETS = [4.0, 4.8, 6.4, 7.2, 8.0]
 REF_D = float(PAPER_BASELINE['ref_D'])
 REF_ETA = float(PAPER_BASELINE['ref_eta'])
@@ -60,6 +61,10 @@ WIDTH_BANDS = [
     {'beta': 0.35, 'center': 7.2, 'half_width': 0.40},
     {'beta': 1.20, 'center': 8.0, 'half_width': 0.40},
 ]
+CASE_D40_BETA = {
+    'D21E21_holdout': float(os.environ.get('STRICT_D40_BETA_D21', '1.309')),
+    'D60E21_release': float(os.environ.get('STRICT_D40_BETA_D60', '1.309')),
+}
 
 TAG = os.environ.get('STRICT_GENERALIZATION_TAG', '').strip()
 SUFFIX = f"_{TAG}" if TAG else ""
@@ -100,13 +105,18 @@ def build_kinetics(case: str, d_min: float, d_max: float, d_num: int):
         return float(beta * activation * b2_gate)
     kin._runtime_direct_gnorm_blend_weight = types.MethodType(patched_gnorm, kin)
 
+    width_bands = [dict(spec) for spec in WIDTH_BANDS]
+    for spec in width_bands:
+        if np.isclose(spec['center'], 4.0):
+            spec['beta'] = float(CASE_D40_BETA.get(case, spec['beta']))
+
     original = kin._blend_observable_width_ratio
     def patched_width(self, width_ratio: float, D: float, eta: float) -> float:
         base = float(original(width_ratio=width_ratio, D=D, eta=eta))
         floor = float(self.params.b_overlap_floor)
         positive_log_width = float(max(np.log(max(base, floor)), 0.0))
         exponent = np.log(max(base, floor))
-        for spec in WIDTH_BANDS:
+        for spec in width_bands:
             act = float(max(0.0, 1.0 - abs(float(D) - float(spec['center'])) / float(spec['half_width'])))
             exponent += float(spec['beta']) * act * positive_log_width
         return float(np.exp(exponent))
@@ -123,7 +133,8 @@ def main() -> None:
 
     detail_rows = []
     summary_rows = []
-    for case, label, path in CASES:
+    cases = [spec for spec in CASES if not CASE_FILTER or spec[0] in CASE_FILTER]
+    for case, label, path in cases:
         df = pd.read_csv(path)
         df['D'] = df['D'].astype(float)
         df['eta'] = df['eta'].astype(float)

@@ -57,7 +57,12 @@ WIDTH_BANDS = [
 ]
 GNORM_BASE = {"beta": 0.25, "center": 0.06, "half_width": 0.04}
 
-if np.isclose(RETUNE_TARGET, 4.8):
+if np.isclose(RETUNE_TARGET, 4.0):
+    raw = os.environ.get("D40_CANDIDATES", "").strip()
+    vals = [float(x) for x in raw.split(",") if x.strip()] if raw else [0.9, 1.1, 1.309, 1.5]
+    CANDIDATES = [{"d40_beta": x} for x in vals]
+    OUT_STEM = "runtime_direct_detlin_generalization_retune_D4p0"
+elif np.isclose(RETUNE_TARGET, 4.8):
     raw = os.environ.get("D48_CANDIDATES", "").strip()
     vals = [float(x) for x in raw.split(",") if x.strip()] if raw else [0.45, 0.55, 0.65, 0.75, 0.85, 0.95]
     CANDIDATES = [{"d48_beta": x} for x in vals]
@@ -157,7 +162,11 @@ def main() -> None:
         print(f"[candidate] target_D={RETUNE_TARGET} spec={cand}", flush=True)
         width_bands = [dict(spec) for spec in WIDTH_BANDS]
         gspec = dict(GNORM_BASE)
-        if np.isclose(RETUNE_TARGET, 4.8):
+        if np.isclose(RETUNE_TARGET, 4.0):
+            for spec in width_bands:
+                if np.isclose(spec["center"], 4.0):
+                    spec["beta"] = float(cand["d40_beta"])
+        elif np.isclose(RETUNE_TARGET, 4.8):
             for spec in width_bands:
                 if np.isclose(spec["center"], 4.8):
                     spec["beta"] = float(cand["d48_beta"])
@@ -221,7 +230,19 @@ def main() -> None:
             )
             partial = pd.DataFrame(rows)
             partial.to_csv(OUT_SUMMARY, index=False)
-            if np.isclose(RETUNE_TARGET, 4.8):
+            if np.isclose(RETUNE_TARGET, 4.0):
+                agg_partial = (
+                    partial.groupby("d40_beta")
+                    .agg(
+                        worst_score=("score", "max"),
+                        mean_score=("score", "mean"),
+                        worst_p95=("p95_abs_delta_mu_mumu", "max"),
+                        worst_mismatch=("mismatch", "max"),
+                    )
+                    .reset_index()
+                    .sort_values(["worst_score", "mean_score", "d40_beta"])
+                )
+            elif np.isclose(RETUNE_TARGET, 4.8):
                 agg_partial = (
                     partial.groupby("d48_beta")
                     .agg(
@@ -266,7 +287,14 @@ def main() -> None:
 
     summary = pd.DataFrame(rows)
     summary.to_csv(OUT_SUMMARY, index=False)
-    if np.isclose(RETUNE_TARGET, 4.8):
+    if np.isclose(RETUNE_TARGET, 4.0):
+        agg = (
+            summary.groupby("d40_beta")
+            .agg(worst_score=("score", "max"), mean_score=("score", "mean"), worst_p95=("p95_abs_delta_mu_mumu", "max"))
+            .reset_index()
+            .sort_values(["worst_score", "mean_score", "d40_beta"])
+        )
+    elif np.isclose(RETUNE_TARGET, 4.8):
         agg = (
             summary.groupby("d48_beta")
             .agg(worst_score=("score", "max"), mean_score=("score", "mean"), worst_p95=("p95_abs_delta_mu_mumu", "max"))

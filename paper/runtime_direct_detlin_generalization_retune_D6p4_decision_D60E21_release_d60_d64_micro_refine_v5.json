@@ -1,0 +1,25 @@
+{
+  "target_D": 6.4,
+  "completed_rows": 2,
+  "completed_candidates": 2,
+  "top": [
+    {
+      "g_beta": 0.243,
+      "g_center": 0.049,
+      "g_half_width": 0.025,
+      "worst_score": 5.213513172978601,
+      "mean_score": 5.213513172978601,
+      "worst_p95": 5.213513172978601,
+      "worst_mismatch": 0.0
+    },
+    {
+      "g_beta": 0.243,
+      "g_center": 0.049,
+      "g_half_width": 0.023,
+      "worst_score": 5.221421313797308,
+      "mean_score": 5.221421313797308,
+      "worst_p95": 5.221421313797308,
+      "worst_mismatch": 0.0
+    }
+  ]
+}

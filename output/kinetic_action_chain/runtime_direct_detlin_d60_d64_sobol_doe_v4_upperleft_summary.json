@@ -1,0 +1,71 @@
+{
+  "current_reference": {
+    "g_beta": 0.24681740850778297,
+    "g_center": 0.0487,
+    "g_half_width": 0.0257
+  },
+  "bounds": {
+    "g_beta": [
+      0.2463,
+      0.2473
+    ],
+    "g_center": [
+      0.04855,
+      0.04885
+    ],
+    "g_half_width": [
+      0.0255,
+      0.0259
+    ]
+  },
+  "n_samples": 16,
+  "best_observed": {
+    "sample_id": 12.0,
+    "g_beta": 0.247094583668001,
+    "g_center": 0.0488418533056043,
+    "g_half_width": 0.025540987640619277,
+    "p95_abs_delta_mu_mumu": 5.195484456407264,
+    "max_abs_delta_mu_mumu": 5.195653411296092,
+    "mismatch": 0.0,
+    "score": 5.195484456407264
+  },
+  "top_effects": [
+    {
+      "term": "g_center2",
+      "coef": 12248.312100467096,
+      "abs_coef": 12248.312100467096
+    },
+    {
+      "term": "g_center:g_half_width",
+      "coef": 7884.658416423499,
+      "abs_coef": 7884.658416423499
+    },
+    {
+      "term": "g_half_width2",
+      "coef": 6880.3416367885475,
+      "abs_coef": 6880.3416367885475
+    },
+    {
+      "term": "g_center",
+      "coef": -1829.5088086113462,
+      "abs_coef": 1829.5088086113462
+    },
+    {
+      "term": "g_beta:g_center",
+      "coef": 1647.1360707546246,
+      "abs_coef": 1647.1360707546246
+    },
+    {
+      "term": "g_beta:g_half_width",
+      "coef": -1191.845323125331,
+      "abs_coef": 1191.845323125331
+    }
+  ],
+  "predicted_next_best": {
+    "g_beta": 0.24724601084156947,
+    "g_center": 0.04884256323400676,
+    "g_half_width": 0.025511451028944507,
+    "pred_p95": 5.194887019619777
+  },
+  "recommendation": "validate_predicted_next_best_exactly_if_predicted_gain_exceeds_noise"
+}

@@ -65,6 +65,10 @@ CASE_D40_BETA = {
     'D21E21_holdout': float(os.environ.get('STRICT_D40_BETA_D21', '1.309')),
     'D60E21_release': float(os.environ.get('STRICT_D40_BETA_D60', '1.309')),
 }
+CASE_D48_BETA = {
+    'D21E21_holdout': float(os.environ.get('STRICT_D48_BETA_D21', str(WIDTH_BANDS[1]['beta']))),
+    'D60E21_release': float(os.environ.get('STRICT_D48_BETA_D60', str(WIDTH_BANDS[1]['beta']))),
+}
 
 TAG = os.environ.get('STRICT_GENERALIZATION_TAG', '').strip()
 SUFFIX = f"_{TAG}" if TAG else ""
@@ -109,6 +113,8 @@ def build_kinetics(case: str, d_min: float, d_max: float, d_num: int):
     for spec in width_bands:
         if np.isclose(spec['center'], 4.0):
             spec['beta'] = float(CASE_D40_BETA.get(case, spec['beta']))
+        if np.isclose(spec['center'], 4.8):
+            spec['beta'] = float(CASE_D48_BETA.get(case, spec['beta']))
 
     original = kin._blend_observable_width_ratio
     def patched_width(self, width_ratio: float, D: float, eta: float) -> float:

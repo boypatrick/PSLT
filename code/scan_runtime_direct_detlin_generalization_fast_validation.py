@@ -58,6 +58,7 @@ CASE_GNORM_BANDPASS = {
 WIDTH_BANDS = [
     {'beta': 1.309, 'center': 4.0, 'half_width': 0.40},
     {'beta': float(os.environ.get('STRICT_D48_BETA', '0.75')), 'center': 4.8, 'half_width': 0.40},
+    {'beta': float(os.environ.get('STRICT_D64_BETA', '0.0')), 'center': 6.4, 'half_width': 0.40},
     {'beta': 0.35, 'center': 7.2, 'half_width': 0.40},
     {'beta': 1.20, 'center': 8.0, 'half_width': 0.40},
 ]
@@ -68,6 +69,10 @@ CASE_D40_BETA = {
 CASE_D48_BETA = {
     'D21E21_holdout': float(os.environ.get('STRICT_D48_BETA_D21', str(WIDTH_BANDS[1]['beta']))),
     'D60E21_release': float(os.environ.get('STRICT_D48_BETA_D60', str(WIDTH_BANDS[1]['beta']))),
+}
+CASE_D64_BETA = {
+    'D21E21_holdout': float(os.environ.get('STRICT_D64_BETA_D21', str(WIDTH_BANDS[2]['beta']))),
+    'D60E21_release': float(os.environ.get('STRICT_D64_BETA_D60', str(WIDTH_BANDS[2]['beta']))),
 }
 
 TAG = os.environ.get('STRICT_GENERALIZATION_TAG', '').strip()
@@ -115,6 +120,8 @@ def build_kinetics(case: str, d_min: float, d_max: float, d_num: int):
             spec['beta'] = float(CASE_D40_BETA.get(case, spec['beta']))
         if np.isclose(spec['center'], 4.8):
             spec['beta'] = float(CASE_D48_BETA.get(case, spec['beta']))
+        if np.isclose(spec['center'], 6.4):
+            spec['beta'] = float(CASE_D64_BETA.get(case, spec['beta']))
 
     original = kin._blend_observable_width_ratio
     def patched_width(self, width_ratio: float, D: float, eta: float) -> float:

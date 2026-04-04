@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import types
 from pathlib import Path
 
@@ -15,10 +16,15 @@ ROOT = Path(__file__).resolve().parent.parent
 OUTDIR = ROOT / "output" / "kinetic_action_chain"
 PAPERDIR = ROOT / "paper"
 MAP = ROOT / "output" / "hll_signal_strength" / "hll_signal_strength_map_chain_mode_full_direct_D60E21_refresh_20260324.csv"
-V10_DETAIL = ROOT / "output" / "kinetic_action_chain" / "runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64d48_v10_casesplit.csv"
-
-OUT_SAMPLES = OUTDIR / "runtime_direct_detlin_d60_d64_local_amp_probe_v1_samples.csv"
-OUT_SUMMARY = OUTDIR / "runtime_direct_detlin_d60_d64_local_amp_probe_v1_summary.json"
+BASELINE_DETAIL = Path(
+    os.environ.get(
+        "BASELINE_DETAIL",
+        str(ROOT / "output" / "kinetic_action_chain" / "runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64d48_v10_casesplit.csv"),
+    )
+)
+TAG = os.environ.get("AMP_PROBE_TAG", "v1").strip() or "v1"
+OUT_SAMPLES = OUTDIR / f"runtime_direct_detlin_d60_d64_local_amp_probe_{TAG}_samples.csv"
+OUT_SUMMARY = OUTDIR / f"runtime_direct_detlin_d60_d64_local_amp_probe_{TAG}_summary.json"
 
 REF_D = float(PAPER_BASELINE["ref_D"])
 REF_ETA = float(PAPER_BASELINE["ref_eta"])
@@ -51,9 +57,9 @@ D48_BETA = 0.55
 D72_BETA = 0.35
 D80_BETA = 1.20
 
-TARGET_CENTER = 6.4
-TARGET_HALF_WIDTH = 0.40
-ALPHAS = [-0.30, -0.20, -0.10, -0.05, -0.02, 0.0, 0.02]
+TARGET_CENTER = float(os.environ.get("TARGET_CENTER", "6.4"))
+TARGET_HALF_WIDTH = float(os.environ.get("TARGET_HALF_WIDTH", "0.40"))
+ALPHAS = [float(x) for x in os.environ.get("ALPHAS", "-0.30,-0.20,-0.10,-0.05,-0.02,0.0,0.02").split(",") if x.strip()]
 
 
 def _patch_width_bands(kin, alpha: float) -> None:
@@ -123,10 +129,10 @@ def main() -> None:
     target_D = float(sorted(df["D"].unique(), key=lambda x: abs(float(x) - TARGET_CENTER))[0])
     sub = df[np.isclose(df["D"], target_D)].copy()
 
-    v10 = pd.read_csv(V10_DETAIL)
-    v10 = v10[(v10["case"] == "D60E21_release") & np.isclose(v10["eval_D"], target_D)]
-    baseline_p95 = float(np.percentile(v10["abs_delta_mu_mumu"], 95.0))
-    baseline_max = float(v10["abs_delta_mu_mumu"].max())
+    baseline = pd.read_csv(BASELINE_DETAIL)
+    baseline = baseline[(baseline["case"] == "D60E21_release") & np.isclose(baseline["eval_D"], target_D)]
+    baseline_p95 = float(np.percentile(baseline["abs_delta_mu_mumu"], 95.0))
+    baseline_max = float(baseline["abs_delta_mu_mumu"].max())
 
     rows = []
     for i, alpha in enumerate(ALPHAS, start=1):
@@ -175,7 +181,8 @@ def main() -> None:
     best = min(rows, key=lambda r: r["p95_abs_delta_mu_mumu"])
     summary = {
         "target_D": float(target_D),
-        "baseline_v10": {
+        "baseline": {
+            "detail_path": str(BASELINE_DETAIL),
             "p95_abs_delta_mu_mumu": baseline_p95,
             "max_abs_delta_mu_mumu": baseline_max,
         },

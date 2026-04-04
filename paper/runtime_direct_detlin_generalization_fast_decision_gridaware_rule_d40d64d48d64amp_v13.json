@@ -1,0 +1,5 @@
+{
+  "all_cases_zero_mismatch": true,
+  "worst_case_p95_abs_delta_mu_mumu": 1.6985945559423512,
+  "worst_case": "D21E21_holdout"
+}

@@ -1,0 +1,12 @@
+{
+  "source_detail": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64_v9_sobol3_bestobs.csv",
+  "source_summary": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/runtime_direct_detlin_generalization_fast_summary_gridaware_rule_d40d64_v9_sobol3_bestobs.csv",
+  "dominant_eval_D": 6.4406779661016955,
+  "dominant_slice_p95_abs_delta_mu_mumu": 5.195121591880543,
+  "dominant_slice_max_abs_delta_mu_mumu": 5.195290559390422,
+  "dominant_slice_share_of_total_p95": 1.000136618659991,
+  "secondary_eval_D": 4.813559322033898,
+  "secondary_slice_p95_abs_delta_mu_mumu": 2.8926606308332694,
+  "all_zero_acceptance_mismatch": true,
+  "note": "Dominant remaining broader-grid strict all-direct residual is concentrated on the D60 release slice near eval_D\u22486.44; D\u22484.81 is the next largest but materially smaller."
+}

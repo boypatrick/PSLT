@@ -1,0 +1,40 @@
+{
+  "target_D": 4.8,
+  "baseline": {
+    "detail_path": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64d48d64amp_v13.csv",
+    "p95_abs_delta_mu_mumu": 1.7221990709067132,
+    "max_abs_delta_mu_mumu": 1.7278372466307577
+  },
+  "best_probe_so_far": {
+    "beta_d21_d48": 0.575,
+    "p95_abs_delta_mu_mumu": 5.55692411429238,
+    "max_abs_delta_mu_mumu": 5.566025759829037,
+    "mean_signed_delta_mu_mumu": 5.475472873619626,
+    "min_signed_delta_mu_mumu": 5.385386054949784,
+    "max_signed_delta_mu_mumu": 5.566025759829037,
+    "delta_p95_vs_v13": 3.834725043385667,
+    "delta_max_vs_v13": 3.838188513198279
+  },
+  "completed_probes": [
+    {
+      "beta_d21_d48": 0.55,
+      "p95_abs_delta_mu_mumu": 7.0330872003235445,
+      "max_abs_delta_mu_mumu": 7.043476714032076,
+      "mean_signed_delta_mu_mumu": 6.940050994060473,
+      "min_signed_delta_mu_mumu": 6.83709765951286,
+      "max_signed_delta_mu_mumu": 7.043476714032076,
+      "delta_p95_vs_v13": 5.310888129416831,
+      "delta_max_vs_v13": 5.3156394674013185
+    },
+    {
+      "beta_d21_d48": 0.575,
+      "p95_abs_delta_mu_mumu": 5.55692411429238,
+      "max_abs_delta_mu_mumu": 5.566025759829037,
+      "mean_signed_delta_mu_mumu": 5.475472873619626,
+      "min_signed_delta_mu_mumu": 5.385386054949784,
+      "max_signed_delta_mu_mumu": 5.566025759829037,
+      "delta_p95_vs_v13": 3.834725043385667,
+      "delta_max_vs_v13": 3.838188513198279
+    }
+  ]
+}

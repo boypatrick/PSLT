@@ -2302,6 +2302,18 @@ and the subsequent family, log-coordinate, normal-coordinate, and generator-affi
 Finally, \texttt{scan\_chi\_open\_system\_parent\_bath\_cocycle\_audit.py} turns this into a positive integrability statement: after dividing out $\kappa_{\rm env}$, the normalized parent bath block defines an exact additive cocycle in the canonical log variables, with pairwise cocycle residuals at $8.95\times10^{-16}$ on the identifiable $\phi$ subset and $8.64\times10^{-13}$ on the mixing branch, while triangle flatness defects stay at $1.11\times10^{-15}$ in both channels. So the affine log-generator is now supported not only by nearby-family exclusion, but also by exact cocycle/flatness closure.
 Pushing one step further, \texttt{scan\_chi\_open\_system\_parent\_bath\_potential\_audit.py} shows that this cocycle is globally integrable on the current knot set: the normalized bath block admits an exact anchored scalar potential $\Phi_a=\log(B_a/B_a^{\rm ref})$ whose direct decomposition, anchor-average recovery, and nearest-neighbor chain recovery agree to machine precision (max residuals $\sim10^{-14}$ on the identifiable $\phi$ subset and $\sim5\times10^{-13}$ or better on the mixing branch). Thus the projected bath witness is no longer characterized only by an affine local generator; it also carries a single-valued anchored potential, so the remaining gap is specifically the parent-action origin of this potential itself.
 
+This also gives the natural local parent-bath effective-action normal form on the audited knot set. Writing $z=(z_{\rm sys},z_{\rm spec})$ for the canonical log variables and $B_a(z)=B_a^{\rm ref} e^{\Phi_a(z)}$, the cocycle closure identifies the bath witness as an anchored exponential potential on the projected bath block,
+\[
+K_{{\rm bath},a}(z)=\kappa_{\rm env}\,K_{{\rm sys},a}^{1/2}(z)\,e^{\Phi_a(z)}\,K_{{\rm sys},a}^{1/2}(z),
+\]
+while the family, log-coordinate, normal-coordinate, and generator-affinity audits isolate the canonical class as the one with no surviving first local log-curvature jet. Equivalently, on a sufficiently small neighborhood $\mathcal N$ of the canonical anchor,
+\[
+\Phi_a(z+\tau)=\Phi_a(z)+\nabla\Phi_a(z)\!\cdot\!\tau+R_{a,2}(z,\tau),
+\qquad
+|R_{a,2}(z,\tau)|\le \tfrac12 \sup_{\zeta\in\mathcal N}\|D^2\Phi_a(\zeta)\|\,\|\tau\|^2,
+\]
+and the audited canonical point is precisely the one where the first non-affine correction is rejected on the current knot set. In this sense, the open-system witness is already promoted from a free nearby-family fit to a locally anchored projected effective action; what remains open is not the existence or local normal form of $\Phi_a$, but the microscopic EYMH derivation of its coefficients, of $\kappa_{\rm env}$, and of the bath degrees of freedom themselves.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

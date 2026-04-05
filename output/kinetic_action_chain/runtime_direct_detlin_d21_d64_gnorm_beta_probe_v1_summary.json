@@ -1,0 +1,30 @@
+{
+  "target_D": 6.4,
+  "baseline": {
+    "detail_path": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64d48d64amp_v15.csv",
+    "p95_abs_delta_mu_mumu": 0.584503983963188,
+    "max_abs_delta_mu_mumu": 0.5847296668955835
+  },
+  "best_probe_so_far": {
+    "gnorm_beta_d21": 0.24,
+    "p95_abs_delta_mu_mumu": 3.319825809483703,
+    "max_abs_delta_mu_mumu": 3.3200450394586625,
+    "mean_signed_delta_mu_mumu": -3.317852637230919,
+    "min_signed_delta_mu_mumu": -3.3200450394586625,
+    "max_signed_delta_mu_mumu": -3.315660132589173,
+    "delta_p95_vs_v15": 2.735321825520515,
+    "delta_max_vs_v15": 2.735315372563079
+  },
+  "completed_probes": [
+    {
+      "gnorm_beta_d21": 0.24,
+      "p95_abs_delta_mu_mumu": 3.319825809483703,
+      "max_abs_delta_mu_mumu": 3.3200450394586625,
+      "mean_signed_delta_mu_mumu": -3.317852637230919,
+      "min_signed_delta_mu_mumu": -3.3200450394586625,
+      "max_signed_delta_mu_mumu": -3.315660132589173,
+      "delta_p95_vs_v15": 2.735321825520515,
+      "delta_max_vs_v15": 2.735315372563079
+    }
+  ]
+}

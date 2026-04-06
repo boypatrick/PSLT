@@ -19,7 +19,7 @@ MAP = ROOT / "output" / "hll_signal_strength" / "hll_signal_strength_map_chain_m
 BASELINE_DETAIL = Path(
     os.environ.get(
         "BASELINE_DETAIL",
-        str(ROOT / "output" / "kinetic_action_chain" / "runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64d48_v10_casesplit.csv"),
+        str(ROOT / "output" / "kinetic_action_chain" / "runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64d48d64amp_v21.csv"),
     )
 )
 TAG = os.environ.get("AMP_PROBE_TAG", "v1").strip() or "v1"
@@ -45,21 +45,21 @@ WIDTH_FIX = {
 }
 
 D21_G_BETA = 0.30
-D21_G_CENTER = 0.06
-D21_G_HALF_WIDTH = 0.04
+D21_G_CENTER = 0.07
+D21_G_HALF_WIDTH = 0.045
 
 D60_G_BETA = 0.2468174085
 D60_G_CENTER = 0.0488372924
 D60_G_HALF_WIDTH = 0.0251312702
 
 D40_BETA = 1.304
-D48_BETA = 0.55
-D72_BETA = 0.35
+D48_BETA = 0.56
+D72_BETA = 0.455
 D80_BETA = 1.20
 
 TARGET_CENTER = float(os.environ.get("TARGET_CENTER", "6.4"))
 TARGET_HALF_WIDTH = float(os.environ.get("TARGET_HALF_WIDTH", "0.40"))
-ALPHAS = [float(x) for x in os.environ.get("ALPHAS", "-0.30,-0.20,-0.10,-0.05,-0.02,0.0,0.02").split(",") if x.strip()]
+ALPHAS = [float(x) for x in os.environ.get("ALPHAS", "0.04,0.045,0.05,0.055,0.06").split(",") if x.strip()]
 
 
 def _patch_width_bands(kin, alpha: float) -> None:
@@ -162,14 +162,14 @@ def main() -> None:
             "mean_signed_delta_mu_mumu": float(np.mean(signed)),
             "min_signed_delta_mu_mumu": float(np.min(signed)),
             "max_signed_delta_mu_mumu": float(np.max(signed)),
-            "delta_p95_vs_v10": float(np.percentile(deltas, 95.0) - baseline_p95),
-            "delta_max_vs_v10": float(np.max(deltas) - baseline_max),
+            "delta_p95_vs_v21": float(np.percentile(deltas, 95.0) - baseline_p95),
+            "delta_max_vs_v21": float(np.max(deltas) - baseline_max),
         }
         rows.append(result)
         print(
             f"[progress] {i}/{len(ALPHAS)} alpha={alpha:+.3f} "
             f"p95={result['p95_abs_delta_mu_mumu']:.6f} "
-            f"delta_vs_v10={result['delta_p95_vs_v10']:+.6f} "
+            f"delta_vs_v10={result['delta_p95_vs_v21']:+.6f} "
             f"mean_signed={result['mean_signed_delta_mu_mumu']:+.6f}"
         )
 

@@ -1,0 +1,70 @@
+{
+  "target_D": 7.254237288135593,
+  "baseline": {
+    "detail_path": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64d48d64amp_v18.csv",
+    "p95_abs_delta_mu_mumu": 0.2823619091163603,
+    "max_abs_delta_mu_mumu": 0.2823629190771295
+  },
+  "best_probe": {
+    "beta_d60_d72": 0.455,
+    "p95_abs_delta_mu_mumu": 0.0009656256040577738,
+    "max_abs_delta_mu_mumu": 0.0009665881096205808,
+    "mean_signed_delta_mu_mumu": -0.0009569630370972206,
+    "min_signed_delta_mu_mumu": -0.0009665881096205808,
+    "max_signed_delta_mu_mumu": -0.0009473378506408281,
+    "delta_p95_vs_v18": -0.2813962835123025,
+    "delta_max_vs_v18": -0.28139633096750893
+  },
+  "all_probes": [
+    {
+      "beta_d60_d72": 0.45,
+      "p95_abs_delta_mu_mumu": 0.01201432218360976,
+      "max_abs_delta_mu_mumu": 0.012015286897283595,
+      "mean_signed_delta_mu_mumu": 0.012005639975703935,
+      "min_signed_delta_mu_mumu": 0.011995993168190111,
+      "max_signed_delta_mu_mumu": 0.012015286897283595,
+      "delta_p95_vs_v18": -0.2703475869327505,
+      "delta_max_vs_v18": -0.2703476321798459
+    },
+    {
+      "beta_d60_d72": 0.4525,
+      "p95_abs_delta_mu_mumu": 0.005526584418641622,
+      "max_abs_delta_mu_mumu": 0.005527548044644615,
+      "mean_signed_delta_mu_mumu": 0.005517912000958673,
+      "min_signed_delta_mu_mumu": 0.0055082760712719114,
+      "max_signed_delta_mu_mumu": 0.005527548044644615,
+      "delta_p95_vs_v18": -0.27683532469771865,
+      "delta_max_vs_v18": -0.2768353710324849
+    },
+    {
+      "beta_d60_d72": 0.455,
+      "p95_abs_delta_mu_mumu": 0.0009656256040577738,
+      "max_abs_delta_mu_mumu": 0.0009665881096205808,
+      "mean_signed_delta_mu_mumu": -0.0009569630370972206,
+      "min_signed_delta_mu_mumu": -0.0009665881096205808,
+      "max_signed_delta_mu_mumu": -0.0009473378506408281,
+      "delta_p95_vs_v18": -0.2813962835123025,
+      "delta_max_vs_v18": -0.28139633096750893
+    },
+    {
+      "beta_d60_d72": 0.4575,
+      "p95_abs_delta_mu_mumu": 0.007427663415697783,
+      "max_abs_delta_mu_mumu": 0.007428624837598985,
+      "mean_signed_delta_mu_mumu": -0.007419010601612097,
+      "min_signed_delta_mu_mumu": -0.007428624837598985,
+      "max_signed_delta_mu_mumu": -0.0074093962517585155,
+      "delta_p95_vs_v18": -0.2749342457006625,
+      "delta_max_vs_v18": -0.27493429423953053
+    },
+    {
+      "beta_d60_d72": 0.46,
+      "p95_abs_delta_mu_mumu": 0.013876899185027547,
+      "max_abs_delta_mu_mumu": 0.013877859525325942,
+      "mean_signed_delta_mu_mumu": -0.013868256105288988,
+      "min_signed_delta_mu_mumu": -0.013877859525325942,
+      "max_signed_delta_mu_mumu": -0.0138586525714528,
+      "delta_p95_vs_v18": -0.26848500993133273,
+      "delta_max_vs_v18": -0.2684850595518036
+    }
+  ]
+}

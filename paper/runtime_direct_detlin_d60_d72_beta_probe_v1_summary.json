@@ -1,0 +1,70 @@
+{
+  "target_D": 7.254237288135593,
+  "baseline": {
+    "detail_path": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64d48d64amp_v18.csv",
+    "p95_abs_delta_mu_mumu": 0.2823619091163603,
+    "max_abs_delta_mu_mumu": 0.2823629190771295
+  },
+  "best_probe": {
+    "beta_d60_d72": 0.45,
+    "p95_abs_delta_mu_mumu": 0.01201432218360976,
+    "max_abs_delta_mu_mumu": 0.012015286897283595,
+    "mean_signed_delta_mu_mumu": 0.012005639975703935,
+    "min_signed_delta_mu_mumu": 0.011995993168190111,
+    "max_signed_delta_mu_mumu": 0.012015286897283595,
+    "delta_p95_vs_v18": -0.2703475869327505,
+    "delta_max_vs_v18": -0.2703476321798459
+  },
+  "all_probes": [
+    {
+      "beta_d60_d72": 0.25,
+      "p95_abs_delta_mu_mumu": 0.5750278117791474,
+      "max_abs_delta_mu_mumu": 0.5750288705622433,
+      "mean_signed_delta_mu_mumu": 0.5750182828433155,
+      "min_signed_delta_mu_mumu": 0.5750076952436713,
+      "max_signed_delta_mu_mumu": 0.5750288705622433,
+      "delta_p95_vs_v18": 0.29266590266278714,
+      "delta_max_vs_v18": 0.29266595148511376
+    },
+    {
+      "beta_d60_d72": 0.3,
+      "p95_abs_delta_mu_mumu": 0.42579334113671496,
+      "max_abs_delta_mu_mumu": 0.42579437504462314,
+      "mean_signed_delta_mu_mumu": 0.42578403610505877,
+      "min_signed_delta_mu_mumu": 0.42577369728349757,
+      "max_signed_delta_mu_mumu": 0.42579437504462314,
+      "delta_p95_vs_v18": 0.1434314320203547,
+      "delta_max_vs_v18": 0.14343145596749363
+    },
+    {
+      "beta_d60_d72": 0.35,
+      "p95_abs_delta_mu_mumu": 0.2823619091163603,
+      "max_abs_delta_mu_mumu": 0.2823629190771295,
+      "mean_signed_delta_mu_mumu": 0.2823528196352726,
+      "min_signed_delta_mu_mumu": 0.28234272031012075,
+      "max_signed_delta_mu_mumu": 0.2823629190771295,
+      "delta_p95_vs_v18": 0.0,
+      "delta_max_vs_v18": 0.0
+    },
+    {
+      "beta_d60_d72": 0.4,
+      "p95_abs_delta_mu_mumu": 0.14450786237469426,
+      "max_abs_delta_mu_mumu": 0.14450884928181074,
+      "mean_signed_delta_mu_mumu": 0.14449898040167514,
+      "min_signed_delta_mu_mumu": 0.14448911163693046,
+      "max_signed_delta_mu_mumu": 0.14450884928181074,
+      "delta_p95_vs_v18": -0.13785404674166601,
+      "delta_max_vs_v18": -0.13785406979531878
+    },
+    {
+      "beta_d60_d72": 0.45,
+      "p95_abs_delta_mu_mumu": 0.01201432218360976,
+      "max_abs_delta_mu_mumu": 0.012015286897283595,
+      "mean_signed_delta_mu_mumu": 0.012005639975703935,
+      "min_signed_delta_mu_mumu": 0.011995993168190111,
+      "max_signed_delta_mu_mumu": 0.012015286897283595,
+      "delta_p95_vs_v18": -0.2703475869327505,
+      "delta_max_vs_v18": -0.2703476321798459
+    }
+  ]
+}

@@ -22,7 +22,7 @@ BASELINE_DETAIL = Path(
             ROOT
             / "output"
             / "kinetic_action_chain"
-            / "runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64d48d64amp_v20_casesplit72_fixed.csv"
+            / "runtime_direct_detlin_generalization_fast_detail_gridaware_rule_d40d64d48d64amp_v25.csv"
         ),
     )
 )
@@ -40,7 +40,7 @@ ENV_CONST = {
     "STRICT_GNORM_BETA_D60": "0.2468174085",
     "STRICT_GNORM_CENTER_D60": "0.0488372924",
     "STRICT_GNORM_HALF_WIDTH_D60": "0.0251312702",
-    "STRICT_D40_BETA_D21": "1.20",
+    "STRICT_D40_BETA_D21": "1.22",
     "STRICT_D40_BETA_D60": "1.304",
     "STRICT_D48_BETA_D60": "0.56",
     "STRICT_D64_BETA_D21": "0.0",
@@ -104,8 +104,8 @@ def main() -> None:
             "mean_signed_delta_mu_mumu": float(np.mean(signed)),
             "min_signed_delta_mu_mumu": float(np.min(signed)),
             "max_signed_delta_mu_mumu": float(np.max(signed)),
-            "delta_p95_vs_v20": float(np.percentile(deltas, 95.0) - baseline_p95),
-            "delta_max_vs_v20": float(np.max(deltas) - baseline_max),
+            "delta_p95_vs_v25": float(np.percentile(deltas, 95.0) - baseline_p95),
+            "delta_max_vs_v25": float(np.max(deltas) - baseline_max),
         }
         rows.append(result)
         with OUT_SAMPLES.open("w", newline="") as fh:
@@ -131,7 +131,7 @@ def main() -> None:
         print(
             f"[progress] {i}/{len(BETAS)} beta={beta:.3f} "
             f"p95={result['p95_abs_delta_mu_mumu']:.6f} "
-            f"delta_vs_v20={result['delta_p95_vs_v20']:+.6f} "
+            f"delta_vs_v20={result['delta_p95_vs_v25']:+.6f} "
             f"mean_signed={result['mean_signed_delta_mu_mumu']:+.6f}",
             flush=True,
         )

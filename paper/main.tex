@@ -2299,13 +2299,39 @@ The newer parent-bath audits sharpen this statement. First, \texttt{scan\_chi\_o
 K_{\rm bath}=\kappa_{\rm env}\sqrt{K_{\rm sys}}\,K_{\rm spec}\,\sqrt{K_{\rm sys}},
 \label{eq:chi_parent_bath_block}
 \]
-and the subsequent family, log-coordinate, normal-coordinate, and generator-affinity audits show that the canonical projected bath class is uniquely selected on the current knot set: $(m,u,v)=(0,0,0)$, $(p_{\rm sys},p_{\rm spec})=(0,0)$, $(\zeta_{\rm sys},\zeta_{\rm spec})=(0,0)$, and $(q_{ss},q_{bb},q_{sb})=(0,0,0)$. Thus the remaining open-system gap is no longer bookkeeping or nearby-family ambiguity; it is the final parent-action statement for why the projected bath generator itself naturally lives in this affine log class.
+and the subsequent family, log-coordinate, normal-coordinate, and generator-affinity audits show that the canonical projected bath class is uniquely selected on the current knot set: $(m,u,v)=(0,0,0)$, $(p_{\rm sys},p_{\rm spec})=(0,0)$, $(\zeta_{\rm sys},\zeta_{\rm spec})=(0,0)$, and $(q_{ss},q_{bb},q_{sb})=(0,0,0)$. It is therefore natural to define the normalized projected bath block
+\[
+B_a(z):=\kappa_{\rm env}^{-1}K_{{\rm sys},a}^{-1/2}(z)\,K_{{\rm bath},a}(z)\,K_{{\rm sys},a}^{-1/2}(z),
+\]
+which the audited factorization already identifies as the bath-shape witness itself. Thus the remaining open-system gap is no longer bookkeeping or nearby-family ambiguity; it is the final parent-action statement for why the projected bath generator itself naturally lives in this affine log class.
 Finally, \texttt{scan\_chi\_open\_system\_parent\_bath\_cocycle\_audit.py} turns this into a positive integrability statement: after dividing out $\kappa_{\rm env}$, the normalized parent bath block defines an exact additive cocycle in the canonical log variables, with pairwise cocycle residuals at $8.95\times10^{-16}$ on the identifiable $\phi$ subset and $8.64\times10^{-13}$ on the mixing branch, while triangle flatness defects stay at $1.11\times10^{-15}$ in both channels. So the affine log-generator is now supported not only by nearby-family exclusion, but also by exact cocycle/flatness closure.
 Pushing one step further, \texttt{scan\_chi\_open\_system\_parent\_bath\_potential\_audit.py} shows that this cocycle is globally integrable on the current knot set: the normalized bath block admits an exact anchored scalar potential $\Phi_a=\log(B_a/B_a^{\rm ref})$ whose direct decomposition, anchor-average recovery, and nearest-neighbor chain recovery agree to machine precision (max residuals $\sim10^{-14}$ on the identifiable $\phi$ subset and $\sim5\times10^{-13}$ or better on the mixing branch). Thus the projected bath witness is no longer characterized only by an affine local generator; it also carries a single-valued anchored potential, so the remaining gap is specifically the parent-action origin of this potential itself.
+
+At this point the cocycle/potential relation can be written explicitly on the audited knot set. Defining the discrete increment
+\[
+G_a(z_i,z_j):=\log B_a(z_j)-\log B_a(z_i),
+\]
+the cocycle audit shows that $G_a$ is additively consistent:
+\[
+G_a(z_i,z_k)=G_a(z_i,z_j)+G_a(z_j,z_k),
+\]
+up to the machine-level residuals quoted above. Fixing an anchor $z_\star$, the potential is then not an extra ansatz but the integrated cocycle itself,
+\[
+\Phi_a(z):=G_a(z_\star,z),
+\qquad
+G_a(z_i,z_j)=\Phi_a(z_j)-\Phi_a(z_i).
+\]
+So the anchored potential is simply the scalar primitive of the already-audited normalized bath block in canonical log variables.
 
 This also gives the natural local parent-bath effective-action normal form on the audited knot set. Writing $z=(z_{\rm sys},z_{\rm spec})$ for the canonical log variables and $B_a(z)=B_a^{\rm ref} e^{\Phi_a(z)}$, the cocycle closure identifies the bath witness as an anchored exponential potential on the projected bath block,
 \[
 K_{{\rm bath},a}(z)=\kappa_{\rm env}\,K_{{\rm sys},a}^{1/2}(z)\,e^{\Phi_a(z)}\,K_{{\rm sys},a}^{1/2}(z),
+\]
+so, channelwise on the present positive knot set,
+\[
+B_a(z)=e^{\Phi_a(z)},
+\qquad
+\log K_{{\rm bath},a}(z)=\log \kappa_{\rm env}+\log K_{{\rm sys},a}(z)+\Phi_a(z).
 \]
 while the family, log-coordinate, normal-coordinate, and generator-affinity audits isolate the canonical class as the one with no surviving first local log-curvature jet. Equivalently, on a sufficiently small neighborhood $\mathcal N$ of the canonical anchor,
 \[
@@ -2313,7 +2339,7 @@ while the family, log-coordinate, normal-coordinate, and generator-affinity audi
 \qquad
 |R_{a,2}(z,\tau)|\le \tfrac12 \sup_{\zeta\in\mathcal N}\|D^2\Phi_a(\zeta)\|\,\|\tau\|^2,
 \]
-and the audited canonical point is precisely the one where the first non-affine correction is rejected on the current knot set. In this sense, the open-system witness is already promoted from a free nearby-family fit to a locally anchored projected effective action; what remains open is not the existence or local normal form of $\Phi_a$, but the microscopic EYMH derivation of its coefficients, of $\kappa_{\rm env}$, and of the bath degrees of freedom themselves.
+so the affine log-generator is just the first Taylor jet of $\Phi_a$ on the projected bath block, while the first non-affine correction is controlled by $R_{a,2}$. The audited canonical point is precisely the one where this first non-affine correction is rejected on the current knot set. In this sense, the open-system witness is already promoted from a free nearby-family fit to a locally anchored projected effective action; what remains open is not the existence or local normal form of $\Phi_a$, but the microscopic EYMH derivation of its coefficients, of $\kappa_{\rm env}$, and of the bath degrees of freedom themselves.
 
 The implication chain here is non-circular. The primitive audited object is the normalized projected bath block itself, namely $K_{{\rm bath},a}/\kappa_{\rm env}$ on the canonical knot set. The nearby-family, log-coordinate, normal-coordinate, and generator-affinity audits act directly on that block and select the unique local affine generator class without assuming any potential. The cocycle audit is then applied to the same normalized block, upgrading this local affine closure to an exact additive consistency statement in the canonical log variables. The potential audit comes only after that step: it integrates the already-audited cocycle and checks path-independence / anchor recovery, rather than feeding any potential ansatz back into the family selection. Equation~(\ref{eq:chi_parent_bath_block}) together with the anchored form above therefore repackages the same projected bath witness into a local effective-action normal form; it does not create new evidence by definition. The remaining open-system gap is still the microscopic parent-action origin of the coefficients and bath degrees of freedom, not the internal consistency of the projected bath block on the present audited knot set.
 

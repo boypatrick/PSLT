@@ -150,6 +150,15 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   with the family/log-coordinate/normal-coordinate/generator-affinity audits selecting the unique canonical point where the first local log-curvature jet is absent. So the remaining gap is now only the microscopic EYMH origin of the coefficients and bath degrees of freedom, not whether the projected bath block already carries a local anchored effective action.
   The logic is non-circular: nearby-family and generator-affinity closure act directly on the normalized projected bath block, the cocycle audit upgrades that same block to exact additive consistency in canonical log variables, and the anchored-potential audit only then integrates that cocycle and checks path-independence. The local effective-action form is therefore a repackaging of the already-audited projected bath witness, not an extra ansatz used to justify itself.
   In the same local sense, the affine log-generator is just the first Taylor jet of the anchored potential on the normalized projected bath block, with the first non-affine correction controlled by the audited quadratic remainder rather than promoted to a new microscopic claim.
+  The reviewer-facing microscopic remainder is now narrower than a generic open-system ansatz and can be summarized as the chain
+  \[
+  \kappa_{\rm env}
+  \;\Longrightarrow\;
+  P\Delta V P\in{\rm span}\{I,\sigma_z,\sigma_x\}
+  \;\Longrightarrow\;
+  S_{zz,a}(0),\,S_{xx,a}(\Delta E_a)=S_a(0),\,S_a(\Delta E_a).
+  \]
+  In words: `kappa_env` is already isolated as the unique exact amplitude modulus, the localized two-level projection leaves only the `\sigma_z/\sigma_x` leading directions, and the dephasing/mixing kernels are already identified as on-shell evaluations of the same minimal response family rather than unrelated bath shapes. What remains open is the parent EYMH origin of this scalar modulus, this projected two-level jet, and this single response family.
 - **Surrogate-vs-direct chi transfer audit (B3):** `code/scan_surrogate_vs_action_points.py` reports point-level drift between interpolated `chi_LR(D)` and direct fine localized extraction injection, exporting:
   - `output/chi_fp_2d/surrogate_vs_action_points.csv`
   - `output/chi_fp_2d/surrogate_vs_action_points_summary.csv`

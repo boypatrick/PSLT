@@ -2451,6 +2451,33 @@ Equivalently,
 \]
 so the mixing channel is just the same minimal Lorentzian response sampled on shell at the transition energy, while the dephasing channel is the zero-frequency limit of that same family. On the current $17$-point micro export this identification is exact at the CSV level: the reconstructed residuals for $S_{zz,a}(0)=2\tau_{{\rm env},a}$ and $S_{xx,a}(\Delta E_a)=2\tau_{{\rm env},a}/(1+(\Delta E_a\tau_{{\rm env},a})^2)$ vanish to machine precision, while the ratio relation above holds with maximal defect $1.1\times10^{-16}$. Thus the unresolved EYMH bath-origin problem is narrower still: beyond the already-audited two-channel projection, one only has to explain why the parent environment induces this single minimal response family and why its on-shell samples are taken at $\omega=0$ and $\omega=\Delta E_a$.
 
+One can push this ``single response family'' statement one notch further without yet claiming a full bath derivation. The same audited family is exactly the Fourier image of the minimal even single-pole correlation kernel
+\[
+C_a(t)=e^{-|t|/\tau_{{\rm env},a}},
+\]
+for which
+\[
+S_a(\omega)=\int_{-\infty}^{\infty}dt\,C_a(t)e^{i\omega t}
+=2\int_0^\infty e^{-t/\tau_{{\rm env},a}}\cos(\omega t)\,dt
+=\frac{2\tau_{{\rm env},a}}{1+(\omega\tau_{{\rm env},a})^2}.
+\]
+Moreover, on the present audited knot set the correlation time is not a second free shape coordinate: the exported micro bridge uses
+\[
+\tau_{{\rm env},a}=\max\!\left(\frac{\tau_{\rm scale}}{\omega_{1,a}},\tau_{\rm floor}\right),
+\]
+and the floor never activates on the current $17$-point map, so one has numerically
+\[
+\tau_{{\rm env},a}=\frac{1}{\omega_{1,a}}
+\]
+to machine precision throughout the audited window. Hence the minimal response family is already gap-locked,
+\[
+S_a(\omega)=\frac{2/\omega_{1,a}}{1+(\omega/\omega_{1,a})^2},
+\qquad
+\frac{S_{xx,a}(\Delta E_a)}{S_{zz,a}(0)}
+=\frac{1}{1+(\Delta E_a/\omega_{1,a})^2}.
+\]
+On the current export the maximal defect in $\tau_{{\rm env},a}-\omega_{1,a}^{-1}$ is $1.1\times10^{-16}$, the on-shell suppression law above again holds to $3.3\times10^{-16}$, and the resulting band $S_{xx,a}(\Delta E_a)/S_{zz,a}(0)$ stays in the narrow interval $[0.9246,0.9800]$. In this precise effective sense, the remaining EYMH bath-origin question is no longer why two unrelated kernels appear, but why the parent environment linearizes to a single dominant pole whose correlation time is locked to the same local gap scale $\omega_{1,a}^{-1}$ that enters the audited two-level reduction.
+
 For the reviewer, the microscopic remainder can therefore be summarized as a three-step narrowing chain rather than as a generic open-system ansatz:
 \[
 \kappa_{\rm env}

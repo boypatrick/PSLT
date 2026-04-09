@@ -2403,6 +2403,23 @@ g_{x,a}=\left|\frac{v_{11,a}-v_{22,a}}{2}\right|.
 \]
 This remains an effective two-level statement rather than a completed EYMH bath theorem, but it shows that the present $\sigma_z/\sigma_x$ bridge is already the most general leading projection compatible with the audited real localized doublet. Numerically, the full $17$-point micro export verifies this decomposition at machine precision: the reconstructed localized entries $(V_{LL},V_{RR},V_{LR})$ agree with the exported map at $\le 7\times10^{-18}$, while $g_z-|v_{12}|$ and $g_x-\bigl|(v_{11}-v_{22})/2\bigr|$ stay below $2.2\times10^{-18}$ and $1.3\times10^{-18}$ respectively. The remaining microscopic bath question is therefore narrower than a generic reservoir identification: one still has to explain why the parent EYMH environment induces the two on-shell kernels multiplying these projected $\sigma_z$ and $\sigma_x$ directions, not why those directions themselves appear in the audited two-level reduction.
 
+Within the present minimal bridge, those two kernels are themselves not independent shape functions but on-shell evaluations of the same response family. The audited micro extraction uses
+\[
+S_a(\omega)=\frac{2\tau_{{\rm env},a}}{1+(\omega\tau_{{\rm env},a})^2},
+\]
+so that
+\[
+S_{zz,a}(0)=S_a(0)=2\tau_{{\rm env},a},
+\qquad
+S_{xx,a}(\Delta E_a)=S_a(\Delta E_a)=\frac{2\tau_{{\rm env},a}}{1+(\Delta E_a\tau_{{\rm env},a})^2}.
+\]
+Equivalently,
+\[
+\frac{S_{xx,a}(\Delta E_a)}{S_{zz,a}(0)}
+=\frac{1}{1+(\Delta E_a\tau_{{\rm env},a})^2},
+\]
+so the mixing channel is just the same minimal Lorentzian response sampled on shell at the transition energy, while the dephasing channel is the zero-frequency limit of that same family. On the current $17$-point micro export this identification is exact at the CSV level: the reconstructed residuals for $S_{zz,a}(0)=2\tau_{{\rm env},a}$ and $S_{xx,a}(\Delta E_a)=2\tau_{{\rm env},a}/(1+(\Delta E_a\tau_{{\rm env},a})^2)$ vanish to machine precision, while the ratio relation above holds with maximal defect $1.1\times10^{-16}$. Thus the unresolved EYMH bath-origin problem is narrower still: beyond the already-audited two-channel projection, one only has to explain why the parent environment induces this single minimal response family and why its on-shell samples are taken at $\omega=0$ and $\omega=\Delta E_a$.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

@@ -2372,6 +2372,37 @@ B_a^{(F)}(z)=\kappa_{\rm eff}^{-1}(z)\,K_{{\rm sys},a}^{-1/2}(z)\,K_{{\rm bath},
 \]
 So an exact amplitude-only renormalization preserves the normalized block if and only if $F(z)$ is constant on the audited knot set. This is exactly what the absolute-normalization audit finds: the canonical locked uniform family keeps the bridge-normalization residuals at machine level ($\sim 8\times10^{-13}$ on the observable/mixing channels), whereas the best non-uniform admissible family improves the holdout RMSE only marginally ($6\times10^{-5}$) while inflating the same normalized residuals to $\sim 10^{-2}$. In that precise local sense, $\kappa_{\rm env}$ is already singled out as the unique exact amplitude modulus, and the remaining microscopic question is no longer whether it mixes with bath shape on the present knot set, but why the parent EYMH dynamics produces this modulus in the first place.
 
+One can also push the third obligation one notch further without yet claiming a full bath derivation. Let $\Delta V$ denote the parent perturbation projected to the parity doublet, so that on the audited knot set
+\[
+V_{{\rm par},a}=
+\begin{pmatrix}
+v_{11,a} & v_{12,a}\\
+v_{12,a} & v_{22,a}
+\end{pmatrix}
+\]
+is real and symmetric. Rotating to the localized basis with
+\[
+U_{LR}=\frac{1}{\sqrt2}
+\begin{pmatrix}
+1&1\\
+1&-1
+\end{pmatrix}
+\]
+gives
+\[
+V_{{\rm loc},a}=U_{LR}^{T}V_{{\rm par},a}U_{LR}
+=\frac{v_{11,a}+v_{22,a}}{2}\,I
++v_{12,a}\,\sigma_z
++\frac{v_{11,a}-v_{22,a}}{2}\,\sigma_x.
+\]
+Hence every audited localized two-level block already lies in the span of $I,\sigma_z,\sigma_x$, with no surviving $\sigma_y$ component: after removing the trace part, the leading projected interaction is at most two-channel. The extracted couplings are therefore not independent fit coordinates but exactly the Pauli coefficients of the localized block,
+\[
+g_{z,a}=|v_{12,a}|,
+\qquad
+g_{x,a}=\left|\frac{v_{11,a}-v_{22,a}}{2}\right|.
+\]
+This remains an effective two-level statement rather than a completed EYMH bath theorem, but it shows that the present $\sigma_z/\sigma_x$ bridge is already the most general leading projection compatible with the audited real localized doublet. Numerically, the full $17$-point micro export verifies this decomposition at machine precision: the reconstructed localized entries $(V_{LL},V_{RR},V_{LR})$ agree with the exported map at $\le 7\times10^{-18}$, while $g_z-|v_{12}|$ and $g_x-\bigl|(v_{11}-v_{22})/2\bigr|$ stay below $2.2\times10^{-18}$ and $1.3\times10^{-18}$ respectively. The remaining microscopic bath question is therefore narrower than a generic reservoir identification: one still has to explain why the parent EYMH environment induces the two on-shell kernels multiplying these projected $\sigma_z$ and $\sigma_x$ directions, not why those directions themselves appear in the audited two-level reduction.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

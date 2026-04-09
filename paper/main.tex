@@ -2343,6 +2343,24 @@ so the affine log-generator is just the first Taylor jet of $\Phi_a$ on the proj
 
 The implication chain here is non-circular. The primitive audited object is the normalized projected bath block itself, namely $K_{{\rm bath},a}/\kappa_{\rm env}$ on the canonical knot set. The nearby-family, log-coordinate, normal-coordinate, and generator-affinity audits act directly on that block and select the unique local affine generator class without assuming any potential. The cocycle audit is then applied to the same normalized block, upgrading this local affine closure to an exact additive consistency statement in the canonical log variables. The potential audit comes only after that step: it integrates the already-audited cocycle and checks path-independence / anchor recovery, rather than feeding any potential ansatz back into the family selection. Equation~(\ref{eq:chi_parent_bath_block}) together with the anchored form above therefore repackages the same projected bath witness into a local effective-action normal form; it does not create new evidence by definition. The remaining open-system gap is still the microscopic parent-action origin of the coefficients and bath degrees of freedom, not the internal consistency of the projected bath block on the present audited knot set.
 
+This also sharpens the remaining microscopic origin question into three narrower obligations. First, since
+\[
+B_a(z)=\kappa_{\rm env}^{-1}K_{{\rm sys},a}^{-1/2}(z)\,K_{{\rm bath},a}(z)\,K_{{\rm sys},a}^{-1/2}(z),
+\]
+one has
+\[
+\partial_{\log \kappa_{\rm env}}\log B_a(z)=0,
+\qquad
+\partial_{\log \kappa_{\rm env}}\log K_{{\rm bath},a}(z)=1,
+\]
+so $\kappa_{\rm env}$ already behaves as a pure scalar bath-susceptibility modulus rather than as an independent bath-shape degree of freedom. Second, the coefficients of $\Phi_a$ are no longer free local fit parameters on the audited knot set: the cocycle primitive $G_a(z_i,z_j)=\Phi_a(z_j)-\Phi_a(z_i)$ already fixes their discrete local jet, and the remaining task is only to identify the parent-action source of those coefficients. Third, the unresolved bath degrees of freedom have already been reduced to the two effective response channels appearing in the audited micro bridge,
+\[
+\gamma_{\phi,a}=\kappa_{\rm env}\,g_{z,a}^2\,S_{zz,a}(0),
+\qquad
+\gamma_{{\rm mix},a}=\kappa_{\rm env}\,g_{x,a}^2\,S_{xx,a}(\Delta E_a),
+\]
+rather than to an arbitrary reservoir family. Thus the next microscopic step, if taken at all, is not to re-justify the local projected effective-action form, but to explain why the parent EYMH dynamics projects specifically onto this scalar modulus, this anchored potential jet, and this minimal two-channel bath kernel.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

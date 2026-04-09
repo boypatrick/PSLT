@@ -2361,6 +2361,17 @@ so $\kappa_{\rm env}$ already behaves as a pure scalar bath-susceptibility modul
 \]
 rather than to an arbitrary reservoir family. Thus the next microscopic step, if taken at all, is not to re-justify the local projected effective-action form, but to explain why the parent EYMH dynamics projects specifically onto this scalar modulus, this anchored potential jet, and this minimal two-channel bath kernel.
 
+Within that first obligation, the present audits already push one step further than a generic ``fitted constant'' interpretation. If one allows a nearby absolute-normalization family
+\[
+\kappa_{\rm eff}(z)=\kappa_{\rm env}\,s\,F(z),
+\]
+with a single anchor-fitted amplitude $s$ but a non-uniform profile $F(z)$, then the normalized projected bath block becomes
+\[
+B_a^{(F)}(z)=\kappa_{\rm eff}^{-1}(z)\,K_{{\rm sys},a}^{-1/2}(z)\,K_{{\rm bath},a}(z)\,K_{{\rm sys},a}^{-1/2}(z)
+=(sF(z))^{-1}B_a(z).
+\]
+So an exact amplitude-only renormalization preserves the normalized block if and only if $F(z)$ is constant on the audited knot set. This is exactly what the absolute-normalization audit finds: the canonical locked uniform family keeps the bridge-normalization residuals at machine level ($\sim 8\times10^{-13}$ on the observable/mixing channels), whereas the best non-uniform admissible family improves the holdout RMSE only marginally ($6\times10^{-5}$) while inflating the same normalized residuals to $\sim 10^{-2}$. In that precise local sense, $\kappa_{\rm env}$ is already singled out as the unique exact amplitude modulus, and the remaining microscopic question is no longer whether it mixes with bath shape on the present knot set, but why the parent EYMH dynamics produces this modulus in the first place.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

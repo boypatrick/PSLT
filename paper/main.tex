@@ -2478,6 +2478,26 @@ S_a(\omega)=\frac{2/\omega_{1,a}}{1+(\omega/\omega_{1,a})^2},
 \]
 On the current export the maximal defect in $\tau_{{\rm env},a}-\omega_{1,a}^{-1}$ is $1.1\times10^{-16}$, the on-shell suppression law above again holds to $3.3\times10^{-16}$, and the resulting band $S_{xx,a}(\Delta E_a)/S_{zz,a}(0)$ stays in the narrow interval $[0.9246,0.9800]$. In this precise effective sense, the remaining EYMH bath-origin question is no longer why two unrelated kernels appear, but why the parent environment linearizes to a single dominant pole whose correlation time is locked to the same local gap scale $\omega_{1,a}^{-1}$ that enters the audited two-level reduction.
 
+One can sharpen that dominant-pole question by phrasing it directly in the parent-kernel language already used in the EYMH subsection. Let
+\[
+R_a(\omega):=u_a^{\top}(M_a^2+\omega^2 I)^{-1}u_a
+\]
+denote the projected Schur-resolvent response of the parent bath/complement block in the same localized channel. Its spectral decomposition reads
+\[
+R_a(\omega)=\sum_{n\ge1}\frac{Z_{n,a}}{\Omega_{n,a}^2+\omega^2},
+\qquad
+Z_{n,a}:=|\langle u_a,n,a\rangle|^2\ge 0.
+\]
+If the first mode dominates on the audited on-shell window,
+\[
+R_a(\omega)\approx \frac{Z_{1,a}}{\Omega_{1,a}^2+\omega^2},
+\]
+then, after absorbing the residue $Z_{1,a}$ into the overall amplitude block $\kappa_{\rm env}$ and the projected couplings $g_{z,a},g_{x,a}$, one recovers exactly the same single-pole family used above. Identifying moreover $\Omega_{1,a}=\omega_{1,a}$ yields the observed gap-locked form
+\[
+S_a(\omega)=\frac{2/\omega_{1,a}}{1+(\omega/\omega_{1,a})^2}.
+\]
+The present audits do not yet prove this first-mode dominance theorem, but they isolate it as the next genuinely microscopic target rather than leaving an undifferentiated reservoir ansatz. On the EYMH parent side, the log-det / Schur witness and the parent block-determinant / Schur audit already close to machine precision, with $\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}$, $\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}$, and $\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}$. On the open-system side, the same audited knot set already satisfies $\tau_{{\rm env},a}=\omega_{1,a}^{-1}$ and the on-shell rate identities to machine precision. In this narrowed sense, the unresolved bath-origin problem is no longer why some effective Lorentzian fit works, but why the projected Schur resolvent is first-mode dominant and why its leading pole is locked to the same local gap scale $\omega_{1,a}$.
+
 For the reviewer, the microscopic remainder can therefore be summarized as a three-step narrowing chain rather than as a generic open-system ansatz:
 \[
 \kappa_{\rm env}

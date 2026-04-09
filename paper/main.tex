@@ -2498,6 +2498,39 @@ S_a(\omega)=\frac{2/\omega_{1,a}}{1+(\omega/\omega_{1,a})^2}.
 \]
 The present audits do not yet prove this first-mode dominance theorem, but they isolate it as the next genuinely microscopic target rather than leaving an undifferentiated reservoir ansatz. On the EYMH parent side, the log-det / Schur witness and the parent block-determinant / Schur audit already close to machine precision, with $\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}$, $\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}$, and $\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}$. On the open-system side, the same audited knot set already satisfies $\tau_{{\rm env},a}=\omega_{1,a}^{-1}$ and the on-shell rate identities to machine precision. In this narrowed sense, the unresolved bath-origin problem is no longer why some effective Lorentzian fit works, but why the projected Schur resolvent is first-mode dominant and why its leading pole is locked to the same local gap scale $\omega_{1,a}$.
 
+The natural next theorem target can therefore be written as an explicit remainder bound rather than as a qualitative hope. Decompose
+\[
+R_a(\omega)=R^{(1)}_a(\omega)+\mathcal R_a(\omega),
+\qquad
+R^{(1)}_a(\omega):=\frac{Z_{1,a}}{\Omega_{1,a}^2+\omega^2},
+\]
+so that
+\[
+\mathcal R_a(\omega)=\sum_{n\ge2}\frac{Z_{n,a}}{\Omega_{n,a}^2+\omega^2}.
+\]
+Then the exact relative remainder satisfies
+\[
+\frac{|\mathcal R_a(\omega)|}{R^{(1)}_a(\omega)}
+\le
+\sum_{n\ge2}
+\frac{Z_{n,a}}{Z_{1,a}}
+\frac{\Omega_{1,a}^2+\omega^2}{\Omega_{n,a}^2+\omega^2}.
+\]
+Hence, if one can show on the audited on-shell window $\omega\in\{0,\Delta E_a\}$ that
+\[
+\varepsilon_a:=
+\sup_{\omega\in\{0,\Delta E_a\}}
+\sum_{n\ge2}
+\frac{Z_{n,a}}{Z_{1,a}}
+\frac{\Omega_{1,a}^2+\omega^2}{\Omega_{n,a}^2+\omega^2}
+\ll 1,
+\]
+then
+\[
+R_a(\omega)=R^{(1)}_a(\omega)\,[1+O(\varepsilon_a)]
+\]
+throughout the same on-shell window. This is the cleanest proof-level formulation of the dominant-pole claim: it is enough to control the complement remainder in the projected Schur resolvent, rather than to derive a full microscopic reservoir from scratch. The current export already shows that this on-shell window is numerically narrow, with $\Delta E_a/\omega_{1,a}\in[0.1430,0.2857]$ and therefore $S_{xx,a}(\Delta E_a)/S_{zz,a}(0)\in[0.9246,0.9800]$, so the audited dephasing and mixing channels sample only the low-frequency shoulder of the same pole. What is still missing is exactly the parent-side bound that identifies $\Omega_{1,a}=\omega_{1,a}$ and proves that the higher-mode remainder is uniformly negligible on this window.
+
 For the reviewer, the microscopic remainder can therefore be summarized as a three-step narrowing chain rather than as a generic open-system ansatz:
 \[
 \kappa_{\rm env}

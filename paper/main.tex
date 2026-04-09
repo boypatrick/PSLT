@@ -2361,6 +2361,37 @@ so $\kappa_{\rm env}$ already behaves as a pure scalar bath-susceptibility modul
 \]
 rather than to an arbitrary reservoir family. Thus the next microscopic step, if taken at all, is not to re-justify the local projected effective-action form, but to explain why the parent EYMH dynamics projects specifically onto this scalar modulus, this anchored potential jet, and this minimal two-channel bath kernel.
 
+One can also sharpen the second obligation without yet claiming a full parent-action derivation of the coefficients. Restrict to the identifiable audited subset
+\[
+\mathcal K_{\phi}:=\{D:\phi_a(D)\ {\rm is\ identifiable}\},
+\]
+and let
+\[
+G_a(D_i,D_j):=\Phi_a(D_j)-\Phi_a(D_i)
+\]
+denote the already-audited cocycle primitive on that subset. For any local anchor $D_\star\in\mathcal K_\phi$ and any finite neighborhood $\mathcal N(D_\star)\subset\mathcal K_\phi$, the discrete first jet coefficient is fixed by the primitive itself, not by a new fit,
+\[
+c_a(D_\star):=
+\arg\min_c\sum_{D_j\in\mathcal N(D_\star)}
+w_j\Bigl[\Phi_a(D_j)-\Phi_a(D_\star)-c(D_j-D_\star)\Bigr]^2
+=
+\frac{\sum_j w_j(D_j-D_\star)G_a(D_\star,D_j)}
+{\sum_j w_j(D_j-D_\star)^2},
+\]
+with local remainder
+\[
+r_{a,\star}(D_j):=\Phi_a(D_j)-\Phi_a(D_\star)-c_a(D_\star)(D_j-D_\star),
+\qquad
+\sum_j w_j(D_j-D_\star)\,r_{a,\star}(D_j)=0.
+\]
+So the local coefficient of $\Phi_a$ on the audited knot set is already an anchor-locked discrete jet of the cocycle primitive, rather than an unconstrained nearby-family parameter. The current audits then push one step further still: on the entire exported map, the observed parent-bath action coefficient is exactly the signed carrier of the same primitive,
+\[
+A_a(D):=\bigl({\rm parent\text{-}bath\ action}_\phi\bigr)_a(D)=-\,\Phi_a(D),
+\qquad
+c_a^{(A)}(D_\star)=-\,c_a^{(\Phi)}(D_\star).
+\]
+Numerically, the potential reconstruction residual stays below $1.5\times10^{-14}$ on the identifiable subset, the anchor and chain recoveries stay below $7.2\times10^{-15}$ and $2.2\times10^{-14}$ respectively, the audited cocycle / local-generator defect stays below $7.2\times10^{-15}$, and the generator/potential representatives agree pointwise at the same $2.2\times10^{-14}$ level. Moreover, the canonical affine class is not merely acceptable but strongly selected: the generator-affinity and normal-coordinate selection gaps exceed the canonical objective by factors of $2.2\times10^{8}$ and $4.4\times10^{8}$ respectively. Thus the unresolved microscopic issue is no longer whether $\Phi_a$ admits a stable local first jet on the audited knot set; it is why the EYMH parent action generates precisely this signed discrete jet and not some nearby nonlinear deformation.
+
 Within that first obligation, the present audits already push one step further than a generic ``fitted constant'' interpretation. If one allows a nearby absolute-normalization family
 \[
 \kappa_{\rm eff}(z)=\kappa_{\rm env}\,s\,F(z),

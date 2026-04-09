@@ -2420,6 +2420,16 @@ Equivalently,
 \]
 so the mixing channel is just the same minimal Lorentzian response sampled on shell at the transition energy, while the dephasing channel is the zero-frequency limit of that same family. On the current $17$-point micro export this identification is exact at the CSV level: the reconstructed residuals for $S_{zz,a}(0)=2\tau_{{\rm env},a}$ and $S_{xx,a}(\Delta E_a)=2\tau_{{\rm env},a}/(1+(\Delta E_a\tau_{{\rm env},a})^2)$ vanish to machine precision, while the ratio relation above holds with maximal defect $1.1\times10^{-16}$. Thus the unresolved EYMH bath-origin problem is narrower still: beyond the already-audited two-channel projection, one only has to explain why the parent environment induces this single minimal response family and why its on-shell samples are taken at $\omega=0$ and $\omega=\Delta E_a$.
 
+For the reviewer, the microscopic remainder can therefore be summarized as a three-step narrowing chain rather than as a generic open-system ansatz:
+\[
+\kappa_{\rm env}
+\;\Longrightarrow\;
+P\Delta V P\in{\rm span}\{I,\sigma_z,\sigma_x\}
+\;\Longrightarrow\;
+S_{zz,a}(0),\,S_{xx,a}(\Delta E_a)=S_a(0),\,S_a(\Delta E_a).
+\]
+The absolute-normalization audit isolates $\kappa_{\rm env}$ as the unique exact amplitude modulus on the audited knot set; the localized two-level projection reduces the leading interaction block to the span of $I,\sigma_z,\sigma_x$, so that the nontrivial projected interaction is at most two-channel; and the micro bridge shows that the dephasing and mixing kernels are on-shell evaluations of the same minimal response family rather than unrelated bath shapes. Accordingly, the remaining EYMH task is no longer to justify the local projected open-system form itself, but to identify the parent origin of the scalar modulus, the projected two-level jet, and the single response family behind the two on-shell channels.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

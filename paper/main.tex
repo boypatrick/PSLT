@@ -589,12 +589,12 @@ Based on stability analysis, we use the baseline parameters summarized in Table~
 \toprule
 \textbf{Module} & \textbf{Parameter} & \textbf{Value} & \textbf{Physical Role} \\
 \midrule
-\parbox[t]{0.16\linewidth}{Micro-degeneracy $g_N$} & \parbox[t]{0.18\linewidth}{Phase-space profile} & \parbox[t]{0.12\linewidth}{Bounded 2D} & \parbox[t]{0.40\linewidth}{Baseline mode: bounded low-$N$ window + energy-gap tail profile} \\
-& \parbox[t]{0.18\linewidth}{$(\alpha,\beta,s)$} & \parbox[t]{0.12\linewidth}{$(0.8,1.1,0.0)$} & \parbox[t]{0.40\linewidth}{low-$N$ window blend, tail damping, shell-power control} \\
-& \parbox[t]{0.18\linewidth}{$c_{\rm eff},\nu,\kappa_g$} & \parbox[t]{0.12\linewidth}{$(0.5,5.0,0.03)$} & \parbox[t]{0.40\linewidth}{Legacy Cardy-comparator parameters (not used for the bounded 2D baseline normalization)} \\
+\parbox[t]{0.16\linewidth}{Micro-degeneracy $g_N$} & \parbox[t]{0.18\linewidth}{Phase-space profile} & \parbox[t]{0.15\linewidth}{Bounded 2D} & \parbox[t]{0.37\linewidth}{Baseline mode: bounded low-$N$ window + energy-gap tail profile} \\
+& \parbox[t]{0.18\linewidth}{$(\alpha,\beta,s)$} & \parbox[t]{0.15\linewidth}{$(0.8,1.1,0.0)$} & \parbox[t]{0.37\linewidth}{low-$N$ window blend, tail damping, shell-power control} \\
+& \parbox[t]{0.18\linewidth}{$c_{\rm eff},\nu,\kappa_g$} & \parbox[t]{0.15\linewidth}{$(0.5,5.0,0.03)$} & \parbox[t]{0.37\linewidth}{Legacy Cardy-comparator parameters (not used for the bounded 2D baseline normalization)} \\
 \midrule
-\parbox[t]{0.16\linewidth}{Visibility $B_N$} & \parbox[t]{0.18\linewidth}{Visibility normalization} & \parbox[t]{0.12\linewidth}{EFT operator} & \parbox[t]{0.40\linewidth}{Baseline fully normalized EFT visibility from overlap-extracted operator inputs $(g_{iN},\lambda_N)$ with finite one-loop + LL-RG normalization} \\
-& \parbox[t]{0.18\linewidth}{$p_B$} & \parbox[t]{0.12\linewidth}{0.30} & \parbox[t]{0.40\linewidth}{Legacy Yukawa comparator/fallback parameter (inactive in EFT-operator baseline)} \\
+\parbox[t]{0.16\linewidth}{Visibility $B_N$} & \parbox[t]{0.18\linewidth}{Visibility normalization} & \parbox[t]{0.15\linewidth}{EFT operator} & \parbox[t]{0.37\linewidth}{Baseline fully normalized EFT visibility from overlap-extracted operator inputs $(g_{iN},\lambda_N)$ with finite one-loop + LL-RG normalization} \\
+& \parbox[t]{0.18\linewidth}{$p_B$} & \parbox[t]{0.15\linewidth}{0.30} & \parbox[t]{0.37\linewidth}{Legacy Yukawa comparator/fallback parameter (inactive in EFT-operator baseline)} \\
 \midrule
 \parbox[t]{0.16\linewidth}{Kinetics $\Gamma_N$} & \parbox[t]{0.18\linewidth}{$\chi_N^{(LR)}(D)$} & \parbox[t]{0.12\linewidth}{App.~\ref{app:chi_loc}} & \parbox[t]{0.40\linewidth}{Localized-channel profile (action-derived extraction; baseline now uses full scan-grid profile injection, early demonstrator used constant $\chi=0.2$)} \\
 & \parbox[t]{0.18\linewidth}{$a_0$} & \parbox[t]{0.12\linewidth}{0.02} & \parbox[t]{0.40\linewidth}{Geometric perturbation} \\
@@ -670,7 +670,7 @@ The earlier de-profiled visibility stress branch remains useful as a historical 
 
 \begin{table*}[t]
 \centering
-\caption{Release-mode full direct map summary. Source CSV: \texttt{paper/full\_direct\_map\_release\_summary.csv}.}
+\caption{Release-mode full direct map summary; exact source artifacts are listed in the reproducibility registry.}
 \label{tab:full_direct_release}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -1552,9 +1552,11 @@ is nearly \(\eta\)-independent at fixed \(D\), so the dominant structure is genu
 
 This decomposition is useful for interpretation because it explains why a single global phenomenological ansatz for \(\xi_{\rm target}(D)\) is only partially successful. The dense-grid diagnostics support a more structured reading:
 \[
-E_{\rm part}(D)\approx \text{slow envelope},
-\qquad
-E_{\rm tree}(D)\approx \text{low/mid-}D\ \text{multi-frequency oscillation} \times \text{high-}D\ \text{cutoff},
+\begin{aligned}
+E_{\rm part}(D)&\approx \text{slow envelope},\\
+E_{\rm tree}(D)&\approx \text{low/mid-}D\ \text{multi-frequency oscillation}\\
+&\quad\times \text{high-}D\ \text{cutoff},
+\end{aligned}
 \]
 with \(\xi_{\rm target}\) reconstructed from their normalized product rather than from a single primitive oscillatory law. In particular, a smooth-envelope model already describes \(E_{\rm part}\) well, while \(E_{\rm tree}\) prefers either a two-frequency global fit or, more cleanly, a piecewise regime fit with a low/mid-\(D\) oscillatory branch and a high-\(D\) cutoff branch. We therefore regard the phenomenological regime decomposition as a reader-facing diagnostic of the corollary, not as a replacement for the parent-kernel statement itself.
 \begin{equation}
@@ -1701,29 +1703,23 @@ bash scripts/repro/reproduce_paper.sh --package-only
 \end{verbatim}
 
 \subsection{Step Map and Deliverables}
-\begin{table*}[t]
+\begin{table}[t]
 \centering
-\caption{SOP step map for action-derived reproducibility. The one-click wrapper calls these modules in a fixed order and logs each step under \texttt{repro/runs/<RUN\_ID>/logs/}.}
+\caption{Compact SOP stage map for action-derived reproducibility. The one-click wrapper executes these stages in a fixed order, logs each stage, and records exact script/output names in the artifact registry.}
 \label{tab:repro_sop}
-\scriptsize
-\noindent\textit{Full per-artifact mapping is listed in \texttt{repro/artifact\_map.csv}.}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}l l l@{}}
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}l l@{}}
 \hline\hline
-Stage & Primary scripts & Key outputs \\
+Stage group & Deliverables and checks \\
 \hline
-\parbox[t]{0.19\textwidth}{Global maps and EFT/Wilson-matched observable plots} & \parbox[t]{0.29\textwidth}{\texttt{generate\_plots.py}; \texttt{scan\_hll\_signal\_strengths.py}; \texttt{scan\_hll\_uv\_to\_eft\_matching.py}} & \parbox[t]{0.42\textwidth}{\texttt{output/three\_generation\_*.png}; \texttt{output/hmumu\_*.png}; \texttt{output/hll\_signal\_strength/*}; \texttt{output/hll\_uv\_matching/*}} \\
-\parbox[t]{0.19\textwidth}{Full-direct release gate (small complete + large spot-check)} & \parbox[t]{0.29\textwidth}{Full-direct publish audit; localized-direct surface audit; chain-mode parity audit; artifact-status registry} & \parbox[t]{0.42\textwidth}{Release summary, localized-direct summaries, chain-mode audit summaries, and \texttt{paper/artifact\_status.csv}; exact filenames are listed in \texttt{repro/artifact\_map.csv}} \\
-\parbox[t]{0.19\textwidth}{Localized mixing extraction} & \parbox[t]{0.29\textwidth}{\texttt{extract\_chi\_localized\_2d.py} (\texttt{--Ds}, \texttt{--full-scan})} & \parbox[t]{0.42\textwidth}{\texttt{output/chi\_fp\_2d/localized\_chi\_D*.csv}} \\
-\parbox[t]{0.19\textwidth}{Localized-profile diagnostics} & \parbox[t]{0.29\textwidth}{\texttt{scan\_chi\_profile\_robustness.py}; \texttt{scan\_surrogate\_vs\_action\_points.py}; \texttt{plot\_chi\_*.py}} & \parbox[t]{0.42\textwidth}{\texttt{paper/chi\_profile\_robustness.csv}; \texttt{paper/surrogate\_vs\_action\_points.csv}; \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}; \texttt{paper/chi\_wavefunction\_contours\_D*.png}} \\
-\parbox[t]{0.19\textwidth}{Core-parameter robustness} & \parbox[t]{0.29\textwidth}{\texttt{scan\_core\_param\_robustness.py}} & \parbox[t]{0.42\textwidth}{\texttt{paper/core\_param\_robustness.csv}; \texttt{output/robustness/core\_param\_robustness\_cases.csv}} \\
-\parbox[t]{0.19\textwidth}{$g_N$ first-principles candidates} & \parbox[t]{0.29\textwidth}{\texttt{extract\_gn\_phase\_space\_candidate.py}; \texttt{extract\_gn\_phase\_space\_2d.py}; \texttt{scan\_gn\_profile\_impact.py}; \texttt{scan\_gn\_nmax\_convergence.py}; \texttt{scan\_gn\_baseline\_replacement.py}; \texttt{plot\_gn\_cardy\_vs\_phase\_space.py}} & \parbox[t]{0.42\textwidth}{\texttt{output/gn\_fp\_1d/*.csv}; \texttt{output/gn\_fp\_2d/*.csv}; \texttt{paper/gn\_profile\_impact.csv}; \texttt{paper/gn\_nmax\_convergence.csv}; \texttt{paper/gn\_baseline\_replacement.csv}; \texttt{paper/gn\_cardy\_vs\_phase\_space.png}} \\
-\parbox[t]{0.19\textwidth}{Open-system diagnostics} & \parbox[t]{0.29\textwidth}{\texttt{lindblad\_chi\_minimal.py}; \texttt{extract\_chi\_open\_system\_*.py}; \texttt{scan\_chi\_open\_system\_*.py}} & \parbox[t]{0.42\textwidth}{\texttt{output/chi\_open\_system/*.csv}; \texttt{paper/chi\_open\_system\_sensitivity.csv}} \\
-\parbox[t]{0.19\textwidth}{Other first-principles profiles} & \parbox[t]{0.29\textwidth}{\texttt{extract\_tcoh\_*.py}, \texttt{extract\_eta\_*.py}, \texttt{extract\_superrad\_*.py}, \texttt{check\_minimal\_dirac\_conformal.py}; \texttt{scan\_*\_profile\_impact.py}} & \parbox[t]{0.42\textwidth}{\texttt{paper/tcoh\_profile\_impact.csv}; \texttt{paper/eta\_profile\_impact.csv}; \texttt{paper/superrad\_profile\_impact.csv}; \texttt{paper/minimal\_dirac\_conformal\_check.csv}} \\
-\parbox[t]{0.19\textwidth}{Packaging and manifest} & \parbox[t]{0.29\textwidth}{\texttt{package\_repro\_outputs.py} (wrapper stage)} & \parbox[t]{0.42\textwidth}{\texttt{repro/runs/<RUN\_ID>/figures/}; \texttt{repro/runs/<RUN\_ID>/tables/}; \texttt{artifact\_index.csv}; \texttt{checksums.sha256}; \texttt{manifest.json}} \\
+\parbox[t]{0.24\textwidth}{Production maps and observables} & \parbox[t]{0.62\textwidth}{Regenerates phase diagrams, Higgs signal-strength maps, and UV-to-EFT matching summaries.} \\
+\parbox[t]{0.24\textwidth}{Release/direct validation} & \parbox[t]{0.62\textwidth}{Runs the full-direct release audit, localized-direct validation surfaces, chain-mode parity checks, and artifact-status registry.} \\
+\parbox[t]{0.24\textwidth}{First-principles profile diagnostics} & \parbox[t]{0.62\textwidth}{Recomputes localized $\chi$, bounded phase-space $g_N$, open-system diagnostics, and the $t_{\rm coh}$, $\eta$, and channel-normalization candidate profiles.} \\
+\parbox[t]{0.24\textwidth}{Packaging and provenance} & \parbox[t]{0.62\textwidth}{Collects figures, tables, logs, checksums, manifest metadata, and the per-artifact map under the reproducibility run directory.} \\
 \hline\hline
 \end{tabular}
-\end{table*}
+\end{table}
 
 \subsection{Acceptance Conditions}
 A run is considered reproducible for this manuscript if:
@@ -1763,11 +1759,16 @@ where $a$ is the geometric strength, $\varepsilon$ is the core regularization sc
 \end{equation}
 gives the smeared Laplacian:
 \begin{equation}
-\nabla^2\Omega = -3a\varepsilon^2\left[(r_+^2 + \varepsilon^2)^{-5/2} + (r_-^2 + \varepsilon^2)^{-5/2}\right] < 0
+\begin{aligned}
+\nabla^2\Omega
+&= -3a\varepsilon^2\left[(r_+^2+\varepsilon^2)^{-5/2}
+ +(r_-^2+\varepsilon^2)^{-5/2}\right] \\
+&<0 .
+\end{aligned}
 \end{equation}
 which is equivalent to the source form in Eq.~\eqref{eq:Omega_poisson}. This negative contribution is essential for forming the attractive wells in $V_{\rm eff}$.
 As a reproducibility check, \texttt{verify\_omega\_geometric\_origin.py} confirms
-$\int d^3r\,\rho_\varepsilon=1$ with absolute error $3.75\times10^{-7}$ and validates the radial Laplacian identity with max relative error $1.39\times10^{-4}$ in the non-asymptotic band (see \texttt{output/omega\_geom\_origin/}).
+$\int d^3r\,\rho_\varepsilon=1$ with absolute error $3.75\times10^{-7}$ and validates the radial Laplacian identity with max relative error $1.39\times10^{-4}$ in the non-asymptotic band; run outputs are listed in the artifact registry.
 
 \subsection{Veff Derivation from KG Equation}
 \label{app:derivation}
@@ -2118,7 +2119,7 @@ Using the reproducible script \texttt{extract\_gn\_phase\_space\_candidate.py} (
 
 \begin{table}[t]
 \centering
-\caption{Preliminary 1D phase-space candidate $g_N^{\rm(ps)}$ at $D=12$. Source CSV: \texttt{output/gn\_fp\_1d/gn\_phase\_space\_candidate\_D12.csv}.}
+\caption{Preliminary 1D phase-space candidate $g_N^{\rm(ps)}$ at $D=12$.}
 \label{tab:gn_ps_d12}
 \small
 \begin{tabular}{cccccccc}
@@ -2152,7 +2153,7 @@ As in the 1D candidate check, this benchmark is reported as a replacement candid
 
 \begin{table}[t]
 \centering
-\caption{Fine-grid 2D phase-space profile candidate at $D=\{6,12,18\}$. Source CSV: \texttt{output/gn\_fp\_2d/gn\_phase\_space\_2d\_D6-12-18.csv}.}
+\caption{Fine-grid 2D phase-space profile candidate at $D=\{6,12,18\}$.}
 \label{tab:gn_ps_2d}
 \small
 \begin{tabular}{cccccc}
@@ -2173,7 +2174,7 @@ $D$ & $\lambda_1$ & $\lambda_2$ & $\lambda_3$ & $\hat g_1$ & $\hat g_2$ \\
     \label{fig:gn_cardy_vs_phase_space}
 \end{figure*}
 
-\begin{table}[t]
+\begin{table}[ht]
 \centering
 \caption{Map-level impact of first-principles $g_N$ profiles on the $60\times60$ scan (baseline is \texttt{fp\_2d\_full}; legacy Cardy retained as comparator). Source CSV: \texttt{paper/gn\_profile\_impact.csv}.}
 \label{tab:gn_profile_impact}
@@ -2601,7 +2602,7 @@ Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the genera
 The explicit gate file \texttt{output/chi\_open\_system/open\_system\_micro\_baseline\_candidate.csv} records that this diagnostic passes the multi-anchor + holdout candidate gates (including holdout RMSE/max-abs thresholds), but we keep it outside baseline until the bath-side microscopic derivation is completed.
 
 \subsection{Cross-Module Migration Snapshot}
-To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three reviewer-facing scenarios: the release baseline, a legacy Cardy comparator, and the open-system microscopic diagnostic. The exact mode flags are retained in the reproducibility CSV. The reproducible script is \texttt{scan\_first\_principles\_migration\_summary.py}; outputs are \texttt{paper/first\_principles\_migration\_summary.csv} and Fig.~\ref{fig:first_principles_migration}.
+To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three reviewer-facing scenarios: the release baseline, a legacy Cardy comparator, and the open-system microscopic diagnostic. Exact mode flags and file-level provenance are retained in the artifact registry; Fig.~\ref{fig:first_principles_migration} shows the resulting summary.
 
 \begin{figure}[t]
     \centering
@@ -2612,7 +2613,7 @@ To compare the two main migration directions on the same map-level metrics under
 
 \begin{table}[t]
 \centering
-\caption{Cross-module migration comparison from \texttt{paper/first\_principles\_migration\_summary.csv}. Scenario names are reviewer-facing summaries; the source CSV retains exact run-mode flags.}
+\caption{Cross-module migration comparison. Scenario names are reviewer-facing summaries; the source registry retains exact run-mode flags.}
 \label{tab:first_principles_migration}
 \small
 \begin{tabular}{lcccc}
@@ -2628,7 +2629,7 @@ open-system diagnostic & 0.927 & 0.0000 & 0.1500 & 0.0003 \\
 
 \subsection{Reference-Normalization Sensitivity Audit}
 \label{app:ref_anchor}
-Because Eq.~\eqref{eq:mu_pred} is currently reported as a relative scan-level observable normalized to a reference point $(D_0,\eta_0)$, we explicitly audit the sensitivity of this reporting convention with two reproducible scripts: \texttt{select\_reference\_anchor.py} and \texttt{scan\_reference\_anchor\_sensitivity.py}. The workflow is:
+Because Eq.~\eqref{eq:mu_pred} is currently reported as a relative scan-level observable normalized to a reference point $(D_0,\eta_0)$, we explicitly audit the sensitivity of this reporting convention with a registered selector-and-rescan workflow:
 \begin{enumerate}
     \item build a fixed-reference baseline map at $(D_0,\eta_0)=(10,1)$ on the same $60\times60$ grid;
     \item extract three candidate reference points: fixed-grid point, $\chi^2$-best [Eq.~\eqref{eq:anchor_chi2_best}], and robust-center [Eq.~\eqref{eq:anchor_robust_center}];
@@ -2675,55 +2676,12 @@ To close the finite-time module with the same action-derived spectral chain, we 
 t_{\rm coh}^{\rm(deph)}(D)\equiv \frac{\pi}{\Delta\omega_{12}(D)},
 \label{eq:tcoh_dephasing}
 \end{equation}
-where $(\omega_1,\omega_2)$ are extracted from the bound-state convention $E_n=\omega_n^2-m_0^2<0$ in the same 1D on-axis operator chain as Appendix~\ref{app:Veff}. The reproducible implementation is provided in the code directory (\texttt{extract\_tcoh\_dephasing\_1d.py}).
-
-\begin{table}[t]
-\centering
-\caption{1D on-axis dephasing candidate for $t_{\rm coh}$ at $D=\{6,12,18\}$ (coarse/mid/fine). Source CSV: \texttt{output/tcoh\_fp\_1d/tcoh\_dephasing\_D6-12-18.csv}.}
-\label{tab:tcoh_dephasing}
-\small
-\begin{tabular}{cccccc}
-\hline\hline
-$D$ & level & $\omega_1$ & $\omega_2$ & $\Delta\omega_{12}$ & $t_{\rm coh}^{\rm(deph)}$ \\
-\hline
-6  & coarse & 0.720883 & 0.738989 & $1.8107\times10^{-2}$ & $1.7350\times10^{2}$ \\
-6  & mid    & 0.721345 & 0.739468 & $1.8123\times10^{-2}$ & $1.7334\times10^{2}$ \\
-6  & fine   & 0.721500 & 0.739629 & $1.8129\times10^{-2}$ & $1.7329\times10^{2}$ \\
-12 & coarse & 0.721781 & 0.722035 & $2.5438\times10^{-4}$ & $1.2350\times10^{4}$ \\
-12 & mid    & 0.722258 & 0.722513 & $2.5533\times10^{-4}$ & $1.2304\times10^{4}$ \\
-12 & fine   & 0.722418 & 0.722674 & $2.5565\times10^{-4}$ & $1.2289\times10^{4}$ \\
-18 & coarse & 0.719404 & 0.719408 & $3.6700\times10^{-6}$ & $8.5602\times10^{5}$ \\
-18 & mid    & 0.719885 & 0.719888 & $3.6943\times10^{-6}$ & $8.5039\times10^{5}$ \\
-18 & fine   & 0.720046 & 0.720050 & $3.7025\times10^{-6}$ & $8.4850\times10^{5}$ \\
-\hline\hline
-\end{tabular}
-\end{table}
-
-For non-fine levels, the maximum relative deviation is
+where $(\omega_1,\omega_2)$ are extracted from the bound-state convention $E_n=\omega_n^2-m_0^2<0$ in the same 1D on-axis operator chain as Appendix~\ref{app:Veff}. Detailed coarse/mid/fine values and implementation provenance are retained in the artifact registry. On the benchmark set $D=\{6,12,18\}$, the maximum non-fine relative deviation is
 \begin{equation}
 \max\!\left(\frac{|t_{\rm coh}-t_{\rm coh}^{\rm(fine)}|}{|t_{\rm coh}^{\rm(fine)}|}\right)=8.86\times10^{-3},
 \end{equation}
 which is numerically stable at the sub-$10^{-2}$ level for this benchmark set.
-
-To assess map-level impact, we compared three cases on the same $60\times60$ $(D,\eta)$ grid within the legacy constant-$A_\ell$ reference chain: constant $t_{\rm coh}=1$, raw dephasing profile from Eq.~\eqref{eq:tcoh_dephasing}, and a capped variant $\min(t_{\rm coh}^{\rm(deph)},10^4)$. Results are summarized in Table~\ref{tab:tcoh_impact} (source CSV: \texttt{paper/tcoh\_profile\_impact.csv}).
-
-\begin{table}[t]
-\centering
-\caption{Global-scan impact of the dephasing $t_{\rm coh}$ candidate (diagnostic only; not baseline).}
-\label{tab:tcoh_impact}
-\small
-\begin{tabular}{lcccc}
-\hline\hline
-case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
-\hline
-constant $t_{\rm coh}=1$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
-$\pi/\Delta\omega_{12}(D)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
-$\min(\pi/\Delta\omega_{12},10^4)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
-\hline\hline
-\end{tabular}
-\end{table}
-
-The dephasing candidate leaves both $\mathcal{R}_3$ and $H\to\mu\mu$ summary fractions unchanged on this grid under the EFT/Wilson-matched diagnostic chain, and the best-$\chi^2$ movement is below the quoted table precision. Therefore, in this manuscript, Eq.~\eqref{eq:tcoh_dephasing} is reported as a first-principles candidate benchmark only and is not propagated into the baseline reported figures.
+The profile-impact scan compares constant $t_{\rm coh}=1$, raw Eq.~\eqref{eq:tcoh_dephasing}, and the capped variant $\min(t_{\rm coh}^{\rm(deph)},10^4)$. All three leave the headline map summaries unchanged in this diagnostic chain: $f(\mathcal{R}_3>0.90)=0.983$, $f(\mathcal{R}_3>0.95)=0.217$, $f(\chi^2_{\mu\mu}<4)=0.0833$, and best $\chi^2=9.62\times10^{-2}$. Therefore, in this manuscript, Eq.~\eqref{eq:tcoh_dephasing} is reported as a first-principles candidate benchmark only and is not propagated into the baseline reported figures.
 
 \subsection{Splitting-Prefactor First-Principles Candidate for \texorpdfstring{$\eta$}{eta}}
 \label{app:eta_candidate}
@@ -2738,58 +2696,12 @@ With a reference point $D_{\rm ref}=12$, we define two dimensionless candidates:
 \eta_{\rm prob}(D)\equiv \eta_{\rm amp}(D)^2.
 \label{eq:eta_pref_candidates}
 \end{equation}
-The reproducible script is \texttt{extract\_eta\_prefactor\_1d.py} in the \texttt{code/} directory.
-
-\begin{table}[t]
-\centering
-\caption{1D on-axis benchmark for $\eta$ prefactor candidates at $D=\{6,12,18\}$ (coarse/mid/fine). Source CSV: \texttt{output/eta\_fp\_1d/eta\_prefactor\_D6-12-18.csv}.}
-\label{tab:eta_prefactor}
-\small
-\begin{tabular}{ccccccc}
-\hline\hline
-$D$ & level & $\Delta E_{12}$ & $S_1$ & $A_{12}$ & $\eta_{\rm amp}$ & $\eta_{\rm prob}$ \\
-\hline
-6  & coarse & $2.6433\times10^{-2}$ & 4.28295 & 1.91521 & 1.04764 & 1.09755 \\
-6  & mid    & $2.6475\times10^{-2}$ & 4.29274 & 1.93709 & 1.05923 & 1.12197 \\
-6  & fine   & $2.6489\times10^{-2}$ & 4.28158 & 1.91661 & 1.04787 & 1.09803 \\
-12 & coarse & $3.6727\times10^{-4}$ & 8.51270 & 1.82812 & 1.00000 & 1.00000 \\
-12 & mid    & $3.6889\times10^{-4}$ & 8.50865 & 1.82877 & 1.00000 & 1.00000 \\
-12 & fine   & $3.6944\times10^{-4}$ & 8.50734 & 1.82906 & 1.00000 & 1.00000 \\
-18 & coarse & $5.2804\times10^{-6}$ & 12.75507 & 1.82864 & 1.00028 & 1.00056 \\
-18 & mid    & $5.3189\times10^{-6}$ & 12.75845 & 1.84820 & 1.01063 & 1.02137 \\
-18 & fine   & $5.3320\times10^{-6}$ & 12.74576 & 1.82936 & 1.00017 & 1.00033 \\
-\hline\hline
-\end{tabular}
-\end{table}
-
-For non-fine levels in Table~\ref{tab:eta_prefactor}, we obtain
+Detailed coarse/mid/fine values and implementation provenance are retained in the artifact registry. On the same $D=\{6,12,18\}$ benchmark set, we obtain
 \begin{equation}
 \max\!\left(\frac{|\eta_{\rm amp}-\eta_{\rm amp}^{\rm(fine)}|}{|\eta_{\rm amp}^{\rm(fine)}|}\right)=1.08\times10^{-2},\qquad
 \max\!\left(\frac{|\eta_{\rm prob}-\eta_{\rm prob}^{\rm(fine)}|}{|\eta_{\rm prob}^{\rm(fine)}|}\right)=2.18\times10^{-2},
 \end{equation}
-and the fine full-scan profile over $D=4,\dots,20$ gives $\eta_{\rm amp}\in[0.9996,1.1695]$ and $\eta_{\rm prob}\in[0.9992,1.3677]$ (source CSV: \texttt{output/eta\_fp\_1d/eta\_prefactor\_D4-5-\dots-20.csv}).
-
-To quantify map-level sensitivity, we compare a reference $\eta_{\rm eff}=\eta$ run (legacy constant-$A_\ell$ chain) against profile-scaled and fully-closed variants on the same $60\times60$ grid. Results are summarized in Table~\ref{tab:eta_impact} (source CSV: \texttt{paper/eta\_profile\_impact.csv}).
-
-\begin{table}[t]
-\centering
-\caption{Global-scan impact of $\eta$ prefactor candidates (diagnostic only; not baseline).}
-\label{tab:eta_impact}
-\small
-\begin{tabular}{lcccc}
-\hline\hline
-case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
-\hline
-reference $\eta_{\rm eff}=\eta$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
-$\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
-$\eta_{\rm eff}=\eta\,\eta_{\rm prob}(D)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
-$\eta_{\rm eff}=\eta_{\rm amp}(D)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
-$\eta_{\rm eff}=\eta_{\rm prob}(D)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
-\hline\hline
-\end{tabular}
-\end{table}
-
-At current scan resolution, both profile-scaled and fully closed implementations leave the headline map-level summaries unchanged in this diagnostic chain; the residual movement is only in sub-table-precision best-$\chi^2$ shifts. Therefore, Eq.~\eqref{eq:eta_pref_candidates} is reported as a first-principles candidate benchmark and is not propagated into baseline reported figures.
+and the fine full-scan profile over $D=4,\dots,20$ gives $\eta_{\rm amp}\in[0.9996,1.1695]$ and $\eta_{\rm prob}\in[0.9992,1.3677]$. Profile-scaled and fully closed implementations leave the headline map-level summaries unchanged in this diagnostic chain; the residual movement is only in sub-table-precision best-$\chi^2$ shifts. Therefore, Eq.~\eqref{eq:eta_pref_candidates} is reported as a first-principles candidate benchmark and is not propagated into baseline reported figures.
 
 \subsection{Action-Derived First-Principles Candidate for Barrier-Leakage Channel Scaling}
 \label{app:superrad_candidate}
@@ -2813,57 +2725,33 @@ Using $(D_{\rm ref},N_{\rm ref})=(12,2)$, we define profile factors
 \tilde A_\ell(D)\equiv \frac{A_\ell^{\rm(fp)}(D;N_{\rm ref})}{A_\ell^{\rm(fp)}(D_{\rm ref};N_{\rm ref})}.
 \label{eq:superrad_A_profile}
 \end{equation}
-The reproducible script is \texttt{extract\_superrad\_prefactor\_1d.py} in the \texttt{code/} directory; the historical filename is retained for artifact compatibility.
-
-\begin{table}[t]
-\centering
-\caption{1D on-axis benchmark for barrier-leakage channel-profile candidates at $D=\{6,12,18\}$ (coarse/mid/fine). Source CSV: \texttt{output/superrad\_fp\_1d/superrad\_prefactor\_D6-12-18.csv}.}
-\label{tab:superrad_prefactor}
-\small
-\begin{tabular}{cccccccc}
-\hline\hline
-$D$ & level & $\omega_{N_{\rm ref}}$ & $S_{N_{\rm ref},1}$ & $S_{N_{\rm ref},2}$ & $\tilde A_1$ & $\tilde A_2$ & $A_2^{\rm(fp)}/A_1^{\rm(fp)}$ \\
-\hline
-6  & coarse & 0.738989 & 12.7478 & 20.7033 & $1.2936\times10^{4}$ & $5.5305\times10^{4}$ & $4.1247\times10^{-7}$ \\
-6  & mid    & 0.739468 & 12.7644 & 20.7073 & $1.2452\times10^{4}$ & $5.4667\times10^{4}$ & $4.2192\times10^{-7}$ \\
-6  & fine   & 0.739629 & 12.7711 & 20.7088 & $1.2652\times10^{4}$ & $5.6814\times10^{4}$ & $4.2589\times10^{-7}$ \\
-12 & coarse & 0.722035 & 17.5746 & 26.3029 & $1.0000$ & $1.0000$ & $9.6480\times10^{-8}$ \\
-12 & mid    & 0.722513 & 17.5720 & 26.3009 & $1.0000$ & $1.0000$ & $9.6103\times10^{-8}$ \\
-12 & fine   & 0.722674 & 17.5866 & 26.3217 & $1.0000$ & $1.0000$ & $9.4844\times10^{-8}$ \\
-18 & coarse & 0.719408 & 22.0000 & 31.0465 & $1.47\times10^{-4}$ & $7.9\times10^{-5}$ & $5.1810\times10^{-8}$ \\
-18 & mid    & 0.719888 & 22.0060 & 31.0550 & $1.45\times10^{-4}$ & $7.8\times10^{-5}$ & $5.1411\times10^{-8}$ \\
-18 & fine   & 0.720050 & 22.0043 & 31.0573 & $1.50\times10^{-4}$ & $8.0\times10^{-5}$ & $5.0954\times10^{-8}$ \\
-\hline\hline
-\end{tabular}
-\end{table}
-
-For non-fine rows in Table~\ref{tab:superrad_prefactor}, the maximum relative deviations are
+Detailed coarse/mid/fine values and implementation provenance are retained in the artifact registry. On the $D=\{6,12,18\}$ benchmark set, the maximum non-fine relative deviations are
 \begin{equation}
 \max\!\left(\frac{|\tilde A_1-\tilde A_1^{\rm(fine)}|}{|\tilde A_1^{\rm(fine)}|}\right)=3.22\times10^{-2},\quad
 \max\!\left(\frac{|\tilde A_2-\tilde A_2^{\rm(fine)}|}{|\tilde A_2^{\rm(fine)}|}\right)=3.78\times10^{-2}.
 \end{equation}
-The fine full-scan profile over $D=4,\dots,20$ yields $\tilde A_1\in[8.54\times10^{-6},\,4.10\times10^5]$ and $\tilde A_2\in[3.95\times10^{-6},\,4.92\times10^6]$ (source files in \texttt{output/superrad\_fp\_1d/}), indicating a very stiff $D$-dependence in this preliminary closure.
+The fine full-scan profile over $D=4,\dots,20$ yields $\tilde A_1\in[8.54\times10^{-6},\,4.10\times10^5]$ and $\tilde A_2\in[3.95\times10^{-6},\,4.92\times10^6]$, indicating a very stiff $D$-dependence in this preliminary closure.
 
-To quantify map-level sensitivity, we compare a legacy constant-$A_\ell$ reference $(A_1,A_2)=(1,1)$ against profile-scaled implementations on the same $60\times60$ grid. Results are summarized in Table~\ref{tab:superrad_impact} (source CSV: \texttt{paper/superrad\_profile\_impact.csv}).
+At current scan resolution, Table~\ref{tab:late_fp_profile_summary} shows that the $t_{\rm coh}$ and $\eta$ candidates are stable diagnostics whose map-level effects are below headline precision, while replacing the legacy constant-$A_\ell$ reference by the action-derived profile induces non-negligible shifts in $\mathcal{R}_3$ coverage. In the updated global scans of this manuscript, Eq.~\eqref{eq:superrad_A_profile} is used in baseline mode, and $(A_1,A_2)=(1,1)$ is retained only as a comparator.
 
-\begin{table}[t]
+\begin{table}[ht]
 \centering
-\caption{Global-scan impact of barrier-leakage channel-profile candidates (diagnostic only; not baseline).}
-\label{tab:superrad_impact}
+\caption{Compressed late-stage diagnostic summary for the three first-principles profile candidates. Detailed coarse/mid/fine tables and exact run artifacts are retained in the artifact registry.}
+\label{tab:late_fp_profile_summary}
 \small
-\begin{tabular}{lcccc}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l l l l@{}}
 \hline\hline
-case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
+Candidate & Local benchmark & Full/profile range & Map-level impact \\
 \hline
-legacy const $(A_1,A_2)=(1,1)$ & 0.9833 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
-action-profile $(A_1,A_2)=(\tilde A_1,\tilde A_2)$ & 0.9269 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
-$(A_1,A_2)=0.5(\tilde A_1,\tilde A_2)$ & 0.9061 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
-$(A_1,A_2)=2(\tilde A_1,\tilde A_2)$ & 0.9469 & 0.217 & 0.0833 & $5.10\times10^{-2}$ \\
+\parbox[t]{0.16\textwidth}{$t_{\rm coh}^{\rm(deph)}$} & \parbox[t]{0.22\textwidth}{non-fine drift $8.86\times10^{-3}$ vs fine} & \parbox[t]{0.23\textwidth}{raw and capped profiles tested} & \parbox[t]{0.25\textwidth}{$f(\mathcal R_3>0.90)=0.983$, $f(\chi^2_{\mu\mu}<4)=0.0833$, best $\chi^2=9.62\times10^{-2}$ unchanged} \\
+\parbox[t]{0.16\textwidth}{$\eta_{\rm amp},\eta_{\rm prob}$} & \parbox[t]{0.22\textwidth}{max drifts $1.08\times10^{-2}$ and $2.18\times10^{-2}$} & \parbox[t]{0.23\textwidth}{$\eta_{\rm amp}\in[0.9996,1.1695]$, $\eta_{\rm prob}\in[0.9992,1.3677]$} & \parbox[t]{0.25\textwidth}{profile-scaled and fully closed variants leave headline map summaries unchanged} \\
+\parbox[t]{0.16\textwidth}{$\tilde A_\ell(D)$} & \parbox[t]{0.22\textwidth}{max drifts $3.22\times10^{-2}$ and $3.78\times10^{-2}$} & \parbox[t]{0.23\textwidth}{$\tilde A_1\in[8.54\times10^{-6},4.10\times10^5]$, $\tilde A_2\in[3.95\times10^{-6},4.92\times10^6]$} & \parbox[t]{0.25\textwidth}{action profile shifts $f(\mathcal R_3>0.90)$ from $0.9833$ to $0.9269$; $H\to\mu\mu$ acceptance stays $0.0833$} \\
 \hline\hline
 \end{tabular}
 \end{table}
 
-At current scan resolution, replacing the legacy constant-$A_\ell$ reference by the action-derived profile induces non-negligible shifts in $\mathcal{R}_3$ coverage, while the $H\to\mu\mu$ acceptance area in this diagnostic chain remains unchanged. In the updated global scans of this manuscript, Eq.~\eqref{eq:superrad_A_profile} is used in baseline mode, and $(A_1,A_2)=(1,1)$ is retained only as a comparator.
+\clearpage
 
 
 \section{Ansatz Ablation Study}

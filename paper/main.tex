@@ -773,8 +773,15 @@ In the baseline \texttt{eft\_wilson\_uv\_rge} mode used for figures, we evaluate
 In the baseline figures we keep a fixed reference point $(D_0,\eta_0)=(10,1)$ for comparability across scan variants.
 This fixed point should be read as a \emph{reference-normalization convention} for the relative scan-level observable in Eq.~\eqref{eq:mu_pred}, not as a physical anchor of the Higgs sector itself. The stronger normalization-side information now comes from the absolute and loop-improved parent-action comparators below together with the reference-normalization-invariant Wilson-diagonal ratios reported later in the section.
 Equation~\eqref{eq:mu_pred} is implemented in \path{pslt_lib.py} as the UV+LL-RG Higgs observable; it remains a scan-level EFT module rather than a full loop-level EYMH$\rightarrow$EFT derivation.
-To push this interface toward UV-to-EFT matching, we run a reproducible UV-tree $\rightarrow$ finite-match $\rightarrow$ LL-RG audit with \path{scan_hll_uv_to_eft_matching.py}. The canonical outputs are \path{paper/hll_uv_to_eft_map.csv} and \path{paper/hll_uv_to_eft_summary.csv}. In the baseline UV settings ($\texttt{uv\_blend}=0$, $\texttt{uv\_m2\_power}=1$, $\kappa_{\rm diag}=\kappa_{\rm offdiag}=0$), the finite-match step is numerically null at map level ($\max |\Delta C_{\mu\mu}^{\rm match}|=10^{-30}$), while LL-RG drift remains bounded: $\langle |\Delta \mu_{\mu\mu}|\rangle \simeq 6.19\times10^{-4}$ and $\max |\Delta \mu_{\mu\mu}|\simeq 8.93\times10^{-3}$; $f(\chi^2_{\mu\mu}<4)$ is unchanged between UV-tree and UV+LL-RG.
-To make the matching chain explicit at the operator level, we also export a layer-resolved basis witness with \path{scan_hll_uv_operator_basis_audit.py}; the corresponding map and summary are stored under \path{paper/hll_uv_operator_basis_*}. There the UV-tree closure is reconstructed as
+
+\medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
+On the audited map, the scan-level chain
+\[
+C_{eH}^{\rm tree}\;\longrightarrow\; C_{eH}^{\rm match}\;\longrightarrow\; C_{eH}^{\rm IR}
+\]
+admits an explicit operator-basis reconstruction with numerically controlled deformation relative to the UV-tree baseline.
+\emph{Verified numerics.} The reproducible audit \path{scan_hll_uv_to_eft_matching.py} (canonical outputs \path{paper/hll_uv_to_eft_map.csv} and \path{paper/hll_uv_to_eft_summary.csv}) shows that in the baseline UV settings ($\texttt{uv\_blend}=0$, $\texttt{uv\_m2\_power}=1$, $\kappa_{\rm diag}=\kappa_{\rm offdiag}=0$) the finite-match step is numerically null at map level ($\max |\Delta C_{\mu\mu}^{\rm match}|=10^{-30}$), while LL-RG drift remains bounded: $\langle |\Delta \mu_{\mu\mu}|\rangle \simeq 6.19\times10^{-4}$ and $\max |\Delta \mu_{\mu\mu}|\simeq 8.93\times10^{-3}$; $f(\chi^2_{\mu\mu}<4)$ is unchanged between UV-tree and UV+LL-RG.
+To make that witness explicit at the operator level, we also export a layer-resolved basis audit with \path{scan_hll_uv_operator_basis_audit.py}; the corresponding map and summary are stored under \path{paper/hll_uv_operator_basis_*}. There the UV-tree closure is reconstructed as
 \begin{equation}
 C_{eH}^{\rm tree}=\sum_{N=1}^{3}\left(\frac{P_N^{\rm kin}}{M_N^2}\right)\,\mathcal B_N^{(eH)},
 \qquad
@@ -847,7 +854,8 @@ Figure~\ref{fig:hll_uv_parented_comparator} summarizes this normalization-side e
     \label{fig:hll_uv_parented_comparator}
 \end{figure}
 
-We now tighten this statement by decomposing the canonical EYMH-side prefactor itself. The exported audit under \path{paper/hll_uv_*eymh_prefactor_decomposition*_D21E21.*} verifies at numerical precision that
+\medskip\noindent\textbf{Proposition U2 (Factorized EYMH prefactor).}
+The canonical EYMH-side normalization block admits an exact factorization into local loop, shell-access, participation, and dispersion-screen sectors. The exported audit under \path{paper/hll_uv_*eymh_prefactor_decomposition*_D21E21.*} verifies at numerical precision that
 \begin{align}
 \Pi_{\rm EYMH}=\Pi_{\rm loc}\,A_{\rm sh}\,A_{\rm part}\,S_{\rm disp},
 \end{align}
@@ -914,7 +922,8 @@ A_{\rm part}^{\rm tilt}\,
 S_{\rm tree},
 \]
 with $\max|\Delta\Pi_{\rm parent}|=9.02\times10^{-17}$. In this language the surviving EYMH normalization gap is narrower again: what remains is to explain why the fluctuation operator dynamically fixes this exact projected coefficient-norm tilt coherence together with the shell-background-normalized tree-diagonal pressure/compressibility response.
-We can push this parent-action reading one step further by absorbing the participation tilt and the tree-diagonal compressibility into a single projected response action. The response-action audit stored under \path{paper/hll_uv_*response_action_audit*_D21E21_fix.*} defines
+\medskip\noindent\textbf{Proposition U3 (Projected response action).}
+The participation tilt and the tree-diagonal compressibility combine additively into a single projected response action. The response-action audit stored under \path{paper/hll_uv_*response_action_audit*_D21E21_fix.*} defines
 \[
 S_{\rm resp}=\Delta F_{\rm norm}+\log(1+\chi_{\rm tree}),
 \qquad
@@ -939,7 +948,8 @@ so that
 S_{\rm resp}=\log\det K_{\rm part}+\log G_{\rm Schur}.
 \]
 On the canonical D21$\times$E21 fix grid this log-det / Schur rewriting again reconstructs the full response weight and parented prefactor to machine precision, with $\max|\Delta A_{\rm resp}^{\rm logdet}|=2.22\times10^{-16}$ and $\max|\Delta\Pi_{\rm parent}^{\rm logdet}|=9.71\times10^{-17}$. The surviving EYMH normalization block can therefore be read as an exact projected log-det participation kernel together with a shell-background-normalized Schur response. The remaining gap is now narrower still: explain why the fluctuation operator dynamically selects precisely this projected log-det / Schur structure.
-We can now phrase that remaining question as a genuine kernel-selection test rather than a bookkeeping issue. The audit stored under \path{paper/hll_uv_*kernel_selection*_D21E21_fix.*} probes the minimal deformed projected family
+\medskip\noindent\textbf{Proposition U4 (Kernel-selection principle).}
+The remaining UV-side question can be phrased as a genuine kernel-selection statement rather than as bookkeeping. The audit stored under \path{paper/hll_uv_*kernel_selection*_D21E21_fix.*} probes the minimal deformed projected family
 \[
 K_{\rm sel}=
 \begin{pmatrix}
@@ -2425,7 +2435,8 @@ B_a^{(F)}(z)=\kappa_{\rm eff}^{-1}(z)\,K_{{\rm sys},a}^{-1/2}(z)\,K_{{\rm bath},
 \]
 So an exact amplitude-only renormalization preserves the normalized block if and only if $F(z)$ is constant on the audited knot set. This is exactly what the absolute-normalization audit finds: the canonical locked uniform family keeps the bridge-normalization residuals at machine level ($\sim 8\times10^{-13}$ on the observable/mixing channels), whereas the best non-uniform admissible family improves the holdout RMSE only marginally ($6\times10^{-5}$) while inflating the same normalized residuals to $\sim 10^{-2}$. In that precise local sense, $\kappa_{\rm env}$ is already singled out as the unique exact amplitude modulus, and the remaining microscopic question is no longer whether it mixes with bath shape on the present knot set, but why the parent EYMH dynamics produces this modulus in the first place.
 
-One can also push the third obligation one notch further without yet claiming a full bath derivation. Let $\Delta V$ denote the parent perturbation projected to the parity doublet, so that on the audited knot set
+\medskip\noindent\textbf{Proposition O1 (Projected two-channel interaction).}
+Without invoking a full bath derivation, the parent perturbation projected to the audited parity doublet already fixes the leading localized interaction to a two-channel Pauli block. Let $\Delta V$ denote the parent perturbation projected to the parity doublet, so that on the audited knot set
 \[
 V_{{\rm par},a}=
 \begin{pmatrix}
@@ -2456,7 +2467,8 @@ g_{x,a}=\left|\frac{v_{11,a}-v_{22,a}}{2}\right|.
 \]
 This remains an effective two-level statement rather than a completed EYMH bath theorem, but it shows that the present $\sigma_z/\sigma_x$ bridge is already the most general leading projection compatible with the audited real localized doublet. Numerically, the full $17$-point micro export verifies this decomposition at machine precision: the reconstructed localized entries $(V_{LL},V_{RR},V_{LR})$ agree with the exported map at $\le 7\times10^{-18}$, while $g_z-|v_{12}|$ and $g_x-\bigl|(v_{11}-v_{22})/2\bigr|$ stay below $2.2\times10^{-18}$ and $1.3\times10^{-18}$ respectively. The remaining microscopic bath question is therefore narrower than a generic reservoir identification: one still has to explain why the parent EYMH environment induces the two on-shell kernels multiplying these projected $\sigma_z$ and $\sigma_x$ directions, not why those directions themselves appear in the audited two-level reduction.
 
-Within the present minimal bridge, those two kernels are themselves not independent shape functions but on-shell evaluations of the same response family. The audited micro extraction uses
+\medskip\noindent\textbf{Proposition O2 (Single gap-locked response family).}
+Within the present minimal bridge, the dephasing and mixing kernels are not independent shape functions but on-shell evaluations of a single response family. The audited micro extraction uses
 \[
 S_a(\omega)=\frac{2\tau_{{\rm env},a}}{1+(\omega\tau_{{\rm env},a})^2},
 \]
@@ -2500,7 +2512,8 @@ S_a(\omega)=\frac{2/\omega_{1,a}}{1+(\omega/\omega_{1,a})^2},
 \]
 On the current export the maximal defect in $\tau_{{\rm env},a}-\omega_{1,a}^{-1}$ is $1.1\times10^{-16}$, the on-shell suppression law above again holds to $3.3\times10^{-16}$, and the resulting band $S_{xx,a}(\Delta E_a)/S_{zz,a}(0)$ stays in the narrow interval $[0.9246,0.9800]$. In this precise effective sense, the remaining EYMH bath-origin question is no longer why two unrelated kernels appear, but why the parent environment linearizes to a single dominant pole whose correlation time is locked to the same local gap scale $\omega_{1,a}^{-1}$ that enters the audited two-level reduction.
 
-One can sharpen that dominant-pole question by phrasing it directly in the parent-kernel language already used in the EYMH subsection. Let
+\medskip\noindent\textbf{Proposition O3 (Schur-resolvent reformulation).}
+The dominant-pole question can be stated directly in the same parent-kernel language used in the EYMH subsection. Let
 \[
 R_a(\omega):=u_a^{\top}(M_a^2+\omega^2 I)^{-1}u_a
 \]
@@ -2520,7 +2533,8 @@ S_a(\omega)=\frac{2/\omega_{1,a}}{1+(\omega/\omega_{1,a})^2}.
 \]
 The present audits do not yet prove this first-mode dominance theorem, but they isolate it as the next genuinely microscopic target rather than leaving an undifferentiated reservoir ansatz. On the EYMH parent side, the log-det / Schur witness and the parent block-determinant / Schur audit already close to machine precision, with $\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}$, $\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}$, and $\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}$. On the open-system side, the same audited knot set already satisfies $\tau_{{\rm env},a}=\omega_{1,a}^{-1}$ and the on-shell rate identities to machine precision. In this narrowed sense, the unresolved bath-origin problem is no longer why some effective Lorentzian fit works, but why the projected Schur resolvent is first-mode dominant and why its leading pole is locked to the same local gap scale $\omega_{1,a}$.
 
-The natural next theorem target can therefore be written as an explicit remainder bound rather than as a qualitative hope. Decompose
+\medskip\noindent\textbf{Theorem Target O1 (First-mode remainder bound).}
+The remaining microscopic step is an explicit remainder estimate rather than a qualitative bath ansatz. Decompose
 \[
 R_a(\omega)=R^{(1)}_a(\omega)+\mathcal R_a(\omega),
 \qquad

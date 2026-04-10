@@ -1,4 +1,4 @@
-\documentclass[aps,prd,onecolumn,notitlepage,nofootinbib,superscriptaddress,11pt]{revtex4-2}
+\documentclass[aps,prd,onecolumn,notitlepage,nofootinbib,superscriptaddress,11pt,floatfix]{revtex4-2}
 
 % -------- packages --------
 \usepackage{amsmath,amssymb,bm}
@@ -137,7 +137,7 @@ For transparency, we additionally provide a bound-state exact benchmark for $(\o
 \label{sec:assumption_status}
 For transparency, Table~\ref{tab:assumption_status} separates action-derived components from EFT-level surrogates currently used in the global scan.
 
-\begin{table*}[htbp]
+\begin{table}[htbp]
 \centering
 \caption{Status map of the PSLT closed chain in the present manuscript.}
 \label{tab:assumption_status}
@@ -150,7 +150,7 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \midrule
 \parbox[t]{0.17\textwidth}{$\Omega(\rho,z;D)$ two-center geometry} & \parbox[t]{0.28\textwidth}{Projected-Poisson two-source Green solution} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Derive the same source from an explicit higher-dimensional parent} \\
 \parbox[t]{0.17\textwidth}{$V_{\rm eff}$, low modes, WKB action} & \parbox[t]{0.28\textwidth}{Action-derived and numerically converged} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Extend the same solver chain to the full $(D,\eta,N)$ map} \\
-\parbox[t]{0.17\textwidth}{$g_N$ phase-space profile} & \parbox[t]{0.28\textwidth}{Bounded two-dimensional phase-space baseline; direct spectral parity and risk-weighted visibility parity checks available} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Treat the strict all-direct broader-grid rule as parked at the current case-aware late-polish endpoint; reopen only for a genuinely new observable-side mechanism class} \\
+\parbox[t]{0.17\textwidth}{$g_N$ phase-space profile} & \parbox[t]{0.28\textwidth}{Bounded two-dimensional phase-space baseline; direct spectral parity and risk-weighted visibility parity checks available} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Treat the strict all-direct broader-grid rule as parked at the current case-aware endpoint; reopen only for a genuinely new observable-side mechanism class} \\
 \parbox[t]{0.17\textwidth}{$\chi_N^{(LR)}(D)$ localized channel} & \parbox[t]{0.28\textwidth}{Full D-grid localized profile from 2D fine extraction; release-production parity path available} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep the current localized-direct parity path as the production support line; the longer-horizon upgrade is a fully localized extraction over $(D,\eta,N)$ rather than another profile-blend retune} \\
 \parbox[t]{0.17\textwidth}{$\Gamma_{N,\ell}$ channel normalization ($A_\ell$)} & \parbox[t]{0.28\textwidth}{Action-derived $\tilde A_\ell(D)$ baseline with stabilized localized-direct support; legacy constant-$A_\ell$ kept only as comparator} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Move to fully localized channel-resolved direct extraction over $(D,\eta,N)$} \\
 \parbox[t]{0.17\textwidth}{Open-system $\chi_{\rm eff}$ (Lindblad)} & \parbox[t]{0.28\textwidth}{Locally closed projected effective-action diagnostic: scalar modulus $\kappa_{\rm env}$, projected $\sigma_z/\sigma_x$ jet, and single-pole gap-locked response family are now explicit on the audited knot set} & \parbox[t]{0.13\textwidth}{Diagnostic only} & \parbox[t]{0.24\textwidth}{Promote the current completion to a parent-side Schur statement by proving first-mode dominance of the projected resolvent on $\omega\in\{0,\Delta E_a\}$ with $\Omega_{1,a}=\omega_{1,a}$} \\
@@ -158,7 +158,8 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \parbox[t]{0.17\textwidth}{$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}]} & \parbox[t]{0.28\textwidth}{EFT/Wilson-matched baseline with UV-tree, finite-one-loop, and LL-RG audits} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Extend the current closure to fuller UV-to-EFT matching from the EYMH action} \\
 \bottomrule
 \end{tabular}
-\end{table*}
+\end{table}
+\clearpage
 
 
 % ============================================================
@@ -290,7 +291,7 @@ This is a \textbf{single-track derivation} for the extraction subchain: there is
 
 
 % ============================================================
-\section{Module 1: The Three Routes to Micro-Degeneracy gN}
+\section{Module 1: The Three Routes to Micro-Degeneracy \texorpdfstring{$g_N$}{gN}}
 \label{sec:gN}
 
 The factor $g_N$ counts the effective degrees of freedom in layer $N$. We justify its form via three convergent theoretical routes.
@@ -318,7 +319,7 @@ g_N(c_{\rm eff}, \nu, \kappa_g) = \frac{\exp\left( 2\pi \sqrt{\frac{c_{\rm eff} 
 }
 \label{eq:gN_reg}
 \end{equation}
-The first factor is the standard Cardy envelope; the Gaussian-in-$N$ term corresponds to a $q^{(N-1)^2}$ suppression with $q=\exp(-\kappa_g)$ and prevents entropic runaway of arbitrarily high layers. In this manuscript, Eq.~\eqref{eq:gN_reg} is retained as a legacy comparator and uncertainty reference, while the scan baseline uses the phase-space-normalized \texttt{fp\_2d\_full} profile.
+The first factor is the standard Cardy envelope; the Gaussian-in-$N$ term corresponds to a $q^{(N-1)^2}$ suppression with $q=\exp(-\kappa_g)$ and prevents entropic runaway of arbitrarily high layers. In this manuscript, Eq.~\eqref{eq:gN_reg} is retained as a legacy comparator and uncertainty reference, while the reported scan baseline uses the bounded two-dimensional phase-space profile.
 
 \textbf{Summary of motivational roles.} Route A (Mock-modular) and Route B (ER=EPR) support the Cardy envelope's plausibility; Route C (QG Template) supports the necessity of a high-$N$ regulator. Equation~\eqref{eq:gN_reg} remains an \emph{EFT-level comparator ansatz} in this version.
 
@@ -351,12 +352,12 @@ We also evaluated a semiclassical phase-space candidate to replace Eq.~\eqref{eq
 \rho_{\rm WKB}(E)\propto \int_{U(z)<E}\frac{\dd z}{\sqrt{E-U(z)}},\qquad
 g_N^{\rm(ps)} \sim 1+\int \rho_{\rm WKB}(E)\,\dd E,
 \end{equation}
-with $U(z)=V_{\rm eff}(z)-m_0^2$ from the same action-derived geometry. The naive 1D implementation is not a drop-in baseline (for bound layers $E_N<0$, using $(0\to E_N)$ is inconsistent with the bound-state threshold convention and can produce nonphysical normalization behavior, including $g_N<1$ in low layers). We therefore use the converged 2D microcanonical extraction in \texttt{fp\_2d\_full} as baseline, while Eq.~\eqref{eq:gN_reg} is kept as a legacy comparator.
+with $U(z)=V_{\rm eff}(z)-m_0^2$ from the same action-derived geometry. The naive 1D implementation is not a drop-in baseline (for bound layers $E_N<0$, using $(0\to E_N)$ is inconsistent with the bound-state threshold convention and can produce nonphysical normalization behavior, including $g_N<1$ in low layers). We therefore use the converged two-dimensional microcanonical extraction as baseline, while Eq.~\eqref{eq:gN_reg} is kept as a legacy comparator.
 
 
 
 % ============================================================
-\section{Module 2: Rank-2 Computable Kinetics GammaN}
+\section{Module 2: Rank-2 Computable Kinetics \texorpdfstring{$\Gamma_N$}{GammaN}}
 \label{sec:kinetics}
 
 The kinetic rate $\Gamma_N$ determines how strictly the geometry selects specific layers. We upgrade previous heuristic models to a rigorous Rank-2 system.
@@ -435,22 +436,22 @@ The channel rates $\Gamma_{N,\ell}$ are modeled by a Kerr-inspired barrier-leaka
 \end{equation}
 and write
 \begin{equation}
-\hat{\Gamma}_{N,\ell} = A_\ell \,\hat{\omega}_N^{4\ell+5},
+\hat{\Gamma}_{N,\ell} = A_\ell(D) \,\hat{\omega}_N^{4\ell+5},
 \label{eq:Gamma_channel_hat}
 \end{equation}
 which is equivalent to
 \begin{equation}
-\Gamma_{N,\ell} = A_\ell \, \omega_N \left(\frac{\omega_N}{M_*}\right)^{4\ell+4}, \qquad A_\ell \equiv 1 \ (\text{demonstrator}),
+\Gamma_{N,\ell} = A_\ell(D) \, \omega_N \left(\frac{\omega_N}{M_*}\right)^{4\ell+4},
 \label{eq:Gamma_channel}
 \end{equation}
-In the demonstrator, we map the two-mode basis to the two lowest leakage channels (legacy ``superrad'' naming kept in file/script paths for reproducibility compatibility):
+The legacy demonstrator corresponds to $A_\ell(D)=1$, while the reported baseline uses the action-derived profile factors $A_\ell(D)=\tilde A_\ell(D)$ from Appendix~\ref{app:superrad_candidate}. In the two-channel truncation, we map the two-mode basis to the two lowest leakage channels:
 \begin{equation}
 \Gamma_{N,a}\equiv \Gamma_{N,1},\qquad
 \Gamma_{N,b}\equiv \Gamma_{N,2},\qquad
 \bar{\Gamma}_N\equiv\sqrt{\Gamma_{N,a}\Gamma_{N,b}}.
 \label{eq:gamma_basis_map}
 \end{equation}
-Any mixing matrix element is rendered dimensionless with $\bar{\Gamma}_N$, independent of whether the basis is parity $(+,-)$ or localized $(L,R)$. Higher-$\ell$ modes are parametrically suppressed by the $\hat{\omega}_N^{4\ell+4}$ scaling and are deferred to future extensions. All baseline scans are reported in \textbf{dimensionless units} ($M_*=1$), where Eq.~\eqref{eq:Gamma_channel_hat} and Eq.~\eqref{eq:Gamma_channel} are numerically identical. In the legacy demonstrator $A_\ell$ was fixed to unity; in the updated baseline we use the action-derived profile factors $\tilde A_\ell(D)$ from Appendix~\ref{app:superrad_candidate}, while retaining constant-$A_\ell$ as a comparator.
+Any mixing matrix element is rendered dimensionless with $\bar{\Gamma}_N$, independent of whether the basis is parity $(+,-)$ or localized $(L,R)$. Higher-$\ell$ modes are parametrically suppressed by the $\hat{\omega}_N^{4\ell+4}$ scaling and are deferred to future extensions. All baseline scans are reported in \textbf{dimensionless units} ($M_*=1$), where Eq.~\eqref{eq:Gamma_channel_hat} and Eq.~\eqref{eq:Gamma_channel} are numerically identical. Constant-$A_\ell$ results are retained only as comparators.
 The effective formation rate of layer $N$ is the largest positive eigenvalue of this matrix:
 \begin{equation}
 \boxed{
@@ -470,10 +471,10 @@ This ``Rank-2 Closure'' ensures that $\Gamma_N$ is not a fitted parameter but a 
 
 The channel scaling in Eq.~\eqref{eq:Gamma_channel} is interpreted as a quasi-bound leakage-width proxy in the two-center geometry. In general, a field mode trapped by a potential barrier has a complex frequency:
 \begin{equation}
-\omega_N = \omega_N^{(R)} - i\,\omega_N^{(I)}, \qquad \Gamma_N \equiv 2\omega_N^{(I)},
+\omega_N = \omega_N^{(R)} - i\,\omega_N^{(I)}, \qquad \Gamma_N^{\rm(width)} \equiv 2\omega_N^{(I)},
 \label{eq:complex_omega}
 \end{equation}
-where $\omega_N^{(I)} > 0$ represents the decay rate due to tunneling or radiation to infinity.
+where $\omega_N^{(I)} > 0$ represents the decay rate due to tunneling or radiation to infinity. This width proxy motivates the channel factors $\Gamma_{N,\ell}$; it is distinct from the final matrix-derived formation rate $\Gamma_N(D,\eta)$ in Eq.~\eqref{eq:GammaN_eigen}.
 
 For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from a rotating-background setup. In the static dual-center geometry considered here (no ergoregion), we use the same power as a leakage-template ansatz: modes must tunnel through the geometric barrier (captured by WKB factor $e^{-2S_N}$), while $\Gamma_{N,\ell}$ encodes the residual channel-dependent escape width. A full non-Hermitian width derivation for this static geometry is left as a dedicated upgrade path.
 
@@ -502,7 +503,7 @@ Figure~\ref{fig:mixing_channels} summarizes this channel interpretation and the 
 
 
 % ============================================================
-\section{Module 3: EFT-Normalized Visibility BN}
+\section{Module 3: EFT-Normalized Visibility \texorpdfstring{$B_N$}{BN}}
 \label{sec:BN}
 
 In early versions of the theory, $B_N$ was an arbitrary matching factor. In the present EFT-operator-normalized baseline, $B_N(D)$ is defined by fully normalized EFT operator kernels built from overlap-extracted flavor-layer couplings and mediator scales from the same 2D localized operator chain as Appendix~\ref{app:chi_loc}; finite one-loop matching and LL-RG normalization are applied before layer-wise normalization. Mode tracking and microcanonical-window averaging suppress branch-switch artifacts in the overlap extraction stage, while high-$N$ regularization remains isolated in Eq.~\eqref{eq:gN_reg}.
@@ -644,7 +645,7 @@ $(11.0,1.4)$ & $2/2$ & $2.51\times10^{-4}$ & $3.06\times10^{-4}$ & $0$ & $2.85\t
 \end{tabular}
 \end{table}
 
-To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and the legacy visibility-comparator exponent $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map and full-grid action-derived $\chi_{LR}(D)$/$\tilde A_\ell(D)$ profiles). Results are summarized in Table~\ref{tab:core_param_robustness} from \texttt{paper/core\_param\_robustness.csv}. Since $p_B$ is inactive in the \texttt{eft\_operator\_norm} baseline, that row is retained as a legacy-comparator sensitivity check rather than an active closure knob. Across this local window, the key fractions remain unchanged: $f(\mathcal{R}_3>0.90)=0.9269$, $f(\chi_{\mu\mu}^2<4)=0.1500$, and $f(N_{\rm win}>3)\approx2.78\times10^{-4}$.
+To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and the legacy visibility-comparator exponent $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map and full-grid action-derived $\chi_{LR}(D)$/$\tilde A_\ell(D)$ profiles). Results are summarized in Table~\ref{tab:core_param_robustness}. Since $p_B$ is inactive in the EFT-operator-normalized baseline, that row is retained as a legacy-comparator sensitivity check rather than an active closure knob. Across this local window, the key fractions remain unchanged: $f(\mathcal{R}_3>0.90)=0.9269$, $f(\chi^2_{\mu\mu}<4)=0.1500$, and $f(N_{\rm win}>3)\approx2.78\times10^{-4}$.
 
 \begin{table}[t]
 \centering
@@ -662,10 +663,10 @@ $p_B$ & $0.28/0.30/0.32$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\D
 \end{tabular}
 \end{table}
 
-To make the full direct chain a release-level primary path, we define a reproducible publish audit combining the strict baseline map with small/large localized-direct audits and runtime-parity checks; Table~\ref{tab:full_direct_release} summarizes the result (source CSV: \path{paper/full_direct_map_release_summary.csv}).
-The release-production runtime branch uses active-D-grid direct two-dimensional phase-space spectra for $g_N(D)$ and evaluates $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ at scan runtime. On both audit grids it matches the full direct release map exactly: $\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch fraction $=0$, and $\max|\Delta\mu_{\mu\mu}|=0$.
-The tuned visibility parity branch keeps a D-only risk-weighted profile blend $\alpha(D)$ (source: \path{paper/runtime_direct_visibility_alphaD_profile_release.csv}) with $(\alpha_{\min},\alpha_{\max},p)=(0.96,0.99,1.0)$, mean $\alpha=0.9637$, and $p90(\alpha)=0.9734$. It passes both release gates (D21$\times$E41: $\max|\Delta\mu_{\mu\mu}|=0.0925$; D60$\times$E21: $\max|\Delta\mu_{\mu\mu}|=0.8373$), but remains explicitly blend-weighted in the observable sector. We therefore read it as a \textbf{risk-weighted profile-blend runtime-direct visibility parity branch}, not as a strict all-direct Higgs-map closure. A no-profile stress branch is retained only for diagnostics.
-The earlier de-profiled visibility stress branch remains useful as a historical negative mechanism audit: it showed that removing the visibility profile too aggressively reopens large observable drift even when some local mismatch gates improve. That negative result has now been superseded operationally by two cleaner endpoints. First, the strict broader-grid all-direct validator is parked at a case-aware late-polish rule, with zero acceptance mismatch and $p95|\Delta\mu_{\mu\mu}|=(0.0560,\,0.1097)$ on the D21$\times$E21 holdout and D60$\times$E21 release grids. Second, the canonical reviewer observable branch is now the two-lobe full-width/reference-amplitude validator, which has moved from promotion work to routine surveillance. We therefore treat additional local \(\alpha(D)\) retunes or de-profiled stress variants as diagnostics only unless a genuinely new observable-side mechanism class is introduced.
+To make the full direct chain auditable at release level, we compare the strict baseline map with two localized-direct validation surfaces and visibility-parity checks; Table~\ref{tab:full_direct_release} summarizes the result.
+The direct spectral branch recomputes the two-dimensional phase-space spectra for $g_N(D)$ and evaluates $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ on the active validation grids. On both audit grids it matches the full direct release map exactly: $\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch fraction $=0$, and $\max|\Delta\mu_{\mu\mu}|=0$.
+The tuned visibility parity branch keeps a D-only risk-weighted profile blend $\alpha(D)$ with $(\alpha_{\min},\alpha_{\max},p)=(0.96,0.99,1.0)$, mean $\alpha=0.9637$, and $p90(\alpha)=0.9734$. It passes both validation surfaces (small complete grid: $\max|\Delta\mu_{\mu\mu}|=0.0925$; large spot-check grid: $\max|\Delta\mu_{\mu\mu}|=0.8373$), but remains explicitly blend-weighted in the observable sector. We therefore read it as a \textbf{risk-weighted profile-blend visibility parity branch}, not as a strict all-direct Higgs-map closure. A no-profile stress branch is retained only for diagnostics.
+The earlier de-profiled visibility stress branch remains useful as a historical negative mechanism audit: it showed that removing the visibility profile too aggressively reopens large observable drift even when some local mismatch gates improve. That negative result has now been superseded operationally by two cleaner endpoints. First, the strict broader-grid all-direct validator is parked at its current case-aware endpoint, with zero acceptance mismatch and $p95|\Delta\mu_{\mu\mu}|=(0.0560,\,0.1097)$ on the two validation surfaces. Second, the canonical reviewer observable branch is now the two-lobe full-width/reference-amplitude validator, which has moved from promotion work to routine surveillance. We therefore treat additional local \(\alpha(D)\) retunes or de-profiled stress variants as diagnostics only unless a genuinely new observable-side mechanism class is introduced.
 
 \begin{table*}[t]
 \centering
@@ -1613,7 +1614,7 @@ with best grid point $\chi^2\simeq 2.21\times10^{-5}$ at $(D,\eta)\approx(4.00,0
     \label{fig:hmumu}
 \end{figure}
 
-\subsection{EFT/Wilson-Matched Extension to H to ee and H to tautau}
+\subsection{\texorpdfstring{EFT/Wilson-Matched Extension to $H\to ee$ and $H\to\tau\tau$}{EFT/Wilson-Matched Extension to H to ee and H to tautau}}
 Using the same map-level EFT/Wilson-matched definition, we additionally evaluate lepton-channel signal strengths by layer assignment $N=1\rightarrow ee$, $N=2\rightarrow \mu\mu$, and $N=3\rightarrow \tau\tau$:
 \begin{equation}
 \mu_{\ell\ell}^{\rm pred}(D,\eta)=
@@ -1648,7 +1649,7 @@ The use of mixed-resolution ingredients is a deliberate design choice: action-de
     \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison now uses a scan-level EFT/Wilson-matched map with bounded flavor mixing and leptonic-width closure [Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:mu_pred}]. The fixed point in Eq.~\eqref{eq:mu_pred} should be read only as a reference-normalization convention for the relative observable, while the stronger normalization-side evidence now comes from the absolute and loop-improved EYMH parent-action comparators and the Wilson-diagonal re-normalization invariants. A full derivation from the EYMH action (including operator-basis matching beyond this closure) is still pending.
     \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and inject its full scan-grid action-derived profile in the global map. The remaining gap is a full $(D,\eta,N)$ localized projection.
     \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). The original multi-anchor + holdout calibration remains in place, but the line is now much narrower than a generic reservoir ansatz: on the audited knot set, $\kappa_{\rm env}$ is isolated as a scalar amplitude modulus, the localized two-level projection leaves only the leading $\sigma_z/\sigma_x$ directions, and the effective kernels are on-shell samples of a single gap-locked single-pole response family with $\tau_{{\rm env},a}=\omega_{1,a}^{-1}$ to machine precision. The sharp remaining theorem target is parent-side: show that the projected EYMH Schur resolvent admits a first-mode-dominant truncation on $\omega\in\{0,\Delta E_a\}$ with leading pole scale $\Omega_{1,a}=\omega_{1,a}$ and uniformly small higher-mode remainder. Until that step is taken, this block remains outside baseline figures.
-    \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map, while the release baseline keeps strict D-grid lookup and the automatic chain remains a comparator. The release-production runtime path now pairs active-D-grid direct \texttt{fp\_2d\_full} spectra for $g_N(D)$ with per-cell direct evaluation of $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ while keeping baseline $B_N$ profile closure; on both release audits it matches the release baseline exactly ($\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch $=0$, $\max|\Delta\mu_{\mu\mu}|=0$). The tuned runtime-direct visibility path should therefore be read as a release-qualified risk-weighted visibility parity check, not as a strict all-direct closure of $B_N$. Separately, the broader-grid strict all-direct validator is parked at a case-aware late-polish endpoint: on the D21$\times$E21 holdout and D60$\times$E21 release grids it keeps acceptance mismatch at $0/0$ with $p95|\Delta\mu_{\mu\mu}|=(0.0560,\,0.1097)$, so this line should be reopened only for a genuinely new observable-side mechanism class rather than another local blend retune. For the UV-to-EFT map on D21$\times$E21, the refreshed diagonal-threshold comparator and the absolute/loop-improved EYMH comparators show the same pattern: zero acceptance mismatch, exact basis reconstruction, and only small deformation. The remaining UV-to-EFT gap is therefore no longer the existence of a stable local absolute witness, but the derivation of its prefactor from a bona fide parent EYMH loop calculation.
+    \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map, while the release baseline keeps strict D-grid lookup and the automatic chain remains a comparator. The release-production path now pairs active-grid direct two-dimensional spectra for $g_N(D)$ with per-cell direct evaluation of $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ while keeping baseline $B_N$ profile closure; on both release audits it matches the release baseline exactly ($\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch $=0$, $\max|\Delta\mu_{\mu\mu}|=0$). The tuned visibility path should therefore be read as a release-qualified risk-weighted visibility parity check, not as a strict all-direct closure of $B_N$. Separately, the broader-grid strict all-direct validator is parked at its current case-aware endpoint on the two validation surfaces, so this line should be reopened only for a genuinely new observable-side mechanism class rather than another local blend retune. For the UV-to-EFT map, the refreshed diagonal-threshold comparator and the absolute/loop-improved EYMH comparators show the same pattern: zero acceptance mismatch, exact basis reconstruction, and only small deformation. The remaining UV-to-EFT gap is therefore no longer the existence of a stable local absolute witness, but the derivation of its prefactor from a bona fide parent EYMH loop calculation.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
     \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; map-level impact is mild in profile-scaled mode but this closure is not yet propagated into baseline figures.
@@ -1953,7 +1954,7 @@ We verified numerical stability using fixed grid spacing $dz$ (rather than fixed
 \item Results are independent of $z_{\max}$ for $z_{\max} > 60$ (domain truncation error negligible).
 \end{itemize}
 
-\section{First-Principles Symmetry-Channel Test for chi}
+\section{First-Principles Symmetry-Channel Test for \texorpdfstring{$\chi$}{chi}}
 \label{app:chi_sym}
 
 Using the explicit definition in Eq.~\eqref{eq:chi_first_principles}, we computed $M_{12}$ and $\chi_N^{\rm(sym)}$ on 2D axisymmetric grids for $D=\{6,12,18\}$ with coarse/mid/fine resolutions. The modes are normalized with the cylindrical measure $2\pi\rho\,d\rho\,dz$, and orthogonality satisfies $|\langle\psi_1,\psi_2\rangle|<10^{-15}$ in all runs.
@@ -1979,7 +1980,7 @@ For this reason, the phenomenological Rank-2 coefficient in the main text is int
 
 
 
-\section{Localized-Channel First-Principles Extraction of chi}
+\section{Localized-Channel First-Principles Extraction of \texorpdfstring{$\chi$}{chi}}
 \label{app:chi_loc}
 
 We compute the nonzero mixing channel directly in localized basis using
@@ -2812,11 +2813,11 @@ Using $(D_{\rm ref},N_{\rm ref})=(12,2)$, we define profile factors
 \tilde A_\ell(D)\equiv \frac{A_\ell^{\rm(fp)}(D;N_{\rm ref})}{A_\ell^{\rm(fp)}(D_{\rm ref};N_{\rm ref})}.
 \label{eq:superrad_A_profile}
 \end{equation}
-The reproducible script is \texttt{extract\_superrad\_prefactor\_1d.py} in the \texttt{code/} directory (legacy naming).
+The reproducible script is \texttt{extract\_superrad\_prefactor\_1d.py} in the \texttt{code/} directory; the historical filename is retained for artifact compatibility.
 
 \begin{table}[t]
 \centering
-\caption{1D on-axis benchmark for barrier-leakage channel-profile candidates at $D=\{6,12,18\}$ (coarse/mid/fine). Source CSV: \texttt{output/superrad\_fp\_1d/superrad\_prefactor\_D6-12-18.csv} (legacy naming).}
+\caption{1D on-axis benchmark for barrier-leakage channel-profile candidates at $D=\{6,12,18\}$ (coarse/mid/fine). Source CSV: \texttt{output/superrad\_fp\_1d/superrad\_prefactor\_D6-12-18.csv}.}
 \label{tab:superrad_prefactor}
 \small
 \begin{tabular}{cccccccc}

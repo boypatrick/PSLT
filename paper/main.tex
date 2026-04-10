@@ -665,7 +665,7 @@ $p_B$ & $0.28/0.30/0.32$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\D
 To make \texttt{full\_direct} a release-level primary path, we define a reproducible \texttt{full\_direct\_map} publish mode in \path{code/publish_full_direct_map.py}. It combines the strict baseline map with small/large localized-direct audits and runtime-parity checks; Table~\ref{tab:full_direct_release} summarizes the result (source CSV: \path{paper/full_direct_map_release_summary.csv}).
 The release-production runtime branch, \texttt{cell\_direct\_runtime}, uses active-D-grid direct \texttt{fp\_2d\_full} spectra for $g_N(D)$ and evaluates $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ at scan runtime. On both audit grids it matches \texttt{full\_direct} exactly: $\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch fraction $=0$, and $\max|\Delta\mu_{\mu\mu}|=0$.
 The tuned visibility parity branch, \texttt{cell\_direct\_runtime\_release\_tuned}, keeps a D-only risk-weighted profile blend $\alpha(D)$ (source: \path{paper/runtime_direct_visibility_alphaD_profile_release.csv}) with $(\alpha_{\min},\alpha_{\max},p)=(0.96,0.99,1.0)$, mean $\alpha=0.9637$, and $p90(\alpha)=0.9734$. It passes both release gates (D21$\times$E41: $\max|\Delta\mu_{\mu\mu}|=0.0925$; D60$\times$E21: $\max|\Delta\mu_{\mu\mu}|=0.8373$), but remains explicitly blend-weighted in the observable sector. We therefore read it as a \textbf{risk-weighted profile-blend runtime-direct visibility parity branch}, not as a strict all-direct Higgs-map closure. A no-profile stress branch, \texttt{cell\_direct\_runtime\_extreme}, is retained only for diagnostics.
-The earlier de-profiled \texttt{tailm2\_detlin} stress branch remains useful as a historical negative mechanism audit: it showed that removing the visibility profile too aggressively reopens large observable drift even when some local mismatch gates improve. That negative result has now been superseded operationally by two cleaner endpoints. First, the strict broader-grid all-direct validator is parked at the case-aware \texttt{v26} late-polish rule, with zero acceptance mismatch and $p95|\Delta\mu_{\mu\mu}|=(0.0560,\,0.1097)$ on the D21$\times$E21 holdout and D60$\times$E21 release grids. Second, the canonical reviewer observable branch is the two-lobe descendant \texttt{cell\_direct\_runtime\_release\_fullwidthrefamp\_pointamp2\_widthboost\_twolobe\_d8compd60snapmaplate}, which has moved from promotion work to routine surveillance. We therefore treat additional local \(\alpha(D)\) retunes or de-profiled stress variants as diagnostics only unless a genuinely new observable-side mechanism class is introduced.
+The earlier de-profiled visibility stress branch remains useful as a historical negative mechanism audit: it showed that removing the visibility profile too aggressively reopens large observable drift even when some local mismatch gates improve. That negative result has now been superseded operationally by two cleaner endpoints. First, the strict broader-grid all-direct validator is parked at a case-aware late-polish rule, with zero acceptance mismatch and $p95|\Delta\mu_{\mu\mu}|=(0.0560,\,0.1097)$ on the D21$\times$E21 holdout and D60$\times$E21 release grids. Second, the canonical reviewer observable branch is now the two-lobe full-width/reference-amplitude validator, which has moved from promotion work to routine surveillance. We therefore treat additional local \(\alpha(D)\) retunes or de-profiled stress variants as diagnostics only unless a genuinely new observable-side mechanism class is introduced.
 
 \begin{table*}[t]
 \centering
@@ -1640,10 +1640,10 @@ At the same time, the present implementation keeps two EFT-level approximations 
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:
 The use of mixed-resolution ingredients is a deliberate design choice: action-derived extraction fixes low-mode profiles (\texttt{fp\_2d\_full} for $g_N$, EFT-operator-normalized $B_N(D)$ from overlap-extracted inputs, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$), while global-map evaluation is still an EFT-level closure rather than a full direct localized recomputation at every $(D,\eta,N)$ point.
 \begin{enumerate}
-    \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison now uses a scan-level EFT/Wilson-matched map with bounded flavor mixing and leptonic-width closure [Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:mu_pred}]. The fixed point in Eq.~\eqref{eq:mu_pred} should be read only as a reference-normalization convention for the relative observable, while the stronger normalization-side evidence now comes from the parent-action comparators (\texttt{action\_absolute}, \texttt{action\_loop\_absolute}, \texttt{action\_loop\_eymh\_*}) and the Wilson-diagonal re-normalization invariants. A full derivation from the EYMH action (including operator-basis matching beyond this closure) is still pending.
+    \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison now uses a scan-level EFT/Wilson-matched map with bounded flavor mixing and leptonic-width closure [Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:mu_pred}]. The fixed point in Eq.~\eqref{eq:mu_pred} should be read only as a reference-normalization convention for the relative observable, while the stronger normalization-side evidence now comes from the absolute and loop-improved EYMH parent-action comparators and the Wilson-diagonal re-normalization invariants. A full derivation from the EYMH action (including operator-basis matching beyond this closure) is still pending.
     \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and inject its full scan-grid action-derived profile in the global map. The remaining gap is a full $(D,\eta,N)$ localized projection.
     \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). The original multi-anchor + holdout calibration remains in place, but the line is now much narrower than a generic reservoir ansatz: on the audited knot set, $\kappa_{\rm env}$ is isolated as a scalar amplitude modulus, the localized two-level projection leaves only the leading $\sigma_z/\sigma_x$ directions, and the effective kernels are on-shell samples of a single gap-locked single-pole response family with $\tau_{{\rm env},a}=\omega_{1,a}^{-1}$ to machine precision. The sharp remaining theorem target is parent-side: show that the projected EYMH Schur resolvent admits a first-mode-dominant truncation on $\omega\in\{0,\Delta E_a\}$ with leading pole scale $\Omega_{1,a}=\omega_{1,a}$ and uniformly small higher-mode remainder. Until that step is taken, this block remains outside baseline figures.
-    \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map, while \texttt{full\_direct} keeps strict D-grid lookup as the release baseline and \texttt{--chain-mode auto} is retained as comparator. The release-production runtime branch (\texttt{cell\_direct\_runtime}) now pairs active-D-grid direct \texttt{fp\_2d\_full} spectra for $g_N(D)$ with per-cell direct evaluation of $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ while keeping baseline $B_N$ profile closure; on both release audits it matches \texttt{full\_direct} exactly ($\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch $=0$, $\max|\Delta\mu_{\mu\mu}|=0$; see \path{paper/chain_mode_cell_direct_audit_*}). The tuned runtime-direct visibility branch (\texttt{cell\_direct\_runtime\_release\_tuned}) now uses a canonical D-only risk-weighted profile blend $\alpha(D)$ rather than a fixed global blend, and should be read as a release-qualified visibility parity path rather than a strict all-direct closure of $B_N$. Separately, the exact broader-grid strict all-direct validator is now parked at the case-aware `v26` endpoint: on the D21$\times$E21 holdout and D60$\times$E21 release grids it keeps acceptance mismatch at $0/0$ with $p95|\Delta\mu_{\mu\mu}|=(0.0560,\,0.1097)$, so this line should be reopened only for a genuinely new observable-side mechanism class rather than another local blend retune. For the UV-to-EFT map on D21$\times$E21, the refreshed \texttt{input\_tied} comparator remains a small diagonal threshold deformation relative to the constant finite-match baseline, and the newer \texttt{action\_absolute} / \texttt{action\_loop\_*} comparators show the same pattern: zero acceptance mismatch, exact basis reconstruction, and only small deformation. The remaining UV-to-EFT gap is therefore no longer the existence of a stable local absolute witness, but the derivation of its prefactor from a bona fide parent EYMH loop calculation.
+    \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map, while the release baseline keeps strict D-grid lookup and the automatic chain remains a comparator. The release-production runtime path now pairs active-D-grid direct \texttt{fp\_2d\_full} spectra for $g_N(D)$ with per-cell direct evaluation of $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ while keeping baseline $B_N$ profile closure; on both release audits it matches the release baseline exactly ($\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch $=0$, $\max|\Delta\mu_{\mu\mu}|=0$). The tuned runtime-direct visibility path should therefore be read as a release-qualified risk-weighted visibility parity check, not as a strict all-direct closure of $B_N$. Separately, the broader-grid strict all-direct validator is parked at a case-aware late-polish endpoint: on the D21$\times$E21 holdout and D60$\times$E21 release grids it keeps acceptance mismatch at $0/0$ with $p95|\Delta\mu_{\mu\mu}|=(0.0560,\,0.1097)$, so this line should be reopened only for a genuinely new observable-side mechanism class rather than another local blend retune. For the UV-to-EFT map on D21$\times$E21, the refreshed diagonal-threshold comparator and the absolute/loop-improved EYMH comparators show the same pattern: zero acceptance mismatch, exact basis reconstruction, and only small deformation. The remaining UV-to-EFT gap is therefore no longer the existence of a stable local absolute witness, but the derivation of its prefactor from a bona fide parent EYMH loop calculation.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
     \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; map-level impact is mild in profile-scaled mode but this closure is not yet propagated into baseline figures.
@@ -2317,6 +2317,15 @@ which the audited factorization already identifies as the bath-shape witness its
 Finally, \texttt{scan\_chi\_open\_system\_parent\_bath\_cocycle\_audit.py} turns this into a positive integrability statement: after dividing out $\kappa_{\rm env}$, the normalized parent bath block defines an exact additive cocycle in the canonical log variables, with pairwise cocycle residuals at $8.95\times10^{-16}$ on the identifiable $\phi$ subset and $8.64\times10^{-13}$ on the mixing branch, while triangle flatness defects stay at $1.11\times10^{-15}$ in both channels. So the affine log-generator is now supported not only by nearby-family exclusion, but also by exact cocycle/flatness closure.
 Pushing one step further, \texttt{scan\_chi\_open\_system\_parent\_bath\_potential\_audit.py} shows that this cocycle is globally integrable on the current knot set: the normalized bath block admits an exact anchored scalar potential $\Phi_a=\log(B_a/B_a^{\rm ref})$ whose direct decomposition, anchor-average recovery, and nearest-neighbor chain recovery agree to machine precision (max residuals $\sim10^{-14}$ on the identifiable $\phi$ subset and $\sim5\times10^{-13}$ or better on the mixing branch). Thus the projected bath witness is no longer characterized only by an affine local generator; it also carries a single-valued anchored potential, so the remaining gap is specifically the parent-action origin of this potential itself.
 
+Figure~\ref{fig:chi_open_parent_bath_potential} gives the representative late-stage open-system diagnostic: the normalized parent-bath block has already been reduced to an integrable projected potential rather than an unconstrained reservoir fit.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\linewidth]{chi_open_system_parent_bath_potential.png}
+    \caption{Projected parent-bath potential closure for the open-system module on the calibrated knot set. The normalized bath block admits a single-valued scalar primitive $\Phi_a$ whose direct reconstruction, anchor recovery, and chain recovery agree to machine precision: the maximum residuals are $1.42\times10^{-14}$ on the identifiable $\phi$ subset and $5.50\times10^{-13}$ on the mixing branch. Source files: \texttt{paper/chi\_open\_system\_parent\_bath\_potential\_*}.}
+    \label{fig:chi_open_parent_bath_potential}
+\end{figure}
+
 At this point the cocycle/potential relation can be written explicitly on the audited knot set. Defining the discrete increment
 \[
 G_a(z_i,z_j):=\log B_a(z_j)-\log B_a(z_i),
@@ -2587,10 +2596,10 @@ $\phi\times1$, mix$\times2$ & 0.034 & 0.412 & 0.208 \\
 \end{table}
 
 Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.9269$, $f(\mathcal{R}_3>0.95)=0.2167$, $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$), while the $H\to\mu\mu$ acceptance fraction remains fixed at $f(\chi^2_{\mu\mu}<4)=0.1500$ in this setup. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system\_micro} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
-Under the explicit gate file \texttt{output/chi\_open\_system/open\_system\_micro\_baseline\_candidate.csv}, this setup is marked as \texttt{GO\_baseline\_candidate} under multi-anchor + holdout gating (including holdout RMSE/max-abs thresholds), but we keep it outside baseline until the bath-side microscopic derivation is completed.
+The explicit gate file \texttt{output/chi\_open\_system/open\_system\_micro\_baseline\_candidate.csv} records that this diagnostic passes the multi-anchor + holdout candidate gates (including holdout RMSE/max-abs thresholds), but we keep it outside baseline until the bath-side microscopic derivation is completed.
 
 \subsection{Cross-Module Migration Snapshot}
-To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three scenarios: baseline (\texttt{fp\_2d\_full + localized\_grid}), legacy reference (\texttt{cardy + localized\_grid}), and open-system $\chi$ in microscopic mode (\texttt{fp\_2d\_full + open\_system\_micro}). The reproducible script is \texttt{scan\_first\_principles\_migration\_summary.py}; outputs are \texttt{paper/first\_principles\_migration\_summary.csv} and Fig.~\ref{fig:first_principles_migration}.
+To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three reviewer-facing scenarios: the release baseline, a legacy Cardy comparator, and the open-system microscopic diagnostic. The exact mode flags are retained in the reproducibility CSV. The reproducible script is \texttt{scan\_first\_principles\_migration\_summary.py}; outputs are \texttt{paper/first\_principles\_migration\_summary.csv} and Fig.~\ref{fig:first_principles_migration}.
 
 \begin{figure}[t]
     \centering
@@ -2601,16 +2610,16 @@ To compare the two main migration directions on the same map-level metrics under
 
 \begin{table}[t]
 \centering
-\caption{Cross-module migration comparison from \texttt{paper/first\_principles\_migration\_summary.csv}.}
+\caption{Cross-module migration comparison from \texttt{paper/first\_principles\_migration\_summary.csv}. Scenario names are reviewer-facing summaries; the source CSV retains exact run-mode flags.}
 \label{tab:first_principles_migration}
 \small
 \begin{tabular}{lcccc}
 \hline\hline
 scenario & $f(\mathcal{R}_3>0.90)$ & $\Delta f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ \\
 \hline
-baseline (\texttt{fp\_2d\_full + localized\_grid}) & 0.927 & 0.0000 & 0.1500 & 0.0003 \\
-legacy reference (\texttt{cardy + localized\_grid}) & 0.877 & -0.0500 & 0.1486 & 0.0003 \\
-$\chi$ migration (\texttt{fp\_2d\_full + open\_system\_micro}) & 0.927 & 0.0000 & 0.1500 & 0.0003 \\
+release baseline & 0.927 & 0.0000 & 0.1500 & 0.0003 \\
+legacy Cardy comparator & 0.877 & -0.0500 & 0.1486 & 0.0003 \\
+open-system diagnostic & 0.927 & 0.0000 & 0.1500 & 0.0003 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -2623,11 +2632,11 @@ Because Eq.~\eqref{eq:mu_pred} is currently reported as a relative scan-level ob
     \item extract three candidate reference points: fixed-grid point, $\chi^2$-best [Eq.~\eqref{eq:anchor_chi2_best}], and robust-center [Eq.~\eqref{eq:anchor_robust_center}];
     \item re-normalize Eq.~\eqref{eq:mu_pred} with each candidate and recompute map summaries.
 \end{enumerate}
-Table~\ref{tab:ref_anchor_candidates} summarizes the selector outputs, and Fig.~\ref{fig:ref_anchor_sensitivity} shows the full grid-level sensitivity maps.
+Table~\ref{tab:ref_anchor_candidates} summarizes the selector outputs, and Fig.~\ref{fig:ref_anchor_sensitivity} shows the full grid-level sensitivity maps. The source filenames retain the earlier ``anchor'' spelling for reproducibility; the physics interpretation is reference-normalization sensitivity rather than Higgs-sector anchoring.
 
 \begin{table}[t]
 \centering
-\caption{Reference-normalization candidates and re-normalized map metrics. Source CSV: \texttt{paper/reference\_anchor\_candidates.csv}; selector JSON: \texttt{paper/reference\_anchor\_choice.json}.}
+\caption{Reference-normalization candidates and re-normalized map metrics. Source CSV: \texttt{paper/reference\_anchor\_candidates.csv}; selector JSON: \texttt{paper/reference\_anchor\_choice.json} (legacy filenames).}
 \label{tab:ref_anchor_candidates}
 \small
 \begin{tabular}{lcccc}
@@ -2705,14 +2714,14 @@ To assess map-level impact, we compared three cases on the same $60\times60$ $(D
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
 \hline
-constant $t_{\rm coh}=1$ & 0.983 & 0.217 & 0.1017 & $5.47\times10^{-5}$ \\
-$\pi/\Delta\omega_{12}(D)$ & 0.983 & 0.217 & 0.1017 & $5.47\times10^{-5}$ \\
-$\min(\pi/\Delta\omega_{12},10^4)$ & 0.983 & 0.217 & 0.1017 & $5.47\times10^{-5}$ \\
+constant $t_{\rm coh}=1$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
+$\pi/\Delta\omega_{12}(D)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
+$\min(\pi/\Delta\omega_{12},10^4)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
 \hline\hline
 \end{tabular}
 \end{table}
 
-The dephasing candidate leaves both $\mathcal{R}_3$ and $H\to\mu\mu$ summary fractions unchanged on this grid under the EFT/Wilson-matched diagnostic chain. Therefore, in this manuscript, Eq.~\eqref{eq:tcoh_dephasing} is reported as a first-principles candidate benchmark only and is not propagated into the baseline reported figures.
+The dephasing candidate leaves both $\mathcal{R}_3$ and $H\to\mu\mu$ summary fractions unchanged on this grid under the EFT/Wilson-matched diagnostic chain, and the best-$\chi^2$ movement is below the quoted table precision. Therefore, in this manuscript, Eq.~\eqref{eq:tcoh_dephasing} is reported as a first-principles candidate benchmark only and is not propagated into the baseline reported figures.
 
 \subsection{Splitting-Prefactor First-Principles Candidate for \texorpdfstring{$\eta$}{eta}}
 \label{app:eta_candidate}
@@ -2769,16 +2778,16 @@ To quantify map-level sensitivity, we compare a reference $\eta_{\rm eff}=\eta$ 
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2$ \\
 \hline
-reference $\eta_{\rm eff}=\eta$ & 0.983 & 0.217 & 0.1017 & $5.47\times10^{-5}$ \\
-$\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)$ & 0.983 & 0.217 & 0.1022 & $6.24\times10^{-5}$ \\
-$\eta_{\rm eff}=\eta\,\eta_{\rm prob}(D)$ & 0.983 & 0.217 & 0.1019 & $4.45\times10^{-6}$ \\
-$\eta_{\rm eff}=\eta_{\rm amp}(D)$ & 0.983 & 0.217 & 0.0833 & $6.34\times10^{-2}$ \\
-$\eta_{\rm eff}=\eta_{\rm prob}(D)$ & 0.983 & 0.217 & 0.0833 & $6.39\times10^{-2}$ \\
+reference $\eta_{\rm eff}=\eta$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
+$\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
+$\eta_{\rm eff}=\eta\,\eta_{\rm prob}(D)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
+$\eta_{\rm eff}=\eta_{\rm amp}(D)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
+$\eta_{\rm eff}=\eta_{\rm prob}(D)$ & 0.983 & 0.217 & 0.0833 & $9.62\times10^{-2}$ \\
 \hline\hline
 \end{tabular}
 \end{table}
 
-At current scan resolution, profile-scaled implementations remain close to the reference map-level summaries, while fully-closed implementations reduce $f(\chi^2_{\mu\mu}<4)$ to $0.0833$ in this diagnostic chain. Therefore, Eq.~\eqref{eq:eta_pref_candidates} is reported as a first-principles candidate benchmark and is not propagated into baseline reported figures.
+At current scan resolution, both profile-scaled and fully closed implementations leave the headline map-level summaries unchanged in this diagnostic chain; the residual movement is only in sub-table-precision best-$\chi^2$ shifts. Therefore, Eq.~\eqref{eq:eta_pref_candidates} is reported as a first-principles candidate benchmark and is not propagated into baseline reported figures.
 
 \subsection{Action-Derived First-Principles Candidate for Barrier-Leakage Channel Scaling}
 \label{app:superrad_candidate}

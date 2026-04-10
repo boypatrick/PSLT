@@ -40,12 +40,12 @@
 We present a comprehensive, computable EFT-level ``closed chain'' for the Projection Spectral Layer Theory (PSLT) in which a self-consistent three-generation structure emerges on the baseline closure from competing spectral entropy, kinetics, and visibility.
 The framework is built on a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action with non-minimal curvature coupling, where the background geometry induces a layer-indexed spectral scale $\omega_N$.
 The theoretical closure is achieved by unifying three key modules:
-(i) a \textbf{Micro-degeneracy module} ($g_N$) implemented in baseline \texttt{fp\_2d\_full} mode (bounded microcanonical low-$N$ window + energy-gap tail prescription, phase-space normalized at $N=3$);
+(i) a \textbf{Micro-degeneracy module} ($g_N$) implemented through a bounded two-dimensional phase-space profile (microcanonical low-$N$ window + energy-gap tail prescription, phase-space normalized at $N=3$);
 (ii) a \textbf{Rank-2 Computable Kinetic module} ($\Gamma_N$) defined as the largest positive eigenvalue of a $2\times2$ growth matrix with explicit WKB tunneling suppression; and
-(iii) a \textbf{Visibility module} ($B_N$) implemented in baseline fully normalized EFT-operator profile mode (\texttt{b\_mode=eft\_operator\_norm}), where overlap-extracted flavor-layer couplings and mediator scales feed finite one-loop + LL-RG-normalized operator kernels, with high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator; a risk-weighted runtime-direct visibility parity branch is also available via \texttt{cell\_direct\_runtime\_release\_tuned}, using a canonical D-only profile blend $\alpha(D)$ rather than a fixed global blend, but it is still not interpreted as a strict all-direct closure.
+(iii) a \textbf{Visibility module} ($B_N$) implemented as a fully normalized EFT-operator profile, where overlap-extracted flavor-layer couplings and mediator scales feed finite one-loop + LL-RG-normalized operator kernels, with high-$N$ saturation ($B_{N>3}=1$) to avoid double-counting with the $g_N$ regulator; a risk-weighted runtime-direct visibility parity branch is also available, but it is not interpreted as a strict all-direct closure.
 The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates, within this baseline closure, a stable ``winner'' phase diagram with clear dominance of layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
-We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid), and (2) a scan-level EFT/Wilson-matched compatibility test with the ATLAS Run-3 $H\to\mu\mu$ signal strength ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
-In the current UV+LL-RG baseline mode (\texttt{hll\_observable\_mode=eft\_wilson\_uv\_rge}), the illustrative acceptance band is about $15.0\%$ of the scanned grid for $\chi^2<4$, providing a sharper falsifiable constraint on $(D,\eta)$.
+We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid), and (2) a scan-level EFT/Wilson-matched compatibility test using the ATLAS Run-2+Run-3 combined $H\to\mu\mu$ signal-strength input ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
+In the current UV+LL-RG baseline, the illustrative acceptance band is about $15.0\%$ of the scanned grid for $\chi^2<4$, providing a sharper falsifiable constraint on $(D,\eta)$.
 \end{abstract}
 
 \maketitle
@@ -65,9 +65,9 @@ In this work, we consolidate the complete theoretical framework of PSLT into a s
 
 Our primary contributions are:
 \begin{enumerate}
-    \item \textbf{Theoretical Motivation}: We present three convergent arguments for the micro-degeneracy $g_N$ (Route A: Mock-modular, Route B: ER=EPR, Route C: QG Template), and implement a scan-ready baseline through the bounded \texttt{fp\_2d\_full} profile with controlled high-$N$ tail prescription.
+    \item \textbf{Theoretical Motivation}: We present three convergent arguments for the micro-degeneracy $g_N$ (Route A: Mock-modular, Route B: ER=EPR, Route C: QG Template), and implement a scan-ready baseline through the bounded two-dimensional phase-space profile with controlled high-$N$ tail prescription.
     \item \textbf{Rank-2 Computable Kinetics}: We replace heuristic growth rates with a rigorous eigenvalue problem for the formation matrix $\mathbf{M}_N$, incorporating numerical WKB tunneling suppression.
-    \item \textbf{Fully Normalized EFT Visibility}: We promote $B_N$ to an EFT-operator-normalized baseline built from overlap-extracted flavor-layer couplings and mediator scales with finite one-loop + LL-RG normalization; overlap-only and Yukawa laws are retained only as legacy comparators/fallbacks, while runtime-direct visibility extraction is release-qualified only in a risk-weighted parity branch (\texttt{cell\_direct\_runtime\_release\_tuned}, canonical D-only profile blend $\alpha(D)$), not as a strict all-direct closure.
+    \item \textbf{Fully Normalized EFT Visibility}: We promote $B_N$ to an EFT-operator-normalized baseline built from overlap-extracted flavor-layer couplings and mediator scales with finite one-loop + LL-RG normalization; overlap-only and Yukawa laws are retained only as legacy comparators/fallbacks, while runtime-direct visibility extraction is release-qualified only as a risk-weighted parity check, not as a strict all-direct closure.
     \item \textbf{Verification}: We demonstrate stable three-generation dominance at $\mathcal{R}_3>90\%$ and a constrained EFT/Wilson-matched-compatible band for LHC $H\to\mu\mu$.
 \end{enumerate}
 
@@ -94,7 +94,7 @@ Figure~\ref{fig:framework} illustrates the logical flow of the PSLT framework.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.85\linewidth]{pslt_framework.png}
-    \caption{Schematic overview of the PSLT framework. Geometric inputs $(D, \eta)$ feed into three modules (micro-degeneracy $g_N$, kinetic rate $\Gamma_N$, visibility $B_N$), which combine in the master equation to yield the observable layer probabilities $P_N$ and the three-generation ratio $\mathcal{R}_3$. In the baseline chain, high-$N$ control is implemented by the bounded phase-space-tail prescription in \texttt{fp\_2d\_full}, while $B_{N>3}$ saturates to unity.}
+    \caption{Schematic overview of the PSLT framework. Geometric inputs $(D, \eta)$ feed into three modules (micro-degeneracy $g_N$, kinetic rate $\Gamma_N$, visibility $B_N$), which combine in the master equation to yield the observable layer probabilities $P_N$ and the three-generation ratio $\mathcal{R}_3$. In the baseline chain, high-$N$ control is implemented by the bounded two-dimensional phase-space-tail prescription, while $B_{N>3}$ saturates to unity.}
     \label{fig:framework}
 \end{figure}
 
@@ -150,11 +150,11 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \midrule
 \parbox[t]{0.17\textwidth}{$\Omega(\rho,z;D)$ two-center geometry} & \parbox[t]{0.28\textwidth}{Projected-Poisson two-source Green solution} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Derive the same source from an explicit higher-dimensional parent} \\
 \parbox[t]{0.17\textwidth}{$V_{\rm eff}$, low modes, WKB action} & \parbox[t]{0.28\textwidth}{Action-derived and numerically converged} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Extend the same solver chain to the full $(D,\eta,N)$ map} \\
-\parbox[t]{0.17\textwidth}{$g_N$ phase-space mode (\texttt{fp\_2d\_full})} & \parbox[t]{0.28\textwidth}{Baseline \texttt{fp\_2d\_full}; direct $g_N$ parity released in \texttt{cell\_direct\_runtime}; risk-weighted visibility parity in \texttt{cell\_direct\_runtime\_release\_tuned}} & \parbox[t]{0.13\textwidth}{Yes: \texttt{full\_direct}, \texttt{cell\_direct\_runtime}, \texttt{release\_tuned}} & \parbox[t]{0.24\textwidth}{Treat the strict all-direct broader-grid rule as parked at the current \texttt{v26} endpoint; reopen only for a genuinely new observable-side mechanism class} \\
-\parbox[t]{0.17\textwidth}{$\chi_N^{(LR)}(D)$ localized channel} & \parbox[t]{0.28\textwidth}{Localized-direct \texttt{Dgrid60} profile from 2D fine extraction; release-production parity path available in \texttt{cell\_direct\_runtime}} & \parbox[t]{0.13\textwidth}{Yes: \texttt{full\_direct}, \texttt{cell\_direct\_runtime}} & \parbox[t]{0.24\textwidth}{Keep the current localized-direct parity path as the production support line; the longer-horizon upgrade is a fully localized extraction over $(D,\eta,N)$ rather than another profile-blend retune} \\
-\parbox[t]{0.17\textwidth}{$\Gamma_{N,\ell}$ channel normalization ($A_\ell$)} & \parbox[t]{0.28\textwidth}{Action-derived $\tilde A_\ell(D)$ baseline with stabilized localized-direct support; legacy constant-$A_\ell$ kept only as comparator} & \parbox[t]{0.13\textwidth}{Yes: \texttt{full\_direct}} & \parbox[t]{0.24\textwidth}{Move to fully localized channel-resolved direct extraction over $(D,\eta,N)$} \\
+\parbox[t]{0.17\textwidth}{$g_N$ phase-space profile} & \parbox[t]{0.28\textwidth}{Bounded two-dimensional phase-space baseline; direct spectral parity and risk-weighted visibility parity checks available} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Treat the strict all-direct broader-grid rule as parked at the current case-aware late-polish endpoint; reopen only for a genuinely new observable-side mechanism class} \\
+\parbox[t]{0.17\textwidth}{$\chi_N^{(LR)}(D)$ localized channel} & \parbox[t]{0.28\textwidth}{Full D-grid localized profile from 2D fine extraction; release-production parity path available} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep the current localized-direct parity path as the production support line; the longer-horizon upgrade is a fully localized extraction over $(D,\eta,N)$ rather than another profile-blend retune} \\
+\parbox[t]{0.17\textwidth}{$\Gamma_{N,\ell}$ channel normalization ($A_\ell$)} & \parbox[t]{0.28\textwidth}{Action-derived $\tilde A_\ell(D)$ baseline with stabilized localized-direct support; legacy constant-$A_\ell$ kept only as comparator} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Move to fully localized channel-resolved direct extraction over $(D,\eta,N)$} \\
 \parbox[t]{0.17\textwidth}{Open-system $\chi_{\rm eff}$ (Lindblad)} & \parbox[t]{0.28\textwidth}{Locally closed projected effective-action diagnostic: scalar modulus $\kappa_{\rm env}$, projected $\sigma_z/\sigma_x$ jet, and single-pole gap-locked response family are now explicit on the audited knot set} & \parbox[t]{0.13\textwidth}{Diagnostic only} & \parbox[t]{0.24\textwidth}{Promote the current completion to a parent-side Schur statement by proving first-mode dominance of the projected resolvent on $\omega\in\{0,\Delta E_a\}$ with $\Omega_{1,a}=\omega_{1,a}$} \\
-\parbox[t]{0.17\textwidth}{$B_N$ visibility profile from EFT normalization} & \parbox[t]{0.28\textwidth}{Baseline \texttt{eft\_operator\_norm}; runtime-direct operator extraction promoted only in the risk-weighted release branch} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep the release-qualified profile-blend branch separate from the parked strict all-direct endpoint; the real remaining upgrade is fully localized channel-resolved extraction, not another local blend retune} \\
+\parbox[t]{0.17\textwidth}{$B_N$ visibility profile from EFT normalization} & \parbox[t]{0.28\textwidth}{EFT-operator-normalized baseline; runtime-direct operator extraction promoted only in the risk-weighted parity branch} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep the release-qualified profile-blend branch separate from the parked strict all-direct endpoint; the real remaining upgrade is fully localized channel-resolved extraction, not another local blend retune} \\
 \parbox[t]{0.17\textwidth}{$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}]} & \parbox[t]{0.28\textwidth}{EFT/Wilson-matched baseline with UV-tree, finite-one-loop, and LL-RG audits} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Extend the current closure to fuller UV-to-EFT matching from the EYMH action} \\
 \bottomrule
 \end{tabular}
@@ -505,7 +505,7 @@ Figure~\ref{fig:mixing_channels} summarizes this channel interpretation and the 
 \section{Module 3: EFT-Normalized Visibility BN}
 \label{sec:BN}
 
-In early versions of the theory, $B_N$ was an arbitrary matching factor. In the present baseline (\texttt{b\_mode=eft\_operator\_norm}), $B_N(D)$ is defined by fully normalized EFT operator kernels built from overlap-extracted flavor-layer couplings and mediator scales from the same 2D localized operator chain as Appendix~\ref{app:chi_loc}; finite one-loop matching and LL-RG normalization are applied before layer-wise normalization. Mode tracking and microcanonical-window averaging suppress branch-switch artifacts in the overlap extraction stage, while high-$N$ regularization remains isolated in Eq.~\eqref{eq:gN_reg}.
+In early versions of the theory, $B_N$ was an arbitrary matching factor. In the present EFT-operator-normalized baseline, $B_N(D)$ is defined by fully normalized EFT operator kernels built from overlap-extracted flavor-layer couplings and mediator scales from the same 2D localized operator chain as Appendix~\ref{app:chi_loc}; finite one-loop matching and LL-RG normalization are applied before layer-wise normalization. Mode tracking and microcanonical-window averaging suppress branch-switch artifacts in the overlap extraction stage, while high-$N$ regularization remains isolated in Eq.~\eqref{eq:gN_reg}.
 
 For comparison with the earlier visibility closure, we retain a legacy Yukawa-normalized fallback based on the \textbf{charged-lepton Yukawa} couplings:
 \begin{equation}
@@ -529,11 +529,11 @@ The exponent $p_B$ keeps the scaling monotonic in Yukawa strength while preventi
 Numerically, using PDG 2024 inputs~\cite{PDG2024} and $p_B=0.30$, we obtain representative values $B_1\simeq 0.085$, $B_2\simeq 0.42$, $B_3=1$ (normalized).
 
 \subsection{High-\texorpdfstring{$N$}{N} Saturation (Avoiding Double-Counting)}
-For layers $N > 3$, we set $B_N = B_3 = 1$ (saturation). In the baseline scan (\texttt{g\_mode=fp\_2d\_full}), high-$N$ control is provided by the bounded phase-space tail prescription and finite-volume clipping in the $g_N$ module; the $\kappa_g$ factor in Eq.~\eqref{eq:gN_reg} is retained only for legacy Cardy-comparator runs. This separation avoids double-counting high-$N$ damping in the visibility block.\footnote{An alternative approach with explicit $B_N$ tail suppression ($B_N \propto \ee^{-\beta_B(N-3)^2}$) was explored; see Appendix~\ref{app:ablation} for comparison.}
+For layers $N > 3$, we set $B_N = B_3 = 1$ (saturation). In the baseline scan, high-$N$ control is provided by the bounded two-dimensional phase-space tail prescription and finite-volume clipping in the $g_N$ module; the $\kappa_g$ factor in Eq.~\eqref{eq:gN_reg} is retained only for legacy Cardy-comparator runs. This separation avoids double-counting high-$N$ damping in the visibility block.\footnote{An alternative approach with explicit $B_N$ tail suppression ($B_N \propto \ee^{-\beta_B(N-3)^2}$) was explored; see Appendix~\ref{app:ablation} for comparison.}
 
 \subsection{Roadmap: Action-Derived Effective Yukawa Operator}
 \label{sec:yukawa_roadmap}
-With the EFT-operator-normalized baseline now in place, the release-production chain separates direct spectral-selection closure from visibility closure. The \texttt{cell\_direct\_runtime} branch recomputes $g_N(D)$, $\chi_{LR}(D)$, and $\tilde A_\ell(D)$ at scan runtime while keeping the baseline $B_N(D)$ profile closure; the runtime-direct visibility path is release-qualified only as the risk-weighted profile-blend branch \texttt{cell\_direct\_runtime\_release\_tuned}, not as a strict all-direct Higgs-map closure. The strict no-cache branch \texttt{cell\_direct\_runtime\_extreme} is retained only as a stress diagnostic. The next upgrade remains an explicit lepton Yukawa sector in the same conformal background:
+With the EFT-operator-normalized baseline now in place, the release-production chain separates direct spectral-selection closure from visibility closure. The runtime direct-spectral branch recomputes $g_N(D)$, $\chi_{LR}(D)$, and $\tilde A_\ell(D)$ at scan runtime while keeping the baseline $B_N(D)$ profile closure; the runtime-direct visibility path is release-qualified only as a risk-weighted profile-blend parity branch, not as a strict all-direct Higgs-map closure. The strict no-cache variant is retained only as a stress diagnostic. The next upgrade remains an explicit lepton Yukawa sector in the same conformal background:
 \begin{equation}
 \mathcal{L}_{Y} = -y_0\,\bar{L}H\ell_R + \mathrm{h.c.}, \qquad g_{\mu\nu}=\Omega^2\eta_{\mu\nu}.
 \end{equation}
@@ -567,7 +567,7 @@ y_N^{\rm eff}(D)=y_0\!\int 2\pi\rho\,\dd\rho\,\dd z\;
 u_N(\rho,z;D)\,f_L(\rho,z)\,f_R(\rho,z)\,\mathcal{W}_{\rm frame}(\rho,z;D).
 \label{eq:yukawa_eff_roadmap}
 \end{equation}
-Here $f_{L,R}$ denote lepton profile functions and $\mathcal{W}_{\rm frame}$ collects fixed normalization factors from the chosen conformal-frame convention. In the minimal Dirac-conformal baseline implied by Eqs.~\eqref{eq:dirac_higgs_weyl}--\eqref{eq:yukawa_frame_cancel}, $\mathcal{W}_{\rm frame}=1$ (implemented as \texttt{frame\_power=0} in \texttt{extract\_y\_eff\_2d\_three\_channel.py}). Nonzero \texttt{frame\_power} is kept only as a diagnostic sensitivity direction and is not used in baseline figures. In this roadmap, the same 2D localized solver and convergence criteria as Appendix~\ref{app:chi_loc} are reused; scan-level runs now separate release-production per-cell direct $g_N+\chi+A$ closure (\texttt{cell\_direct\_runtime}) from the promoted risk-weighted profile-blend runtime-direct visibility parity branch (\texttt{cell\_direct\_runtime\_release\_tuned}, canonical D-only profile blend $\alpha(D)$) and the strict no-cache stress branch \texttt{cell\_direct\_runtime\_extreme}.
+Here $f_{L,R}$ denote lepton profile functions and $\mathcal{W}_{\rm frame}$ collects fixed normalization factors from the chosen conformal-frame convention. In the minimal Dirac-conformal baseline implied by Eqs.~\eqref{eq:dirac_higgs_weyl}--\eqref{eq:yukawa_frame_cancel}, $\mathcal{W}_{\rm frame}=1$. Nonzero conformal-frame powers are kept only as diagnostic sensitivity directions and are not used in baseline figures. In this roadmap, the same 2D localized solver and convergence criteria as Appendix~\ref{app:chi_loc} are reused; scan-level runs now separate release-production per-cell direct $g_N+\chi+A$ closure from the promoted risk-weighted profile-blend runtime-direct visibility parity branch (canonical D-only profile blend $\alpha(D)$) and the strict no-cache stress branch.
 
 % ============================================================
 \section{Verification Results}
@@ -588,11 +588,11 @@ Based on stability analysis, we use the baseline parameters summarized in Table~
 \toprule
 \textbf{Module} & \textbf{Parameter} & \textbf{Value} & \textbf{Physical Role} \\
 \midrule
-\parbox[t]{0.16\linewidth}{Micro-degeneracy $g_N$} & \parbox[t]{0.18\linewidth}{\texttt{g\_mode}} & \parbox[t]{0.12\linewidth}{\texttt{fp\_2d\_full}} & \parbox[t]{0.40\linewidth}{Baseline mode: bounded low-$N$ window + energy-gap tail profile} \\
+\parbox[t]{0.16\linewidth}{Micro-degeneracy $g_N$} & \parbox[t]{0.18\linewidth}{Phase-space profile} & \parbox[t]{0.12\linewidth}{Bounded 2D} & \parbox[t]{0.40\linewidth}{Baseline mode: bounded low-$N$ window + energy-gap tail profile} \\
 & \parbox[t]{0.18\linewidth}{$(\alpha,\beta,s)$} & \parbox[t]{0.12\linewidth}{$(0.8,1.1,0.0)$} & \parbox[t]{0.40\linewidth}{low-$N$ window blend, tail damping, shell-power control} \\
-& \parbox[t]{0.18\linewidth}{$c_{\rm eff},\nu,\kappa_g$} & \parbox[t]{0.12\linewidth}{$(0.5,5.0,0.03)$} & \parbox[t]{0.40\linewidth}{Legacy Cardy-comparator parameters (not used for baseline normalization in \texttt{fp\_2d\_full})} \\
+& \parbox[t]{0.18\linewidth}{$c_{\rm eff},\nu,\kappa_g$} & \parbox[t]{0.12\linewidth}{$(0.5,5.0,0.03)$} & \parbox[t]{0.40\linewidth}{Legacy Cardy-comparator parameters (not used for the bounded 2D baseline normalization)} \\
 \midrule
-\parbox[t]{0.16\linewidth}{Visibility $B_N$} & \parbox[t]{0.18\linewidth}{\texttt{b\_mode}} & \parbox[t]{0.12\linewidth}{\texttt{eft\_operator\_norm}} & \parbox[t]{0.40\linewidth}{Baseline fully normalized EFT visibility from overlap-extracted operator inputs $(g_{iN},\lambda_N)$ with finite one-loop + LL-RG normalization} \\
+\parbox[t]{0.16\linewidth}{Visibility $B_N$} & \parbox[t]{0.18\linewidth}{Visibility normalization} & \parbox[t]{0.12\linewidth}{EFT operator} & \parbox[t]{0.40\linewidth}{Baseline fully normalized EFT visibility from overlap-extracted operator inputs $(g_{iN},\lambda_N)$ with finite one-loop + LL-RG normalization} \\
 & \parbox[t]{0.18\linewidth}{$p_B$} & \parbox[t]{0.12\linewidth}{0.30} & \parbox[t]{0.40\linewidth}{Legacy Yukawa comparator/fallback parameter (inactive in EFT-operator baseline)} \\
 \midrule
 \parbox[t]{0.16\linewidth}{Kinetics $\Gamma_N$} & \parbox[t]{0.18\linewidth}{$\chi_N^{(LR)}(D)$} & \parbox[t]{0.12\linewidth}{App.~\ref{app:chi_loc}} & \parbox[t]{0.40\linewidth}{Localized-channel profile (action-derived extraction; baseline now uses full scan-grid profile injection, early demonstrator used constant $\chi=0.2$)} \\
@@ -648,12 +648,12 @@ To propagate finite-$N$ surrogate uncertainty into map-level systematics, we als
 
 \begin{table}[t]
 \centering
-\caption{Local one-at-a-time robustness scan around baseline closure parameters, with the $p_B$ row retained only as a legacy visibility-comparator sensitivity because $p_B$ is inactive in the \texttt{eft\_operator\_norm} baseline. Fractions are measured on the same $60\times60$ map as the baseline scan. Source CSV: \texttt{paper/core\_param\_robustness.csv}.}
+\caption{Local one-at-a-time robustness scan around baseline closure parameters, with the $p_B$ row retained only as a legacy visibility-comparator sensitivity because $p_B$ is inactive in the EFT-operator-normalized baseline. Fractions are measured on the same $60\times60$ map as the baseline scan. Source CSV: \texttt{paper/core\_param\_robustness.csv}.}
 \label{tab:core_param_robustness}
-\small
+\scriptsize
 \begin{tabular}{ccccc}
 \hline\hline
-Parameter & Window (low/base/high) & $f(\mathcal{R}_3>0.90)$ low/base/high & $f(\chi^2_{\mu\mu}<4)$ low/base/high & Max abs drift \\
+Parameter & Window & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & Max drift \\
 \hline
 $c_{\rm eff}$ & $0.45/0.50/0.55$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
 $\nu$ & $4.80/5.00/5.20$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
@@ -662,14 +662,14 @@ $p_B$ & $0.28/0.30/0.32$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\D
 \end{tabular}
 \end{table}
 
-To make \texttt{full\_direct} a release-level primary path, we define a reproducible \texttt{full\_direct\_map} publish mode in \path{code/publish_full_direct_map.py}. It combines the strict baseline map with small/large localized-direct audits and runtime-parity checks; Table~\ref{tab:full_direct_release} summarizes the result (source CSV: \path{paper/full_direct_map_release_summary.csv}).
-The release-production runtime branch, \texttt{cell\_direct\_runtime}, uses active-D-grid direct \texttt{fp\_2d\_full} spectra for $g_N(D)$ and evaluates $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ at scan runtime. On both audit grids it matches \texttt{full\_direct} exactly: $\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch fraction $=0$, and $\max|\Delta\mu_{\mu\mu}|=0$.
-The tuned visibility parity branch, \texttt{cell\_direct\_runtime\_release\_tuned}, keeps a D-only risk-weighted profile blend $\alpha(D)$ (source: \path{paper/runtime_direct_visibility_alphaD_profile_release.csv}) with $(\alpha_{\min},\alpha_{\max},p)=(0.96,0.99,1.0)$, mean $\alpha=0.9637$, and $p90(\alpha)=0.9734$. It passes both release gates (D21$\times$E41: $\max|\Delta\mu_{\mu\mu}|=0.0925$; D60$\times$E21: $\max|\Delta\mu_{\mu\mu}|=0.8373$), but remains explicitly blend-weighted in the observable sector. We therefore read it as a \textbf{risk-weighted profile-blend runtime-direct visibility parity branch}, not as a strict all-direct Higgs-map closure. A no-profile stress branch, \texttt{cell\_direct\_runtime\_extreme}, is retained only for diagnostics.
+To make the full direct chain a release-level primary path, we define a reproducible publish audit combining the strict baseline map with small/large localized-direct audits and runtime-parity checks; Table~\ref{tab:full_direct_release} summarizes the result (source CSV: \path{paper/full_direct_map_release_summary.csv}).
+The release-production runtime branch uses active-D-grid direct two-dimensional phase-space spectra for $g_N(D)$ and evaluates $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ at scan runtime. On both audit grids it matches the full direct release map exactly: $\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch fraction $=0$, and $\max|\Delta\mu_{\mu\mu}|=0$.
+The tuned visibility parity branch keeps a D-only risk-weighted profile blend $\alpha(D)$ (source: \path{paper/runtime_direct_visibility_alphaD_profile_release.csv}) with $(\alpha_{\min},\alpha_{\max},p)=(0.96,0.99,1.0)$, mean $\alpha=0.9637$, and $p90(\alpha)=0.9734$. It passes both release gates (D21$\times$E41: $\max|\Delta\mu_{\mu\mu}|=0.0925$; D60$\times$E21: $\max|\Delta\mu_{\mu\mu}|=0.8373$), but remains explicitly blend-weighted in the observable sector. We therefore read it as a \textbf{risk-weighted profile-blend runtime-direct visibility parity branch}, not as a strict all-direct Higgs-map closure. A no-profile stress branch is retained only for diagnostics.
 The earlier de-profiled visibility stress branch remains useful as a historical negative mechanism audit: it showed that removing the visibility profile too aggressively reopens large observable drift even when some local mismatch gates improve. That negative result has now been superseded operationally by two cleaner endpoints. First, the strict broader-grid all-direct validator is parked at a case-aware late-polish rule, with zero acceptance mismatch and $p95|\Delta\mu_{\mu\mu}|=(0.0560,\,0.1097)$ on the D21$\times$E21 holdout and D60$\times$E21 release grids. Second, the canonical reviewer observable branch is now the two-lobe full-width/reference-amplitude validator, which has moved from promotion work to routine surveillance. We therefore treat additional local \(\alpha(D)\) retunes or de-profiled stress variants as diagnostics only unless a genuinely new observable-side mechanism class is introduced.
 
 \begin{table*}[t]
 \centering
-\caption{Release-mode \texttt{full\_direct\_map} summary. Source CSV: \texttt{paper/full\_direct\_map\_release\_summary.csv}.}
+\caption{Release-mode full direct map summary. Source CSV: \texttt{paper/full\_direct\_map\_release\_summary.csv}.}
 \label{tab:full_direct_release}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -711,8 +711,8 @@ $\kappa_{\rm offdiag}$ & $-1.0/0.0/1.0$ & $0.1500/0.1500/0.1500$ & $0$ \\
 \end{tabular}
 \end{table}
 
-\subsection{H to mumu Signal Strength (EFT/Wilson-Matched Mapping, UV+LL-RG Baseline)}
-We confront the theory with the ATLAS Run-3 $H\to\mu\mu$ signal strength, $\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$ (combined uncertainty)~\cite{ATLAS_Hmumu}.
+\subsection{\texorpdfstring{$H\to\mu\mu$ Signal Strength}{H to mumu Signal Strength} (EFT/Wilson-Matched Mapping, UV+LL-RG Baseline)}
+We confront the theory with the ATLAS Run-2+Run-3 combined $H\to\mu\mu$ signal-strength input, $\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$ (combined uncertainty)~\cite{ATLAS_Hmumu}. The same ATLAS evidence result reports a Run-3-only signal strength near $\mu_{\mu\mu}=1.6\pm0.6$; all scan maps in this manuscript use the combined input above.
 
 Within the PSLT closure, we construct a scan-level EFT/Wilson-matched map (evaluated in baseline \texttt{eft\_wilson\_uv\_rge} mode) by combining kinetic occupancy with overlap-extracted raw couplings:
 \begin{equation}
@@ -770,35 +770,38 @@ In the baseline \texttt{eft\_wilson\_uv\_rge} mode used for figures, we evaluate
 \label{eq:mu_pred}
 \end{equation}
 In the baseline figures we keep a fixed reference point $(D_0,\eta_0)=(10,1)$ for comparability across scan variants.
-This fixed point should be read as a \emph{reference-normalization convention} for the relative scan-level observable in Eq.~\eqref{eq:mu_pred}, not as a physical anchor of the Higgs sector itself. The stronger normalization-side information now comes from the parent-action comparators below (\texttt{action\_absolute}, \texttt{action\_loop\_absolute}, \texttt{action\_loop\_eymh\_*}) together with the reference-normalization-invariant Wilson-diagonal ratios reported later in the section.
-Equation~\eqref{eq:mu_pred} is implemented in \path{pslt_lib.py} with \texttt{hll\_observable\_mode=eft\_wilson\_uv\_rge}; it remains a scan-level EFT module rather than a full loop-level EYMH$\rightarrow$EFT derivation.
+This fixed point should be read as a \emph{reference-normalization convention} for the relative scan-level observable in Eq.~\eqref{eq:mu_pred}, not as a physical anchor of the Higgs sector itself. The stronger normalization-side information now comes from the absolute and loop-improved parent-action comparators below together with the reference-normalization-invariant Wilson-diagonal ratios reported later in the section.
+Equation~\eqref{eq:mu_pred} is implemented in \path{pslt_lib.py} as the UV+LL-RG Higgs observable; it remains a scan-level EFT module rather than a full loop-level EYMH$\rightarrow$EFT derivation.
 To push this interface toward UV-to-EFT matching, we run a reproducible UV-tree $\rightarrow$ finite-match $\rightarrow$ LL-RG audit with \path{scan_hll_uv_to_eft_matching.py}. The canonical outputs are \path{paper/hll_uv_to_eft_map.csv} and \path{paper/hll_uv_to_eft_summary.csv}. In the baseline UV settings ($\texttt{uv\_blend}=0$, $\texttt{uv\_m2\_power}=1$, $\kappa_{\rm diag}=\kappa_{\rm offdiag}=0$), the finite-match step is numerically null at map level ($\max |\Delta C_{\mu\mu}^{\rm match}|=10^{-30}$), while LL-RG drift remains bounded: $\langle |\Delta \mu_{\mu\mu}|\rangle \simeq 6.19\times10^{-4}$ and $\max |\Delta \mu_{\mu\mu}|\simeq 8.93\times10^{-3}$; $f(\chi^2_{\mu\mu}<4)$ is unchanged between UV-tree and UV+LL-RG.
 To make the matching chain explicit at the operator level, we also export a layer-resolved basis witness with \path{scan_hll_uv_operator_basis_audit.py}; the corresponding map and summary are stored under \path{paper/hll_uv_operator_basis_*}. There the UV-tree closure is reconstructed as
 \begin{equation}
-C_{eH}^{\rm tree}=\sum_{N=1}^{3}\left(\frac{P_N^{\rm kin}}{M_N^2}\right)\,B_N,
+C_{eH}^{\rm tree}=\sum_{N=1}^{3}\left(\frac{P_N^{\rm kin}}{M_N^2}\right)\,\mathcal B_N^{(eH)},
 \qquad
-B_N\equiv g_N g_N^T,
+\mathcal B_N^{(eH)}\equiv \mathbf g_N^{(eH)}\mathbf g_N^{(eH)\,T},
 \label{eq:ceh_operator_basis}
 \end{equation}
-with explicit blockwise witnesses for $\Delta C^{\rm match}$ and $\Delta C^{\rm RGE}$. On the baseline \texttt{full\_direct} $D60\times E60$ grid, the tree/match/IR reconstruction residuals are numerically zero at map level, while the $\mu_{\mu\mu}$ reconstructed from the operator-basis witness agrees with the native \texttt{eft\_wilson\_uv\_rge} observable to $\max |\Delta \mu_{\mu\mu}^{\rm recon}|=7.31\times 10^{-8}$. This does not yet constitute a full EYMH$\rightarrow$SMEFT derivation, but it upgrades the current closure from a black-box Wilson-map audit to an explicit basis-level EFT witness.
-As a next structured step beyond fixed $(\kappa_{\rm diag},\kappa_{\rm offdiag})$, the code also supports an \texttt{input\_tied} finite-match comparator: the effective shifts are built from local UV-basis invariants (shell spread, coefficient variation of $P_N^{\rm kin}/M_N^2$, and a normalized off-diagonal mixing norm). We treat this as a structured comparator, not as a replacement for the current constant finite-match baseline.
-The canonical D21$\times$E21 summaries are stored under \path{paper/hll_uv_*input_tied*}. The basis witness remains exact ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.55\times10^{-8}$, reconstruction residuals zero), and the refreshed comparator stays in the small-deformation regime relative to the constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=5.06\times10^{-4}$, $p95=1.03\times10^{-3}$, $\max|\Delta\mu_{\mu\mu}|=7.87\times10^{-3}$) with zero acceptance mismatch. Off-diagonal tying is numerically inactive in the current UV basis, while \texttt{diag\_scale} simply controls the strength of a small diagonal threshold deformation.
-To quantify this interpretation, we run a Phase-2 diagonal-threshold window audit with \path{code/scan_hll_uv_input_tied_diag_window.py}; the canonical summary and figure are stored under \path{paper/hll_uv_input_tied_diag_window_*}. On the refreshed D21$\times$E21 scan, both gates require zero acceptance mismatch and select
+where $\mathbf g_N^{(eH)}$ is the flavor-layer coupling vector entering Eq.~\eqref{eq:wilson_tree_uv}; this notation avoids collision with the micro-degeneracy scalar $g_N$ and the visibility factor $B_N$ used elsewhere. With explicit blockwise witnesses for $\Delta C^{\rm match}$ and $\Delta C^{\rm RGE}$, the tree/match/IR reconstruction residuals are numerically zero at map level, while the reconstructed $\mu_{\mu\mu}$ agrees with the native UV+LL-RG observable to $\max |\Delta \mu_{\mu\mu}^{\rm recon}|=7.31\times 10^{-8}$. This does not yet constitute a full EYMH$\rightarrow$SMEFT derivation, but it upgrades the current closure from a black-box Wilson-map audit to an explicit basis-level EFT witness.
+As a next structured step beyond fixed $(\kappa_{\rm diag},\kappa_{\rm offdiag})$, we test a finite-match comparator whose effective shifts are built from local UV-basis invariants (shell spread, coefficient variation of $P_N^{\rm kin}/M_N^2$, and a normalized off-diagonal mixing norm). We treat this as a structured comparator, not as a replacement for the current constant finite-match baseline.
+On the canonical D21$\times$E21 grid, the basis witness remains exact ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.55\times10^{-8}$, reconstruction residuals zero), and the refreshed comparator stays in the small-deformation regime relative to the constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=5.06\times10^{-4}$, $p95=1.03\times10^{-3}$, $\max|\Delta\mu_{\mu\mu}|=7.87\times10^{-3}$) with zero acceptance mismatch. The off-diagonal component is numerically inactive in the current UV basis, while the diagonal-threshold scale simply controls the strength of a small diagonal threshold deformation.
+To quantify this interpretation, we run a Phase-2 diagonal-threshold window audit. On the refreshed D21$\times$E21 scan, both gates require zero acceptance mismatch and select
 \[
-\texttt{diag\_scale}\in[0.25,\,1.0] \quad \text{(conservative comparator window)},
-\qquad
-\texttt{diag\_scale}\in[0.25,\,1.5] \quad \text{(extended stable window)}.
+\begin{aligned}
+\kappa_{\rm diag}^{\rm(th)}&\in[0.25,\,1.0]
+&&\text{(conservative comparator window)},\\
+\kappa_{\rm diag}^{\rm(th)}&\in[0.25,\,1.5]
+&&\text{(extended stable window)}.
+\end{aligned}
 \]
-The canonical witness choice $\texttt{diag\_scale}=1.0$ therefore sits at the upper edge of the conservative window: it keeps the diagonal threshold feed-through explicit while remaining in the small-deformation regime. This sharpens the current interpretation of \texttt{diag\_scale} as a diagonal threshold susceptibility. The remaining missing ingredient is not off-diagonal closure, which is numerically absent in the present basis, but a parent-action normalization for this susceptibility.
-We now push this normalization one step closer to the parent action by introducing an \texttt{action\_normalized} finite-match comparator. The canonical D21$\times$E21 summaries are stored under \path{paper/hll_uv_*action_normalized*}. The basis witness remains exact ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.54\times10^{-8}$, zero reconstruction residuals), and the comparator keeps zero acceptance mismatch with only small deformation relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=1.00\times10^{-3}$, $p95=1.86\times10^{-3}$, $\max|\Delta\mu_{\mu\mu}|=1.59\times10^{-2}$).
-We now probe the remaining gap directly with \texttt{action\_absolute}. In this mode the external diagonal-scale choice is removed and replaced by an absolute witness built from parent-action-side invariants and coefficient alignment:
+The canonical witness choice $\kappa_{\rm diag}^{\rm(th)}=1.0$ therefore sits at the upper edge of the conservative window: it keeps the diagonal threshold feed-through explicit while remaining in the small-deformation regime. This sharpens the current interpretation of $\kappa_{\rm diag}^{\rm(th)}$ as a diagonal threshold susceptibility. The remaining missing ingredient is not off-diagonal closure, which is numerically absent in the present basis, but a parent-action normalization for this susceptibility.
+We now push this normalization one step closer to the parent action by introducing an action-normalized finite-match comparator. The basis witness remains exact ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.54\times10^{-8}$, zero reconstruction residuals), and the comparator keeps zero acceptance mismatch with only small deformation relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=1.00\times10^{-3}$, $p95=1.86\times10^{-3}$, $\max|\Delta\mu_{\mu\mu}|=1.59\times10^{-2}$).
+We now probe the remaining gap directly with an absolute parent-action comparator. In this mode the external diagonal-scale choice is removed and replaced by an absolute witness built from parent-action-side invariants and coefficient alignment:
 \[
-\texttt{action\_abs\_diag}\equiv \texttt{pkin\_entropy}\times \texttt{coeff\_align},
+\kappa_{\rm abs}^{(d)}\equiv S_{\rm kin}^{(P)}\,A_{\rm coeff},
 \qquad
-\texttt{coeff\_align}\equiv \frac{\|c_N\|_2}{\|c_N\|_1},
+A_{\rm coeff}\equiv \frac{\|c_N\|_2}{\|c_N\|_1},
 \]
-so that the effective diagonal threshold is generated locally rather than chosen externally. The canonical D21$\times$E21 summaries are stored under \path{paper/hll_uv_*action_absolute*}. The basis witness remains exact ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.55\times10^{-8}$, zero reconstruction residuals), and the map again keeps zero acceptance mismatch relative to the refreshed constant baseline with only small deformation ($\langle|\Delta\mu_{\mu\mu}|\rangle=7.17\times10^{-4}$, $p95=1.17\times10^{-3}$, $\max|\Delta\mu_{\mu\mu}|=1.14\times10^{-2}$).
-To test whether this remaining prefactor can be pushed closer to a genuine curved-background loop origin, we next introduced a heat-kernel comparator family. The direct lesson from the raw and flat-space-subtracted local witnesses is negative: a purely local $a_2$-type diagonal density remains dominated by the well region and does not align with the current \texttt{action\_absolute} normalization. The useful signal appears only after promoting the loop witness to a \emph{contrast-based} non-local quantity that compares well and barrier curvature structure. The canonical D21$\times$E21 summaries for \texttt{action\_loop\_contrast} are stored under \path{paper/hll_uv_*action_loop_contrast*}; the basis witness remains exact, acceptance mismatch stays zero, and the deformation remains small relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=4.88\times10^{-4}$, $p95=8.76\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=7.67\times10^{-3}$). We then add one more comparator layer, \texttt{action\_loop\_absolute}, by modulating the parent-action absolute witness with a contrast-based loop prefactor,
+so that the effective diagonal threshold is generated locally rather than chosen externally. On the canonical D21$\times$E21 grid, this absolute parent-action comparator remains exact at the basis level ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.55\times10^{-8}$, zero reconstruction residuals), and the map again keeps zero acceptance mismatch relative to the refreshed constant baseline with only small deformation ($\langle|\Delta\mu_{\mu\mu}|\rangle=7.17\times10^{-4}$, $p95=1.17\times10^{-3}$, $\max|\Delta\mu_{\mu\mu}|=1.14\times10^{-2}$).
+To test whether this remaining prefactor can be pushed closer to a genuine curved-background loop origin, we next introduced a heat-kernel comparator family. The direct lesson from the raw and flat-space-subtracted local witnesses is negative: a purely local $a_2$-type diagonal density remains dominated by the well region and does not align with the absolute parent-action normalization. The useful signal appears only after promoting the loop witness to a \emph{contrast-based} non-local quantity that compares well and barrier curvature structure. On the canonical D21$\times$E21 grid this contrast-based loop comparator remains exact at the basis level, keeps zero acceptance mismatch, and has only small deformation relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=4.88\times10^{-4}$, $p95=8.76\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=7.67\times10^{-3}$). We then add one more loop-improved comparator layer by modulating the parent-action absolute witness with a contrast-based loop prefactor,
 \begin{align}
 \kappa_{\rm diag}^{\rm eff}
 &=
@@ -816,8 +819,8 @@ To test whether this remaining prefactor can be pushed closer to a genuine curve
  m_{\rm off}\,
  a_{\rm norm}^{(o)}.
 \end{align}
-Here $(\kappa_{\rm abs}^{(d/o)},\Pi_{\rm hk}^{(d/o)},s_{\rm sh},c_{\rm cv},m_{\rm off},a_{\rm norm}^{(d/o)})$ are the short-hand symbols for the exported fields \texttt{action\_abs}, \texttt{hk\_loop\_prefactor}, \texttt{shell\_spread}, \texttt{coeff\_cv}, \texttt{offdiag\_mix}, and \texttt{action\_norm}. The canonical D21$\times$E21 summaries are stored under \path{paper/hll_uv_*action_loop_absolute*}. This mode remains exact at the basis level ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.56\times10^{-8}$, zero reconstruction residuals) and keeps zero acceptance mismatch, with only small deformation relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=3.37\times10^{-4}$, $p95=6.92\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=5.33\times10^{-3}$).
-We now add one further EYMH-side screening layer, \texttt{action\_loop\_eymh\_absolute}, which keeps the same contrast-based loop family but modulates it by local mass-access and curvature-screen factors together with shell-dispersion screening,
+Here $(\kappa_{\rm abs}^{(d/o)},\Pi_{\rm hk}^{(d/o)},s_{\rm sh},c_{\rm cv},m_{\rm off},a_{\rm norm}^{(d/o)})$ denote the absolute parent-action witness, heat-kernel loop prefactor, shell-spread witness, coefficient variation, off-diagonal mixing norm, and normalized action weight. This loop-improved absolute comparator remains exact at the basis level ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.56\times10^{-8}$, zero reconstruction residuals) and keeps zero acceptance mismatch, with only small deformation relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=3.37\times10^{-4}$, $p95=6.92\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=5.33\times10^{-3}$).
+We now add one further EYMH-side screening layer, which keeps the same contrast-based loop family but modulates it by local mass-access and curvature-screen factors together with shell-dispersion screening,
 \begin{align}
 A_X &= \sqrt{\frac{X_{\rm well}}{1+X_{\rm well}}},
 &
@@ -830,16 +833,16 @@ A_R &= (1+R_{\rm bar})^{-1/2},\\
  \sqrt{c_{\rm align}}
  (1+g_{\rm cv}+c_{\rm tree})^{-1/2}.
 \end{align}
-Here $(X_{\rm well},R_{\rm bar},s_{\rm sh},c_{\rm align},g_{\rm cv},c_{\rm tree})$ denote the exported well-mass, barrier-curvature, shell-spread, coefficient-alignment, gap-variation, and tree-diagonal variation witnesses. The canonical D21$\times$E21 summaries are stored under \path{paper/hll_uv_*action_loop_eymh_absolute*}. This mode remains exact at the basis level ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.56\times10^{-8}$, zero reconstruction residuals) and keeps zero acceptance mismatch, with only small deformation relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=4.17\times10^{-5}$, $p95=7.63\times10^{-5}$, $\max|\Delta\mu_{\mu\mu}|=6.46\times10^{-4}$). We therefore read \texttt{action\_loop\_eymh\_absolute} as the current best \emph{EYMH-side absolute loop-prefactor comparator}.
-We then promote the two dominant source factors already isolated by the EYMH-side audits into a refreshed \texttt{action\_loop\_eymh\_source\_informed} comparator; the canonical D21$\times$E21 summaries are stored under \path{paper/hll_uv_*action_loop_eymh_source_informed*_fix}. This mode again remains exact at the basis level, keeps zero acceptance mismatch, and stays in the same small-deformation class relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=5.2\times10^{-5}$, $p95=1.09\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=7.81\times10^{-4}$). The promoted source-informed prefactor remains nonzero across the whole D21$\times$E21 map, so \texttt{action\_loop\_eymh\_source\_informed} is the current best \emph{source-informed EYMH comparator}.
+Here $(X_{\rm well},R_{\rm bar},s_{\rm sh},c_{\rm align},g_{\rm cv},c_{\rm tree})$ denote the well-mass, barrier-curvature, shell-spread, coefficient-alignment, gap-variation, and tree-diagonal variation witnesses. This EYMH-screened loop comparator remains exact at the basis level ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.56\times10^{-8}$, zero reconstruction residuals) and keeps zero acceptance mismatch, with only small deformation relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=4.17\times10^{-5}$, $p95=7.63\times10^{-5}$, $\max|\Delta\mu_{\mu\mu}|=6.46\times10^{-4}$). We therefore read it as the current best \emph{EYMH-side absolute loop-prefactor comparator}.
+We then promote the two dominant source factors already isolated by the EYMH-side audits into a refreshed source-informed EYMH comparator. This mode again remains exact at the basis level, keeps zero acceptance mismatch, and stays in the same small-deformation class relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=5.2\times10^{-5}$, $p95=1.09\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=7.81\times10^{-4}$). The promoted source-informed prefactor remains nonzero across the whole D21$\times$E21 map, so this is the current best \emph{source-informed EYMH comparator}.
 
-We now rewrite that same source-informed block in explicit parent-action participation/compressibility language via \texttt{action\_loop\_eymh\_parented}. The canonical artifacts are grouped under \path{paper/hll_uv_*action_loop_eymh_parented*_D21E21_fix.*}. This parented rewrite remains exact at the basis level ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.56\times10^{-8}$, zero reconstruction residuals), keeps zero acceptance mismatch, and on the canonical D21$\times$E21 fix grid is map-identical to \texttt{action\_loop\_eymh\_source\_informed}. Relative to the refreshed constant baseline it therefore inherits the same small-deformation scale ($\langle|\Delta\mu_{\mu\mu}|\rangle=5.2\times10^{-5}$, $p95=1.09\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=7.81\times10^{-4}$). The numerical role of this mode is not to introduce a new baseline, but to show that the same comparator can be written directly in parent-action participation/coherence and shell-background compressibility language without changing the canonical map.
+We now rewrite that same source-informed block in explicit parent-action participation/compressibility language. This parented rewrite remains exact at the basis level ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.56\times10^{-8}$, zero reconstruction residuals), keeps zero acceptance mismatch, and on the canonical D21$\times$E21 fix grid is map-identical to the source-informed comparator. Relative to the refreshed constant baseline it therefore inherits the same small-deformation scale ($\langle|\Delta\mu_{\mu\mu}|\rangle=5.2\times10^{-5}$, $p95=1.09\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=7.81\times10^{-4}$). The numerical role of this mode is not to introduce a new baseline, but to show that the same comparator can be written directly in parent-action participation/coherence and shell-background compressibility language without changing the canonical map.
 Figure~\ref{fig:hll_uv_parented_comparator} summarizes this normalization-side endpoint visually: the parented rewrite is map-identical to the source-informed comparator while the remaining deformation relative to the constant finite-match baseline is small and structured.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{hll_uv_action_loop_eymh_parented_comparator_D21E21_fix.png}
-    \caption{EYMH-side parented finite-match comparator on the canonical D21$\times$E21 fix grid. Top row: map-level deformation against the refreshed constant baseline and the source-informed comparator; the source-informed and parented maps coincide to numerical precision. Bottom row: the corresponding EYMH source prefactor, parented prefactor, and tree-diagonal compressibility witness. Source files: \texttt{paper/hll\_uv\_action\_loop\_eymh\_parented\_*.}}
+    \caption{EYMH-side parented finite-match comparator on the canonical D21$\times$E21 fix grid. Top row: map-level deformation against the refreshed constant baseline and the source-informed comparator; the source-informed and parented maps coincide to numerical precision. Bottom row: the corresponding EYMH source prefactor, parented prefactor, and tree-diagonal compressibility witness.}
     \label{fig:hll_uv_parented_comparator}
 \end{figure}
 
@@ -855,7 +858,7 @@ To sharpen that statement further, we resolved the two dominant factors one leve
 \qquad
 N_{\rm eff}=\left(\frac{c_{l1}}{c_{l2}}\right)^2,
 \]
-with source-level reconstruction again closed to machine precision, $\max|\Delta_{\rm source}|=9.71\times10^{-17}$. In the exported tables, $A_{\rm part}$ is stored as \texttt{coeff\_participation\_access}. Likewise, the diagonal screening factor splits as
+with source-level reconstruction again closed to machine precision, $\max|\Delta_{\rm source}|=9.71\times10^{-17}$. Likewise, the diagonal screening factor splits as
 \[
 S_{\rm disp}=S_{\rm gap}S_{\rm tree},
 \]
@@ -866,7 +869,7 @@ S_{\rm tree}=(1+\chi_{\rm tree})^{-1/2},
 \qquad
 \chi_{\rm tree}\equiv \frac{c_{\rm tree}^{\rm cv}}{1+g_{\rm cv}},
 \]
-so that the canonical screening factor is exactly the compressibility witness of a shell-background-normalized diagonal susceptibility; in the exported tables, it appears as \texttt{tree\_diag\_compressibility}. The corresponding audit closes identically ($\max|\Delta_{\rm tree}|=0$) and shows that the susceptibility itself is positively correlated with the EYMH prefactor ($\mathrm{corr}=0.7409$), while the compressibility carries the leading suppression ($\mathrm{corr}=-0.8226$). A complementary tree-diagonal pressure fraction also correlates strongly with the prefactor ($\mathrm{corr}=0.8449$). Hence the unresolved parent-action question is now even narrower: one must explain not merely why tree-diagonal dispersion enters, but why a shell-normalized diagonal susceptibility/compressibility controls the dominant screening of the canonical EYMH loop prefactor.
+so that the canonical screening factor is exactly the compressibility witness of a shell-background-normalized diagonal susceptibility. The corresponding audit closes identically ($\max|\Delta_{\rm tree}|=0$) and shows that the susceptibility itself is positively correlated with the EYMH prefactor ($\mathrm{corr}=0.7409$), while the compressibility carries the leading suppression ($\mathrm{corr}=-0.8226$). A complementary tree-diagonal pressure fraction also correlates strongly with the prefactor ($\mathrm{corr}=0.8449$). Hence the unresolved parent-action question is now even narrower: one must explain not merely why tree-diagonal dispersion enters, but why a shell-normalized diagonal susceptibility/compressibility controls the dominant screening of the canonical EYMH loop prefactor.
 We can sharpen the source-side interpretation one step further by rewriting the participation block in the language of a two-mode loop trace,
 \[
 N_{\rm trace}=\frac{1}{p_1^2+p_2^2},
@@ -885,7 +888,7 @@ d=\sqrt{\frac{2}{N_{\rm eff}}-1},
 \qquad
 A_{\rm part}^{\rm exact}=\sqrt{\frac{1-d}{1+d}},
 \]
-we reconstruct \texttt{coeff\_participation\_access\_parented} to machine precision, with $\max|\Delta_{\rm part}^{\rm exact}|=9.99\times10^{-16}$. The participation block is therefore no longer just strongly correlated with a projected response; it is exactly fixed by the two-mode loop-trace imbalance implied by the parented map. At this stage the remaining EYMH normalization gap has narrowed again: what remains to be explained from the parent action is why the fluctuation operator dynamically selects this exact two-mode participation closure together with the shell-background-normalized tree-diagonal pressure/compressibility response.
+we reconstruct the parented participation factor to machine precision, with $\max|\Delta_{\rm part}^{\rm exact}|=9.99\times10^{-16}$. The participation block is therefore no longer just strongly correlated with a projected response; it is exactly fixed by the two-mode loop-trace imbalance implied by the parented map. At this stage the remaining EYMH normalization gap has narrowed again: what remains to be explained from the parent action is why the fluctuation operator dynamically selects this exact two-mode participation closure together with the shell-background-normalized tree-diagonal pressure/compressibility response.
 We can sharpen this parent-action reading once more by eliminating the intermediate two-mode probabilities altogether and working directly with the projected coefficient vector $c_N=P_N^{\rm kin}/M_N^2$. The coefficient-norm audit stored under \path{paper/hll_uv_*participation_norm_audit*_D21E21_fix.*} shows that
 \[
 Q_2=\frac{\|c\|_2^2}{\|c\|_1^2},
@@ -894,14 +897,14 @@ N_{\rm eff}^{\rm norm}=\frac{\|c\|_1^2}{\|c\|_2^2},
 \qquad
 A_{\rm part}^{\rm norm}=Q_2^{1/4}=\sqrt{\frac{\|c\|_2}{\|c\|_1}}
 \]
-reconstructs \texttt{coeff\_participation\_access\_parented} to machine precision, with $\max|\Delta_{\rm part}^{\rm norm}|=2.22\times10^{-16}$. The participation block can therefore be read directly as an exact norm-ratio coherence of the projected parent-action coefficient block. Numerically, this norm coherence remains correlated with the canonical parented prefactor, $\mathrm{corr}(A_{\rm part}^{\rm norm},\Pi_{\rm parent})=0.7129$, while staying essentially orthogonal to the residual map deformation relative to the refreshed constant baseline. The remaining normalization gap is now narrower once again: explain why the parent EYMH fluctuation operator fixes this exact projected coefficient-norm participation closure together with the shell-background-normalized tree-diagonal pressure/compressibility response.
+reconstructs the parented participation factor to machine precision, with $\max|\Delta_{\rm part}^{\rm norm}|=2.22\times10^{-16}$. The participation block can therefore be read directly as an exact norm-ratio coherence of the projected parent-action coefficient block. Numerically, this norm coherence remains correlated with the canonical parented prefactor, $\mathrm{corr}(A_{\rm part}^{\rm norm},\Pi_{\rm parent})=0.7129$, while staying essentially orthogonal to the residual map deformation relative to the refreshed constant baseline. The remaining normalization gap is now narrower once again: explain why the parent EYMH fluctuation operator fixes this exact projected coefficient-norm participation closure together with the shell-background-normalized tree-diagonal pressure/compressibility response.
 The new coefficient-norm tilt audit stored under \path{paper/hll_uv_*participation_tilt_audit*_D21E21_fix.*} removes even the explicit norm-ratio intermediate and rewrites the same participation block as an exact projected free-energy tilt,
 \[
 \Delta F_{\rm norm}=\log\frac{\|c\|_1}{\|c\|_2},
 \qquad
 A_{\rm part}^{\rm tilt}=e^{-\Delta F_{\rm norm}/2}=\sqrt{\frac{\|c\|_2}{\|c\|_1}}.
 \]
-On the canonical D21$\times$E21 fix grid this tilt coherence reconstructs \texttt{coeff\_participation\_access\_parented} with $\max|\Delta_{\rm part}^{\rm tilt}|=2.22\times10^{-16}$ and, together with the shell access and tree-diagonal compressibility blocks, closes the full parented prefactor exactly as
+On the canonical D21$\times$E21 fix grid this tilt coherence reconstructs the parented participation factor with $\max|\Delta_{\rm part}^{\rm tilt}|=2.22\times10^{-16}$ and, together with the shell access and tree-diagonal compressibility blocks, closes the full parented prefactor exactly as
 \[
 \Pi_{\rm parent}
 =\Pi_{\rm hk,local}\,
@@ -924,7 +927,7 @@ A_{\rm shell}\,
 A_{\rm resp},
 \]
 with $\max|\Delta A_{\rm resp}|=2.22\times10^{-16}$ and $\max|\Delta\Pi_{\rm parent}^{\rm resp}|=9.71\times10^{-17}$. In other words, the coefficient-norm tilt coherence and the shell-background-normalized tree-diagonal compressibility are not merely parallel witnesses; they enter additively in the same projected response action whose exponential fixes the canonical parented prefactor. The remaining EYMH normalization gap is therefore narrower again: explain why the fluctuation operator dynamically selects this exact projected response action rather than only its separate tilt and compressibility components.
-We can sharpen this once more by identifying the two terms in $S_{\rm resp}$ with the most direct projected kernel objects currently available in the code. The log-det / Schur audit stored under \path{paper/hll_uv_*logdet_schur_audit*_D21E21_fix.*} defines
+We can sharpen this once more by identifying the two terms in $S_{\rm resp}$ with the most direct projected kernel objects currently available in the audited projection. The log-det / Schur audit stored under \path{paper/hll_uv_*logdet_schur_audit*_D21E21_fix.*} defines
 \[
 K_{\rm part}=\frac{\|c\|_1}{\|c\|_2},
 \qquad
@@ -1060,10 +1063,12 @@ C_{\rm parent}=\sqrt{(K_{11}-1)(K_{22}-K_{\rm bg})},
 \]
 for which the determinant, Schur, weight, and normalized cross-ratio residuals all collapse to machine precision:
 \[
-\max|\Delta(\det/K_{\rm bg})|=4.44\times10^{-16},\quad
-\max|\Delta \widehat G_{\rm Schur}|=4.44\times10^{-16},\quad
-\max|\Delta A|=1.11\times10^{-16},\quad
-\max|\Delta\xi|=1.11\times10^{-16}.
+\begin{aligned}
+\max|\Delta(\det/K_{\rm bg})|&=4.44\times10^{-16},&
+\max|\Delta \widehat G_{\rm Schur}|&=4.44\times10^{-16},\\
+\max|\Delta A|&=1.11\times10^{-16},&
+\max|\Delta\xi|&=1.11\times10^{-16}.
+\end{aligned}
 \]
 The first nontrivial runner-up, $(u,v,\kappa)=(0.625,0.625,1.1)$, already opens visible residuals, with $\max|\Delta(\det/K_{\rm bg})|=1.32\times10^{-3}$ and $\max|\Delta A|=2.18\times10^{-4}$. This is the strongest naturality statement so far: once the projected parent kernel is required to couple the participation and tree/background sectors through a minimal symmetric excess family, the geometric-mean mixed block is uniquely selected.
 We can push that one step further by testing the nearest non-minimal extension: a ratio-dependent warp of the geometric mean. The audit stored under \path{paper/hll_uv_*parent_ratio_warp*_D21E21_fix.*} probes
@@ -1615,7 +1620,7 @@ Using the same map-level EFT/Wilson-matched definition, we additionally evaluate
 \left|\frac{C_{eH}^{\ell\ell}(D,\eta)}{C_{eH}^{\ell\ell}(D_0,\eta_0)}\right|^2
 \left[\frac{\Gamma_{\rm tot}(D,\eta)}{\Gamma_{\rm tot}(D_0,\eta_0)}\right]^{-1}.
 \end{equation}
-Figure~\ref{fig:hll_proxy} summarizes the corresponding maps on the same $(D,\eta)$ grid; tabulated statistics are stored in \path{paper/hll_signal_strength_summary.csv}. This extension is still a scan-level EFT map (not full UV matching), while the visibility sector in the global scan uses baseline fully normalized EFT operator visibility (\texttt{b\_mode=eft\_operator\_norm}) built from overlap-extracted inputs with mode tracking and microcanonical windowing. The repository keeps the three-channel observation fields in \path{data/pdg_leptons.json} as a reproducible interface. The corresponding runtime-direct visibility branch is release-qualified only in the risk-weighted profile-blend form \texttt{cell\_direct\_runtime\_release\_tuned}; the reported baseline maps remain \texttt{full\_direct}/\texttt{eft\_operator\_norm} unless stated otherwise.
+Figure~\ref{fig:hll_proxy} summarizes the corresponding maps on the same $(D,\eta)$ grid; tabulated statistics are stored in \path{paper/hll_signal_strength_summary.csv}. This extension is still a scan-level EFT map (not full UV matching), while the visibility sector in the global scan uses baseline fully normalized EFT operator visibility built from overlap-extracted inputs with mode tracking and microcanonical windowing. The repository keeps the three-channel observation fields in \path{data/pdg_leptons.json} as a reproducible interface. The corresponding runtime-direct visibility branch is release-qualified only in the risk-weighted profile-blend form; the reported baseline maps remain full-direct and EFT-operator normalized unless stated otherwise.
 
 \begin{figure}[htbp]
     \centering
@@ -1707,7 +1712,7 @@ bash scripts/repro/reproduce_paper.sh --package-only
 Stage & Primary scripts & Key outputs \\
 \hline
 \parbox[t]{0.19\textwidth}{Global maps and EFT/Wilson-matched observable plots} & \parbox[t]{0.29\textwidth}{\texttt{generate\_plots.py}; \texttt{scan\_hll\_signal\_strengths.py}; \texttt{scan\_hll\_uv\_to\_eft\_matching.py}} & \parbox[t]{0.42\textwidth}{\texttt{output/three\_generation\_*.png}; \texttt{output/hmumu\_*.png}; \texttt{output/hll\_signal\_strength/*}; \texttt{output/hll\_uv\_matching/*}} \\
-\parbox[t]{0.19\textwidth}{Full-direct release gate (small complete + large spot-check)} & \parbox[t]{0.29\textwidth}{\texttt{publish\_full\_direct\_map.py}; \texttt{scan\_localized\_direct\_surface\_bias.py}; \texttt{scan\_chain\_mode\_cell\_direct\_audit.py}; \texttt{build\_artifact\_status\_registry.py}} & \parbox[t]{0.42\textwidth}{\texttt{paper/full\_direct\_map\_release\_summary.csv}; \texttt{paper/localized\_direct\_surface\_summary\_Dgrid21\_Egrid41.csv}; \texttt{paper/localized\_direct\_surface\_summary\_Dgrid60\_Egrid21.csv}; \texttt{paper/chain\_mode\_cell\_direct\_audit\_Dgrid21\_Egrid41.csv}; \texttt{paper/chain\_mode\_cell\_direct\_audit\_Dgrid21\_Egrid41\_cell\_direct\_runtime\_release\_tuned.csv}; \texttt{paper/artifact\_status.csv}} \\
+\parbox[t]{0.19\textwidth}{Full-direct release gate (small complete + large spot-check)} & \parbox[t]{0.29\textwidth}{Full-direct publish audit; localized-direct surface audit; chain-mode parity audit; artifact-status registry} & \parbox[t]{0.42\textwidth}{Release summary, localized-direct summaries, chain-mode audit summaries, and \texttt{paper/artifact\_status.csv}; exact filenames are listed in \texttt{repro/artifact\_map.csv}} \\
 \parbox[t]{0.19\textwidth}{Localized mixing extraction} & \parbox[t]{0.29\textwidth}{\texttt{extract\_chi\_localized\_2d.py} (\texttt{--Ds}, \texttt{--full-scan})} & \parbox[t]{0.42\textwidth}{\texttt{output/chi\_fp\_2d/localized\_chi\_D*.csv}} \\
 \parbox[t]{0.19\textwidth}{Localized-profile diagnostics} & \parbox[t]{0.29\textwidth}{\texttt{scan\_chi\_profile\_robustness.py}; \texttt{scan\_surrogate\_vs\_action\_points.py}; \texttt{plot\_chi\_*.py}} & \parbox[t]{0.42\textwidth}{\texttt{paper/chi\_profile\_robustness.csv}; \texttt{paper/surrogate\_vs\_action\_points.csv}; \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}; \texttt{paper/chi\_wavefunction\_contours\_D*.png}} \\
 \parbox[t]{0.19\textwidth}{Core-parameter robustness} & \parbox[t]{0.29\textwidth}{\texttt{scan\_core\_param\_robustness.py}} & \parbox[t]{0.42\textwidth}{\texttt{paper/core\_param\_robustness.csv}; \texttt{output/robustness/core\_param\_robustness\_cases.csv}} \\
@@ -1825,13 +1830,9 @@ so the minimal overlap kernel has
 \begin{equation}
 \mathcal{W}_{\rm frame}=1.
 \end{equation}
-This is the baseline convention in \texttt{extract\_y\_eff\_2d\_three\_channel.py} (\texttt{frame\_power=0}); nonzero frame power is treated only as a diagnostic deformation.
+This is the baseline convention in the three-channel effective-Yukawa extraction; nonzero frame power is treated only as a diagnostic deformation.
 
-As a reproducibility check, \texttt{code/check\_minimal\_dirac\_conformal.py} exports
-\texttt{output/dirac\_frame\_check/minimal\_dirac\_conformal\_check.csv}
-and a paper copy at
-\texttt{paper/minimal\_dirac\_conformal\_check.csv},
-verifying the zero net conformal power in both kinetic and Yukawa factors.
+As a reproducibility check, the minimal Dirac-conformal audit exports a machine-readable CSV and paper copy verifying the zero net conformal power in both kinetic and Yukawa factors.
 
 \subsection{1D On-Axis Reduction}
 \label{app:1D}
@@ -2067,7 +2068,7 @@ Figure~\ref{fig:chi_loc_modes} shows the fine-grid 2D parity eigenmodes used in 
 
 To test profile uncertainty in the global map, we benchmarked six $\chi_N^{(LR)}(D)$ choices built from the same fine-grid knots $(D,\chi_N^{(LR)})=\{(6,4.02\times10^{-4}),\,(12,2.21\times10^{-4}),\,(18,2.13\times10^{-4})\}$: linear interpolation, log-linear exponential fit $\ln\chi = -7.5956 - 0.05282\,D$, and $\pm20\%$ amplitude rescalings of each profile. Re-running the full $60\times60$ scan keeps the generation fractions fixed and yields a narrow $H\to\mu\mu$ acceptance spread:
 \begin{equation}
-f(\mathcal{R}_3>0.90)=0.932,\quad
+f(\mathcal{R}_3>0.90)=0.927,\quad
 f(\mathcal{R}_3>0.95)=0.217,\quad
 f(\chi^2_{\mu\mu}<4)\in[0.1625,\,0.1681].
 \end{equation}
@@ -2082,12 +2083,12 @@ The best-fit point moves within $(D,\eta)\approx(8.07\text{--}9.42,\ 1.29\text{-
 \hline\hline
 Profile & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & Best $(D,\eta)$ \\
 \hline
-Linear interpolation & $0.932$ & $0.217$ & $0.168$ & $(9.42,\;1.29)$ \\
-Exponential fit      & $0.932$ & $0.217$ & $0.163$ & $(9.15,\;1.94)$ \\
-Linear $\times 0.8$  & $0.932$ & $0.217$ & $0.167$ & $(8.61,\;3.03)$ \\
-Linear $\times 1.2$  & $0.932$ & $0.217$ & $0.168$ & $(8.07,\;2.26)$ \\
-Exp-fit $\times 0.8$ & $0.932$ & $0.217$ & $0.163$ & $(8.61,\;3.10)$ \\
-Exp-fit $\times 1.2$ & $0.932$ & $0.217$ & $0.163$ & $(8.88,\;2.13)$ \\
+Linear interpolation & $0.927$ & $0.217$ & $0.168$ & $(9.42,\;1.29)$ \\
+Exponential fit      & $0.927$ & $0.217$ & $0.163$ & $(9.15,\;1.94)$ \\
+Linear $\times 0.8$  & $0.927$ & $0.217$ & $0.167$ & $(8.61,\;3.03)$ \\
+Linear $\times 1.2$  & $0.927$ & $0.217$ & $0.168$ & $(8.07,\;2.26)$ \\
+Exp-fit $\times 0.8$ & $0.927$ & $0.217$ & $0.163$ & $(8.61,\;3.10)$ \\
+Exp-fit $\times 1.2$ & $0.927$ & $0.217$ & $0.163$ & $(8.88,\;2.13)$ \\
 \hline\hline
 \end{tabular}
 \end{table*}
@@ -2142,11 +2143,11 @@ g_{N,\rm raw}^{\rm(ps)}=1+\int_{\mathcal{W}_N}\rho_{\rm ps}(E')\,\dd E'
 =1+N_{\rm ps}(\lambda_N)-N_{\rm ps}(\lambda_1),\qquad
 \hat g_N\equiv\frac{g_{N,\rm raw}^{\rm(ps)}}{g_{3,\rm raw}^{\rm(ps)}}.
 \end{equation}
-The script \texttt{extract\_gn\_phase\_space\_2d.py} (in \texttt{code/}) exports both the low-$N$ profile table and the low-mode spectral table with explicit window bounds (source CSVs: \texttt{output/gn\_fp\_2d/gn\_phase\_space\_2d\_D6-12-18.csv}, \texttt{output/gn\_fp\_2d/gn\_phase\_space\_2d\_spectrum\_D6-12-18.csv}). For non-fine levels, the maximum profile deviation is
+The two-dimensional phase-space extraction exports both the low-$N$ profile table and the low-mode spectral table with explicit window bounds. For non-fine levels, the maximum profile deviation is
 \begin{equation}
 \max_{\text{non-fine}}\left(\max_N\frac{|\hat g_N-\hat g_N^{\rm(fine)}|}{|\hat g_N^{\rm(fine)}|}\right)=2.35\times10^{-2}.
 \end{equation}
-As in the 1D candidate check, this benchmark is reported as a replacement candidate. To test map-level impact, we connected both candidates to the main scan through \texttt{g\_mode} choices (\texttt{fp\_2d\_full}, \texttt{cardy}, \texttt{fp\_1d}, \texttt{fp\_2d}) and the reproducible script \texttt{scan\_gn\_profile\_impact.py}. Results in Table~\ref{tab:gn_profile_impact} show that the main conclusion is retained: relative to baseline \texttt{fp\_2d\_full}, the largest absolute shift is $0.0669$ in $f(\mathcal{R}_3>0.90)$ (for \texttt{fp\_2d}), while high-$N$ runaway remains controlled with $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$ in all tested modes.
+As in the 1D candidate check, this benchmark is reported as a replacement candidate. To test map-level impact, we connected the baseline, legacy Cardy comparator, one-dimensional phase-space candidate, and two-dimensional phase-space candidate to the main scan through the reproducible script \texttt{scan\_gn\_profile\_impact.py}. Results in Table~\ref{tab:gn_profile_impact} show that the main conclusion is retained: relative to the bounded two-dimensional baseline, the largest absolute shift is $0.0669$ in $f(\mathcal{R}_3>0.90)$ (for the raw two-dimensional phase-space candidate), while high-$N$ runaway remains controlled with $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$ in all tested modes.
 
 \begin{table}[t]
 \centering
@@ -2208,8 +2209,8 @@ $g_N$ fp\_2d profile & 40 & 0.860 & 0.1492 & 0.0003 & 0.114352 \\
 \end{table}
 Across $N_{\max}=20,30,40$, both baseline and fp\_2d scenarios are numerically stable at map level: the key fractions $f(\mathcal{R}_3>0.90)$, $f(\chi^2_{\mu\mu}<4)$, and $f(N_{\rm win}>3)$ remain unchanged in this scan.
 
-\subsection{Baseline Cross-Check Under \texorpdfstring{$g\_mode=\mathrm{fp\_2d\_full}$}{g_mode=fp_2d_full}}
-To implement a strict same-framework upgrade, we set \texttt{g\_mode=fp\_2d\_full} as the baseline. Instead of direct low-$N$ substitution plus geometric continuation, this mode uses an explicit bounded microcanonical window for $N\le 3$ and an energy-gap tail prescription for $N>3$:
+\subsection{Baseline Cross-Check Under \texorpdfstring{$g_{\rm mode}=\mathrm{fp\_2d\_full}$}{g mode fp 2d full}}
+To implement a strict same-framework upgrade, we set the bounded two-dimensional phase-space profile as the baseline. Instead of direct low-$N$ substitution plus geometric continuation, this mode uses an explicit bounded microcanonical window for $N\le 3$ and an energy-gap tail prescription for $N>3$:
 \begin{equation}
 g_N^{\rm(full)}(D)=g_3^{\rm(ps)}(D)\hat g_N(D),\quad
 \hat g_n=\left(\hat g_n^{\rm(dir)}\right)^{1-\alpha}\left(\hat g_n^{\rm(win)}\right)^{\alpha}\ (n=1,2,3),
@@ -2258,11 +2259,11 @@ For this module we set $\gamma_{\rm mix}(D)\equiv M_{LR}^{(H)}(D)$ from Appendix
 \gamma_\phi(D)\equiv \sqrt{\left\langle\left(\delta V\right)^2\right\rangle_\rho},\qquad
 \delta V=V_{\rm eff}-\bar V_{\rm eff}(r),
 \end{equation}
-with cylindrical weighting $\langle\cdots\rangle_\rho$. The minimal Lindblad evolution is generated by \texttt{lindblad\_chi\_minimal.py}, and geometry-profile extraction is handled by \texttt{extract\_chi\_open\_system\_geometry.py}. These scripts output reproducible diagnostics such as
+with cylindrical weighting $\langle\cdots\rangle_\rho$. The minimal Lindblad evolution and geometry-profile extraction output reproducible diagnostics such as
 \begin{equation}
 C_{\max}\equiv \max_t |\rho_{LR}(t)|,\qquad P_{\max}\equiv \max_t \rho_{RR}(t),
 \end{equation}
-and a normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. Results for $D=\{6,12,18\}$ are summarized in Table~\ref{tab:chi_open_geom}. Extending the same profile to $D=4,\dots,20$ gives a stable geometry-informed ratio band $\chi_{\rm open}/\chi_{LR}\in[0.0852,0.2127]$ with mean $0.1269$ (source CSV: \texttt{output/chi\_open\_system/chi\_open\_ratio\_band.csv}). This value belongs to the geometry-only proxy closure in this subsection; the anchor-calibrated microscopic band is reported separately in Eq.~\eqref{eq:chi_open_micro_band} and Table~\ref{tab:chi_open_sensitivity}.
+and a normalized proxy $\chi_{\rm eff}^{\rm(proxy)}=2\gamma_{\rm mix}C_{\max}/\bar{\Gamma}_N$. Results for $D=\{6,12,18\}$ are summarized in Table~\ref{tab:chi_open_geom}. Extending the same profile to $D=4,\dots,20$ gives a stable geometry-informed ratio band $\chi_{\rm open}/\chi_{LR}\in[0.0852,0.2127]$ with mean $0.1269$. This value belongs to the geometry-only proxy closure in this subsection; the anchor-calibrated microscopic band is reported separately in Eq.~\eqref{eq:chi_open_micro_band} and Table~\ref{tab:chi_open_sensitivity}.
 
 To move this module toward microscopic closure, we also extract localized-basis couplings $(g_z,g_x)$ directly from the same 2D eigenmodes and set
 \begin{equation}
@@ -2270,13 +2271,13 @@ To move this module toward microscopic closure, we also extract localized-basis 
 \gamma_{\rm mix}=\kappa_{\rm env}\,g_x^2 S(\Delta E),\qquad
 S(\omega)=\frac{2\tau_{\rm env}}{1+(\omega\tau_{\rm env})^2},
 \end{equation}
-via \texttt{extract\_chi\_open\_system\_micro.py}. To avoid map-level fitting, we calibrate $\kappa_{\rm env}$ with a multi-anchor rule (\texttt{calibrate\_kappa\_env\_micro\_anchor.py}): least-squares match to geometry-profile ratios on anchors $D=\{6,9,12,15,18\}$, then validate on holdout $D=\{4,5,7,8,10,11,13,14,16,17,19,20\}$. This gives $\kappa_{\rm env}=4.31\times10^{5}$ with anchor RMSE $8.61\times10^{-2}$ and holdout RMSE $6.95\times10^{-2}$ (holdout max-abs error $1.25\times10^{-1}$; source CSVs: \texttt{output/chi\_open\_system/kappa\_env\_anchor\_calibration.csv}, \texttt{output/chi\_open\_system/kappa\_env\_anchor\_holdout.csv}). The corresponding scan-level band is
+from the localized microscopic extraction. To avoid map-level fitting, we calibrate $\kappa_{\rm env}$ with a multi-anchor rule: least-squares match to geometry-profile ratios on anchors $D=\{6,9,12,15,18\}$, then validate on holdout $D=\{4,5,7,8,10,11,13,14,16,17,19,20\}$. This gives $\kappa_{\rm env}=4.31\times10^{5}$ with anchor RMSE $8.61\times10^{-2}$ and holdout RMSE $6.95\times10^{-2}$ (holdout max-abs error $1.25\times10^{-1}$). The corresponding scan-level band is
 \begin{equation}
 \chi_{\rm open}^{\rm(micro)}/\chi_{LR}\in[0.0173,0.3271],\qquad \langle \chi_{\rm open}^{\rm(micro)}/\chi_{LR}\rangle=0.1380,
 \label{eq:chi_open_micro_band}
 \end{equation}
-from \texttt{output/chi\_open\_system/chi\_open\_micro\_ratio\_band.csv}.
-To pin down the microscopic bookkeeping, we additionally export a bridge audit with \texttt{scan\_chi\_open\_system\_micro\_bridge.py}, writing \texttt{paper/chi\_open\_system\_micro\_bridge\_map.csv}, \texttt{paper/chi\_open\_system\_micro\_bridge\_summary.csv}, and \texttt{paper/chi\_open\_system\_micro\_bridge.png}. On the calibrated $D=4,\dots,20$ knot set, this audit reconstructs
+from the microscopic ratio-band audit.
+To pin down the microscopic bookkeeping, we additionally export a bridge audit with map, summary, and figure artifacts. On the calibrated $D=4,\dots,20$ knot set, this audit reconstructs
 \[
 \gamma_\phi=\kappa_{\rm env}g_z^2S(0),\qquad
 \gamma_{\rm mix}=\kappa_{\rm env}g_x^2S(\Delta E),\qquad
@@ -2290,11 +2291,11 @@ with numerically negligible residuals:
 \]
 The corresponding bridge summary identifies the effective system as the localized two-level $(L/R)$ subspace, the current bath witness as a Gaussian Markov bath with Lorentzian PSD, and the coupling operators as the diagonal/off-diagonal pair $(\sigma_z,\sigma_x)$. This means the open-system gap is no longer in the system-to-Lindblad bookkeeping, but in the microscopic EYMH origin and normalization of the bath itself.
 
-We can therefore push the bath normalization one step further without over-claiming a full microscopic derivation. Using \texttt{scan\_chi\_open\_system\_micro\_kappa\_window.py}, we treat
+We can therefore push the bath normalization one step further without over-claiming a full microscopic derivation. In the $\kappa_{\rm env}$ window audit, we treat
 \[
 \kappa_{\rm env}\rightarrow \kappa_{\rm scale}\,\kappa_{\rm env}^{\rm(calib)}
 \]
-as a uniform bath-normalization susceptibility that rescales both $\gamma_\phi$ and $\gamma_{\rm mix}$ while leaving the localized two-level Hamiltonian $(\Delta E,\sigma_x)$ fixed. The resulting audit writes \texttt{paper/chi\_open\_system\_micro\_kappa\_window\_scan.csv}, \texttt{paper/chi\_open\_system\_micro\_kappa\_window\_summary.csv}, and \texttt{paper/chi\_open\_system\_micro\_kappa\_window.png}. On the current $D=4,\dots,20$ knot set, the calibration-consistent candidate window is
+as a uniform bath-normalization susceptibility that rescales both $\gamma_\phi$ and $\gamma_{\rm mix}$ while leaving the localized two-level Hamiltonian $(\Delta E,\sigma_x)$ fixed. On the current $D=4,\dots,20$ knot set, the calibration-consistent candidate window is
 \[
 \kappa_{\rm scale}\in[0.5,1.0],
 \]
@@ -2304,7 +2305,7 @@ while a broader scan-stable window
 \]
 keeps the map-level fractions $f(\mathcal R_3>0.90)$ and $f(\chi^2_{\mu\mu}\le 4)$ unchanged and only relaxes the holdout tolerance slightly. In this sense, $\kappa_{\rm env}$ is no longer just a single-point fit parameter: within the present witness it acts as a bounded bath-normalization susceptibility. What still remains open is the EYMH-side derivation of its absolute normalization and of the microscopic bath degrees of freedom themselves.
 
-The newer parent-bath audits sharpen this statement. First, \texttt{scan\_chi\_open\_system\_bath\_factorization.py} and \texttt{scan\_chi\_open\_system\_kappa\_absolute\_audit.py} show that the witness already factorizes into a system block $(g_z^2,g_x^2)$, a bath-shape block $(S_{zz}(0),S_{xx}(\Delta E))$, and an amplitude block $\kappa_{\rm env}$, with the canonical constant normalization remaining the unique exact amplitude choice. Second, \texttt{scan\_chi\_open\_system\_parent\_bath\_statement.py} rewrites the rates as the projected bath block
+The newer parent-bath audits sharpen this statement. First, they show that the witness already factorizes into a system block $(g_z^2,g_x^2)$, a bath-shape block $(S_{zz}(0),S_{xx}(\Delta E))$, and an amplitude block $\kappa_{\rm env}$, with the canonical constant normalization remaining the unique exact amplitude choice. Second, they rewrite the rates as the projected bath block
 \[
 K_{\rm bath}=\kappa_{\rm env}\sqrt{K_{\rm sys}}\,K_{\rm spec}\,\sqrt{K_{\rm sys}},
 \label{eq:chi_parent_bath_block}
@@ -2595,7 +2596,7 @@ $\phi\times1$, mix$\times2$ & 0.034 & 0.412 & 0.208 \\
 \end{tabular}
 \end{table}
 
-Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.9269$, $f(\mathcal{R}_3>0.95)=0.2167$, $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$), while the $H\to\mu\mu$ acceptance fraction remains fixed at $f(\chi^2_{\mu\mu}<4)=0.1500$ in this setup. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, \texttt{chi\_mode=open\_system\_micro} is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
+Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.9269$, $f(\mathcal{R}_3>0.95)=0.2167$, $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$), while the $H\to\mu\mu$ acceptance fraction remains fixed at $f(\chi^2_{\mu\mu}<4)=0.1500$ in this setup. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, the open-system microscopic branch is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
 The explicit gate file \texttt{output/chi\_open\_system/open\_system\_micro\_baseline\_candidate.csv} records that this diagnostic passes the multi-anchor + holdout candidate gates (including holdout RMSE/max-abs thresholds), but we keep it outside baseline until the bath-side microscopic derivation is completed.
 
 \subsection{Cross-Module Migration Snapshot}
@@ -2663,7 +2664,7 @@ f(\chi^2_{\mu\mu}<4)\in[0.0333,\,0.2411],\qquad
 \chi^2_{\min}\in[1.52\times10^{-5},\,7.47\times10^{-1}].
 \end{equation}
 The baseline fixed-reference value used in main figures is $f(\chi^2_{\mu\mu}<4)=0.1500$.
-For reporting discipline, we keep this fixed normalization point in headline plots and treat dynamic re-normalizations as sensitivity diagnostics rather than post-hoc optimization. The physical normalization story should instead be read from the parent-action comparators in Sec.~\ref{sec:results}, especially \texttt{action\_absolute} and the \texttt{action\_loop\_*} family, together with the Wilson-diagonal ratios in Eq.~\eqref{eq:anchor_invariant_ratios}.
+For reporting discipline, we keep this fixed normalization point in headline plots and treat dynamic re-normalizations as sensitivity diagnostics rather than post-hoc optimization. The physical normalization story should instead be read from the absolute and loop-improved parent-action comparators in Sec.~\ref{sec:results}, together with the Wilson-diagonal ratios in Eq.~\eqref{eq:anchor_invariant_ratios}.
 
 \subsection{Dephasing-Based First-Principles Candidate for \texorpdfstring{$t_{\rm coh}$}{tcoh}}
 \label{app:tcoh_candidate}
@@ -2884,6 +2885,7 @@ This massive hierarchy ($B_1 \gg B_2 \gg B_3$) directly encodes the answer by ov
 
 We recommend the baseline as the primary closure due to its greater transparency and falsifiability.
 
+\clearpage
 \bibliographystyle{apsrev4-2}
 \bibliography{mainRefs}
 \end{document}

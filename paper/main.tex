@@ -502,12 +502,12 @@ Figure~\ref{fig:mixing_channels} summarizes this channel interpretation and the 
 
 
 % ============================================================
-\section{Module 3: Yukawa-Anchored Visibility BN}
+\section{Module 3: EFT-Normalized Visibility BN}
 \label{sec:BN}
 
 In early versions of the theory, $B_N$ was an arbitrary matching factor. In the present baseline (\texttt{b\_mode=eft\_operator\_norm}), $B_N(D)$ is defined by fully normalized EFT operator kernels built from overlap-extracted flavor-layer couplings and mediator scales from the same 2D localized operator chain as Appendix~\ref{app:chi_loc}; finite one-loop matching and LL-RG normalization are applied before layer-wise normalization. Mode tracking and microcanonical-window averaging suppress branch-switch artifacts in the overlap extraction stage, while high-$N$ regularization remains isolated in Eq.~\eqref{eq:gN_reg}.
 
-Since our primary observable is the $H\to\mu\mu$ signal strength, we anchor visibility to the \textbf{charged-lepton Yukawa} couplings:
+For comparison with the earlier visibility closure, we retain a legacy Yukawa-normalized fallback based on the \textbf{charged-lepton Yukawa} couplings:
 \begin{equation}
 Y_1 \equiv y_e, \quad Y_2 \equiv y_\mu, \quad Y_3 \equiv y_\tau, \qquad y_\ell = \sqrt{2}\,m_\ell/v,
 \label{eq:Y_lepton}
@@ -517,7 +517,7 @@ and define a cumulative effective strength:
 \tilde{Y}_N \equiv \sum_{k=1}^{\min(N,3)} Y_k, \qquad N \ge 1.
 \label{eq:Y_cumulative}
 \end{equation}
-This cumulative definition restricts the visibility anchoring to the three observable generations.
+This cumulative definition restricts the legacy visibility normalization to the three observable generations.
 As a \textbf{legacy comparator/fallback}, we keep the Yukawa-derived visibility law with sublinear compression exponent $0<p_B<1$:
 \begin{equation}
 \boxed{
@@ -533,7 +533,7 @@ For layers $N > 3$, we set $B_N = B_3 = 1$ (saturation). In the baseline scan (\
 
 \subsection{Roadmap: Action-Derived Effective Yukawa Operator}
 \label{sec:yukawa_roadmap}
-With the EFT-operator-normalized baseline now in place, we keep profile-closure visibility (\texttt{b\_mode=eft\_operator\_norm}) in the release-production per-cell chain (\texttt{cell\_direct\_runtime}), and treat runtime-direct per-cell operator extraction (\texttt{b\_mode=eft\_operator\_norm\_runtime\_direct}; \texttt{cell\_direct\_runtime\_release\_tuned}/\texttt{cell\_direct\_runtime\_extreme}) as benchmark branches pending drift reduction. The next upgrade remains an explicit lepton Yukawa sector in the same conformal background:
+With the EFT-operator-normalized baseline now in place, the release-production chain separates direct spectral-selection closure from visibility closure. The \texttt{cell\_direct\_runtime} branch recomputes $g_N(D)$, $\chi_{LR}(D)$, and $\tilde A_\ell(D)$ at scan runtime while keeping the baseline $B_N(D)$ profile closure; the runtime-direct visibility path is release-qualified only as the risk-weighted profile-blend branch \texttt{cell\_direct\_runtime\_release\_tuned}, not as a strict all-direct Higgs-map closure. The strict no-cache branch \texttt{cell\_direct\_runtime\_extreme} is retained only as a stress diagnostic. The next upgrade remains an explicit lepton Yukawa sector in the same conformal background:
 \begin{equation}
 \mathcal{L}_{Y} = -y_0\,\bar{L}H\ell_R + \mathrm{h.c.}, \qquad g_{\mu\nu}=\Omega^2\eta_{\mu\nu}.
 \end{equation}
@@ -644,11 +644,11 @@ $(11.0,1.4)$ & $2/2$ & $2.51\times10^{-4}$ & $3.06\times10^{-4}$ & $0$ & $2.85\t
 \end{tabular}
 \end{table}
 
-To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map and full-grid action-derived $\chi_{LR}(D)$/$\tilde A_\ell(D)$ profiles). Results are summarized in Table~\ref{tab:core_param_robustness} from \texttt{paper/core\_param\_robustness.csv}. Across this local window, the key fractions remain unchanged: $f(\mathcal{R}_3>0.90)=0.9269$, $f(\chi_{\mu\mu}^2<4)=0.1500$, and $f(N_{\rm win}>3)\approx2.78\times10^{-4}$.
+To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and the legacy visibility-comparator exponent $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map and full-grid action-derived $\chi_{LR}(D)$/$\tilde A_\ell(D)$ profiles). Results are summarized in Table~\ref{tab:core_param_robustness} from \texttt{paper/core\_param\_robustness.csv}. Since $p_B$ is inactive in the \texttt{eft\_operator\_norm} baseline, that row is retained as a legacy-comparator sensitivity check rather than an active closure knob. Across this local window, the key fractions remain unchanged: $f(\mathcal{R}_3>0.90)=0.9269$, $f(\chi_{\mu\mu}^2<4)=0.1500$, and $f(N_{\rm win}>3)\approx2.78\times10^{-4}$.
 
 \begin{table}[t]
 \centering
-\caption{Local one-at-a-time robustness scan around baseline closure parameters. Fractions are measured on the same $60\times60$ map as the baseline scan. Source CSV: \texttt{paper/core\_param\_robustness.csv}.}
+\caption{Local one-at-a-time robustness scan around baseline closure parameters, with the $p_B$ row retained only as a legacy visibility-comparator sensitivity because $p_B$ is inactive in the \texttt{eft\_operator\_norm} baseline. Fractions are measured on the same $60\times60$ map as the baseline scan. Source CSV: \texttt{paper/core\_param\_robustness.csv}.}
 \label{tab:core_param_robustness}
 \small
 \begin{tabular}{ccccc}
@@ -665,7 +665,7 @@ $p_B$ & $0.28/0.30/0.32$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\D
 To make \texttt{full\_direct} a release-level primary path, we define a reproducible \texttt{full\_direct\_map} publish mode in \path{code/publish_full_direct_map.py}. It combines the strict baseline map with small/large localized-direct audits and runtime-parity checks; Table~\ref{tab:full_direct_release} summarizes the result (source CSV: \path{paper/full_direct_map_release_summary.csv}).
 The release-production runtime branch, \texttt{cell\_direct\_runtime}, uses active-D-grid direct \texttt{fp\_2d\_full} spectra for $g_N(D)$ and evaluates $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ at scan runtime. On both audit grids it matches \texttt{full\_direct} exactly: $\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch fraction $=0$, and $\max|\Delta\mu_{\mu\mu}|=0$.
 The tuned visibility parity branch, \texttt{cell\_direct\_runtime\_release\_tuned}, keeps a D-only risk-weighted profile blend $\alpha(D)$ (source: \path{paper/runtime_direct_visibility_alphaD_profile_release.csv}) with $(\alpha_{\min},\alpha_{\max},p)=(0.96,0.99,1.0)$, mean $\alpha=0.9637$, and $p90(\alpha)=0.9734$. It passes both release gates (D21$\times$E41: $\max|\Delta\mu_{\mu\mu}|=0.0925$; D60$\times$E21: $\max|\Delta\mu_{\mu\mu}|=0.8373$), but remains explicitly blend-weighted in the observable sector. We therefore read it as a \textbf{risk-weighted profile-blend runtime-direct visibility parity branch}, not as a strict all-direct Higgs-map closure. A no-profile stress branch, \texttt{cell\_direct\_runtime\_extreme}, is retained only for diagnostics.
-After fixing the runtime-direct warm-path recursion and deterministic eigensolver seeding, we also re-ran a de-anchored exploratory branch, \texttt{cell\_direct\_runtime\_release\_tailm2\_detlin}, as a trusted stress test. It now closes the small-surface mismatch gate on D21$\times$E41 (mismatch $=9.29\times10^{-3}$) but still fails strongly on drift ($\max|\Delta\mu_{\mu\mu}|=68.39$, $p95=9.99$; source: \path{paper/hll_signal_strength_summary_chain_mode_cell_direct_runtime_release_tailm2_detlin_D21E41.csv}). The associated component audits show a split residual structure rather than a single tuning miss: $D=4.8$ is width-dominated, $D=6.4$ is UV/$g$-dominated, and $D=7.2$ is a small width tail (\path{paper/runtime_direct_detlin_component_audit_summary.csv}, \path{paper/runtime_direct_detlin_component_audit_slices.csv}). Width-family extensions and direct-only $g$-correction audits do not find a jointly admissible family that lowers $D=4.8$ without reopening $D=6.4$ or the $D=4.0$ acceptance boundary (\path{paper/runtime_direct_detlin_width_family_extension_summary.csv}, \path{paper/runtime_direct_detlin_gnorm_family_audit_summary.csv}, \path{paper/runtime_direct_detlin_gmixgate_audit_summary.csv}). We therefore treat strict all-direct visibility as an open extraction-family limitation, not as a release gate that can be closed by another local retune of $\alpha(D)$.
+The earlier de-profiled \texttt{tailm2\_detlin} stress branch remains useful as a historical negative mechanism audit: it showed that removing the visibility profile too aggressively reopens large observable drift even when some local mismatch gates improve. That negative result has now been superseded operationally by two cleaner endpoints. First, the strict broader-grid all-direct validator is parked at the case-aware \texttt{v26} late-polish rule, with zero acceptance mismatch and $p95|\Delta\mu_{\mu\mu}|=(0.0560,\,0.1097)$ on the D21$\times$E21 holdout and D60$\times$E21 release grids. Second, the canonical reviewer observable branch is the two-lobe descendant \texttt{cell\_direct\_runtime\_release\_fullwidthrefamp\_pointamp2\_widthboost\_twolobe\_d8compd60snapmaplate}, which has moved from promotion work to routine surveillance. We therefore treat additional local \(\alpha(D)\) retunes or de-profiled stress variants as diagnostics only unless a genuinely new observable-side mechanism class is introduced.
 
 \begin{table*}[t]
 \centering
@@ -678,14 +678,14 @@ After fixing the runtime-direct warm-path recursion and deterministic eigensolve
 \hline\hline
 scenario & grid & $n_{\rm points}$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2_{\mu\mu}$ & frac winner mismatch & $\max|\Delta\mu_{\mu\mu}|$ \\
 \hline
- full direct baseline & D60$\times$E60 & 3600 & 0.1500 & $1.18\times10^{-3}$ & --- & --- \\
+ full direct baseline & D60$\times$E60 & 3600 & 0.1428 & $1.56\times10^{-3}$ & --- & --- \\
  small-surface direct bias & D21$\times$E41 & 861 & 0.1905 & $1.45\times10^{-5}$ & 0 & $3.37\times10^{-3}$ \\
  large-surface direct bias & D60$\times$E21 & 1260 & 0.1500 & $5.10\times10^{-4}$ & 0 & 0 \\
  runtime parity (small) & D21$\times$E41 & 861 & 0.0952 & $2.11\times10^{-1}$ & 0 & 0 \\
- tuned parity (small) & D21$\times$E41 & 861 & 0.0952 & $2.11\times10^{-1}$ & 0 & $3.64\times10^{-1}$ \\
+ tuned parity (small) & D21$\times$E41 & 861 & 0.0952 & $2.11\times10^{-1}$ & 0 & $9.25\times10^{-2}$ \\
  runtime parity (large) & D60$\times$E21 & 1260 & 0.1429 & $1.56\times10^{-3}$ & 0 & 0 \\
- tuned parity (large) & D60$\times$E21 & 1260 & 0.1429 & $1.56\times10^{-3}$ & 0 & $2.94$ \\
- extreme parity (large) & D60$\times$E21 & 1260 & 0.1500 & $1.18\times10^{-3}$ & 0.0444 & $55.0$ \\
+ tuned parity (large) & D60$\times$E21 & 1260 & 0.1429 & $1.56\times10^{-3}$ & 0 & $8.37\times10^{-1}$ \\
+ extreme parity (large) & D60$\times$E21 & 1260 & 0.1429 & $1.56\times10^{-3}$ & 0.0373 & $59.3$ \\
 \hline\hline
 \end{tabular}}
 \end{table*}
@@ -834,6 +834,15 @@ Here $(X_{\rm well},R_{\rm bar},s_{\rm sh},c_{\rm align},g_{\rm cv},c_{\rm tree}
 We then promote the two dominant source factors already isolated by the EYMH-side audits into a refreshed \texttt{action\_loop\_eymh\_source\_informed} comparator; the canonical D21$\times$E21 summaries are stored under \path{paper/hll_uv_*action_loop_eymh_source_informed*_fix}. This mode again remains exact at the basis level, keeps zero acceptance mismatch, and stays in the same small-deformation class relative to the refreshed constant baseline ($\langle|\Delta\mu_{\mu\mu}|\rangle=5.2\times10^{-5}$, $p95=1.09\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=7.81\times10^{-4}$). The promoted source-informed prefactor remains nonzero across the whole D21$\times$E21 map, so \texttt{action\_loop\_eymh\_source\_informed} is the current best \emph{source-informed EYMH comparator}.
 
 We now rewrite that same source-informed block in explicit parent-action participation/compressibility language via \texttt{action\_loop\_eymh\_parented}. The canonical artifacts are grouped under \path{paper/hll_uv_*action_loop_eymh_parented*_D21E21_fix.*}. This parented rewrite remains exact at the basis level ($\max|\Delta \mu_{\mu\mu}^{\rm recon}|=5.56\times10^{-8}$, zero reconstruction residuals), keeps zero acceptance mismatch, and on the canonical D21$\times$E21 fix grid is map-identical to \texttt{action\_loop\_eymh\_source\_informed}. Relative to the refreshed constant baseline it therefore inherits the same small-deformation scale ($\langle|\Delta\mu_{\mu\mu}|\rangle=5.2\times10^{-5}$, $p95=1.09\times10^{-4}$, $\max|\Delta\mu_{\mu\mu}|=7.81\times10^{-4}$). The numerical role of this mode is not to introduce a new baseline, but to show that the same comparator can be written directly in parent-action participation/coherence and shell-background compressibility language without changing the canonical map.
+Figure~\ref{fig:hll_uv_parented_comparator} summarizes this normalization-side endpoint visually: the parented rewrite is map-identical to the source-informed comparator while the remaining deformation relative to the constant finite-match baseline is small and structured.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\linewidth]{hll_uv_action_loop_eymh_parented_comparator_D21E21_fix.png}
+    \caption{EYMH-side parented finite-match comparator on the canonical D21$\times$E21 fix grid. Top row: map-level deformation against the refreshed constant baseline and the source-informed comparator; the source-informed and parented maps coincide to numerical precision. Bottom row: the corresponding EYMH source prefactor, parented prefactor, and tree-diagonal compressibility witness. Source files: \texttt{paper/hll\_uv\_action\_loop\_eymh\_parented\_*.}}
+    \label{fig:hll_uv_parented_comparator}
+\end{figure}
+
 We now tighten this statement by decomposing the canonical EYMH-side prefactor itself. The exported audit under \path{paper/hll_uv_*eymh_prefactor_decomposition*_D21E21.*} verifies at numerical precision that
 \begin{align}
 \Pi_{\rm EYMH}=\Pi_{\rm loc}\,A_{\rm sh}\,A_{\rm part}\,S_{\rm disp},
@@ -1611,7 +1620,7 @@ Figure~\ref{fig:hll_proxy} summarizes the corresponding maps on the same $(D,\et
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\linewidth]{hll_signal_strength_maps.png}
-    \caption{PSLT EFT/Wilson-matched extension from $H\to\mu\mu$ to three lepton channels on the same scan grid: $H\to ee$ (left), $H\to\mu\mu$ (middle), and $H\to\tau\tau$ (right). Each panel shows $\mu_{\ell\ell}^{\rm pred}$ from Eq.~\eqref{eq:mu_pred} with the same reference point $(D_0,\eta_0)=(10,1)$.}
+    \caption{PSLT EFT/Wilson-matched extension from $H\to\mu\mu$ to three lepton channels on the same scan grid: $H\to ee$ (left), $H\to\mu\mu$ (middle), and $H\to\tau\tau$ (right). Each panel shows $\mu_{\ell\ell}^{\rm pred}$ from Eq.~\eqref{eq:mu_pred} with the same reference-normalization point $(D_0,\eta_0)=(10,1)$.}
     \label{fig:hll_proxy}
 \end{figure}
 

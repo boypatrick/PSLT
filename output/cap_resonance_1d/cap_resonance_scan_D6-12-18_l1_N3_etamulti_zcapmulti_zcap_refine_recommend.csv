@@ -1,0 +1,16 @@
+D,ell,N_target,eta_cap,scan_axis,regime_guess,trend_guess,data_axis_min,data_axis_max,source_window_min,source_window_max,recommended_min,recommended_max,recommended_center,recommended_spacing,recommended_points,recommendation_note
+6.0,1.0,3.0,5e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+6.0,1.0,3.0,5.53e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+6.0,1.0,3.0,6.12e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+6.0,1.0,3.0,6.78e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+6.0,1.0,3.0,7.5e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+12.0,1.0,3.0,5e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+12.0,1.0,3.0,5.53e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+12.0,1.0,3.0,6.12e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+12.0,1.0,3.0,6.78e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+12.0,1.0,3.0,7.5e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+18.0,1.0,3.0,5e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+18.0,1.0,3.0,5.53e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+18.0,1.0,3.0,6.12e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+18.0,1.0,3.0,6.78e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac
+18.0,1.0,3.0,7.5e-05,z_cap_frac,mixed,decreasing,0.8,0.9,0.8,0.85,0.8500000000000001,0.95,0.9,linear,5.0,push the absorber farther out because Gamma_cap decreases with z_cap_frac

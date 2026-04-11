@@ -1,0 +1,4 @@
+D,ell,N_target,z_cap_frac,scan_axis,regime_guess,trend_guess,data_axis_min,data_axis_max,source_window_min,source_window_max,recommended_min,recommended_max,recommended_center,recommended_spacing,recommended_points,recommendation_note
+6.0,1.0,3.0,0.7,eta_cap,absorber_linear_like,increasing,0.0001,0.001,0.0001,0.0003,3.333333333333334e-05,0.0001,5.7735026918962585e-05,log,5.0,push to lower eta to test departure from absorber-linear scaling
+6.0,1.0,3.0,0.75,eta_cap,absorber_linear_like,increasing,0.0001,0.001,0.0001,0.0003,3.333333333333334e-05,0.0001,5.7735026918962585e-05,log,5.0,push to lower eta to test departure from absorber-linear scaling
+6.0,1.0,3.0,0.8,eta_cap,absorber_linear_like,increasing,0.0001,0.001,0.0001,0.0003,3.333333333333334e-05,0.0001,5.7735026918962585e-05,log,5.0,push to lower eta to test departure from absorber-linear scaling

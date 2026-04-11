@@ -478,6 +478,8 @@ where $\omega_N^{(I)} > 0$ represents the decay rate due to tunneling or radiati
 
 For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from a rotating-background setup. In the static dual-center geometry considered here (no ergoregion), we use the same power as a leakage-template ansatz: modes must tunnel through the geometric barrier (captured by WKB factor $e^{-2S_N}$), while $\Gamma_{N,\ell}$ encodes the residual channel-dependent escape width. A full non-Hermitian width derivation for this static geometry is left as a dedicated upgrade path.
 
+\textbf{Reviewer-facing status of the static-width upgrade:} In the strict static formulation, the relevant object is the resonance problem for the same action-derived operator with outgoing boundary conditions, so that $\Gamma_{N,\ell}^{\rm(strict)}=-2\,\Im \omega_{N,\ell}$. We implemented a minimal complex-absorbing-potential pilot on the same 1D operator chain as Appendix~\ref{app:superrad_candidate} and scanned the benchmark set $D=\{6,12,18\}$ for the representative $(N,\ell)=(3,1)$ mode. The numerical chain is stable as infrastructure, but the extracted widths remain absorber-dominated over the tested $(\eta,z_{\rm cap})$ windows and do not yet exhibit a clean plateau. For that reason, the CAP outputs are not promoted into the reported baseline. At the current stage, the most conservative first-principles static surrogate is therefore the geometry-driven rate $\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}$ from Appendix~\ref{app:superrad_candidate}, while the full complex-pole extraction remains an explicit next-step upgrade rather than an over-claimed result.
+
 \textbf{Rank-2 truncation justification:} The $\hat{\omega}_N^{4\ell+4}$ scaling ensures that higher-$\ell$ modes are exponentially suppressed for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
 \begin{equation}
 \frac{\Gamma_{N,3}}{\Gamma_{N,2}} \sim \hat{\omega}_N^4 \sim 10^{-4}.
@@ -1665,7 +1667,7 @@ The use of mixed-resolution ingredients is a deliberate design choice: action-de
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
     \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; map-level impact is mild in profile-scaled mode but this closure is not yet propagated into baseline figures.
-    \item \textbf{Barrier-leakage channel normalization}: the baseline maps now use action-derived profile factors $(A_1,A_2)=(\tilde A_1(D),\tilde A_2(D))$ from Appendix~\ref{app:superrad_candidate} (legacy ``superrad'' file naming retained). The remaining gap is to replace profile-level insertion with a fully localized, channel-resolved extraction across the full scan grid.
+    \item \textbf{Barrier-leakage channel normalization}: the baseline maps now use action-derived profile factors $(A_1,A_2)=(\tilde A_1(D),\tilde A_2(D))$ from Appendix~\ref{app:superrad_candidate} (historical ``superrad'' artifact filenames retained for reproducibility). The remaining gap is to replace profile-level insertion with a fully localized, channel-resolved extraction across the full scan grid.
 \end{enumerate}
 
 \textbf{Status and redefinition of the mixing channel.}
@@ -2653,7 +2655,7 @@ Table~\ref{tab:ref_anchor_candidates} summarizes the selector outputs, and Fig.~
 
 \begin{table}[t]
 \centering
-\caption{Reference-normalization candidates and re-normalized map metrics. Source CSV: \texttt{paper/reference\_anchor\_candidates.csv}; selector JSON: \texttt{paper/reference\_anchor\_choice.json} (legacy filenames).}
+\caption{Reference-normalization candidates and re-normalized map metrics. Source CSV: \texttt{paper/reference\_anchor\_candidates.csv}; selector JSON: \texttt{paper/reference\_anchor\_choice.json} (historical artifact filenames retained for reproducibility).}
 \label{tab:ref_anchor_candidates}
 \small
 \begin{tabular}{lcccc}
@@ -2745,6 +2747,8 @@ Detailed coarse/mid/fine values and implementation provenance are retained in th
 \max\!\left(\frac{|\tilde A_2-\tilde A_2^{\rm(fine)}|}{|\tilde A_2^{\rm(fine)}|}\right)=3.78\times10^{-2}.
 \end{equation}
 The fine full-scan profile over $D=4,\dots,20$ yields $\tilde A_1\in[8.54\times10^{-6},\,4.10\times10^5]$ and $\tilde A_2\in[3.95\times10^{-6},\,4.92\times10^6]$, indicating a very stiff $D$-dependence in this preliminary closure.
+
+As a strict-upgrade check, we also connected a minimal complex-absorbing-potential solver to the same 1D action-derived operator chain and scanned benchmark windows in the absorber strength $\eta$ and absorber onset $z_{\rm cap}$. This pilot confirms that the non-Hermitian extraction pipeline is operational, but the benchmark mode remains in an absorber-linear or mixed regime rather than a plateau regime. Accordingly, the CAP outputs are retained as infrastructure diagnostics only; the reported baseline continues to use $\Gamma_{N,\ell}^{\rm(geo)}$ as the leading static surrogate while reserving complex-pole width extraction for a later dedicated release.
 
 At current scan resolution, Table~\ref{tab:late_fp_profile_summary} shows that the $t_{\rm coh}$ and $\eta$ candidates are stable diagnostics whose map-level effects are below headline precision, while replacing the legacy constant-$A_\ell$ reference by the action-derived profile induces non-negligible shifts in $\mathcal{R}_3$ coverage. In the updated global scans of this manuscript, Eq.~\eqref{eq:superrad_A_profile} is used in baseline mode, and $(A_1,A_2)=(1,1)$ is retained only as a comparator.
 

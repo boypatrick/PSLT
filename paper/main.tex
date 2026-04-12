@@ -2777,7 +2777,7 @@ With the same reference defect $\delta_{q,a}\le 10^{-3}$ this still implies
 \]
 In this form the remaining theorem target becomes sharper still: it is enough to prove a small complement log-det loss (or, equivalently, a small $\|A_a\|$) on the audited localized window, because the already-established family gap floor then lifts automatically to the exact Schur-reduced operator.
 
-There is also a minimal parent-side route to that loss parameter if one assumes that the complement contraction is itself first-channel dominant on the same local window. In the rank-one model
+There is also an auxiliary parent-side route to that loss parameter if one assumes that the complement contraction is itself first-channel dominant on the same local window. In the rank-one model
 \[
 A_a \approx a_a\,u_a u_a^\top,
 \qquad
@@ -2842,7 +2842,7 @@ g_a^{\rm(exact)}\ge 1.3326,
 \qquad
 \varepsilon_a(\Delta E_a)\le 5.37\times10^{-2}
 \]
-at the same reference defect $\delta_{q,a}\le 10^{-3}$. This is not yet a full operator theorem, because the rank-one dominant-channel hypothesis itself remains to be justified, but it shows that once the complement is reduced to one effective contraction channel, the audited parent-side off-diagonal witnesses already drive the remaining log-det loss into the small-$10^{-3}$ regime rather than leaving it order one.
+at the same reference defect $\delta_{q,a}\le 10^{-3}$. This is not yet a full operator theorem, because the rank-one dominant-channel hypothesis itself remains to be justified, but it shows that once the complement is reduced to one effective contraction channel, the audited parent-side off-diagonal witnesses already drive the remaining log-det loss into the small-$10^{-3}$ regime rather than leaving it order one. We therefore keep this line as an auxiliary source model rather than as the preferred theorem route.
 
 What the same audit now adds is that, once any such bound on $\sigma_a$ has been obtained, its consequences for the exact complement contraction are genuine operator inequalities rather than rank-one bookkeeping identities. If the eigenvalues of $A_a$ are $\alpha_{1,a},\alpha_{2,a}\in[0,1)$, then
 \[
@@ -2910,7 +2910,7 @@ with
 \left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
 \le 1.48\times10^{-2}.
 \]
-So the remaining gap is now narrower than before: the open theorem target is no longer to guess whether the complement is small, but to prove the parent-side hypothesis that supplies a comparably small $\sigma_a$ without passing through the rank-one dominant-channel surrogate.
+So the remaining gap is now narrower than before: the open theorem target is no longer to guess whether the complement is small, but to prove a parent-side hypothesis that supplies a comparably small loss budget. The determinant-deficit reformulation below is the preferred theorem route; the rank-one dominant-channel line above should be read only as an auxiliary source model.
 
 \medskip\noindent\textbf{Proposition O4 (Determinant-deficit control).}
 One can remove the explicit rank-one step from the operator consequences once a determinant-deficit budget has been identified. For any $2\times 2$ positive contraction $A_a$ with eigenvalues $\alpha_{1,a},\alpha_{2,a}\in[0,1)$, define

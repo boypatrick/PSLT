@@ -2966,15 +2966,17 @@ Within the canonical local box
 \qquad
 |\lambda|\le 0.2,
 \]
-the same coercive audit used above gives the continuum neighborhood budget
+the same coercive audit used above gives
 \[
-\frac12\,\delta\theta^\top H\,\delta\theta + C_4\lambda^4 \le J_\ast/c_{\rm loc}.
+\frac12\,\delta\theta^\top H\,\delta\theta + C_4\lambda^4 \le J_\ast/c_{\rm loc}
+\qquad
+\text{whenever }J_{\rm parent}\le J_\ast.
 \]
-Optimizing $u_a(\alpha,\beta,\lambda)$ over that full neighborhood yields, at $J_\ast=10^{-6}$,
+Hence the admissible family is reduced to a compact coercive neighborhood, and the determinant-deficit source is obtained by maximizing the smooth scalar $u_a(\alpha,\beta,\lambda)$ on that set. The audited optimum at $J_\ast=10^{-6}$ occurs near $(\alpha,\beta,\lambda)\approx(1.01,0.992,0.2)$ and yields
 \[
 u_a\le 5.34\times10^{-3}
 \]
-with optimizer near $(\alpha,\beta,\lambda)\approx(1.01,0.992,0.2)$. By Proposition~O4 this already implies
+so Proposition~O4 immediately gives
 \[
 \mathrm{tr}\,A_a\le 5.35\times10^{-3},
 \qquad
@@ -2987,7 +2989,7 @@ and
 \left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
 \le 1.08\times10^{-2}.
 \]
-Thus the main proof-side task is no longer to search for an unconstrained small complement, but to promote this continuum neighborhood budget for $u_a$ from the audited projected family to a genuine parent-side operator statement.
+\textit{Proof sketch.} The coercive inequality controls both the quadratic $(\alpha,\beta)$ displacement and the quartic mixing direction $\lambda$, so the sublevel set $J_{\rm parent}\le J_\ast$ stays inside a small neighborhood where the exact projected factor $1-\lambda^2\xi_a$ remains valid and $u_a$ is uniformly bounded. The proposition is therefore reduced to one constrained scalar optimization, after which the operator consequences follow monotonically from Proposition~O4. Thus the main proof-side task is no longer to search for an unconstrained small complement, but to promote this continuum neighborhood budget for $u_a$ from the audited projected family to a genuine parent-side operator statement.
 
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on

@@ -2912,33 +2912,30 @@ with
 \]
 So the remaining gap is now narrower than before: the open theorem target is no longer to guess whether the complement is small, but to prove the parent-side hypothesis that supplies a comparably small $\sigma_a$ without passing through the rank-one dominant-channel surrogate.
 
-One can also remove the explicit rank-one step from the operator consequences once a determinant-deficit budget has been identified. For any $2\times 2$ positive contraction $A_a$ with eigenvalues $\alpha_{1,a},\alpha_{2,a}\in[0,1)$, define
+\medskip\noindent\textbf{Proposition O4 (Determinant-deficit control).}
+One can remove the explicit rank-one step from the operator consequences once a determinant-deficit budget has been identified. For any $2\times 2$ positive contraction $A_a$ with eigenvalues $\alpha_{1,a},\alpha_{2,a}\in[0,1)$, define
 \[
 u_a:=1-\det(I-A_a)=\alpha_{1,a}+\alpha_{2,a}-\alpha_{1,a}\alpha_{2,a}.
 \]
 Then
 \[
-u_a-\alpha_{1,a}
-=
-\alpha_{2,a}(1-\alpha_{1,a})\ge 0,
+u_a-\alpha_{1,a}=\alpha_{2,a}(1-\alpha_{1,a})\ge 0,
 \qquad
-u_a-\alpha_{2,a}
-=
-\alpha_{1,a}(1-\alpha_{2,a})\ge 0,
+u_a-\alpha_{2,a}=\alpha_{1,a}(1-\alpha_{2,a})\ge 0,
 \]
 so
 \[
 \|A_a\|=\max(\alpha_{1,a},\alpha_{2,a})\le u_a.
 \]
-If $s_a:=\alpha_{1,a}+\alpha_{2,a}=\mathrm{tr}\,A_a$, then
+Writing $s_a:=\alpha_{1,a}+\alpha_{2,a}=\mathrm{tr}\,A_a$ and using $\alpha_{1,a}\alpha_{2,a}\le s_a^2/4$ gives
 \[
 u_a=s_a-\alpha_{1,a}\alpha_{2,a}\ge s_a-\frac{s_a^2}{4},
 \]
-because $\alpha_{1,a}\alpha_{2,a}\le s_a^2/4$. Solving the quadratic inequality gives the true trace bound
+hence
 \[
 \mathrm{tr}\,A_a\le 2\bigl(1-\sqrt{1-u_a}\bigr).
 \]
-Hence any parent-side bound of the form $u_a\le u_\ast<1$ already implies
+Therefore any parent-side bound $u_a\le u_\ast<1$ already implies
 \[
 \|A_a\|\le u_\ast,
 \qquad
@@ -2952,50 +2949,58 @@ and Corollary~1 becomes
 \le
 \frac{2u_\ast}{1-u_\ast}.
 \]
-The exact projected kernel family suggests precisely such a determinant-deficit candidate, because its local determinant factor is already
-\[
-1-\lambda^2\xi_a.
-\]
-Feeding the same $J_\ast=10^{-6}$ parent-side envelopes into this $u_a$-route gives, from the exact canonical factor,
-\[
-u_a\le 5.46\times10^{-3},
-\qquad
-\mathrm{tr}\,A_a\le 5.46\times10^{-3},
-\qquad
-\|A_a\|\le 5.46\times10^{-3},
-\]
-while the conservative raw off-diagonal envelope still gives only
-\[
-u_a\le 7.36\times10^{-3},
-\qquad
-\mathrm{tr}\,A_a\le 7.37\times10^{-3},
-\qquad
-\|A_a\|\le 7.36\times10^{-3},
-\]
-together with
-\[
-H_{{\rm eff},a}\succeq 0.9926\,H_{PP,a},
-\qquad
-\left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
-\le 1.48\times10^{-2}.
-\]
-So even before proving a single dominant complement channel, the theorem target can now be restated more sharply: it is enough to identify a parent-side source for a small determinant deficit $u_a$ on the audited window, because the $2\times2$ operator consequences already follow without any further rank-one reduction.
+So the operator theorem target can be stated without any single-channel hypothesis: it is enough to control the determinant deficit $u_a$ on the audited window.
 
-The exact projected parent-kernel scan already points to such a source on the current local grid, but the relevant local family must be scanned more densely than the original coarse `0.1` step to see the true admissible ridge. Densifying to
+\medskip\noindent\textbf{Proposition O5 (Continuum neighborhood determinant-deficit bound).}
+The exact projected kernel family already carries a canonical determinant-deficit candidate through its local factor
+\[
+1-\lambda^2\xi_a,
+\qquad
+u_a(\alpha,\beta,\lambda):=\lambda^2\xi_a(\alpha,\beta).
+\]
+Within the canonical local box
+\[
+|\alpha-1|\le 0.1,
+\qquad
+|\beta-1|\le 0.1,
+\qquad
+|\lambda|\le 0.2,
+\]
+the same coercive audit used above gives the continuum neighborhood budget
+\[
+\frac12\,\delta\theta^\top H\,\delta\theta + C_4\lambda^4 \le J_\ast/c_{\rm loc}.
+\]
+Optimizing $u_a(\alpha,\beta,\lambda)$ over that full neighborhood yields, at $J_\ast=10^{-6}$,
+\[
+u_a\le 5.34\times10^{-3}
+\]
+with optimizer near $(\alpha,\beta,\lambda)\approx(1.01,0.992,0.2)$. By Proposition~O4 this already implies
+\[
+\mathrm{tr}\,A_a\le 5.35\times10^{-3},
+\qquad
+\|A_a\|\le 5.34\times10^{-3},
+\qquad
+H_{{\rm eff},a}\succeq 0.9947\,H_{PP,a},
+\]
+and
+\[
+\left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
+\le 1.08\times10^{-2}.
+\]
+Thus the main proof-side task is no longer to search for an unconstrained small complement, but to promote this continuum neighborhood budget for $u_a$ from the audited projected family to a genuine parent-side operator statement.
+
+\medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
+The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[
 \alpha,\beta\in[0.95,1.05],
 \qquad
 \lambda\in[-0.2,0.2],
 \]
-with step `0.005`, and evaluating
+with step `0.005` and imposing exact admissibility $J_{\rm parent}\le 10^{-6}$ shows that the extremal ridge sits near
 \[
-u_a(\alpha,\beta,\lambda)=\lambda^2\xi_a(\alpha,\beta)
+(\alpha,\beta,\lambda)\approx(1.03,0.99,\pm0.2),
 \]
-directly on the exact admissible family points with $J_{\rm parent}\le J_\ast$, shows that the extremal local source is no longer at $(1,1,\pm0.1)$ but near
-\[
-(\alpha,\beta,\lambda)\approx(1.03,0.99,\pm0.2)
-\]
-once $J_\ast=10^{-6}$. The resulting exact overlap budget is then
+giving
 \[
 u_a\le 5.42\times10^{-3},
 \qquad
@@ -3010,22 +3015,14 @@ H_{{\rm eff},a}\succeq 0.9946\,H_{PP,a},
 \left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
 \le 1.09\times10^{-2}.
 \]
-This exact dense-scan statement is the tightest local result we currently have, but it is still scan-level rather than theorem-level. The useful comparison is that the continuum neighborhood bound obtained from the same coercive budget is now almost equally sharp. Optimizing the local surrogate
-\[
-\frac12\,\delta\theta^\top H\,\delta\theta + C_4\lambda^4 \le J_\ast/c_{\rm loc}
-\]
-over the full symmetric neighborhood $|\alpha-1|,|\beta-1|\le 0.1$ and $|\lambda|\le 0.2$ gives
-\[
-u_a\le 5.34\times10^{-3}
-\]
-at $J_\ast=10^{-6}$, with optimizer near $(\alpha,\beta)\approx(1.01,0.992)$ and $\lambda=0.2$. Thus the theorem-friendly continuum bound is already within about one percent of the exact dense-family audit. Even the conservative raw off-diagonal envelope remains moderate on the same dense admissible window, giving only
+This is the tightest local benchmark currently available, but it is only about one percent above Proposition~O5. Even the conservative raw off-diagonal envelope remains moderate on the same dense admissible window, giving only
 \[
 u_a\le 7.19\times10^{-3},
 \qquad
 \left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
 \le 1.45\times10^{-2}.
 \]
-So the open theorem target is now narrower in a more stable sense: the candidate parent-side source really does live in the exact projected determinant factor, and the remaining task is to promote the near-saturated local neighborhood budget to a genuine operator statement beyond the scanned family.
+So the right reading is now stable: the dense exact-family scan sets the benchmark, while the continuum neighborhood bound is the theorem candidate to push beyond the scanned family.
 
 For the reviewer, the microscopic remainder can therefore be summarized as a three-step narrowing chain rather than as a generic open-system ansatz:
 \[

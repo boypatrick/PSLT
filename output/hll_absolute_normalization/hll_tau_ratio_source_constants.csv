@@ -1,0 +1,2 @@
+source,ref_D,ref_eta,C_uv_mumu_ref,C_uv_tautau_ref,C_ir_mumu_ref,C_ir_tautau_ref,R_tau_over_mu_uv_ref,R_tau_over_mu_ir_ref,mu_layer1_share_ref,mu_layer2_share_ref,mu_layer3_share_ref,tau_layer1_share_ref,tau_layer2_share_ref,tau_layer3_share_ref
+reference_tau_ratio_chain,9.6,1.0,4.3579838326273245e-05,3.95602960115452e-06,4.3822693216572823e-05,3.9780751426642745e-06,0.008240391313133913,0.008240391313133909,4.7751157082638905e-29,1.0,1.2217306931982075e-29,3.994793692351158e-28,6.4935287829692965e-28,1.0

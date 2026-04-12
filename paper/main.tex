@@ -804,7 +804,22 @@ A_\star=x_{\mu,\star}^{-1},\qquad
 R_{e/\mu}^\star=\frac{|C_{eH,\star}^{ee}|^2}{|C_{eH,\star}^{\mu\mu}|^2},\qquad
 R_{\tau/\mu}^\star=\frac{|C_{eH,\star}^{\tau\tau}|^2}{|C_{eH,\star}^{\mu\mu}|^2}.
 \]
-So the current reference-normalization arbitrariness is not an unconstrained map-level rescaling; it is exactly equivalent to three scalar bridge constants. The audit \path{code/audit_hll_absolute_normalization_bridge.py} on the canonical parented D21$\times$E21 map (\path{output/hll_absolute_normalization/hll_absolute_normalization_bridge_summary.csv}) verifies Eq.~\eqref{eq:mu_pred_abs_bridge} to machine precision ($\max|\Delta\mu_{\mu\mu}|=5.56\times10^{-8}$). More importantly, the accepted-region invariant median already fixes the electron-to-muon ratio essentially uniquely: if $R_{e/\mu}^\star$ is frozen to the invariant audit median, a two-parameter fit in $(A_\star,R_{\tau/\mu}^\star)$ still closes the canonical map at the same $5.56\times10^{-8}$ level with zero acceptance mismatch. In this sense the remaining UV normalization gap is now narrower than a generic reference-anchor ambiguity: the live unresolved parent-side constants are primarily the absolute amplitude $A_\star$ and the tau-to-muon ratio $R_{\tau/\mu}^\star$, while $R_{e/\mu}^\star$ is already effectively fixed by the invariant-ratio audit itself.
+So the current reference-normalization arbitrariness is not an unconstrained map-level rescaling; it is exactly equivalent to three scalar bridge constants. The audit \path{code/audit_hll_absolute_normalization_bridge.py} on the canonical parented D21$\times$E21 map (\path{output/hll_absolute_normalization/hll_absolute_normalization_bridge_summary.csv}) verifies Eq.~\eqref{eq:mu_pred_abs_bridge} to machine precision ($\max|\Delta\mu_{\mu\mu}|=5.56\times10^{-8}$). More importantly, the accepted-region invariant median already fixes the electron-to-muon ratio essentially uniquely: if $R_{e/\mu}^\star$ is frozen to the invariant audit median, a two-parameter fit in $(A_\star,R_{\tau/\mu}^\star)$ still closes the canonical map at the same $5.56\times10^{-8}$ level with zero acceptance mismatch. At this bridge-reduction stage the observable-side problem is therefore already narrower than a generic reference-anchor ambiguity: the live scalar constants are reduced to the absolute amplitude $A_\star$ and the tau-to-muon ratio $R_{\tau/\mu}^\star$, while $R_{e/\mu}^\star$ is effectively fixed by the invariant-ratio audit itself.
+The next source audit sharpens this split further. Because the present finite-match and LL-RG layers apply the same diagonal dressing to all three charged-lepton diagonals,
+\[
+C_{eH}^{\ell\ell,\,\rm IR}=Z_{\rm diag}\,C_{eH}^{\ell\ell,\,\rm tree},
+\qquad
+Z_{\rm diag}=
+\left(1+\frac{\kappa_{\rm diag}^{\rm eff}}{16\pi^2}\right)
+\left(1+\frac{\gamma_{\rm diag}\log(\mu_{\rm match}/\mu_{\rm low})}{16\pi^2}\right),
+\]
+the flavor ratios $R_{e/\mu}$ and $R_{\tau/\mu}$ are exact UV-tree invariants of the current diagonal chain rather than additional loop-level normalization freedoms. The audits \path{code/audit_hll_absolute_amp_source.py} and \path{code/audit_hll_tau_ratio_source.py} (canonical outputs under \path{output/hll_absolute_normalization/}) verify this statement on the D21$\times$E21 parented map: on active rows the residuals between UV and IR ratios remain at machine level ($\max|\Delta R_{e/\mu}|=6.05\times10^{-13}$, $\max|\Delta R_{\tau/\mu}|=3.23\times10^{-14}$), and at the live reference point the tau-to-muon constant is identical across tree/match/IR ($R_{\tau/\mu}^\star=8.24039\times10^{-3}$). The same audit also shows that the absolute amplitude itself factorizes exactly as
+\[
+A_\star=A_\star^{\rm(tree)}\,Z_{{\rm diag},\star}^{-2},
+\qquad
+A_\star^{\rm(tree)}\equiv |C_{eH,\star}^{\mu\mu,\,\rm tree}|^{-2},
+\]
+with map-level factorization residual $\max|\Delta C_{\mu\mu}^{\rm fact}|=9.32\times10^{-17}$. Numerically the remaining gap is now concentrated almost entirely in the reference tree amplitude: $A_\star^{\rm(tree)}=5.26537\times10^{8}$, $A_\star=5.20717\times10^{8}$, so the full diagonal dressing shifts the absolute normalization by only about $1.11\%$. Using the live ratio constants, a tree-only replacement for $A_\star$ already preserves the accepted region exactly, while restoring only the universal LL-RG factor reduces the map-level bridge error to $\max|\Delta\mu_{\mu\mu}|=1.08\times10^{-3}$. Within the current diagonal UV+LL-RG chain, the outstanding parent-side normalization target is therefore primarily the absolute amplitude $A_\star$ itself rather than an unresolved flavor-ratio constant.
 
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain

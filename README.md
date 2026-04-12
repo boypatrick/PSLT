@@ -256,7 +256,21 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/hll_absolute_normalization/hll_absolute_normalization_bridge_detail.csv`
   - `output/hll_absolute_normalization/hll_absolute_normalization_bridge_constants.csv`
   - `output/hll_absolute_normalization/hll_absolute_normalization_bridge_run_meta.json`
-  The exact live-reference rewrite closes at machine precision (`mean |Δ\mu_{\mu\mu}| = 9.06e-09`, `max = 5.56e-08`). More importantly, a global three-parameter bridge fit stays in the same negligible error class (`mean = 1.21e-06`, `max = 1.12e-05`, zero acceptance mismatch), and if `R_{e/\mu}^*` is frozen to the accepted-region invariant median from `paper/reference_anchor_invariant_ratios.csv`, a two-parameter fit in `(A_*, R_{\tau/\mu}^*)` still closes the canonical map at the same `5.56e-08` level with zero acceptance mismatch. So the observable-side gap is now narrower than a generic reference-anchor ambiguity: the electron-to-muon ratio is already effectively fixed by the invariant audit, and the remaining parent-side normalization target is primarily the absolute amplitude `A_*` together with the tau-to-muon bridge constant `R_{\tau/\mu}^*`.
+  The exact live-reference rewrite closes at machine precision (`mean |Δ\mu_{\mu\mu}| = 9.06e-09`, `max = 5.56e-08`). More importantly, a global three-parameter bridge fit stays in the same negligible error class (`mean = 1.21e-06`, `max = 1.12e-05`, zero acceptance mismatch), and if `R_{e/\mu}^*` is frozen to the accepted-region invariant median from `paper/reference_anchor_invariant_ratios.csv`, a two-parameter fit in `(A_*, R_{\tau/\mu}^*)` still closes the canonical map at the same `5.56e-08` level with zero acceptance mismatch.
+- **`A_*` / `R_{\tau/\mu}^*` source audits:** two follow-up audits now separate the remaining observable-side tasks cleanly:
+  - `code/audit_hll_absolute_amp_source.py`
+  - `code/audit_hll_tau_ratio_source.py`
+  with canonical outputs
+  - `output/hll_absolute_normalization/hll_absolute_amp_source_summary.csv`
+  - `output/hll_absolute_normalization/hll_absolute_amp_source_constants.csv`
+  - `output/hll_absolute_normalization/hll_tau_ratio_source_summary.csv`
+  - `output/hll_absolute_normalization/hll_tau_ratio_source_constants.csv`
+  The new result is sharper than the original bridge audit. On active rows of the canonical `action_loop_eymh_parented` D21xE21 map, the diagonal flavor ratios are exact UV-tree invariants of the present chain (`max |ΔR_{e/\mu}^{\rm UV\to IR}| = 6.05e-13`, `max |ΔR_{\tau/\mu}^{\rm UV\to IR}| = 3.23e-14`), and at the live reference point `R_{\tau/\mu}^* = 8.24039e-03` is identical across tree/match/IR; the two-parameter bridge fit with fixed `R_{e/\mu}^*` returns the same `R_{\tau/\mu}^*` up to `2.86e-07` relative drift. So within the current diagonal UV+LL-RG chain, `R_{\tau/\mu}^*` is already source-resolved rather than a free normalization ambiguity.
+  The remaining observable-side gap is now concentrated almost entirely in the absolute amplitude. The companion `A_*` audit verifies the exact factorization
+  \[
+  A_* = A_*^{\rm(tree)} Z_{{\rm diag},*}^{-2},
+  \]
+  with `max |ΔC_{\mu\mu}^{\rm fact}| = 9.32e-17`, `A_*^{\rm(tree)} = 5.26537e+08`, and `A_* = 5.20717e+08`; the full diagonal dressing changes the normalization by only about `1.11%`. A tree-only replacement for `A_*` already preserves the accepted region exactly, while restoring only the universal LL-RG factor reduces the map-level bridge error to `max |Δ\mu_{\mu\mu}| = 1.08e-03`. The normalization-side parent target is therefore primarily the EYMH/UV origin of `A_*`, not a remaining uncertainty in the diagonal flavor ratios.
 - **Input-tied finite-match comparator:** the UV matching layer now also supports `--uv-match-mode input_tied`, which replaces fixed finite-match shifts by effective
   \[
   \kappa_{\rm diag}^{\rm eff},\ \kappa_{\rm offdiag}^{\rm eff}

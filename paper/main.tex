@@ -2569,6 +2569,464 @@ R_a(\omega)=R^{(1)}_a(\omega)\,[1+O(\varepsilon_a)]
 \]
 throughout the same on-shell window. This is the cleanest proof-level formulation of the dominant-pole claim: it is enough to control the complement remainder in the projected Schur resolvent, rather than to derive a full microscopic reservoir from scratch. The current export already shows that this on-shell window is numerically narrow, with $\Delta E_a/\omega_{1,a}\in[0.1430,0.2857]$ and therefore $S_{xx,a}(\Delta E_a)/S_{zz,a}(0)\in[0.9246,0.9800]$, so the audited dephasing and mixing channels sample only the low-frequency shoulder of the same pole. What is still missing is exactly the parent-side bound that identifies $\Omega_{1,a}=\omega_{1,a}$ and proves that the higher-mode remainder is uniformly negligible on this window.
 
+A useful quantitative sharpening is immediate once one separates the gap question from the tail-weight question. Define
+\[
+q_a:=\frac{R_a(\Delta E_a)}{R_a(0)},\qquad
+r_a:=\frac{\Delta E_a}{\Omega_{1,a}},\qquad
+\nu_{n,a}:=\frac{Z_{n,a}/\Omega_{n,a}^2}{R_a(0)},
+\]
+so that $\sum_{n\ge1}\nu_{n,a}=1$ and
+\[
+q_a=\sum_{n\ge1}\frac{\nu_{n,a}}{1+(\Delta E_a/\Omega_{n,a})^2}.
+\]
+If the higher modes satisfy the conditional gap bound $\Omega_{n,a}\ge g_a\,\Omega_{1,a}$ for all $n\ge2$ with some $g_a>1$, then with $f(x):=(1+x^2)^{-1}$ one has
+\[
+q_a\ge \nu_{1,a} f(r_a) + (1-\nu_{1,a}) f\!\left(\frac{r_a}{g_a}\right),
+\]
+hence
+\[
+1-\nu_{1,a}
+\le
+\frac{q_a-f(r_a)}{f(r_a/g_a)-f(r_a)}.
+\]
+Since $\varepsilon_a(0)=\frac{1-\nu_{1,a}}{\nu_{1,a}}$ and $\varepsilon_a(\Delta E_a)\le \varepsilon_a(0)\frac{1+r_a^2}{g_a^2+r_a^2}$, the theorem target can be restated as a two-knob quantitative task: prove a parent-side lower bound on $g_a$ and a small on-shell defect $\delta_{q,a}:=q_a-f(r_a)$. On the audited knot set, the exported gap-conditioned audit shows that for the representative benchmark $g_a=2$ one has
+\[
+f(r_a/2)-f(r_a)\in[1.50\times10^{-2},\,5.55\times10^{-2}],
+\qquad
+\frac{1+r_a^2}{4+r_a^2}\in[2.54\times10^{-1},\,2.65\times10^{-1}],
+\]
+so even a future parent-side match at the modest level $\delta_{q,a}\le 10^{-3}$ would already force
+\[
+1-\nu_{1,a}\le 6.68\times10^{-2},
+\qquad
+\varepsilon_a(\Delta E_a)\le 1.82\times10^{-2}
+\]
+uniformly across the current audited window. The present effective export, by contrast, has $\max|\delta_{q,a}|=3.33\times10^{-16}$ because the fitted response family is exactly single-pole on shell. This does not yet prove the parent-side gap itself, but it converts the remaining Schur-resolvent problem into a sharply quantified gap-plus-defect statement rather than a diffuse reservoir ansatz.
+
+One can now push this one notch further on the parent side without yet claiming a full spectral theorem. Write the background-normalized canonical complement block as
+\[
+\widetilde K_a:=
+\begin{pmatrix}
+K_{11,a} & C_a/\sqrt{K_{{\rm bg},a}}\\
+C_a/\sqrt{K_{{\rm bg},a}} & G_a
+\end{pmatrix},
+\qquad
+G_a:=K_{22,a}/K_{{\rm bg},a},
+\]
+with the audited geometric-mean identity
+\[
+\frac{C_a^2}{K_{{\rm bg},a}}=(K_{11,a}-1)(G_a-1).
+\]
+Hence
+\[
+\widetilde K_a = I + v_a v_a^\top,
+\qquad
+v_a=
+\begin{pmatrix}
+\sqrt{K_{11,a}-1}\\[2pt]
+\sqrt{G_a-1}
+\end{pmatrix},
+\]
+so the two proxy eigenvalues are fixed exactly by
+\[
+\lambda^{\rm(proxy)}_{1,a}=1,
+\qquad
+\lambda^{\rm(proxy)}_{2,a}=1+\|v_a\|^2=K_{11,a}+G_a-1.
+\]
+Calibrating the identity mode to the already-audited gap-locked pole then gives the calculable parent-side proxies
+\[
+\begin{aligned}
+\Omega^{\rm(proxy)}_{1,a}&:=\omega_{1,a},\\
+\Omega^{\rm(proxy)}_{2,a}&:=\omega_{1,a}\sqrt{K_{11,a}+G_a-1},\\
+g^{\rm(proxy)}_a&:=\frac{\Omega^{\rm(proxy)}_{2,a}}{\Omega^{\rm(proxy)}_{1,a}}
+=\sqrt{K_{11,a}+G_a-1}.
+\end{aligned}
+\]
+The corresponding audit closes to machine precision:
+\[
+\max\left|C_a^2/K_{{\rm bg},a}-(K_{11,a}-1)(G_a-1)\right|=2.78\times10^{-16},
+\]
+\[
+\max\left|\lambda^{\rm(proxy)}_{1,a}-1\right|
+=
+\max\left|\lambda^{\rm(proxy)}_{2,a}-(K_{11,a}+G_a-1)\right|
+=4.44\times10^{-16}.
+\]
+On the nontrivial active rows of the D21xE21 fix grid this already yields
+\[
+g^{\rm(proxy)}_a\in[1.3537,\,1.5609],
+\qquad
+\mathrm{median}\,g^{\rm(proxy)}_a=1.4692.
+\]
+On the overlap with the currently audited open-system knot set, the induced separator band becomes
+\[
+f(r_a/g^{\rm(proxy)}_a)-f(r_a)\in[1.43\times10^{-2},\,4.03\times10^{-2}],
+\]
+so a future parent-side defect estimate as mild as $\delta_{q,a}\le 10^{-3}$ would already imply
+\[
+1-\nu_{1,a}\le 6.98\times10^{-2},
+\qquad
+\varepsilon_a(\Delta E_a)\le 3.60\times10^{-2}.
+\]
+This is still only a proxy, not a proof that the true Schur-resolvent spectrum has the same gap. But it does show that the canonical projected EYMH complement block already carries a concrete, calculable gap floor rather than leaving $g_a$ completely unconstrained.
+
+One can also turn this proxy into a local operator-family lower bound by combining it with the exact parent mismatch functional from Proposition~U4. Let
+\[
+\delta\theta:=
+\begin{pmatrix}
+\alpha-1\\
+\beta-1
+\end{pmatrix},
+\qquad
+Q_{\rm loc}(\delta\theta,\lambda)
+:=
+\frac12\,\delta\theta^\top H\,\delta\theta + C_4\lambda^4,
+\]
+where the stationarity audit supplies the exact quadratic matrix $H$ in the $(\alpha,\beta)$ sector and the exact quartic coefficient $C_4$ in the mixing direction. On the audited local box
+\[
+|\alpha-1|\le 0.1,\qquad
+|\beta-1|\le 0.1,\qquad
+|\lambda|\le 0.2,
+\]
+the parent-kernel scan gives the empirical coercivity bound
+\[
+J_{\rm parent}(\alpha,\beta,\lambda)\ge c_{\rm loc}\,Q_{\rm loc}(\delta\theta,\lambda),
+\qquad
+c_{\rm loc}=3.98\times10^{-1},
+\]
+with $\lambda_{\min}(H)=1.33\times10^{-3}$ and $C_4=1.497\times10^{-3}$. Hence any local operator-side candidate obeying $J_{\rm parent}\le J_\ast$ inside that box must satisfy
+\[
+\|\delta\theta\|
+\le
+\rho_\ast:=
+\sqrt{\frac{2J_\ast}{c_{\rm loc}\lambda_{\min}(H)}}.
+\]
+For the same rowwise gap proxy
+\[
+g_a(\alpha,\beta)=\sqrt{e^{\alpha S_{{\rm part},a}}+e^{\beta S_{{\rm schur},a}}-1},
+\]
+the corresponding audit gives a local Lipschitz bound $\|\nabla g_a\|\le L^{\rm(box)}_a$, so
+\[
+g_a(\alpha,\beta)\ge g_{0,a}-L^{\rm(box)}_a\rho_\ast,
+\qquad
+g_{0,a}:=\sqrt{K_{11,a}+G_a-1}.
+\]
+Taking $J_\ast=10^{-6}$, the audited box has $L^{\rm(box)}_{\max}=5.11\times10^{-1}$ and therefore yields the uniform local operator-family floor
+\[
+g_a\ge 1.3375.
+\]
+Direct enumeration of the admissible scan points with $J_{\rm parent}\le 10^{-6}$ is sharper still and gives
+\[
+g_a\ge 1.3537
+\]
+throughout the same local family. On the overlap with the current open-system knot set, the conservative analytic floor $g_a\ge 1.3375$ already implies
+\[
+f(r_a/g_a)-f(r_a)\ge 1.19\times10^{-2},
+\]
+so the same reference defect $\delta_{q,a}\le 10^{-3}$ would force
+\[
+1-\nu_{1,a}\le 8.37\times10^{-2},
+\qquad
+\varepsilon_a(\Delta E_a)\le 5.28\times10^{-2}.
+\]
+This is still not a proof of the exact complement spectrum, because it remains confined to the audited projected family. But it upgrades the previous proxy statement into a genuine local operator-side lower bound: within the canonical projected EYMH basin, a small exact parent mismatch already forbids the second-mode scale from collapsing back to the leading pole.
+
+Corollary~1 also gives a minimal lifting lemma from this local family floor to the exact Schur-reduced operator. Let
+\[
+\sigma_a:=-\log\det(I-A_a),
+\]
+with the same positive semidefinite complement contraction
+\[
+A_a=H_{PP,a}^{-1/2}H_{PQ,a}H_{QQ,a}^{-1}H_{QP,a}H_{PP,a}^{-1/2}.
+\]
+If the eigenvalues of $A_a$ lie in $[0,1)$, then the eigenvalues of $I-A_a$ also lie in $(0,1]$, and therefore
+\[
+I-A_a\succeq \det(I-A_a)\,I=e^{-\sigma_a}I.
+\]
+Hence the exact Schur-reduced operator obeys the Loewner bound
+\[
+H_{{\rm eff},a}
+=
+H_{PP,a}^{1/2}(I-A_a)H_{PP,a}^{1/2}
+\succeq
+e^{-\sigma_a}H_{PP,a},
+\]
+so if the projected family supplies any lower gap floor $g^{\rm(fam)}_a$, then the exact effective gap satisfies
+\[
+g^{\rm(exact)}_a\ge e^{-\sigma_a/2} g^{\rm(fam)}_a.
+\]
+Using the conservative audited family floor $g^{\rm(fam)}_a\ge 1.3375$ from the local operator-family bound above, the current overlap with the open-system knot set yields the conditional exact floors
+\[
+g^{\rm(exact)}_a\ge 1.3368\quad(\sigma_a\le 10^{-3}),
+\qquad
+g^{\rm(exact)}_a\ge 1.3308\quad(\sigma_a\le 10^{-2}).
+\]
+The corresponding separator band remains
+\[
+f(r_a/g^{\rm(exact)}_a)-f(r_a)\ge 1.19\times10^{-2}\quad(\sigma_a\le 10^{-3}),
+\]
+up to the displayed precision, and only weakens to
+\[
+f(r_a/g^{\rm(exact)}_a)-f(r_a)\ge 1.18\times10^{-2}\quad(\sigma_a\le 10^{-2}).
+\]
+With the same reference defect $\delta_{q,a}\le 10^{-3}$ this still implies
+\[
+\varepsilon_a(\Delta E_a)\le 5.29\times10^{-2}\quad(\sigma_a\le 10^{-3}),
+\qquad
+\varepsilon_a(\Delta E_a)\le 5.41\times10^{-2}\quad(\sigma_a\le 10^{-2}).
+\]
+In this form the remaining theorem target becomes sharper still: it is enough to prove a small complement log-det loss (or, equivalently, a small $\|A_a\|$) on the audited localized window, because the already-established family gap floor then lifts automatically to the exact Schur-reduced operator.
+
+There is also a minimal parent-side route to that loss parameter if one assumes that the complement contraction is itself first-channel dominant on the same local window. In the rank-one model
+\[
+A_a \approx a_a\,u_a u_a^\top,
+\qquad
+0\le a_a<1,
+\]
+one has
+\[
+\|A_a\|=a_a,
+\qquad
+\sigma_a=-\log(1-a_a).
+\]
+The exact projected kernel family already carries the corresponding scalar contraction candidate, because
+\[
+\det K_a(\alpha,\beta,\lambda)
+=
+K_{11,a}K_{22,a}\left(1-\lambda^2\xi_a(\alpha,\beta)\right),
+\qquad
+\xi_a(\alpha,\beta):=
+\frac{(K_{11,a}-1)(K_{22,a}-1)}{K_{11,a}K_{22,a}},
+\]
+so the minimal dominant-channel identification is
+\[
+a_a^{(1)}:=\lambda^2\xi_a.
+\]
+The local coercivity bound above already gives
+\[
+|\lambda|
+\le
+\left(\frac{J_\ast}{c_{\rm loc}C_4}\right)^{1/4},
+\]
+which yields $|\lambda|\le 2.02\times10^{-1}$ at $J_\ast=10^{-6}$. On the overlap with the current open-system knot set, the exact canonical factor satisfies
+\[
+\max \xi_a = 1.3324\times10^{-1},
+\]
+while the best raw off-diagonal envelope built directly from the parented EYMH witnesses,
+\[
+\xi_a^{\rm(raw)}
+:=
+0.127472\,\frac{hk_{\rm abs,offdiag}}{\mathrm{diag}}
++
+0.435064\,\frac{action_{\rm abs,offdiag}}{\mathrm{diag}},
+\]
+has overlap p95 residual $4.37\times10^{-2}$ and therefore gives the conservative envelope
+\[
+\xi_a\le 1.797\times10^{-1}.
+\]
+Hence the same local objective tolerance already implies the rank-one dominant-channel candidates
+\[
+a_a^{(1)}\le 5.46\times10^{-3},
+\qquad
+\sigma_a^{(1)}\le 5.47\times10^{-3}
+\]
+from the exact canonical $\xi_a$, and
+\[
+a_a^{(1)}\le 7.36\times10^{-3},
+\qquad
+\sigma_a^{(1)}\le 7.39\times10^{-3}
+\]
+from the raw-witness envelope. Feeding the latter into the conditional lift still leaves
+\[
+g_a^{\rm(exact)}\ge 1.3326,
+\qquad
+\varepsilon_a(\Delta E_a)\le 5.37\times10^{-2}
+\]
+at the same reference defect $\delta_{q,a}\le 10^{-3}$. This is not yet a full operator theorem, because the rank-one dominant-channel hypothesis itself remains to be justified, but it shows that once the complement is reduced to one effective contraction channel, the audited parent-side off-diagonal witnesses already drive the remaining log-det loss into the small-$10^{-3}$ regime rather than leaving it order one.
+
+What the same audit now adds is that, once any such bound on $\sigma_a$ has been obtained, its consequences for the exact complement contraction are genuine operator inequalities rather than rank-one bookkeeping identities. If the eigenvalues of $A_a$ are $\alpha_{1,a},\alpha_{2,a}\in[0,1)$, then
+\[
+\sigma_a
+=
+\sum_{i=1}^2 -\log(1-\alpha_{i,a})
+\ge
+\sum_{i=1}^2 \alpha_{i,a}
+=
+\mathrm{tr}\,A_a,
+\]
+because $-\log(1-x)\ge x$ on $[0,1)$. Likewise,
+\[
+e^{-\sigma_a}
+=
+\prod_{i=1}^2 (1-\alpha_{i,a})
+\le
+1-\max_i \alpha_{i,a}
+=
+1-\|A_a\|,
+\]
+so
+\[
+\|A_a\|
+\le
+1-e^{-\sigma_a}.
+\]
+Thus the same conditional $\sigma_a$ budget immediately implies the true operator bounds
+\[
+\mathrm{tr}\,A_a\le \sigma_a,
+\qquad
+\|A_a\|\le 1-e^{-\sigma_a},
+\qquad
+H_{{\rm eff},a}\succeq e^{-\sigma_a}H_{PP,a},
+\]
+and Corollary~1 then gives
+\[
+\left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
+\le
+\frac{2(1-e^{-\sigma_a})}{e^{-\sigma_a}}.
+\]
+At the same local objective tolerance $J_\ast=10^{-6}$, the exact canonical route $\sigma_a\le 5.47\times10^{-3}$ therefore yields
+\[
+\mathrm{tr}\,A_a\le 5.47\times10^{-3},
+\qquad
+\|A_a\|\le 5.46\times10^{-3},
+\qquad
+H_{{\rm eff},a}\succeq 0.9945\,H_{PP,a},
+\]
+together with
+\[
+\left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
+\le 1.10\times10^{-2}.
+\]
+The conservative raw off-diagonal envelope $\sigma_a\le 7.39\times10^{-3}$ still gives
+\[
+\mathrm{tr}\,A_a\le 7.39\times10^{-3},
+\qquad
+\|A_a\|\le 7.36\times10^{-3},
+\qquad
+H_{{\rm eff},a}\succeq 0.9926\,H_{PP,a},
+\]
+with
+\[
+\left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
+\le 1.48\times10^{-2}.
+\]
+So the remaining gap is now narrower than before: the open theorem target is no longer to guess whether the complement is small, but to prove the parent-side hypothesis that supplies a comparably small $\sigma_a$ without passing through the rank-one dominant-channel surrogate.
+
+One can also remove the explicit rank-one step from the operator consequences once a determinant-deficit budget has been identified. For any $2\times 2$ positive contraction $A_a$ with eigenvalues $\alpha_{1,a},\alpha_{2,a}\in[0,1)$, define
+\[
+u_a:=1-\det(I-A_a)=\alpha_{1,a}+\alpha_{2,a}-\alpha_{1,a}\alpha_{2,a}.
+\]
+Then
+\[
+u_a-\alpha_{1,a}
+=
+\alpha_{2,a}(1-\alpha_{1,a})\ge 0,
+\qquad
+u_a-\alpha_{2,a}
+=
+\alpha_{1,a}(1-\alpha_{2,a})\ge 0,
+\]
+so
+\[
+\|A_a\|=\max(\alpha_{1,a},\alpha_{2,a})\le u_a.
+\]
+If $s_a:=\alpha_{1,a}+\alpha_{2,a}=\mathrm{tr}\,A_a$, then
+\[
+u_a=s_a-\alpha_{1,a}\alpha_{2,a}\ge s_a-\frac{s_a^2}{4},
+\]
+because $\alpha_{1,a}\alpha_{2,a}\le s_a^2/4$. Solving the quadratic inequality gives the true trace bound
+\[
+\mathrm{tr}\,A_a\le 2\bigl(1-\sqrt{1-u_a}\bigr).
+\]
+Hence any parent-side bound of the form $u_a\le u_\ast<1$ already implies
+\[
+\|A_a\|\le u_\ast,
+\qquad
+\mathrm{tr}\,A_a\le 2\bigl(1-\sqrt{1-u_\ast}\bigr),
+\qquad
+H_{{\rm eff},a}\succeq (1-u_\ast)H_{PP,a},
+\]
+and Corollary~1 becomes
+\[
+\left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
+\le
+\frac{2u_\ast}{1-u_\ast}.
+\]
+The exact projected kernel family suggests precisely such a determinant-deficit candidate, because its local determinant factor is already
+\[
+1-\lambda^2\xi_a.
+\]
+Feeding the same $J_\ast=10^{-6}$ parent-side envelopes into this $u_a$-route gives, from the exact canonical factor,
+\[
+u_a\le 5.46\times10^{-3},
+\qquad
+\mathrm{tr}\,A_a\le 5.46\times10^{-3},
+\qquad
+\|A_a\|\le 5.46\times10^{-3},
+\]
+while the conservative raw off-diagonal envelope still gives only
+\[
+u_a\le 7.36\times10^{-3},
+\qquad
+\mathrm{tr}\,A_a\le 7.37\times10^{-3},
+\qquad
+\|A_a\|\le 7.36\times10^{-3},
+\]
+together with
+\[
+H_{{\rm eff},a}\succeq 0.9926\,H_{PP,a},
+\qquad
+\left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
+\le 1.48\times10^{-2}.
+\]
+So even before proving a single dominant complement channel, the theorem target can now be restated more sharply: it is enough to identify a parent-side source for a small determinant deficit $u_a$ on the audited window, because the $2\times2$ operator consequences already follow without any further rank-one reduction.
+
+The exact projected parent-kernel scan already points to such a source on the current local grid, but the relevant local family must be scanned more densely than the original coarse `0.1` step to see the true admissible ridge. Densifying to
+\[
+\alpha,\beta\in[0.95,1.05],
+\qquad
+\lambda\in[-0.2,0.2],
+\]
+with step `0.005`, and evaluating
+\[
+u_a(\alpha,\beta,\lambda)=\lambda^2\xi_a(\alpha,\beta)
+\]
+directly on the exact admissible family points with $J_{\rm parent}\le J_\ast$, shows that the extremal local source is no longer at $(1,1,\pm0.1)$ but near
+\[
+(\alpha,\beta,\lambda)\approx(1.03,0.99,\pm0.2)
+\]
+once $J_\ast=10^{-6}$. The resulting exact overlap budget is then
+\[
+u_a\le 5.42\times10^{-3},
+\qquad
+\mathrm{tr}\,A_a\le 5.42\times10^{-3},
+\qquad
+\|A_a\|\le 5.42\times10^{-3},
+\]
+with
+\[
+H_{{\rm eff},a}\succeq 0.9946\,H_{PP,a},
+\qquad
+\left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
+\le 1.09\times10^{-2}.
+\]
+This exact dense-scan statement is the tightest local result we currently have, but it is still scan-level rather than theorem-level. The useful comparison is that the continuum neighborhood bound obtained from the same coercive budget is now almost equally sharp. Optimizing the local surrogate
+\[
+\frac12\,\delta\theta^\top H\,\delta\theta + C_4\lambda^4 \le J_\ast/c_{\rm loc}
+\]
+over the full symmetric neighborhood $|\alpha-1|,|\beta-1|\le 0.1$ and $|\lambda|\le 0.2$ gives
+\[
+u_a\le 5.34\times10^{-3}
+\]
+at $J_\ast=10^{-6}$, with optimizer near $(\alpha,\beta)\approx(1.01,0.992)$ and $\lambda=0.2$. Thus the theorem-friendly continuum bound is already within about one percent of the exact dense-family audit. Even the conservative raw off-diagonal envelope remains moderate on the same dense admissible window, giving only
+\[
+u_a\le 7.19\times10^{-3},
+\qquad
+\left|\log\det H_{{\rm eff},a}-\log\det H_{PP,a}\right|
+\le 1.45\times10^{-2}.
+\]
+So the open theorem target is now narrower in a more stable sense: the candidate parent-side source really does live in the exact projected determinant factor, and the remaining task is to promote the near-saturated local neighborhood budget to a genuine operator statement beyond the scanned family.
+
 For the reviewer, the microscopic remainder can therefore be summarized as a three-step narrowing chain rather than as a generic open-system ansatz:
 \[
 \kappa_{\rm env}

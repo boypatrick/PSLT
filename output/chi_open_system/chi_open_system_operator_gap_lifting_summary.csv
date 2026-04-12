@@ -1,0 +1,2 @@
+base_objective_tol,base_rho_tol,analytic_base_g_floor,exact_base_g_floor,delta_q_ref,overlap_rows,overlap_D_min,overlap_D_max,r_on_shell_min,r_on_shell_max
+1e-06,0.0613957697698881,1.3375010684862083,1.3537138088886351,0.001,84,4.0,16.0,0.16823630920554344,0.2856644248277023

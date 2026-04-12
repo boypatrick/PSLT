@@ -1,0 +1,2 @@
+alpha_radius,beta_radius,lambda_radius,local_scan_points,coercivity_ratio_min,coercivity_ratio_p10,coercivity_ratio_p50,coercivity_ratio_max,quadratic_hessian_eigmin,lambda_quartic_coeff,g_proxy_canonical_min,g_proxy_canonical_p50,g_proxy_canonical_max,g_grad_box_max,g_grad_box_p50
+0.1,0.1,0.2,79,0.39827426765904017,0.7817144281974974,1.0720412940099835,1.6213765076770874,0.0013322043587053,0.0014974113157501,1.3537138088886351,1.4692445588192249,1.560887695720297,0.510552969415163,0.35710339254429546

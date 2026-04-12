@@ -1,0 +1,3 @@
+source,ref_D,ref_eta,amp_abs,r_e_star,r_tau_star,mu_obs,sigma_obs
+live_reference_point,9.6,1.0,520717137.269355,0.06342339296486554,0.008240391313133909,1.4,0.4
+accepted_invariant_medians,,,,0.0639147337095015,0.0097152204517453,1.4,0.4

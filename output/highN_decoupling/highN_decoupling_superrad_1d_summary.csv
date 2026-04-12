@@ -1,0 +1,2 @@
+D_min,D_max,max_n_bound_superrad_1d,min_E3,max_E3,min_E4,max_E4,all_E4_positive,all_E3_positive,gamma_N4_over_N3_l1_min,gamma_N4_over_N3_l1_max,gamma_N4_over_N2_l1_min,gamma_N4_over_N2_l1_max
+4.0,20.0,2,0.005636667361514087,0.005945125403411246,0.005637926145822842,0.005945370681707314,1,1,1.000003628710827,1.0000125286160488,3.087290163141321,4214106.375695965

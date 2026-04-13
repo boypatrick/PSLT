@@ -1,0 +1,4 @@
+candidate,description,formula,sigma_scale_mu,ref_D,ref_eta,y2_raw_ref_interp,g_uv_mu2_ref_interp,nearest_detail_D,nearest_detail_y2_raw,nearest_detail_y2_center,nearest_detail_center2_vs_raw2_rel
+primary_parent_source,microcanonical_windowed_mu_flavor_overlap,"y_2^raw(D)=sum_k w_{2k}(D) * |<u_k(D), K_mu(D)>|",1.0,9.6,1.0,0.00016598138027792002,0.012883376121107386,,,,
+equivalent_uv_coupling_source,g_uv_mu_2(D)^2,g_{mu 2}^{UV}(D)^2 = y_2^raw(D),1.0,9.6,1.0,0.00016598138027792002,0.012883376121107386,,,,
+rejected_coarse_candidate,center_mode_overlap_only,"y_{center,2}(D) = |<u_{k_2}(D), K_mu(D)>|",,,,,,10.0,0.0001414235473956,0.0002267138297992,0.6030840264883186

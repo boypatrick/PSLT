@@ -1,0 +1,9 @@
+{
+  "overlap_detail_input": "/Users/boypatrick/codex/PSLT_quantam/output/y_eff_2d/y_eff_2d_three_channel_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
+  "summary_input": "/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_to_eft_summary_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "ref_D": 9.6,
+  "ref_eta": 1.0,
+  "chain_mode": "full_direct",
+  "uv_blend": 0.0,
+  "n_overlap_rows": 17
+}

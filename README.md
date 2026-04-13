@@ -287,6 +287,17 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `C_{\mu\mu,*}^{tree} = 4.35798e-05`
   - `A_*^{tree} = 5.26537e+08`
   and the resulting absolute normalization still differs from the final `A_*` only through the mild universal diagonal dressing already audited above. Across active rows the tree-amplitude variation is dominated by the overlap factor (`std log y_2^{raw} = 4.07`) rather than by the kinetic/mass coefficient (`std log(P_2^{kin}/M_2^2) = 1.97e-01`), so the next parent-side target should focus first on deriving the reference overlap block `y_2^{raw}(D_*)`.
+- **`y_2^{raw}(D_*)` parent-side source audit:** the next narrowing step is now explicit in
+  - `code/audit_hll_y2raw_parent_source.py`
+  with outputs
+  - `output/hll_absolute_normalization/hll_y2raw_parent_source_summary.csv`
+  - `output/hll_absolute_normalization/hll_y2raw_parent_source_detail.csv`
+  - `output/hll_absolute_normalization/hll_y2raw_parent_source_constants.csv`
+  This audit shows that in the canonical overlap extractor the muon flavor kernel is exactly the raw overlap kernel because `sigma_scale_mu = 1` pointwise. As a result,
+  \[
+  y_2^{raw}(D)=y_{\mu,2}^{flavor}(D)=\bigl(g_{\mu 2}^{UV}(D)\bigr)^2
+  \]
+  on the audited overlap profile, with machine-level residuals (`max |(g_{\mu 2}^{UV})^2-y_2^{raw}| = 9.87e-17`). The same audit also shows that a naive center-mode reduction is not good enough: on the audited D4-20 detail grid, the center-only candidate `y_{center,2}` has mean relative defect `8.61e-01` and p95 relative defect `1.14` against `y_2^{raw}`. So the remaining `A_*` target should now be read as a microcanonical-windowed mu-flavor overlap block rather than as a single tracked-mode overlap.
 - **Input-tied finite-match comparator:** the UV matching layer now also supports `--uv-match-mode input_tied`, which replaces fixed finite-match shifts by effective
   \[
   \kappa_{\rm diag}^{\rm eff},\ \kappa_{\rm offdiag}^{\rm eff}

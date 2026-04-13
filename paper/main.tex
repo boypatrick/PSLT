@@ -849,6 +849,19 @@ y_2^{\rm raw}(D_\star)\,
 Z_{{\rm diag},\star}^{-2}.
 \]
 Across active rows the log-variation of $C_{eH}^{\mu\mu,\,\rm tree}$ is dominated by the overlap factor rather than by the kinetic-mass coefficient ($\sigma[\log y_2^{\rm raw}]=4.07$, $\sigma[\log(P_2^{\rm kin}/M_2^2)]=1.97\times10^{-1}$), with corresponding correlations $0.9998$ and $0.9100$ to $\log C_{eH}^{\mu\mu,\,\rm tree}$. This suggests a sharper parent-side task ordering: first derive the reference overlap block $y_2^{\rm raw}(D_\star)$ from the EYMH/projected-Yukawa side, then lift the smaller residual coefficient $P_2^{\rm kin}/M_2^2$ and the already mild universal diagonal dressing.
+The next source audit identifies this overlap block more precisely. In the canonical overlap extractor the flavor kernels differ only through the chirality-width rescaling $\sigma_{\rm scale}^{(\ell)}$, and for the muon one has $\sigma_{\rm scale}^{(\mu)}=1$ exactly. Therefore the raw overlap and the mu-flavor overlap coincide pointwise:
+\[
+y_2^{\rm raw}(D)=y_{\mu,2}^{\rm flavor}(D)=\bigl(g_{\mu 2}^{\rm UV}(D)\bigr)^2.
+\]
+More explicitly, if $u_k(D)$ are the tracked low-lying modes and $K_\mu(D)$ denotes the mu-flavor left-right overlap kernel, then
+\[
+y_2^{\rm raw}(D)=\sum_k w_{2k}(D)\,\bigl|\langle u_k(D),K_\mu(D)\rangle\bigr|,
+\]
+with
+\[
+K_\mu(D)=f_L^{(\mu)}(D)f_R^{(\mu)}(D)W_{\rm frame}(D),
+\]
+and where $w_{2k}(D)$ are the normalized Gaussian weights of the local microcanonical window around the tracked second branch. The audit \path{code/audit_hll_y2raw_parent_source.py} verifies both identities on the extracted overlap profile to machine precision ($\max|y_2^{\rm raw}-y_{\mu,2}^{\rm flavor}|=0$, $\max|(g_{\mu 2}^{\rm UV})^2-y_2^{\rm raw}|=9.87\times10^{-17}$). The same audit also shows that collapsing this block to the center-mode overlap is not adequate: on the audited D4--20 detail grid, the center-only candidate $y_{{\rm center},2}$ differs from $y_2^{\rm raw}$ by a mean relative error $8.61\times10^{-1}$ and a $95\%$ relative error $1.14$. So the remaining normalization target is better understood as a \emph{windowed projected-Yukawa block} rather than as a single-mode overlap.
 
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain

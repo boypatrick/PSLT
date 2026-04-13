@@ -1,0 +1,2 @@
+source,ref_D,ref_eta,uv_blend,y2_raw_ref,p2_kin_ref,m2_2_ref,coeff2_kin_over_m2_ref,C_tree_mumu_ref,A_tree_ref,finite_fac_diag_ref,rge_fac_diag_ref,z_diag_ref,A_star_ref
+reference_current_chain_source,9.6,0.96,0.0,0.00016598138027800206,0.44797458783139243,1.7061889902908467,0.2625585971897686,4.357983836541372e-05,526536848.49946916,1.0000381747361455,1.005534257208682,1.0055726432136363,520717136.33399165

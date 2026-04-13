@@ -1,0 +1,10 @@
+{
+  "map_input": "/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_to_eft_map_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "summary_input": "/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_to_eft_summary_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "ref_D": 9.6,
+  "ref_eta": 1.0,
+  "chain_mode": "full_direct",
+  "uv_match_mode": "action_loop_eymh_parented",
+  "uv_blend": 0.0,
+  "n_points": 441
+}

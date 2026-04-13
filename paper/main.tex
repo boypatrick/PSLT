@@ -820,6 +820,35 @@ A_\star=A_\star^{\rm(tree)}\,Z_{{\rm diag},\star}^{-2},
 A_\star^{\rm(tree)}\equiv |C_{eH,\star}^{\mu\mu,\,\rm tree}|^{-2},
 \]
 with map-level factorization residual $\max|\Delta C_{\mu\mu}^{\rm fact}|=9.32\times10^{-17}$. Numerically the remaining gap is now concentrated almost entirely in the reference tree amplitude: $A_\star^{\rm(tree)}=5.26537\times10^{8}$, $A_\star=5.20717\times10^{8}$, so the full diagonal dressing shifts the absolute normalization by only about $1.11\%$. Using the live ratio constants, a tree-only replacement for $A_\star$ already preserves the accepted region exactly, while restoring only the universal LL-RG factor reduces the map-level bridge error to $\max|\Delta\mu_{\mu\mu}|=1.08\times10^{-3}$. Within the current diagonal UV+LL-RG chain, the outstanding parent-side normalization target is therefore primarily the absolute amplitude $A_\star$ itself rather than an unresolved flavor-ratio constant.
+The next source audit tightens this target once more. In the canonical parented baseline one has $\texttt{uv\_blend}=0$, so the UV-tree coupling matrix reduces to a diagonal overlap form,
+\[
+g_{iN}^{\rm UV}(D)=\delta_{iN}\sqrt{y_{i}^{\rm raw}(D)},
+\]
+and therefore the muon tree coefficient collapses exactly to a single layer:
+\begin{equation}
+C_{eH}^{\mu\mu,\,\rm tree}(D,\eta)
+=
+y_2^{\rm raw}(D)\,
+\frac{P_2^{\rm kin}(D,\eta)}{M_2^2(D)}.
+\label{eq:cmm_tree_single_layer}
+\end{equation}
+The audit \path{code/audit_hll_tree_mumu_parent_source.py} verifies Eq.~\eqref{eq:cmm_tree_single_layer} on the canonical D21$\times$E21 map with $\max|\Delta C_{\mu\mu}^{\rm tree}|=9.76\times10^{-17}$ and exact layer support ($\mu$-channel share from $N=2$ equals $1$ on every active row, while the $N=1,3$ shares remain below $10^{-26}$ in magnitude). At the live reference point this gives
+\[
+y_2^{\rm raw}=1.65981\times10^{-4},\qquad
+\frac{P_2^{\rm kin}}{M_2^2}=2.62559\times10^{-1},\qquad
+C_{eH,\star}^{\mu\mu,\,\rm tree}=4.35798\times10^{-5},
+\]
+so the current absolute-normalization target may be written as
+\[
+A_\star
+=
+\left(
+y_2^{\rm raw}(D_\star)\,
+\frac{P_2^{\rm kin}(D_\star,\eta_\star)}{M_2^2(D_\star)}
+\right)^{-2}
+Z_{{\rm diag},\star}^{-2}.
+\]
+Across active rows the log-variation of $C_{eH}^{\mu\mu,\,\rm tree}$ is dominated by the overlap factor rather than by the kinetic-mass coefficient ($\sigma[\log y_2^{\rm raw}]=4.07$, $\sigma[\log(P_2^{\rm kin}/M_2^2)]=1.97\times10^{-1}$), with corresponding correlations $0.9998$ and $0.9100$ to $\log C_{eH}^{\mu\mu,\,\rm tree}$. This suggests a sharper parent-side task ordering: first derive the reference overlap block $y_2^{\rm raw}(D_\star)$ from the EYMH/projected-Yukawa side, then lift the smaller residual coefficient $P_2^{\rm kin}/M_2^2$ and the already mild universal diagonal dressing.
 
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain

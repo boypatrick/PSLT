@@ -271,6 +271,22 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   A_* = A_*^{\rm(tree)} Z_{{\rm diag},*}^{-2},
   \]
   with `max |ΔC_{\mu\mu}^{\rm fact}| = 9.32e-17`, `A_*^{\rm(tree)} = 5.26537e+08`, and `A_* = 5.20717e+08`; the full diagonal dressing changes the normalization by only about `1.11%`. A tree-only replacement for `A_*` already preserves the accepted region exactly, while restoring only the universal LL-RG factor reduces the map-level bridge error to `max |Δ\mu_{\mu\mu}| = 1.08e-03`. The normalization-side parent target is therefore primarily the EYMH/UV origin of `A_*`, not a remaining uncertainty in the diagonal flavor ratios.
+- **Canonical `C_{\mu\mu,*}^{\rm tree}` source audit:** the next narrowing step is now explicit in
+  - `code/audit_hll_tree_mumu_parent_source.py`
+  with outputs
+  - `output/hll_absolute_normalization/hll_tree_mumu_parent_source_summary.csv`
+  - `output/hll_absolute_normalization/hll_tree_mumu_parent_source_detail.csv`
+  - `output/hll_absolute_normalization/hll_tree_mumu_parent_source_constants.csv`
+  On the canonical parented baseline, `uv_blend=0`, so the UV-tree coupling matrix is purely diagonal and the muon tree coefficient collapses exactly to
+  \[
+  C_{eH}^{\mu\mu,\rm tree}(D,\eta)=y_2^{\rm raw}(D)\,[P_2^{\rm kin}(D,\eta)/M_2^2(D)].
+  \]
+  The audit verifies this single-layer reduction to machine precision (`max |ΔC_{\mu\mu}^{\rm tree}| = 9.76e-17`) with exact `N=2` support on every active row. At the live reference point,
+  - `y_2^{raw} = 1.65981e-04`
+  - `P_2^{kin}/M_2^2 = 2.62559e-01`
+  - `C_{\mu\mu,*}^{tree} = 4.35798e-05`
+  - `A_*^{tree} = 5.26537e+08`
+  and the resulting absolute normalization still differs from the final `A_*` only through the mild universal diagonal dressing already audited above. Across active rows the tree-amplitude variation is dominated by the overlap factor (`std log y_2^{raw} = 4.07`) rather than by the kinetic/mass coefficient (`std log(P_2^{kin}/M_2^2) = 1.97e-01`), so the next parent-side target should focus first on deriving the reference overlap block `y_2^{raw}(D_*)`.
 - **Input-tied finite-match comparator:** the UV matching layer now also supports `--uv-match-mode input_tied`, which replaces fixed finite-match shifts by effective
   \[
   \kappa_{\rm diag}^{\rm eff},\ \kappa_{\rm offdiag}^{\rm eff}

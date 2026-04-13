@@ -298,6 +298,21 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   y_2^{raw}(D)=y_{\mu,2}^{flavor}(D)=\bigl(g_{\mu 2}^{UV}(D)\bigr)^2
   \]
   on the audited overlap profile, with machine-level residuals (`max |(g_{\mu 2}^{UV})^2-y_2^{raw}| = 9.87e-17`). The same audit also shows that a naive center-mode reduction is not good enough: on the audited D4-20 detail grid, the center-only candidate `y_{center,2}` has mean relative defect `8.61e-01` and p95 relative defect `1.14` against `y_2^{raw}`. So the remaining `A_*` target should now be read as a microcanonical-windowed mu-flavor overlap block rather than as a single tracked-mode overlap.
+- **`K_\mu(D)` parent-side kernel candidate audit:** the next narrowing step is now explicit in
+  - `code/audit_hll_kmu_parent_candidate.py`
+  with outputs
+  - `output/hll_absolute_normalization/hll_kmu_parent_candidate_summary.csv`
+  - `output/hll_absolute_normalization/hll_kmu_parent_candidate_detail.csv`
+  - `output/hll_absolute_normalization/hll_kmu_parent_candidate_constants.csv`
+  In the canonical baseline the overlap extractor keeps `sigma_l = sigma_r = 2.5` and `frame_power = 0`, so the muon kernel itself collapses to an exact symmetric midplane bridge
+  \[
+  K_\mu(\rho,z;D)=A_\mu^{disc}(D)\exp[-(\rho^2+z^2)/\sigma_\mu^2].
+  \]
+  The audit verifies this pointwise factorization on the D4-20 overlap grid with relative sup residual `3.05e-15`. A finite-box continuum normalization
+  \[
+  A_\mu^{box}(D)=\exp[-D^2/(4\sigma_\mu^2)]/[I_\rho I_z]
+  \]
+  already matches the canonical discrete kernel at the `1e-4` level (`max` relative sup error `9.45e-05`), while the naive infinite-volume amplitude remains off by about `2.37e-01`. At the live reference point `(D_*,\eta_*)=(9.6,1.0)`, the exact discrete and finite-box amplitudes are `3.77586e-04` and `3.77621e-04`. So the next parent-side target is no longer the whole kernel shape; it is the origin of the effective width `\sigma_\mu` or its first curvature-controlled correction inside this midplane bridge block.
 - **Input-tied finite-match comparator:** the UV matching layer now also supports `--uv-match-mode input_tied`, which replaces fixed finite-match shifts by effective
   \[
   \kappa_{\rm diag}^{\rm eff},\ \kappa_{\rm offdiag}^{\rm eff}

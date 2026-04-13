@@ -862,6 +862,42 @@ with
 K_\mu(D)=f_L^{(\mu)}(D)f_R^{(\mu)}(D)W_{\rm frame}(D),
 \]
 and where $w_{2k}(D)$ are the normalized Gaussian weights of the local microcanonical window around the tracked second branch. The audit \path{code/audit_hll_y2raw_parent_source.py} verifies both identities on the extracted overlap profile to machine precision ($\max|y_2^{\rm raw}-y_{\mu,2}^{\rm flavor}|=0$, $\max|(g_{\mu 2}^{\rm UV})^2-y_2^{\rm raw}|=9.87\times10^{-17}$). The same audit also shows that collapsing this block to the center-mode overlap is not adequate: on the audited D4--20 detail grid, the center-only candidate $y_{{\rm center},2}$ differs from $y_2^{\rm raw}$ by a mean relative error $8.61\times10^{-1}$ and a $95\%$ relative error $1.14$. So the remaining normalization target is better understood as a \emph{windowed projected-Yukawa block} rather than as a single-mode overlap.
+One more parent-side simplification is already available for the kernel itself. In the canonical baseline the overlap extractor keeps $\sigma_L=\sigma_R\equiv \sigma_\mu=2.5$ and $W_{\rm frame}=1$, so the muon kernel is not merely approximately but exactly a symmetric midplane bridge:
+\[
+K_\mu(\rho,z;D)
+=
+A_\mu^{\rm(disc)}(D)\,
+\exp\!\left[-\frac{\rho^2+z^2}{\sigma_\mu^2}\right].
+\]
+The audit \path{code/audit_hll_kmu_parent_candidate.py} verifies this pointwise factorization on the audited D4--20 overlap grid with relative sup residual $3.05\times10^{-15}$. Replacing the discrete normalization by the corresponding finite-box continuum normalization gives a closed-form parent-side candidate
+\[
+A_\mu^{\rm(box)}(D)
+=
+\frac{\exp[-D^2/(4\sigma_\mu^2)]}
+{I_\rho(\sigma_\mu,\rho_{\max})\,I_z(\sigma_\mu,D,z_{\rm margin})},
+\]
+where
+\[
+I_\rho=\pi\sigma_\mu^2\!\left(1-e^{-\rho_{\max}^2/\sigma_\mu^2}\right),
+\qquad
+I_z=\frac{\sqrt{\pi}\sigma_\mu}{2}
+\left[
+\operatorname{erf}\!\left(\frac{D+z_{\rm margin}}{\sigma_\mu}\right)
++
+\operatorname{erf}\!\left(\frac{z_{\rm margin}}{\sigma_\mu}\right)
+\right].
+\]
+This finite-box bridge already matches the canonical discrete kernel at the $10^{-4}$ level ($\max$ relative sup error $9.45\times10^{-5}$). By contrast, the naive infinite-volume amplitude
+\[
+A_\mu^{\rm(\infty)}(D)=\pi^{-3/2}\sigma_\mu^{-3}\exp[-D^2/(4\sigma_\mu^2)]
+\]
+still misses the canonical kernel by about $2.37\times10^{-1}$. At the live reference point $(D_\star,\eta_\star)=(9.6,1.0)$ the exact discrete and finite-box amplitudes are
+\[
+A_\mu^{\rm(disc)}(D_\star)=3.77586\times10^{-4},
+\qquad
+A_\mu^{\rm(box)}(D_\star)=3.77621\times10^{-4},
+\]
+so the remaining parent-side task is no longer the entire kernel shape. It is better read as the origin of the effective width $\sigma_\mu$ (or its first curvature-controlled correction) inside this midplane bridge block.
 
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain

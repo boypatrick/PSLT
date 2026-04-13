@@ -1,0 +1,4 @@
+candidate,formula,status,sigma_mu_ref,amp_ref
+exact_discrete_midplane_bridge,"K_mu(rho,z;D)=A_mu^disc(D) * exp(-(rho^2+z^2)/sigma_mu^2)",exact_on_canonical_discrete_kernel,2.5,0.0003775864097581459
+finite_box_continuum_midplane_bridge,"A_mu^box(D)=exp(-D^2/(4 sigma_mu^2)) / [I_rho(sigma_mu,rho_max) I_z(sigma_mu,D,z_margin)]",best_parent_side_closed_form_candidate,2.5,0.0003776207636877406
+infinite_volume_midplane_bridge,A_mu^inf(D)=pi^(-3/2) sigma_mu^(-3) exp(-D^2/(4 sigma_mu^2)),too_coarse_for_current_box_normalized_extractor,2.5,0.00028805272421387465

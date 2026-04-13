@@ -1,0 +1,6 @@
+section,uv_blend,frame_power_min,frame_power_max,sigma_l_min,sigma_l_max,sigma_r_min,sigma_r_max,max_rel_sup_exact_factorization,mean_rel_sup_exact_factorization,max_rel_sup_box_candidate,mean_rel_sup_box_candidate,max_rel_amp_box_vs_exact,mean_rel_amp_box_vs_exact,max_rel_sup_infinite_candidate,mean_rel_sup_infinite_candidate,max_rel_amp_inf_vs_exact,mean_rel_amp_inf_vs_exact,ref_D,ref_eta,nearest_detail_D,sigma_mu_ref,amp_exact_disc_ref,amp_box_continuum_ref,amp_infinite_volume_ref,rel_sup_box_candidate_ref,rel_sup_infinite_candidate_ref
+canonical_kernel_metadata,0.0,0.0,0.0,2.5,2.5,2.5,2.5,,,,,,,,,,,,,,,,,,,
+exact_midplane_factorization,,,,,,,,3.0497086204546275e-15,1.4244991623153438e-15,,,,,,,,,,,,,,,,,
+finite_box_continuum_candidate,,,,,,,,,,9.450576000362044e-05,9.095884606664935e-05,9.450576000341665e-05,9.095884606641585e-05,,,,,,,,,,,,,
+infinite_volume_candidate,,,,,,,,,,,,,,0.2371237942360843,0.23712106768426,0.23712379423608396,0.23712106768426017,,,,,,,,,
+reference_candidate_constants,,,,,,,,,,,,,,,,,,9.6,1.0,10.0,2.5,0.0003775864097581459,0.0003776207636877406,0.00028805272421387465,9.098296100455068e-05,0.23712104893187222

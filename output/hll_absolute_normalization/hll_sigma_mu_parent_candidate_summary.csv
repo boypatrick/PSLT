@@ -1,0 +1,5 @@
+section,max_sigma_hessian_relerr,mean_sigma_hessian_relerr,max_logfit_resid,max_sigma_moment_relerr,mean_sigma_moment_relerr,ref_D,ref_eta,sigma_ref_target,c_sigma,kappa_iso_ref,max_sigma_curvature_relerr,mean_sigma_curvature_relerr,anisotropy_ratio_min,anisotropy_ratio_max,max_kernel_rel_sup_curvature_candidate,mean_kernel_rel_sup_curvature_candidate,sigma_exact_ref,sigma_curvature_ref,amp_curvature_box_ref,kappa_rho_ref,kappa_z_ref
+exact_log_hessian_width,2.4868995751603505e-15,8.045851566695253e-16,1.8474111129762605e-13,,,,,,,,,,,,,,,,,,
+finite_box_moment_width,,,,4.090502859241951e-05,4.029568258113409e-05,,,,,,,,,,,,,,,,
+curvature_controlled_width,,,,,,9.6,1.0,2.5,22.30270311763138,6333.882150907281,0.0010097623241142272,0.00030493162901208015,0.999996309438145,0.9999999702976006,0.01108807807805021,0.0031992462856030904,,,,,
+reference_constants,,,,,,9.6,1.0,,,,,,,,,,2.5,2.5,0.0003776207636877406,6333.881584669854,6333.883283382136

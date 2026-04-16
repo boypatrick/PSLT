@@ -1,0 +1,4 @@
+candidate,formula,status
+d_invariant_bridge_constant,c_sigma(D)=sigma_exact(D) * kappa_iso(D)^(1/4),empirically almost constant on the audited D-window
+quartic_invariant,q4_iso(D)=lambda_iso(D)/kappa_iso(D)^(3/2),first curvature-controlled correction coordinate
+corrected_width,"sigma_mu^(curv,4)(D)=c_sigma,* kappa_iso(D)^(-1/4) [1+b4 (q4_iso(D)-q4_iso(D_*))]",best current EYMH-side corrected width candidate

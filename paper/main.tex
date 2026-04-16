@@ -898,6 +898,66 @@ A_\mu^{\rm(disc)}(D_\star)=3.77586\times10^{-4},
 A_\mu^{\rm(box)}(D_\star)=3.77621\times10^{-4},
 \]
 so the remaining parent-side task is no longer the entire kernel shape. It is better read as the origin of the effective width $\sigma_\mu$ (or its first curvature-controlled correction) inside this midplane bridge block.
+That effective width now admits a cleaner three-level split. First, because the canonical kernel already closes exactly as
+\[
+\log K_\mu(\rho,z;D)=c_0(D)-\frac{\rho^2+z^2}{\sigma_\mu^2},
+\]
+a direct log-Hessian fit on the audited D4--20 overlap grid recovers $\sigma_\mu=2.5$ to machine precision ($\max |\sigma_\mu^{\rm(Hess)}/\sigma_\mu-1|=2.49\times10^{-15}$, $\max$ fit residual $1.85\times10^{-13}$). Second, a box-normalized moment inversion gives an independent finite-volume check: solving
+\[
+\langle \rho^2+z^2\rangle_{K_\mu}=M_2^{\rm(box)}(\sigma_\mu;\rho_{\max},z_{\max})
+\]
+returns $\sigma_\mu^{\rm(box)}=2.4999$ with $\max |\sigma_\mu^{\rm(box)}/\sigma_\mu-1|=4.09\times10^{-5}$. Third, one step closer to the EYMH side, write the action-derived shifted potential near either core as
+\[
+U(\rho,\delta z;D)
+=
+U_0(D)+\frac12\kappa_{\rho,\mu}(D)\rho^2+\frac12\kappa_{z,\mu}(D)\delta z^2+\cdots,
+\qquad
+\delta z=z\mp D/2,
+\]
+and define the isotropized core curvature
+\[
+\bar\kappa_\mu(D)=\frac{2\kappa_{\rho,\mu}(D)+\kappa_{z,\mu}(D)}{3}.
+\]
+In a harmonic-ground-state reading one expects a Gaussian width law $\sigma_\mu\propto \bar\kappa_\mu^{-1/4}$. Calibrating the proportionality constant at the live reference point therefore gives the current best parent-side candidate
+\[
+\sigma_\mu^{\rm(curv)}(D)=c_\sigma\,\bar\kappa_\mu(D)^{-1/4},
+\qquad
+c_\sigma=22.3027.
+\]
+The audit \path{code/audit_hll_sigma_mu_parent_candidate.py} shows that the core Hessian is already almost isotropic on the tested D4--20 window ($\kappa_{\rho,\mu}/\kappa_{z,\mu}\in[0.999996,0.99999997]$), the resulting curvature-controlled width stays within $1.01\times10^{-3}$ of the canonical $\sigma_\mu=2.5$, and the induced finite-box kernel deformation remains small ($\max$ relative sup error $1.11\times10^{-2}$). So the next parent-side target is now even narrower: not the entire kernel width profile, but the single calibration constant $c_\sigma$ or its first curvature correction.
+That remaining gap also now has a clean first-correction audit. Define the bridge constant
+\[
+c_\sigma(D)=\sigma_\mu\,\bar\kappa_\mu(D)^{1/4},
+\]
+which on the audited D4--20 grid is already almost $D$-invariant: the audit \path{code/audit_hll_sigma_mu_curvature_correction.py} finds
+\[
+c_\sigma^{\rm ref}=22.3027,
+\qquad
+\frac{\max c_\sigma-\min c_\sigma}{\langle c_\sigma\rangle}=1.38\times10^{-3}.
+\]
+To probe the first non-harmonic correction, expand the same core potential one order further,
+\[
+U(\rho,\delta z;D)
+=
+U_0(D)+\frac12\kappa_{\rho,\mu}(D)\rho^2+\frac12\kappa_{z,\mu}(D)\delta z^2
++\lambda_{\rho,\mu}(D)\rho^4+\lambda_{z,\mu}(D)\delta z^4+\cdots,
+\]
+and introduce the isotropized quartic invariant
+\[
+\lambda_\mu(D)=\frac{2\lambda_{\rho,\mu}(D)+\lambda_{z,\mu}(D)}{3},
+\qquad
+q_{4,\mu}(D)=\frac{\lambda_\mu(D)}{\bar\kappa_\mu(D)^{3/2}}.
+\]
+The current best corrected EYMH-side candidate is then
+\[
+\sigma_\mu^{\rm(curv,4)}(D)
+=
+c_{\sigma,*}\,\bar\kappa_\mu(D)^{-1/4}
+\Bigl[1+b_4\bigl(q_{4,\mu}(D)-q_{4,\mu}(D_\star)\bigr)\Bigr],
+\qquad
+b_4=0.4244.
+\]
+Numerically this single quartic correction collapses the remaining width drift from $1.01\times10^{-3}$ to $8.47\times10^{-7}$, and pushes the finite-box kernel defect down from $1.11\times10^{-2}$ to $9.47\times10^{-5}$, essentially saturating the residual box-normalization error. In that sense the current bridge problem is now very narrow: the surviving EYMH-side ambiguity is no longer the width profile, but the source of the nearly constant bridge coefficient $c_\sigma$ and, at the next order, the quartic-response coefficient $b_4$.
 
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain

@@ -1,0 +1,4 @@
+candidate,formula,status
+kernel_log_hessian_width,log K_mu = c0 - (rho^2+z^2)/sigma_mu^2,exact current-chain reduction on the canonical kernel
+finite_box_moment_width,"<rho^2+z^2>_K = M2_box(sigma_mu; rho_max, z_max)",robust finite-box cross-check
+core_hessian_curvature_width,sigma_mu^curv(D) = c_sigma * ((2 kappa_rho(D)+kappa_z(D))/3)^(-1/4),best current parent-side candidate after one reference calibration

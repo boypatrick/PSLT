@@ -313,6 +313,44 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   A_\mu^{box}(D)=\exp[-D^2/(4\sigma_\mu^2)]/[I_\rho I_z]
   \]
   already matches the canonical discrete kernel at the `1e-4` level (`max` relative sup error `9.45e-05`), while the naive infinite-volume amplitude remains off by about `2.37e-01`. At the live reference point `(D_*,\eta_*)=(9.6,1.0)`, the exact discrete and finite-box amplitudes are `3.77586e-04` and `3.77621e-04`. So the next parent-side target is no longer the whole kernel shape; it is the origin of the effective width `\sigma_\mu` or its first curvature-controlled correction inside this midplane bridge block.
+- **`\sigma_\mu` curvature/Hessian candidate audit:** the next narrowing step is now explicit in
+  - `code/audit_hll_sigma_mu_parent_candidate.py`
+  with outputs
+  - `output/hll_absolute_normalization/hll_sigma_mu_parent_candidate_summary.csv`
+  - `output/hll_absolute_normalization/hll_sigma_mu_parent_candidate_detail.csv`
+  - `output/hll_absolute_normalization/hll_sigma_mu_parent_candidate_constants.csv`
+  This audit separates the width problem into three layers. On the canonical kernel, a direct log-Hessian fit of `\log K_\mu` returns `\sigma_\mu=2.5` to machine precision (`max` relative error `2.49e-15`), while an independent finite-box second-moment inversion still returns `\sigma_\mu=2.4999` with only `4.09e-05` maximum relative error. One step closer to the EYMH side, the action-derived shifted potential `U=V_{\rm eff}-m_0^2` is expanded at the left/right cores and its isotropized Hessian
+  \[
+  \bar\kappa_\mu(D)=\frac{2\kappa_{\rho,\mu}(D)+\kappa_{z,\mu}(D)}{3}
+  \]
+  is used to define a reference-calibrated curvature-controlled width
+  \[
+  \sigma_\mu^{curv}(D)=c_\sigma\,\bar\kappa_\mu(D)^{-1/4},
+  \qquad c_\sigma=22.3027.
+  \]
+  Across the audited D4-20 window the core Hessian is already almost isotropic (`\kappa_{\rho,\mu}/\kappa_{z,\mu}\in[0.999996,0.99999997]`), the resulting width stays within `1.01e-03` of the canonical `2.5`, and the induced kernel deformation remains small (`max` relative sup error `1.11e-02`). So the next unresolved normalization-side parent target is no longer the width profile itself; it is the single calibration constant `c_\sigma` or its first curvature correction.
+- **`c_\sigma` bridge-constant and first quartic correction audit:** the next narrowing step is now explicit in
+  - `code/audit_hll_sigma_mu_curvature_correction.py`
+  with outputs
+  - `output/hll_absolute_normalization/hll_sigma_mu_curvature_correction_summary.csv`
+  - `output/hll_absolute_normalization/hll_sigma_mu_curvature_correction_detail.csv`
+  - `output/hll_absolute_normalization/hll_sigma_mu_curvature_correction_constants.csv`
+  This audit promotes the remaining `\sigma_\mu` question from a free-width complaint to a nearly closed EYMH-side bridge. The bridge constant
+  \[
+  c_\sigma(D)=\sigma_\mu\,\bar\kappa_\mu(D)^{1/4}
+  \]
+  is already almost `D`-invariant on the audited D4-20 window, with relative span only `1.38e-03`. The first non-harmonic correction is then organized by the isotropized quartic invariant
+  \[
+  q_{4,\mu}(D)=\lambda_\mu(D)/\bar\kappa_\mu(D)^{3/2},
+  \qquad
+  \lambda_\mu=(2\lambda_{\rho,\mu}+\lambda_{z,\mu})/3.
+  \]
+  Using the one-parameter corrected candidate
+  \[
+  \sigma_\mu^{(curv,4)}(D)=c_{\sigma,*}\,\bar\kappa_\mu(D)^{-1/4}\left[1+b_4(q_{4,\mu}(D)-q_{4,\mu}(D_*))\right],
+  \qquad b_4=0.4244,
+  \]
+  the remaining width drift collapses from `1.01e-03` to `8.47e-07`, and the finite-box kernel defect drops from `1.11e-02` to `9.47e-05`, essentially saturating the residual box-normalization floor. So the next parent-side target is now even narrower: derive the nearly constant bridge coefficient `c_\sigma`, and only after that the quartic-response coefficient `b_4`.
 - **Input-tied finite-match comparator:** the UV matching layer now also supports `--uv-match-mode input_tied`, which replaces fixed finite-match shifts by effective
   \[
   \kappa_{\rm diag}^{\rm eff},\ \kappa_{\rm offdiag}^{\rm eff}

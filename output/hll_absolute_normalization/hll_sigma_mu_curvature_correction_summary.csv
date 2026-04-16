@@ -1,0 +1,6 @@
+section,c_sigma_ref,c_sigma_mean,c_sigma_min,c_sigma_max,c_sigma_rel_span,q4_ref,q4_mean,q4_min,q4_max,q4_rel_span,max_sigma_curv0_relerr,mean_sigma_curv0_relerr,max_kernel_rel_sup_curv0,mean_kernel_rel_sup_curv0,b4_fit,max_sigma_curv1_relerr,mean_sigma_curv1_relerr,max_kernel_rel_sup_curv1,mean_kernel_rel_sup_curv1,improvement_factor_max_kernel,ref_D,ref_eta,sigma_exact_ref,sigma_curv0_ref,sigma_curv1_ref,kappa_iso_ref,lambda_iso_ref,nearest_detail_D
+bridge_constant_invariance,22.30270311763138,22.302769928229612,22.280205405639244,22.31108913787859,0.0013847487257739632,,,,,,,,,,,,,,,,,,,,,,,
+quartic_invariant_profile,,,,,,-1.0386955414990033,-1.0386890340557073,-1.0410744004668526,-1.037810761204745,0.003142075399953315,,,,,,,,,,,,,,,,,,
+uncorrected_curvature_candidate,,,,,,,,,,,0.001009762324114316,0.0003049316290120697,0.01108807807805021,0.0031992462856030904,,,,,,,,,,,,,,
+first_quartic_correction,,,,,,,,,,,,,,,0.4244007048874373,8.46544030763674e-07,2.6093714454526494e-07,9.473639124121253e-05,8.717573505426965e-05,117.04138117123716,,,,,,,,
+reference_constants,,,,,,,,,,,,,,,,,,,,,9.6,1.0,2.5,2.5,2.5,6333.882150907281,-523592.28090360767,10.0

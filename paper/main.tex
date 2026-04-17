@@ -125,12 +125,12 @@ Under conformal rescaling $\Phi \to \Omega^{-1} \tilde{\Phi}$, the scalar equati
 \end{equation}
 where the effective potential $V_{\rm eff}$ is determined by the conformal factor $\Omega(x)$ and the specific projection geometry (e.g., stereographic projection of dual centers).
 
-The layer index $N$ emerges naturally as the principal quantum number of this spectrum. In Section~\ref{sec:worked_example}, we derive the spectral scale $\mu(D)$ explicitly from a two-center geometry; the result supports a power-law scaling $\mu(D) \propto D^{-\gamma}$ with $\gamma \approx 0.1$ in the demonstrator regime. For analytic tractability, we adopt the \textbf{hydrogenic proxy}:
+The layer index $N$ emerges naturally as the discrete principal-like label of this spectrum. In Section~\ref{sec:worked_example}, we derive the spectral scale $\mu(D)$ explicitly from a two-center geometry; the result supports a power-law scaling $\mu(D) \propto D^{-\gamma}$ with $\gamma \approx 0.1$ in the demonstrator regime. In the reported baseline, $\omega_N(D)$ is taken from the action-derived spectrum (or its audited interpolation), while the older hydrogenic $1-1/(2N^2)$ form is retained only as a \textbf{legacy comparator} for early demonstrator bookkeeping. We therefore write
 \begin{equation}
-\omega_N(D) \simeq \mu(D) \left( 1 - \frac{1}{2N^2} \right), \qquad \mu(D) = \mu_0 \, D^{-\gamma},
+\omega_N(D) \equiv \omega_N^{\rm(exact)}(D), \qquad \mu(D) = \mu_0 \, D^{-\gamma},
 \label{eq:omega_N}
 \end{equation}
-where $\mu_0$ and $\gamma$ are determined numerically from the geometry (Section~\ref{sec:worked_example}). This form captures the essential $N$-dependence from the hydrogenic spectrum while allowing the $D$-dependence to be set by explicit calculation.
+where $\mu_0$ and $\gamma$ are determined numerically from the geometry (Section~\ref{sec:worked_example}). The envelope $\mu(D)$ remains useful for compact analytic summaries, but the mainline spectral input is the numerically extracted action-derived $\omega_N^{\rm(exact)}(D)$ rather than a hydrogenic $1/N^2$ law.
 For transparency, we additionally provide a bound-state exact benchmark for $(\omega_1,\omega_2)$ at $D=\{6,12,18\}$ with coarse/mid/fine convergence from the same action-derived operator chain (Appendix~\ref{app:omega_exact_conv}, Table~\ref{tab:omega_exact_conv}). These benchmark values use $E=\omega^2-m_0^2<0$ and should not be mixed with the generalized localized-extraction eigenvalues $\lambda$ in Appendix~\ref{app:chi_loc}.
 
 \subsection{Model-Chain Assumption Status}
@@ -368,12 +368,12 @@ The formation of a layer requires tunneling through the potential barrier create
 S_N(D) = \int_{x_-}^{x_+} \dd x \sqrt{V_{\rm eff}(x; D) - \omega_N^2},
 \label{eq:SN}
 \end{equation}
-The tunneling probability is then:
+The effective rank-2 tunneling suppression factor is then:
 \begin{equation}
 r_N(D, \eta) = \eta \, \ee^{-2 S_N(D)}.
 \label{eq:rN}
 \end{equation}
-Here, $\eta$ is a dimensionless \emph{overlap amplitude} (not a probability), representing the effective strength of the dual-center interaction; values $\eta > 1$ are permitted, corresponding to collective or multi-channel enhancement.
+Here, $\eta$ is a dimensionless \emph{overlap amplitude} (not a probability), representing the effective strength of the dual-center interaction; values $\eta > 1$ are permitted, corresponding to collective or multi-channel enhancement. Because $r_N$ enters only as the coarse-grained prefactor multiplying the growth matrix in Eq.~\eqref{eq:rank2_linear_system}, it should not be interpreted as a literal single-particle transmission probability.
 An action-derived prefactor candidate $\eta_{\rm fp}(D)$ extracted from splitting--action data is reported in Appendix~\ref{app:eta_candidate} as a conservative replacement direction; it is not used in the baseline scan.
 
 \subsection{Dimensionality and Units}
@@ -429,7 +429,7 @@ Here, $r_N = \eta e^{-2S_N}$ is the tunneling suppression factor. The mixing ter
 \begin{equation}
 \epsilon_{\rm mix} = \chi \sqrt{\Gamma_{N,a} \Gamma_{N,b}}
 \end{equation}
-The channel rates $\Gamma_{N,\ell}$ are modeled by a Kerr-inspired barrier-leakage width proxy scaling~\cite{DetweilerSuperrad1980}. In the present static two-center background this is used as an EFT-level channel-rate template (not a literal ergoregion superradiance derivation). To avoid dimensional ambiguity, we define
+The channel rates $\Gamma_{N,\ell}$ are organized in the current global scan by a residual leakage-hierarchy template, historically written in the Kerr-inspired power-law form~\cite{DetweilerSuperrad1980}. In the present static two-center background this should be read only as an EFT-level bookkeeping convention for the channel hierarchy, not as a literal ergoregion superradiance derivation. To avoid dimensional ambiguity, we define
 \begin{equation}
 \hat{\omega}_N \equiv \frac{\omega_N}{M_*},\qquad
 \hat{\Gamma}_{N,\ell}\equiv \frac{\Gamma_{N,\ell}}{M_*},
@@ -444,7 +444,7 @@ which is equivalent to
 \Gamma_{N,\ell} = A_\ell(D) \, \omega_N \left(\frac{\omega_N}{M_*}\right)^{4\ell+4},
 \label{eq:Gamma_channel}
 \end{equation}
-The legacy demonstrator corresponds to $A_\ell(D)=1$, while the reported baseline uses the action-derived profile factors $A_\ell(D)=\tilde A_\ell(D)$ from Appendix~\ref{app:superrad_candidate}. In the two-channel truncation, we map the two-mode basis to the two lowest leakage channels:
+The legacy demonstrator corresponds to $A_\ell(D)=1$, while the reported baseline uses the action-derived profile factors $A_\ell(D)=\tilde A_\ell(D)$ from Appendix~\ref{app:superrad_candidate}. In this sense the explicit $D$-dependence is carried by the action-derived profile factors, while the $\hat{\omega}_N^{4\ell+5}$ factor is retained only as a compact residual hierarchy convention. In the two-channel truncation, we map the two-mode basis to the two lowest leakage channels:
 \begin{equation}
 \Gamma_{N,a}\equiv \Gamma_{N,1},\qquad
 \Gamma_{N,b}\equiv \Gamma_{N,2},\qquad
@@ -476,11 +476,11 @@ The channel scaling in Eq.~\eqref{eq:Gamma_channel} is interpreted as a quasi-bo
 \end{equation}
 where $\omega_N^{(I)} > 0$ represents the decay rate due to tunneling or radiation to infinity. This width proxy motivates the channel factors $\Gamma_{N,\ell}$; it is distinct from the final matrix-derived formation rate $\Gamma_N(D,\eta)$ in Eq.~\eqref{eq:GammaN_eigen}.
 
-For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from a rotating-background setup. In the static dual-center geometry considered here (no ergoregion), we use the same power as a leakage-template ansatz: modes must tunnel through the geometric barrier (captured by WKB factor $e^{-2S_N}$), while $\Gamma_{N,\ell}$ encodes the residual channel-dependent escape width. A full non-Hermitian width derivation for this static geometry is left as a dedicated upgrade path.
+For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from a rotating-background setup. In the static dual-center geometry considered here (no ergoregion), we no longer treat that same power as the physical origin of the escape width. Instead, the current baseline should be read as follows: the geometry-driven static surrogate is $\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}$, while Eq.~\eqref{eq:Gamma_channel} retains a Kerr-shaped power only as a legacy hierarchy convention absorbed into the action-derived profile factors $\tilde A_\ell(D)$. A full non-Hermitian width derivation for this static geometry is left as a dedicated upgrade path.
 
 \textbf{Reviewer-facing status of the static-width upgrade:} In the strict static formulation, the relevant object is the resonance problem for the same action-derived operator with outgoing boundary conditions, so that $\Gamma_{N,\ell}^{\rm(strict)}=-2\,\Im \omega_{N,\ell}$. We implemented a minimal complex-absorbing-potential pilot on the same 1D operator chain as Appendix~\ref{app:superrad_candidate} and scanned the benchmark set $D=\{6,12,18\}$ for the representative $(N,\ell)=(3,1)$ mode. The numerical chain is stable as infrastructure, but the extracted widths remain absorber-dominated over the tested $(\eta,z_{\rm cap})$ windows and do not yet exhibit a clean plateau. For that reason, the CAP outputs are not promoted into the reported baseline. At the current stage, the most conservative first-principles static surrogate is therefore the geometry-driven rate $\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}$ from Appendix~\ref{app:superrad_candidate}, while the full complex-pole extraction remains an explicit next-step upgrade rather than an over-claimed result.
 
-\textbf{Rank-2 truncation justification:} The $\hat{\omega}_N^{4\ell+4}$ scaling ensures that higher-$\ell$ modes are exponentially suppressed for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
+\textbf{Rank-2 truncation justification:} Within the present hierarchy convention, the $\hat{\omega}_N^{4\ell+4}$ factor keeps higher-$\ell$ channels parametrically small for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
 \begin{equation}
 \frac{\Gamma_{N,3}}{\Gamma_{N,2}} \sim \hat{\omega}_N^4 \sim 10^{-4}.
 \end{equation}

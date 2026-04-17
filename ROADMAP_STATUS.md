@@ -1,6 +1,6 @@
 # PSLT Roadmap Status
 
-Last updated: 2026-04-12
+Last updated: 2026-04-17
 
 This file tracks roadmap items that are still open, partially promoted, or explicitly held behind release gates. It is intended as an operational companion to `/Users/boypatrick/codex/PSLT_quantam/README.md`, `/Users/boypatrick/codex/PSLT_quantam/FAMILY_DECISION_TABLE.md`, and `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex`.
 
@@ -64,6 +64,7 @@ Short submission-facing checklist:
 - `must-fix`: keep the static-width language conservative until a genuine complex-pole / plateau-resolved extraction exists.
 - `should-fix`: upgrade the current high-`N` threshold evidence into a mode-resolved statement, ideally an `E_4(D)` threshold theorem on a stated domain.
 - `can-polish`: push the current assumption-status split down from the table level to lighter equation/subsection tags if another structure pass is made.
+- `can-polish`: keep the spectrum/kinetics narrative aligned with the later audits by treating the hydrogenic `1-1/(2N^2)` law only as a legacy comparator, the Kerr-shaped `\hat\omega^{4\ell+5}` factor only as a residual hierarchy convention, and `r_N=\eta e^{-2S_N}` as a coarse-grained suppression factor rather than a literal tunneling probability.
 
 ## Post-Submission / Longer Horizon
 
@@ -74,6 +75,8 @@ Short submission-facing checklist:
 ## Completed Recently
 
 These should not be re-listed as "not done":
+
+- The front-of-paper spectral/kinetic wording was cleaned up to match the current audited state. In `/Users/boypatrick/codex/PSLT_quantam/paper/main.tex`, the mainline spectral input is now the action-derived `\omega_N^{\rm(exact)}(D)` with the hydrogenic `1-1/(2N^2)` law demoted to a legacy comparator; the kinetic section now treats the Kerr-shaped `\hat\omega_N^{4\ell+5}` factor only as a residual hierarchy convention absorbed into the action-derived profile factors `\tilde A_\ell(D)`; and the `r_N=\eta e^{-2S_N}` paragraph now calls `r_N` an effective rank-2 suppression factor rather than a literal tunneling probability. This was a narrative cleanup only: no baseline maps or scan outputs changed.
 
 - `full_direct_map` release mode exists and is published through `/Users/boypatrick/codex/PSLT_quantam/code/publish_full_direct_map.py`.
 - Release-gate protocol exists and exports:

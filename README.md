@@ -351,6 +351,19 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   \qquad b_4=0.4244,
   \]
   the remaining width drift collapses from `1.01e-03` to `8.47e-07`, and the finite-box kernel defect drops from `1.11e-02` to `9.47e-05`, essentially saturating the residual box-normalization floor. So the next parent-side target is now even narrower: derive the nearly constant bridge coefficient `c_\sigma`, and only after that the quartic-response coefficient `b_4`.
+- **`c_\sigma` source-selector audit:** the next bridge-level narrowing step is now explicit in
+  - `code/audit_hll_csigma_source.py`
+  with outputs
+  - `output/hll_absolute_normalization/hll_csigma_source_summary.csv`
+  - `output/hll_absolute_normalization/hll_csigma_source_detail.csv`
+  - `output/hll_absolute_normalization/hll_csigma_source_constants.csv`
+  This audit compares three global selectors for the same EYMH-side bridge constant: direct width matching, finite-box midplane amplitude matching, and full-kernel matching. All three selectors collapse onto the same narrow band,
+  \[
+  c_\sigma^{\rm ref}=22.3033,\qquad
+  c_\sigma^{\rm width}=22.3025,\qquad
+  c_\sigma^{\rm amp}=c_\sigma^{\rm kernel}=22.3100,
+  \]
+  with relative drifts only `3.8e-05` (width) and `3.0e-04` (amplitude/kernel) from the reference calibration. The finite-box core-to-box choice `c_\sigma=22.3100` is the most useful current parent-side reading: it improves the maximum amplitude mismatch from `1.02e-02` to `1.88e-03` and lowers the maximum finite-box kernel defect by the same factor, without changing the underlying curvature law. So the surviving ambiguity is now even narrower: not whether a stable bridge constant exists, but why this nearly unique finite-box value emerges from the EYMH / projected-Yukawa side.
 - **Narrative cleanup after reviewer-style objections:** the front-of-paper spectrum language has now been tightened so that the action-derived `\omega_N^{\rm(exact)}(D)` is the mainline spectral input and the older hydrogenic `1-1/(2N^2)` formula is only a legacy comparator. Likewise, the kinetic section now treats the Kerr-shaped `\hat\omega_N^{4\ell+5}` factor only as a residual hierarchy convention absorbed into the action-derived profile factors `\tilde A_\ell(D)`, not as the physical origin of static leakage in the dual-center geometry. Finally, the `r_N=\eta e^{-2S_N}` paragraph now calls `r_N` an effective rank-2 tunneling suppression factor rather than a literal tunneling probability, so the existing `\eta>1` overlap-amplitude interpretation is stated without probability-language conflict. These edits are narrative/interpretive rather than numerical: they do not change the current baseline maps, but they better align the paper with the exact-spectrum benchmarks, the geometry-driven static surrogate `\Gamma_{N,\ell}^{(geo)}`, and the existing reviewer-facing caveats.
 - **Input-tied finite-match comparator:** the UV matching layer now also supports `--uv-match-mode input_tied`, which replaces fixed finite-match shifts by effective
   \[

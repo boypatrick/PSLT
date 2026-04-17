@@ -925,6 +925,25 @@ In a harmonic-ground-state reading one expects a Gaussian width law $\sigma_\mu\
 c_\sigma=22.3027.
 \]
 The audit \path{code/audit_hll_sigma_mu_parent_candidate.py} shows that the core Hessian is already almost isotropic on the tested D4--20 window ($\kappa_{\rho,\mu}/\kappa_{z,\mu}\in[0.999996,0.99999997]$), the resulting curvature-controlled width stays within $1.01\times10^{-3}$ of the canonical $\sigma_\mu=2.5$, and the induced finite-box kernel deformation remains small ($\max$ relative sup error $1.11\times10^{-2}$). So the next parent-side target is now even narrower: not the entire kernel width profile, but the single calibration constant $c_\sigma$ or its first curvature correction.
+One more narrowing step is already available for that constant itself. The audit \path{code/audit_hll_csigma_source.py} compares three global selectors for $c_\sigma$: direct width matching,
+\[
+\arg\min_c \sum_D \bigl[\log \sigma_\mu^{\rm exact}(D)-\log(c\,\bar\kappa_\mu(D)^{-1/4})\bigr]^2,
+\]
+finite-box midplane amplitude matching,
+\[
+\arg\min_c \sum_D \bigl[\log A_\mu^{\rm disc}(D)-\log A_\mu^{\rm box}(D;c)\bigr]^2,
+\]
+and full-kernel matching,
+\[
+\arg\min_c \max_D \operatorname{relsup}\!\bigl(K_\mu^{\rm exact}(D),K_\mu^{\rm box}(D;c)\bigr).
+\]
+All three selectors collapse onto the same narrow interval:
+\[
+c_\sigma^{\rm ref}=22.3033,\qquad
+c_\sigma^{\rm width}=22.3025,\qquad
+c_\sigma^{\rm amp}=c_\sigma^{\rm kernel}=22.3100,
+\]
+with relative drifts only $3.8\times10^{-5}$ (width) and $3.0\times10^{-4}$ (amplitude/kernel) from the reference calibration. The finite-box core-to-box choice $c_\sigma=22.3100$ is the most useful parent-side reading at present: it improves the maximum amplitude mismatch from $1.02\times10^{-2}$ to $1.88\times10^{-3}$ and simultaneously lowers the maximum finite-box kernel defect from $1.02\times10^{-2}$ to $1.88\times10^{-3}$. In that sense the surviving ambiguity is no longer whether a stable $c_\sigma$ exists, but why this nearly unique finite-box bridge constant emerges from the EYMH / projected-Yukawa side.
 That remaining gap also now has a clean first-correction audit. Define the bridge constant
 \[
 c_\sigma(D)=\sigma_\mu\,\bar\kappa_\mu(D)^{1/4},

@@ -1,0 +1,6 @@
+candidate,formula,status,value
+reference_curvature_bridge,c_sigma = sigma_mu(D_*) * kappa_iso(D_*)^(1/4),single-point calibration already used in current paper,22.30334764660425
+global_width_match,argmin_c sum_D [log sigma_exact(D) - log(c kappa_iso(D)^(-1/4))]^2,best global width-source fit,22.302500000000002
+global_box_amplitude_match,argmin_c sum_D [log A_disc(D) - log A_box(D;c)]^2,best finite-box core-to-box matching constant,22.310000000000002
+global_kernel_match,"argmin_c max_D relsup(K_exact(D), K_box(D;c))",best full-kernel matching constant,22.310000000000002
+recommended_parent_side_reading,"c_sigma selected by finite-box core-to-box matching, then refined by kernel-level check",current best EYMH-side source candidate,22.310000000000002

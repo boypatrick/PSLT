@@ -1,0 +1,4 @@
+candidate,formula,status,value,value_ref
+projected_box_normalization_constant,argmin_c sum_D [log y_2^pred(D;c)-log y_2^raw(D)]^2,benchmark selector on the projected-Yukawa box-normalized overlap functional,22.3095,
+self_core_to_projected_box,insert c_sigma^(self) into y_2^pred(D;c) with the finite-box Gaussian kernel and compare directly to y_2^raw(D),explicit one-center EYMH source statement,22.319782286451296,
+analytic_two_center_to_projected_box,insert c_sigma^(analytic)(D) pointwise into y_2^pred(D;c),explicit mirror-corrected source statement,,22.30686513349205

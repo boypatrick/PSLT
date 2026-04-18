@@ -374,6 +374,38 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   c_\sigma^{projected}=22.3095,
   \]
   only `1.60e-04` away from `c_\sigma^{ref}` and `2.24e-05` away from `c_\sigma^{amp}`, while the local projected selectors `22.2665, 22.3055, 22.3100` reproduce `y_2^{raw}` with maximum relative error `1.27e-04`. So `c_\sigma \approx 22.31` is now supported not only by kernel-side selectors, but also by direct core-to-box inversion and by an independent projected-overlap benchmark.
+- **EYMH core-source audit for `c_\sigma`:** the bridge constant now also has a local analytic source candidate in
+  - `code/audit_hll_csigma_eymh_core_source.py`
+  with outputs
+  - `output/hll_absolute_normalization/hll_csigma_eymh_core_source_summary.csv`
+  - `output/hll_absolute_normalization/hll_csigma_eymh_core_source_detail.csv`
+  - `output/hll_absolute_normalization/hll_csigma_eymh_core_source_constants.csv`
+  This audit expands the shifted EYMH-side potential
+  \[
+  U=m_0^2(\Omega^2-1)+(1-6\xi)\,\nabla^2\Omega/\Omega
+  \]
+  directly around one core. In the isolated one-center Plummer limit it gives an explicit isotropic curvature source
+  \[
+  \kappa_{self}=6353.3061,
+  \qquad
+  c_\sigma^{self}=\sigma_\mu \kappa_{self}^{1/4}=22.3198,
+  \]
+  already within `1.78e-03` of the extracted bridge band. Including the second center analytically in the local two-center jet then yields `\bar\kappa_\mu^{analytic}(D)` with only `1.68e-04` maximum relative error against the finite-difference EYMH Hessian, and therefore
+  \[
+  c_\sigma^{analytic}(D)=\sigma_\mu\,\bar\kappa_\mu^{analytic}(D)^{1/4}
+  \]
+  with maximum relative error `4.21e-05` on the audited D4-20 window. The mirror correction remains small,
+  \[
+  \delta\kappa_{mirror}/\kappa_{self}\in[-6.91e-03,-1.39e-03],
+  \]
+  so the present best reading is that `c_\sigma` is already set primarily by the one-center EYMH / Plummer core, with the second center supplying only a mild D-dependent refinement.
+- **Explicit projected-normalization statement for `c_\sigma`:** the new audit
+  - `code/audit_hll_csigma_projected_box_source.py`
+  plugs the EYMH-side constants back into the same projected-Yukawa box-normalized overlap functional whose global selector defines `c_\sigma^{projected}`. On the representative benchmark `D={6,12,18}`, the one-center source
+  \[
+  c_\sigma^{self}=22.3198
+  \]
+  sits only `4.61e-04` above `c_\sigma^{projected}=22.3095` and already reproduces the projected overlap block with `y_2` log-RMSE `6.15e-03`, maximum relative error `9.26e-03`, and mean relative error `4.93e-03`. Feeding in the analytic two-center refinement `c_\sigma^{analytic}(D)` improves the same projected functional to log-RMSE `6.29e-04` and maximum relative error `9.89e-04`, slightly better than the fixed projected selector itself (`9.08e-04`, `1.45e-03`). So the normalization statement is now sharper than “one-center core sets `22.3198`”: the one-center EYMH core already fixes the bulk of the projected-Yukawa box normalization, and the small mirror correction is enough to saturate the projected benchmark.
 - **Narrative cleanup after reviewer-style objections:** the front-of-paper spectrum language has now been tightened so that the action-derived `\omega_N^{\rm(exact)}(D)` is the mainline spectral input and the older hydrogenic `1-1/(2N^2)` formula is only a legacy comparator. Likewise, the kinetic section now treats the Kerr-shaped `\hat\omega_N^{4\ell+5}` factor only as a residual hierarchy convention absorbed into the action-derived profile factors `\tilde A_\ell(D)`, not as the physical origin of static leakage in the dual-center geometry. Finally, the `r_N=\eta e^{-2S_N}` paragraph now calls `r_N` an effective rank-2 tunneling suppression factor rather than a literal tunneling probability, so the existing `\eta>1` overlap-amplitude interpretation is stated without probability-language conflict. These edits are narrative/interpretive rather than numerical: they do not change the current baseline maps, but they better align the paper with the exact-spectrum benchmarks, the geometry-driven static surrogate `\Gamma_{N,\ell}^{(geo)}`, and the existing reviewer-facing caveats.
 - **Input-tied finite-match comparator:** the UV matching layer now also supports `--uv-match-mode input_tied`, which replaces fixed finite-match shifts by effective
   \[

@@ -962,6 +962,69 @@ lands at
 c_\sigma^{\rm(projected)}=22.3095,
 \]
 with only $1.60\times10^{-4}$ relative drift from $c_\sigma^{\rm ref}$ and $2.24\times10^{-5}$ from $c_\sigma^{\rm amp}$; the corresponding pointwise selector values $22.2665$, $22.3055$, and $22.3100$ reproduce $y_2^{\rm raw}$ with maximum relative error $1.27\times10^{-4}$. So the current evidence is stronger than a single-kernel fit: both the finite-box core-to-box inversion and the projected-Yukawa overlap benchmark now select the same $c_\sigma\approx 22.31$ bridge band.
+One more step now identifies the body of that bridge constant itself. The audit \path{code/audit_hll_csigma_eymh_core_source.py} expands the EYMH-side shifted potential
+\[
+U(\rho,\delta z;D)=m_0^2\bigl(\Omega^2-1\bigr)+(1-6\xi)\frac{\nabla^2\Omega}{\Omega}
+\]
+directly around one core, first in the isolated one-center Plummer limit and then in the full two-center local jet. In the one-center limit,
+\[
+\Omega_{\rm self}(r)=1+\frac{a}{\sqrt{r^2+\varepsilon^2}}
+=
+\Omega_{0,{\rm self}}+\Omega_{2,{\rm self}}\,r^2+\cdots,
+\qquad
+\Omega_{0,{\rm self}}=1+\frac{a}{\varepsilon},
+\qquad
+\Omega_{2,{\rm self}}=-\frac{a}{2\varepsilon^3},
+\]
+while
+\[
+\nabla^2\Omega_{\rm self}(r)
+=
+L_{0,{\rm self}}+L_{2,{\rm self}}\,r^2+\cdots,
+\qquad
+L_{0,{\rm self}}=-\frac{3a}{\varepsilon^3},
+\qquad
+L_{2,{\rm self}}=\frac{15a}{2\varepsilon^5}.
+\]
+So the isotropic one-center curvature source is already explicit:
+\[
+\kappa_{\rm self}
+=
+2\left[
+m_0^2\bigl(2\Omega_{0,{\rm self}}\Omega_{2,{\rm self}}\bigr)
++(1-6\xi)\left(\frac{L_{2,{\rm self}}}{\Omega_{0,{\rm self}}}
+-\frac{L_{0,{\rm self}}\Omega_{2,{\rm self}}}{\Omega_{0,{\rm self}}^2}\right)
+\right].
+\]
+With the canonical EYMH parameters $(a,\varepsilon,m_0,\xi)=(0.04,0.1,1,0.14)$ this gives
+\[
+\kappa_{\rm self}=6353.3061,
+\qquad
+c_\sigma^{\rm(self)}=\sigma_\mu\,\kappa_{\rm self}^{1/4}=22.3198,
+\]
+already within $1.78\times10^{-3}$ of the full extracted bridge band. The same audit then includes the second center analytically in the local jet by expanding the distant term around $\delta z=z-D/2=0$ and reconstructing the full quadratic coefficients of both $\Omega$ and $\nabla^2\Omega/\Omega$. This produces an analytic two-center curvature $\bar\kappa_\mu^{\rm(analytic)}(D)$ that tracks the finite-difference EYMH Hessian to $1.68\times10^{-4}$ relative error and therefore gives
+\[
+c_\sigma^{\rm(analytic)}(D)=\sigma_\mu\,\bar\kappa_\mu^{\rm(analytic)}(D)^{1/4}
+\]
+with maximum relative error only $4.21\times10^{-5}$ on the audited D4--20 window. Equally importantly, the mirror correction remains parametrically small:
+\[
+\frac{\delta\kappa_{\rm mirror}(D)}{\kappa_{\rm self}}
+=
+\frac{\bar\kappa_\mu^{\rm(analytic)}(D)-\kappa_{\rm self}}{\kappa_{\rm self}}
+\in[-6.91\times10^{-3},-1.39\times10^{-3}],
+\]
+so the surviving D-dependence is genuinely a subleading two-center correction to an essentially one-center EYMH core source. In that sense the mainline bridge problem is now narrower again: `why does $c_\sigma$ exist?' is no longer the right question; the more precise question is why the one-center Plummer/EYMH core sets $c_\sigma\approx22.32$ and how the small mirror correction refines it to the observed $22.30$ band.
+That refinement can now be stated directly at the projected-Yukawa normalization level. Define the box-normalized projected overlap functional
+\[
+\mathcal N_{\mu,2}^{\rm(proj-box)}(D;c)
+:=
+\sum_k w_{2k}(D)\left|\left\langle u_k(D),K_\mu^{\rm box}(D;c)\right\rangle\right|,
+\]
+which is the object whose global selector previously returned $c_\sigma^{\rm(projected)}=22.3095$ on the representative set $D=\{6,12,18\}$. The new audit \path{code/audit_hll_csigma_projected_box_source.py} now inserts the EYMH candidates directly into the same functional. The one-center source alone,
+\[
+c_\sigma^{\rm(self)}=22.3198,
+\]
+lies only $4.61\times10^{-4}$ above the projected selector and already reproduces $\mathcal N_{\mu,2}^{\rm(proj-box)}$ with $y_2$ log-RMSE $6.15\times10^{-3}$, maximum relative $y_2$ error $9.26\times10^{-3}$, and mean relative $y_2$ error $4.93\times10^{-3}$. Once the analytic mirror correction is included pointwise through $c_\sigma^{\rm(analytic)}(D)$, the same projected functional improves to log-RMSE $6.29\times10^{-4}$ with maximum relative $y_2$ error $9.89\times10^{-4}$, slightly outperforming the fixed projected selector itself (log-RMSE $9.08\times10^{-4}$, maximum relative error $1.45\times10^{-3}$). So the normalization statement is now sharper than ``the one-center core sets $22.3198$'': the one-center Plummer/EYMH core already fixes the bulk of the projected-Yukawa box normalization, and the small two-center mirror correction is enough to saturate the projected benchmark.
 That remaining gap also now has a clean first-correction audit. Define the bridge constant
 \[
 c_\sigma(D)=\sigma_\mu\,\bar\kappa_\mu(D)^{1/4},

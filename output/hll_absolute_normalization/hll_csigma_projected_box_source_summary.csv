@@ -1,0 +1,8 @@
+section,c_sigma_ref,c_sigma_amp,c_sigma_projected,c_sigma_self,rel_drift_self_vs_projected,rel_drift_self_vs_amp,rel_drift_self_vs_ref,c,y2_log_rmse,max_rel_y2_resid,mean_rel_y2_resid,max_rel_self_vs_projected_y2,mean_rel_self_vs_projected_y2,max_rel_analytic_vs_projected_y2,mean_rel_analytic_vs_projected_y2,ref_D,ref_eta,nearest_detail_D,y2_exact_ref,y2_self_ref,y2_analytic_ref,y2_projected_ref,rel_y2_resid_self_ref,rel_y2_resid_analytic_ref,rel_self_vs_projected_y2_ref
+candidate_constants,22.305926686651315,22.31,22.3095,22.319782286451296,0.0004608927340952196,0.00043847093013438254,0.0006211622585612364,,,,,,,,,,,,,,,,,,
+reference_candidate_metrics,,,,,,,,22.305926686651315,0.002325204419036447,0.0040161754672538574,0.0014122159187467769,,,,,,,,,,,,,,
+amplitude_candidate_metrics,,,,,,,,22.31,0.0009499943407676357,0.0016357713152168607,0.0006346983969870804,,,,,,,,,,,,,,
+projected_global_candidate_metrics,,,,,,,,22.3095,0.000908174439830033,0.0014460851851181289,0.0007303476163086353,,,,,,,,,,,,,,
+self_core_candidate_metrics,,,,,,,,22.319782286451296,0.006151265297141924,0.009262801284705358,0.004926773797202448,0.00987417400074131,0.004600134825170891,,,,,,,,,,,,
+analytic_two_center_candidate_metrics,,,,,,,,,0.000628608617787981,0.000988974843353363,0.0005098866029924487,,,0.0015953355924991364,0.0008796163905568551,,,,,,,,,,
+reference_point,,,,,,,,,,,,,,,,9.6,1.0,12.0,2.9570824375314875e-05,2.9729041468789604e-05,2.9584036070890622e-05,2.9613586306355746e-05,0.005350445813299798,0.0004467814426836192,0.003898722742982308

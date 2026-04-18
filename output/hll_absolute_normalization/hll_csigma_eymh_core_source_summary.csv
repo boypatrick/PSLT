@@ -1,0 +1,5 @@
+section,sigma_mu,kappa_self,c_sigma_self,max_relerr_csigma_self,mean_relerr_csigma_self,max_relerr_kappa_rho_analytic,max_relerr_kappa_z_analytic,max_relerr_kappa_iso_analytic,mean_relerr_kappa_iso_analytic,max_relerr_csigma_analytic,mean_relerr_csigma_analytic,mirror_fraction_min,mirror_fraction_max,mirror_fraction_mean,max_abs_delta_kappa_mirror,ref_D,ref_eta,nearest_detail_D,c_sigma_exact_ref,c_sigma_analytic_ref,mirror_fraction_ref,kappa_iso_fd_ref,kappa_iso_analytic_ref
+self_core_source,2.5,6353.306122448976,22.319782286451296,0.001776324773111737,0.0007629380012882185,,,,,,,,,,,,,,,,,,
+full_two_center_analytic_jet,,,,,,0.0001683495856183992,0.00016834960817568856,0.0001683495931372736,0.00016830360231276538,4.2084741521675184e-05,4.207324526675983e-05,,,,,,,,,,,,
+mirror_correction_scale,,,,,,,,,,,,-0.0069066988336836275,-0.001388992562578941,-0.0028766879446016527,43.88037198595339,,,,,,,,
+reference_point,,,22.319782286451296,,,,,,,,,,,,,9.6,1.0,10.0,22.30334764660425,22.304286014250398,-0.0027742459572721013,6334.614357672427,6335.6804886234595

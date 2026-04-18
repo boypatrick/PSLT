@@ -1,0 +1,3 @@
+candidate,formula,status,value,value_ref
+isolated_plummer_core_source,"c_sigma^(self)=sigma_mu * kappa_self^(1/4), kappa_self from the one-center EYMH core jet at r=0",D-independent dominant source candidate,22.319782286451296,
+two_center_analytic_core_jet,"c_sigma^(analytic)(D)=sigma_mu * kappa_iso^(analytic)(D)^(1/4), with kappa_iso^(analytic) from the full local two-center EYMH jet",analytic D-dependent refinement of the same core source,,22.304286014250398

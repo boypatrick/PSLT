@@ -3296,6 +3296,53 @@ g_a^{\rm(exact)}\ge 1.3339,
 \]
 under the same reference defect target $\delta_{q,a}\le 10^{-3}$ used in Theorem Target~O1. In other words, Proposition~O5 already compresses the remaining first-mode statement to a single parent-side task: justify that the audited continuum neighborhood budget survives the lift from the projected family to the exact Schur complement.
 
+\medskip\noindent\textbf{Corollary O2 (On-shell defect closure on the audited knot set).}
+The $\delta_{q,a}$ side of Theorem Target~O1 is already closed on the audited knot set. Indeed, the parent-bath factorization of Proposition~O1 identifies
+\[
+K_{{\rm spec},a}
+=
+\operatorname{diag}\!\bigl(S_{zz,a}(0),\,S_{xx,a}(\Delta E_a)\bigr),
+\qquad
+q_a
+:=
+\frac{R_a(\Delta E_a)}{R_a(0)}
+=
+\frac{S_{xx,a}(\Delta E_a)}{S_{zz,a}(0)}.
+\]
+By Proposition~O2 the same audited family is gap-locked,
+\[
+\tau_{{\rm env},a}=\omega_{1,a}^{-1},
+\qquad
+q_a=\frac{1}{1+(\Delta E_a/\omega_{1,a})^2}=f(r_a).
+\]
+The new audit \path{code/audit_open_system_deltaq_source.py} verifies this equality directly from the parent-bath statement map and the micro bridge: on the current D4--20 knot set,
+\[
+\max|\tau_{{\rm env},a}-\omega_{1,a}^{-1}|=1.11\times10^{-16},
+\]
+\[
+\max|\delta_{q,a}|=
+\max\left|q_a-f(r_a)\right|
+\le 4.44\times10^{-16},
+\]
+with the direct micro ratio staying at the same level,
+\[
+\max\left|\frac{S_{xx,a}(\Delta E_a)}{S_{zz,a}(0)}-f(r_a)\right|
+\le 3.33\times10^{-16}.
+\]
+Feeding this actual defect into the gap floors already available from Proposition~O5 gives
+\[
+1-\nu_{1,a}\le 5.08\times10^{-14},
+\qquad
+\varepsilon_a(\Delta E_a)\le 2.94\times10^{-14}
+\]
+for the conservative analytic floor $g_a\ge 1.3375$, and
+\[
+1-\nu_{1,a}\le 4.93\times10^{-14},
+\qquad
+\varepsilon_a(\Delta E_a)\le 2.79\times10^{-14}
+\]
+for the sharper exact-family floor $g_a\ge 1.3537$. Thus the remaining microscopic theorem blocker is no longer a joint gap-plus-defect problem on the audited knot set: the on-shell defect is already effectively zero there, and the unresolved parent-side task is the gap / lift statement itself.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

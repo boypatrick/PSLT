@@ -1014,17 +1014,28 @@ with maximum relative error only $4.21\times10^{-5}$ on the audited D4--20 windo
 \in[-6.91\times10^{-3},-1.39\times10^{-3}],
 \]
 so the surviving D-dependence is genuinely a subleading two-center correction to an essentially one-center EYMH core source. In that sense the mainline bridge problem is now narrower again: `why does $c_\sigma$ exist?' is no longer the right question; the more precise question is why the one-center Plummer/EYMH core sets $c_\sigma\approx22.32$ and how the small mirror correction refines it to the observed $22.30$ band.
-That refinement can now be stated directly at the projected-Yukawa normalization level. Define the box-normalized projected overlap functional
+
+\medskip\noindent\textbf{Proposition U5 (Core-to-projected normalization bridge).}
+The remaining $c_\sigma$ ambiguity admits a direct normalization-side closure on the projected-Yukawa benchmark. Define the box-normalized projected overlap functional
 \[
 \mathcal N_{\mu,2}^{\rm(proj-box)}(D;c)
 :=
 \sum_k w_{2k}(D)\left|\left\langle u_k(D),K_\mu^{\rm box}(D;c)\right\rangle\right|,
 \]
-which is the object whose global selector previously returned $c_\sigma^{\rm(projected)}=22.3095$ on the representative set $D=\{6,12,18\}$. The new audit \path{code/audit_hll_csigma_projected_box_source.py} now inserts the EYMH candidates directly into the same functional. The one-center source alone,
+where the representative projected selector already gave
+\[
+c_\sigma^{\rm(projected)}=22.3095
+\]
+on $D=\{6,12,18\}$. Then the one-center EYMH / Plummer source
 \[
 c_\sigma^{\rm(self)}=22.3198,
 \]
-lies only $4.61\times10^{-4}$ above the projected selector and already reproduces $\mathcal N_{\mu,2}^{\rm(proj-box)}$ with $y_2$ log-RMSE $6.15\times10^{-3}$, maximum relative $y_2$ error $9.26\times10^{-3}$, and mean relative $y_2$ error $4.93\times10^{-3}$. Once the analytic mirror correction is included pointwise through $c_\sigma^{\rm(analytic)}(D)$, the same projected functional improves to log-RMSE $6.29\times10^{-4}$ with maximum relative $y_2$ error $9.89\times10^{-4}$, slightly outperforming the fixed projected selector itself (log-RMSE $9.08\times10^{-4}$, maximum relative error $1.45\times10^{-3}$). So the normalization statement is now sharper than ``the one-center core sets $22.3198$'': the one-center Plummer/EYMH core already fixes the bulk of the projected-Yukawa box normalization, and the small two-center mirror correction is enough to saturate the projected benchmark.
+already fixes the bulk of the projected-Yukawa box normalization, while the pointwise analytic mirror refinement
+\[
+c_\sigma^{\rm(analytic)}(D)=\sigma_\mu\,\bar\kappa_\mu^{\rm(analytic)}(D)^{1/4}
+\]
+saturates the same benchmark.
+\emph{Verified numerics.} The audit \path{code/audit_hll_csigma_projected_box_source.py} inserts these EYMH candidates directly into $\mathcal N_{\mu,2}^{\rm(proj-box)}$. The one-center source lies only $4.61\times10^{-4}$ above the projected selector and already reproduces the overlap block with $y_2$ log-RMSE $6.15\times10^{-3}$, maximum relative $y_2$ error $9.26\times10^{-3}$, and mean relative $y_2$ error $4.93\times10^{-3}$. Once the analytic mirror correction is included pointwise through $c_\sigma^{\rm(analytic)}(D)$, the same functional improves to log-RMSE $6.29\times10^{-4}$ with maximum relative $y_2$ error $9.89\times10^{-4}$, slightly outperforming the fixed projected selector itself (log-RMSE $9.08\times10^{-4}$, maximum relative error $1.45\times10^{-3}$). So the normalization statement is now sharper than ``the one-center core sets $22.3198$'': the one-center Plummer/EYMH core already fixes the bulk of the projected-Yukawa box normalization, and the small two-center mirror correction is enough to saturate the projected benchmark.
 That remaining gap also now has a clean first-correction audit. Define the bridge constant
 \[
 c_\sigma(D)=\sigma_\mu\,\bar\kappa_\mu(D)^{1/4},

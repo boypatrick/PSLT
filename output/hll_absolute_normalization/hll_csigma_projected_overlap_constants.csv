@@ -1,0 +1,4 @@
+candidate,formula,status,value
+projected_overlap_global_selector,argmin_c sum_D [log y_2^pred(D;c)-log y_2^raw(D)]^2,projected-Yukawa overlap block source candidate,22.3095
+finite_box_amplitude_selector,argmin_c sum_D [log A_mu^disc(D)-log A_mu^box(D;c)]^2,current kernel-side best selector,22.31
+reference_curvature_selector,c_sigma(D_*)=sigma_mu(D_*) * kappa_iso(D_*)^(1/4),single-point curvature calibration,22.305926686651315

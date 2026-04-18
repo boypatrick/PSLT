@@ -944,6 +944,24 @@ c_\sigma^{\rm width}=22.3025,\qquad
 c_\sigma^{\rm amp}=c_\sigma^{\rm kernel}=22.3100,
 \]
 with relative drifts only $3.8\times10^{-5}$ (width) and $3.0\times10^{-4}$ (amplitude/kernel) from the reference calibration. The finite-box core-to-box choice $c_\sigma=22.3100$ is the most useful parent-side reading at present: it improves the maximum amplitude mismatch from $1.02\times10^{-2}$ to $1.88\times10^{-3}$ and simultaneously lowers the maximum finite-box kernel defect from $1.02\times10^{-2}$ to $1.88\times10^{-3}$. In that sense the surviving ambiguity is no longer whether a stable $c_\sigma$ exists, but why this nearly unique finite-box bridge constant emerges from the EYMH / projected-Yukawa side.
+That bridge constant is now supported by two independent overlap-side checks rather than by kernel matching alone. First, the pointwise core-to-box inversion in \path{code/audit_hll_csigma_core_box_local.py} solves
+\[
+c_\sigma^{\rm(box,local)}(D)
+=
+\arg\min_c
+\left|
+\log A_\mu^{\rm box}(D;c)-\log A_\mu^{\rm disc}(D)
+\right|
+\]
+on the audited D4--20 overlap profile. Apart from the known near-merger tracking outlier at $D=5$, the recovered local constants stay on the same narrow band, with mean $22.3033$, minimum $22.2825$, maximum $22.3100$, and relative span $1.23\times10^{-3}$. Second, the projected-Yukawa benchmark \path{code/audit_hll_csigma_projected_overlap.py} re-solves the fine overlap block at the representative points $D=\{6,12,18\}$ using the same shift-invert target as the original overlap extractor and verifies that the canonical rebuild is exact to machine precision ($\max$ relative rebuild error $1.27\times10^{-13}$). On the same benchmark, the projected-overlap selector
+\[
+\arg\min_c \sum_D \bigl[\log y_2^{\rm pred}(D;c)-\log y_2^{\rm raw}(D)\bigr]^2
+\]
+lands at
+\[
+c_\sigma^{\rm(projected)}=22.3095,
+\]
+with only $1.60\times10^{-4}$ relative drift from $c_\sigma^{\rm ref}$ and $2.24\times10^{-5}$ from $c_\sigma^{\rm amp}$; the corresponding pointwise selector values $22.2665$, $22.3055$, and $22.3100$ reproduce $y_2^{\rm raw}$ with maximum relative error $1.27\times10^{-4}$. So the current evidence is stronger than a single-kernel fit: both the finite-box core-to-box inversion and the projected-Yukawa overlap benchmark now select the same $c_\sigma\approx 22.31$ bridge band.
 That remaining gap also now has a clean first-correction audit. Define the bridge constant
 \[
 c_\sigma(D)=\sigma_\mu\,\bar\kappa_\mu(D)^{1/4},

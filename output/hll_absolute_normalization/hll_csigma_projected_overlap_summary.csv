@@ -1,0 +1,7 @@
+section,max_canonical_rebuild_relerr,mean_canonical_rebuild_relerr,c_sigma_ref,c_sigma_amp,c_sigma_projected_global,rel_drift_proj_global_vs_ref,rel_drift_proj_global_vs_amp,c_sigma_projected_local_min,c_sigma_projected_local_max,c_sigma_projected_local_mean,c_sigma_projected_local_rel_span,c,y2_log_rmse,max_rel_y2_resid,mean_rel_y2_resid,ref_D,ref_eta,nearest_detail_D,c_sigma_projected_local_ref,y2_exact_ref,y2_projected_ref_ref,y2_projected_amp_ref,y2_projected_local_ref
+canonical_overlap_rebuild,1.2723155862204294e-13,8.77816338136957e-14,,,,,,,,,,,,,,,,,,,,,
+projected_overlap_selector,,,22.305926686651315,22.31,22.3095,0.00016019569143588264,2.241147467496596e-05,22.2665,22.31,22.294,0.0019511976316496857,,,,,,,,,,,,
+reference_selector_metrics,,,,,,,,,,,,22.305926686651315,0.00228515749950677,0.003946293074479912,0.0013982560490708822,,,,,,,,
+amplitude_selector_metrics,,,,,,,,,,,,22.31,0.0009499943407677743,0.0016357713152164166,0.0006346983969875245,,,,,,,,
+projected_overlap_global_fit_metrics,,,,,,,,,,,,22.3095,0.0009081744398304583,0.00012737271413465479,6.629797127148211e-05,,,,,,,,
+reference_point_projected_overlap,,,,,,,,,,,,,,,,9.6,1.0,12.0,22.3055,2.9570824375314875e-05,2.957433669173242e-05,2.961919548159532e-05,2.9568731692092534e-05

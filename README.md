@@ -364,6 +364,16 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   c_\sigma^{\rm amp}=c_\sigma^{\rm kernel}=22.3100,
   \]
   with relative drifts only `3.8e-05` (width) and `3.0e-04` (amplitude/kernel) from the reference calibration. The finite-box core-to-box choice `c_\sigma=22.3100` is the most useful current parent-side reading: it improves the maximum amplitude mismatch from `1.02e-02` to `1.88e-03` and lowers the maximum finite-box kernel defect by the same factor, without changing the underlying curvature law. So the surviving ambiguity is now even narrower: not whether a stable bridge constant exists, but why this nearly unique finite-box value emerges from the EYMH / projected-Yukawa side.
+- **Independent `c_\sigma` support lines:** two additional audits now support the same bridge band from the overlap side itself.
+  - `code/audit_hll_csigma_core_box_local.py`
+  - `code/audit_hll_csigma_projected_overlap.py`
+  with outputs under
+  - `output/hll_absolute_normalization/`
+  The pointwise core-to-box inversion recovers `c_\sigma^{box,local}(D)` directly from the finite-box amplitude relation. Aside from the known near-merger tracking outlier at `D=5`, the local constants stay in a narrow band with mean `22.3033`, min `22.2825`, max `22.3100`, and relative span `1.23e-03`. The projected-Yukawa benchmark then re-solves the fine overlap block at `D={6,12,18}` using the same shift-invert target as the original overlap extractor and verifies that the canonical overlap rebuild is exact to machine precision (`max relerr = 1.27e-13`). On that benchmark the projected selector lands at
+  \[
+  c_\sigma^{projected}=22.3095,
+  \]
+  only `1.60e-04` away from `c_\sigma^{ref}` and `2.24e-05` away from `c_\sigma^{amp}`, while the local projected selectors `22.2665, 22.3055, 22.3100` reproduce `y_2^{raw}` with maximum relative error `1.27e-04`. So `c_\sigma \approx 22.31` is now supported not only by kernel-side selectors, but also by direct core-to-box inversion and by an independent projected-overlap benchmark.
 - **Narrative cleanup after reviewer-style objections:** the front-of-paper spectrum language has now been tightened so that the action-derived `\omega_N^{\rm(exact)}(D)` is the mainline spectral input and the older hydrogenic `1-1/(2N^2)` formula is only a legacy comparator. Likewise, the kinetic section now treats the Kerr-shaped `\hat\omega_N^{4\ell+5}` factor only as a residual hierarchy convention absorbed into the action-derived profile factors `\tilde A_\ell(D)`, not as the physical origin of static leakage in the dual-center geometry. Finally, the `r_N=\eta e^{-2S_N}` paragraph now calls `r_N` an effective rank-2 tunneling suppression factor rather than a literal tunneling probability, so the existing `\eta>1` overlap-amplitude interpretation is stated without probability-language conflict. These edits are narrative/interpretive rather than numerical: they do not change the current baseline maps, but they better align the paper with the exact-spectrum benchmarks, the geometry-driven static surrogate `\Gamma_{N,\ell}^{(geo)}`, and the existing reviewer-facing caveats.
 - **Input-tied finite-match comparator:** the UV matching layer now also supports `--uv-match-mode input_tied`, which replaces fixed finite-match shifts by effective
   \[

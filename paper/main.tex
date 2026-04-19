@@ -4264,6 +4264,84 @@ so
 \]
 Thus the observable-chain side is not merely known to admit a floor: after Proposition~O15 the remaining gap is essentially only the slack in the amplitude factor $A_\chi^{\rm(sep\ floor)}$, not in the coherence-response floor itself.
 
+\medskip\noindent\textbf{Proposition O16 (Amplitude-floor alignment with the mix-rate floor on the exact bridge).}
+On the exported exact bridge,
+\[
+A_\chi(D)=\frac{2\gamma_{\rm mix}(D)}{\gamma_{\rm ref}(D)}
+=
+\frac{2\gamma_{\rm mix}(D)}{\omega_1(D)^{11}}
+=
+\kappa_{\rm env}\frac{2g_x(D)^2S_{xx}(D)}{\omega_1(D)^{11}}.
+\]
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_achi_amplitude_source.py} verifies the exact residuals
+\[
+\max_D \left|A_\chi-\frac{2\gamma_{\rm mix}}{\omega_1^{11}}\right|
+=1.73\times10^{-16},
+\qquad
+\max_D \left|A_\chi-\kappa_{\rm env}\frac{2g_x^2S_{xx}}{\omega_1^{11}}\right|
+=1.01\times10^{-16}.
+\]
+Moreover the three minima
+\[
+\arg\min_D A_\chi(D),
+\qquad
+\arg\min_D \gamma_{\rm mix}(D),
+\qquad
+\arg\min_D \frac{g_x(D)^2S_{xx}(D)}{\omega_1(D)^{11}}
+\]
+all occur at the same audited knot
+\[
+D=11.
+\]
+Hence the exact amplitude floor is already determined by the mix-rate floor together with the local first-mode scale at that same knot:
+\[
+A_\chi^{\rm exact\ floor}
+=
+\frac{2\gamma_{\rm mix}^{\rm floor}}{\omega_1(D_{\gamma,\min})^{11}}
+=1.81567\times10^{-6},
+\]
+with
+\[
+\gamma_{\rm mix}^{\rm floor}=5.22995\times10^{-4},
+\qquad
+\omega_1(D_{\gamma,\min})=1.78219.
+\]
+If one instead keeps the same numerator floor but replaces the local denominator by the global first-mode ceiling,
+\[
+A_\chi^{(\gamma,\omega{\rm ceil})}
+:=
+\frac{2\gamma_{\rm mix}^{\rm floor}}{(\omega_1^{\rm ceil})^{11}}
+=1.10807\times10^{-6},
+\qquad
+\omega_1^{\rm ceil}=1.86402,
+\]
+then the entire remaining amplitude-side slack on the exported bridge is
+\[
+\frac{A_\chi^{\rm exact\ floor}}{A_\chi^{(\gamma,\omega{\rm ceil})}}
+=
+\left(\frac{\omega_1^{\rm ceil}}{\omega_1(D_{\gamma,\min})}\right)^{11}
+=1.63858.
+\]
+
+\medskip\noindent\textbf{Corollary O15 (Tightened observable floor from the aligned amplitude source).}
+Combining Proposition~O16 with Corollary~O14 yields, on the exported exact bridge,
+\[
+\chi_{\rm eff}(D)\ge
+A_\chi^{\rm exact\ floor}\,C_{\max}^{\rm(ratio,rig)\ floor}
+=4.24949\times10^{-7}.
+\]
+The exact exported floor remains
+\[
+\chi_{\rm eff}^{\rm exact\ floor}=9.03367\times10^{-7},
+\]
+so
+\[
+\frac{\chi_{\rm eff}^{\rm exact\ floor}}
+{A_\chi^{\rm exact\ floor}C_{\max}^{\rm(ratio,rig)\ floor}}
+=2.12582.
+\]
+Thus after Propositions~O15--O16 the residual observable-chain slack is no longer spread over both the coherence-response and amplitude factors.  The coherence-response floor is already essentially saturated, and the remaining gap is concentrated in proving an a priori floor for $\gamma_{\rm mix}$ together with the corresponding local first-mode denominator control.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

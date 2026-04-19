@@ -4047,6 +4047,144 @@ so even this coarse separated reduction undershoots the exact floor by only
 \]
 Hence after Propositions~O11--O13 the residual observable-chain closure is now fully localized: the only scalar still missing from the exact export to a complete proof-side floor statement is a lower bound on $C_{\max}$ itself.
 
+\medskip\noindent\textbf{Proposition O14 (Underdamped closed form for \texorpdfstring{$C_{\max}$}{Cmax} on the exact two-level bridge).}
+In the localized two-level Lindblad block used by the exact micro bridge,
+\[
+H=\frac{\Delta E}{2}\sigma_x,
+\qquad
+L_\phi=\sqrt{\gamma_\phi}\,\sigma_z,
+\qquad
+L_{\rm mix}=\sqrt{\gamma_{\rm mix}}\,\sigma_x,
+\]
+with initial state $\rho(0)=|L\rangle\langle L|$, the Bloch evolution closes on the $(y,z)$ plane:
+\[
+\dot y = -\Delta E\, z - 2(\gamma_\phi+\gamma_{\rm mix})y,
+\qquad
+\dot z = \Delta E\, y - 2\gamma_{\rm mix} z.
+\]
+Writing
+\[
+\Gamma := \gamma_\phi + 2\gamma_{\rm mix},
+\qquad
+\omega := \sqrt{\Delta E^2-\gamma_\phi^2},
+\]
+the underdamped regime $\Delta E>\gamma_\phi$ gives the exact solution
+\[
+y(t)=-\frac{\Delta E}{\omega}e^{-\Gamma t}\sin(\omega t),
+\qquad
+C(t)=|\rho_{LR}(t)|=\frac{|y(t)|}{2}
+=
+\frac{\Delta E}{2\omega}e^{-\Gamma t}|\sin(\omega t)|.
+\]
+The first-lobe maximum occurs at
+\[
+t_\ast = \omega^{-1}\arctan\!\left(\frac{\omega}{\Gamma}\right),
+\]
+so
+\[
+C_{\max}
+=
+\frac{\Delta E}{2\sqrt{\Gamma^2+\omega^2}}
+\exp\!\left[
+-\frac{\Gamma}{\omega}\arctan\!\left(\frac{\omega}{\Gamma}\right)
+\right].
+\]
+
+\textit{Audit check.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_cmax_floor_source.py} verifies on the exported exact bridge that all rows are underdamped,
+\[
+\min_D(\Delta E-\gamma_\phi)=2.59273\times10^{-1}>0,
+\qquad
+\max_D \frac{\gamma_\phi}{\Delta E}=2.07\times10^{-4},
+\]
+and that the closed form above matches the exported Lindblad maxima to within
+\[
+\max_D |C_{\max}^{\rm(export)}-C_{\max}^{\rm(closed)}|
+=2.82\times10^{-4}.
+\]
+The closed-form minimum is attained at
+\[
+D=5,
+\qquad
+C_{\max}^{\rm(closed)\ floor}=2.34338\times10^{-1},
+\]
+while the exported exact minimum is
+\[
+C_{\max}^{\rm exact\ floor}=2.34255\times10^{-1},
+\]
+so
+\[
+\frac{C_{\max}^{\rm exact\ floor}}{C_{\max}^{\rm(closed)\ floor}}=0.999644.
+\]
+
+\medskip\noindent\textbf{Corollary O13 (Separated \texorpdfstring{$C_{\max}$}{Cmax} floor and resulting \texorpdfstring{$\chi_{\rm eff}$}{chi_eff} floor).}
+On the audited exact parameter box, the same closed form is numerically monotone:
+\[
+\partial_{\Delta E} C_{\max}>0,
+\qquad
+\partial_{\gamma_\phi} C_{\max}<0,
+\qquad
+\partial_{\gamma_{\rm mix}} C_{\max}<0,
+\]
+with audited derivative margins
+\[
+\min \partial_{\Delta E} C_{\max}=3.16\times10^{-3},
+\qquad
+\max \partial_{\gamma_\phi} C_{\max}=-3.98\times10^{-1},
+\qquad
+\max \partial_{\gamma_{\rm mix}} C_{\max}=-7.96\times10^{-1}.
+\]
+Therefore the exact bridge already admits the separated floor
+\[
+C_{\max}(D)\ge
+C_{\max}^{\rm(sep\ floor)}
+
+=
+\frac{\Delta E_{\min}}
+{2\sqrt{\Gamma_{\max}^2+\omega_{\min}^2}}
+\exp\!\left[
+-\frac{\Gamma_{\max}}{\omega_{\min}}
+\arctan\!\left(\frac{\omega_{\min}}{\Gamma_{\max}}\right)
+\right],
+\]
+where
+\[
+\Delta E_{\min}=2.59278\times10^{-1},
+\qquad
+\gamma_{\phi,\max}=9.56\times10^{-5},
+\qquad
+\gamma_{{\rm mix},\max}=1.48999\times10^{-1},
+\]
+\[
+\omega_{\min}=\sqrt{\Delta E_{\min}^2-\gamma_{\phi,\max}^2}=2.59278\times10^{-1},
+\qquad
+\Gamma_{\max}=\gamma_{\phi,\max}+2\gamma_{{\rm mix},\max}=2.98093\times10^{-1},
+\]
+giving
+\[
+C_{\max}^{\rm(sep\ floor)}=1.44083\times10^{-1}.
+\]
+The exact exported floor exceeds this by
+\[
+\frac{C_{\max}^{\rm exact\ floor}}{C_{\max}^{\rm(sep\ floor)}}=1.626.
+\]
+Combining this with Proposition~O13 gives the conservative observable floor
+\[
+\chi_{\rm eff}(D)\ge
+A_\chi^{\rm(sep\ floor)} C_{\max}^{\rm(sep\ floor)}
+=1.50059\times10^{-7},
+\]
+while the actual exported exact floor is
+\[
+\chi_{\rm eff}^{\rm exact\ floor}=9.03367\times10^{-7},
+\]
+so
+\[
+\frac{\chi_{\rm eff}^{\rm exact\ floor}}
+{A_\chi^{\rm(sep\ floor)} C_{\max}^{\rm(sep\ floor)}}
+=6.02.
+\]
+Thus after Propositions~O13--O14 the observable-chain side is effectively closed on the current exact bridge: the remaining gap is no longer the existence of a floor but only how much of the present slack one wants to recover analytically.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

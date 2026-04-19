@@ -4404,6 +4404,92 @@ Proposition~O17 shows that the exact exported \texorpdfstring{$\gamma_{\rm mix}$
 \]
 Therefore the next proof-side target should not be read as an independent floor theorem for $S_{xx}$.  On the current exact bridge the response factor is already mild and the dominant unresolved ingredient is the overlap-side floor itself, i.e. an a priori lower bound on $g_x$ (equivalently on $g_x^2S_{xx}$ up to this small response uplift).
 
+\medskip\noindent\textbf{Proposition O18 (Parity-diagonal source for the \texorpdfstring{$g_x$}{gx} floor on the exact bridge).}
+Let
+\[
+V_{\rm par}^{(\delta V)}(D)
+=
+\begin{pmatrix}
+V_{11}(D) & V_{12}(D)\\
+V_{12}(D) & V_{22}(D)
+\end{pmatrix}
+\]
+be the parity-basis projection of the fluctuation operator $\delta V=V_{\rm eff}-\bar V(r)$ onto the lowest two parity modes, and let
+\[
+U_{LR}=\frac{1}{\sqrt 2}
+\begin{pmatrix}
+1&1\\
+1&-1
+\end{pmatrix}
+\]
+be the localized-basis rotation.  Then
+\[
+V_{\rm loc}^{(\delta V)}(D)
+=
+U_{LR}^{\top}V_{\rm par}^{(\delta V)}(D)U_{LR}
+=
+\begin{pmatrix}
+\tfrac12(V_{11}+2V_{12}+V_{22}) & \tfrac12(V_{11}-V_{22})\\
+\tfrac12(V_{11}-V_{22}) & \tfrac12(V_{11}-2V_{12}+V_{22})
+\end{pmatrix}.
+\]
+Hence the localized-channel couplings are exact reparameterizations of the same projected fluctuation matrix:
+\[
+g_x(D)=\left|\bigl(V_{\rm loc}^{(\delta V)}(D)\bigr)_{LR}\right|
+=
+\frac12\left|V_{11}(D)-V_{22}(D)\right|,
+\]
+\[
+g_z(D)=\frac12\left|\bigl(V_{\rm loc}^{(\delta V)}(D)\bigr)_{LL}-\bigl(V_{\rm loc}^{(\delta V)}(D)\bigr)_{RR}\right|
+=
+\left|V_{12}(D)\right|.
+\]
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_gx_floor_source.py} verifies on the exported exact bridge that
+\[
+\max_D\left|g_x-\left|V_{LR}^{(\delta V)}\right|\right|=0,
+\]
+\[
+\max_D\left|g_x-\frac12\left|V_{11}-V_{22}\right|\right|
+=1.00\times10^{-16},
+\qquad
+\max_D\left|g_z-\left|V_{12}\right|\right|
+=2.18\times10^{-18}.
+\]
+Moreover the minima of
+\[
+g_x(D),\qquad
+\frac12\left|V_{11}(D)-V_{22}(D)\right|,\qquad
+\gamma_{\rm mix}(D)
+\]
+all occur at the same audited knot
+\[
+D=11,
+\]
+where
+\[
+g_x^{\rm floor}=3.35398\times10^{-5},
+\qquad
+\left|V_{11}-V_{22}\right|_{\rm floor}=6.70795\times10^{-5}.
+\]
+Thus the remaining exact-bridge floor question for $g_x$ is already equivalent to a static parity-diagonal contrast floor for the projected fluctuation operator $\delta V$.
+
+\medskip\noindent\textbf{Corollary O17 (The remaining \texorpdfstring{$g_x$}{gx} floor gap is static rather than bath-side).}
+Propositions~O17--O18 reduce the last open-system overlap-side floor statement to the chain
+\[
+\gamma_{\rm mix}^{\rm exact\ floor}
+=
+\kappa_{\rm env}\,(g_x^{\rm floor})^2\,S_{xx}(D_{g_x,\min}),
+\qquad
+g_x^{\rm floor}
+=
+\frac12\left|V_{11}-V_{22}\right|_{\rm floor}.
+\]
+Therefore the unresolved proof-side target is no longer naturally read as a bath-response theorem for $S_{xx}$ or as an additional localized-basis theorem for $V_{LR}^{(\delta V)}$.  On the current exact bridge it is enough to produce an a priori lower bound on the parity-diagonal contrast
+\[
+\left|V_{11}(D)-V_{22}(D)\right|
+\]
+for the projected fluctuation operator $\delta V$ over the audited knot window.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

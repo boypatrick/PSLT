@@ -1,0 +1,8 @@
+component,equation_source,envelope
+block22,factorization_mix,3.6280835047364235e-07
+block11,factorization_phi_identifiable,2.3283064365386963e-10
+aux_mix_cocycle,cocycle_mix_envelope,8.63597388045534e-13
+anisotropy,statement_log_anisotropy_identifiable,8.428813202954188e-13
+aux_mix_potential,potential_mix_envelope,5.498171362638972e-13
+trace,statement_trace,4.39648317751562e-14
+det,statement_det,4.2063656160648555e-18

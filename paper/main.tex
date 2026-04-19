@@ -3549,6 +3549,87 @@ and, together with Corollary~O2,
 \]
 The remaining proof-level gap is now very specific: promote this verified chart inclusion of the exported exact operator into an analytic operator theorem.
 
+\medskip\noindent\textbf{Proposition O8 (Exact-equation witness envelope for the exported operator).}
+The preceding chart inclusion can be compressed one step further into a single operator-envelope bound that no longer needs the rowwise chart aggregation. Define
+\[
+\mathcal B_{\rm op}^{\rm(exact)}:=
+\max\bigl\{
+\Delta_{\phi}^{\rm(fact)},
+\Delta_{\rm mix}^{\rm(fact)},
+\Delta_{\rm tr}^{\rm(stmt)},
+\Delta_{\rm det}^{\rm(stmt)},
+\Delta_{\rm ani}^{\rm(stmt)},
+\Delta_{\rm mix}^{\rm(cocycle)},
+\Delta_{\rm mix}^{\rm(potential)}
+\bigr\},
+\]
+with
+\[
+\Delta_{\phi}^{\rm(fact)}:=\max|\kappa_{\phi}^{\rm(obs)}-\kappa_{\rm env}|,
+\qquad
+\Delta_{\rm mix}^{\rm(fact)}:=\max|\kappa_{\rm mix}^{\rm(obs)}-\kappa_{\rm env}|,
+\]
+\[
+\Delta_{\rm tr}^{\rm(stmt)}:=\max|{\rm tr}(K_{\rm bath})-{\rm tr}(\Gamma)|,
+\qquad
+\Delta_{\rm det}^{\rm(stmt)}:=\max|\det(K_{\rm bath})-\det(\Gamma)|,
+\]
+\[
+\Delta_{\rm ani}^{\rm(stmt)}:=\max\bigl|\log(\gamma_{\rm mix}/\gamma_{\phi})-\log({\rm sys})-\log({\rm bath})\bigr|,
+\]
+and where the last two terms are the exact mix-side cocycle and potential envelopes already exported by the parent-bath closure audits. Then the exact witness equations imply
+\[
+\|W^{\rm(exact)}\|_\infty \le \mathcal B_{\rm op}^{\rm(exact)}.
+\]
+
+\textit{Audit proof.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_operator_radius_bound.py} reads the factorization, statement, cocycle, and potential summaries directly and evaluates the envelope components
+\[
+\Delta_{\phi}^{\rm(fact)}=2.33\times10^{-10},
+\qquad
+\Delta_{\rm mix}^{\rm(fact)}=3.63\times10^{-7},
+\]
+\[
+\Delta_{\rm tr}^{\rm(stmt)}=4.40\times10^{-14},
+\qquad
+\Delta_{\rm det}^{\rm(stmt)}=4.21\times10^{-18},
+\qquad
+\Delta_{\rm ani}^{\rm(stmt)}=8.43\times10^{-13},
+\]
+\[
+\Delta_{\rm mix}^{\rm(cocycle)}=8.64\times10^{-13},
+\qquad
+\Delta_{\rm mix}^{\rm(potential)}=5.50\times10^{-13}.
+\]
+Hence
+\[
+\mathcal B_{\rm op}^{\rm(exact)}=3.63\times10^{-7},
+\]
+with the envelope dominated by the exact factorization-side block-22 witness. The same audit checks that this conservative envelope is tight on the exported operator, i.e.
+\[
+\mathcal B_{\rm op}^{\rm(exact)}=\|W_{\max}^{\rm(exact)}\|_\infty,
+\]
+so no hidden larger witness remains outside the listed exact equations.
+
+\medskip\noindent\textbf{Corollary O7 (Half-radius chart inclusion from the exact witness equations).}
+The envelope of Proposition~O8 is already smaller than one half of both audited chart radii:
+\[
+\mathcal B_{\rm op}^{\rm(exact)}
+=3.63\times10^{-7}
+\le \frac{1}{2}r_{95}^{\rm safe}=4.81\times10^{-5},
+\]
+\[
+\mathcal B_{\rm op}^{\rm(exact)}
+=3.63\times10^{-7}
+\le \frac{1}{2}r_{\max}^{\rm safe}=5.03\times10^{-5}.
+\]
+Equivalently,
+\[
+\frac{\tfrac12 r_{95}^{\rm safe}}{\mathcal B_{\rm op}^{\rm(exact)}}=1.33\times10^{2},
+\qquad
+\frac{\tfrac12 r_{\max}^{\rm safe}}{\mathcal B_{\rm op}^{\rm(exact)}}=1.39\times10^{2}.
+\]
+Therefore the exported exact operator satisfies the witness-chart hypothesis of Proposition~O7 with half-radius room to spare, directly from the exact factorization/statement/cocycle/potential equations themselves rather than from the scan chart alone. Consequently the exact-lift conclusions of Corollary~O5 follow again for the exported operator on the audited knot set. The proof-level gap is now reduced to a final analytic upgrade: replace these exported exact residual constants by an operator theorem that bounds the same envelope a priori.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

@@ -3706,6 +3706,96 @@ Proposition~O9 shows that the dominant block-22 witness no longer requires the f
 \]
 strong enough to reproduce one of the denominator floors above. Once that is available, the half-radius chart inclusion of the exact operator follows without any remaining appeal to exported scan geometry.
 
+\medskip\noindent\textbf{Proposition O10 (Observable-chain source for the \texorpdfstring{$\gamma_{\rm mix}$}{gamma_mix} floor).}
+The mix rate also admits an exact observable-chain reconstruction:
+\[
+\gamma_{\rm mix}(D)
+=
+\frac{\gamma_{\rm ref}(D)\,\chi_{\rm eff}(D)}{2\,C_{\max}(D)}.
+\]
+Hence any lower floors
+\[
+\gamma_{\rm ref}(D)\ge \gamma_{\rm ref}^{\rm floor},
+\qquad
+\chi_{\rm eff}(D)\ge \chi_{\rm eff}^{\rm floor},
+\qquad
+C_{\max}(D)\le C_{\max}^{\rm ceil},
+\]
+imply the mix-rate floor
+\[
+\gamma_{\rm mix}(D)\ge
+\frac{\gamma_{\rm ref}^{\rm floor}\,\chi_{\rm eff}^{\rm floor}}
+{2\,C_{\max}^{\rm ceil}}.
+\]
+Dividing by $\kappa_{\rm env}$ then yields a lower bound on the mix kernel,
+\[
+g_x(D)^2 S_{xx}(D)\ge
+\frac{\gamma_{\rm ref}^{\rm floor}\,\chi_{\rm eff}^{\rm floor}}
+{2\,C_{\max}^{\rm ceil}\,\kappa_{\rm env}^{\max}}.
+\]
+
+\textit{Audit proof.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_gamma_mix_floor_source.py} verifies the exact identity above with
+\[
+\max_D\left|
+\gamma_{\rm mix}(D)-\frac{\gamma_{\rm ref}(D)\chi_{\rm eff}(D)}{2C_{\max}(D)}
+\right|
+=
+4.12\times10^{-14}.
+\]
+On the exported exact operator, the conservative separated floors are
+\[
+\gamma_{\rm ref}^{\rm floor}=4.75\times10^{2},
+\qquad
+\chi_{\rm eff}^{\rm floor}=9.03\times10^{-7},
+\qquad
+C_{\max}^{\rm ceil}=4.98\times10^{-1},
+\]
+which give
+\[
+\gamma_{\rm mix}^{\rm(sep\ floor)}
+=
+\frac{\gamma_{\rm ref}^{\rm floor}\chi_{\rm eff}^{\rm floor}}{2C_{\max}^{\rm ceil}}
+=4.31\times10^{-4}.
+\]
+The actual exact minimum is
+\[
+\min_D\gamma_{\rm mix}(D)=5.23\times10^{-4},
+\]
+so the separated observable-chain floor already captures the true minimum within a factor
+\[
+\frac{\min_D\gamma_{\rm mix}(D)}{\gamma_{\rm mix}^{\rm(sep\ floor)}}=1.21.
+\]
+Since $\kappa_{\rm env}=4.31\times10^{5}$ on the audited knot set, this induces the conservative kernel floor
+\[
+g_x(D)^2S_{xx}(D)\ge 1.00\times10^{-9}.
+\]
+
+\medskip\noindent\textbf{Corollary O9 (Observable-chain floor implies the half-radius mix witness bound).}
+Combining Proposition~O10 with the numerator residual
+\[
+\varepsilon_{\rm mix}=4.40\times10^{-14}
+\]
+of Proposition~O9 gives
+\[
+\|\Delta_{\rm mix}^{\rm(fact)}\|_\infty
+\le
+\frac{\varepsilon_{\rm mix}}{1.00\times10^{-9}}
+=4.39\times10^{-5}.
+\]
+This is still below both audited half-radii,
+\[
+4.39\times10^{-5}<\frac12 r_{95}^{\rm safe}=4.81\times10^{-5},
+\qquad
+4.39\times10^{-5}<\frac12 r_{\max}^{\rm safe}=5.03\times10^{-5},
+\]
+with margins
+\[
+\frac{\tfrac12 r_{95}^{\rm safe}}{4.39\times10^{-5}}=1.09,
+\qquad
+\frac{\tfrac12 r_{\max}^{\rm safe}}{4.39\times10^{-5}}=1.15.
+\]
+Thus even the separated observable-chain floor on $\gamma_{\rm mix}$ is already sufficient to recover the half-radius bound for the dominant block-22 witness. The remaining proof-level task is therefore yet narrower: justify the individual floors on $\gamma_{\rm ref}$, $\chi_{\rm eff}$, and $C_{\max}$ (or a directly equivalent mix-rate floor) from the exact operator side.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

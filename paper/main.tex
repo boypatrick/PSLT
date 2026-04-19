@@ -3954,6 +3954,99 @@ with margins
 \]
 So after Proposition~O12, the universal two-level positivity bound already removes $C_{\max}$ as an independent proof-level obstacle. The residual observable-chain closure is now narrower one final time: it is concentrated on $\chi_{\rm eff}^{\rm floor}$, or on a directly equivalent floor for $\gamma_{\rm mix}$.
 
+\medskip\noindent\textbf{Proposition O13 (Reduction of the \texorpdfstring{$\chi_{\rm eff}$}{chi_eff} floor to a coherence-response floor).}
+On the exact micro bridge one has the exact identities
+\[
+\chi_{\rm eff}(D)
+=
+\chi_{LR}(D)\,\frac{\chi_{\rm eff}(D)}{\chi_{LR}(D)}
+=
+\frac{2\gamma_{\rm mix}(D)C_{\max}(D)}{\gamma_{\rm ref}(D)},
+\]
+and, since $\chi_{LR}(D)=|M_{LR}(D)|/\gamma_{\rm ref}(D)$,
+\[
+\frac{\chi_{\rm eff}(D)}{\chi_{LR}(D)}
+=
+\frac{2\gamma_{\rm mix}(D)C_{\max}(D)}{|M_{LR}(D)|}.
+\]
+Equivalently,
+\[
+\chi_{\rm eff}(D)=A_\chi(D)\,C_{\max}(D),
+\qquad
+A_\chi(D):=\frac{2\gamma_{\rm mix}(D)}{\gamma_{\rm ref}(D)}
+=
+\kappa_{\rm env}\frac{2g_x(D)^2S_{xx}(D)}{\gamma_{\rm ref}(D)}.
+\]
+Using Proposition~O11 to rewrite
+\[
+\gamma_{\rm ref}(D)=\omega_1(D)^{11},
+\]
+any first-mode ceiling $\omega_1(D)\le \omega_1^{\rm ceil}$ implies the separated prefactor floor
+\[
+A_\chi(D)\ge
+\kappa_{\rm env}\,
+\frac{2\,g_{x,\min}^2\,S_{xx}^{\rm floor}}{(\omega_1^{\rm ceil})^{11}}
+:
+A_\chi^{\rm(sep\ floor)}.
+\]
+
+\textit{Audit check.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_chi_eff_floor_source.py} verifies on the exact exported bridge that
+\[
+\max_D\left|A_\chi-\frac{2\gamma_{\rm mix}}{\gamma_{\rm ref}}\right|=1.74\times10^{-16},
+\qquad
+\max_D\left|A_\chi-\kappa_{\rm env}\frac{2g_x^2S_{xx}}{\gamma_{\rm ref}}\right|=1.01\times10^{-16},
+\]
+\[
+\max_D\left|\frac{\chi_{\rm eff}}{\chi_{LR}}-\frac{2\gamma_{\rm mix}C_{\max}}{|M_{LR}|}\right|
+=4.72\times10^{-16},
+\qquad
+\max_D\left|\chi_{\rm eff}-\chi_{LR}\frac{\chi_{\rm eff}}{\chi_{LR}}\right|
+=5.58\times10^{-17}.
+\]
+The same audit finds
+\[
+A_\chi^{\rm exact\ floor}=1.815669\times10^{-6},
+\qquad
+A_\chi^{\rm(sep\ floor)}=1.041474\times10^{-6},
+\]
+so the separated prefactor floor already matches the exact one within a factor
+\[
+\frac{A_\chi^{\rm exact\ floor}}{A_\chi^{\rm(sep\ floor)}}=1.743.
+\]
+
+\medskip\noindent\textbf{Corollary O12 (The remaining \texorpdfstring{$\chi_{\rm eff}$}{chi_eff} closure is exactly a \texorpdfstring{$C_{\max}$}{Cmax} floor).}
+Proposition~O13 shows that the residual open-system observable-chain problem can be rewritten as
+\[
+\chi_{\rm eff}(D)\ge A_\chi^{\rm(sep\ floor)}\,C_{\max}(D).
+\]
+So once a coherence-response floor
+\[
+C_{\max}(D)\ge C_{\max}^{\rm floor}
+\]
+is available, one obtains immediately
+\[
+\chi_{\rm eff}(D)\ge A_\chi^{\rm(sep\ floor)}\,C_{\max}^{\rm floor}.
+\]
+On the current exact export, using only the exact minimum
+\[
+C_{\max}^{\rm exact\ floor}=0.2342548\ldots
+\]
+already gives the conservative bound
+\[
+\chi_{\rm eff}(D)\ge 2.43970\times10^{-7},
+\]
+while the actual exported floor is
+\[
+\chi_{\rm eff}^{\rm exact\ floor}=9.03367\times10^{-7},
+\]
+so even this coarse separated reduction undershoots the exact floor by only
+\[
+\frac{\chi_{\rm eff}^{\rm exact\ floor}}
+{A_\chi^{\rm(sep\ floor)}C_{\max}^{\rm exact\ floor}}
+=3.70.
+\]
+Hence after Propositions~O11--O13 the residual observable-chain closure is now fully localized: the only scalar still missing from the exact export to a complete proof-side floor statement is a lower bound on $C_{\max}$ itself.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

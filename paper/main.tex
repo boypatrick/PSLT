@@ -4729,6 +4729,87 @@ already on the exact bridge, without invoking any barrier-center WKB ansatz. Sin
 \]
 the remaining proof-side gap has become very narrow: produce an a priori lower bound on the one-center core contribution \(I_{\rm self,core}^{(R_\ast)}\), and retain only a coarse signed control of the small mirror remainder \(I_\times\).
 
+\medskip\noindent\textbf{Proposition O21 (Compact box-anchor lower bound for the one-center core on the exact bridge).}
+Keep the same optimal core radius \(R_\ast=1.35\), and define the compact local box anchor
+\[
+B_{\rm box}(\rho_\#,z_\#;D)
+:=
+\left\{(\rho,z): \rho\le \rho_\#,\ |z\mp D/2|\le z_\#\right\}\cap B_{\rm core}(R_\ast;D),
+\]
+with the canonical audited choice
+\[
+\rho_\#=0.70,\qquad z_\#=1.21.
+\]
+Let
+\[
+I_{\rm self,anchor}^{(\rho_\#,z_\#)}(D)
+:=
+\int_{B_{\rm box}(\rho_\#,z_\#;D)}
+\mathcal C(\rho,z;D)\,
+\bigl(\delta V_+(\rho,z;D)+\delta V_-(\rho,z;D)\bigr)\,d\rho\,dz,
+\]
+and
+\[
+I_{\rm self,shell}^{(\rho_\#,z_\#)}(D)
+:=
+I_{\rm self,core}^{(R_\ast)}(D)-I_{\rm self,anchor}^{(\rho_\#,z_\#)}(D).
+\]
+The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_self_core_anchor_source.py} scans
+\[
+\rho_\#\in[0.55,0.85],\qquad z_\#\in[1.05,1.30],
+\]
+in steps of \(0.01\) and finds a flat optimal plateau at \(z_\#=1.21\) with \(\rho_\#\in[0.69,0.74]\).  On the exact bridge the canonical box \((\rho_\#,z_\#)=(0.70,1.21)\) already satisfies
+\[
+\operatorname{sgn} I_{\rm self,anchor}^{(\rho_\#,z_\#)}(D)
+=
+\operatorname{sgn} I_{\rm self,core}^{(R_\ast)}(D),
+\qquad
+\operatorname{sgn} I_{\rm self,shell}^{(\rho_\#,z_\#)}(D)
+=
+\operatorname{sgn} I_{\rm self,core}^{(R_\ast)}(D)
+\]
+for every audited knot \(D=4,\dots,20\). Therefore
+\[
+|I_{\rm self,core}^{(R_\ast)}(D)|
+\ge
+|I_{\rm self,anchor}^{(\rho_\#,z_\#)}(D)|.
+\]
+The corresponding compact-anchor floor is
+\[
+\min_D |I_{\rm self,anchor}^{(\rho_\#,z_\#)}(D)|
+=
+1.32321\times10^{-4},
+\]
+whereas the exact core-window floor is
+\[
+\min_D |I_{\rm self,core}^{(R_\ast)}(D)|
+=
+1.33812\times10^{-4}.
+\]
+So the compact box anchor already saturates the exact core-window minimum to within a factor
+\[
+1.01127.
+\]
+
+\medskip\noindent\textbf{Corollary O20 (The one-center core floor is already carried by a compact local anchor).}
+Combining Proposition~O21 with Proposition~O20 gives
+\[
+|I_{\rm self,pair}(D)|
+\ge
+\lambda_\ast\,|I_{\rm self,core}^{(R_\ast)}(D)|
+\ge
+\lambda_\ast\,|I_{\rm self,anchor}^{(\rho_\#,z_\#)}(D)|
+\ge
+5.64043\times10^{-5}
+\]
+on the full audited window. The exact one-center-pair and total parity-contrast floors remain
+\[
+\min_D |I_{\rm self,pair}(D)|=6.69675\times10^{-5},
+\qquad
+\min_D |V_{11}(D)-V_{22}(D)|=6.70795\times10^{-5},
+\]
+so the remaining gap from the compact anchor to the exact exported minima is now only a factor \(1.187\) to \(1.189\).  This further tightens the proof target: it is enough to prove a lower bound on the compact one-center anchor \(I_{\rm self,anchor}^{(\rho_\#,z_\#)}\), while the rest of \(I_{\rm self,core}^{(R_\ast)}\) can remain a same-sign completion and \(I_\times\) only needs coarse signed remainder control.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

@@ -3455,6 +3455,67 @@ on the audited knot set. Together with Corollary~O2 this leaves only
 \]
 Thus, on the currently exported family classes, the unresolved theorem gap is no longer whether the lift survives, but whether one can remove the explicit family-class hypothesis and prove the same transfer directly at the operator level.
 
+\medskip\noindent\textbf{Proposition O7 (Operator-witness chart transfer on the audited chart).}
+The preceding family-class hypothesis can be weakened one step further by replacing the explicit deformation labels with operator witnesses. Define the p95 and max witness vectors
+\[
+W_{a,95}:=
+(\Delta^{95}_{11,a},\,\Delta^{95}_{22,a},\,\Delta^{95}_{{\rm tr},a},\,\Delta^{95}_{{\rm det},a},\,\Delta^{95}_{{\rm ani},a}),
+\]
+\[
+W_{a,\max}:=
+(\Delta^{\max}_{11,a},\,\Delta^{\max}_{22,a},\,\Delta^{\max}_{{\rm tr},a},\,\Delta^{\max}_{{\rm det},a},\,\Delta^{\max}_{{\rm ani},a}),
+\]
+where the entries are exactly the block, trace, determinant, and anisotropy residuals already used in the parent-bath family scans. Suppose an exact Schur-side candidate satisfies the same local tolerance
+\[
+J_{\rm parent}\le J_\ast=10^{-6},
+\]
+and lies in the audited operator witness chart
+\[
+\|W_{a,95}\|_\infty \le 9.62\times10^{-5},
+\qquad
+\|W_{a,\max}\|_\infty \le 1.01\times10^{-4}.
+\]
+Then, on the current audited chart, the candidate belongs to the same canonical pocket as the undeformed point and therefore inherits the Proposition~O5 determinant-deficit budget.
+
+\textit{Audit proof.} The new aggregation audit \path{code/audit_open_system_operator_witness_transfer.py} discards the family labels and stacks all non-canonical rows from the four exported scans directly in witness space. Across that union, the nearest non-canonical challenger is already the generator-affinity point \(q_{bb}=\pm 0.0625\), with
+\[
+\min_{\rm noncan}\|W_{a,95}\|_\infty = 1.92\times10^{-4},
+\qquad
+\min_{\rm noncan}\|W_{a,\max}\|_\infty = 2.01\times10^{-4}.
+\]
+The canonical witness suprema remain only
+\[
+\|W_{a,95}^{\rm(can)}\|_\infty \le 8.17\times10^{-13},
+\qquad
+\|W_{a,\max}^{\rm(can)}\|_\infty \le 8.43\times10^{-13},
+\]
+so the half-radius chart bounds above still leave margins of
+\[
+\frac{9.62\times10^{-5}}{\|W_{a,95}^{\rm(can)}\|_\infty}\ge 1.18\times10^{8},
+\qquad
+\frac{1.01\times10^{-4}}{\|W_{a,\max}^{\rm(can)}\|_\infty}\ge 1.19\times10^{8}.
+\]
+Therefore, on the audited operator chart, any exact candidate satisfying the same theorem tolerance and these witness-radius bounds cannot land on any scanned non-canonical deformation and is forced into the canonical pocket. This removes the explicit family-class labels from the transfer statement, even though the last remaining proof step is still to justify the witness-radius bound directly from the exact operator.
+
+\medskip\noindent\textbf{Corollary O5 (Exact-lift consequences on the audited operator chart).}
+Under the witness-chart hypothesis of Proposition~O7, the exact Schur-reduced operator again inherits the same neighborhood budget
+\[
+u_a\le 5.34\times10^{-3},
+\]
+and hence the same operator consequences,
+\[
+g_a^{\rm(exact)}\ge 1.3339,
+\qquad
+H_{{\rm eff},a}\succeq 0.9947\,H_{PP,a},
+\]
+on the audited knot set. Together with Corollary~O2 this again leaves only
+\[
+1-\nu_{1,a}\le 5.12\times10^{-14},
+\qquad
+\varepsilon_a(\Delta E_a)\le 2.97\times10^{-14}.
+\]
+Thus the remaining theorem gap is now narrower still: derive the witness-radius bound directly from the exact operator, rather than from the exported scan chart.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

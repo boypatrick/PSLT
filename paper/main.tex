@@ -3868,6 +3868,92 @@ Combining Proposition~O11 with Proposition~O10 shows that the $\gamma_{\rm ref}$
 \]
 So after Proposition~O11, the remaining proof-level task narrows again: $\gamma_{\rm ref}$ no longer needs a separate source argument, and the residual observable-chain closure is concentrated on the floor/ceiling pair $(\chi_{\rm eff}^{\rm floor},C_{\max}^{\rm ceil})$ or on a directly equivalent mix-rate floor.
 
+\medskip\noindent\textbf{Proposition O12 (Universal two-level source for the \texorpdfstring{$C_{\max}$}{Cmax} ceiling).}
+Let $\rho(t)$ be any positive semidefinite $2\times 2$ density matrix with unit trace. Writing
+\[
+\rho(t)=
+\begin{pmatrix}
+\rho_{LL}(t) & \rho_{LR}(t) \\
+\rho_{RL}(t) & \rho_{RR}(t)
+\end{pmatrix},
+\qquad
+\rho_{LL}(t)+\rho_{RR}(t)=1,
+\]
+positivity implies
+\[
+|\rho_{LR}(t)|^2 \le \rho_{LL}(t)\rho_{RR}(t)
+\le
+\left(\frac{\rho_{LL}(t)+\rho_{RR}(t)}{2}\right)^2
+=\frac14.
+\]
+Hence
+\[
+|\rho_{LR}(t)|\le \frac12
+\qquad\text{for all }t,
+\]
+and therefore the open-system coherence response
+\[
+C_{\max}:=\max_t |\rho_{LR}(t)|
+\]
+obeys the universal ceiling
+\[
+C_{\max}\le \frac12.
+\]
+
+\textit{Audit check.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_cmax_ceiling_source.py} verifies on the exported exact micro bridge that
+\[
+\max_D C_{\max}(D)=0.497539\ldots<\frac12,
+\]
+with strict slack
+\[
+\frac12-\max_D C_{\max}(D)=2.461\times10^{-3}.
+\]
+Equivalently,
+\[
+\frac14-\max_D C_{\max}(D)^2=2.455\times10^{-3}>0.
+\]
+
+\medskip\noindent\textbf{Corollary O11 (Universal \texorpdfstring{$C_{\max}$}{Cmax} ceiling still implies the half-radius mix witness bound).}
+Combining Proposition~O12 with Proposition~O11 and the observable-chain identity of Proposition~O10 yields
+\[
+\gamma_{\rm mix}(D)\ge
+\frac{\gamma_{\rm ref}^{\rm floor}\chi_{\rm eff}^{\rm floor}}{2(\tfrac12)}
+=
+\gamma_{\rm ref}^{\rm floor}\chi_{\rm eff}^{\rm floor}.
+\]
+On the current exact export this gives the conservative floor
+\[
+\gamma_{\rm mix}(D)\ge 4.29102\times10^{-4},
+\]
+and therefore
+\[
+g_x(D)^2S_{xx}(D)\ge 9.96645\times10^{-10}.
+\]
+Using again the common numerator residual
+\[
+\varepsilon_{\rm mix}=4.40\times10^{-14}
+\]
+from Proposition~O9, one obtains
+\[
+\|\Delta_{\rm mix}^{\rm(fact)}\|_\infty
+\le
+\frac{\varepsilon_{\rm mix}}{9.96645\times10^{-10}}
+=4.41\times10^{-5}.
+\]
+This remains below both half-radii,
+\[
+4.41\times10^{-5}<\frac12 r_{95}^{\rm safe}=4.81\times10^{-5},
+\qquad
+4.41\times10^{-5}<\frac12 r_{\max}^{\rm safe}=5.03\times10^{-5},
+\]
+with margins
+\[
+\frac{\tfrac12 r_{95}^{\rm safe}}{4.41\times10^{-5}}=1.09,
+\qquad
+\frac{\tfrac12 r_{\max}^{\rm safe}}{4.41\times10^{-5}}=1.14.
+\]
+So after Proposition~O12, the universal two-level positivity bound already removes $C_{\max}$ as an independent proof-level obstacle. The residual observable-chain closure is now narrower one final time: it is concentrated on $\chi_{\rm eff}^{\rm floor}$, or on a directly equivalent floor for $\gamma_{\rm mix}$.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

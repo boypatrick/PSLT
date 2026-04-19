@@ -4490,6 +4490,131 @@ Therefore the unresolved proof-side target is no longer naturally read as a bath
 \]
 for the projected fluctuation operator $\delta V$ over the audited knot window.
 
+\medskip\noindent\textbf{Proposition O19 (One-center pair plus mirror remainder decomposition for the parity contrast).}
+Write the two-center shifted potential as
+\[
+U_2(\rho,z;D)=U_+(\rho,z;D)+U_-(\rho,z;D)+U_\times(\rho,z;D),
+\]
+where
+\[
+U_\pm
+=
+m_0^2\bigl((1+s_\pm)^2-1\bigr)
+c_\xi\frac{\ell_\pm}{1+s_\pm},
+\qquad
+c_\xi:=1-6\xi,
+\]
+with
+\[
+s_\pm(\rho,z;D)=\frac{a}{\sqrt{\rho^2+(z\mp D/2)^2+\varepsilon^2}},
+\qquad
+\ell_\pm(\rho,z;D)=
+-3a\varepsilon^2\bigl(\rho^2+(z\mp D/2)^2+\varepsilon^2\bigr)^{-5/2},
+\]
+and
+\[
+U_\times
+=
+2m_0^2 s_+ s_-
++
+c_\xi\left[
+\frac{\ell_++\ell_-}{1+s_++s_-}
+-\frac{\ell_+}{1+s_+}
+-\frac{\ell_-}{1+s_-}
+\right].
+\]
+Let
+\[
+\delta V_j(\rho,z;D):=U_j(\rho,z;D)-\bar U_j(r;D),
+\qquad
+r=\sqrt{\rho^2+z^2},
+\]
+with the same origin-centered spherical-average convention as the exact bridge, so that
+\[
+\delta V=\delta V_+ + \delta V_- + \delta V_\times.
+\]
+For the exact contrast density
+\[
+\mathcal C(\rho,z;D):=
+2\pi\rho\bigl(\psi_1(\rho,z;D)^2-\psi_2(\rho,z;D)^2\bigr),
+\]
+the parity-diagonal contrast decomposes exactly as
+\[
+V_{11}(D)-V_{22}(D)
+=
+\int \mathcal C\,\delta V_+
++
+\int \mathcal C\,\delta V_-
++
+\int \mathcal C\,\delta V_\times.
+\]
+On the symmetry-adapted continuum pair one has
+\[
+\int \mathcal C\,\delta V_+
+=
+\int \mathcal C\,\delta V_-,
+\]
+so the exact contrast may be read as a one-center pair plus a mirror/cross remainder:
+\[
+V_{11}(D)-V_{22}(D)=2I_{\rm self}(D)+I_\times(D).
+\]
+The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_self_mirror_source.py} closes the additive split to machine precision,
+\[
+\max_D\|U_2-U_+-U_--U_\times\|_\infty
+=8.88\times10^{-15},
+\]
+\[
+\max_D\|\delta V-\delta V_+-\delta V_--\delta V_\times\|_\infty
+=7.11\times10^{-15},
+\]
+and reconstructs the projected contrast with
+\[
+\max_D\left|(V_{11}-V_{22})-(I_++I_-+I_\times)\right|
+=3.79\times10^{-18}.
+\]
+Across the full audited window \(D=4,\dots,20\), the one-center pair carries between
+\[
+97.74\%
+\quad\text{and}\quad
+99.833\%
+\]
+of the exact parity contrast in absolute value, while the mirror/cross remainder contributes only
+\[
+0.167\%
+\quad\text{to}\quad
+2.257\%.
+\]
+At the exact floor knot \(D=11\),
+\[
+V_{11}-V_{22}=6.70795\times10^{-5},
+\]
+\[
+I_+ + I_- = 6.69675\times10^{-5},
+\qquad
+I_\times = 1.12022\times10^{-7},
+\]
+so the exact floor is already \(99.833\%\) saturated by the one-center pair, with the remainder reduced to a \(0.167\%\) correction.  The cross piece itself splits as
+\[
+I_\times=I_\times^{\rm mass}+I_\times^{\rm deriv},
+\]
+where at \(D=11\)
+\[
+I_\times^{\rm mass}=3.85528\times10^{-7},
+\qquad
+I_\times^{\rm deriv}=-2.73506\times10^{-7},
+\]
+showing that the small remainder comes from a partial cancellation inside the mirror term rather than from the failure of the one-center anchor.
+
+\medskip\noindent\textbf{Corollary O18 (The remaining \texorpdfstring{$|V_{11}-V_{22}|$}{|V11-V22|} gap is now a one-center floor problem with a small static remainder).}
+Propositions~O18--O19 sharpen the last overlap-side target from a generic parity-contrast floor to a much narrower statement.  On the exact bridge,
+\[
+|V_{11}(D)-V_{22}(D)|
+\]
+is already overwhelmingly carried by the one-center pair \(2I_{\rm self}(D)\), while the mirror/cross remainder \(I_\times(D)\) keeps the same sign as the exact contrast and remains below \(2.26\%\) of it on every audited knot.  Therefore the next proof-side task should not be framed as a new bath-side or barrier-center theorem.  A theorem-level lower bound on the one-center pair \(2I_{\rm self}(D)\), together with a coarse control of the small static remainder \(I_\times(D)\), is enough to close the present exact-bridge gap for
+\[
+|V_{11}(D)-V_{22}(D)|.
+\]
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

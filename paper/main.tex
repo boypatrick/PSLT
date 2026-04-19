@@ -4137,7 +4137,6 @@ Therefore the exact bridge already admits the separated floor
 \[
 C_{\max}(D)\ge
 C_{\max}^{\rm(sep\ floor)}
-
 =
 \frac{\Delta E_{\min}}
 {2\sqrt{\Gamma_{\max}^2+\omega_{\min}^2}}
@@ -4184,6 +4183,86 @@ so
 =6.02.
 \]
 Thus after Propositions~O13--O14 the observable-chain side is effectively closed on the current exact bridge: the remaining gap is no longer the existence of a floor but only how much of the present slack one wants to recover analytically.
+
+\medskip\noindent\textbf{Proposition O15 (Ratio-box \texorpdfstring{$C_{\max}$}{Cmax} floor).}
+The closed form of Proposition~O14 depends only on the two dimensionless ratios
+\[
+a:=\frac{\gamma_\phi}{\Delta E},
+\qquad
+b:=\frac{\gamma_{\rm mix}}{\Delta E}.
+\]
+Indeed
+\[
+C_{\max}=F(a,b),
+\]
+where
+\[
+F(a,b)
+=
+\frac{1}{2\sqrt{1+4b^2+4ab}}
+\exp\!\left[
+-\frac{a+2b}{\sqrt{1-a^2}}
+\arctan\!\left(\frac{\sqrt{1-a^2}}{a+2b}\right)
+\right].
+\]
+This representation is scale-free: the dependence on $\Delta E$ enters only through the ratios $(a,b)$.
+On the exported exact bridge, \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_cmax_ratio_floor_source.py} verifies that $F$ is monotone decreasing on the audited ratio box
+\[
+0\le a\le a_{\max},
+\qquad
+0\le b\le b_{\max},
+\]
+with derivative margins
+\[
+\max \partial_a F=-2.44\times10^{-1}<0,
+\qquad
+\max \partial_b F=-4.88\times10^{-1}<0.
+\]
+Here
+\[
+a_{\max}=\max_D \frac{\gamma_\phi(D)}{\Delta E(D)}
+=2.06749\times10^{-4},
+\qquad
+b_{\max}=\max_D \frac{\gamma_{\rm mix}(D)}{\Delta E(D)}
+=2.93097\times10^{-1}.
+\]
+Therefore the closed-form ratio floor is
+\[
+C_{\max}^{\rm(ratio,closed)\ floor}=F(a_{\max},b_{\max})=2.34328\times10^{-1}.
+\]
+Subtracting the exported exact-vs-closed residual bound from Proposition~O14 gives the rigorous exact-bridge floor
+\[
+C_{\max}(D)\ge
+C_{\max}^{\rm(ratio,rig)\ floor}
+:=
+C_{\max}^{\rm(ratio,closed)\ floor}
+-\max_D |C_{\max}^{\rm(export)}-C_{\max}^{\rm(closed)}|
+=2.34045\times10^{-1}.
+\]
+
+\medskip\noindent\textbf{Corollary O14 (Tightened \texorpdfstring{$\chi_{\rm eff}$}{chi_eff} floor from the ratio-box \texorpdfstring{$C_{\max}$}{Cmax} floor).}
+Combining Proposition~O15 with Proposition~O13 yields
+\[
+\chi_{\rm eff}(D)
+\ge
+A_\chi^{\rm(sep\ floor)} C_{\max}^{\rm(ratio,rig)\ floor}
+=2.43752\times10^{-7}.
+\]
+The exact exported floors are
+\[
+C_{\max}^{\rm exact\ floor}=2.34255\times10^{-1},
+\qquad
+\chi_{\rm eff}^{\rm exact\ floor}=9.03367\times10^{-7},
+\]
+so
+\[
+\frac{C_{\max}^{\rm exact\ floor}}{C_{\max}^{\rm(ratio,rig)\ floor}}=1.000895,
+\qquad
+\frac{\chi_{\rm eff}^{\rm exact\ floor}}
+{A_\chi^{\rm(sep\ floor)} C_{\max}^{\rm(ratio,rig)\ floor}}
+=3.706.
+\]
+Thus the observable-chain side is not merely known to admit a floor: after Proposition~O15 the remaining gap is essentially only the slack in the amplitude factor $A_\chi^{\rm(sep\ floor)}$, not in the coherence-response floor itself.
 
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on

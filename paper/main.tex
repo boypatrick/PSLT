@@ -3516,6 +3516,39 @@ on the audited knot set. Together with Corollary~O2 this again leaves only
 \]
 Thus the remaining theorem gap is now narrower still: derive the witness-radius bound directly from the exact operator, rather than from the exported scan chart.
 
+\medskip\noindent\textbf{Corollary O6 (The exported exact operator lies inside the audited witness chart).}
+The chart hypothesis of Proposition~O7 is itself now verified directly on the exported exact operator data. Reading the exact parent-bath statement map rowwise and aggregating it with the same p95/max conventions used in the family scans gives
+\[
+\|W_{95}^{\rm(exact)}\|_\infty = 3.52\times10^{-7},
+\qquad
+\|W_{\max}^{\rm(exact)}\|_\infty = 3.63\times10^{-7},
+\]
+with the dominant component in both cases coming from the exact block-22 witness. These are already smaller than the audited chart radii of Proposition~O7 by factors
+\[
+\frac{9.62\times10^{-5}}{\|W_{95}^{\rm(exact)}\|_\infty}=2.73\times10^{2},
+\qquad
+\frac{1.01\times10^{-4}}{\|W_{\max}^{\rm(exact)}\|_\infty}=2.77\times10^{2}.
+\]
+The companion exactness witnesses remain tiny,
+\[
+\Delta_{\rm cocycle}^{\max}=1.11\times10^{-15},
+\qquad
+\Delta_{\rm chain}^{\max}=4.03\times10^{-15},
+\]
+so the exported exact operator already lies well inside the audited witness chart. Consequently the conclusions of Corollary~O5 apply directly to the exported exact Schur-reduced operator on the audited knot set:
+\[
+g_a^{\rm(exact)}\ge 1.3339,
+\qquad
+H_{{\rm eff},a}\succeq 0.9947\,H_{PP,a},
+\]
+and, together with Corollary~O2,
+\[
+1-\nu_{1,a}\le 5.12\times10^{-14},
+\qquad
+\varepsilon_a(\Delta E_a)\le 2.97\times10^{-14}.
+\]
+The remaining proof-level gap is now very specific: promote this verified chart inclusion of the exported exact operator into an analytic operator theorem.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

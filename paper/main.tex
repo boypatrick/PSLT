@@ -3630,6 +3630,82 @@ Equivalently,
 \]
 Therefore the exported exact operator satisfies the witness-chart hypothesis of Proposition~O7 with half-radius room to spare, directly from the exact factorization/statement/cocycle/potential equations themselves rather than from the scan chart alone. Consequently the exact-lift conclusions of Corollary~O5 follow again for the exported operator on the audited knot set. The proof-level gap is now reduced to a final analytic upgrade: replace these exported exact residual constants by an operator theorem that bounds the same envelope a priori.
 
+\medskip\noindent\textbf{Proposition O9 (Mix-side factorization witness half-radius bound).}
+The dominant term in the envelope of Proposition~O8 can itself be reduced to a simple quotient bound. Rowwise,
+\[
+\Delta_{\rm mix}^{\rm(fact)}(D)
+:=
+\left|\frac{\gamma_{\rm mix}(D)}{g_x(D)^2 S_{xx}(D)}-\kappa_{\rm env}\right|
+=
+\frac{\bigl|\gamma_{\rm mix}(D)-\kappa_{\rm env}\,g_x(D)^2 S_{xx}(D)\bigr|}
+{g_x(D)^2 S_{xx}(D)}.
+\]
+Therefore any uniform numerator bound
+\[
+\varepsilon_{\rm mix}
+\ge
+\max_D \bigl|\gamma_{\rm mix}(D)-\kappa_{\rm env}\,g_x(D)^2 S_{xx}(D)\bigr|
+\]
+and any positive lower floor
+\[
+m_{\rm mix}\le \min_D g_x(D)^2 S_{xx}(D)
+\]
+imply the operator bound
+\[
+\|\Delta_{\rm mix}^{\rm(fact)}\|_\infty
+\le \frac{\varepsilon_{\rm mix}}{m_{\rm mix}}.
+\]
+
+\textit{Audit proof.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_mix_factorization_source.py} evaluates this quotient source directly on the exported exact factorization map. The common numerator bound is
+\[
+\varepsilon_{\rm mix}=4.40\times10^{-14}.
+\]
+Three natural lower floors for the denominator all remain positive on the audited knot set:
+\[
+m_{\rm mix}^{\rm(dir)}=\min_D g_x(D)^2S_{xx}(D)=1.2147\times10^{-9},
+\]
+\[
+m_{\rm mix}^{(\gamma)}=\frac{\min_D\gamma_{\rm mix}(D)-\varepsilon_{\rm mix}}{\kappa_{\rm env}^{\max}}=1.2147\times10^{-9},
+\]
+\[
+m_{\rm mix}^{\rm(sep)}=\bigl(\min_D g_x(D)\bigr)^2\min_D S_{xx}(D)=1.1417\times10^{-9}.
+\]
+Hence
+\[
+\|\Delta_{\rm mix}^{\rm(fact)}\|_\infty
+\le
+\frac{\varepsilon_{\rm mix}}{m_{\rm mix}^{\rm(dir)}}
+=3.62\times10^{-5},
+\]
+\[
+\|\Delta_{\rm mix}^{\rm(fact)}\|_\infty
+\le
+\frac{\varepsilon_{\rm mix}}{m_{\rm mix}^{(\gamma)}}
+=3.62\times10^{-5},
+\]
+and even the fully separated floor still gives
+\[
+\|\Delta_{\rm mix}^{\rm(fact)}\|_\infty
+\le
+\frac{\varepsilon_{\rm mix}}{m_{\rm mix}^{\rm(sep)}}
+=3.85\times10^{-5}.
+\]
+All three bounds are already below the Proposition~O7 half-radii
+\[
+\frac12 r_{95}^{\rm safe}=4.81\times10^{-5},
+\qquad
+\frac12 r_{\max}^{\rm safe}=5.03\times10^{-5}.
+\]
+So the dominant witness component itself now satisfies the audited half-radius condition from a simple factorization numerator/denominator estimate.
+
+\medskip\noindent\textbf{Corollary O8 (Remaining analytic gap reduced to a lower floor on the mix kernel).}
+Proposition~O9 shows that the dominant block-22 witness no longer requires the full chart machinery: on the exported exact operator it is already controlled by one small numerator residual and one positive lower floor on $g_x^2S_{xx}$ (equivalently on $\gamma_{\rm mix}$ after dividing by $\kappa_{\rm env}$). Since all other witness components are already much smaller by Proposition~O8, the remaining proof-level gap is now narrower again:
+\[
+\text{prove an a priori lower bound on }g_x(D)^2S_{xx}(D)
+\quad\text{or equivalently on }\gamma_{\rm mix}(D),
+\]
+strong enough to reproduce one of the denominator floors above. Once that is available, the half-radius chart inclusion of the exact operator follows without any remaining appeal to exported scan geometry.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

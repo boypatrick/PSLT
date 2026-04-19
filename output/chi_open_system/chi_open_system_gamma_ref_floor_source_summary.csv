@@ -1,0 +1,2 @@
+max_abs_gamma_ref_omega11_residual,max_abs_gamma_ref_tau_residual,max_abs_tau_gaplock_residual,omega1_floor,omega1_floor_D,tau_env_ceiling,tau_env_ceiling_D,actual_gamma_ref_floor,actual_gamma_ref_floor_D,gamma_ref_floor_from_omega11,gamma_ref_floor_from_tau_ceiling,actual_over_omega11_floor,actual_over_tau_ceiling_floor
+1.5575096767861396e-11,1.5916157281026244e-11,1.1102230246251565e-16,1.7512011374518028,4.0,0.5710366322940573,4.0,475.0029831292905,4.0,475.00298312929175,475.0029831292914,0.9999999999999973,0.9999999999999981

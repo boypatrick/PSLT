@@ -3796,6 +3796,78 @@ with margins
 \]
 Thus even the separated observable-chain floor on $\gamma_{\rm mix}$ is already sufficient to recover the half-radius bound for the dominant block-22 witness. The remaining proof-level task is therefore yet narrower: justify the individual floors on $\gamma_{\rm ref}$, $\chi_{\rm eff}$, and $C_{\max}$ (or a directly equivalent mix-rate floor) from the exact operator side.
 
+\medskip\noindent\textbf{Proposition O11 (First-mode source for the \texorpdfstring{$\gamma_{\rm ref}$}{gamma_ref} floor).}
+The reference rate is not an independent observable-chain input. In the localized-channel extraction it is defined by
+\[
+\gamma_{\rm ref}(D)=\sqrt{\Gamma_1(D)\Gamma_2(D)},
+\qquad
+\Gamma_1(D)=\omega_1(D)^9,
+\qquad
+\Gamma_2(D)=\omega_1(D)^{13},
+\]
+hence
+\[
+\gamma_{\rm ref}(D)=\omega_1(D)^{11}.
+\]
+On the audited open-system micro bridge one also has the gap-locked environmental timescale
+\[
+\tau_{\rm env}(D)=\omega_1(D)^{-1},
+\]
+so equivalently
+\[
+\gamma_{\rm ref}(D)=\tau_{\rm env}(D)^{-11}.
+\]
+Therefore any first-mode lower floor
+\[
+\omega_1(D)\ge \omega_1^{\rm floor}
+\]
+or, equivalently, any gap-locked timescale ceiling
+\[
+\tau_{\rm env}(D)\le \tau_{\rm env}^{\rm ceil}
+\]
+immediately implies
+\[
+\gamma_{\rm ref}(D)\ge (\omega_1^{\rm floor})^{11}=(\tau_{\rm env}^{\rm ceil})^{-11}.
+\]
+
+\textit{Audit proof.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_gamma_ref_floor_source.py} verifies on the exported exact bridge that
+\[
+\max_D|\gamma_{\rm ref}(D)-\omega_1(D)^{11}|=1.56\times10^{-11},
+\]
+\[
+\max_D|\gamma_{\rm ref}(D)-\tau_{\rm env}(D)^{-11}|=1.59\times10^{-11},
+\]
+\[
+\max_D|\tau_{\rm env}(D)-\omega_1(D)^{-1}|=1.11\times10^{-16}.
+\]
+The exact audited floors/ceilings are
+\[
+\omega_1^{\rm floor}=1.751201\ldots,
+\qquad
+\tau_{\rm env}^{\rm ceil}=0.5710366\ldots,
+\]
+both attained at $D=4$, and they induce the same reference-rate floor
+\[
+\gamma_{\rm ref}^{\rm floor}
+=
+(\omega_1^{\rm floor})^{11}
+=
+(\tau_{\rm env}^{\rm ceil})^{-11}
+=
+475.002983\ldots,
+\]
+which matches the actual exact minimum of $\gamma_{\rm ref}$ to machine precision.
+
+\medskip\noindent\textbf{Corollary O10 (\texorpdfstring{$\gamma_{\rm ref}$}{gamma_ref} is no longer an independent blocker).}
+Combining Proposition~O11 with Proposition~O10 shows that the $\gamma_{\rm ref}$ side of the observable-chain floor is already reduced to the first-mode floor $\omega_1^{\rm floor}$ (equivalently the gap-locked timescale ceiling $\tau_{\rm env}^{\rm ceil}$). In particular, on the current exact export the separated observable-chain estimate of Proposition~O10 can be rewritten with no additional loss as
+\[
+\gamma_{\rm mix}(D)\ge
+\frac{(\omega_1^{\rm floor})^{11}\chi_{\rm eff}^{\rm floor}}{2C_{\max}^{\rm ceil}}
+=
+\frac{(\tau_{\rm env}^{\rm ceil})^{-11}\chi_{\rm eff}^{\rm floor}}{2C_{\max}^{\rm ceil}}.
+\]
+So after Proposition~O11, the remaining proof-level task narrows again: $\gamma_{\rm ref}$ no longer needs a separate source argument, and the residual observable-chain closure is concentrated on the floor/ceiling pair $(\chi_{\rm eff}^{\rm floor},C_{\max}^{\rm ceil})$ or on a directly equivalent mix-rate floor.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

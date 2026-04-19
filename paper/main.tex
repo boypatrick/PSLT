@@ -4342,6 +4342,68 @@ so
 \]
 Thus after Propositions~O15--O16 the residual observable-chain slack is no longer spread over both the coherence-response and amplitude factors.  The coherence-response floor is already essentially saturated, and the remaining gap is concentrated in proving an a priori floor for $\gamma_{\rm mix}$ together with the corresponding local first-mode denominator control.
 
+\medskip\noindent\textbf{Proposition O17 (Alignment of the \texorpdfstring{$\gamma_{\rm mix}$}{gamma_mix} floor with the \texorpdfstring{$x$}{x}-channel overlap floor on the exact bridge).}
+On the exported exact bridge,
+\[
+\gamma_{\rm mix}(D)=\kappa_{\rm env}\,g_x(D)^2\,S_{xx}(D).
+\]
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_gamma_mix_floor_alignment.py} verifies the exact reconstruction
+\[
+\max_D \left|\gamma_{\rm mix}-\kappa_{\rm env} g_x^2 S_{xx}\right|
+=4.40\times10^{-14}.
+\]
+Moreover the minima of
+\[
+\gamma_{\rm mix}(D),\qquad
+g_x(D),\qquad
+g_x(D)^2,\qquad
+g_x(D)^2S_{xx}(D)
+\]
+all occur at the same audited knot
+\[
+D=11.
+\]
+Hence the exact mix-rate floor is already controlled by the $x$-channel overlap floor together with the local response factor at that same knot:
+\[
+\gamma_{\rm mix}^{\rm exact\ floor}
+=
+\kappa_{\rm env}\,(g_x^{\rm floor})^2\,S_{xx}(D_{g_x,\min})
+=5.22995\times10^{-4},
+\]
+where
+\[
+g_x^{\rm floor}=3.35398\times10^{-5},
+\qquad
+S_{xx}(D_{g_x,\min})=1.07984.
+\]
+If one instead keeps the same overlap floor but replaces the local response factor by the global response minimum,
+\[
+\gamma_{\rm mix}^{(g_x,S_{xx}^{\min})}
+:=
+\kappa_{\rm env}\,(g_x^{\rm floor})^2\,S_{xx}^{\rm floor}
+=4.91560\times10^{-4},
+\]
+with
+\[
+S_{xx}^{\rm floor}=1.01493
+\qquad\text{at }D=5,
+\]
+then the remaining floor slack is exactly
+\[
+\frac{\gamma_{\rm mix}^{\rm exact\ floor}}
+{\gamma_{\rm mix}^{(g_x,S_{xx}^{\min})}}
+=
+\frac{S_{xx}(D_{g_x,\min})}{S_{xx}^{\rm floor}}
+=1.06395.
+\]
+
+\medskip\noindent\textbf{Corollary O16 (The remaining \texorpdfstring{$\gamma_{\rm mix}$}{gamma_mix} slack is not response-dominated).}
+Proposition~O17 shows that the exact exported \texorpdfstring{$\gamma_{\rm mix}$}{gamma_mix} floor is already aligned with the $x$-channel overlap floor, and that replacing the local response factor by the global response minimum changes the floor by only
+\[
+6.39\%.
+\]
+Therefore the next proof-side target should not be read as an independent floor theorem for $S_{xx}$.  On the current exact bridge the response factor is already mild and the dominant unresolved ingredient is the overlap-side floor itself, i.e. an a priori lower bound on $g_x$ (equivalently on $g_x^2S_{xx}$ up to this small response uplift).
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

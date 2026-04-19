@@ -1,0 +1,2 @@
+R_star,lambda_star,eta_star,self_core_floor_abs_at_R_star,induced_self_floor,self_exact_floor_abs,self_exact_floor_D,self_floor_over_induced,exact_total_floor_abs,exact_total_floor_D,exact_total_floor_over_induced,max_cross_abs_share_of_total,all_cross_same_sign_as_total,all_core_same_sign_as_self,all_tail_opposite_sign_to_self
+1.35,0.4262685412881964,0.5737314587118035,0.00013381238686795827,5.704001095649638e-05,6.696747956221355e-05,11.0,1.1740439463324912,6.707950157355751e-05,11.0,1.1760078662102311,0.02256804376179819,1,1,1

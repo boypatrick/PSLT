@@ -4615,6 +4615,120 @@ is already overwhelmingly carried by the one-center pair \(2I_{\rm self}(D)\), w
 |V_{11}(D)-V_{22}(D)|.
 \]
 
+\medskip\noindent\textbf{Proposition O20 (Core-window lower bound for the one-center pair on the exact bridge).}
+For \(R>0\), let
+\[
+B_\pm(R;D):=\left\{(\rho,z):\rho^2+(z\mp D/2)^2\le R^2\right\},
+\qquad
+B_{\rm core}(R;D):=B_+(R;D)\cup B_-(R;D),
+\]
+and define
+\[
+I_{\rm self,pair}(D):=I_+(D)+I_-(D),
+\]
+\[
+I_{\rm self,core}^{(R)}(D)
+:=
+\int_{B_{\rm core}(R;D)}
+\mathcal C(\rho,z;D)\,
+\bigl(\delta V_+(\rho,z;D)+\delta V_-(\rho,z;D)\bigr)\,d\rho\,dz,
+\]
+\[
+I_{\rm self,tail}^{(R)}(D)
+:=
+I_{\rm self,pair}(D)-I_{\rm self,core}^{(R)}(D).
+\]
+The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_self_floor_source.py} scans
+\[
+R\in[1.20,1.40]
+\]
+in steps of \(0.01\) and identifies the optimal safe radius
+\[
+R_\ast=1.35,
+\]
+for which every audited knot \(D=4,\dots,20\) satisfies
+\[
+\operatorname{sgn} I_{\rm self,core}^{(R_\ast)}(D)
+=
+\operatorname{sgn} I_{\rm self,pair}(D),
+\qquad
+\operatorname{sgn} I_{\rm self,tail}^{(R_\ast)}(D)
+=
+-\operatorname{sgn} I_{\rm self,pair}(D).
+\]
+Hence
+\[
+|I_{\rm self,pair}(D)|
+=
+|I_{\rm self,core}^{(R_\ast)}(D)|
+-|I_{\rm self,tail}^{(R_\ast)}(D)|.
+\]
+Moreover the same audit gives the uniform tail-to-core control
+\[
+|I_{\rm self,tail}^{(R_\ast)}(D)|
+\le
+\eta_\ast\,|I_{\rm self,core}^{(R_\ast)}(D)|,
+\qquad
+\eta_\ast=0.573731\ldots
+\]
+so that
+\[
+|I_{\rm self,pair}(D)|
+\ge
+\lambda_\ast\,|I_{\rm self,core}^{(R_\ast)}(D)|,
+\qquad
+\lambda_\ast:=1-\eta_\ast=0.426269\ldots
+\]
+on the full audited window. Since the core-window floor is
+\[
+\min_D |I_{\rm self,core}^{(R_\ast)}(D)|
+=
+1.33812\times10^{-4},
+\]
+this already yields the nontrivial lower bound
+\[
+|I_{\rm self,pair}(D)|
+\ge
+5.70400\times10^{-5}.
+\]
+The exact one-center-pair floor is
+\[
+\min_D |I_{\rm self,pair}(D)|
+=
+6.69675\times10^{-5}
+\qquad\text{at }D=11,
+\]
+so the optimized core-window lower bound is only a factor
+\[
+1.174
+\]
+below the exact minimum.
+
+\medskip\noindent\textbf{Corollary O19 (The parity-contrast floor now follows from a one-center core floor plus a tiny same-sign remainder).}
+Combine Proposition~O20 with Proposition~O19 and the sign information from the same decomposition audit. On the exact bridge one has
+\[
+\operatorname{sgn} I_\times(D)=\operatorname{sgn}(V_{11}(D)-V_{22}(D))
+\]
+for every audited knot, together with
+\[
+\max_D \frac{|I_\times(D)|}{|V_{11}(D)-V_{22}(D)|}=2.2568\%.
+\]
+Therefore
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+|I_{\rm self,pair}(D)|
+\ge
+\lambda_\ast\,|I_{\rm self,core}^{(R_\ast)}(D)|
+\ge
+5.70400\times10^{-5}
+\]
+already on the exact bridge, without invoking any barrier-center WKB ansatz. Since
+\[
+\min_D |V_{11}(D)-V_{22}(D)|=6.70795\times10^{-5},
+\]
+the remaining proof-side gap has become very narrow: produce an a priori lower bound on the one-center core contribution \(I_{\rm self,core}^{(R_\ast)}\), and retain only a coarse signed control of the small mirror remainder \(I_\times\).
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

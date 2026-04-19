@@ -3399,6 +3399,62 @@ and, together with Corollary~O2, forces only
 \]
 on the audited knot set. In this narrowed audit-level sense, the exact-lift source is no longer a free-standing mystery: the remaining proof-level step is to replace this canonical rigidity evidence by a genuinely operator-level theorem, not to discover a new gap scale.
 
+\medskip\noindent\textbf{Proposition O6 (Canonical-rigidity transfer on the audited family classes).}
+The previous corollary can be sharpened into a conditional transfer statement on the explicit deformation families already scanned. Let $\mathfrak F$ denote any one of the four audited parent-bath classes
+\[
+\mathfrak F\in\{\text{linear family},\ \text{generator-affinity},\ \text{log-coordinate},\ \text{normal-coordinate}\}.
+\]
+Suppose an exact Schur-side candidate remains inside one such family and satisfies the same local tolerance
+\[
+J_{\rm parent}\le J_\ast=10^{-6}.
+\]
+Then on the current audit grid the candidate is forced back to the undeformed canonical point of that family. Equivalently, within each of the four audited classes the canonical point is the unique admissible point at the theorem tolerance.
+
+\textit{Audit proof.} The new transfer audit \path{code/audit_open_system_rigidity_transfer.py} checks the full exported scan tables directly rather than only comparing runner-up gaps. At $J_\ast=10^{-6}$ it finds, for all four families,
+\[
+N_{\rm adm}^{\rm(total)}=1,
+\qquad
+N_{\rm adm}^{\rm(noncan)}=0,
+\]
+so the only surviving point is the undeformed canonical one. Quantitatively, the largest canonical objective among the four scans is still only
+\[
+J_{\rm can}^{\max}=3.18\times10^{-12},
+\]
+while the smallest non-canonical objective is already
+\[
+J_{\rm noncan}^{\min}=6.90\times10^{-4},
+\]
+hence
+\[
+J_{\rm noncan}^{\min}-J_{\rm can}^{\max}\ge 6.90\times10^{-4}.
+\]
+This leaves the same margins as before,
+\[
+\frac{J_{\rm noncan}^{\min}-J_{\rm can}^{\max}}{J_\ast}\ge 6.90\times10^{2},
+\qquad
+\frac{J_{\rm noncan}^{\min}-J_{\rm can}^{\max}}{J_{\rm can}^{\max}}\ge 2.17\times10^{8},
+\]
+but now in the stronger form that no non-canonical family member survives the theorem tolerance at all. Therefore, conditional on the exact operator being represented by any of these audited deformation classes, the continuum-neighborhood determinant-deficit budget of Proposition~O5 transfers unchanged to the exact Schur-reduced operator on the audited knot set.
+
+\medskip\noindent\textbf{Corollary O4 (Exact-lift consequences on the audited family classes).}
+Under the family-class hypothesis of Proposition~O6, the exact Schur-reduced operator inherits the same budget
+\[
+u_a\le 5.34\times10^{-3},
+\]
+and therefore the same operator consequences,
+\[
+g_a^{\rm(exact)}\ge 1.3339,
+\qquad
+H_{{\rm eff},a}\succeq 0.9947\,H_{PP,a},
+\]
+on the audited knot set. Together with Corollary~O2 this leaves only
+\[
+1-\nu_{1,a}\le 5.12\times10^{-14},
+\qquad
+\varepsilon_a(\Delta E_a)\le 2.97\times10^{-14}.
+\]
+Thus, on the currently exported family classes, the unresolved theorem gap is no longer whether the lift survives, but whether one can remove the explicit family-class hypothesis and prove the same transfer directly at the operator level.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

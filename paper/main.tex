@@ -3343,6 +3343,62 @@ for the conservative analytic floor $g_a\ge 1.3375$, and
 \]
 for the sharper exact-family floor $g_a\ge 1.3537$. Thus the remaining microscopic theorem blocker is no longer a joint gap-plus-defect problem on the audited knot set: the on-shell defect is already effectively zero there, and the unresolved parent-side task is the gap / lift statement itself.
 
+\medskip\noindent\textbf{Corollary O3 (Audited bath-family rigidity source for the exact lift).}
+The surviving gap / lift statement also admits a sharper audit-level source than the earlier conditional phrasing might suggest. Across the four explicit parent-bath deformation scans already exported on the same knot set---the linear family audit, the generator-affinity audit, the log-coordinate audit, and the normal-coordinate audit---the exact statement is always selected at the undeformed point. Concretely, the audited minimizers are
+\[
+(m,u,v)=(0,0,0),
+\qquad
+(q_{ss},q_{bb},q_{sb})=(0,0,0),
+\]
+\[
+(p_{\rm sys},p_{\rm spec})=(0,0),
+\qquad
+(\zeta_{\rm sys},\zeta_{\rm spec})=(0,0).
+\]
+The corresponding canonical objectives stay at
+\[
+J_{\rm can}\le 3.18\times10^{-12},
+\]
+while the smallest audited runner-up gap among those four scans is already
+\[
+\Delta J_{\rm sel}\ge 6.90\times10^{-4}.
+\]
+Hence the exact parent-bath statement is canonically rigid on the present audit scope: the weakest observed deformation gap still exceeds the continuum-neighborhood tolerance $J_\ast=10^{-6}$ from Proposition~O5 by a factor
+\[
+\Delta J_{\rm sel}/J_\ast \ge 6.90\times10^{2},
+\]
+and exceeds the largest canonical residual by
+\[
+\Delta J_{\rm sel}/J_{\rm can}^{\max}\ge 2.17\times10^{8}.
+\]
+This rigidity is consistent with the companion exactness audits,
+\[
+\max\bigl|\log(\gamma_{\rm mix}/\gamma_\phi)-(\log\mathcal A_{\rm sys}+\log\mathcal A_{\rm bath})\bigr|
+\le 8.43\times10^{-13},
+\]
+\[
+\max |\Delta_{\rm cocycle}^{\rm mix}|\le 1.11\times10^{-15},
+\qquad
+\max |\Delta_{\rm chain}^{\rm mix}|\le 4.03\times10^{-15},
+\]
+from the parent-bath statement, cocycle, and potential/chain reconstructions. The new consolidation audit \path{code/audit_open_system_exact_lift_source.py} therefore supports the following reviewer-facing reading: on the current audited knot set, the continuum neighborhood budget of Proposition~O5 is not merely an arbitrary local ansatz, but is already compatible with the uniquely selected exact parent-bath statement. Using the same audited budget
+\[
+u_a\le 5.34\times10^{-3}
+\]
+therefore leaves the exact lifted floor
+\[
+g_a^{\rm(exact)}\ge 1.3339,
+\qquad
+H_{{\rm eff},a}\succeq 0.9947\,H_{PP,a},
+\]
+and, together with Corollary~O2, forces only
+\[
+1-\nu_{1,a}\le 5.12\times10^{-14},
+\qquad
+\varepsilon_a(\Delta E_a)\le 2.97\times10^{-14}
+\]
+on the audited knot set. In this narrowed audit-level sense, the exact-lift source is no longer a free-standing mystery: the remaining proof-level step is to replace this canonical rigidity evidence by a genuinely operator-level theorem, not to discover a new gap scale.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

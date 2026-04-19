@@ -1,0 +1,5 @@
+audit,canonical_objective,selection_gap,best_parameters,runner_up_parameters,gap_over_objective_tol,gap_over_canonical
+family,3.167593964903403e-12,0.0299990378826346,"m=0.0, u=0.0, v=0.0","m=0.0, u=0.0, v=0.125",29999.037882634602,9470607096.43366
+generator_affinity,3.1719848969657957e-12,0.0006896954635788,"q_ss=0.0, q_bb=0.0, q_sb=0.0","q_ss=0.0, q_bb=-0.0625, q_sb=0.0",689.6954635788,217433400.84580395
+log_coordinate,3.1719848969657957e-12,0.0013740859208279,"p_sys=0.0, p_spec=0.0","p_sys=0.0, p_spec=0.25",1374.0859208279,433194345.32689613
+normal_coordinate,3.1719848969657957e-12,0.0013793015683818,"zeta_sys=0.0, zeta_spec=0.0","zeta_sys=0.0, zeta_spec=-0.125",1379.3015683818,434838630.4427834

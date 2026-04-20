@@ -4810,6 +4810,459 @@ on the full audited window. The exact one-center-pair and total parity-contrast 
 \]
 so the remaining gap from the compact anchor to the exact exported minima is now only a factor \(1.187\) to \(1.189\).  This further tightens the proof target: it is enough to prove a lower bound on the compact one-center anchor \(I_{\rm self,anchor}^{(\rho_\#,z_\#)}\), while the rest of \(I_{\rm self,core}^{(R_\ast)}\) can remain a same-sign completion and \(I_\times\) only needs coarse signed remainder control.
 
+\medskip\noindent\textbf{Proposition O22 (The compact anchor is already controlled by a same-center static source plus a local mirror loss).}
+Keep the canonical compact anchor
+\[
+B_{\rm anchor}(D):=B_{\rm box}(0.70,1.21;D).
+\]
+Split the anchor integral into its same-center and mirror pieces:
+\[
+I_{\rm self,anchor}(D)=I_{\rm diag,anchor}(D)+I_{\rm mir,anchor}(D),
+\]
+where
+\[
+I_{\rm diag,anchor}(D)
+:=
+\int_{B_+(D)\cap B_{\rm anchor}(D)}
+\mathcal C(\rho,z;D)\,\delta V_+(\rho,z;D)\,d\rho\,dz
++
+\int_{B_-(D)\cap B_{\rm anchor}(D)}
+\mathcal C(\rho,z;D)\,\delta V_-(\rho,z;D)\,d\rho\,dz,
+\]
+\[
+I_{\rm mir,anchor}(D)
+:=
+\int_{B_+(D)\cap B_{\rm anchor}(D)}
+\mathcal C(\rho,z;D)\,\delta V_-(\rho,z;D)\,d\rho\,dz
++
+\int_{B_-(D)\cap B_{\rm anchor}(D)}
+\mathcal C(\rho,z;D)\,\delta V_+(\rho,z;D)\,d\rho\,dz.
+\]
+The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_anchor_static_source.py} scans all same-center sub-boxes
+\[
+\rho_{\rm box}\in[0.40,0.70],\qquad
+z_{\rm box}\in[0.80,1.21],
+\]
+in steps of \(0.01\), requiring the same-center box and the remaining same-center shell to keep the sign of \(I_{\rm self,anchor}\) on every audited knot \(D=4,\dots,20\).  Under this criterion the optimal box is the full canonical anchor itself:
+\[
+(\rho_{\rm box}^{\rm opt},z_{\rm box}^{\rm opt})=(0.69,1.21)\sim(0.70,1.21).
+\]
+Moreover, on the full audited window one has
+\[
+\operatorname{sgn} I_{\rm diag,anchor}(D)
+=
+\operatorname{sgn} I_{\rm self,anchor}(D),
+\]
+and a uniform local mirror ratio
+\[
+\mu_{\rm anc}
+:=
+\max_D \frac{|I_{\rm mir,anchor}(D)|}{|I_{\rm diag,anchor}(D)|}
+=
+0.415143\ldots<1.
+\]
+Therefore
+\[
+|I_{\rm self,anchor}(D)|
+\ge
+(1-\mu_{\rm anc})\,|I_{\rm diag,anchor}(D)|.
+\]
+The same-center static floor is
+\[
+\min_D |I_{\rm diag,anchor}(D)|=1.63757\times10^{-4}
+\qquad\text{at }D=11,
+\]
+so the induced anchor lower bound is
+\[
+|I_{\rm self,anchor}(D)|
+\ge
+(1-\mu_{\rm anc})\,|I_{\rm diag,anchor}(D)|
+\ge
+9.57744\times10^{-5}.
+\]
+Compared against the exact compact-anchor floor
+\[
+\min_D |I_{\rm self,anchor}(D)|=1.32321\times10^{-4},
+\]
+this static-source bound is only a factor
+\[
+1.38159
+\]
+below the exact minimum.
+
+\medskip\noindent\textbf{Corollary O21 (The remaining overlap-side gap has been reduced to a same-center static anchor source).}
+Combining Proposition~O22 with Corollary~O20 gives
+\[
+|I_{\rm self,pair}(D)|
+\ge
+\lambda_\ast\,|I_{\rm self,anchor}(D)|
+\ge
+\lambda_\ast(1-\mu_{\rm anc})\,|I_{\rm diag,anchor}(D)|
+\ge
+4.08256\times10^{-5}.
+\]
+The exact one-center-pair and total parity-contrast floors remain
+\[
+\min_D |I_{\rm self,pair}(D)|=6.69675\times10^{-5},
+\qquad
+\min_D |V_{11}(D)-V_{22}(D)|=6.70795\times10^{-5},
+\]
+so the residual gap from the audited exact minima is now only a factor
+\[
+1.640\text{ to }1.643.
+\]
+This isolates the true proof-side target even further: the overlap-side problem is no longer to control barrier-center WKB tails, nor even the full compact anchor, but to produce an a priori lower bound on the same-center static source \(I_{\rm diag,anchor}\).  The compact anchor itself is already obtained from that source by a local mirror correction with uniform ratio \(\mu_{\rm anc}<0.42\), while \(I_\times\) stays only a coarse same-sign remainder in the total parity contrast.
+
+\medskip\noindent\textbf{Proposition O23 (Strict same-center subboxes do not improve the static anchor floor).}
+To test whether the proof target can be localized further, define a strict same-center subbox inside the canonical anchor by
+\[
+B_{\rm diag,box}(\rho_\Box,\zeta_\Box;D)
+:=
+\left\{(\rho,z):\rho\le \rho_\Box,\ |z\mp D/2|\le \zeta_\Box\right\}
+\subsetneq B_{\rm anchor}(D),
+\]
+with at least one strict inequality
+\[
+\rho_\Box<0.70\qquad\text{or}\qquad \zeta_\Box<1.21.
+\]
+Let
+\[
+I_{\rm diag,anchor}(D)
+=
+I_{\rm diag,box}^{(\rho_\Box,\zeta_\Box)}(D)
++
+I_{\rm diag,shell}^{(\rho_\Box,\zeta_\Box)}(D).
+\]
+The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_box_source.py} scans
+\[
+\rho_\Box\in[0.40,0.70],\qquad
+\zeta_\Box\in[0.80,1.21],
+\]
+in steps of \(0.01\), excluding the trivial full-anchor choice. On every audited knot \(D=4,\dots,20\), the optimal strict plateau occurs at
+\[
+\rho_\Box\in[0.63,0.68],\qquad \zeta_\Box=1.21,
+\]
+and the rounded representative choice
+\[
+(\rho_\Box,\zeta_\Box)=(0.65,1.21)
+\]
+already satisfies
+\[
+\operatorname{sgn} I_{\rm diag,box}^{(\rho_\Box,\zeta_\Box)}(D)
+=
+\operatorname{sgn} I_{\rm diag,anchor}(D),
+\qquad
+\operatorname{sgn} I_{\rm diag,shell}^{(\rho_\Box,\zeta_\Box)}(D)
+=
+\operatorname{sgn} I_{\rm diag,anchor}(D)
+\]
+for every audited knot. Therefore
+\[
+|I_{\rm diag,anchor}(D)|
+\ge
+|I_{\rm diag,box}^{(\rho_\Box,\zeta_\Box)}(D)|.
+\]
+The resulting strict-box floor is
+\[
+\min_D \left|I_{\rm diag,box}^{(0.65,1.21)}(D)\right|
+=
+1.48301\times10^{-4},
+\]
+whereas the exact same-center-anchor floor is
+\[
+\min_D |I_{\rm diag,anchor}(D)|
+=
+1.63757\times10^{-4}.
+\]
+So even after forcing a genuine strict localization, the loss is only a factor
+\[
+1.10422.
+\]
+
+\medskip\noindent\textbf{Corollary O22 (The proof target has stabilized at the full same-center anchor scale).}
+Proposition~O23 shows that no genuinely smaller same-center box inside the canonical anchor improves the static-source floor on the audited bridge. The best strict local box already carries
+\[
+\frac{1}{1.10422}=90.56\%
+\]
+of the exact same-center-anchor floor. Thus the next theorem step should not be to keep shrinking the support, but to lower-bound \(I_{\rm diag,anchor}\) itself. In other words, the overlap-side mainline has stabilized:
+\[
+I_{\rm diag,anchor}
+\]
+is now the natural one-center static source to target, while \(I_{\rm mir,anchor}\) remains only a coarse local mirror correction and \(I_\times\) remains only a coarse same-sign remainder in the full parity contrast.
+
+\medskip\noindent\textbf{Proposition O24 (Oriented moment reduction of the same-center static anchor).}
+Keep the canonical same-center static anchor \(I_{\rm diag,anchor}(D)\) and define the oriented anchor density
+\[
+q_{\rm diag}(\rho,z;D)
+:=
+\operatorname{sgn}\!\bigl(I_{\rm diag,anchor}(D)\bigr)\,
+\mathcal C(\rho,z;D)\Bigl(
+\delta V_+(\rho,z;D)\,\mathbf 1_{B_+(D)\cap B_{\rm anchor}(D)}
++
+\delta V_-(\rho,z;D)\,\mathbf 1_{B_-(D)\cap B_{\rm anchor}(D)}
+\Bigr).
+\]
+Let
+\[
+P_{\rm diag}(D):=\int [q_{\rm diag}(\rho,z;D)]_+\,d\rho\,dz,
+\qquad
+N_{\rm diag}(D):=\int [q_{\rm diag}(\rho,z;D)]_-\,d\rho\,dz,
+\]
+so that
+\[
+|I_{\rm diag,anchor}(D)|=P_{\rm diag}(D)-N_{\rm diag}(D).
+\]
+The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_moment_source.py} closes this split to machine precision,
+\[
+\max_D \Bigl||I_{\rm diag,anchor}(D)|-(P_{\rm diag}(D)-N_{\rm diag}(D))\Bigr|
+=
+6.51\times10^{-19},
+\]
+and gives the uniform moment ratio
+\[
+\nu_{\rm diag}^{(\pm)}
+:=
+\max_D \frac{N_{\rm diag}(D)}{P_{\rm diag}(D)}
+=
+0.911532\ldots
+\quad\text{at }D=11.
+\]
+Therefore
+\[
+|I_{\rm diag,anchor}(D)|
+\ge
+\bigl(1-\nu_{\rm diag}^{(\pm)}\bigr)\,P_{\rm diag}(D).
+\]
+The positive-moment floor itself is
+\[
+\min_D P_{\rm diag}(D)=1.17067\times10^{-3}
+\qquad\text{at }D=20,
+\]
+so the induced intrinsic static lower bound is
+\[
+|I_{\rm diag,anchor}(D)|
+\ge
+\bigl(1-\nu_{\rm diag}^{(\pm)}\bigr)\,\min_D P_{\rm diag}(D)
+\ge
+1.03567\times10^{-4}.
+\]
+Compared against the exact same-center-anchor floor
+\[
+\min_D |I_{\rm diag,anchor}(D)|=1.65556\times10^{-4},
+\]
+this oriented-moment bound is only a factor
+\[
+1.59854
+\]
+below the exact minimum, while remaining more intrinsic than any support-based subbox choice.
+
+\medskip\noindent\textbf{Corollary O23 (The remaining anchor-side gap is now cancellation control, not support selection).}
+Proposition~O24 gives a direct lower bound on the full same-center anchor source without introducing any new support cutoff:
+\[
+|I_{\rm diag,anchor}(D)|
+\ge
+1.03567\times10^{-4}.
+\]
+This is stronger than the previous mass-only route
+\[
+8.17293\times10^{-5}
+\]
+by a factor
+\[
+1.26719,
+\]
+and it is also slightly stronger than the induced compact-anchor lower bound
+\[
+9.57744\times10^{-5}
+\]
+coming from Proposition~O22, by a factor
+\[
+1.08136.
+\]
+So the proof-side interpretation is now sharper still: the obstacle is no longer where to localize the source. The support has already stabilized at the full same-center anchor scale, and the remaining loss is dominated by the positive/negative cancellation inside that anchor.
+
+\medskip\noindent\textbf{Proposition O25 (Shell-isolated cancellation control for the same-center anchor).}
+To separate genuine interior cancellation from mere support leakage, fix a same-center axial slab cut
+\[
+\zeta_{\rm cut}<1.21
+\]
+and write the canonical anchor as
+\[
+B_{\rm anchor}(D)=B_{\rm in}^{(\zeta_{\rm cut})}(D)\sqcup B_{\rm out}^{(\zeta_{\rm cut})}(D),
+\]
+where
+\[
+B_{\rm in}^{(\zeta_{\rm cut})}(D)
+:=
+\bigl\{(\rho,z)\in B_{\rm anchor}(D): |z\mp D/2|\le \zeta_{\rm cut}\bigr\}.
+\]
+Define the corresponding inner and outer oriented moments
+\[
+P_{\rm in}^{(\zeta_{\rm cut})}(D):=\int_{B_{\rm in}^{(\zeta_{\rm cut})}(D)} [q_{\rm diag}]_+\,d\rho\,dz,
+\qquad
+N_{\rm in}^{(\zeta_{\rm cut})}(D):=\int_{B_{\rm in}^{(\zeta_{\rm cut})}(D)} [q_{\rm diag}]_-\,d\rho\,dz,
+\]
+\[
+P_{\rm out}^{(\zeta_{\rm cut})}(D):=\int_{B_{\rm out}^{(\zeta_{\rm cut})}(D)} [q_{\rm diag}]_+\,d\rho\,dz,
+\qquad
+N_{\rm out}^{(\zeta_{\rm cut})}(D):=\int_{B_{\rm out}^{(\zeta_{\rm cut})}(D)} [q_{\rm diag}]_-\,d\rho\,dz.
+\]
+Then
+\[
+\nu_{\rm diag}^{(\pm)}(D)
+:=
+\frac{N_{\rm diag}(D)}{P_{\rm diag}(D)}
+\le
+\frac{N_{\rm in}^{(\zeta_{\rm cut})}(D)}{P_{\rm in}^{(\zeta_{\rm cut})}(D)}
++
+\frac{N_{\rm out}^{(\zeta_{\rm cut})}(D)}{P_{\rm in}^{(\zeta_{\rm cut})}(D)},
+\]
+because \(N_{\rm diag}=N_{\rm in}+N_{\rm out}\) and \(P_{\rm diag}\ge P_{\rm in}\).
+The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_cancellation_source.py}
+scans the nontrivial slab family
+\[
+\zeta_{\rm cut}\in[0.80,1.20]
+\]
+and finds the optimal shell-isolating choice
+\[
+\zeta_{\rm cut}^{\ast}=1.20.
+\]
+On the full audited window this gives
+\[
+\min_D P_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D)=1.17067\times10^{-3},
+\]
+\[
+\max_D \frac{N_{\rm out}^{(\zeta_{\rm cut}^{\ast})}(D)}{P_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D)}
+=
+8.68193\times10^{-3},
+\]
+\[
+\max_D \frac{N_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D)}{P_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D)}
+=
+0.912743\ldots
+\]
+and therefore the full cancellation ratio obeys the explicit audited bound
+\[
+\nu_{\rm diag}^{(\pm)}(D)
+\le
+0.912743 + 8.68193\times10^{-3}
+\le
+0.921425
+\]
+for every audited knot \(D=4,\dots,20\). The shell leakage is thus below one percent at the level of the normalized cancellation budget.
+
+\medskip\noindent\textbf{Corollary O24 (The anchor-side cancellation problem is interior and mass-dominated).}
+The same audit further decomposes the oriented anchor density as
+\[
+q_{\rm diag}=q_{\rm mass}+q_{\rm der},
+\]
+where \(q_{\rm mass}\) and \(q_{\rm der}\) are the same-center mass and derivative contributions built from
+\[
+U_{\pm}^{\rm mass}=m_0^2(\Omega_\pm^2-1),
+\qquad
+U_{\pm}^{\rm der}=(1-6\xi)\frac{\nabla^2\Omega_\pm}{\Omega_\pm},
+\]
+after the same origin-centered spherical-average subtraction. Writing the corresponding positive/negative moments as
+\[
+P_{\rm mass},\,N_{\rm mass},\,P_{\rm der},\,N_{\rm der},
+\]
+the audited exact bridge satisfies
+\[
+\min_D \frac{P_{\rm mass}(D)}{P_{\rm diag}(D)}=1.00507,
+\qquad
+\max_D \frac{P_{\rm der}(D)}{P_{\rm diag}(D)}=8.53082\times10^{-2},
+\]
+\[
+\min_D \frac{N_{\rm mass}(D)}{N_{\rm diag}(D)}=0.712802,
+\qquad
+\max_D \frac{N_{\rm der}(D)}{N_{\rm diag}(D)}=0.570882.
+\]
+So the shell part is negligible, the positive carrier is already overwhelmingly same-center mass-sector, and the remaining adverse budget stays interior to the one-center anchor rather than coming from support selection or mirror leakage. The proof-side target has therefore narrowed again: the remaining overlap-side gap is best read as a one-center interior cancellation bound, not as a localization problem.
+
+\medskip\noindent\textbf{Proposition O26 (Interior mass-sector cancellation controls the floor knot).}
+Keep the same canonical same-center anchor and the shell-isolating cut
+\[
+\zeta_{\rm cut}^{\ast}=1.20.
+\]
+On the resulting inner slab \(B_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D)\), define the oriented same-center mass contribution
+\[
+I_{\rm mass,in}(D)
+:=
+\operatorname{sgn}\!\bigl(I_{\rm diag,anchor}(D)\bigr)
+\int_{B_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D)} q_{\rm mass}(\rho,z;D)\,d\rho\,dz,
+\]
+with corresponding positive/negative moments
+\[
+P_{\rm mass,in}(D):=\int_{B_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D)} [q_{\rm mass}]_+\,d\rho\,dz,
+\qquad
+N_{\rm mass,in}(D):=\int_{B_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D)} [q_{\rm mass}]_-\,d\rho\,dz.
+\]
+Then
+\[
+I_{\rm mass,in}(D)=P_{\rm mass,in}(D)-N_{\rm mass,in}(D)
+=
+\bigl(1-\nu_{\rm diag,int}^{(\pm,m)}(D)\bigr)P_{\rm mass,in}(D),
+\]
+where
+\[
+\nu_{\rm diag,int}^{(\pm,m)}(D)
+:=
+\frac{N_{\rm mass,in}(D)}{P_{\rm mass,in}(D)}.
+\]
+Writing the full oriented anchor as
+\[
+|I_{\rm diag,anchor}(D)|
+=
+I_{\rm mass,in}(D)+I_{\rm der,in}(D)+I_{\rm out}(D),
+\]
+with \(I_{\rm der,in}\) the derivative-sector correction on the same inner slab and \(I_{\rm out}\) the residual oriented shell term, the audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_cancellation_source.py}
+shows that the same shell-isolating cut remains optimal for the mass-net floor:
+\[
+\zeta_{\rm cut}^{\ast}=1.20.
+\]
+At that cut the exact bridge satisfies
+\[
+I_{\rm mass,in}(D)\ge 0
+\quad\text{for all audited }D,
+\]
+and the extrema align on the same knot:
+\[
+\arg\min_D |I_{\rm diag,anchor}(D)|
+=
+\arg\min_D I_{\rm mass,in}(D)
+=
+\arg\max_D \nu_{\rm diag,int}^{(\pm,m)}(D)
+=
+11.
+\]
+Numerically,
+\[
+\min_D |I_{\rm diag,anchor}(D)|=1.65556\times10^{-4},
+\]
+\[
+\min_D I_{\rm mass,in}(D)=7.92440\times10^{-5},
+\qquad
+\max_D \nu_{\rm diag,int}^{(\pm,m)}(D)=0.957812.
+\]
+At the floor knot \(D=11\), one furthermore finds
+\[
+I_{\rm der,in}(11)=8.38290\times10^{-5}>0,
+\qquad
+I_{\rm out}(11)=2.48275\times10^{-6}>0,
+\]
+so the derivative and shell pieces are non-adverse there and the exact floor is obtained by adding a positive derivative uplift and a tiny positive shell correction to the interior mass-sector net.
+
+\medskip\noindent\textbf{Corollary O25 (The adverse cancellation is set by the interior one-center mass sector).}
+Proposition~O26 isolates the last overlap-side obstruction more sharply than Proposition~O25. The floor knot is not selected by shell leakage, by mirror leakage, or by any smaller support cutoff. It is selected by the same interior knot that maximizes the one-center mass-sector cancellation ratio
+\(\nu_{\rm diag,int}^{(\pm,m)}\), while the derivative and shell terms are already non-adverse there. In particular, the exact floor lies only a factor
+\[
+\frac{1.65556\times10^{-4}}{7.92440\times10^{-5}}
+=
+2.08919
+\]
+above the interior mass-sector net, and the gap is accounted for by a positive derivative uplift at the very same knot rather than by any new adverse mechanism. So the proof-side target has narrowed again: the remaining overlap-side gap is best read as an interior one-center mass-sector cancellation problem, with derivative and shell pieces retained only as signed local corrections.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

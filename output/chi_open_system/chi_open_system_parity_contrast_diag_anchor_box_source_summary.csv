@@ -1,0 +1,2 @@
+rho_anchor,zeta_anchor,rho_box_opt,zeta_box_opt,diag_box_floor_abs_opt,diag_box_floor_D,diag_anchor_floor_abs,diag_anchor_floor_over_box_floor,all_box_same_sign_as_diag,all_shell_same_sign_as_diag,max_shell_abs_share_of_diag
+0.7,1.21,0.6900000000000003,1.2100000000000004,0.00016555573881248136,11.0,0.00016555573881248136,1.0,1,1,0.0

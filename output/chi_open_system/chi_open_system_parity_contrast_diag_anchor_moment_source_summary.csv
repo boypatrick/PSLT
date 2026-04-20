@@ -1,0 +1,2 @@
+max_split_resid_abs,diag_floor_abs,diag_floor_D,positive_moment_floor_abs,positive_moment_floor_D,max_neg_over_pos,max_neg_over_pos_D,induced_diag_lower_from_moments,diag_floor_over_induced_moment_lower,mass_induced_lower,moment_over_mass_induced,anchor_induced_lower,moment_over_anchor_induced
+6.505213034913027e-19,0.00016555573881248136,11.0,0.0011706661801132298,20.0,0.911531876183456,11.0,0.00010356664057009782,1.598543101341855,8.172932339733154e-05,1.2671907250057972,9.577440948639748e-05,1.081360262365356

@@ -837,3 +837,30 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   - `output/source_projection/source_projection_profile_gaussian_w0p2.csv`
   - `output/source_projection/source_projection_fit_gaussian_w0p2.json`
   - mirrored CSV under `paper/`.
+- **Open-system compact-anchor static-source reduction:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_anchor_static_source.py` now pushes the overlap-side proof target one step further. Keeping the canonical compact anchor `(\rho_\#,z_\#)=(0.70,1.21)`, the exact anchor splits as `I_self,anchor = I_diag,anchor + I_mir,anchor`, where `I_diag,anchor` keeps only the same-center static pieces (`\delta V_+` on the right anchor box, `\delta V_-` on the left anchor box) and `I_mir,anchor` is the local mirror correction. On every audited knot, `I_diag,anchor` has the same sign as `I_self,anchor`, and the uniform mirror ratio stays below `\mu_anc = 0.415143`, so `|I_self,anchor| >= (1-\mu_anc)|I_diag,anchor|`. The same-center static anchor floor is `1.63757e-4`, giving the induced compact-anchor lower bound `9.57744e-5`, only a factor `1.38159` below the exact anchor floor `1.32321e-4`. Scanning all safe same-center sub-boxes inside the canonical anchor shows that the optimum already sits at the full anchor itself (`rho_box ≈ 0.69–0.70`, `zeta_box = 1.21`), so the proof target narrows again: it is now enough to lower-bound the same-center static anchor source, while the local mirror term can stay a coarse signed correction.
+- **Open-system strict same-center subbox audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_box_source.py` then checks whether `I_diag,anchor` can be replaced by a genuinely smaller same-center static patch. Scanning all strict subboxes inside the canonical anchor shows that the best safe strict plateau sits at `rho_box in [0.63,0.68]`, `zeta_box = 1.21`; a rounded representative choice `(0.65,1.21)` already has the same sign as `I_diag,anchor` and leaves a same-sign shell on every audited knot. Its floor is `1.48301e-4`, versus the full same-center-anchor floor `1.63757e-4`, only a factor `1.10422` lower. So there is a useful negative result here: further localizing the support does not buy us a stronger object. The proof-side target has effectively stabilized at the full same-center anchor scale `I_diag,anchor`, with the local mirror term and the global `I_x` remainder both remaining coarse signed corrections.
+- **Open-system oriented-moment reduction of the same-center anchor:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_moment_source.py` now rewrites the same-center static anchor as an intrinsic positive/negative moment balance instead of another support choice. With the oriented density `q_diag = sgn(I_diag,anchor) * C * (deltaV_+ 1_{B_+∩B_anchor} + deltaV_- 1_{B_-∩B_anchor})`, the exact split `|I_diag,anchor| = P_diag - N_diag` closes to `6.51e-19`, and the audited moment ratio stays below `nu_diag^(±) = 0.911532`. The positive-moment floor is `min P_diag = 1.17067e-3`, so one gets the direct intrinsic lower bound `|I_diag,anchor| >= (1-nu_diag^(±)) min P_diag = 1.03567e-4`. This is stronger than the mass-only route (`8.17293e-5`) by a factor `1.26719`, and stronger than the earlier induced compact-anchor floor (`9.57744e-5`) by a factor `1.08136`. The message is useful and narrow: the remaining anchor-side gap is no longer support selection; it is cancellation control inside the full same-center anchor.
+- **Open-system shell-isolated cancellation control:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_cancellation_source.py` now attacks `nu_diag^(±)` directly. It splits the same-center anchor into an inner axial slab `|z \mp D/2| <= zeta_cut` and an outer shell, then tracks the oriented positive/negative moments of `q_diag`. Scanning `zeta_cut in [0.80,1.20]` shows that the optimal nontrivial shell-isolating cut is `zeta_cut^* = 1.20`. At that cut, the shell-negative leakage is tiny: `max N_out/P_in = 8.68193e-3`, while the inner cancellation ratio is already `max N_in/P_in = 0.912743`. So the full audited cancellation ratio satisfies `nu_diag^(±) <= 0.921425`, and the shell contribution is below one percent of the normalized cancellation budget. The same audit also aligns this with the one-center mass/derivative split: `min P_mass/P_diag = 1.00507`, `max P_der/P_diag = 8.53082e-2`, `min N_mass/N_diag = 0.712802`, `max N_der/N_diag = 0.570882`. That is the cleanest reading so far: support leakage is not the issue, and the remaining gap is an interior one-center cancellation problem, largely carried by the mass sector.
+- **Open-system interior mass-sector cancellation control:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_cancellation_source.py` now fixes the same optimal inner slab `zeta_cut^* = 1.20` and rewrites the stabilized same-center anchor floor in terms of the interior one-center mass net
+  \[
+  I_{\rm mass,in}
+  =
+  (1-\nu_{\rm diag,int}^{(\pm,m)})P_{\rm mass,in},
+  \qquad
+  \nu_{\rm diag,int}^{(\pm,m)}=\frac{N_{\rm mass,in}}{P_{\rm mass,in}}.
+  \]
+  On the audited window the interior mass term keeps the sign of the full same-center anchor on every knot, and the exact anchor floor, the interior mass-net floor, and the maximal mass-sector cancellation ratio all align at the same knot `D=11`. Numerically,
+  \[
+  \min |I_{\rm diag,anchor}|=1.65556\times10^{-4},
+  \qquad
+  \min I_{\rm mass,in}=7.92440\times10^{-5},
+  \qquad
+  \max \nu_{\rm diag,int}^{(\pm,m)}=0.957812.
+  \]
+  At that same floor knot, the derivative and shell pieces are already non-adverse:
+  \[
+  I_{\rm der,in}(11)=8.38290\times10^{-5}>0,
+  \qquad
+  I_{\rm out}(11)=2.48275\times10^{-6}>0.
+  \]
+  So the overlap-side proof target narrows again: the adverse floor-setting mechanism is the interior one-center mass-sector cancellation itself, while derivative and shell terms act only as signed local corrections at the audited floor knot.

@@ -1,0 +1,2 @@
+max_split_resid_abs,all_mass_same_sign_as_diag,num_der_same_sign_as_diag,diag_floor_abs,diag_floor_D,mass_floor_abs,mass_floor_D,max_opposite_loss_ratio_over_mass,max_opposite_loss_ratio_D,induced_diag_lower_from_mass_min,induced_diag_lower_from_mass_D,diag_floor_over_induced_mass_lower
+2.168404344971009e-19,1,1,0.00016555573881248136,11.0,8.172932339733154e-05,11.0,0.6935105048768687,9.0,8.172932339733154e-05,11.0,2.025658991542401

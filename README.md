@@ -864,3 +864,60 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   I_{\rm out}(11)=2.48275\times10^{-6}>0.
   \]
   So the overlap-side proof target narrows again: the adverse floor-setting mechanism is the interior one-center mass-sector cancellation itself, while derivative and shell terms act only as signed local corrections at the audited floor knot.
+- **Open-system positive mass-carrier floor:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_positive_source.py` now attacks `P_{\rm mass,in}` directly. For any same-center subbox inside the canonical inner slab, monotonicity of the positive part gives
+  \[
+  P_{\rm mass,in}(D)\ge P_{\rm mass,box}^{(\rho_\Box,\zeta_\Box)}(D).
+  \]
+  Scanning `rho_box in [0.35,0.70]` and `zeta_box in [0.70,1.20]` shows that the optimal strict positive-carrier plateau already lies on a near-full axial trim, `rho_box in [0.69,0.70]`, `zeta_box in [1.10,1.19]`. Using the canonical strict representative `(0.70,1.19)`, the audited floor is unchanged:
+  \[
+  \min_D P_{\rm mass,box}^{(0.70,1.19)}(D)
+  =
+  \min_D P_{\rm mass,in}(D)
+  =
+  1.25520\times10^{-3}
+  \]
+  at `D=20`, and the minimum all-knot share is still
+  \[
+  \min_D \frac{P_{\rm mass,box}^{(0.70,1.19)}(D)}{P_{\rm mass,in}(D)}
+  =
+  0.999825
+  \]
+  at `D=11`. So the positive-carrier side is now essentially closed: the remaining overlap-side gap is not the one-center positive mass carrier, but the interior mass-sector cancellation ratio `\nu_{\rm diag,int}^{(\pm,m)}`.
+- **Open-system adverse mass-carrier annulus control:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_negative_source.py` now localizes the negative mass carrier itself. Inside the same canonical inner slab `|z\mp D/2|\le 1.20`, it scans off-axis annuli
+  \[
+  A_{\rm neg}^{(\rho_{\min},\zeta_\Box)}
+  =
+  \{(\rho,z): \rho_{\min}\le \rho\le 0.70,\ |z\mp D/2|\le \zeta_\Box\}
+  \]
+  with `rho_min in [0.03,0.30]`, `zeta_box in [1.10,1.20]`. If arbitrary strict trims are allowed, the optimum is a near-full slab; but once we insist on genuinely off-axis annuli `rho_min >= 0.12`, the best plateau sits at `rho_min in [0.12,0.15]`, `zeta_box = 1.20`. Using the canonical representative `(rho_min,zeta_box)=(0.15,1.20)`, the annulus already captures at least
+  \[
+  \min_D \frac{N_{\rm mass,ann}^{(0.15,1.20)}(D)}{N_{\rm mass,in}(D)}
+  =
+  0.949763
+  \]
+  on the audited window, while the omitted axial-core leakage obeys
+  \[
+  \max_D \frac{N_{\rm mass,tail}^{(0.15,1.20)}(D)}{P_{\rm mass,in}(D)}
+  =
+  4.81178\times10^{-2}
+  \]
+  at `D=11`. The same knot also maximizes the annular adverse load,
+  \[
+  \max_D \frac{N_{\rm mass,ann}^{(0.15,1.20)}(D)}{P_{\rm mass,in}(D)}
+  =
+  0.909694.
+  \]
+  So the cancellation ratio is no longer best read as a full-slab negative-carrier problem: it has narrowed to an off-axis one-center adverse annulus plus a small axial-core leakage.
+- **Open-system strict adverse-annulus trim audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_annulus_source.py` then asks whether the canonical adverse annulus can itself be replaced by a genuinely smaller support. Scanning strict annular trims inside `A_{\rm neg}^{(0.15,1.20)}` over `rho_min in [0.15,0.30]`, `zeta_box in [1.10,1.20]` shows that the best strict plateau already sits at the smallest radial trim, namely `(rho_min,zeta_box)=(0.15,1.19)`. This trimmed adverse annulus still captures at least
+  \[
+  \min_D \frac{N_{\rm mass,subann}^{(0.15,1.19)}(D)}{N_{\rm mass,ann}^{(0.15,1.20)}(D)}
+  =
+  0.984061
+  \]
+  (worst at `D=16`), while the omitted cap leakage obeys
+  \[
+  \max_D \frac{N_{\rm mass,cap}^{(0.15,1.19)}(D)}{P_{\rm mass,in}(D)}
+  =
+  7.47726\times10^{-3}.
+  \]
+  The audited floor drops only from `7.73394e-4` to `7.64028e-4`, a factor `1.01226`. So the support side is now effectively closed here too: the proof target has stabilized at the full canonical adverse annulus, and the remaining gap is the adverse magnitude carried by that annulus, not any finer support selection inside it.

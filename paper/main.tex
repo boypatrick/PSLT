@@ -5263,6 +5263,278 @@ Proposition~O26 isolates the last overlap-side obstruction more sharply than Pro
 \]
 above the interior mass-sector net, and the gap is accounted for by a positive derivative uplift at the very same knot rather than by any new adverse mechanism. So the proof-side target has narrowed again: the remaining overlap-side gap is best read as an interior one-center mass-sector cancellation problem, with derivative and shell pieces retained only as signed local corrections.
 
+\medskip\noindent\textbf{Proposition O27 (The positive mass-carrier floor survives a strict axial trim).}
+Keep the same inner slab
+\[
+B_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D),
+\qquad
+\zeta_{\rm cut}^{\ast}=1.20,
+\]
+and define for any same-center subbox
+\[
+B_{\rm mass,box}^{(\rho_\Box,\zeta_\Box)}(D)
+:=
+\bigl\{(\rho,z)\in B_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D): \rho\le \rho_\Box,\ |z\mp D/2|\le \zeta_\Box\bigr\}
+\]
+the positive mass-carrier moment
+\[
+P_{\rm mass,box}^{(\rho_\Box,\zeta_\Box)}(D)
+:=
+\int_{B_{\rm mass,box}^{(\rho_\Box,\zeta_\Box)}(D)} [q_{\rm mass}]_+\,d\rho\,dz.
+\]
+Since \([q_{\rm mass}]_+\ge 0\), monotonicity gives the exact lower bound
+\[
+P_{\rm mass,in}(D)\ge P_{\rm mass,box}^{(\rho_\Box,\zeta_\Box)}(D)
+\]
+for every such subbox.
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_positive_source.py}
+scans
+\[
+\rho_\Box\in[0.35,0.70],
+\qquad
+\zeta_\Box\in[0.70,1.20],
+\]
+and finds that the optimal strict positive-carrier plateau already sits on the near-full axial trims
+\[
+\rho_\Box\in[0.69,0.70],
+\qquad
+\zeta_\Box\in[1.10,1.19].
+\]
+Using the canonical strict representative
+\[
+(\rho_\Box,\zeta_\Box)=(0.70,1.19),
+\]
+one gets
+\[
+\min_D P_{\rm mass,box}^{(0.70,1.19)}(D)
+=
+\min_D P_{\rm mass,in}(D)
+=
+1.25520\times10^{-3}
+\]
+at \(D=20\). Moreover, on the full audited window
+\[
+\min_D
+\frac{P_{\rm mass,box}^{(0.70,1.19)}(D)}{P_{\rm mass,in}(D)}
+=
+0.999825
+\]
+at \(D=11\). So the positive mass carrier is already fully stabilized on a strict axial trim of the canonical one-center slab.
+
+\medskip\noindent\textbf{Corollary O26 (The positive-carrier side is no longer the blocker).}
+Propositions~O26 and O27 now split the interior mass-sector problem cleanly in two:
+\[
+I_{\rm mass,in}
+=
+\bigl(1-\nu_{\rm diag,int}^{(\pm,m)}\bigr)P_{\rm mass,in},
+\qquad
+P_{\rm mass,in}\ge P_{\rm mass,box}^{(0.70,1.19)}.
+\]
+The positive carrier floor is therefore already stable under a strict one-center axial trim, with no loss at the audited floor knot and at most
+\[
+1-0.999825=1.75\times10^{-4}
+\]
+relative loss anywhere on the audited window. The remaining overlap-side gap is thus no longer a positive-carrier problem; it is the interior one-center mass-sector cancellation ratio itself.
+
+\medskip\noindent\textbf{Proposition O28 (The adverse mass carrier localizes to an off-axis one-center annulus).}
+Keep the same canonical inner slab
+\[
+B_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D),
+\qquad
+\zeta_{\rm cut}^{\ast}=1.20,
+\]
+and define for any annular trim
+\[
+A_{\rm neg}^{(\rho_{\min},\zeta_{\Box})}(D)
+:=
+\bigl\{(\rho,z)\in B_{\rm in}^{(\zeta_{\rm cut}^{\ast})}(D):
+\rho_{\min}\le \rho\le 0.70,\ |z\mp D/2|\le \zeta_{\Box}\bigr\}
+\]
+the off-axis adverse-carrier moment
+\[
+N_{\rm mass,ann}^{(\rho_{\min},\zeta_{\Box})}(D)
+:=
+\int_{A_{\rm neg}^{(\rho_{\min},\zeta_{\Box})}(D)} [q_{\rm mass}]_-\,d\rho\,dz.
+\]
+Since \([q_{\rm mass}]_-\ge 0\), one has the exact split
+\[
+N_{\rm mass,in}(D)
+=
+N_{\rm mass,ann}^{(\rho_{\min},\zeta_{\Box})}(D)
++
+N_{\rm mass,tail}^{(\rho_{\min},\zeta_{\Box})}(D),
+\]
+with
+\[
+N_{\rm mass,tail}^{(\rho_{\min},\zeta_{\Box})}(D)\ge 0.
+\]
+Therefore
+\[
+\nu_{\rm diag,int}^{(\pm,m)}(D)
+=
+\frac{N_{\rm mass,ann}^{(\rho_{\min},\zeta_{\Box})}(D)}{P_{\rm mass,in}(D)}
++
+\frac{N_{\rm mass,tail}^{(\rho_{\min},\zeta_{\Box})}(D)}{P_{\rm mass,in}(D)}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_negative_source.py}
+scans
+\[
+\rho_{\min}\in[0.03,0.30],
+\qquad
+\zeta_{\Box}\in[1.10,1.20].
+\]
+If one allows arbitrary strict trims, the optimum is a near-full slab. Constraining instead to genuinely off-axis annuli with \(\rho_{\min}\ge 0.12\), the best plateau sits at
+\[
+\rho_{\min}\in[0.12,0.15],
+\qquad
+\zeta_{\Box}=1.20.
+\]
+Using the canonical representative
+\[
+(\rho_{\min},\zeta_{\Box})=(0.15,1.20),
+\]
+one gets
+\[
+\min_D
+\frac{N_{\rm mass,ann}^{(0.15,1.20)}(D)}{N_{\rm mass,in}(D)}
+=
+0.949763
+\]
+at \(D=11\), while the axial-core leakage obeys
+\[
+\max_D
+\frac{N_{\rm mass,tail}^{(0.15,1.20)}(D)}{P_{\rm mass,in}(D)}
+=
+4.81178\times10^{-2}
+\]
+again at \(D=11\). The same knot also maximizes the annular adverse load,
+\[
+\max_D
+\frac{N_{\rm mass,ann}^{(0.15,1.20)}(D)}{P_{\rm mass,in}(D)}
+=
+0.909694.
+\]
+So the adverse-carrier side is already stabilized at an off-axis one-center annulus, with only a small axial-core leakage left outside it.
+
+\medskip\noindent\textbf{Corollary O27 (The remaining cancellation gap is an off-axis adverse-annulus problem).}
+Combining Propositions~O26--O28 gives
+\[
+I_{\rm mass,in}
+=
+\bigl(1-\nu_{\rm diag,int}^{(\pm,m)}\bigr)P_{\rm mass,in},
+\qquad
+\nu_{\rm diag,int}^{(\pm,m)}(D)
+\le
+\frac{N_{\rm mass,ann}^{(0.15,1.20)}(D)}{P_{\rm mass,in}(D)}
++
+4.81178\times10^{-2}.
+\]
+At the exact floor knot \(D=11\), this reads
+\[
+0.957812
+=
+0.909694 + 4.81178\times10^{-2},
+\]
+so the entire mass-sector cancellation gap is already explained by an off-axis one-center adverse annulus plus a small axial-core leakage. In particular, the positive-carrier side is no longer the issue, and neither shell leakage nor mirror leakage sets the overlap-side floor. The remaining proof-side target has narrowed once more: it is now enough to control the adverse annular carrier \(N_{\rm mass,ann}^{(0.15,1.20)}\), with the axial core retained only as a small corrective leakage.
+
+\medskip\noindent\textbf{Proposition O29 (The adverse annulus floor survives a strict axial trim).}
+Keep the canonical adverse annulus
+\[
+A_{\rm neg}^{(0.15,1.20)}(D)
+\]
+from Proposition~O28 and define for any strict annular trim
+\[
+A_{\rm neg}^{(\rho_{\min},\zeta_{\Box})}(D)
+\subsetneq
+A_{\rm neg}^{(0.15,1.20)}(D),
+\qquad
+\rho_{\min}\ge 0.15,\ \zeta_{\Box}\le 1.20,
+\]
+the trimmed adverse-carrier moment
+\[
+N_{\rm mass,subann}^{(\rho_{\min},\zeta_{\Box})}(D)
+:=
+\int_{A_{\rm neg}^{(\rho_{\min},\zeta_{\Box})}(D)} [q_{\rm mass}]_-\,d\rho\,dz.
+\]
+Because \([q_{\rm mass}]_-\ge 0\), one has the exact monotone split
+\[
+N_{\rm mass,ann}^{(0.15,1.20)}(D)
+=
+N_{\rm mass,subann}^{(\rho_{\min},\zeta_{\Box})}(D)
++
+N_{\rm mass,cap}^{(\rho_{\min},\zeta_{\Box})}(D),
+\qquad
+N_{\rm mass,cap}^{(\rho_{\min},\zeta_{\Box})}(D)\ge 0.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_annulus_source.py}
+scans
+\[
+\rho_{\min}\in[0.15,0.30],
+\qquad
+\zeta_{\Box}\in[1.10,1.20]
+\]
+inside the canonical annulus and finds that the optimal strict plateau already lies at the smallest possible radial trim,
+\[
+\rho_{\min}=0.15,
+\qquad
+\zeta_{\Box}=1.19.
+\]
+Using this canonical strict representative, one gets
+\[
+\min_D
+\frac{N_{\rm mass,subann}^{(0.15,1.19)}(D)}
+{N_{\rm mass,ann}^{(0.15,1.20)}(D)}
+=
+0.984061
+\]
+at \(D=16\), while the omitted cap leakage satisfies
+\[
+\max_D
+\frac{N_{\rm mass,cap}^{(0.15,1.19)}(D)}
+{P_{\rm mass,in}(D)}
+=
+7.47726\times10^{-3}
+\]
+again at \(D=16\). The trimmed adverse-annulus floor is
+\[
+\min_D N_{\rm mass,subann}^{(0.15,1.19)}(D)
+=
+7.64028\times10^{-4},
+\]
+whereas the full annulus floor is
+\[
+\min_D N_{\rm mass,ann}^{(0.15,1.20)}(D)
+=
+7.73394\times10^{-4},
+\]
+so the strict trim lowers the audited floor by only the factor
+\[
+\frac{7.73394\times10^{-4}}{7.64028\times10^{-4}}
+=
+1.01226.
+\]
+Thus the adverse annular carrier is already stable at the canonical full-annulus scale: strict axial trims do not produce a meaningfully stronger theorem object.
+
+\medskip\noindent\textbf{Corollary O28 (The proof target stabilizes at the full adverse-annulus scale).}
+Propositions~O28 and O29 together imply that the support side of the adverse carrier is now exhausted:
+\[
+\nu_{\rm diag,int}^{(\pm,m)}(D)
+\le
+\frac{N_{\rm mass,subann}^{(0.15,1.19)}(D)}{P_{\rm mass,in}(D)}
++
+4.81178\times10^{-2}
++
+7.47726\times10^{-3},
+\]
+but the extra strict-trim leakage is already an order of magnitude smaller than the axial-core leakage from Proposition~O28. So the remaining proof-side gap is no longer about how to choose the annular support: it is the adverse magnitude carried by the canonical annulus itself. In particular, the natural theorem object has stabilized at
+\[
+N_{\rm mass,ann}^{(0.15,1.20)},
+\]
+with only tiny axial and cap leakages retained as corrective constants.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

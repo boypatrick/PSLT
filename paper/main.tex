@@ -5535,6 +5535,361 @@ N_{\rm mass,ann}^{(0.15,1.20)},
 \]
 with only tiny axial and cap leakages retained as corrective constants.
 
+\medskip\noindent\textbf{Proposition O30 (The adverse annulus magnitude localizes to a radial shoulder).}
+Keep the canonical adverse annulus \(A_{\rm neg}^{(0.15,1.20)}(D)\) and, for any strict radial trim
+\[
+\rho_{\rm sh}>0.15,
+\]
+define the adverse shoulder
+\[
+S_{\rm neg}^{(\rho_{\rm sh},1.20)}(D)
+:=
+\{(\rho,z)\in A_{\rm neg}^{(0.15,1.20)}(D): \rho\ge \rho_{\rm sh}\},
+\]
+with shoulder and rim moments
+\[
+N_{\rm mass,shoulder}^{(\rho_{\rm sh},1.20)}(D)
+:=
+\int_{S_{\rm neg}^{(\rho_{\rm sh},1.20)}(D)} [q_{\rm mass}]_-\,d\rho\,dz,
+\]
+\[
+N_{\rm mass,rim}^{(\rho_{\rm sh},1.20)}(D)
+:=
+N_{\rm mass,ann}^{(0.15,1.20)}(D)
+-
+N_{\rm mass,shoulder}^{(\rho_{\rm sh},1.20)}(D).
+\]
+Because \([q_{\rm mass}]_-\ge 0\), one has the exact monotone split
+\[
+N_{\rm mass,ann}^{(0.15,1.20)}(D)
+=
+N_{\rm mass,shoulder}^{(\rho_{\rm sh},1.20)}(D)
++
+N_{\rm mass,rim}^{(\rho_{\rm sh},1.20)}(D),
+\qquad
+N_{\rm mass,rim}^{(\rho_{\rm sh},1.20)}(D)\ge 0.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_shoulder_source.py}
+scans strict radial trims
+\[
+\rho_{\rm sh}\in[0.16,0.30]
+\]
+inside the canonical annulus and finds a flat optimal plateau
+\[
+\rho_{\rm sh}\in[0.16,0.20].
+\]
+Using the clean canonical representative
+\[
+\rho_{\rm sh}=0.20,
+\]
+one gets
+\[
+\min_D
+\frac{N_{\rm mass,shoulder}^{(0.20,1.20)}(D)}
+{N_{\rm mass,ann}^{(0.15,1.20)}(D)}
+=
+0.940824
+\]
+at \(D=11\), while the discarded inner-rim leakage obeys
+\[
+\max_D
+\frac{N_{\rm mass,rim}^{(0.20,1.20)}(D)}
+{P_{\rm mass,in}(D)}
+=
+5.38319\times10^{-2}
+\]
+again at \(D=11\). The shoulder floor is
+\[
+\min_D N_{\rm mass,shoulder}^{(0.20,1.20)}(D)
+=
+7.37447\times10^{-4},
+\]
+whereas the full adverse-annulus floor is
+\[
+\min_D N_{\rm mass,ann}^{(0.15,1.20)}(D)
+=
+7.73394\times10^{-4},
+\]
+so the radial shoulder loses only the factor
+\[
+\frac{7.73394\times10^{-4}}{7.37447\times10^{-4}}
+=
+1.04874.
+\]
+Thus the adverse magnitude is already carried almost entirely by an off-axis radial shoulder: the inner rim is only a secondary leakage.
+
+\medskip\noindent\textbf{Corollary O29 (The cancellation gap narrows to an adverse shoulder plus two small leakages).}
+Combining Proposition~O30 with Proposition~O28 yields
+\[
+\nu_{\rm diag,int}^{(\pm,m)}(D)
+\le
+\frac{N_{\rm mass,shoulder}^{(0.20,1.20)}(D)}
+{P_{\rm mass,in}(D)}
++
+5.38319\times10^{-2}
++
+4.81178\times10^{-2}.
+\]
+At the exact worst cancellation knot \(D=11\), this reads
+\[
+0.957812
+=
+0.855863
++
+5.38319\times10^{-2}
++
+4.81178\times10^{-2}.
+\]
+So the positive carrier, the axial core, and the inner radial rim are all now demoted to corrective terms. The remaining proof-side target has narrowed again: it is enough to control the off-axis one-center adverse shoulder
+\[
+N_{\rm mass,shoulder}^{(0.20,1.20)},
+\]
+with only the small axial-core and inner-rim leakages retained outside it.
+
+\medskip\noindent\textbf{Proposition O31 (The adverse shoulder floor survives a genuine axial hollow).}
+Keep the canonical adverse shoulder
+\[
+N_{\rm mass,shoulder}^{(0.20,1.20)}(D)
+\]
+from Proposition~O30 and define, for any axial hollow
+\[
+\zeta_{\rm low}>0,
+\]
+the adverse shoulder band
+\[
+B_{\rm neg}^{(0.20;\zeta_{\rm low},1.20)}(D)
+:=
+\{(\rho,z)\in S_{\rm neg}^{(0.20,1.20)}(D): \zeta_{\rm low}\le |z\mp D/2|\le 1.20\},
+\]
+with band and shoulder-core moments
+\[
+N_{\rm mass,band}^{(0.20;\zeta_{\rm low},1.20)}(D)
+:=
+\int_{B_{\rm neg}^{(0.20;\zeta_{\rm low},1.20)}(D)} [q_{\rm mass}]_-\,d\rho\,dz,
+\]
+\[
+N_{\rm mass,core}^{(0.20;\zeta_{\rm low},1.20)}(D)
+:=
+N_{\rm mass,shoulder}^{(0.20,1.20)}(D)
+-
+N_{\rm mass,band}^{(0.20;\zeta_{\rm low},1.20)}(D).
+\]
+Because \([q_{\rm mass}]_-\ge 0\), one has the exact monotone split
+\[
+N_{\rm mass,shoulder}^{(0.20,1.20)}(D)
+=
+N_{\rm mass,band}^{(0.20;\zeta_{\rm low},1.20)}(D)
++
+N_{\rm mass,core}^{(0.20;\zeta_{\rm low},1.20)}(D),
+\qquad
+N_{\rm mass,core}^{(0.20;\zeta_{\rm low},1.20)}(D)\ge 0.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_shoulder_band_source.py}
+scans genuine hollows
+\[
+\zeta_{\rm low}\in[0.10,0.40]
+\]
+inside the canonical shoulder and finds that the best hollow already sits at the smallest nontrivial cut,
+\[
+\zeta_{\rm low}=0.10.
+\]
+For this canonical representative one gets
+\[
+\min_D
+\frac{N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)}
+{N_{\rm mass,shoulder}^{(0.20,1.20)}(D)}
+=
+0.951019
+\]
+at \(D=11\), while the discarded shoulder-core leakage satisfies
+\[
+\max_D
+\frac{N_{\rm mass,core}^{(0.20;0.10,1.20)}(D)}
+{P_{\rm mass,in}(D)}
+=
+4.19214\times10^{-2}
+\]
+again at \(D=11\). The adverse-band floor is
+\[
+\min_D N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)
+=
+7.37447\times10^{-4},
+\]
+exactly matching the canonical shoulder floor
+\[
+\min_D N_{\rm mass,shoulder}^{(0.20,1.20)}(D)
+=
+7.37447\times10^{-4},
+\]
+so the audited factor
+\[
+\frac{\min_D N_{\rm mass,shoulder}^{(0.20,1.20)}(D)}
+{\min_D N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)}
+=
+1
+\]
+to machine precision. Thus the adverse shoulder magnitude is already carried by a genuinely hollow off-axis band: the shoulder-core piece is only a small corrective leakage.
+
+\medskip\noindent\textbf{Corollary O30 (The cancellation gap narrows to an adverse band plus three small leakages).}
+Combining Proposition~O31 with Corollary~O29 gives
+\[
+\nu_{\rm diag,int}^{(\pm,m)}(D)
+\le
+\frac{N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)}
+{P_{\rm mass,in}(D)}
++
+4.19214\times10^{-2}
++
+5.38319\times10^{-2}
++
+4.81178\times10^{-2}.
+\]
+At the exact worst cancellation knot \(D=11\), this reads
+\[
+0.957812
+=
+0.813941
++
+4.19214\times10^{-2}
++
+5.38319\times10^{-2}
++
+4.81178\times10^{-2}.
+\]
+
+\medskip\noindent\textbf{Proposition O32 (Strict corner trims do not improve the adverse-band floor).}
+Keep the canonical adverse band
+\[
+N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)
+\]
+from Proposition~O31 and define, for any strict corner trim
+\[
+\rho_{\rm corner}>0.20,
+\qquad
+\zeta_{\rm corner}\ge 0.10,
+\]
+the corner subband
+\[
+C_{\rm neg}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D)
+:=
+\{(\rho,z)\in B_{\rm neg}^{(0.20;0.10,1.20)}(D): \rho\ge \rho_{\rm corner},\ \zeta_{\rm corner}\le |z\mp D/2|\le 1.20\},
+\]
+with corner and cap moments
+\[
+N_{\rm mass,corner}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D)
+:=
+\int_{C_{\rm neg}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D)} [q_{\rm mass}]_-\,d\rho\,dz,
+\]
+\[
+N_{\rm mass,cap}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D)
+:=
+N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)
+-
+N_{\rm mass,corner}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D).
+\]
+Because \([q_{\rm mass}]_-\ge 0\), one has the exact monotone split
+\[
+N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)
+=
+N_{\rm mass,corner}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D)
++
+N_{\rm mass,cap}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D),
+\qquad
+N_{\rm mass,cap}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D)\ge 0.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_band_corner_source.py}
+scans genuinely strict corner trims
+\[
+\rho_{\rm corner}\in[0.22,0.30],
+\qquad
+\zeta_{\rm corner}\in[0.10,0.40],
+\]
+inside the canonical adverse band and finds the best plateau
+\[
+\rho_{\rm corner}\in[0.22,0.27],
+\qquad
+\zeta_{\rm corner}=0.10.
+\]
+Using the clean canonical representative
+\[
+(\rho_{\rm corner},\zeta_{\rm corner})=(0.22,0.10),
+\]
+one gets
+\[
+\min_D
+\frac{N_{\rm mass,corner}^{(0.22;0.10,1.20)}(D)}
+{N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)}
+=
+0.921342
+\]
+at \(D=4\), while the discarded cap leakage obeys
+\[
+\max_D
+\frac{N_{\rm mass,cap}^{(0.22;0.10,1.20)}(D)}
+{P_{\rm mass,in}(D)}
+=
+6.35145\times10^{-2}
+\]
+at \(D=11\). The strict-corner floor is
+\[
+\min_D N_{\rm mass,corner}^{(0.22;0.10,1.20)}(D)
+=
+6.88668\times10^{-4},
+\]
+whereas the canonical adverse-band floor is
+\[
+\min_D N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)
+=
+7.37447\times10^{-4},
+\]
+so every genuinely strict corner trim loses the audited factor
+\[
+\frac{7.37447\times10^{-4}}{6.88668\times10^{-4}}
+=
+1.07083.
+\]
+Thus support-side localization is already exhausted at the full adverse-band scale: a strict corner trim does not produce a better theorem object.
+
+\medskip\noindent\textbf{Corollary O31 (The cancellation gap stabilizes at the full adverse-band scale).}
+Combining Proposition~O32 with Corollary~O30 gives
+\[
+\nu_{\rm diag,int}^{(\pm,m)}(D)
+\le
+\frac{N_{\rm mass,corner}^{(0.22;0.10,1.20)}(D)}
+{P_{\rm mass,in}(D)}
++
+6.35145\times10^{-2}
++
+4.19214\times10^{-2}
++
+5.38319\times10^{-2}
++
+4.81178\times10^{-2}.
+\]
+At the exact worst cancellation knot \(D=11\), this reads
+\[
+0.957812
+=
+0.750427
++
+6.35145\times10^{-2}
++
+4.19214\times10^{-2}
++
+5.38319\times10^{-2}
++
+4.81178\times10^{-2}.
+\]
+So the dominant adverse band has now been tested against a genuinely strict corner localization and survives as the stable proof-side target: the remaining gap is best read as the full canonical adverse band plus only small cap, shoulder-core, inner-rim, and axial-core leakages.
+So the positive carrier, the axial core, the inner rim, and even the small axial shoulder core have all been demoted to corrective terms. The remaining proof-side target narrows once more: it is enough to control the genuinely hollow off-axis adverse band
+\[
+N_{\rm mass,band}^{(0.20;0.10,1.20)},
+\]
+with only three small leakages retained outside it.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

@@ -921,3 +921,68 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   7.47726\times10^{-3}.
   \]
   The audited floor drops only from `7.73394e-4` to `7.64028e-4`, a factor `1.01226`. So the support side is now effectively closed here too: the proof target has stabilized at the full canonical adverse annulus, and the remaining gap is the adverse magnitude carried by that annulus, not any finer support selection inside it.
+- **Open-system adverse-shoulder magnitude audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_shoulder_source.py` then attacks that remaining magnitude directly by splitting the canonical adverse annulus into a radial shoulder and an inner-rim leakage,
+  \[
+  N_{\rm mass,ann}^{(0.15,1.20)}
+  =
+  N_{\rm mass,shoulder}^{(\rho_{\rm sh},1.20)}
+  +
+  N_{\rm mass,rim}^{(\rho_{\rm sh},1.20)}.
+  \]
+  Scanning strict radial trims `rho_sh in [0.16,0.30]` shows a flat optimal plateau `rho_sh in [0.16,0.20]`; using the clean canonical representative `rho_sh = 0.20`, the off-axis shoulder still captures at least
+  \[
+  \min_D \frac{N_{\rm mass,shoulder}^{(0.20,1.20)}(D)}{N_{\rm mass,ann}^{(0.15,1.20)}(D)}
+  =
+  0.940824
+  \]
+  (worst at `D=11`), while the discarded inner-rim leakage obeys
+  \[
+  \max_D \frac{N_{\rm mass,rim}^{(0.20,1.20)}(D)}{P_{\rm mass,in}(D)}
+  =
+  5.38319\times10^{-2}
+  \]
+  again at `D=11`. The shoulder floor is `7.37447e-4`, only a factor `1.04874` below the full-annulus floor `7.73394e-4`. So the remaining cancellation gap is now best read as an off-axis one-center adverse shoulder plus two small leakages (the inner radial rim and the axial core), not as a full-annulus magnitude problem.
+- **Open-system adverse-shoulder band audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_shoulder_band_source.py` then attacks the shoulder magnitude itself by carving out a genuine axial hollow inside the canonical shoulder. Fixing `rho_sh = 0.20`, it scans
+  \[
+  \zeta_{\rm low}\in[0.10,0.40]
+  \]
+  in the exact split
+  \[
+  N_{\rm mass,shoulder}^{(0.20,1.20)}
+  =
+  N_{\rm mass,band}^{(0.20;\zeta_{\rm low},1.20)}
+  +
+  N_{\rm mass,core}^{(0.20;\zeta_{\rm low},1.20)}.
+  \]
+  The best hollow already sits at the smallest genuine cut, `zeta_low = 0.10`. For this canonical band,
+  \[
+  \min_D \frac{N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)}{N_{\rm mass,shoulder}^{(0.20,1.20)}(D)}
+  =
+  0.951019
+  \]
+  (worst at `D=11`), while the discarded shoulder-core leakage obeys
+  \[
+  \max_D \frac{N_{\rm mass,core}^{(0.20;0.10,1.20)}(D)}{P_{\rm mass,in}(D)}
+  =
+  4.19214\times10^{-2}.
+  \]
+  The adverse-band floor exactly matches the canonical shoulder floor, both equal to `7.37447e-4` at `D=19`. So the theorem target narrows once more: the remaining adverse magnitude is already carried by a genuinely hollow off-axis band, with only three small corrective leakages left outside it (axial shoulder core, inner rim, and axial core).
+- **Open-system adverse-band corner-stability audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_band_corner_source.py` checks whether the canonical adverse band can be improved by a genuinely strict corner trim. It scans
+  \[
+  \rho_{\rm corner}\in[0.22,0.30],
+  \qquad
+  \zeta_{\rm corner}\in[0.10,0.40]
+  \]
+  inside the canonical band `N_{mass,band}^{(0.20;0.10,1.20)}` and finds a flat best plateau `rho_corner in [0.22,0.27]`, `zeta_corner = 0.10`. Using the clean canonical strict representative `(rho_corner,zeta_corner)=(0.22,0.10)`, the corner subband still captures at least
+  \[
+  \min_D \frac{N_{\rm mass,corner}^{(0.22;0.10,1.20)}(D)}{N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)}
+  =
+  0.921342
+  \]
+  (worst at `D=4`), but the discarded cap leakage already rises to
+  \[
+  \max_D \frac{N_{\rm mass,cap}^{(0.22;0.10,1.20)}(D)}{P_{\rm mass,in}(D)}
+  =
+  6.35145\times10^{-2}
+  \]
+  at `D=11`. More importantly, the strict-corner floor drops to `6.88668e-4`, whereas the full band floor remains `7.37447e-4`, a loss by the factor `1.07083`. So support-side localization is now exhausted at the full adverse-band scale: the stable proof target remains `N_{mass,band}^{(0.20;0.10,1.20)}`, with only small cap, shoulder-core, inner-rim, and axial-core leakages outside it.

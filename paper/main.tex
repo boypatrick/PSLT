@@ -1122,6 +1122,102 @@ b_4,
 \]
 namely in the one-center EYMH normalization that fixes the bridge coefficient, the already small analytic two-center mirror correction, and the first quartic-response coefficient.  Therefore the mainline task is no longer to discover a new overlap object, a new kernel shape, or a new support reduction for \(A_\star\).  The chain is already structurally closed; what remains, if any further improvement is desired, is only to formalize the one-center EYMH source of \(c_\sigma\) and, secondarily, to tighten its mirror/quartic corrections.
 
+\medskip\noindent\textbf{Proposition U7 (\texorpdfstring{$c_\sigma$}{c_sigma} closes as a one-center EYMH constant plus a tiny analytic mirror multiplier).}
+Let
+\[
+c_\sigma^{\rm(exact)}(D)=\sigma_\mu\,\bar\kappa_\mu^{\rm(FD)}(D)^{1/4},
+\qquad
+c_\sigma^{\rm(self)}=\sigma_\mu\,\kappa_{\rm self}^{1/4},
+\]
+and define the analytic two-center curvature refinement by
+\[
+\delta\kappa_{\rm mirror}(D)=\bar\kappa_\mu^{\rm(analytic)}(D)-\kappa_{\rm self}.
+\]
+Then the analytic EYMH bridge coefficient satisfies the exact factorization
+\[
+c_\sigma^{\rm(analytic)}(D)
+=
+\sigma_\mu\,\bar\kappa_\mu^{\rm(analytic)}(D)^{1/4}
+=
+c_\sigma^{\rm(self)}
+\left(1+\frac{\delta\kappa_{\rm mirror}(D)}{\kappa_{\rm self}}\right)^{1/4}.
+\]
+Equivalently,
+\[
+c_\sigma^{\rm(analytic)}(D)
+=
+c_\sigma^{\rm(self)}
+\left[
+1+\frac14\frac{\delta\kappa_{\rm mirror}(D)}{\kappa_{\rm self}}
++O\!\left(\left(\frac{\delta\kappa_{\rm mirror}(D)}{\kappa_{\rm self}}\right)^2\right)
+\right],
+\]
+so the entire \(D\)-dependence of the bridge coefficient is carried by a parametrically small mirror multiplier on top of the one-center EYMH core constant.
+\emph{Verified numerics.}
+The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_hll_csigma_tightening_synthesis.py} consolidates the current \(c_\sigma\)-side summaries and confirms that this is no longer merely a heuristic reading.  The extracted bridge coefficient itself already stays on the narrow D4--20 band
+\[
+22.2802\le c_\sigma^{\rm(exact)}(D)\le 22.3111,
+\qquad
+\frac{\max c_\sigma^{\rm(exact)}-\min c_\sigma^{\rm(exact)}}{\langle c_\sigma^{\rm(exact)}\rangle}=1.38\times10^{-3}.
+\]
+The one-center source is constant,
+\[
+c_\sigma^{\rm(self)}=22.3198,
+\]
+and the analytic mirror factorization closes to machine precision,
+\[
+\max_D\left|
+c_\sigma^{\rm(analytic)}(D)
+-c_\sigma^{\rm(self)}
+\left(1+\frac{\delta\kappa_{\rm mirror}(D)}{\kappa_{\rm self}}\right)^{1/4}
+\right|
+=
+3.55\times10^{-15}.
+\]
+Moreover,
+\[
+\frac{\delta\kappa_{\rm mirror}(D)}{\kappa_{\rm self}}
+\in[-6.91\times10^{-3},-1.39\times10^{-3}],
+\]
+so the mirror multiplier itself lies in the very narrow interval
+\[
+0.998269\le
+\left(1+\frac{\delta\kappa_{\rm mirror}(D)}{\kappa_{\rm self}}\right)^{1/4}
+\le 0.999653,
+\]
+with relative span \(1.38\times10^{-3}\).  Even the first-order linearization already captures that multiplier to
+\[
+\max_D {\rm relerr}\!\left(
+1+\frac14\frac{\delta\kappa_{\rm mirror}}{\kappa_{\rm self}},
+\left(1+\frac{\delta\kappa_{\rm mirror}}{\kappa_{\rm self}}\right)^{1/4}
+\right)
+=4.50\times10^{-6}.
+\]
+Against the extracted finite-difference bridge coefficient, the one-center constant alone stays within
+\[
+\max_D {\rm relerr}\!\left(c_\sigma^{\rm(self)},c_\sigma^{\rm(exact)}\right)=1.78\times10^{-3},
+\]
+while the analytic mirror-refined coefficient improves this immediately to
+\[
+\max_D {\rm relerr}\!\left(c_\sigma^{\rm(analytic)},c_\sigma^{\rm(exact)}\right)=4.21\times10^{-5}.
+\]
+The same tightening is visible on the projected-Yukawa box benchmark: the one-center source gives maximum relative \(y_2\) error \(9.26\times10^{-3}\) and log-RMSE \(6.15\times10^{-3}\), whereas the analytic mirror refinement lowers these to \(9.89\times10^{-4}\) and \(6.29\times10^{-4}\), i.e. improvement factors \(9.37\) and \(9.79\), respectively.
+
+\medskip\noindent\textbf{Corollary U7 (What remains secondary after the \texorpdfstring{$c_\sigma$}{c_sigma} tightening).}
+On the audited normalization chain, the mainline \(c_\sigma\) problem is no longer an open support-selection or kernel-shape problem.  It is already closed, to current numerical precision, by:
+\begin{enumerate}
+\item the one-center EYMH core constant \(c_\sigma^{\rm(self)}\), which sets the bulk normalization scale;
+\item the exact analytic mirror multiplier \(\left(1+\delta\kappa_{\rm mirror}/\kappa_{\rm self}\right)^{1/4}\), which carries the residual \(D\)-dependence;
+\item the projected-box benchmark, which is already saturated by the analytic refinement at sub-\(10^{-3}\) maximum relative \(y_2\) error.
+\end{enumerate}
+Accordingly, the remaining \(c_\sigma\)-side work is now only secondary tightening:
+\[
+b_4,
+\qquad
+\text{and at most sub-}10^{-3}\text{ projected-box polish.}
+\]
+No new overlap object, no new support reduction, and no new kernel ansatz is needed for the normalization mainline.
+
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain
 \[

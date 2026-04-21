@@ -6988,15 +6988,186 @@ u_a\le 7.19\times10^{-3},
 \]
 So the right reading is now stable: the dense exact-family scan sets the benchmark, while the continuum neighborhood bound is the theorem candidate to push beyond the scanned family.
 
-For the reviewer, the microscopic remainder can therefore be summarized as a three-step narrowing chain rather than as a generic open-system ansatz:
+\medskip\noindent\textbf{Proposition O40 (Synthesis of the dominant-pole source chain on the audited exact bridge).}
+Combining Propositions~O1--O9, Corollaries~O1--O8, and Benchmark~O1, the dominant-pole line on the current audited exact bridge separates into three structural blocks:
 \[
-\kappa_{\rm env}
-\;\Longrightarrow\;
-P\Delta V P\in{\rm span}\{I,\sigma_z,\sigma_x\}
-\;\Longrightarrow\;
-S_{zz,a}(0),\,S_{xx,a}(\Delta E_a)=S_a(0),\,S_a(\Delta E_a).
+\text{on-shell defect closure},\qquad
+\text{determinant-deficit gap budget},\qquad
+\text{exact operator witness-envelope inclusion}.
 \]
-The absolute-normalization audit isolates $\kappa_{\rm env}$ as the unique exact amplitude modulus on the audited knot set; the localized two-level projection reduces the leading interaction block to the span of $I,\sigma_z,\sigma_x$, so that the nontrivial projected interaction is at most two-channel; and the micro bridge shows that the dephasing and mixing kernels are on-shell evaluations of the same minimal response family rather than unrelated bath shapes. Accordingly, the remaining EYMH task is no longer to justify the local projected open-system form itself, but to identify the parent origin of the scalar modulus, the projected two-level jet, and the single response family behind the two on-shell channels.
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_dominant_pole_synthesis_source.py}
+compresses these blocks into one reviewer-facing summary on the exported D4--20 knot set.  First, the defect side is already closed:
+\[
+\max_a|\delta_{q,a}|=4.44\times10^{-16},
+\qquad
+\max_a\left|\tau_{{\rm env},a}-\omega_{1,a}^{-1}\right|=1.11\times10^{-16}.
+\]
+Second, the projected continuum-neighborhood route still gives the same determinant-deficit budget and lifted exact-gap floor as the later exact-lift audit:
+\[
+u_a^{(\mathrm{neigh})}\le 5.34\times10^{-3},
+\qquad
+g_a^{\rm(exact)}\ge 1.3339,
+\qquad
+H_{{\rm eff},a}\succeq 0.9947\,H_{PP,a},
+\]
+with consistency residuals
+\[
+\left|g_{a,\mathrm{lift}}^{\rm(exact)}-g_{a,\mathrm{neigh}}^{\rm(exact)}\right|=0,
+\qquad
+\left|\eta_{{\rm eff},\mathrm{lift}}-\eta_{{\rm eff},\mathrm{neigh}}\right|=0,
+\]
+at the exported precision.  Third, the exact operator already lies deep inside the audited safe chart:
+\[
+\mathcal B_{\rm op}^{\rm(exact)}=3.63\times10^{-7}
+=\|W_{\max}^{\rm(exact)}\|_\infty,
+\]
+with the envelope attained by the exact factorization-side block-22 witness at \(D=13\), and
+\[
+\mathcal B_{\rm op}^{\rm(exact)}
+\le \tfrac12 r_{95}^{\rm safe}=4.81\times10^{-5},
+\qquad
+\mathcal B_{\rm op}^{\rm(exact)}
+\le \tfrac12 r_{\max}^{\rm safe}=5.03\times10^{-5},
+\]
+by factors
+\[
+1.33\times10^{2},
+\qquad
+1.39\times10^{2}.
+\]
+Meanwhile the family-transfer audit still gives
+\[
+N_{\rm adm}^{\rm(total)}=1,
+\qquad
+N_{\rm adm}^{\rm(noncan)}=0
+\]
+at \(J_\ast=10^{-6}\), with the minimum selection gap exceeding that theorem tolerance by the factor
+\[
+6.90\times10^{2}.
+\]
+Thus, on the current exact bridge, the defect side, the family/chart transfer side, and the exact witness-envelope side are already mutually aligned: the only missing step is no longer to discover a new response family or a new projected interaction channel, but to promote the same determinant-deficit budget from audited evidence to an a priori exact Schur-resolvent lift.
+
+\medskip\noindent\textbf{Corollary O39 (What is closed, and what remains as the single dominant-pole gap).}
+On the current audited exact bridge, the dominant-pole / Schur-resolvent line now separates cleanly into \emph{closed} structural blocks and \emph{one} remaining theorem-level lift.
+
+\emph{Closed on the audited exact bridge:}
+\[
+P\Delta V P\in{\rm span}\{I,\sigma_z,\sigma_x\},
+\qquad
+\delta_{q,a}\approx 0,
+\qquad
+\text{family/chart transfer},
+\qquad
+\mathcal B_{\rm op}^{\rm(exact)}\ll r_{\rm safe}/2.
+\]
+Equivalently, the localized two-level reduction, the gap-locked single-pole response family, the on-shell defect closure, and the exact operator witness inclusion are no longer substantive blockers on the current knot set.
+
+\emph{The single remaining theorem-level gap is:}
+\[
+\text{upgrade }
+u_a^{(\mathrm{neigh})}\le 5.34\times10^{-3}
+\quad\Longrightarrow\quad
+g_a^{\rm(exact)}\ge 1.3339
+\]
+from the present audited projected-family / chart evidence to a genuine parent-side analytic lift for the exact Schur resolvent.  Once that step is made, Theorem Target~O1 is closed on the current on-shell window without introducing any new support, response family, or overlap object.
+
+\medskip\noindent\textbf{Proposition O41 (A single scalar sufficient condition for the exact Schur lift).}
+The remaining theorem-level lift of Corollary~O39 can be reduced one step further to a single scalar lower floor on the mix kernel.  Define
+\[
+m_{{\rm mix},\ast}
+:=
+\frac{\varepsilon_{\rm mix}}{\tfrac12 r_{95}^{\rm safe}},
+\qquad
+\varepsilon_{\rm mix}
+:=
+\max_D\bigl|\gamma_{\rm mix}(D)-\kappa_{\rm env}\,g_x(D)^2S_{xx}(D)\bigr|.
+\]
+On the current audited exact bridge,
+\[
+\varepsilon_{\rm mix}=4.40\times10^{-14},
+\qquad
+\tfrac12 r_{95}^{\rm safe}=4.81\times10^{-5},
+\]
+so
+\[
+m_{{\rm mix},\ast}=9.15\times10^{-10}.
+\]
+Suppose a parent-side analytic argument supplies the uniform lower floor
+\[
+g_x(D)^2S_{xx}(D)\ge m_{{\rm mix},\ast}
+\]
+throughout the audited on-shell window.  Then Proposition~O9 gives
+\[
+\|\Delta_{\rm mix}^{\rm(fact)}\|_\infty
+\le
+\frac{\varepsilon_{\rm mix}}{m_{{\rm mix},\ast}}
+\le
+\tfrac12 r_{95}^{\rm safe}.
+\]
+Meanwhile all non-mix witness components are already much smaller:
+\[
+\mathcal B_{\rm op}^{\rm(nonmix)}
+:=
+\max\bigl\{
+\Delta_{\phi}^{\rm(fact)},
+\Delta_{\rm tr}^{\rm(stmt)},
+\Delta_{\rm det}^{\rm(stmt)},
+\Delta_{\rm ani}^{\rm(stmt)},
+\Delta_{\rm mix}^{\rm(cocycle)},
+\Delta_{\rm mix}^{\rm(potential)}
+\bigr\}
+=2.33\times10^{-10},
+\]
+so
+\[
+\frac{\tfrac12 r_{95}^{\rm safe}}{\mathcal B_{\rm op}^{\rm(nonmix)}}
+=2.06\times10^{5}.
+\]
+Hence the exact witness envelope satisfies
+\[
+\mathcal B_{\rm op}^{\rm(exact)}\le \tfrac12 r_{95}^{\rm safe},
+\]
+the exact operator lies in the audited safe chart by Corollary~O7, and the determinant-deficit budget of Proposition~O5 transfers to the exact Schur-reduced operator. Therefore
+\[
+u_a\le 5.34\times10^{-3},
+\qquad
+g_a^{\rm(exact)}\ge 1.3339,
+\qquad
+H_{{\rm eff},a}\succeq 0.9947\,H_{PP,a},
+\]
+and, together with Corollary~O2, Theorem Target~O1 is closed on the current on-shell window.
+
+\medskip\noindent\textbf{Corollary O40 (The exact Schur lift has been reduced to one scalar floor).}
+On the current audited exact bridge, the only remaining analytic input needed for the dominant-pole / exact-Schur lift is any one parent-side proof of a mix-kernel floor at or above
+\[
+g_x(D)^2S_{xx}(D)\ge 9.15\times10^{-10}.
+\]
+Equivalently, since \(\kappa_{\rm env}^{\max}=4.31\times10^{5}\) on the same knot set, it is enough to prove
+\[
+\gamma_{\rm mix}(D)\ge 3.94\times10^{-4}.
+\]
+The new audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_lift_scalar_source.py}
+shows that the current exported exact bridge already exceeds this threshold in several independent ways:
+\[
+\min_D g_x(D)^2S_{xx}(D)=1.2147\times10^{-9},
+\qquad
+\frac{\min_D g_x(D)^2S_{xx}(D)}{m_{{\rm mix},\ast}}=1.328,
+\]
+\[
+\frac{\min_D\gamma_{\rm mix}(D)}{\kappa_{\rm env}^{\max}}
+=1.2147\times10^{-9},
+\qquad
+\frac{\min_D\gamma_{\rm mix}(D)/\kappa_{\rm env}^{\max}}{m_{{\rm mix},\ast}}=1.328,
+\]
+and even the separated observable-chain floor already gives
+\[
+\frac{\gamma_{\rm mix}^{\rm(sep\ floor)}}{\kappa_{\rm env}^{\max}}
+=1.0016\times10^{-9},
+\qquad
+\frac{\gamma_{\rm mix}^{\rm(sep\ floor)}/\kappa_{\rm env}^{\max}}{m_{{\rm mix},\ast}}=1.095.
+\]
+Thus the exact Schur-lift problem is no longer a multi-parameter chart or support problem: it has been reduced to one scalar analytic floor on the mix kernel (equivalently on \(\gamma_{\rm mix}\)), while the defect side, the family/chart transfer side, and the non-mix witness side are already closed on the audited exact bridge.
 
 \begin{table}[t]
 \centering

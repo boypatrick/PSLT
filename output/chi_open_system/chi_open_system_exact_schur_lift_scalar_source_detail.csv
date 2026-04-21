@@ -1,0 +1,6 @@
+source,kernel_floor,gamma_floor,ratio_to_required_p95,ratio_to_required_max,argmin_or_reference_D,role
+required_half_radius_threshold,9.147187296962529e-10,0.00039382888770111144,1.0,1.0459530601365594,,sufficient_condition
+direct_exact_mix_kernel_floor,1.2147234528669615e-09,,1.3279748336085015,1.3889993409971504,11.0,exact_export
+gamma_induced_kernel_floor,1.2147234527648042e-09,0.0005229948516151,1.32797483349682,1.3889993408803367,11.0,exact_export
+separated_gamma_floor,1.0015740636360775e-09,0.0004312241420519088,1.0949530507248564,1.145269494111525,11.0,observable_chain_sufficient
+nonmix_witness_envelope,,,206497.48732699055,215986.67878017615,,already_closed

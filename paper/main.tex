@@ -7710,6 +7710,183 @@ so the right window \(\mathcal D_{\rm R}\) is already uniformly far above both S
 \]
 Therefore, from the standpoint of the remaining parent-side analytic lift, the right window is formally demoted to a non-bottleneck sector.  The only substantive task left on `open\_system\_micro' is to prove one of the equivalent left-window bounds of Proposition~O47 on the same family \(B_{\rm core}(R_\ast)\) and the same exact-total split.
 
+\medskip\noindent\textbf{Proposition O48 (Even the left-window bottleneck is a coupling artifact: the same-family split localizes it to \(D\le 10\) plus the single core-floor knot \(D=11\)).}
+Keep the same family \(B_{\rm core}(R_\ast)\) with the same radius \(R_\ast=1.35\), but now split the left window
+\[
+\mathcal D_{\rm L}=\{4,\dots,11\}
+\]
+into the two contiguous subwindows
+\[
+\mathcal D_{\rm L1}=\{4,\dots,10\},
+\qquad
+\mathcal D_{\rm L2}=\{11\}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_left_window_split_source.py}
+shows that the best same-family split occurs exactly at
+\[
+D_{\rm cut}=10.
+\]
+On \(\mathcal D_{\rm L1}\) the tail-ratio bottleneck remains
+\[
+\eta_{\rm L1}^{\max}=0.520215\ldots
+\quad\text{at }D=9,
+\]
+but the core floor improves to
+\[
+\inf_{D\in\mathcal D_{\rm L1}}|J_{\rm core}^{(R_\ast)}(D)|
+=
+1.54417\times10^{-4},
+\]
+so the same-family induced floor there is
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+7.40868\times10^{-5}
+\qquad
+(D\in\mathcal D_{\rm L1}).
+\]
+On the singleton subwindow \(\mathcal D_{\rm L2}=\{11\}\), the same-family split gives
+\[
+\eta_{\rm L2}=0.502024\ldots,
+\qquad
+|J_{\rm core}^{(R_\ast)}(11)|=1.34704\times10^{-4},
+\]
+hence
+\[
+|V_{11}(11)-V_{22}(11)|
+\ge
+6.70795\times10^{-5}.
+\]
+Therefore the same-family left-window split already yields the audited floor
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+6.70795\times10^{-5}
+\qquad
+(D\in\mathcal D_{\rm L1}\cup\mathcal D_{\rm L2}),
+\]
+which exceeds the global and local Schur-parity thresholds by the factors
+\[
+1.11721
+\qquad\text{and}\qquad
+1.15238.
+\]
+In particular, the former left-window bottleneck is itself only a coupling artifact: the tail-ratio maximum occurs at \(D=9\), while the core-floor minimum occurs at \(D=11\), and forcing them into one left-window product is what creates the residual slack.
+
+\medskip\noindent\textbf{Corollary O47 (The only meaningful parent-side target left is a theorem for the same-family tail ratio on \(D=4,\dots,10\), together with the already-isolated core-floor knot at \(D=11\)).}
+The same audit shows
+\[
+\eta_{\rm L}^{\max}\text{ occurs at }D=9,
+\qquad
+\inf_{\mathcal D_{\rm L}}|J_{\rm core}^{(R_\ast)}|\text{ occurs at }D=11,
+\]
+so the left-window bottleneck no longer behaves as a single coherent interval obstruction.  After the same-family split at \(D_{\rm cut}=10\), the subwindow \(\mathcal D_{\rm L1}=\{4,\dots,10\}\) already clears both Schur-parity thresholds by itself, and the singleton knot \(D=11\) carries the audited left exact minimum \(6.70795\times10^{-5}\).  Therefore the remaining parent-side analytic work can be read in its narrowest practical form:
+
+\begin{enumerate}
+\item prove the same-family tail/core inequality on the left subwindow \(D=4,\dots,10\), where the true ratio bottleneck lives;
+\item treat \(D=11\) as the already isolated core-floor knot rather than as part of a larger family-design problem.
+\end{enumerate}
+
+No new family, no new support, and no new chart structure are left even on the former bottleneck window; what remains is a localized parent-side estimate on the same exact-total split.
+
+\medskip\noindent\textbf{Proposition O49 (The residual \(D=4,\dots,10\) target is itself a coupling artifact: the same-family hierarchical split leaves only the singleton knot \(D=11\) as the audited bottleneck).}
+Keep exactly the same family \(B_{\rm core}(R_\ast)\) with the same radius \(R_\ast=1.35\), and refine the left subwindow
+\[
+\mathcal D_{\rm L1}=\{4,\dots,10\}
+\]
+into the two contiguous windows
+\[
+\mathcal D_{\rm L1a}=\{4,5,6\},
+\qquad
+\mathcal D_{\rm L1b}=\{7,\dots,10\}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_left_window_hierarchical_split_source.py}
+shows that the best secondary same-family cut occurs at
+\[
+D_{\rm cut}^{(2)}=6.
+\]
+On \(\mathcal D_{\rm L1a}\), the tail-ratio maximum remains
+\[
+\eta_{\rm L1a}^{\max}=0.469739\ldots
+\quad\text{at }D=4,
+\]
+while the core floor is now
+\[
+\inf_{D\in\mathcal D_{\rm L1a}}|J_{\rm core}^{(R_\ast)}(D)|
+=
+1.54417\times10^{-4}
+\quad\text{at }D=6,
+\]
+giving the same-family induced floor
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+8.18812\times10^{-5}
+\qquad
+(D\in\mathcal D_{\rm L1a}).
+\]
+On \(\mathcal D_{\rm L1b}\), the tail-ratio maximum occurs at
+\[
+\eta_{\rm L1b}^{\max}=0.520215\ldots
+\quad\text{at }D=9,
+\]
+but the core floor is already much larger,
+\[
+\inf_{D\in\mathcal D_{\rm L1b}}|J_{\rm core}^{(R_\ast)}(D)|
+=
+7.72912\times10^{-4},
+\]
+so the same-family induced floor there is
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+3.70831\times10^{-4}
+\qquad
+(D\in\mathcal D_{\rm L1b}).
+\]
+Together with the already isolated singleton knot \(D=11\),
+\[
+|V_{11}(11)-V_{22}(11)|\ge 6.70795\times10^{-5},
+\]
+the overall audited hierarchical floor on \(D=4,\dots,11\) remains
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+6.70795\times10^{-5},
+\]
+which exceeds the global and local Schur-parity thresholds by the same factors
+\[
+1.11721
+\qquad\text{and}\qquad
+1.15238.
+\]
+Therefore even the residual \(D=4,\dots,10\) target is only a coupling artifact: after the same-family hierarchical split, every non-singleton subwindow clears the Schur threshold by a comfortable margin, and the audited minimum is carried solely by the isolated knot \(D=11\).
+
+\medskip\noindent\textbf{Corollary O48 (On the audited bridge, the only surviving bottleneck is the single core-floor knot \(D=11\); all interval pieces are formally non-bottleneck on the same family).}
+The same audit gives
+\[
+\frac{8.18812\times10^{-5}}{6.00420\times10^{-5}}=1.36373,
+\qquad
+\frac{8.18812\times10^{-5}}{5.82096\times10^{-5}}=1.40666
+\]
+on \(\mathcal D_{\rm L1a}=\{4,5,6\}\), and
+\[
+\frac{3.70831\times10^{-4}}{6.00420\times10^{-5}}=6.17693,
+\qquad
+\frac{3.70831\times10^{-4}}{5.82096\times10^{-5}}=6.37084
+\]
+on \(\mathcal D_{\rm L1b}=\{7,\dots,10\}\).  Since the singleton floor
+\[
+6.70795\times10^{-5}
+\]
+at \(D=11\) is smaller than both interval floors, the audited bridge now has a uniquely isolated same-family bottleneck.  Thus the remaining parent-side analytic task can be read in its narrowest current form:
+\begin{enumerate}
+\item the interval pieces \(D=4,\dots,6\) and \(D=7,\dots,10\) are formally demoted to non-bottleneck sectors on the same exact-total split;
+\item the only surviving audited bottleneck is the single-knot core-floor estimate at \(D=11\).
+\end{enumerate}
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

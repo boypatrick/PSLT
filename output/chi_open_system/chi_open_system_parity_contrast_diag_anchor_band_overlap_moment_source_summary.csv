@@ -1,0 +1,2 @@
+max_identity_resid_abs,max_localized_abs_resid_abs,M_band_neg_floor_abs,M_band_neg_floor_D,M_band_abs_floor_abs,M_band_abs_floor_D,max_signed_ratio,max_signed_ratio_D,min_signed_ratio,min_signed_ratio_D,theta_neg_floor,theta_neg_floor_D,induced_lower_bound_abs,exact_over_induced_lower_bound
+1.734723475976807e-18,3.469446951953614e-18,0.0030127025320934257,20.0,0.0064529893772364375,19.0,0.09603389137008386,11.0,-0.20378838874370603,7.0,0.45198305431495805,11.0,0.0029166418481853043,1.0329353718790975

@@ -6116,11 +6116,158 @@ Moreover,
 1.00088,
 \]
 so even the coarsest audited lower product is already essentially exact. Thus the carrier-side magnitude problem narrows once more: to control \(W_{\rm band}^{(-)}\), it is enough to control the unweighted negative overlap-band moment \(M_{\rm band}^{(-)}\), with only an almost constant radial factor left outside it.
-So the positive carrier, the axial core, the inner rim, and even the small axial shoulder core have all been demoted to corrective terms. The remaining proof-side target narrows once more: it is enough to control the genuinely hollow off-axis adverse band
+
+\medskip\noindent\textbf{Proposition O35 (The negative overlap-band moment is an absolute overlap-band mass times a signed-imbalance factor).}
+Keep the canonical adverse band
 \[
-N_{\rm mass,band}^{(0.20;0.10,1.20)},
+B_{\rm neg}^{(0.20;0.10,1.20)}(D)
 \]
-with only three small leakages retained outside it.
+and define the unweighted signed overlap-band density
+\[
+m_{\rm band}(\rho,z;D)
+:=
+\operatorname{sgn}(I_{\rm diag,anchor}(D))\bigl(\psi_1(\rho,z;D)^2-\psi_2(\rho,z;D)^2\bigr)
+\mathbf 1_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}.
+\]
+Define its negative moment, absolute moment, and signed residue by
+\[
+M_{\rm band}^{(-)}(D)
+:=
+\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)} [ -m_{\rm band}(\rho,z;D)]_+\,d\rho\,dz,
+\]
+\[
+M_{\rm band}^{\rm(abs)}(D)
+:=
+\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)} |m_{\rm band}(\rho,z;D)|\,d\rho\,dz,
+\]
+\[
+R_{\rm band}^{\rm(sgn)}(D)
+:=
+\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)} m_{\rm band}(\rho,z;D)\,d\rho\,dz.
+\]
+Since \(x_-=(|x|-x)/2\), one has the exact identity
+\[
+M_{\rm band}^{(-)}(D)
+=
+\frac{M_{\rm band}^{\rm(abs)}(D)-R_{\rm band}^{\rm(sgn)}(D)}{2}.
+\]
+Equivalently, if
+\[
+r_{\rm band}^{\rm(sgn)}(D)
+:=
+\frac{R_{\rm band}^{\rm(sgn)}(D)}{M_{\rm band}^{\rm(abs)}(D)},
+\qquad
+\theta_{\rm band}^{(-)}(D)
+:=
+\frac{1-r_{\rm band}^{\rm(sgn)}(D)}{2},
+\]
+then
+\[
+M_{\rm band}^{(-)}(D)=\theta_{\rm band}^{(-)}(D)\,M_{\rm band}^{\rm(abs)}(D).
+\]
+Moreover, using the localized basis
+\[
+\phi_R=\frac{\psi_1+\psi_2}{\sqrt2},
+\qquad
+\phi_L=\frac{\psi_1-\psi_2}{\sqrt2},
+\]
+the parity-contrast identity
+\[
+\psi_1^2-\psi_2^2=2\phi_R\phi_L
+\]
+implies
+\[
+M_{\rm band}^{\rm(abs)}(D)
+=
+2\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)} |\phi_R(\rho,z;D)\phi_L(\rho,z;D)|\,d\rho\,dz.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_overlap_moment_source.py}
+verifies both identities to machine precision:
+\[
+\max_D \left|M_{\rm band}^{(-)}-\frac{M_{\rm band}^{\rm(abs)}-R_{\rm band}^{\rm(sgn)}}{2}\right|
+=
+1.73472\times10^{-18},
+\]
+\[
+\max_D \left|M_{\rm band}^{\rm(abs)}-2\int |\phi_R\phi_L|\right|
+=
+3.46945\times10^{-18}.
+\]
+The signed-imbalance ratio satisfies
+\[
+-2.03788\times10^{-1}
+\le
+r_{\rm band}^{\rm(sgn)}(D)
+\le
+9.60339\times10^{-2},
+\]
+with the maximum at \(D=11\) and the minimum at \(D=7\). Hence the negative-fraction factor satisfies
+\[
+4.51983\times10^{-1}
+\le
+\theta_{\rm band}^{(-)}(D)
+\le
+6.01894\times10^{-1},
+\]
+with the minimum again at \(D=11\). The absolute overlap-band floor is
+\[
+\min_D M_{\rm band}^{\rm(abs)}(D)
+=
+6.45299\times10^{-3}
+\]
+at \(D=19\), while the negative overlap-band floor remains
+\[
+\min_D M_{\rm band}^{(-)}(D)
+=
+3.01270\times10^{-3}
+\]
+at \(D=20\).
+
+\medskip\noindent\textbf{Corollary O34 (The remaining overlap-side target is the absolute overlap-band mass).}
+By Proposition~O35, one has the exact identity
+\[
+M_{\rm band}^{(-)}(D)
+=
+\theta_{\rm band}^{(-)}(D)\,M_{\rm band}^{\rm(abs)}(D),
+\qquad
+\theta_{\rm band}^{(-)}(D)=\frac{1-r_{\rm band}^{\rm(sgn)}(D)}{2}.
+\]
+Since
+\[
+r_{\rm band}^{\rm(sgn)}(D)\le 9.60339\times10^{-2},
+\]
+it follows that
+\[
+M_{\rm band}^{(-)}(D)
+\ge
+(4.51983\times10^{-1})\,M_{\rm band}^{\rm(abs)}(D).
+\]
+Combining this with the audited absolute overlap-band floor gives the direct lower bound
+\[
+M_{\rm band}^{(-)}(D)
+\ge
+(4.51983\times10^{-1})(6.45299\times10^{-3})
+=
+2.91664\times10^{-3}.
+\]
+Compared with the exact negative overlap-band floor
+\[
+3.01270\times10^{-3},
+\]
+this misses by only the factor
+\[
+\frac{3.01270\times10^{-3}}{2.91664\times10^{-3}}
+=
+1.03294.
+\]
+Thus the support problem, the kernel problem, and the radial-weight problem are all closed. What remains on the overlap side is no longer the clipped negative carrier itself, but the absolute localized overlap-band mass
+\[
+M_{\rm band}^{\rm(abs)}(D)
+=
+2\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)} |\phi_R\phi_L|\,d\rho\,dz,
+\]
+with only a small signed-imbalance factor left outside it.
 
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on

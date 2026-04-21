@@ -1022,3 +1022,31 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   \frac{\min W_{\rm band}^{(-)}}{2\pi(\min \bar\rho_{\rm band}^{(-)})(\min M_{\rm band}^{(-)})}=1.00088.
   \]
   So the carrier-side magnitude problem narrows again: to control `W_{band}^{(-)}`, it is enough to control the unweighted negative overlap-band moment `M_{band}^{(-)}`, with only an almost constant radial factor left outside it.
+- **Open-system overlap-band sign-balance audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_overlap_moment_source.py` attacks `M_{band}^{(-)}` itself without any further support change. On the same canonical band it defines the absolute overlap-band mass
+  \[
+  M_{\rm band}^{\rm(abs)}
+  =
+  \int |(\operatorname{sgn}I_{diag,anchor})(\psi_1^2-\psi_2^2)|,
+  \]
+  and the signed overlap residue `R_{band}^{(sgn)}`, then verifies the exact identity
+  \[
+  M_{\rm band}^{(-)}=\frac{M_{\rm band}^{\rm(abs)}-R_{\rm band}^{\rm(sgn)}}{2}
+  =\theta_{\rm band}^{(-)}M_{\rm band}^{\rm(abs)}
+  \]
+  with residual `1.73e-18`. It also verifies the localized-overlap rewrite
+  \[
+  M_{\rm band}^{\rm(abs)}=2\int |\phi_R\phi_L|
+  \]
+  with residual `3.47e-18`. The signed-imbalance ratio stays in the audited interval
+  \[
+  -2.03788\times10^{-1}\le r_{\rm band}^{\rm(sgn)}\le 9.60339\times10^{-2},
+  \]
+  so the negative-fraction factor obeys
+  \[
+  \theta_{\rm band}^{(-)}\ge 4.51983\times10^{-1}.
+  \]
+  Since the absolute overlap-band floor is `6.45299e-3` at `D=19`, this already induces
+  \[
+  M_{\rm band}^{(-)}\ge 2.91664\times10^{-3},
+  \]
+  only a factor `1.03294` below the exact negative-overlap floor `3.01270e-3` at `D=20`. So the support, kernel, and radial-weight questions are all effectively closed: the remaining overlap-side proof target is now the absolute localized overlap-band mass `M_{band}^{abs}=2\int|\phi_R\phi_L|`, with only a small signed-imbalance factor left outside it.

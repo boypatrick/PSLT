@@ -1070,6 +1070,58 @@ b_4=0.4244.
 \]
 Numerically this single quartic correction collapses the remaining width drift from $1.01\times10^{-3}$ to $8.47\times10^{-7}$, and pushes the finite-box kernel defect down from $1.11\times10^{-2}$ to $9.47\times10^{-5}$, essentially saturating the residual box-normalization error. In that sense the current bridge problem is now very narrow: the surviving EYMH-side ambiguity is no longer the width profile, but the source of the nearly constant bridge coefficient $c_\sigma$ and, at the next order, the quartic-response coefficient $b_4$.
 
+\medskip\noindent\textbf{Proposition U6 (Absolute-normalization synthesis chain).}
+On the current diagonal UV+LL-RG chain, the observable-side absolute normalization reduces exactly to the reference overlap block and a structurally fixed finite-box bridge:
+\[
+A_\star
+=
+Z_{{\rm diag},\star}^{-2}
+\left[
+y_2^{\rm raw}(D_\star)\,
+\frac{P_2^{\rm kin}(D_\star,\eta_\star)}{M_2^2(D_\star)}
+\right]^{-2},
+\]
+with \(R_{e/\mu}^\star\) already fixed by the accepted-region invariant audit for practical purposes and \(R_{\tau/\mu}^\star\) an exact UV-tree invariant of the current diagonal chain.  Moreover,
+\[
+y_2^{\rm raw}(D)=y_{\mu,2}^{\rm flavor}(D)=\bigl(g_{\mu 2}^{\rm UV}(D)\bigr)^2,
+\]
+and the corresponding overlap kernel closes exactly as
+\[
+K_\mu(\rho,z;D)=A_\mu^{\rm(disc)}(D)\exp\!\left[-\frac{\rho^2+z^2}{\sigma_\mu^2}\right].
+\]
+Thus the only remaining parent-side source ambiguity is the EYMH origin of the nearly constant bridge coefficient \(c_\sigma\) in the structurally fixed width law
+\[
+\sigma_\mu(D)=c_\sigma(D)\,\bar\kappa_\mu(D)^{-1/4},
+\]
+or, after the first quartic tightening,
+\[
+\sigma_\mu^{\rm(curv,4)}(D)
+=
+c_{\sigma,\star}\,\bar\kappa_\mu(D)^{-1/4}
+\Bigl[1+b_4\bigl(q_{4,\mu}(D)-q_{4,\mu}(D_\star)\bigr)\Bigr].
+\]
+On the representative projected-Yukawa benchmark \(D=\{6,12,18\}\), this residual bridge constant is already fixed in bulk by the one-center source \(c_\sigma^{\rm(self)}\) and saturated by the analytic two-center refinement \(c_\sigma^{\rm(analytic)}(D)\).
+\emph{Audit synthesis.}
+The new consolidation audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_hll_absolute_normalization_synthesis_source.py} reads the existing normalization-side summaries directly and confirms that the chain now separates into exact-closure stages and secondary-tightening stages.  On the exact side, the diagonal flavor ratios remain UV-tree invariants to machine precision (\(\max|\Delta R_{e/\mu}^{\rm UV\to IR}|=6.05\times10^{-13}\), \(\max|\Delta R_{\tau/\mu}^{\rm UV\to IR}|=3.23\times10^{-14}\)); the amplitude factorization \(A_\star=A_\star^{\rm(tree)}Z_{{\rm diag},\star}^{-2}\) closes with residual \(9.32\times10^{-17}\); the single-layer reduction \(C_{\mu\mu}^{\rm tree}=y_2^{\rm raw}(P_2^{\rm kin}/M_2^2)\) closes with residual \(9.76\times10^{-17}\) and exact \(N=2\) support; the overlap identity \(y_2^{\rm raw}=(g_{\mu2}^{\rm UV})^2\) closes with residual \(9.87\times10^{-17}\); and the Gaussian midplane kernel factorization closes with relative sup residual \(3.05\times10^{-15}\).  On the structural-but-not-final side, the finite-box Gaussian bridge already stays at \(9.45\times10^{-5}\) relative sup error, the curvature width law is within \(1.01\times10^{-3}\) of the canonical width, and the quartic correction collapses that drift to \(8.47\times10^{-7}\) while lowering the finite-box kernel defect to \(9.47\times10^{-5}\).  Excluding the known near-merger outlier at \(D=5\), the pointwise core-to-box inversion keeps \(c_\sigma\) on the narrow band \([22.2825,22.3100]\) with relative span \(1.23\times10^{-3}\).  The one-center EYMH source itself gives \(c_\sigma^{\rm(self)}=22.3198\), only \(7.37\times10^{-4}\) above the reference selector and \(4.61\times10^{-4}\) above the projected selector, while the analytic two-center jet tracks the extracted \(c_\sigma(D)\) with maximum relative error \(4.21\times10^{-5}\).  Finally, on the projected-box benchmark, the one-center source alone reproduces the overlap block with log-RMSE \(6.15\times10^{-3}\) and maximum relative \(y_2\) error \(9.26\times10^{-3}\), whereas the analytic mirror refinement improves this to log-RMSE \(6.29\times10^{-4}\) and maximum relative error \(9.89\times10^{-4}\), slightly better than the fixed projected selector itself.
+
+\medskip\noindent\textbf{Corollary U6 (What is closed, and what remains only as secondary tightening, for \texorpdfstring{$A_\star$}{A*}).}
+On the current audited domain, the following normalization-side blocks are already structurally closed:
+\begin{enumerate}
+\item the flavor-ratio side \((R_{e/\mu}^\star,R_{\tau/\mu}^\star)\), with \(R_{e/\mu}^\star\) practically fixed by the invariant audit and \(R_{\tau/\mu}^\star\) exact along the diagonal UV chain;
+\item the exact amplitude factorization \(A_\star=A_\star^{\rm(tree)}Z_{{\rm diag},\star}^{-2}\);
+\item the single-layer tree reduction \(C_{\mu\mu}^{\rm tree}=y_2^{\rm raw}(P_2^{\rm kin}/M_2^2)\);
+\item the overlap identity \(y_2^{\rm raw}=y_{\mu,2}^{\rm flavor}=(g_{\mu2}^{\rm UV})^2\);
+\item the Gaussian midplane kernel shape \(K_\mu=A_\mu^{\rm(disc)}\exp[-(\rho^2+z^2)/\sigma_\mu^2]\);
+\item the structural width profile \(\sigma_\mu\propto \bar\kappa_\mu^{-1/4}\) together with its first quartic tightening.
+\end{enumerate}
+Only secondary tightening remains in:
+\[
+c_\sigma,\qquad
+\delta c_\sigma^{\rm(mirror)},\qquad
+b_4,
+\]
+namely in the one-center EYMH normalization that fixes the bridge coefficient, the already small analytic two-center mirror correction, and the first quartic-response coefficient.  Therefore the mainline task is no longer to discover a new overlap object, a new kernel shape, or a new support reduction for \(A_\star\).  The chain is already structurally closed; what remains, if any further improvement is desired, is only to formalize the one-center EYMH source of \(c_\sigma\) and, secondarily, to tighten its mirror/quartic corrections.
+
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain
 \[

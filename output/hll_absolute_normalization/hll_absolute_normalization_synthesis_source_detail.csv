@@ -1,0 +1,11 @@
+stage,status,metric_1_name,metric_1_value,metric_2_name,metric_2_value,note
+flavor_ratio_invariance,closed_exact,max_abs_delta_R_e_uv_to_ir,6.050715484207103e-13,max_abs_delta_R_tau_uv_to_ir,3.232136780439987e-14,Diagonal flavor ratios are exact UV-tree invariants on active rows.
+absolute_amplitude_factorization,closed_exact,max_abs_factorization_residual,9.316007167081697e-17,A_star_ir_over_tree,0.9889471892004417,"A_* = A_*^(tree) Z_diag,*^{-2} with only mild diagonal dressing."
+tree_single_layer_reduction,closed_exact,max_abs_single_layer_residual,9.75781955236954e-17,min_mu_share2,0.9999999999999997,C_{mumu}^{tree} = y2raw * (P2kin/M2^2) with exact N=2 support.
+overlap_block_identity,closed_exact,max_abs_guv_mu2_sq_vs_raw,9.871660780480518e-17,p95_rel_center2_vs_raw2,1.1431925971994563,"y2raw = y_mu,2^flavor = (g_mu2^UV)^2; center-mode collapse is not adequate."
+kernel_shape_factorization,closed_exact,max_rel_sup_exact_factorization,3.0497086204546275e-15,max_rel_sup_box_candidate,9.450576000362044e-05,K_mu closes exactly as a symmetric Gaussian midplane bridge.
+width_profile_chain,closed_structural,max_sigma_curvature_relerr,0.0010097623241142272,max_sigma_curv1_relerr,8.46544030763674e-07,The width profile is structurally fixed; quartic correction saturates the residual drift.
+c_sigma_bridge_band,secondary_tightening,c_sigma_box_local_min_excl_D5,22.2825,c_sigma_box_local_max_excl_D5,22.310000000000002,The finite-box bridge constant lives on a narrow audited band once the D=5 merger outlier is excluded.
+one_center_core_source,secondary_tightening,c_sigma_self,22.319782286451296,max_relerr_csigma_analytic,4.2084741521675184e-05,One-center core fixes the bulk normalization; analytic two-center jet gives a near-exact refinement.
+projected_box_benchmark,secondary_tightening,max_rel_y2_resid_self,0.00926280128470539,max_rel_y2_resid_analytic,0.0009889748433533614,Analytic mirror correction improves the projected-box benchmark beyond the fixed projected selector.
+live_reference_chain_consistency,summary_consistency,rel_resid_A_from_tree_chain,1.7962970105959038e-09,rel_resid_A_from_y2_chain,1.796297926327544e-09,Rounded summary constants remain chain-consistent at the 1e-9 relative level.

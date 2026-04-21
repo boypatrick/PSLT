@@ -6413,6 +6413,123 @@ Therefore the remaining overlap-side proof target has narrowed again. It is no l
 \]
 with the same-center carrier moment already providing an almost saturated one-center positive source.
 
+\medskip\noindent\textbf{Proposition O37 (The weighted mirror-tail average factorizes through an ordinary mirror-band mean and a self-weight bias).}
+Keep the same canonical band
+\[
+B_{\rm neg}^{(0.20;0.10,1.20)}(D)
+\]
+and define its band area
+\[
+A_{\rm band}(D)
+:=
+\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)} 1\,d\rho\,dz.
+\]
+Using the mirror-tail carrier moment
+\[
+S_{\rm band}^{\rm(mir)}(D)
+:=
+\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)} \Phi_{\rm mir}(\rho,z;D)\,d\rho\,dz,
+\]
+define the ordinary mirror-band mean
+\[
+\bar\Phi_{\rm band}^{\rm(mir)}(D)
+:=
+\frac{S_{\rm band}^{\rm(mir)}(D)}{A_{\rm band}(D)}.
+\]
+Then the weighted mirror-tail average from Proposition~O36 satisfies the exact identity
+\[
+\bar\Phi_{\rm band}^{\rm(mir|self)}(D)
+=
+\Xi_{\rm band}^{\rm(self)}(D)\,\bar\Phi_{\rm band}^{\rm(mir)}(D),
+\]
+where
+\[
+\Xi_{\rm band}^{\rm(self)}(D)
+:=
+\frac{\bar\Phi_{\rm band}^{\rm(mir|self)}(D)}{\bar\Phi_{\rm band}^{\rm(mir)}(D)}
+=
+\frac{A_{\rm band}(D)\int \Phi_{\rm self}\Phi_{\rm mir}}
+{\left(\int \Phi_{\rm self}\right)\left(\int \Phi_{\rm mir}\right)}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_mirror_average_source.py}
+verifies this factorization with zero residual:
+\[
+\max_D\left|\bar\Phi_{\rm band}^{\rm(mir|self)}-\Xi_{\rm band}^{\rm(self)}\bar\Phi_{\rm band}^{\rm(mir)}\right|
+=
+0.
+\]
+It finds
+\[
+2.43229\times10^{-2}
+\le
+\bar\Phi_{\rm band}^{\rm(mir)}(D)
+\le
+6.23458\times10^{-2},
+\]
+with the floor at \(D=20\), while the self-weight bias lies in the interval
+\[
+7.40007\times10^{-1}
+\le
+\Xi_{\rm band}^{\rm(self)}(D)
+\le
+8.35352\times10^{-1},
+\]
+with the minimum at \(D=5\) and the maximum at \(D=9\). The band area itself is almost fixed:
+\[
+2.3814
+\le
+A_{\rm band}(D)
+\le
+2.3976,
+\]
+with relative spread only
+\[
+6.78914\times10^{-3}.
+\]
+Thus the weighted mirror-tail average differs from the ordinary mirror-band mean only by a positive self-weight bias and a tiny geometric area aliasing.
+
+\medskip\noindent\textbf{Corollary O36 (The remaining multiplier-side target can be taken to be the ordinary mirror-band mean).}
+By Proposition~O37,
+\[
+\bar\Phi_{\rm band}^{\rm(mir|self)}(D)
+=
+\Xi_{\rm band}^{\rm(self)}(D)\,\bar\Phi_{\rm band}^{\rm(mir)}(D).
+\]
+Using the audited floors
+\[
+\Xi_{\rm band}^{\rm(self)}(D)\ge 7.40007\times10^{-1},
+\qquad
+\bar\Phi_{\rm band}^{\rm(mir)}(D)\ge 2.43229\times10^{-2},
+\]
+one gets the direct lower bound
+\[
+\bar\Phi_{\rm band}^{\rm(mir|self)}(D)
+\ge
+(7.40007\times10^{-1})(2.43229\times10^{-2})
+=
+1.79991\times10^{-2}.
+\]
+Compared with the exact weighted mirror-tail floor
+\[
+\min_D \bar\Phi_{\rm band}^{\rm(mir|self)}(D)
+=
+1.92259\times10^{-2},
+\]
+this misses by only the factor
+\[
+\frac{1.92259\times10^{-2}}{1.79991\times10^{-2}}
+=
+1.06816.
+\]
+Since \(A_{\rm band}(D)\) varies by less than one percent, the same statement may equivalently be read in terms of the mirror carrier moment \(S_{\rm band}^{\rm(mir)}\), at the cost of only a tiny geometric aliasing. Therefore the remaining overlap-side multiplier target is no longer the self-weighted mirror average itself, but the ordinary mirror-band mean
+\[
+\bar\Phi_{\rm band}^{\rm(mir)}(D)
+=
+\frac{S_{\rm band}^{\rm(mir)}(D)}{A_{\rm band}(D)},
+\]
+with the self-weight bias confined to a narrow positive interval.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

@@ -1068,3 +1068,22 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   M_{\rm band}^{\rm(abs)}\ge 6.40606\times10^{-3},
   \]
   only a factor `1.00733` below the exact absolute-overlap floor `6.45299e-3`. The reverse factorization through the mirror carrier is weaker (`1.04982`). So the mainline proof target narrows once more: the absolute overlap-band mass is already essentially fixed by the same-center carrier route, and the only remaining nontrivial multiplier is the weighted mirror-tail average `\bar\Phi_{\rm band}^{\rm(mir|self)}`.
+- **Open-system weighted mirror-tail audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_mirror_average_source.py` attacks `\bar\Phi_{\rm band}^{\rm(mir|self)}` directly, still without shrinking support. It defines the ordinary mirror-band mean
+  \[
+  \bar\Phi_{\rm band}^{\rm(mir)}=\frac{S_{\rm band}^{\rm(mir)}}{A_{\rm band}},
+  \]
+  together with the self-weight bias
+  \[
+  \Xi_{\rm band}^{\rm(self)}
+  =
+  \frac{\bar\Phi_{\rm band}^{\rm(mir|self)}}{\bar\Phi_{\rm band}^{\rm(mir)}}.
+  \]
+  The factorization
+  \[
+  \bar\Phi_{\rm band}^{\rm(mir|self)}=\Xi_{\rm band}^{\rm(self)}\,\bar\Phi_{\rm band}^{\rm(mir)}
+  \]
+  is exact with zero residual. The ordinary mirror-band mean has floor `2.43229e-2` at `D=20`, while the self-weight bias stays in the positive interval `[7.40007e-1, 8.35352e-1]`, with minimum at `D=5`. This already induces
+  \[
+  \bar\Phi_{\rm band}^{\rm(mir|self)}\ge 1.79991\times10^{-2},
+  \]
+  only a factor `1.06816` below the exact weighted-mirror floor `1.92259e-2` at `D=19`. The canonical band area itself varies only between `2.3814` and `2.3976`, with relative spread `6.79e-3`, so the same statement is essentially equivalent to a statement about the mirror carrier moment `S_{\rm band}^{\rm(mir)}`. So the multiplier-side proof target narrows again: the remaining object is no longer the self-weighted mirror average itself, but the ordinary mirror-band mean (or equivalently the mirror carrier, up to tiny geometric aliasing).

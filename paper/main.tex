@@ -7435,6 +7435,86 @@ is still missing on the local-response version of the scalar Schur threshold.  E
 \]
 of the required static parity contrast.  Thus the dominant-pole / exact-Schur line remains on the same static-overlap spine as before, but the remaining gap is now smaller still: no new support family is needed, and the residual task is only a final sub-two-percent tightening of the current parity theorem when read at the locally aligned response level.
 
+\medskip\noindent\textbf{Proposition O45 (The same family and the same radius already close the Schur threshold after a contiguous two-window split).}
+Keep exactly the same symmetric core-window family \(B_{\rm core}(R;D)\) and the same optimal radius
+\[
+R_\ast=1.35
+\]
+from Proposition~O44.  Do not change the support family or the radius; instead, only split the audited knot window into the two contiguous subwindows
+\[
+\mathcal D_{\rm L}=\{4,\dots,11\},
+\qquad
+\mathcal D_{\rm R}=\{12,\dots,20\}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_total_core_window_split_source.py}
+reuses the exact-total core/tail data from Proposition~O44 and shows that the same-family exact split
+\[
+V_{11}(D)-V_{22}(D)=J_{\rm core}^{(R_\ast)}(D)+J_{\rm tail}^{(R_\ast)}(D)
+\]
+remains sign-safe on both subwindows.  On the left window one has
+\[
+\lambda_{{\rm tot},\ast}^{\rm(L)}
+=
+0.479785\ldots,
+\qquad
+\min_{D\in\mathcal D_{\rm L}}|J_{\rm core}^{(R_\ast)}(D)|
+=
+1.34704\times10^{-4},
+\]
+so
+\[
+\min_{D\in\mathcal D_{\rm L}}|V_{11}(D)-V_{22}(D)|
+\ge
+6.46291\times10^{-5}.
+\]
+On the right window one has
+\[
+\lambda_{{\rm tot},\ast}^{\rm(R)}
+=
+0.426709\ldots,
+\qquad
+\min_{D\in\mathcal D_{\rm R}}|J_{\rm core}^{(R_\ast)}(D)|
+=
+3.25919\times10^{-4},
+\]
+so
+\[
+\min_{D\in\mathcal D_{\rm R}}|V_{11}(D)-V_{22}(D)|
+\ge
+1.39072\times10^{-4}.
+\]
+Therefore the same family and the same radius already yield the audited piecewise exact-total floor
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+6.46291\times10^{-5}
+\qquad
+\text{for all audited }D\in\mathcal D_{\rm L}\cup\mathcal D_{\rm R},
+\]
+with no new support family and no new response object.
+
+\medskip\noindent\textbf{Corollary O44 (The remaining \(1.27\%\) gap is only a global-coupling artifact of the single-window product bound).}
+Compare Proposition~O45 with the parity thresholds from Proposition~O43:
+\[
+|V_{11}(D)-V_{22}(D)|\ge 6.00420\times10^{-5}
+\]
+under the globally valid response floor and
+\[
+|V_{11}(D)-V_{22}(D)|\ge 5.82096\times10^{-5}
+\]
+under the exact local-response alignment.  The same-family two-window floor from Proposition~O45 satisfies
+\[
+\frac{6.46291\times10^{-5}}{6.00420\times10^{-5}}
+=
+1.07640,
+\qquad
+\frac{6.46291\times10^{-5}}{5.82096\times10^{-5}}
+=
+1.11028.
+\]
+Hence the dominant-pole / exact-Schur threshold is already closed on the audited bridge without changing the family \(B_{\rm core}(R)\) and without changing the optimal radius \(R_\ast=1.35\).  The previous residual \(1.27\%\) gap was therefore not evidence for a missing Schur-resolvent structure; it was only the loss incurred by forcing one global minimum \(\lambda_{{\rm tot},\ast}\) and one global core floor to be multiplied across the entire audited window instead of allowing the same split family to be read piecewise on its natural contiguous subwindows.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

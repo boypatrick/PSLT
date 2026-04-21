@@ -6530,6 +6530,94 @@ Since \(A_{\rm band}(D)\) varies by less than one percent, the same statement ma
 \]
 with the self-weight bias confined to a narrow positive interval.
 
+\medskip\noindent\textbf{Proposition O38 (The ordinary mirror-band mean factors exactly through the same-center band mean and the mirror/self carrier ratio).}
+Keep the same canonical band
+\[
+B_{\rm neg}^{(0.20;0.10,1.20)}(D).
+\]
+Define the same-center band mean
+\[
+\bar\Phi_{\rm band}^{\rm(self)}(D)
+:=
+\frac{S_{\rm band}^{\rm(self)}(D)}{A_{\rm band}(D)}
+\]
+and the mirror/self carrier ratio
+\[
+\Lambda_{\rm band}^{\rm(mir|self)}(D)
+:=
+\frac{S_{\rm band}^{\rm(mir)}(D)}{S_{\rm band}^{\rm(self)}(D)}.
+\]
+Then the ordinary mirror-band mean satisfies the exact identity
+\[
+\bar\Phi_{\rm band}^{\rm(mir)}(D)
+=
+\Lambda_{\rm band}^{\rm(mir|self)}(D)\,\bar\Phi_{\rm band}^{\rm(self)}(D).
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_mirror_ratio_source.py}
+verifies this factorization with machine-level residual
+\[
+\max_D\left|
+\bar\Phi_{\rm band}^{\rm(mir)}
+-
+\Lambda_{\rm band}^{\rm(mir|self)}\bar\Phi_{\rm band}^{\rm(self)}
+\right|
+=
+6.94\times10^{-18}.
+\]
+It finds
+\[
+6.99586\times10^{-2}
+\le
+\bar\Phi_{\rm band}^{\rm(self)}(D)
+\le
+8.80198\times10^{-2},
+\]
+with the floor at \(D=20\), while the carrier ratio lies in the interval
+\[
+3.47676\times10^{-1}
+\le
+\Lambda_{\rm band}^{\rm(mir|self)}(D)
+\le
+7.08509\times10^{-1},
+\]
+with the minimum at \(D=20\) and the maximum at \(D=4\). The ordinary mirror-band mean itself has audited floor
+\[
+\min_D \bar\Phi_{\rm band}^{\rm(mir)}(D)
+=
+2.43229\times10^{-2}
+\]
+at the same knot \(D=20\).
+
+\medskip\noindent\textbf{Corollary O37 (The ordinary mirror-band mean is already saturated by the same-center band mean and the mirror/self ratio).}
+By Proposition~O38,
+\[
+\bar\Phi_{\rm band}^{\rm(mir)}(D)
+=
+\Lambda_{\rm band}^{\rm(mir|self)}(D)\,\bar\Phi_{\rm band}^{\rm(self)}(D).
+\]
+Using the audited floors
+\[
+\bar\Phi_{\rm band}^{\rm(self)}(D)\ge 6.99586\times10^{-2},
+\qquad
+\Lambda_{\rm band}^{\rm(mir|self)}(D)\ge 3.47676\times10^{-1},
+\]
+one gets
+\[
+\bar\Phi_{\rm band}^{\rm(mir)}(D)
+\ge
+(6.99586\times10^{-2})(3.47676\times10^{-1})
+=
+2.43229\times10^{-2}.
+\]
+This equals the exact audited floor
+\[
+\min_D \bar\Phi_{\rm band}^{\rm(mir)}(D)
+=
+2.43229\times10^{-2},
+\]
+up to machine precision, with all three floor knots aligned at \(D=20\). Therefore the ordinary mirror-band mean is no longer a substantive multiplier-side blocker on the current exact export: it is already closed by a same-center positive carrier and a mirror/self ratio, with no further support refinement required.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

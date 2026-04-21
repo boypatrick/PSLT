@@ -1087,3 +1087,16 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   \bar\Phi_{\rm band}^{\rm(mir|self)}\ge 1.79991\times10^{-2},
   \]
   only a factor `1.06816` below the exact weighted-mirror floor `1.92259e-2` at `D=19`. The canonical band area itself varies only between `2.3814` and `2.3976`, with relative spread `6.79e-3`, so the same statement is essentially equivalent to a statement about the mirror carrier moment `S_{\rm band}^{\rm(mir)}`. So the multiplier-side proof target narrows again: the remaining object is no longer the self-weighted mirror average itself, but the ordinary mirror-band mean (or equivalently the mirror carrier, up to tiny geometric aliasing).
+- **Open-system ordinary mirror-band mean audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_mirror_ratio_source.py` then attacks `\bar\Phi_{\rm band}^{\rm(mir)}` directly, still with no support change. It verifies the exact identity
+  \[
+  \bar\Phi_{\rm band}^{\rm(mir)}
+  =
+  \left(\frac{S_{\rm band}^{\rm(mir)}}{S_{\rm band}^{\rm(self)}}\right)\bar\Phi_{\rm band}^{\rm(self)}
+  \]
+  with residual `6.94e-18`. On the audited knot set, the floor of the ordinary mirror-band mean, the floor of the same-center band mean, and the floor of the mirror/self carrier ratio all align at the same knot `D=20`:
+  \[
+  \min \bar\Phi_{\rm band}^{\rm(mir)} = 2.43229\times10^{-2},\quad
+  \min \bar\Phi_{\rm band}^{\rm(self)} = 6.99586\times10^{-2},\quad
+  \min \frac{S_{\rm band}^{\rm(mir)}}{S_{\rm band}^{\rm(self)}} = 3.47676\times10^{-1}.
+  \]
+  Their product reproduces the exact ordinary mirror-band mean floor to machine precision. So this line is now effectively closed as well: the mirror-band mean is already saturated by a same-center positive carrier and a mirror/self ratio, and the next remaining multiplier-side object is downstream of that factorization rather than a support artifact.

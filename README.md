@@ -999,3 +999,26 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   5.38460\times10^{-2}\le \bar K_{\rm band}^{(-)} \le 1.00728\times10^{-1},
   \]
   while the negative-carrier floor is `8.40086e-3` at `D=20`. The coarse product floor `K_{min}^{band} W_{band}^{(-)}` is `4.28523e-4`, and the exact band floor `7.37447e-4` exceeds it by the factor `1.72090`. So the magnitude problem has narrowed again: the remaining proof target is no longer the raw adverse-band integral, but the negative carrier moment `W_{band}^{(-)}`, with the one-center mass kernel now reduced to a positive audited multiplier.
+- **Open-system negative-carrier radial-factor audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_negative_carrier_source.py` then attacks `W_{band}^{(-)}` itself, still without any support shrinkage. Using
+  \[
+  \mathcal C=2\pi\rho(\psi_1^2-\psi_2^2),
+  \]
+  it defines the unweighted negative overlap-band moment
+  \[
+  M_{\rm band}^{(-)}
+  =
+  \int_{B_{neg}^{(0.20;0.10,1.20)}} [-(\operatorname{sgn}I_{diag,anchor})(\psi_1^2-\psi_2^2)]_+,
+  \]
+  and verifies the exact factorization
+  \[
+  W_{\rm band}^{(-)}=2\pi\,\bar\rho_{\rm band}^{(-)}\,M_{\rm band}^{(-)}
+  \]
+  with residual `1.35525e-20`. The weighted radial factor is trapped in the tiny interval
+  \[
+  0.4434097 \le \bar\rho_{\rm band}^{(-)} \le 0.4438634,
+  \]
+  whose relative spread is only `1.02267e-3`. Both `W_{band}^{(-)}` and `M_{band}^{(-)}` attain their floors at `D=20`, namely `8.40086e-3` and `3.01270e-3`, and even the coarsest lower product is essentially exact:
+  \[
+  \frac{\min W_{\rm band}^{(-)}}{2\pi(\min \bar\rho_{\rm band}^{(-)})(\min M_{\rm band}^{(-)})}=1.00088.
+  \]
+  So the carrier-side magnitude problem narrows again: to control `W_{band}^{(-)}`, it is enough to control the unweighted negative overlap-band moment `M_{band}^{(-)}`, with only an almost constant radial factor left outside it.

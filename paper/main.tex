@@ -6001,6 +6001,121 @@ so the exact band floor exceeds the coarse product floor by the factor
 1.72090.
 \]
 Therefore the support problem is already closed and the magnitude problem has narrowed again: to control the canonical adverse band, it is now enough to control the negative carrier moment \(W_{\rm band}^{(-)}\), with the positive one-center mass kernel confined to a narrow audited interval.
+
+\medskip\noindent\textbf{Proposition O34 (The negative carrier moment factorizes through an almost constant radial weight).}
+Keep the canonical adverse band
+\[
+B_{\rm neg}^{(0.20;0.10,1.20)}(D)
+\]
+and define the negative overlap-band density
+\[
+M_{\rm band}^{(-)}(\rho,z;D)
+:=
+\bigl[-\operatorname{sgn}(I_{\rm diag,anchor}(D))(\psi_1(\rho,z;D)^2-\psi_2(\rho,z;D)^2)\bigr]_+
+\mathbf 1_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}.
+\]
+Since
+\[
+\mathcal C(\rho,z;D)=2\pi\rho\bigl(\psi_1(\rho,z;D)^2-\psi_2(\rho,z;D)^2\bigr),
+\]
+the canonical negative carrier moment satisfies the exact pointwise identity
+\[
+W_{\rm band}^{(-)}(\rho,z;D)
+=
+2\pi\rho\,M_{\rm band}^{(-)}(\rho,z;D).
+\]
+Integrating over the canonical band gives
+\[
+W_{\rm band}^{(-)}(D)
+=
+2\pi\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)} \rho\,M_{\rm band}^{(-)}(\rho,z;D)\,d\rho\,dz.
+\]
+Define the unweighted overlap-band moment
+\[
+M_{\rm band}^{(-)}(D)
+:=
+\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}
+M_{\rm band}^{(-)}(\rho,z;D)\,d\rho\,dz,
+\]
+and the weighted radial factor
+\[
+\bar\rho_{\rm band}^{(-)}(D)
+:=
+\frac{W_{\rm band}^{(-)}(D)}{2\pi\,M_{\rm band}^{(-)}(D)}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_negative_carrier_source.py}
+verifies the exact factorization
+\[
+\max_D \|W_{\rm band}^{(-)}-2\pi\rho\,M_{\rm band}^{(-)}\|_\infty
+=
+1.35525\times10^{-20},
+\]
+and finds the weighted radial factor confined to the tiny interval
+\[
+0.4434097
+\le
+\bar\rho_{\rm band}^{(-)}(D)
+\le
+0.4438634,
+\]
+with the minimum at \(D=7\) and the maximum at \(D=6\). Its relative spread is only
+\[
+\frac{\max \bar\rho_{\rm band}^{(-)}-\min \bar\rho_{\rm band}^{(-)}}{\operatorname{mean}\bar\rho_{\rm band}^{(-)}}
+=
+1.02267\times10^{-3}.
+\]
+The canonical negative-carrier floor is
+\[
+\min_D W_{\rm band}^{(-)}(D)
+=
+8.40086\times10^{-3}
+\]
+at \(D=20\), and the unweighted overlap-band floor is
+\[
+\min_D M_{\rm band}^{(-)}(D)
+=
+3.01270\times10^{-3}
+\]
+again at \(D=20\). Therefore the negative carrier moment itself is already equivalent, up to an almost constant radial factor, to an unweighted overlap-band moment.
+
+\medskip\noindent\textbf{Corollary O33 (The remaining carrier-side proof target is the unweighted negative overlap-band moment).}
+By Proposition~O34, one has the exact identity
+\[
+W_{\rm band}^{(-)}(D)
+=
+2\pi\,\bar\rho_{\rm band}^{(-)}(D)\,M_{\rm band}^{(-)}(D),
+\]
+with
+\[
+0.4434097
+\le
+\bar\rho_{\rm band}^{(-)}(D)
+\le
+0.4438634.
+\]
+Equivalently,
+\[
+2\pi\,(0.4434097)\,M_{\rm band}^{(-)}(D)
+\le
+W_{\rm band}^{(-)}(D)
+\le
+2\pi\,(0.4438634)\,M_{\rm band}^{(-)}(D).
+\]
+At the audited floor knot \(D=20\), this reads
+\[
+W_{\rm band}^{(-)}(20)
+=
+2\pi\,(0.4438002)\,M_{\rm band}^{(-)}(20).
+\]
+Moreover,
+\[
+\frac{\min_D W_{\rm band}^{(-)}(D)}
+{2\pi(\min_D \bar\rho_{\rm band}^{(-)}(D))(\min_D M_{\rm band}^{(-)}(D))}
+=
+1.00088,
+\]
+so even the coarsest audited lower product is already essentially exact. Thus the carrier-side magnitude problem narrows once more: to control \(W_{\rm band}^{(-)}\), it is enough to control the unweighted negative overlap-band moment \(M_{\rm band}^{(-)}\), with only an almost constant radial factor left outside it.
 So the positive carrier, the axial core, the inner rim, and even the small axial shoulder core have all been demoted to corrective terms. The remaining proof-side target narrows once more: it is enough to control the genuinely hollow off-axis adverse band
 \[
 N_{\rm mass,band}^{(0.20;0.10,1.20)},

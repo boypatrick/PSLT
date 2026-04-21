@@ -1,0 +1,2 @@
+max_factor_resid_abs,W_band_neg_floor_abs,W_band_neg_floor_D,M_band_neg_floor_abs,M_band_neg_floor_D,min_rho_bar_weighted,min_rho_bar_weighted_D,max_rho_bar_weighted,max_rho_bar_weighted_D,rho_bar_relative_spread,W_floor_over_2pi_rho_bar_min_M_floor
+1.3552527156068805e-20,0.008400857666632018,20.0,0.0030127025320934257,20.0,0.44340969284908127,7.0,0.44386339175460204,6.0,0.001022674751179871,1.0008807196336298

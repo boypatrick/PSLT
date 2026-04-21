@@ -6269,6 +6269,150 @@ M_{\rm band}^{\rm(abs)}(D)
 \]
 with only a small signed-imbalance factor left outside it.
 
+\medskip\noindent\textbf{Proposition O36 (The absolute overlap-band mass factorizes through a same-center carrier moment and a weighted mirror-tail average).}
+Keep the same canonical band
+\[
+B_{\rm neg}^{(0.20;0.10,1.20)}(D)
+\]
+and the localized basis \((\phi_R,\phi_L)\). On the canonical band, define the same-center and mirror amplitudes by
+\[
+\Phi_{\rm self}(\rho,z;D)
+:=
+|\phi_R(\rho,z;D)|\,\mathbf 1_{B_+(D)}
++
+|\phi_L(\rho,z;D)|\,\mathbf 1_{B_-(D)},
+\]
+\[
+\Phi_{\rm mir}(\rho,z;D)
+:=
+|\phi_L(\rho,z;D)|\,\mathbf 1_{B_+(D)}
++
+|\phi_R(\rho,z;D)|\,\mathbf 1_{B_-(D)}.
+\]
+Then, by the localized-overlap identity from Proposition~O35,
+\[
+M_{\rm band}^{\rm(abs)}(D)
+=
+2\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}
+\Phi_{\rm self}(\rho,z;D)\,\Phi_{\rm mir}(\rho,z;D)\,d\rho\,dz.
+\]
+Define the same-center and mirror carrier moments
+\[
+S_{\rm band}^{\rm(self)}(D)
+:=
+\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}
+\Phi_{\rm self}(\rho,z;D)\,d\rho\,dz,
+\]
+\[
+S_{\rm band}^{\rm(mir)}(D)
+:=
+\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}
+\Phi_{\rm mir}(\rho,z;D)\,d\rho\,dz,
+\]
+and the weighted local averages
+\[
+\bar\Phi_{\rm band}^{\rm(mir|self)}(D)
+:=
+\frac{M_{\rm band}^{\rm(abs)}(D)}{2\,S_{\rm band}^{\rm(self)}(D)},
+\qquad
+\bar\Phi_{\rm band}^{\rm(self|mir)}(D)
+:=
+\frac{M_{\rm band}^{\rm(abs)}(D)}{2\,S_{\rm band}^{\rm(mir)}(D)}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_absolute_overlap_source.py}
+verifies the exact factorization
+\[
+\max_D\left|M_{\rm band}^{\rm(abs)}-2\,S_{\rm band}^{\rm(self)}\,\bar\Phi_{\rm band}^{\rm(mir|self)}\right|
+=
+0,
+\]
+and equivalently
+\[
+\max_D\left|M_{\rm band}^{\rm(abs)}-2\,S_{\rm band}^{\rm(mir)}\,\bar\Phi_{\rm band}^{\rm(self|mir)}\right|
+=
+0.
+\]
+On the audited window, the same-center carrier floor is
+\[
+\min_D S_{\rm band}^{\rm(self)}(D)
+=
+1.66599\times10^{-1}
+\]
+at \(D=20\), while the weighted mirror-tail average satisfies
+\[
+1.92259\times10^{-2}
+\le
+\bar\Phi_{\rm band}^{\rm(mir|self)}(D)
+\le
+5.20575\times10^{-2},
+\]
+with the minimum at \(D=19\). Therefore the self-carrier route gives the induced product floor
+\[
+2\bigl(\min_D S_{\rm band}^{\rm(self)}(D)\bigr)
+\bigl(\min_D \bar\Phi_{\rm band}^{\rm(mir|self)}(D)\bigr)
+=
+6.40606\times10^{-3}.
+\]
+The reverse route is weaker: although
+\[
+\min_D S_{\rm band}^{\rm(mir)}(D)
+=
+5.79226\times10^{-2}
+\]
+at \(D=20\) and
+\[
+5.30602\times10^{-2}
+\le
+\bar\Phi_{\rm band}^{\rm(self|mir)}(D)
+\le
+7.34746\times10^{-2},
+\]
+the corresponding product floor is only
+\[
+6.14677\times10^{-3}.
+\]
+Hence the tighter canonical factorization is the same-center-carrier / weighted-mirror route.
+
+\medskip\noindent\textbf{Corollary O35 (The absolute overlap-band mass is already essentially fixed by the same-center carrier route).}
+By Proposition~O36,
+\[
+M_{\rm band}^{\rm(abs)}(D)
+=
+2\,S_{\rm band}^{\rm(self)}(D)\,\bar\Phi_{\rm band}^{\rm(mir|self)}(D).
+\]
+Using the audited floors
+\[
+S_{\rm band}^{\rm(self)}(D)\ge 1.66599\times10^{-1},
+\qquad
+\bar\Phi_{\rm band}^{\rm(mir|self)}(D)\ge 1.92259\times10^{-2},
+\]
+one gets the direct lower bound
+\[
+M_{\rm band}^{\rm(abs)}(D)
+\ge
+2(1.66599\times10^{-1})(1.92259\times10^{-2})
+=
+6.40606\times10^{-3}.
+\]
+The exact audited absolute overlap-band floor is
+\[
+\min_D M_{\rm band}^{\rm(abs)}(D)
+=
+6.45299\times10^{-3}
+\]
+at \(D=19\), so this misses the exact floor by only the factor
+\[
+\frac{6.45299\times10^{-3}}{6.40606\times10^{-3}}
+=
+1.00733.
+\]
+Therefore the remaining overlap-side proof target has narrowed again. It is no longer the full absolute overlap-band mass as an undifferentiated object, but the weighted mirror-tail average
+\[
+\bar\Phi_{\rm band}^{\rm(mir|self)}(D),
+\]
+with the same-center carrier moment already providing an almost saturated one-center positive source.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

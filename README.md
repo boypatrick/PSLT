@@ -1050,3 +1050,21 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   M_{\rm band}^{(-)}\ge 2.91664\times10^{-3},
   \]
   only a factor `1.03294` below the exact negative-overlap floor `3.01270e-3` at `D=20`. So the support, kernel, and radial-weight questions are all effectively closed: the remaining overlap-side proof target is now the absolute localized overlap-band mass `M_{band}^{abs}=2\int|\phi_R\phi_L|`, with only a small signed-imbalance factor left outside it.
+- **Open-system absolute localized-overlap audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_absolute_overlap_source.py` attacks `M_{band}^{abs}` directly on the same canonical band, with no further support shrinkage. It defines the same-center carrier amplitude `Phi_self` and mirror-tail amplitude `Phi_mir`, and verifies the exact factorization
+  \[
+  M_{\rm band}^{\rm(abs)}=2\int \Phi_{\rm self}\Phi_{\rm mir}
+  =2\,S_{\rm band}^{\rm(self)}\,\bar\Phi_{\rm band}^{\rm(mir|self)}.
+  \]
+  The same-center carrier moment has audited floor
+  \[
+  \min S_{\rm band}^{\rm(self)}=1.66599\times10^{-1}
+  \]
+  at `D=20`, while the weighted mirror-tail average stays positive on the whole window with
+  \[
+  1.92259\times10^{-2}\le \bar\Phi_{\rm band}^{\rm(mir|self)} \le 5.20575\times10^{-2},
+  \]
+  attaining its minimum at `D=19`. Their direct product gives
+  \[
+  M_{\rm band}^{\rm(abs)}\ge 6.40606\times10^{-3},
+  \]
+  only a factor `1.00733` below the exact absolute-overlap floor `6.45299e-3`. The reverse factorization through the mirror carrier is weaker (`1.04982`). So the mainline proof target narrows once more: the absolute overlap-band mass is already essentially fixed by the same-center carrier route, and the only remaining nontrivial multiplier is the weighted mirror-tail average `\bar\Phi_{\rm band}^{\rm(mir|self)}`.

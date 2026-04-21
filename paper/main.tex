@@ -6618,6 +6618,107 @@ This equals the exact audited floor
 \]
 up to machine precision, with all three floor knots aligned at \(D=20\). Therefore the ordinary mirror-band mean is no longer a substantive multiplier-side blocker on the current exact export: it is already closed by a same-center positive carrier and a mirror/self ratio, with no further support refinement required.
 
+\medskip\noindent\textbf{Proposition O39 (Synthesis of the overlap-side reduction chain on the canonical exact bridge).}
+Combining Propositions~O19--O38, the canonical adverse-band piece of the interior one-center mass-sector cancellation admits the exact composite factorization
+\[
+N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)
+=
+4\pi\,
+\bar K_{\rm band}^{(-)}(D)\,
+\bar\rho_{\rm band}^{(-)}(D)\,
+\theta_{\rm band}^{(-)}(D)\,
+\Xi_{\rm band}^{\rm(self)}(D)\,
+\Lambda_{\rm band}^{\rm(mir|self)}(D)\,
+\frac{S_{\rm band}^{\rm(self)}(D)^2}{A_{\rm band}(D)}.
+\]
+Equivalently, the normalized interior mass-sector cancellation ratio satisfies
+\[
+\nu_{\rm diag,int}^{(\pm,m)}(D)
+=
+\frac{N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)}{P_{\rm mass,in}(D)}
++
+\frac{N_{\rm mass,core}^{(0.20;0.10,1.20)}(D)}{P_{\rm mass,in}(D)}
++
+\frac{N_{\rm mass,rim}^{(0.20,1.20)}(D)}{P_{\rm mass,in}(D)}
++
+\frac{N_{\rm mass,tail}^{(0.15,1.20)}(D)}{P_{\rm mass,in}(D)}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_synthesis_source.py}
+verifies both identities on the exact audited knot set with residuals
+\[
+\max_D\left|
+N_{\rm mass,band}^{(0.20;0.10,1.20)}
+-
+4\pi\bar K_{\rm band}^{(-)}\bar\rho_{\rm band}^{(-)}\theta_{\rm band}^{(-)}
+\Xi_{\rm band}^{\rm(self)}\Lambda_{\rm band}^{\rm(mir|self)}
+\frac{S_{\rm band}^{\rm(self)\,2}}{A_{\rm band}}
+\right|
+=
+9.67\times10^{-17},
+\]
+\[
+\max_D\left|
+\nu_{\rm diag,int}^{(\pm,m)}
+-
+\frac{N_{\rm mass,band}}{P_{\rm mass,in}}
+-
+\frac{N_{\rm mass,core}}{P_{\rm mass,in}}
+-
+\frac{N_{\rm mass,rim}}{P_{\rm mass,in}}
+-
+\frac{N_{\rm mass,tail}}{P_{\rm mass,in}}
+\right|
+=
+5.97\times10^{-14}.
+\]
+At the canonical adverse-band floor knot \(D=19\), the composite mainline factor already reproduces the exact band magnitude:
+\[
+N_{\rm mass,band}^{(0.20;0.10,1.20)}(19)
+=
+7.37447\times10^{-4},
+\]
+with residual \(2.72\times10^{-17}\). At the worst interior cancellation knot \(D=11\), the normalized decomposition reads
+\[
+\nu_{\rm diag,int}^{(\pm,m)}(11)
+=
+0.813941
++
+4.19214\times10^{-2}
++
+5.38319\times10^{-2}
++
+4.81178\times10^{-2}
+=
+0.957812,
+\]
+so the audited exact bridge is now reduced to one multiplicative mainline and three explicit leakage channels.
+
+\medskip\noindent\textbf{Corollary O38 (What is closed, and what remains only as secondary tightening).}
+On the current exact export, the overlap-side chain from Propositions~O19--O38 now separates cleanly into \emph{closed} structural blocks and \emph{secondary tightening} blocks.
+
+\emph{Closed on the audited exact bridge:}
+\[
+\text{support reduction }(O19\text{--}O32),\qquad
+P_{\rm mass,in},\qquad
+\bar\Phi_{\rm band}^{\rm(self)},\qquad
+\Lambda_{\rm band}^{\rm(mir|self)},\qquad
+\bar\Phi_{\rm band}^{\rm(mir)}.
+\]
+In particular, Proposition~O38 shows that the ordinary mirror-band mean is already saturated exactly by the same-center band mean and the mirror/self carrier ratio at the common knot \(D=20\), so no further support/object refinement is needed on this line.
+
+\emph{Only secondary tightening remains in:}
+\[
+\bar K_{\rm band}^{(-)},\qquad
+\bar\rho_{\rm band}^{(-)},\qquad
+\theta_{\rm band}^{(-)},\qquad
+\Xi_{\rm band}^{\rm(self)},\qquad
+\frac{N_{\rm mass,core}}{P_{\rm mass,in}},\qquad
+\frac{N_{\rm mass,rim}}{P_{\rm mass,in}},\qquad
+\frac{N_{\rm mass,tail}}{P_{\rm mass,in}},
+\]
+with the outer same-sign parity-contrast remainder \(I_\times\) from Proposition~O19 also retained only as a small static correction. Therefore the mainline task is no longer to discover a new support or a new overlap object. The chain is already structurally closed; what remains, if any further improvement is desired, is only constant-tightening inside the already identified multiplicative and leakage factors.
+
 \medskip\noindent\textbf{Benchmark O1 (Dense-family sharpness check).}
 The dense exact-family scan should now be read as a sharpness benchmark rather than as the theorem input. Resolving the same family on
 \[

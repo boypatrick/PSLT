@@ -1100,3 +1100,30 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   \min \frac{S_{\rm band}^{\rm(mir)}}{S_{\rm band}^{\rm(self)}} = 3.47676\times10^{-1}.
   \]
   Their product reproduces the exact ordinary mirror-band mean floor to machine precision. So this line is now effectively closed as well: the mirror-band mean is already saturated by a same-center positive carrier and a mirror/self ratio, and the next remaining multiplier-side object is downstream of that factorization rather than a support artifact.
+- **Open-system synthesis audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_synthesis_source.py` now compresses `O19` through `O38` into one exact composite statement. On the canonical adverse band, the mainline adverse magnitude satisfies
+  \[
+  N_{\rm mass,band}
+  =
+  4\pi\,\bar K_{\rm band}^{(-)}\bar\rho_{\rm band}^{(-)}\theta_{\rm band}^{(-)}
+  \Xi_{\rm band}^{\rm(self)}\Lambda_{\rm band}^{\rm(mir|self)}
+  \frac{S_{\rm band}^{\rm(self)\,2}}{A_{\rm band}},
+  \]
+  with residual `9.67e-17`, and the full interior cancellation ratio satisfies
+  \[
+  \nu_{\rm diag,int}^{(\pm,m)}
+  =
+  \frac{N_{\rm mass,band}}{P_{\rm mass,in}}
+  +
+  \frac{N_{\rm mass,core}}{P_{\rm mass,in}}
+  +
+  \frac{N_{\rm mass,rim}}{P_{\rm mass,in}}
+  +
+  \frac{N_{\rm mass,tail}}{P_{\rm mass,in}}
+  \]
+  with residual `5.97e-14`. At the worst knot `D=11`, this is exactly
+  \[
+  0.957812
+  =
+  0.813941 + 4.19214\times10^{-2} + 5.38319\times10^{-2} + 4.81178\times10^{-2}.
+  \]
+  The resulting status is now stable: the support chain and the ordinary mirror-band mean line are closed on the exact bridge, while only multiplier/leakage constants such as `\bar K_{\rm band}^{(-)}`, `\bar\rho_{\rm band}^{(-)}`, `\theta_{\rm band}^{(-)}`, `\Xi_{\rm band}^{\rm(self)}`, and the three explicit leakage ratios remain as secondary tightening directions.

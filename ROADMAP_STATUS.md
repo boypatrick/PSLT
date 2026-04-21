@@ -147,3 +147,24 @@ Pause point (2026-04-16):
   \min \frac{S_{band}^{(mir)}}{S_{band}^{(self)}} = 3.47676\times10^{-1},
   \]
   and their product reproduces the exact mirror-band mean floor to machine precision. So the ordinary mirror-band mean is now effectively closed as well: it is already saturated by a same-center positive carrier and a mirror/self ratio, and no further support-side refinement is needed on this line.
+- A new synthesis audit now exists in `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_synthesis_source.py`, with outputs under `/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/`. It compresses `O19` through `O38` into one exact composite statement:
+  \[
+  N_{\rm mass,band}
+  =
+  4\pi\,\bar K_{\rm band}^{(-)}\bar\rho_{\rm band}^{(-)}\theta_{\rm band}^{(-)}
+  \Xi_{\rm band}^{(self)}\Lambda_{\rm band}^{(mir|self)}
+  \frac{S_{\rm band}^{(self)\,2}}{A_{\rm band}},
+  \]
+  together with
+  \[
+  \nu_{\rm diag,int}^{(\pm,m)}
+  =
+  \frac{N_{\rm mass,band}}{P_{\rm mass,in}}
+  +
+  \frac{N_{\rm mass,core}}{P_{\rm mass,in}}
+  +
+  \frac{N_{\rm mass,rim}}{P_{\rm mass,in}}
+  +
+  \frac{N_{\rm mass,tail}}{P_{\rm mass,in}}.
+  \]
+  The exact residuals are only `9.67e-17` and `5.97e-14`, respectively. At the worst cancellation knot `D=11`, the full interior ratio is reconstructed exactly as `0.957812 = 0.813941 + 0.041921 + 0.053832 + 0.048118`. This is the cleanest current stopping point: the support chain and ordinary mirror-band mean line are closed on the exact bridge, while only multiplier/leakage constants remain as secondary tightening directions.

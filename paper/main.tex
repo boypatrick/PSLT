@@ -1218,6 +1218,92 @@ b_4,
 \]
 No new overlap object, no new support reduction, and no new kernel ansatz is needed for the normalization mainline.
 
+\medskip\noindent\textbf{Proposition U8 (The quartic response is already a single stable scalar tightening).}
+Once the bridge coefficient has been reduced to the one-center EYMH core plus the tiny analytic mirror multiplier, the remaining width-side correction is still controlled by the original isotropized quartic invariant
+\[
+q_{4,\mu}(D)=\frac{\lambda_\mu(D)}{\bar\kappa_\mu(D)^{3/2}},
+\qquad
+\lambda_\mu(D)=\frac{2\lambda_{\rho,\mu}(D)+\lambda_{z,\mu}(D)}{3},
+\]
+with no need for any new overlap block or support refinement.  Writing
+\[
+\sigma_\mu^{\rm(curv,0)}(D)=c_{\sigma,\star}\,\bar\kappa_\mu(D)^{-1/4},
+\]
+the first non-harmonic correction is the one-parameter family
+\[
+\sigma_\mu^{\rm(curv,4)}(D)
+=
+\sigma_\mu^{\rm(curv,0)}(D)
+\Bigl[1+b_4\bigl(q_{4,\mu}(D)-q_{4,\mu}(D_\star)\bigr)\Bigr].
+\]
+The optimal quartic-response coefficient is therefore the single scalar
+\[
+b_4
+=
+\arg\min_b
+\sum_D
+\left[
+\sigma_\mu^{\rm exact}(D)
+-\sigma_\mu^{\rm(curv,0)}(D)\Bigl(1+b\bigl(q_{4,\mu}(D)-q_{4,\mu}(D_\star)\bigr)\Bigr)
+\right]^2.
+\]
+\emph{Verified numerics.}
+The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_hll_b4_tightening_synthesis.py}, together with the underlying curvature-correction detail table, shows that this last correction is already exhausted by one global scalar.  The fitted value is
+\[
+b_4=0.4244007048874373,
+\]
+with the quartic coordinate itself varying only over the narrow range
+\[
+-1.0410744\le q_{4,\mu}(D)\le -1.0378108,
+\qquad
+\frac{\max q_{4,\mu}-\min q_{4,\mu}}{\langle q_{4,\mu}\rangle}=3.14\times10^{-3}.
+\]
+Using no quartic correction, the width candidate already has
+\[
+\max_D {\rm relerr}\!\left(\sigma_\mu^{\rm(curv,0)},\sigma_\mu^{\rm exact}\right)
+=1.01\times10^{-3},
+\]
+while the single fitted quartic correction lowers this immediately to
+\[
+\max_D {\rm relerr}\!\left(\sigma_\mu^{\rm(curv,4)},\sigma_\mu^{\rm exact}\right)
+=8.47\times10^{-7},
+\]
+an improvement factor \(1.19\times10^3\).  The same scalar also lowers the finite-box kernel defect from
+\[
+1.11\times10^{-2}\quad\text{to}\quad 9.47\times10^{-5},
+\]
+an improvement factor \(1.17\times10^2\), essentially saturating the residual box floor.
+
+This fitted scalar is also stable under coarse re-fits of the audited D-window.  Re-fitting on the outer window \(D\le 8\) or \(D\ge 12\) changes the coefficient by only
+\[
+3.98\times10^{-6}
+\]
+relative to the full fit, and even excluding the known near-merger point \(D=5\) changes it by only
+\[
+6.27\times10^{-5}.
+\]
+More aggressively splitting the window still leaves only permille-level drift:
+\[
+\frac{|b_4^{\rm left}-b_4|}{b_4}=5.35\times10^{-4},
+\qquad
+\frac{|b_4^{\rm right}-b_4|}{b_4}=1.25\times10^{-3}.
+\]
+So on the current audited domain, \(b_4\) is already not a new functional degree of freedom, but a single stable scalar response coefficient on a fixed quartic coordinate.
+
+\medskip\noindent\textbf{Corollary U8 (After \texorpdfstring{$U7$}{U7}, only scalar-level quartic polish remains).}
+On the normalization mainline, the \(b_4\) problem is no longer a search for a new quartic observable, a new support choice, or a new kernel class.  It has already reduced to one global scalar on the fixed coordinate \(q_{4,\mu}(D)-q_{4,\mu}(D_\star)\), and that scalar already saturates the audited width-side residuals:
+\begin{enumerate}
+\item the uncorrected curvature width law is at the \(10^{-3}\) level;
+\item the single fitted quartic coefficient lowers that to \(8.47\times10^{-7}\);
+\item the same coefficient simultaneously saturates the finite-box kernel defect at \(9.47\times10^{-5}\);
+\item subset re-fits change \(b_4\) only at the \(10^{-6}\) to \(10^{-3}\) relative level.
+\end{enumerate}
+Therefore the remaining normalization-side work after \(U7\) is truly only polish:
+\[
+\text{either keep }b_4=0.4244007\text{ as final on the audited domain, or pursue only sub-}10^{-3}\text{ benchmark cleanup.}
+\]
+No further structural expansion of the \(A_\star\) chain is needed.
+
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain
 \[

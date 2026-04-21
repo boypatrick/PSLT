@@ -5884,6 +5884,123 @@ At the exact worst cancellation knot \(D=11\), this reads
 4.81178\times10^{-2}.
 \]
 So the dominant adverse band has now been tested against a genuinely strict corner localization and survives as the stable proof-side target: the remaining gap is best read as the full canonical adverse band plus only small cap, shoulder-core, inner-rim, and axial-core leakages.
+
+\medskip\noindent\textbf{Proposition O33 (The canonical adverse-band magnitude factorizes into a positive static kernel and a negative carrier moment).}
+Keep the canonical adverse band
+\[
+B_{\rm neg}^{(0.20;0.10,1.20)}(D)
+\]
+from Proposition~O31. Define the one-center local mass kernel
+\[
+K_{\rm band}^{\rm mass}(\rho,z;D)
+:=
+\bigl(U_+^{\rm mass}-\bar U_+^{\rm mass}\bigr)\mathbf 1_{B_+}
++
+\bigl(U_-^{\rm mass}-\bar U_-^{\rm mass}\bigr)\mathbf 1_{B_-},
+\]
+restricted to \(B_{\rm neg}^{(0.20;0.10,1.20)}(D)\), and the negative carrier density
+\[
+W_{\rm band}^{(-)}(\rho,z;D)
+:=
+\bigl[-\operatorname{sgn}(I_{\rm diag,anchor}(D))\,\mathcal C(\rho,z;D)\bigr]_+
+\mathbf 1_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}.
+\]
+Then on the canonical band one has the exact pointwise factorization
+\[
+[q_{\rm mass}]_-(\rho,z;D)
+=
+K_{\rm band}^{\rm mass}(\rho,z;D)\,W_{\rm band}^{(-)}(\rho,z;D),
+\]
+provided \(K_{\rm band}^{\rm mass}>0\) there. The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_band_magnitude_source.py}
+verifies precisely this structure across all audited knots \(D=4,\dots,20\):
+\[
+\max_D \|[q_{\rm mass}]_- - K_{\rm band}^{\rm mass}W_{\rm band}^{(-)}\|_\infty = 0,
+\]
+and
+\[
+\min_D \inf_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)} K_{\rm band}^{\rm mass}
+=
+1.82852\times10^{-2}
+\]
+at \(D=4\), so the kernel stays strictly positive on the whole canonical band. Writing the negative carrier moment as
+\[
+W_{\rm band}^{(-)}(D)
+:=
+\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}
+W_{\rm band}^{(-)}(\rho,z;D)\,d\rho\,dz,
+\]
+and the weighted kernel average as
+\[
+\bar K_{\rm band}^{(-)}(D)
+:=
+\frac{N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)}
+{W_{\rm band}^{(-)}(D)},
+\]
+the audit finds
+\[
+5.38460\times10^{-2}
+\le
+\bar K_{\rm band}^{(-)}(D)
+\le
+1.00728\times10^{-1}
+\]
+for all audited \(D\), with the minimum at \(D=5\) and the maximum at \(D=18\). The negative-carrier floor is
+\[
+\min_D W_{\rm band}^{(-)}(D)
+=
+8.40086\times10^{-3}
+\]
+at \(D=20\), while the crude kernel-floor product
+\[
+\inf_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}K_{\rm band}^{\rm mass}\cdot W_{\rm band}^{(-)}(D)
+\]
+has audited floor
+\[
+4.28523\times10^{-4}
+\]
+at \(D=20\). Thus the adverse-band magnitude is no longer a black-box carrier: it is a positive one-center mass kernel against a negative carrier moment.
+
+\medskip\noindent\textbf{Corollary O32 (The remaining adverse-band proof target is the negative carrier moment).}
+By Proposition~O33, the canonical adverse-band magnitude satisfies the exact identity
+\[
+N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)
+=
+\bar K_{\rm band}^{(-)}(D)\,W_{\rm band}^{(-)}(D),
+\]
+with
+\[
+5.38460\times10^{-2}
+\le
+\bar K_{\rm band}^{(-)}(D)
+\le
+1.00728\times10^{-1}.
+\]
+Equivalently,
+\[
+\inf_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}K_{\rm band}^{\rm mass}\cdot W_{\rm band}^{(-)}(D)
+\le
+N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)
+\le
+\sup_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)}K_{\rm band}^{\rm mass}\cdot W_{\rm band}^{(-)}(D).
+\]
+The audited band floor remains
+\[
+\min_D N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)
+=
+7.37447\times10^{-4},
+\]
+whereas the kernel-floor product has floor
+\[
+4.28523\times10^{-4},
+\]
+so the exact band floor exceeds the coarse product floor by the factor
+\[
+\frac{7.37447\times10^{-4}}{4.28523\times10^{-4}}
+=
+1.72090.
+\]
+Therefore the support problem is already closed and the magnitude problem has narrowed again: to control the canonical adverse band, it is now enough to control the negative carrier moment \(W_{\rm band}^{(-)}\), with the positive one-center mass kernel confined to a narrow audited interval.
 So the positive carrier, the axial core, the inner rim, and even the small axial shoulder core have all been demoted to corrective terms. The remaining proof-side target narrows once more: it is enough to control the genuinely hollow off-axis adverse band
 \[
 N_{\rm mass,band}^{(0.20;0.10,1.20)},

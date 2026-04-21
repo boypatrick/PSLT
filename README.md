@@ -986,3 +986,16 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   6.35145\times10^{-2}
   \]
   at `D=11`. More importantly, the strict-corner floor drops to `6.88668e-4`, whereas the full band floor remains `7.37447e-4`, a loss by the factor `1.07083`. So support-side localization is now exhausted at the full adverse-band scale: the stable proof target remains `N_{mass,band}^{(0.20;0.10,1.20)}`, with only small cap, shoulder-core, inner-rim, and axial-core leakages outside it.
+- **Open-system adverse-band magnitude factorization audit:** `/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_band_magnitude_source.py` attacks the canonical adverse band itself without shrinking support. On `B_{neg}^{(0.20;0.10,1.20)}`, it defines the one-center local mass kernel `K_{band}^{mass}` and the negative carrier density `W_{band}^{(-)}=[-(sgn I_{diag,anchor})\,\mathcal C]_+`, and verifies the exact pointwise factorization
+  \[
+  [q_{\rm mass}]_- = K_{\rm band}^{mass}\,W_{\rm band}^{(-)}.
+  \]
+  Across all audited knots `D=4,...,20`, the factorization residual is exactly zero and the kernel stays strictly positive, with audited minimum `1.82852e-2` at `D=4`. Writing
+  \[
+  N_{\rm mass,band}^{(0.20;0.10,1.20)} = \bar K_{\rm band}^{(-)}\,W_{\rm band}^{(-)},
+  \]
+  the weighted kernel average is trapped in the narrow interval
+  \[
+  5.38460\times10^{-2}\le \bar K_{\rm band}^{(-)} \le 1.00728\times10^{-1},
+  \]
+  while the negative-carrier floor is `8.40086e-3` at `D=20`. The coarse product floor `K_{min}^{band} W_{band}^{(-)}` is `4.28523e-4`, and the exact band floor `7.37447e-4` exceeds it by the factor `1.72090`. So the magnitude problem has narrowed again: the remaining proof target is no longer the raw adverse-band integral, but the negative carrier moment `W_{band}^{(-)}`, with the one-center mass kernel now reduced to a positive audited multiplier.

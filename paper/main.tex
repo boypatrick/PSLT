@@ -7614,6 +7614,102 @@ The left window is the only bottleneck, while the right window already exceeds t
 \]
 Hence `open\_system\_micro' should now be read in its sharpest current form: it is \emph{audited piecewise closed} on the same exact-total split, and the only remaining theorem task is to prove those same windowwise core/tail inequalities directly on the parent side.  No new response family, no new support class, and no new chart design remain on this line.
 
+\medskip\noindent\textbf{Proposition O47 (The remaining parent-side task is only a left-window bottleneck bound, equivalent to either a tail-ratio theorem or a core-floor theorem).}
+Corollary~O45 shows that the right window \(\mathcal D_{\rm R}=\{12,\dots,20\}\) is already non-bottleneck.  Thus the only remaining parent-side task on the same family \(B_{\rm core}(R_\ast)\) comes from the left window
+\[
+\mathcal D_{\rm L}=\{4,\dots,11\},
+\qquad
+R_\ast=1.35.
+\]
+Write
+\[
+\eta_{\rm L}
+:=
+\sup_{D\in\mathcal D_{\rm L}}
+\frac{|J_{\rm tail}^{(R_\ast)}(D)|}{|J_{\rm core}^{(R_\ast)}(D)|},
+\qquad
+C_{\rm L}
+:=
+\inf_{D\in\mathcal D_{\rm L}}
+|J_{\rm core}^{(R_\ast)}(D)|.
+\]
+Then the left-window parity floor is
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+(1-\eta_{\rm L})\,C_{\rm L}
+\qquad
+(D\in\mathcal D_{\rm L}),
+\]
+provided the same-sign split of Proposition~O46 holds.  Therefore the parity thresholds from Proposition~O43 are equivalent to either of the following two parent-side sufficient conditions on the \emph{same} left-window family:
+
+\emph{(i) Tail-ratio target with the current left core floor fixed.}  
+If one keeps the current audited left core floor
+\[
+C_{\rm L}=1.34704\times10^{-4},
+\]
+then it is enough to prove
+\[
+\eta_{\rm L}\le 0.554268
+\]
+for the globally valid Schur-parity threshold, or
+\[
+\eta_{\rm L}\le 0.567871
+\]
+for the locally aligned threshold.  The current audited value is
+\[
+\eta_{\rm L}^{\rm(aud)}=0.520215,
+\]
+so the required slack is only
+\[
+0.034053
+\quad\text{(global)},\qquad
+0.047656
+\quad\text{(local)}.
+\]
+
+\emph{(ii) Core-floor target with the current left tail ratio fixed.}  
+If one keeps the current audited left tail ratio
+\[
+\eta_{\rm L}=0.520215,
+\]
+then it is enough to prove
+\[
+C_{\rm L}\ge 1.25144\times10^{-4}
+\]
+for the globally valid threshold, or
+\[
+C_{\rm L}\ge 1.21325\times10^{-4}
+\]
+for the locally aligned threshold.  The current audited value
+\[
+C_{\rm L}^{\rm(aud)}=1.34704\times10^{-4}
+\]
+already exceeds these by the factors
+\[
+1.07640
+\quad\text{and}\quad
+1.11028.
+\]
+Hence the remaining parent-side analytic lift is no longer a whole-window family problem.  On the same exact-total split, it has been reduced to a single left-window bottleneck, which can be formulated equally well as a tail-ratio theorem or as a core-floor theorem.
+
+\medskip\noindent\textbf{Corollary O46 (The right window is formally demoted, and the left window alone sets the remaining parent-side proof target).}
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_left_window_bottleneck_source.py}
+shows that
+\[
+\frac{(1-\eta_{\rm R})C_{\rm R}}{6.00420\times10^{-5}}=2.31625,
+\qquad
+\frac{(1-\eta_{\rm R})C_{\rm R}}{5.82096\times10^{-5}}=2.38917,
+\]
+so the right window \(\mathcal D_{\rm R}\) is already uniformly far above both Schur-parity thresholds.  Meanwhile the left window saturates the audited piecewise floor:
+\[
+\frac{(1-\eta_{\rm L})C_{\rm L}}{6.00420\times10^{-5}}=1.07640,
+\qquad
+\frac{(1-\eta_{\rm L})C_{\rm L}}{5.82096\times10^{-5}}=1.11028.
+\]
+Therefore, from the standpoint of the remaining parent-side analytic lift, the right window is formally demoted to a non-bottleneck sector.  The only substantive task left on `open\_system\_micro' is to prove one of the equivalent left-window bounds of Proposition~O47 on the same family \(B_{\rm core}(R_\ast)\) and the same exact-total split.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

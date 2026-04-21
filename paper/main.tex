@@ -7515,6 +7515,105 @@ under the exact local-response alignment.  The same-family two-window floor from
 \]
 Hence the dominant-pole / exact-Schur threshold is already closed on the audited bridge without changing the family \(B_{\rm core}(R)\) and without changing the optimal radius \(R_\ast=1.35\).  The previous residual \(1.27\%\) gap was therefore not evidence for a missing Schur-resolvent structure; it was only the loss incurred by forcing one global minimum \(\lambda_{{\rm tot},\ast}\) and one global core floor to be multiplied across the entire audited window instead of allowing the same split family to be read piecewise on its natural contiguous subwindows.
 
+\medskip\noindent\textbf{Proposition O46 (The parent-side analytic lift has been reduced to the same family and two windowwise core/tail bounds).}
+The audited piecewise closure of Proposition~O45 can be promoted to a parent-side theorem target without introducing any new family.  Keep exactly the same split
+\[
+V_{11}(D)-V_{22}(D)=J_{\rm core}^{(R_\ast)}(D)+J_{\rm tail}^{(R_\ast)}(D),
+\qquad
+R_\ast=1.35,
+\]
+on the same contiguous windows
+\[
+\mathcal D_{\rm L}=\{4,\dots,11\},
+\qquad
+\mathcal D_{\rm R}=\{12,\dots,20\}.
+\]
+Suppose a parent-side analytic argument proves, for every \(D\in\mathcal D_{\rm L}\),
+\[
+\operatorname{sgn}J_{\rm core}^{(R_\ast)}(D)
+=
+\operatorname{sgn}(V_{11}(D)-V_{22}(D)),
+\]
+\[
+\operatorname{sgn}J_{\rm tail}^{(R_\ast)}(D)
+=
+-\operatorname{sgn}(V_{11}(D)-V_{22}(D)),
+\]
+\[
+|J_{\rm tail}^{(R_\ast)}(D)|
+\le
+\eta_{\rm L}\,|J_{\rm core}^{(R_\ast)}(D)|,
+\qquad
+\eta_{\rm L}=0.520215\ldots,
+\]
+\[
+|J_{\rm core}^{(R_\ast)}(D)|
+\ge
+C_{\rm L},
+\qquad
+C_{\rm L}=1.34704\times10^{-4},
+\]
+and, for every \(D\in\mathcal D_{\rm R}\),
+\[
+|J_{\rm tail}^{(R_\ast)}(D)|
+\le
+\eta_{\rm R}\,|J_{\rm core}^{(R_\ast)}(D)|,
+\qquad
+\eta_{\rm R}=0.573291\ldots,
+\]
+\[
+|J_{\rm core}^{(R_\ast)}(D)|
+\ge
+C_{\rm R},
+\qquad
+C_{\rm R}=3.25919\times10^{-4}.
+\]
+Then
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+(1-\eta_{\rm L})C_{\rm L}
+=
+6.46291\times10^{-5}
+\qquad
+(D\in\mathcal D_{\rm L}),
+\]
+and
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+(1-\eta_{\rm R})C_{\rm R}
+=
+1.39072\times10^{-4}
+\qquad
+(D\in\mathcal D_{\rm R}).
+\]
+Therefore the same family and the same radius imply the global piecewise floor
+\[
+|V_{11}(D)-V_{22}(D)|\ge 6.46291\times10^{-5}
+\]
+throughout the audited on-shell window.  By Proposition~O43, this already exceeds both the global and the locally aligned parity thresholds required for the scalar exact-Schur lift.
+
+\medskip\noindent\textbf{Corollary O45 (What remains is no longer family design, but only a parent-side proof of the same piecewise bounds).}
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_piecewise_parent_lift_source.py}
+shows that the constants in Proposition~O46 are already realized on the exported bridge:
+\[
+\eta_{\rm L}=0.520215\ldots,\quad
+C_{\rm L}=1.34704\times10^{-4},\quad
+(1-\eta_{\rm L})C_{\rm L}=6.46291\times10^{-5},
+\]
+\[
+\eta_{\rm R}=0.573291\ldots,\quad
+C_{\rm R}=3.25919\times10^{-4},\quad
+(1-\eta_{\rm R})C_{\rm R}=1.39072\times10^{-4}.
+\]
+The left window is the only bottleneck, while the right window already exceeds the global parity threshold by the factor
+\[
+2.31625.
+\]
+Hence `open\_system\_micro' should now be read in its sharpest current form: it is \emph{audited piecewise closed} on the same exact-total split, and the only remaining theorem task is to prove those same windowwise core/tail inequalities directly on the parent side.  No new response family, no new support class, and no new chart design remain on this line.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

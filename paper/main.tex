@@ -7169,6 +7169,272 @@ and even the separated observable-chain floor already gives
 \]
 Thus the exact Schur-lift problem is no longer a multi-parameter chart or support problem: it has been reduced to one scalar analytic floor on the mix kernel (equivalently on \(\gamma_{\rm mix}\)), while the defect side, the family/chart transfer side, and the non-mix witness side are already closed on the audited exact bridge.
 
+\medskip\noindent\textbf{Proposition O42 (The remaining scalar Schur-lift gap is only a small tightening of the current static parity floor).}
+The scalar threshold of Proposition~O41 can be compared directly with the current overlap-side lower bounds.  By Corollary~O20,
+\[
+|V_{11}(D)-V_{22}(D)|\ge 5.64043\times10^{-5}
+\]
+on the audited exact bridge, hence by Proposition~O18
+\[
+g_x(D)\ge 2.820215\times10^{-5}.
+\]
+Combining this with the global response floor from Proposition~O17,
+\[
+S_{xx}(D)\ge S_{xx}^{\rm floor}=1.01493,
+\]
+gives the exact-bridge lower estimate
+\[
+\gamma_{\rm mix}(D)\ge
+\kappa_{\rm env}\,(2.820215\times10^{-5})^2\,S_{xx}^{\rm floor}
+=3.47553\times10^{-4}.
+\]
+The new audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_lift_overlap_bridge.py}
+compares this directly with the scalar Schur-lift threshold from Proposition~O41,
+\[
+\gamma_{{\rm mix},\ast}=3.93829\times10^{-4},
+\]
+and finds
+\[
+\frac{3.47553\times10^{-4}}{3.93829\times10^{-4}}=0.88250.
+\]
+So with the global response floor the current compact-anchor parity-contrast theorem already supplies \(88.25\%\) of the scalar Schur-lift threshold.  Equivalently, if the same global response floor is kept fixed, only the further tightening
+\[
+g_x(D)\ge 1.06450\times (2.820215\times10^{-5})
+\]
+would be sufficient to close Proposition~O41.
+
+If one instead keeps the exact local response factor at the common knot \(D=11\),
+\[
+S_{xx}(D_{g_x,\min})=1.07984,
+\]
+then the same parity floor already gives
+\[
+\gamma_{\rm mix}(D)\ge 3.69779\times10^{-4},
+\qquad
+\frac{3.69779\times10^{-4}}{3.93829\times10^{-4}}=0.93893,
+\]
+so the remaining gap is only
+\[
+g_x(D)\ge 1.03201\times(2.820215\times10^{-5})
+\]
+under that local-response alignment.  Likewise, using the slightly stronger core-window parity floor
+\[
+|V_{11}(D)-V_{22}(D)|\ge 5.70400\times10^{-5}
+\]
+from Corollary~O19 improves the global-response fraction to
+\[
+0.90250
+\]
+and the local-response fraction to
+\[
+0.96022.
+\]
+
+\medskip\noindent\textbf{Corollary O41 (The exact Schur-lift gap is no longer a new operator question, but a small constant-tightening question on the static overlap side).}
+On the current exact bridge, Propositions~O41--O42 show that the remaining dominant-pole / exact-Schur lift gap is not a missing chart inclusion, not a missing response family, and not a missing non-mix operator estimate.  It is already reduced to a small scalar constant gap between the current static parity-contrast floor and the threshold
+\[
+g_x(D)^2S_{xx}(D)\ge 9.15\times10^{-10}.
+\]
+With the globally valid response floor from Proposition~O17, the remaining deficit is only a
+\[
+6.45\%
+\]
+tightening of the compact-anchor \(g_x\) floor, and even on the exact local-response alignment it drops to only
+\[
+3.20\%.
+\]
+So the next useful proof-side task is now very specific: strengthen the current one-center/static parity floor just enough to cross the scalar threshold of Proposition~O41, rather than reopening any new Schur-resolvent structure.
+
+\medskip\noindent\textbf{Proposition O43 (The scalar Schur-lift criterion is equivalent to a single static parity threshold).}
+Proposition~O41 asks only for the scalar floor
+\[
+g_x(D)^2S_{xx}(D)\ge m_{{\rm mix},\ast},
+\qquad
+m_{{\rm mix},\ast}=9.14719\times10^{-10}.
+\]
+By Proposition~O18,
+\[
+g_x(D)=\frac12|V_{11}(D)-V_{22}(D)|.
+\]
+Therefore any response lower bound
+\[
+S_{xx}(D)\ge S_\ast
+\]
+implies the sufficient static parity threshold
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+2\sqrt{\frac{m_{{\rm mix},\ast}}{S_\ast}}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_lift_parity_threshold_source.py}
+evaluates this threshold for the two response inputs already isolated in Propositions~O17 and O41.  With the globally valid response floor
+\[
+S_\ast=S_{xx}^{\rm floor}=1.01493,
+\]
+the exact Schur lift follows from the single static bound
+\[
+|V_{11}(D)-V_{22}(D)|\ge 6.00420\times10^{-5}.
+\]
+With the exact local-response alignment at the common knot \(D=11\),
+\[
+S_\ast=S_{xx}(D_{g_x,\min})=1.07984,
+\]
+the required static threshold sharpens to
+\[
+|V_{11}(D)-V_{22}(D)|\ge 5.82096\times10^{-5}.
+\]
+These two thresholds can then be compared directly with the currently available overlap-side floors:
+\[
+|V_{11}-V_{22}|_{\rm anchor}=5.64043\times10^{-5},
+\qquad
+|V_{11}-V_{22}|_{\rm core}=5.70400\times10^{-5},
+\]
+\[
+|V_{11}-V_{22}|_{\rm exact}=6.70795\times10^{-5}.
+\]
+Numerically, the current compact-anchor theorem already reaches
+\[
+93.94\%
+\quad\text{of the global threshold,}
+\qquad
+96.90\%
+\quad\text{of the local-response threshold,}
+\]
+while the current core-window theorem reaches
+\[
+95.00\%
+\quad\text{of the global threshold,}
+\qquad
+97.99\%
+\quad\text{of the local-response threshold.}
+\]
+Meanwhile the exact bridge floor already exceeds the same thresholds by the factors
+\[
+1.117
+\quad\text{(global-response version)},
+\qquad
+1.152
+\quad\text{(local-response version)}.
+\]
+
+\medskip\noindent\textbf{Corollary O42 (The remaining dominant-pole theorem gap is exactly a one-scalar parity-threshold tightening).}
+Propositions~O41--O43 show that the residual exact Schur-lift task can now be stated with no additional response-family or chart language.  It is enough to strengthen the current static parity theorem to one of the two scalar thresholds
+\[
+|V_{11}(D)-V_{22}(D)|\ge 6.00420\times10^{-5}
+\]
+under the globally valid response floor, or
+\[
+|V_{11}(D)-V_{22}(D)|\ge 5.82096\times10^{-5}
+\]
+under the exact local-response alignment already audited at the common floor knot.  Relative to the current core-window theorem floor \(5.70400\times10^{-5}\), these correspond to only
+\[
+5.26\%
+\quad\text{and}\quad
+2.05\%
+\]
+of additional static-parity tightening, respectively.  Thus the open-system dominant-pole line is no longer missing any new Schur-resolvent structure: it has been reduced to a single explicit constant threshold on the same parity contrast \(|V_{11}-V_{22}|\) that already drives the overlap-side synthesis.
+
+\medskip\noindent\textbf{Proposition O44 (The same core-window family already gives a tighter floor for the exact total parity contrast).}
+Keep the same symmetric core-window family \(B_{\rm core}(R;D)\) from Proposition~O20, but apply it directly to the full exact parity-contrast density:
+\[
+J_{\rm core}^{(R)}(D)
+:=
+\int_{B_{\rm core}(R;D)}
+\mathcal C(\rho,z;D)\,\delta V(\rho,z;D)\,d\rho\,dz,
+\]
+\[
+J_{\rm tail}^{(R)}(D)
+:=
+\bigl(V_{11}(D)-V_{22}(D)\bigr)-J_{\rm core}^{(R)}(D).
+\]
+Thus
+\[
+V_{11}(D)-V_{22}(D)=J_{\rm core}^{(R)}(D)+J_{\rm tail}^{(R)}(D).
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_total_core_tightening_source.py}
+rescans the same interval
+\[
+R\in[1.20,1.40]
+\]
+with the exact total density instead of the one-center pair alone.  It finds that the same optimal safe radius remains
+\[
+R_\ast=1.35,
+\]
+and now satisfies on every audited knot \(D=4,\dots,20\)
+\[
+\operatorname{sgn}J_{\rm core}^{(R_\ast)}(D)
+=
+\operatorname{sgn}\bigl(V_{11}(D)-V_{22}(D)\bigr),
+\]
+\[
+\operatorname{sgn}J_{\rm tail}^{(R_\ast)}(D)
+=
+-\operatorname{sgn}\bigl(V_{11}(D)-V_{22}(D)\bigr).
+\]
+Hence
+\[
+|V_{11}(D)-V_{22}(D)|
+=
+|J_{\rm core}^{(R_\ast)}(D)|
+-|J_{\rm tail}^{(R_\ast)}(D)|
+\ge
+\lambda_{\rm tot,\ast}\,|J_{\rm core}^{(R_\ast)}(D)|,
+\]
+with
+\[
+\lambda_{\rm tot,\ast}=0.426709\ldots
+\]
+and
+\[
+\min_D |J_{\rm core}^{(R_\ast)}(D)|
+=
+1.34704\times10^{-4}.
+\]
+Therefore the same core-window family already yields the sharper exact-total floor
+\[
+|V_{11}(D)-V_{22}(D)|
+\ge
+5.74795\times10^{-5}.
+\]
+This improves the previous core-window theorem floor \(5.70400\times10^{-5}\) by the factor
+\[
+1.00771.
+\]
+The exact bridge floor remains
+\[
+\min_D |V_{11}(D)-V_{22}(D)|=6.70795\times10^{-5}
+\qquad\text{at }D=11,
+\]
+so the new same-family tightening is already within the factor
+\[
+1.16702
+\]
+of the exact minimum.
+
+\medskip\noindent\textbf{Corollary O43 (The remaining Schur-lift gap drops from \(2.05\%\) to \(1.27\%\) without changing the support family).}
+Combine Proposition~O44 with the parity-threshold reduction of Proposition~O43.  Under the exact local-response alignment at the common floor knot, the Schur-lift target is
+\[
+|V_{11}(D)-V_{22}(D)|\ge 5.82096\times10^{-5}.
+\]
+The tightened exact-total core-window floor from Proposition~O44 already reaches
+\[
+\frac{5.74795\times10^{-5}}{5.82096\times10^{-5}}
+=
+0.987457,
+\]
+so only the remaining tightening
+\[
+1.27\%
+\]
+is still missing on the local-response version of the scalar Schur threshold.  Even against the globally valid response threshold \(6.00420\times10^{-5}\), the same tightened floor already reaches
+\[
+95.73\%
+\]
+of the required static parity contrast.  Thus the dominant-pole / exact-Schur line remains on the same static-overlap spine as before, but the remaining gap is now smaller still: no new support family is needed, and the residual task is only a final sub-two-percent tightening of the current parity theorem when read at the locally aligned response level.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

@@ -1,0 +1,2 @@
+R_star,lambda_total_star,eta_total_star,exact_core_floor_abs_at_R_star,induced_exact_total_floor,exact_total_floor_abs,exact_total_floor_D,exact_total_floor_over_induced,all_core_same_sign_as_total,all_tail_opposite_sign_to_total
+1.35,0.42670871396500126,0.5732912860349988,0.00013470433896902912,5.747951524698002e-05,6.70795015735575e-05,11.0,1.1670157844116797,1,1

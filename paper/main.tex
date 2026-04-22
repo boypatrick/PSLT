@@ -8164,6 +8164,88 @@ strong enough to reach either \(1.49217\times10^{-4}\) (global) or \(1.44663\tim
 \end{enumerate}
 Thus the audited bridge now isolates the bottleneck in its narrowest current parent-side form: a one-knot, same-family, same-center static-anchor lower bound.
 
+\medskip\noindent\textbf{Proposition O53 (At the singleton bottleneck knot, the static-anchor lift is equivalent to a local positive-moment lower bound or a local cancellation-ratio upper bound).}
+Keep the same singleton knot \(D=11\) and the same same-center static anchor \(J_{{\rm diag},\rm anchor}(11)\).  By the oriented-moment split from Proposition~O24,
+\[
+|J_{{\rm diag},\rm anchor}(11)|
+=
+P_{\rm diag}(11)-N_{\rm diag}(11)
+=
+\bigl(1-\nu_{11}^{(\pm)}\bigr)\,P_{\rm diag}(11),
+\]
+where
+\[
+\nu_{11}^{(\pm)}
+:=
+\frac{N_{\rm diag}(11)}{P_{\rm diag}(11)}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_diag_moment_source.py}
+reads the already-exported moment split at this singleton knot and gives
+\[
+P_{\rm diag}(11)=1.87136\times10^{-3},
+\qquad
+N_{\rm diag}(11)=1.70580\times10^{-3},
+\]
+\[
+\nu_{11}^{(\pm)}=0.911531876\ldots,
+\qquad
+\bigl||J_{{\rm diag},\rm anchor}(11)|-(1-\nu_{11}^{(\pm)})P_{\rm diag}(11)\bigr|
+\le 10^{-16}.
+\]
+Therefore the global and local static-anchor targets from Proposition~O52,
+\[
+|J_{{\rm diag},\rm anchor}(11)|\ge 1.49217\times10^{-4},
+\qquad
+|J_{{\rm diag},\rm anchor}(11)|\ge 1.44663\times10^{-4},
+\]
+are each equivalent to either of the following one-dimensional sufficient conditions:
+\[
+P_{\rm diag}(11)\ge \frac{1.49217\times10^{-4}}{1-\nu_{11}^{(\pm)}}
+=
+1.68667\times10^{-3},
+\]
+\[
+P_{\rm diag}(11)\ge \frac{1.44663\times10^{-4}}{1-\nu_{11}^{(\pm)}}
+=
+1.63520\times10^{-3},
+\]
+or, holding the positive moment fixed,
+\[
+\nu_{11}^{(\pm)}\le 1-\frac{1.49217\times10^{-4}}{P_{\rm diag}(11)}
+=
+0.920262868\ldots,
+\]
+\[
+\nu_{11}^{(\pm)}\le 1-\frac{1.44663\times10^{-4}}{P_{\rm diag}(11)}
+=
+0.922696321\ldots.
+\]
+Numerically, the audited singleton positive moment already exceeds the two required positive-moment floors by the factors
+\[
+1.10950
+\qquad\text{and}\qquad
+1.14442,
+\]
+while the audited local cancellation ratio lies below the two admissible upper bounds by the absolute slacks
+\[
+8.73\times10^{-3}
+\qquad\text{and}\qquad
+1.12\times10^{-2}.
+\]
+
+\medskip\noindent\textbf{Corollary O52 (The most robust remaining parent-side route is a lower bound for the local positive moment \(P_{\rm diag}(11)\)).}
+Proposition~O53 turns the last singleton static-anchor lift into two equivalent parent-side statements:
+\begin{enumerate}
+\item a local positive-moment lower bound for \(P_{\rm diag}(11)\);
+\item a local cancellation-ratio upper bound for \(\nu_{11}^{(\pm)}\).
+\end{enumerate}
+On the audited bridge both are satisfied, but they are not equally robust: the positive-moment route keeps a multiplicative margin of about \(10.95\%\) (global) or \(14.44\%\) (local), whereas the cancellation-ratio route keeps only an absolute slack of about \(0.0087\) or \(0.0112\).  Therefore the cleanest next parent-side analytic target is no longer the full static anchor itself, but the local positive carrier moment
+\[
+P_{\rm diag}(11),
+\]
+with \(\nu_{11}^{(\pm)}\) retained only as a secondary tightening line if a sharper theorem is later wanted.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

@@ -1,0 +1,11 @@
+term,value,role
+I_diag_anchor_11,0.0001655557388124,target
+P_diag_11,0.0018713603461942,positive_moment
+N_diag_11,0.0017058046073817,adverse_moment
+nu_11,0.911531876183456,local_cancellation_ratio
+required_diag_floor_global,0.000149216907552,global_target
+required_diag_floor_local,0.0001446630399855,local_target
+required_P_diag_global_given_nu11,0.0016866742631665899,global_positive_moment_target
+required_P_diag_local_given_nu11,0.0016351995921772588,local_positive_moment_target
+required_nu11_global_given_Pdiag,0.9202628676751308,global_ratio_target
+required_nu11_local_given_Pdiag,0.9226963207381719,local_ratio_target

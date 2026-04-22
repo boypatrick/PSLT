@@ -7887,6 +7887,75 @@ at \(D=11\) is smaller than both interval floors, the audited bridge now has a u
 \item the only surviving audited bottleneck is the single-knot core-floor estimate at \(D=11\).
 \end{enumerate}
 
+\medskip\noindent\textbf{Proposition O50 (After the audited hierarchical split, the remaining parent-side lift is equivalent to a single-knot core-floor theorem at \(D=11\)).}
+Keep the same exact-total split and the same family \(B_{\rm core}(R_\ast)\) with \(R_\ast=1.35\).  At the isolated bottleneck knot \(D=11\), the audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_knot_source.py}
+shows
+\[
+V_{11}(11)-V_{22}(11)=J_{\rm core}^{(R_\ast)}(11)+J_{\rm tail}^{(R_\ast)}(11),
+\]
+with
+\[
+\operatorname{sgn}J_{\rm core}^{(R_\ast)}(11)=\operatorname{sgn}(V_{11}(11)-V_{22}(11)),
+\qquad
+\operatorname{sgn}J_{\rm tail}^{(R_\ast)}(11)=-\operatorname{sgn}(V_{11}(11)-V_{22}(11)),
+\]
+and audited ratio
+\[
+\eta_{11}:=
+\frac{|J_{\rm tail}^{(R_\ast)}(11)|}{|J_{\rm core}^{(R_\ast)}(11)|}
+=0.502024\ldots,
+\qquad
+\lambda_{11}:=1-\eta_{11}=0.497976\ldots.
+\]
+Hence
+\[
+|V_{11}(11)-V_{22}(11)|=\lambda_{11}|J_{\rm core}^{(R_\ast)}(11)|.
+\]
+To imply the global Schur-parity threshold
+\[
+|V_{11}-V_{22}|\ge 6.00420\times10^{-5},
+\]
+it is enough to prove the single-knot core-floor estimate
+\[
+|J_{\rm core}^{(R_\ast)}(11)|
+\ge
+\frac{6.00420\times10^{-5}}{\lambda_{11}}
+=
+1.20572\times10^{-4}.
+\]
+To imply the locally aligned Schur-parity threshold
+\[
+|V_{11}-V_{22}|\ge 5.82096\times10^{-5},
+\]
+it is enough to prove
+\[
+|J_{\rm core}^{(R_\ast)}(11)|
+\ge
+\frac{5.82096\times10^{-5}}{\lambda_{11}}
+=
+1.16893\times10^{-4}.
+\]
+The current audited exact value is
+\[
+|J_{\rm core}^{(R_\ast)}(11)|=1.34704\times10^{-4},
+\]
+which exceeds these single-knot targets by the factors
+\[
+1.11721
+\qquad\text{and}\qquad
+1.15238.
+\]
+
+\medskip\noindent\textbf{Corollary O49 (The only remaining non-audited lift is a single-knot analytic lower bound at \(D=11\), not any interval theorem or family-design statement).}
+By Proposition~O49, every non-singleton interval piece on \(D=4,\dots,11\) already lies safely above the Schur-parity thresholds on the same family \(B_{\rm core}(R_\ast)\).  Proposition~O50 then identifies the residual bottleneck in its sharpest form:
+\begin{enumerate}
+\item no new split, no new chart, and no new support family are needed;
+\item no interval theorem remains on the audited bridge;
+\item the only remaining parent-side analytic task is to prove a lower bound on the single quantity \(|J_{\rm core}^{(R_\ast)}(11)|\) strong enough to reach either \(1.20572\times10^{-4}\) (global) or \(1.16893\times10^{-4}\) (local).
+\end{enumerate}
+Thus the `open\_system\_micro' bottleneck has now been reduced from a family-design problem to a single-knot core-floor lift.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

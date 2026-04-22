@@ -1,0 +1,8 @@
+quantity,value,role
+exact_total_abs_11,6.70795015735575e-05,singleton_floor
+core_abs_11,0.00013470433896902912,audited_core
+tail_abs_11,6.762483739547158e-05,opposite_sign_tail
+required_core_floor_global,0.00012057217927098605,global_threshold_target
+required_core_floor_local,0.00011689250418844786,local_threshold_target
+interval_floor_4_6,8.188121803641355e-05,non_bottleneck_interval
+interval_floor_7_10,0.0003708312660711065,non_bottleneck_interval

@@ -1,0 +1,10 @@
+term,value,role
+plus_core,8.685909684673181e-05,self_pair_component
+minus_core,4.695329002132373e-05,self_pair_component
+self_pair_core,0.00013381238686805555,parent_target_candidate
+cross_mass_core,1.1296099771173164e-06,same_sign_refinement
+cross_deriv_core,-2.3765787604599717e-07,same_sign_refinement
+cross_core,8.919521010713191e-07,same_sign_refinement
+total_core,0.00013470433896912694,exact_core
+required_core_floor_global,0.00012057217927098605,global_threshold
+required_core_floor_local,0.00011689250418844786,local_threshold

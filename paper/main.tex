@@ -7956,6 +7956,71 @@ By Proposition~O49, every non-singleton interval piece on \(D=4,\dots,11\) alrea
 \end{enumerate}
 Thus the `open\_system\_micro' bottleneck has now been reduced from a family-design problem to a single-knot core-floor lift.
 
+\medskip\noindent\textbf{Proposition O51 (At the singleton bottleneck knot, the exact core is already carried by the same-center pair core, with only a tiny same-sign cross refinement).}
+At \(D=11\) and the same radius \(R_\ast=1.35\), write
+\[
+J_{\rm core}^{(R_\ast)}(11)
+=
+J_{+,{\rm core}}^{(R_\ast)}(11)
++
+J_{-,{\rm core}}^{(R_\ast)}(11)
++
+J_{\times,{\rm core}}^{(R_\ast)}(11),
+\]
+where the first two terms come from the two one-center same-sign pieces and the last term is the cross correction, all integrated on the same core region \(B_{\rm core}(R_\ast;11)\).  The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_parent_source.py}
+gives
+\[
+J_{+,{\rm core}}^{(R_\ast)}(11)=8.68591\times10^{-5},
+\qquad
+J_{-,{\rm core}}^{(R_\ast)}(11)=4.69533\times10^{-5},
+\]
+so the same-center pair core already contributes
+\[
+J_{{\rm self\text{-}pair},{\rm core}}^{(R_\ast)}(11)
+=
+1.33812\times10^{-4}.
+\]
+Meanwhile the core cross correction is
+\[
+J_{\times,{\rm core}}^{(R_\ast)}(11)
+=
+8.91952\times10^{-7},
+\]
+has the same sign as \(J_{\rm core}^{(R_\ast)}(11)\), and contributes only
+\[
+\frac{|J_{\times,{\rm core}}^{(R_\ast)}(11)|}{|J_{\rm core}^{(R_\ast)}(11)|}
+=
+6.62\times10^{-3}.
+\]
+Hence the exact bottleneck core satisfies
+\[
+|J_{\rm core}^{(R_\ast)}(11)|
+\ge
+|J_{{\rm self\text{-}pair},{\rm core}}^{(R_\ast)}(11)|.
+\]
+In particular, the global and local single-knot targets from Proposition~O50 are already implied by the weaker same-center pair inequalities
+\[
+|J_{{\rm self\text{-}pair},{\rm core}}^{(R_\ast)}(11)|
+\ge 1.20572\times10^{-4},
+\qquad
+|J_{{\rm self\text{-}pair},{\rm core}}^{(R_\ast)}(11)|
+\ge 1.16893\times10^{-4},
+\]
+and the audited same-center pair value exceeds them by the factors
+\[
+1.10981
+\qquad\text{and}\qquad
+1.14475.
+\]
+
+\medskip\noindent\textbf{Corollary O50 (The remaining parent-side theorem target can be narrowed once more to a same-center pair-core lower bound at \(D=11\)).}
+On the audited bridge, the singleton bottleneck no longer requires a theorem for the full exact core \(J_{\rm core}^{(R_\ast)}(11)\).  It is enough to prove a lower bound for the same-center pair core \(J_{{\rm self\text{-}pair},{\rm core}}^{(R_\ast)}(11)\) on the same knot and the same radius, because the cross contribution is already same-sign and numerically tiny.  Thus the residual `open\_system\_micro' lift is now concentrated on the narrowest current object available on the audited bridge:
+\[
+|J_{{\rm self\text{-}pair},{\rm core}}^{(R_\ast)}(11)|.
+\]
+No interval theorem, no family redesign, and no exact-cross control sharper than a small positive refinement is still needed to explain the exported bottleneck.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

@@ -1,0 +1,11 @@
+term,value,role
+self_pair_core,0.0001338123868679,parent_target
+self_anchor,0.0001323211313169,same_sign_core_subanchor
+self_shell,1.491255550996078e-06,same_sign_completion
+diag_anchor,0.0001637570966893,static_parent_candidate
+mirror_anchor,3.1435965372357336e-05,local_mirror_loss
+induced_anchor_from_diag,0.00013232113131694267,diag_to_anchor_lower_bound
+required_core_floor_global,0.0001205721792709,global_target
+required_core_floor_local,0.0001168925041884,local_target
+required_diag_floor_global,0.0001492169075520612,global_static_target
+required_diag_floor_local,0.0001446630399855359,local_static_target

@@ -8246,6 +8246,230 @@ P_{\rm diag}(11),
 \]
 with \(\nu_{11}^{(\pm)}\) retained only as a secondary tightening line if a sharper theorem is later wanted.
 
+\medskip\noindent\textbf{Proposition O54 (At \(D=11\), the local positive moment of the same-center static anchor is already controlled by a positive mass carrier minus a small derivative leakage).}
+Keep the same knot \(D=11\) and the same canonical anchor \(B_{\rm anchor}(11)\).  Write the oriented same-center static density as
+\[
+q_{\rm diag}=q_{\rm mass}+q_{\rm der},
+\]
+where \(q_{\rm mass}\) and \(q_{\rm der}\) are the one-center mass and derivative anchor densities from Corollary~O24, specialized to the singleton knot.  Define
+\[
+P_{\rm mass}(11):=\int_{B_{\rm anchor}(11)} [q_{\rm mass}]_+\,d\rho\,dz,
+\qquad
+N_{\rm der}(11):=\int_{B_{\rm anchor}(11)} [q_{\rm der}]_-\,d\rho\,dz.
+\]
+Since for every real pair \((a,b)\) one has
+\[
+[a+b]_+ \ge [a]_+ - [b]_-,
+\]
+it follows pointwise on the anchor that
+\[
+[q_{\rm diag}]_+ \ge [q_{\rm mass}]_+ - [q_{\rm der}]_-.
+\]
+Integrating over \(B_{\rm anchor}(11)\) gives the exact lower bound
+\[
+P_{\rm diag}(11)\ge P_{\rm mass}(11)-N_{\rm der}(11).
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_diag_mass_bridge_source.py}
+evaluates this inequality on the exported singleton bridge and gives
+\[
+P_{\rm mass}(11)=1.88085\times10^{-3},
+\qquad
+N_{\rm der}(11)=7.58159\times10^{-5},
+\]
+so that
+\[
+P_{\rm diag}(11)\ge P_{\rm mass}(11)-N_{\rm der}(11)
+=
+1.80504\times10^{-3}.
+\]
+The pointwise lower-bound residual closes numerically:
+\[
+\max_{B_{\rm anchor}(11)}
+\Bigl([q_{\rm mass}]_+ - [q_{\rm der}]_- - [q_{\rm diag}]_+\Bigr)
+\le 0
+\]
+to machine precision in the audit export.  In particular the induced lower bound already exceeds the global and local singleton positive-moment targets from Proposition~O53,
+\[
+1.68667\times10^{-3},
+\qquad
+1.63520\times10^{-3},
+\]
+by the factors
+\[
+1.07018
+\qquad\text{and}\qquad
+1.10386.
+\]
+Equivalently, if one holds \(N_{\rm der}(11)\) fixed, it is enough to prove the weaker positive-mass inequalities
+\[
+P_{\rm mass}(11)\ge 1.76249\times10^{-3},
+\qquad
+P_{\rm mass}(11)\ge 1.71102\times10^{-3},
+\]
+for the global and local routes.  And if one instead holds \(P_{\rm mass}(11)\) fixed, it is enough to prove the derivative-leakage ceilings
+\[
+N_{\rm der}(11)\le 1.94179\times10^{-4},
+\qquad
+N_{\rm der}(11)\le 2.45654\times10^{-4}.
+\]
+The audited derivative leakage occupies only
+\[
+\frac{N_{\rm der}(11)}{P_{\rm mass}(11)}=4.03\%
+\]
+of the positive mass carrier.
+
+\medskip\noindent\textbf{Corollary O53 (The cleanest next parent-side route is a lower bound for the local positive mass carrier \(P_{\rm mass}(11)\)).}
+Proposition~O54 turns the singleton positive-moment target from Corollary~O52 into two equivalent mass/derivative statements:
+\begin{enumerate}
+\item prove a lower bound for the positive one-center mass carrier \(P_{\rm mass}(11)\);
+\item prove an upper bound for the adverse derivative leakage \(N_{\rm der}(11)\).
+\end{enumerate}
+Both routes are valid on the audited bridge, but the mass route is structurally cleaner and numerically stronger: the required mass floors,
+\[
+1.76249\times10^{-3}
+\qquad\text{and}\qquad
+1.71102\times10^{-3},
+\]
+sit below the audited value \(1.88085\times10^{-3}\) by the factors
+\[
+1.06716
+\qquad\text{and}\qquad
+1.09927,
+\]
+while the derivative route only asks that the already small leakage \(N_{\rm der}(11)\) remain below moderate ceilings.  Therefore the sharpest current parent-side target is no longer the full static anchor \(J_{\rm diag,anchor}(11)\), nor even the full positive moment \(P_{\rm diag}(11)\), but the local positive one-center mass carrier
+\[
+P_{\rm mass}(11),
+\]
+with \(N_{\rm der}(11)\) retained only as a secondary local correction.
+
+\medskip\noindent\textbf{Proposition O55 (At \(D=11\), the local positive mass carrier factorizes exactly into a strictly positive one-center mass kernel and a positive oriented carrier moment).}
+Keep the same knot \(D=11\) and the same canonical anchor \(B_{\rm anchor}(11)\).  Let
+\[
+\sigma_{11}:=\operatorname{sgn}\!\Bigl(\int_{B_{\rm anchor}(11)} q_{\rm diag}\Bigr),
+\]
+and define the oriented anchor carrier
+\[
+\mathcal C_{11}^{\rm(or)}:=\sigma_{11}\,\mathcal C.
+\]
+Write the one-center mass kernel on the singleton anchor as
+\[
+K_{{\rm mass},11}^{\rm(anc)}
+:=
+\bigl(\delta m_+\bigr)\mathbf 1_{B_+(11)}
++
+\bigl(\delta m_-\bigr)\mathbf 1_{B_-(11)},
+\]
+where \(\delta m_\pm\) are the centered mass deviations from Proposition~O54.  Then on \(B_{\rm anchor}(11)\) one has
+\[
+q_{\rm mass}
+=
+\mathcal C_{11}^{\rm(or)}\,K_{{\rm mass},11}^{\rm(anc)}.
+\]
+The singleton audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_pmass_kernel_source.py}
+shows that
+\[
+K_{{\rm mass},11}^{\rm(anc)}>0
+\qquad\text{everywhere on }B_{\rm anchor}(11),
+\]
+so the positive part factorizes pointwise:
+\[
+[q_{\rm mass}]_+
+=
+K_{{\rm mass},11}^{\rm(anc)}\,[\mathcal C_{11}^{\rm(or)}]_+.
+\]
+Define the positive oriented carrier moment
+\[
+W_{11}^{(+)}
+:=
+\int_{B_{\rm anchor}(11)}[\mathcal C_{11}^{\rm(or)}]_+\,d\rho\,dz
+\]
+and the weighted mass-kernel average
+\[
+\bar K_{{\rm mass},11}^{(+)}
+:=
+\frac{P_{\rm mass}(11)}{W_{11}^{(+)}}.
+\]
+Then one has the exact factorization
+\[
+P_{\rm mass}(11)
+=
+\bar K_{{\rm mass},11}^{(+)}\,W_{11}^{(+)}.
+\]
+The audit gives
+\[
+W_{11}^{(+)}=2.02920\times10^{-2},
+\qquad
+\bar K_{{\rm mass},11}^{(+)}=9.26892\times10^{-2},
+\]
+with factorization residual zero to machine precision.  The same export also yields the pointwise kernel range
+\[
+4.36792\times10^{-2}
+\le
+K_{{\rm mass},11}^{\rm(anc)}
+\le
+8.97295\times10^{-1},
+\]
+and therefore the crude product bounds
+\[
+K_{\min}W_{11}^{(+)}
+\le
+P_{\rm mass}(11)
+\le
+K_{\max}W_{11}^{(+)}.
+\]
+At the audited singleton knot the lower product is
+\[
+K_{\min}W_{11}^{(+)}
+=
+8.86341\times10^{-4},
+\]
+which reaches only
+\[
+50.29\%
+\qquad\text{and}\qquad
+51.80\%
+\]
+of the global and local mass targets from Proposition~O54.  By contrast the exact weighted route gives the equivalent carrier thresholds
+\[
+W_{11}^{(+)}\ge 1.90151\times10^{-2},
+\qquad
+W_{11}^{(+)}\ge 1.84597\times10^{-2},
+\]
+or, equivalently, the weighted-kernel thresholds
+\[
+\bar K_{{\rm mass},11}^{(+)}\ge 8.68562\times10^{-2},
+\qquad
+\bar K_{{\rm mass},11}^{(+)}\ge 8.43195\times10^{-2},
+\]
+for the global and local routes.  The audited singleton values clear these by the factors
+\[
+1.06716
+\qquad\text{and}\qquad
+1.09926.
+\]
+The plus and minus lobes are also nearly symmetric on this factorized route:
+\[
+P_{{\rm mass},+}(11)=9.47708\times10^{-4},
+\qquad
+P_{{\rm mass},-}(11)=9.33145\times10^{-4},
+\]
+\[
+W_{11,+}^{(+)}=1.01723\times10^{-2},
+\qquad
+W_{11,-}^{(+)}=1.01197\times10^{-2},
+\]
+and the corresponding weighted kernel averages differ by only about \(1.03\%\).
+
+\medskip\noindent\textbf{Corollary O54 (The one-center mass profile is no longer the bottleneck; the remaining singleton difficulty lies in the positive carrier geometry, not in a bare kernel floor).}
+Proposition~O55 shows that the singleton positive-mass target from Corollary~O53 admits two exact routes:
+\begin{enumerate}
+\item prove a lower bound for the positive oriented carrier moment \(W_{11}^{(+)}\);
+\item prove a lower bound for the weighted kernel average \(\bar K_{{\rm mass},11}^{(+)}\).
+\end{enumerate}
+Both routes are equivalent on the audited bridge.  But the audit also shows that a \emph{bare minimum-kernel floor} is too crude: replacing \(\bar K_{{\rm mass},11}^{(+)}\) by \(K_{\min}\) loses roughly half the required mass target.  Therefore the cleanest current parent-side reading is the following.  The local one-center mass profile has already been stabilized: it is explicit, strictly positive on the canonical singleton anchor, and almost lobe-symmetric.  The remaining theorem-level difficulty is no longer the full positive mass carrier \(P_{\rm mass}(11)\) itself, but the positive oriented carrier geometry that weights this mass kernel.  Equivalently, if one prefers to keep the mass profile on the theorem side, then one must prove a \emph{nontrivial weighted} lower bound for \(\bar K_{{\rm mass},11}^{(+)}\), not merely a pointwise minimum-floor estimate.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

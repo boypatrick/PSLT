@@ -8470,6 +8470,104 @@ Proposition~O55 shows that the singleton positive-mass target from Corollary~O53
 \end{enumerate}
 Both routes are equivalent on the audited bridge.  But the audit also shows that a \emph{bare minimum-kernel floor} is too crude: replacing \(\bar K_{{\rm mass},11}^{(+)}\) by \(K_{\min}\) loses roughly half the required mass target.  Therefore the cleanest current parent-side reading is the following.  The local one-center mass profile has already been stabilized: it is explicit, strictly positive on the canonical singleton anchor, and almost lobe-symmetric.  The remaining theorem-level difficulty is no longer the full positive mass carrier \(P_{\rm mass}(11)\) itself, but the positive oriented carrier geometry that weights this mass kernel.  Equivalently, if one prefers to keep the mass profile on the theorem side, then one must prove a \emph{nontrivial weighted} lower bound for \(\bar K_{{\rm mass},11}^{(+)}\), not merely a pointwise minimum-floor estimate.
 
+\medskip\noindent\textbf{Proposition O56 (At \(D=11\), the positive oriented carrier route reduces exactly to a single-lobe lower bound, and the total carrier is recovered by reflection symmetry).}
+Keep the same knot \(D=11\) and the same canonical anchor
+\[
+B_{\rm anchor}(11)=B_+(11)\cup B_-(11).
+\]
+Define the single-lobe positive oriented carrier moments
+\[
+W_{11,+}^{(+)}
+:=
+\int_{B_+(11)}[\mathcal C_{11}^{\rm(or)}]_+\,d\rho\,dz,
+\qquad
+W_{11,-}^{(+)}
+:=
+\int_{B_-(11)}[\mathcal C_{11}^{\rm(or)}]_+\,d\rho\,dz.
+\]
+Let \(\mathfrak R(\rho,z):=(\rho,-z)\).  The two-center background at \(D=11\) is invariant under \(\mathfrak R\), and the lowest parity pair may be chosen with definite reflection parity,
+\[
+\psi_1\circ\mathfrak R=\psi_1,
+\qquad
+\psi_2\circ\mathfrak R=-\psi_2.
+\]
+Therefore
+\[
+\psi_1^2\circ\mathfrak R=\psi_1^2,
+\qquad
+\psi_2^2\circ\mathfrak R=\psi_2^2,
+\qquad
+\mathcal C\circ\mathfrak R=\mathcal C,
+\]
+and since \(\sigma_{11}\) is a global sign,
+\[
+\mathcal C_{11}^{\rm(or)}\circ\mathfrak R=\mathcal C_{11}^{\rm(or)}.
+\]
+The same reflection exchanges the two lobes:
+\[
+\mathfrak R\bigl(B_+(11)\bigr)=B_-(11).
+\]
+Hence the positive oriented carrier is exactly lobe-symmetric,
+\[
+W_{11,+}^{(+)}=W_{11,-}^{(+)}.
+\]
+Consequently the total carrier from Proposition~O55 satisfies
+\[
+W_{11}^{(+)}
+=
+W_{11,+}^{(+)}+W_{11,-}^{(+)}
+=
+2W_{11,+}^{(+)}
+=
+2W_{11,-}^{(+)}.
+\]
+The singleton audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_single_lobe_carrier_source.py}
+records
+\[
+W_{11,+}^{(+)}=1.01723\times10^{-2},
+\qquad
+W_{11,-}^{(+)}=1.01197\times10^{-2},
+\qquad
+\frac12 W_{11}^{(+)}=1.01460\times10^{-2},
+\]
+with exact lobe-sum reconstruction residual
+\[
+\bigl|W_{11,+}^{(+)}+W_{11,-}^{(+)}-W_{11}^{(+)}\bigr|
+=
+3.47\times10^{-18}.
+\]
+On the current grid the two audited lobe values differ from the exact half-total by only
+\[
+2.63\times10^{-5},
+\]
+so the audited bridge is already numerically consistent with the analytic reflection picture.  Thus the singleton carrier theorem target no longer needs to be read as a total-anchor statement: it has reduced exactly to a one-lobe lower bound, with the second lobe recovered by symmetry rather than by a separate estimate.
+
+\medskip\noindent\textbf{Corollary O55 (To close the singleton positive-carrier route, it is enough to prove a one-lobe lower bound and then reflect it).}
+By Proposition~O56, the carrier thresholds from Proposition~O55 halve exactly.  The global and local singleton carrier targets become
+\[
+W_{11,+}^{(+)}\ge 9.50753\times10^{-3},
+\qquad
+W_{11,+}^{(+)}\ge 9.22985\times10^{-3},
+\]
+and the same thresholds hold for \(W_{11,-}^{(+)}\).  The audited singleton lobe values satisfy
+\[
+\frac{W_{11,+}^{(+)}}{(W_{11}^{(+)})_{{\rm req},g}/2}=1.06993,
+\qquad
+\frac{W_{11,+}^{(+)}}{(W_{11}^{(+)})_{{\rm req},l}/2}=1.10211,
+\]
+\[
+\frac{W_{11,-}^{(+)}}{(W_{11}^{(+)})_{{\rm req},g}/2}=1.06439,
+\qquad
+\frac{W_{11,-}^{(+)}}{(W_{11}^{(+)})_{{\rm req},l}/2}=1.09641.
+\]
+Therefore the sharpest current parent-side reading is no longer a theorem about the total carrier \(W_{11}^{(+)}\), nor about a weighted kernel average, but simply this:
+\begin{enumerate}
+\item prove a lower bound for one lobe, e.g. \(W_{11,+}^{(+)}\);
+\item recover \(W_{11}^{(+)}\) by the exact reflection symmetry from Proposition~O56.
+\end{enumerate}
+No further support refinement is needed, and no bare minimum-kernel estimate needs to be revisited.  The remaining theorem-level difficulty has narrowed to a one-lobe positive oriented carrier lower bound on the canonical singleton anchor.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

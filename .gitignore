@@ -19,6 +19,10 @@ __pycache__/
 
 # Matplotlib cache
 .matplotlib/
+.mplconfig/
+
+# Generated numerical caches
+output/hll_absolute_normalization/mode_cache/
 
 # Reproducibility runs (generated artifacts and logs)
 repro/runs/*

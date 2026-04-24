@@ -480,6 +480,383 @@ For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto
 
 \textbf{Reviewer-facing status of the static-width upgrade:} In the strict static formulation, the relevant object is the resonance problem for the same action-derived operator with outgoing boundary conditions, so that $\Gamma_{N,\ell}^{\rm(strict)}=-2\,\Im \omega_{N,\ell}$. We implemented a minimal complex-absorbing-potential pilot on the same 1D operator chain as Appendix~\ref{app:superrad_candidate} and scanned the benchmark set $D=\{6,12,18\}$ for the representative $(N,\ell)=(3,1)$ mode. The numerical chain is stable as infrastructure, but the extracted widths remain absorber-dominated over the tested $(\eta,z_{\rm cap})$ windows and do not yet exhibit a clean plateau. For that reason, the CAP outputs are not promoted into the reported baseline. At the current stage, the most conservative first-principles static surrogate is therefore the geometry-driven rate $\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}$ from Appendix~\ref{app:superrad_candidate}, while the full complex-pole extraction remains an explicit next-step upgrade rather than an over-claimed result.
 
+\medskip\noindent\textbf{Proposition S1 (Siegert/DtN gate for promoting the static width).}
+For fixed \(D,\ell\), set
+\[
+H_{D,\ell}=-\frac{d^2}{dz^2}+U_\ell(z;D),
+\qquad
+U_\ell(z;D)=U(z;D)+\frac{\ell(\ell+1)}{z^2+\varepsilon^2},
+\]
+and \(E=\omega^2-m_0^2\).  A strict static resonance is a non-\(L^2\) solution of
+\[
+(H_{D,\ell}-E)\psi=0
+\]
+with outgoing behavior at both ends.  Let \(f_+(z;E)\) be the outgoing exterior solution on \([R,\infty)\), and define the right Dirichlet-to-Neumann map
+\[
+m_+(E;R)\equiv \frac{f_+'(R;E)}{f_+(R;E)}.
+\]
+The left map is defined analogously.  Eliminating the exterior gives the finite-interval Siegert problem
+\[
+\psi'(R)=m_+(E;R)\psi(R),\qquad
+\psi'(-R)=-m_-(E;R)\psi(-R).
+\]
+Because the audited one-dimensional operator is even in \(z\), the same condition can be written in parity form.  Let \(\psi_{\rm e}\) solve
+\[
+\psi_{\rm e}(0)=1,\qquad \psi'_{\rm e}(0)=0,
+\]
+and let \(\psi_{\rm o}\) solve
+\[
+\psi_{\rm o}(0)=0,\qquad \psi'_{\rm o}(0)=1.
+\]
+Then the even/odd pole conditions are
+\[
+F_{\rm e/o}(E;R)
+\equiv
+\psi_{\rm e/o}'(R;E)-m_+(E;R)\psi_{\rm e/o}(R;E)
+=0.
+\]
+For any root \(E_\star\), the strict width is
+\[
+\Gamma_{\rm strict}
+=-2\,\Im\sqrt{m_0^2+E_\star}.
+\]
+In the narrow-width limit,
+\[
+E_\star=E_R-i\gamma_E/2,\qquad
+\Gamma_{\rm strict}
+=\frac{\gamma_E}{2\omega_R}+O(\gamma_E^2),
+\qquad
+\omega_R=\Re\sqrt{m_0^2+E_\star}.
+\]
+Therefore a numerical static-width extraction can be promoted only if the complex pole is stable under outward motion of \(R\) and under replacement of the numerical exterior representation (CAP, exact DtN, ECS, or Siegert/Robin discretization).  Plateau failure is not a small numerical nuisance: it means the computed imaginary part is still controlled by the chosen exterior closure rather than by an intrinsic pole.
+
+\emph{Proof.}
+The exterior problems on \((-\infty,-R]\) and \([R,\infty)\) are linear second-order ODEs.  For non-threshold \(E\), specifying the outgoing branch fixes each exterior solution up to a scalar multiple; hence each exterior half-line contributes only its logarithmic derivative at the interface.  Substituting these logarithmic derivatives gives the finite-interval DtN boundary conditions above.  Conversely, any nonzero interior solution satisfying those DtN conditions extends uniquely to outgoing exterior solutions, hence gives a Siegert state.  The parity reduction follows from evenness of \(U_\ell\).  Finally, the width formula is just the frequency-plane parametrization \(\omega=\omega_R-i\Gamma/2\), while the narrow-width relation follows by expanding \(E=\omega^2-m_0^2\).
+
+\emph{Verified numerics.}
+The audit \path{code/audit_static_width_siegert_extraction.py} exports \path{output/cap_resonance_1d/static_width_siegert_audit_detail.csv} and \path{output/cap_resonance_1d/static_width_siegert_audit_summary.csv}.  It uses a finite-difference half-line parity recurrence and the local outgoing Robin approximation \(m_R^{\rm loc}(E)=i\sqrt{E-U_\ell(R;D)}\) as a first Siegert gate, not as the final exact Coulomb-DtN exterior.  On \(D=\{6,12,18\}\), \(\ell=1\), \(N=3\), and \(R=\{60,80,100,120\}\), the nonlinear boundary residuals are solved to
+\[
+\max |F_{\rm e/o}(E;R)|=3.48\times10^{-13}.
+\]
+The even/odd roots are essentially degenerate, with maximum relative width splitting \(5.06\times10^{-8}\) and maximum complex-energy splitting \(5.96\times10^{-10}\).  However, the roots fail the required \(R\)-stability test:
+\[
+\max_D {\rm span}_R(\Gamma_{\rm Siegert})=1.598,\qquad
+\min_D \frac{\Gamma_{\rm Siegert}(R=120)}{\Gamma_{\rm Siegert}(R=80)}=0.463.
+\]
+The real parts drift similarly, with maximum relative \(R\)-span \(1.085\).  The same audit compresses the existing CAP negative control: the median \(\eta\)-scan width span is \(0.4085\), matching the imposed absorber-strength span, while \(\Gamma_{\rm CAP}/\eta\) is constant to \(3.48\times10^{-7}\); meanwhile the smallest \(z_{\rm cap}\)-scan width span is still \(1.9608\).  Thus the CAP chain is absorber-linear and the finite-radius Siegert/Robin roots are boundary-sensitive.  Finally, the local Siegert widths exceed the current geometry surrogate by at least \(2.95\times10^7\) on this benchmark, so they cannot be read as a stable extraction of \(\Gamma_{N,\ell}^{\rm(geo)}\).
+
+The combined extractor \path{code/extract_static_width_physical.py} implements this promotion rule explicitly and exports \path{output/cap_resonance_1d/static_width_physical_extraction_detail.csv} and \path{output/cap_resonance_1d/static_width_physical_extraction_summary.csv}.  It first asks for CAP stationarity in both \(\eta\) and \(z_{\rm cap}\), together with nonlinearity of \(\Gamma_{\rm CAP}/\eta\), then asks for local Robin/Siegert residual, parity, and \(R\)-stability gates.  A physical static width is populated only if the two independent candidates also agree.  On the same benchmark, the CAP candidate widths are only
+\[
+7.29\times10^{-7}\leq \Gamma_{\rm CAP}^{\rm cand}\leq 7.67\times10^{-7},
+\]
+but fail the \(\eta\)- and \(z_{\rm cap}\)-stationarity gates.  The local Robin/Siegert candidate widths are
+\[
+3.77\times10^{-3}\leq \Gamma_{\rm Siegert}^{\rm cand}\leq 3.90\times10^{-3},
+\]
+but fail the \(R\)-stability gate.  The maximum CAP-vs-Siegert candidate relative difference is \(1.99923\), so every \(D\)-row and the global row are marked \(\texttt{not\_promoted}\).  The extraction is therefore implemented, but it correctly returns no promoted physical static width on the current finite-radius/local-exterior data.
+
+\medskip\noindent\textbf{Corollary S1 (Static-width roadmap status).}
+The strict static-width line now has an executable physical-extraction gate, but it is not promoted.  The baseline should continue to report \(\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}\) as a conservative static surrogate.  The next valuable task is not another unconstrained CAP scan and not a new damping object; it is one of the following controlled exterior upgrades: exact Coulomb-tail DtN, exterior complex scaling, or a Siegert method whose pole passes an explicit \(R\)-stability/plateau test.
+
+\medskip\noindent\textbf{Proposition S2 (Riccati-DtN replacement audit).}
+The first controlled replacement of the local Robin closure is obtained by propagating the exterior logarithmic derivative.  If \(m(z;E)=f'(z;E)/f(z;E)\) for the outgoing exterior solution, then
+\[
+m'(z;E)+m(z;E)^2=U_\ell(z;D)-E.
+\]
+At a large exterior start \(R_{\rm tail}\), the outgoing WKB branch gives
+\[
+m(R_{\rm tail};E)
+=i q(R_{\rm tail};E)+\frac{U_\ell'(R_{\rm tail};D)}{4q(R_{\rm tail};E)^2},
+\qquad
+q(z;E)=\sqrt{E-U_\ell(z;D)} ,
+\]
+with the outgoing square-root branch.  Integrating this Riccati equation inward to \(R\) gives the numerical DtN value \(m_+^{\rm Ric}(E;R,R_{\rm tail})\), which replaces \(m_R^{\rm loc}\) in the same parity residual \(F_{\rm e/o}(E;R)=0\).
+
+The audit \path{code/extract_static_width_exact_dtn.py} implements this replacement and exports \path{output/cap_resonance_1d/static_width_exact_dtn_detail.csv} and \path{output/cap_resonance_1d/static_width_exact_dtn_summary.csv}.  On \(D=\{6,12,18\}\), \(\ell=1\), \(N=3\), \(R=\{60,80,100,120\}\), and \(R_{\rm tail}=\{400,800\}\), the nonlinear residuals are solved with
+\[
+\max |F_{\rm e/o}|=4.78\times10^{-8}.
+\]
+The resulting Riccati-DtN widths lie in the range
+\[
+5.35\times10^{-4}\leq \Gamma_{\rm DtN}^{\rm cand}\leq 2.11\times10^{-3},
+\]
+which is below the local-Robin widths but still fails promotion:
+\[
+\max_D {\rm span}_R(\Gamma_{\rm DtN})=1.083,\qquad
+\max_D {\rm span}_{R_{\rm tail}}(\Gamma_{\rm DtN})=0.979,\qquad
+\min_D \frac{\Gamma_{\rm DtN}(R=120)}{\Gamma_{\rm DtN}(R=80)}=0.716 .
+\]
+One branch-tracking stress point in the \(R_{\rm tail}=400\) validation also gives a parity-width split \(1.45\times10^{-1}\), confirming that the WKB-start Riccati closure is not yet an exact exterior pole extractor.  Thus the exact-DtN infrastructure is in place, but the static width is still not promoted; the remaining upgrade is an analytic Coulomb-tail DtN normalization or an ECS cross-check that removes the \(R_{\rm tail}\) sensitivity.
+
+\medskip\noindent\textbf{Proposition S3 (Analytic Coulomb-tail normalization is not yet a physical static-width extraction).}
+The large-\(z\) tail of the audited one-dimensional operator has the universal Coulomb form
+\[
+U_\ell(z;D)
+=\frac{A}{z}+\frac{B_\ell}{z^2}+O(z^{-3}),\qquad
+A=4am_0^2,\qquad
+B_\ell=\ell(\ell+1)+4a^2m_0^2 .
+\]
+For the analytic tail equation \(m'+m^2=A/z+B_\ell/z^2-E\), write
+\[
+m(z)=ik+\sum_{n=1}^{M} c_n z^{-n},\qquad k=\sqrt{E},
+\]
+with the outgoing branch.  Equating powers gives the triangular recurrence
+\[
+2ik\,c_n+\sum_{j=1}^{n-1}c_jc_{n-j}-(n-1)c_{n-1}=r_n,
+\qquad
+r_1=A,\quad r_2=B_\ell,\quad r_n=0\;(n\ge3).
+\]
+The audit uses this analytic Coulomb value at a matching radius \(R_C\), then propagates the full Riccati equation with the actual \(U_\ell(z;D)\) inward to the interface \(R\).  This removes the crude WKB start as an independent approximation while retaining the \(D\)-dependent \(O(z^{-3})\) tail between \(R_C\) and \(R\).
+
+The implementation is the Coulomb-series mode of \path{code/extract_static_width_exact_dtn.py},
+\[
+\texttt{--tail-mode coulomb\_series --coulomb-order 6 --tail-validation --fallback-guesses},
+\]
+and exports \path{output/cap_resonance_1d/static_width_coulomb_tail_dtn_o6_detail.csv} and \path{output/cap_resonance_1d/static_width_coulomb_tail_dtn_o6_summary.csv}.  On the same \(D=\{6,12,18\}\), \(R=\{60,80,100,120\}\), and \(R_C=\{400,800\}\) benchmark, fallback branch tracking gives
+\[
+\max |F_{\rm e/o}|=5.41\times10^{-7},
+\qquad
+1.67\times10^{-3}\leq \Gamma_{\rm Coul}^{\rm cand}\leq 1.87\times10^{-3}.
+\]
+However the promotion gates still fail:
+\[
+\max_D {\rm span}_R(\Gamma_{\rm Coul})=0.763,\qquad
+\max_D {\rm span}_{R_C}(\Gamma_{\rm Coul})=0.617,\qquad
+\min_D \frac{\Gamma_{\rm Coul}(R=120)}{\Gamma_{\rm Coul}(R=80)}=0.673 .
+\]
+The largest parity split in this stress run is \(9.19\times10^{-2}\).  Thus the analytic Coulomb-tail normalization is useful as a negative control--it removes the purely ad hoc WKB start--but it does not yet produce an exterior-stable pole.  The remaining static-width path should therefore be an ECS cross-check or a fully analytic Coulomb/Whittaker DtN implementation, not a further CAP scan.
+
+\medskip\noindent\textbf{Proposition S4 (Exterior complex scaling also rejects the current static-width promotion).}
+The next independent exterior check is exterior complex scaling.  For \(x\in[-L,L]\), define the piecewise analytic contour
+\[
+Z_{\theta,R_0}(x)=
+\begin{cases}
+x, & |x|\le R_0,\\
+\operatorname{sgn}(x)\{R_0+e^{i\theta}(|x|-R_0)\}, & |x|>R_0,
+\end{cases}
+\qquad J_{\theta,R_0}(x)=\frac{dZ_{\theta,R_0}}{dx}.
+\]
+If \(\phi(x)=\psi(Z_{\theta,R_0}(x))\), then the exterior-scaled one-dimensional operator is discretized in flux form as
+\[
+H_{\rm ECS}(\theta,R_0,L)\phi
+=-J_{\theta,R_0}^{-1}\frac{d}{dx}
+\left(J_{\theta,R_0}^{-1}\frac{d\phi}{dx}\right)
++U_\ell(Z_{\theta,R_0}(x);D)\phi .
+\]
+This is a direct complex-contour replacement of the finite-box exterior.  A genuine resonance pole should be insensitive to the artificial parameters \(\theta\), \(R_0\), and \(L\), while the rotated continuum and box branches move with them.
+
+The implementation \path{code/audit_static_width_ecs_crosscheck.py} evaluates the complex-scaled potential directly on \(Z_{\theta,R_0}\) and therefore avoids the real-casting shortcut used by the finite-radius utilities.  It exports \path{output/cap_resonance_1d/static_width_ecs_crosscheck_detail.csv} and \path{output/cap_resonance_1d/static_width_ecs_crosscheck_summary.csv}.  On \(D=\{6,12,18\}\), \(\ell=1\), \(N=3\), \(\theta=\{0.08,0.12,0.16\}\), \(R_0=\{50,60\}\), \(L=\{100,120\}\), and \(h=0.15\), the sparse eigen-residual is small:
+\[
+\max \|(H_{\rm ECS}-E_{\rm ECS})\phi\|/\|\phi\|
+=4.98\times10^{-14}.
+\]
+The tracked seed branch has candidate widths
+\[
+2.09\times10^{-4}\leq \Gamma_{\rm ECS}^{\rm cand}\leq 5.78\times10^{-4},
+\qquad
+\Gamma_{\rm ECS}^{\rm med}=3.61\times10^{-4}\quad{\rm(global)}.
+\]
+However the stability gates fail:
+\[
+\max_D{\rm span}_\theta(\Gamma_{\rm ECS})=0.669,\qquad
+\max_D{\rm span}_{R_0}(\Gamma_{\rm ECS})=0.223,\qquad
+\max_D{\rm span}_{L}(\Gamma_{\rm ECS})=0.144.
+\]
+The complex energy itself moves by
+\[
+\max_D{\rm span}_\theta(E_{\rm ECS})=2.90\times10^{-4},\qquad
+\max_D{\rm span}_{L}(E_{\rm ECS})=1.15\times10^{-3}.
+\]
+The overlap tracker remains high (\(\min|\langle\psi_{\rm seed},\phi_{\rm ECS}\rangle|=0.862\)), and the residuals are at roundoff scale, so this is not a solver failure.  It is a clean diagnostic that the current tracked branch is still an exterior-scaling-sensitive box/continuum branch rather than an isolated resonance pole.
+
+\medskip\noindent\textbf{Corollary S4 (Static-width promotion remains blocked after ECS).}
+The CAP, local Robin/Siegert, Riccati-DtN, analytic Coulomb-tail DtN, and ECS cross-checks now all agree on the same conservative conclusion: the present finite-radius/open-boundary extractions are useful infrastructure, but none supplies a parameter-stable physical pole.  The paper should therefore continue to report \(\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}\) as the static-width surrogate.  Further work, if pursued, should be a full Coulomb/Whittaker DtN or a more refined ECS branch-tracking theorem, not a new CAP scan and not a new static-width family.
+
+\medskip\noindent\textbf{Proposition S5 (Refined ECS branch tracking finds no resolved stable pole).}
+The single-branch ECS audit can be sharpened without changing the operator family.  For each ECS parameter
+\[
+p=(\theta,R_0,L)
+\]
+let
+\[
+\Sigma_p(D)=\{E_j(p;D)\}_{j=1}^{K}
+\]
+be the sparse spectrum returned near the Hermitian \(N=3,\ell=1\) seed.  For every anchor \(a\in\Sigma_{p_a}(D)\), define the optimistic nearest-neighbor continuation
+\[
+B_a(p)=\operatorname*{arg\,min}_{E\in\Sigma_p(D)} |E-a|.
+\]
+This construction is deliberately favorable to promotion: it does not force a fixed overlap label and allows the nearest branch in the computed ECS spectrum to represent the same pole at each parameter point.  Consequently, any resolved isolated pole in the sampled spectral window, separated from neighboring branches by more than the numerical residual and moving within the stability tolerances, would be detected by at least one such anchor branch.
+
+The audit \path{code/audit_static_width_ecs_branch_tracking.py} implements this branch envelope and exports \path{output/cap_resonance_1d/static_width_ecs_branch_spectrum_detail.csv}, \path{output/cap_resonance_1d/static_width_ecs_branch_candidates.csv}, and \path{output/cap_resonance_1d/static_width_ecs_branch_summary.csv}.
+With \(K=24\), the same \(D=\{6,12,18\}\), \(\theta=\{0.08,0.12,0.16\}\), \(R_0=\{50,60\}\), \(L=\{100,120\}\), and \(h=0.15\) grid gives \(864\) resolved eigenvalues.  The anchor filter produces \(84\) non-growing branch candidates, of which \(4\) are seed-qualified by the overlap gate.  None passes all ECS stability gates:
+\[
+N_{\rm pass}=0 .
+\]
+For the seed-qualified branches, the best candidates reproduce the same scaling drift as Proposition S4:
+\[
+\max_D{\rm span}_\theta(\Gamma_{\rm branch})=0.669,\qquad
+\max_D{\rm span}_{R_0}(\Gamma_{\rm branch})=0.223,\qquad
+\max_D{\rm span}_{L}(\Gamma_{\rm branch})=0.144,
+\]
+with
+\[
+\max_D{\rm span}_{L}(E_{\rm branch})=1.15\times10^{-3},\qquad
+\min_D \min_p |\langle\psi_{\rm seed},B_a(p)\rangle|=0.864 .
+\]
+The median seed-branch width is again on the \(3.5\times10^{-4}\) scale, but it is not stable:
+\[
+3.50\times10^{-4}\leq \Gamma_{\rm branch}^{\rm seed}\leq 3.61\times10^{-4}
+\quad{\rm across}\quad D=\{6,12,18\}.
+\]
+Thus the negative conclusion is not an artifact of choosing the overlap-maximal branch in Proposition S4.  Even an optimistic nearest-neighbor continuation over the resolved ECS spectrum finds no branch that is both seed-connected and stable in \((\theta,R_0,L)\).
+
+\medskip\noindent\textbf{Corollary S5 (Static-width mainline is now narrowed to full analytic DtN).}
+The refined ECS theorem closes the current ECS route as a promotion mechanism on the audited grid.  The static-width language should therefore remain conservative: \(\Gamma_{N,\ell}^{\rm(geo)}\) is still the reported surrogate, and the non-Hermitian outputs remain diagnostics.  The remaining mathematically distinct route is the full Coulomb/Whittaker outgoing DtN map audited next in Proposition S6; further CAP scans, truncated tail starts, and unconstrained ECS branch picking should not be treated as new support.
+
+\medskip\noindent\textbf{Proposition S6 (Full Coulomb/Whittaker DtN is audited but still not a physical static-width extraction).}
+The final non-CAP exterior replacement in this line is obtained by solving the analytic Coulomb tail exactly.  For the same one-dimensional operator, the large-\(z\) tail has
+\[
+f''(z)+\left(E-\frac{A}{z}-\frac{B_\ell}{z^2}\right)f(z)=0,
+\qquad
+A=4am_0^2,\qquad
+B_\ell=\ell(\ell+1)+4a^2m_0^2 .
+\]
+Let \(k=\sqrt{E}\) on the outgoing branch and set
+\[
+x=-2ikz,\qquad
+\kappa=-\frac{iA}{2k},\qquad
+\mu=\sqrt{B_\ell+\frac14}.
+\]
+Since \(d/dz=(-2ik)d/dx\), the equation becomes the Whittaker equation
+\[
+\frac{d^2W}{dx^2}
++\left(-\frac14+\frac{\kappa}{x}+\frac{1/4-\mu^2}{x^2}\right)W=0 .
+\]
+The outgoing solution is \(W_{\kappa,\mu}(x)\), because
+\(W_{\kappa,\mu}(-2ikz)\sim e^{ikz}(-2ikz)^\kappa\) on the outgoing sheet.  Using the hypergeometric representation
+\[
+W_{\kappa,\mu}(x)=e^{-x/2}x^{\mu+1/2}
+\mathrm{U}\!\left(a,b,x\right),
+\qquad
+a=\mu-\kappa+\frac12,\qquad b=2\mu+1,
+\]
+and \(\partial_x\mathrm{U}(a,b,x)=-a\,\mathrm{U}(a+1,b+1,x)\), the exact outgoing tail logarithmic derivative at the matching radius \(R_C\) is
+\[
+m_W(R_C;E)
+=(-2ik)\left[
+-\frac12+\frac{\mu+1/2}{x}
+-a\,\frac{\mathrm{U}(a+1,b+1,x)}{\mathrm{U}(a,b,x)}
+\right]_{x=-2ikR_C}.
+\]
+This is the requested full Coulomb/Whittaker DtN datum.  The implementation is the \texttt{whittaker} mode of \path{code/extract_static_width_exact_dtn.py}; it evaluates the complex \(\mathrm{U}\)-ratio with \texttt{mpmath} at \(50\) digits and then propagates the full Riccati equation for the actual \(U_\ell(z;D)\) inward from \(R_C\) to \(R\).
+
+The audit exports \path{output/cap_resonance_1d/static_width_whittaker_dtn_dps50_detail.csv} and \path{output/cap_resonance_1d/static_width_whittaker_dtn_dps50_summary.csv}.  On \(D=\{6,12,18\}\), \(\ell=1\), \(N=3\), \(R=\{60,80,100,120\}\), and \(R_C=\{400,800\}\), the nonlinear residual gate is still met:
+\[
+\max |F_{\rm e/o}|=9.82\times10^{-7}.
+\]
+The candidate medians are on the same static-width scale as the Coulomb-series audit,
+\[
+1.66\times10^{-3}\leq \Gamma_W^{\rm cand}\leq 1.91\times10^{-3},
+\]
+but the exterior-stability gates still fail:
+\[
+\max_D{\rm span}_R(\Gamma_W)=0.763,\qquad
+\max_D{\rm span}_{R_C}(\Gamma_W)=0.536,
+\]
+\[
+0.673\leq
+\frac{\Gamma_W(R=120)}{\Gamma_W(R=80)}
+\leq0.681 .
+\]
+The largest parity-width split is \(8.94\times10^{-2}\), concentrated in the same stress sector that already failed the earlier exact-DtN gates.  A higher-precision spot check at \(80\) digits on the \(D=6,R=60,R_C=800\) row gives \(\Gamma_{\rm even}=1.99471337\times10^{-3}\), \(\Gamma_{\rm odd}=1.99471342\times10^{-3}\), and parity split \(2.61\times10^{-8}\), identical at displayed precision to the \(50\)-digit backend.  Thus the failure is not a complex-special-function precision failure; it is the same absence of an exterior-stable pole on the current finite-radius branch.
+
+\medskip\noindent\textbf{Corollary S6 (Full analytic DtN closes the current static-width promotion route).}
+The full Coulomb/Whittaker tail removes the last ad hoc exterior datum from the finite-radius DtN chain.  Since even this audited backend remains strongly \(R\)- and \(R_C\)-dependent, the strict static-width upgrade is still not promoted.  The manuscript should continue to report \(\Gamma_{N,\ell}^{\rm(geo)}=\omega_Ne^{-2S_{N,\ell}}\) as the conservative static surrogate.  Further work in this direction is no longer another CAP scan, another truncated tail normalization, or another unconstrained ECS branch search; it would have to be a new exterior-stable complex-pole theorem or branch-isolation argument, with a continued-fraction \(H'/H\) implementation serving only as an independent backend cross-check.
+
+\medskip\noindent\textbf{Proposition S7 (Nearest-neighbor Whittaker branch isolation finds no resolved stable branch).}
+The Whittaker-DtN audit can be sharpened without changing the exterior family.  For a fixed \(D\), let
+\[
+{\cal P}=\{(R_C,R,\pi):R_C\in\{400,800\},\ R\in\{60,80,100,120\},\ \pi\in\{{\rm e},{\rm o}\}\}
+\]
+be the audited parameter set, and let \({\cal Z}_p(D)\) be the resolved Whittaker-DtN roots recorded at parameter point \(p\).  For every anchor \(a\in\cup_{p\in{\cal P}}{\cal Z}_p(D)\), define the optimistic nearest-neighbor continuation
+\[
+B_a(p)=\operatorname*{arg\,min}_{z\in{\cal Z}_p(D)} |z-a|.
+\]
+This is deliberately favorable to promotion: it does not force the originally selected seed label to persist.  Therefore, if the audited Whittaker candidate set already contained an exterior-stable pole whose displacement stayed inside the \(R\)-, \(R_C\)-, and parity-stability gates, at least one anchor continuation \(B_a\) would pass those gates.
+
+The implementation \path{code/audit_static_width_whittaker_branch_isolation.py} applies this construction to the full S6 detail table and exports \path{output/cap_resonance_1d/static_width_whittaker_branch_isolation_candidates.csv}, \path{output/cap_resonance_1d/static_width_whittaker_branch_isolation_selected.csv}, \path{output/cap_resonance_1d/static_width_whittaker_branch_isolation_summary.csv}, and \path{output/cap_resonance_1d/static_width_whittaker_branch_isolation_roots.png}.  Across \(D=\{6,12,18\}\) it tests \(48\) anchor continuations.  None passes:
+\[
+N_{\rm pass}=0 .
+\]
+Per \(D\), this is \(0/16\) branches.  The best available branch at \(D=6\) still has
+\[
+{\rm span}_R(\Gamma)=0.674,\qquad
+{\rm span}_{R_C}(\Gamma)=0.536,\qquad
+0.680\leq\Gamma(R=120)/\Gamma(R=80)\leq0.681,
+\]
+and it also retains the large stress-sector parity split \(8.94\times10^{-2}\).  At \(D=12\) and \(D=18\), the parity split is already small, but the exterior-stability obstruction persists:
+\[
+\begin{array}{c|ccc}
+D & {\rm span}_R(\Gamma) & {\rm span}_{R_C}(\Gamma) &
+\Gamma(R=120)/\Gamma(R=80)\\
+\hline
+12 & 0.751 & 0.526 & 0.6765\text{--}0.6766\\
+18 & 0.763 & 0.522 & 0.6729\text{--}0.6741
+\end{array}
+\]
+The best normalized branch-stability scores are \(8.94\times10^3\), \(10.53\), and \(10.43\) for \(D=6,12,18\), respectively, where a passing branch would require score \(\le1\).  Thus the failure is not merely that the seed-selected row was an unlucky label: even the most permissive nearest-neighbor continuation over the resolved Whittaker-DtN candidate set finds no stable branch.
+
+\medskip\noindent\textbf{Corollary S7 (The remaining static-width task is a zero-count/conditioning theorem, not more branch picking).}
+The current static-width evidence now closes the resolved-candidate loophole as well as the backend loophole.  Continuing this line is still possible, but the task has changed: one must either give an argument-principle zero count for the finite-interval Whittaker-DtN residual on a specified complex contour, or prove a tail-remainder/condition-number theorem showing that the exact exterior pole survives the \(R_C\to\infty\) and \(R\)-movement limits with a quantified displacement bound.  Until such a theorem is supplied, the stable reviewer-facing statement remains conservative: \(\Gamma_{N,\ell}^{\rm(geo)}\) is the reported static surrogate, while all finite-radius complex roots remain diagnostics.
+
+\medskip\noindent\textbf{Proposition S8 (Local argument-principle contours certify isolated Whittaker-DtN zeros).}
+The next check separates two issues that were coupled in S6--S7: whether the computed roots are genuine local zeros of the finite-radius residual, and whether those local zeros define a single exterior-stable pole as \(R\) and \(R_C\) vary.  For fixed \(p=(D,R_C,R,\pi)\), write the Whittaker-DtN finite-interval residual as \(F_p(E)\).  Around each numerical root \(E_0(p)\), define the rectangle
+\[
+Q_p=\{E:\ |\Re(E-E_0)|\le 10^{-4},\ |\Im(E-E_0)|\le 10^{-4}\}.
+\]
+If \(F_p\) is pole-free in \(Q_p\), the argument principle gives
+\[
+N_{Q_p}
+=\frac{1}{2\pi i}\oint_{\partial Q_p}\frac{F_p'(E)}{F_p(E)}\,dE
+=\frac{1}{2\pi}\Delta_{\partial Q_p}\arg F_p(E).
+\]
+The implemented contour is traversed clockwise, so a single simple zero gives argument index \(-1\).  The audit therefore records \(|{\rm index}|\) as the local zero count, together with the boundary gap
+\[
+g_p=\min_{E\in\partial Q_p}|F_p(E)|
+\]
+and a Newton displacement proxy
+\[
+\delta_p^{\rm Newt}=\frac{|F_p(E_0)|}{|F_p'(E_0)|}.
+\]
+
+The implementation \path{code/audit_static_width_whittaker_argument_principle.py} evaluates the same Whittaker-DtN residual used in S6 and exports \path{output/cap_resonance_1d/static_width_whittaker_argument_principle_detail.csv}, \path{output/cap_resonance_1d/static_width_whittaker_argument_principle_summary.csv}, and \path{output/cap_resonance_1d/static_width_whittaker_argument_principle_index.png}.  On all \(48\) audited roots,
+\[
+{\rm index}=-1,\qquad |{\rm index}|=1,
+\qquad N_{\rm local\ pass}=48/48 .
+\]
+The numerical contour is well separated from zero:
+\[
+\min_p g_p=2.40\times10^{-2},
+\qquad
+\min_p \frac{g_p}{|F_p(E_0)|}=8.35\times10^5,
+\]
+and the largest Newton displacement proxy is tiny relative to the contour size:
+\[
+\max_p\frac{\delta_p^{\rm Newt}}{10^{-4}}
+=7.66\times10^{-7}.
+\]
+The Cauchy--Riemann directional derivative mismatch of the numerical residual stays below \(9.53\times10^{-3}\), so the local index computation is not being driven by gross non-holomorphic numerical noise.  Thus the S6 roots are locally isolated finite-radius Whittaker-DtN zeros.  Their failure is not that they are solver ghosts; their failure is that the isolated zeros move too much with the exterior parameters.
+
+\medskip\noindent\textbf{Corollary S8 (The remaining theorem is a displacement bound, not local root existence).}
+The local zero-count gate is now positive, while the resolved-branch stability gate remains negative.  Consequently, a static-width promotion cannot be obtained by further local root polishing: the roots already exist locally.  The missing theorem is a displacement estimate comparing \(F_{R,R_C}\) to a limiting exterior residual \(F_\infty\), for example
+\[
+|\Delta E|
+\le
+\frac{\|F_{R,R_C}-F_\infty\|_{\partial Q}}{\inf_{\partial Q}|F_\infty'|}
+\quad\text{or an equivalent Rouché/condition-number bound,}
+\]
+strong enough to beat the observed \(R\)- and \(R_C\)-drift.  Until such a bound is proved, the static-width result remains diagnostic rather than promoted.
+
 \textbf{Rank-2 truncation justification:} Within the present hierarchy convention, the $\hat{\omega}_N^{4\ell+4}$ factor keeps higher-$\ell$ channels parametrically small for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
 \begin{equation}
 \frac{\Gamma_{N,3}}{\Gamma_{N,2}} \sim \hat{\omega}_N^4 \sim 10^{-4}.
@@ -10560,7 +10937,7 @@ Detailed coarse/mid/fine values and implementation provenance are retained in th
 \end{equation}
 The fine full-scan profile over $D=4,\dots,20$ yields $\tilde A_1\in[8.54\times10^{-6},\,4.10\times10^5]$ and $\tilde A_2\in[3.95\times10^{-6},\,4.92\times10^6]$, indicating a very stiff $D$-dependence in this preliminary closure.
 
-As a strict-upgrade check, we also connected a minimal complex-absorbing-potential solver to the same 1D action-derived operator chain and scanned benchmark windows in the absorber strength $\eta$ and absorber onset $z_{\rm cap}$. This pilot confirms that the non-Hermitian extraction pipeline is operational, but the benchmark mode remains in an absorber-linear or mixed regime rather than a plateau regime. Accordingly, the CAP outputs are retained as infrastructure diagnostics only; the reported baseline continues to use $\Gamma_{N,\ell}^{\rm(geo)}$ as the leading static surrogate while reserving complex-pole width extraction for a later dedicated release.
+As a strict-upgrade check, we also connected a minimal complex-absorbing-potential solver to the same 1D action-derived operator chain and scanned benchmark windows in the absorber strength $\eta$ and absorber onset $z_{\rm cap}$. This pilot confirms that the non-Hermitian extraction pipeline is operational, but the benchmark mode remains in an absorber-linear or mixed regime rather than a plateau regime. A follow-up finite-radius Siegert/Robin audit, summarized in Proposition S1, reaches the same conservative conclusion from the outgoing-boundary side: the roots are parity-degenerate but strongly \(R\)-dependent, so they are still boundary-sensitive rather than stable complex poles. The combined physical extractor \path{code/extract_static_width_physical.py} now enforces both gates and marks the benchmark rows as \(\texttt{not\_promoted}\). Proposition S2 adds the first Riccati-DtN replacement of the local Robin exterior; it lowers the candidate widths but still fails both \(R\)- and \(R_{\rm tail}\)-stability. Proposition S3 then replaces the WKB exterior start by an analytic Coulomb-tail normalization; this removes the most ad hoc tail datum but still fails the exterior-stability gates. Proposition S4 adds the independent ECS cross-check; it solves the complex-scaled eigenproblem to roundoff residuals, but the tracked branch remains sensitive to \(\theta\), \(R_0\), and \(L\). Proposition S5 then removes the single-branch-selection loophole by tracking optimistic nearest-neighbor continuations over the resolved ECS spectrum; no seed-qualified branch passes. Proposition S6 implements the remaining full Coulomb/Whittaker outgoing DtN with a complex \(\mathrm{U}\)-function backend and still finds \(R\)- and matching-radius sensitivity. Proposition S7 then applies the same optimistic nearest-neighbor branch-isolation idea directly to the Whittaker-DtN roots; again \(0/48\) anchor continuations pass. Proposition S8 finally applies local argument-principle contours and certifies that all \(48\) Whittaker roots are isolated local finite-radius zeros, so the obstruction is not local root existence but exterior-parameter displacement. Accordingly, the CAP, local-Siegert, Riccati-DtN, Coulomb-normalized DtN, ECS, and full Whittaker-DtN outputs are retained as infrastructure diagnostics only; the reported baseline continues to use $\Gamma_{N,\ell}^{\rm(geo)}$ as the leading static surrogate unless a future tail-remainder/conditioning theorem changes the gate.
 
 At current scan resolution, Table~\ref{tab:late_fp_profile_summary} shows that the $t_{\rm coh}$ and $\eta$ candidates are stable diagnostics whose map-level effects are below headline precision, while replacing the legacy constant-$A_\ell$ reference by the action-derived profile induces non-negligible shifts in $\mathcal{R}_3$ coverage. In the updated global scans of this manuscript, Eq.~\eqref{eq:superrad_A_profile} is used in baseline mode, and $(A_1,A_2)=(1,1)$ is retained only as a comparator.
 

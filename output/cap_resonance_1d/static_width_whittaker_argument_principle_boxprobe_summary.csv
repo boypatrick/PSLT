@@ -1,0 +1,3 @@
+D,n_rows,n_local_argument_pass,index_round_min,index_round_max,index_error_max,boundary_F_abs_min,boundary_root_gap_ratio_min,dF_dE_abs_proxy_min,dF_dE_CR_rel_mismatch_max,newton_radius_proxy_max,newton_radius_over_contour_max,local_argument_status
+12.0,1.0,0.0,-1.0,-1.0,0.0,0.9333867589512764,4985696.9994235365,15188.082415393967,0.007993885460355983,1.2326302155421777e-11,1.2326302155421777e-07,not_all_certified
+global,1.0,0.0,-1.0,-1.0,0.0,0.9333867589512764,4985696.9994235365,15188.082415393967,0.007993885460355983,1.2326302155421777e-11,1.2326302155421777e-07,not_all_certified

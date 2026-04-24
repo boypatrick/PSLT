@@ -1,0 +1,6 @@
+stage,description,trace_product,closed_by_parent_side,trace_over_global_after_source,trace_gap_over_global_after_source,source_completed_total,source_completed_over_required_global
+O66_rounded_b_p_floors,pointwise rounded b_q^- p_q^- certificate,0.1345410144,partially_before_O68_O70,1.0033163974790575,0.0004447166238956135,0.14576628705760725,1.003060224456482
+O68_5sig_flux_with_p_floor,missing-neighbor flux floors with old p_q^- floors,0.13456886172299998,flux_identity_only,1.0035240640847864,0.0004725639468955989,0.14579413438060723,1.003251849986793
+O69_4sig_exterior_flux_with_p_floor,parent exterior phi barrier plus old p_q^- floors,0.13455686726000007,b_side_closed,1.0034346174468194,0.0004605694838956953,0.14578213991760733,1.0031693125977177
+O70_GS548_parent_barrier,parent exterior phi barrier plus GS548 adjoint barrier,0.1345329256808323,main_closed_certificate,1.0032560772517147,0.00043662790472792645,0.14575819833843956,1.0030045636268918
+O70_GS859_point_floor_completion,same monotone adjoint sequence also dominates old p_q^- floors,0.13458547480326316,optional_point_floor_completion,1.003647953263971,0.0004891770271587825,0.14581074746087042,1.0033661694248062

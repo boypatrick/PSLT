@@ -8568,6 +8568,1691 @@ Therefore the sharpest current parent-side reading is no longer a theorem about 
 \end{enumerate}
 No further support refinement is needed, and no bare minimum-kernel estimate needs to be revisited.  The remaining theorem-level difficulty has narrowed to a one-lobe positive oriented carrier lower bound on the canonical singleton anchor.
 
+\medskip\noindent\textbf{Proposition O57 (At \(D=11\), the one-lobe positive carrier admits an exact \(++/--\) localized-overlap split, and the \(++\) piece already carries the threshold).}
+Keep the same knot \(D=11\), the same canonical anchor, and the plus lobe \(B_+(11)\).  Introduce the localized states
+\[
+\phi_R:=\frac{\psi_1+\psi_2}{\sqrt2},
+\qquad
+\phi_L:=\frac{\psi_1-\psi_2}{\sqrt2}.
+\]
+Then
+\[
+\psi_1^2-\psi_2^2=2\phi_R\phi_L,
+\]
+so on \(B_+(11)\) the oriented carrier density from Proposition~O55 may be written as
+\[
+\mathcal C_{11}^{\rm(or)} = 4\pi\rho\,\phi_R\phi_L.
+\]
+For any real numbers \(a,b\) one has the exact identity
+\[
+[ab]_+ = [a]_+[b]_+ + [a]_- [b]_-.
+\]
+Applying this pointwise to \(a=\phi_R\), \(b=\phi_L\) yields
+\[
+[\mathcal C_{11}^{\rm(or)}]_+
+=
+4\pi\rho\Bigl([\phi_R]_+[\phi_L]_+ + [\phi_R]_- [\phi_L]_-\Bigr)
+\qquad\text{on }B_+(11).
+\]
+Define the one-lobe positive-positive overlap moment and the negative-negative same-sign completion by
+\[
+W_{11,+}^{(++)}
+:=
+4\pi \int_{B_+(11)} \rho\,[\phi_R]_+[\phi_L]_+\,d\rho\,dz,
+\]
+\[
+W_{11,+}^{(--)}
+:=
+4\pi \int_{B_+(11)} \rho\,[\phi_R]_- [\phi_L]_-\,d\rho\,dz.
+\]
+Then the singleton one-lobe carrier splits exactly as
+\[
+W_{11,+}^{(+)}
+=
+W_{11,+}^{(++)}+W_{11,+}^{(--)}.
+\]
+In particular,
+\[
+W_{11,+}^{(+)}\ge W_{11,+}^{(++)}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_single_lobe_overlap_source.py}
+gives
+\[
+W_{11,+}^{(+)}=1.01723\times10^{-2},
+\qquad
+W_{11,+}^{(++)}=1.01659\times10^{-2},
+\qquad
+W_{11,+}^{(--)}=6.43626\times10^{-6},
+\]
+with exact split residual
+\[
+2.03\times10^{-20}.
+\]
+Thus the positive-positive overlap already carries
+\[
+\frac{W_{11,+}^{(++)}}{W_{11,+}^{(+)}}
+=
+0.999367,
+\]
+while the negative-negative completion is only
+\[
+\frac{W_{11,+}^{(--)}}{W_{11,+}^{(+)}}
+=
+6.33\times10^{-4}.
+\]
+The same export also shows that the same-center localized mode is almost one-sign on its own lobe:
+\[
+\frac{\|\phi_{R,-}\|_{L^1(B_+)}}{\|\phi_{R,+}\|_{L^1(B_+)}} = 2.13\times10^{-4},
+\]
+and only \(1.23\%\) of the plus-lobe grid points have \(\phi_R<0\).  So the remaining one-lobe carrier theorem is no longer naturally read as a statement about a general positive part; it has narrowed to a positive-positive localized-overlap lower bound, with the negative-negative completion acting only as a tiny same-sign refinement.
+
+\medskip\noindent\textbf{Corollary O56 (The sharpest current singleton theorem target is the one-lobe positive-positive overlap \(W_{11,+}^{(++)}\)).}
+By Corollary~O55, it is enough to prove
+\[
+W_{11,+}^{(+)}\ge 9.50753\times10^{-3}
+\qquad\text{or}\qquad
+W_{11,+}^{(+)}\ge 9.22985\times10^{-3}.
+\]
+By Proposition~O57, it is therefore enough to prove the \emph{stronger} one-lobe lower bound
+\[
+W_{11,+}^{(++)}\ge 9.50753\times10^{-3}
+\qquad\text{or}\qquad
+W_{11,+}^{(++)}\ge 9.22985\times10^{-3},
+\]
+since then
+\[
+W_{11,+}^{(+)}\ge W_{11,+}^{(++)},
+\qquad
+W_{11}^{(+)} = 2W_{11,+}^{(+)}.
+\]
+Numerically the audited positive-positive overlap already clears these one-lobe thresholds by the factors
+\[
+1.06925
+\qquad\text{and}\qquad
+1.10142,
+\]
+even before the tiny same-sign \(--\) completion is added back.  Therefore the cleanest current parent-side endpoint is no longer the total carrier \(W_{11}^{(+)}\), nor the full one-lobe positive part \(W_{11,+}^{(+)}\), but the one-lobe positive-positive localized-overlap moment
+\[
+W_{11,+}^{(++)}.
+\]
+That is the narrowest theorem object currently visible on the audited bridge.
+
+\medskip\noindent\textbf{Proposition O58 (At \(D=11\), the one-lobe positive-positive overlap factors exactly through single-function positive lobe masses; the preferred route is the mirror-positive lobe mass.)}
+Keep the same knot \(D=11\), the same plus lobe \(B_+(11)\), and the same localized states \((\phi_R,\phi_L)\) from Proposition~O57.  Define the one-lobe same-center and mirror positive masses by
+\[
+S_{11,+}^{(R+)}
+:=
+4\pi \int_{B_+(11)} \rho\,[\phi_R]_+\,d\rho\,dz,
+\qquad
+S_{11,+}^{(L+)}
+:=
+4\pi \int_{B_+(11)} \rho\,[\phi_L]_+\,d\rho\,dz.
+\]
+Also define the corresponding weighted positive averages by
+\[
+\bar\Phi_{L,11,+}^{(+|R+)}
+:=
+\frac{W_{11,+}^{(++)}}{S_{11,+}^{(R+)}},
+\qquad
+\bar\Phi_{R,11,+}^{(+|L+)}
+:=
+\frac{W_{11,+}^{(++)}}{S_{11,+}^{(L+)}}.
+\]
+Then the one-lobe positive-positive overlap admits the exact factorizations
+\[
+W_{11,+}^{(++)}
+=
+S_{11,+}^{(R+)}\,\bar\Phi_{L,11,+}^{(+|R+)}
+=
+S_{11,+}^{(L+)}\,\bar\Phi_{R,11,+}^{(+|L+)}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_single_lobe_pp_factor_source.py}
+gives
+\[
+W_{11,+}^{(++)}=1.01659\times10^{-2},
+\qquad
+S_{11,+}^{(R+)}=6.58504\times10^{-1},
+\qquad
+\bar\Phi_{L,11,+}^{(+|R+)}=1.54379\times10^{-2},
+\]
+\[
+S_{11,+}^{(L+)}=1.55385\times10^{-1},
+\qquad
+\bar\Phi_{R,11,+}^{(+|L+)}=6.54241\times10^{-2},
+\]
+with factorization residuals
+\[
+0
+\qquad\text{and}\qquad
+1.73\times10^{-18}.
+\]
+Moreover, on the current exact export one has
+\[
+\phi_R>0
+\qquad\text{on the whole support }\{\phi_L>0\}\cap B_+(11),
+\]
+with audited minimum
+\[
+\min_{\{\phi_L>0\}\cap B_+(11)} \phi_R = 7.79\times10^{-3}.
+\]
+So after Proposition~O57, the remaining one-lobe theorem target is no longer naturally read as a generic two-function overlap.  It is equivalently a statement about one single-function positive mass multiplied by a weighted positive average, and the cleaner of the two routes is the mirror-positive one, because its multiplier is the same-center localized mode on its own lobe.
+
+\medskip\noindent\textbf{Corollary O57 (The sharpest current one-function theorem target is the mirror-positive lobe mass \(S_{11,+}^{(L+)}\)).}
+By Corollary~O56, it is enough to prove
+\[
+W_{11,+}^{(++)}\ge 9.50753\times10^{-3}
+\qquad\text{or}\qquad
+W_{11,+}^{(++)}\ge 9.22985\times10^{-3}.
+\]
+By Proposition~O58, this is equivalent to either of the two exact single-function routes:
+\[
+S_{11,+}^{(L+)}\ge 1.45322\times10^{-1}
+\qquad\text{or}\qquad
+S_{11,+}^{(L+)}\ge 1.41077\times10^{-1},
+\]
+provided the same-center weighted average \(\bar\Phi_{R,11,+}^{(+|L+)}\) is kept at its audited value, or
+\[
+S_{11,+}^{(R+)}\ge 6.15857\times10^{-1}
+\qquad\text{or}\qquad
+S_{11,+}^{(R+)}\ge 5.97871\times10^{-1},
+\]
+provided the mirror-weighted average \(\bar\Phi_{L,11,+}^{(+|R+)}\) is kept at its audited value.  Numerically both routes clear the global and local one-lobe thresholds by the same factors
+\[
+1.06925
+\qquad\text{and}\qquad
+1.10142,
+\]
+but only the first route leaves outside a same-center multiplier on the same lobe.  Therefore the sharpest current single-function parent-side endpoint is no longer \(W_{11,+}^{(++)}\) itself, but the one-lobe mirror-positive mass
+\[
+S_{11,+}^{(L+)}
+:=
+4\pi \int_{B_+(11)} \rho\,[\phi_L]_+\,d\rho\,dz.
+\]
+That is the cleanest remaining theorem object on the audited singleton bridge.
+
+\medskip\noindent\textbf{Proposition O59 (At \(D=11\), the one-lobe mirror-positive mass is carried entirely by the lower half of the plus lobe, up to a tiny negative leakage).}
+Keep the same knot \(D=11\), the same plus lobe \(B_+(11)\), and define the lower and upper halves
+\[
+B_{+,\downarrow}(11):=B_+(11)\cap\{z<D/2\},
+\qquad
+B_{+,\uparrow}(11):=B_+(11)\cap\{z\ge D/2\}.
+\]
+For the mirror-localized state \(\phi_L=(\psi_1-\psi_2)/\sqrt2\), define
+\[
+S_{11,+}^{(L+)}
+:=
+4\pi \int_{B_+(11)} \rho\,[\phi_L]_+\,d\rho\,dz,
+\]
+\[
+I_{11,+}^{(L,\downarrow)}
+:=
+4\pi \int_{B_{+,\downarrow}(11)} \rho\,\phi_L\,d\rho\,dz,
+\qquad
+N_{11,+}^{(L,\downarrow)}
+:=
+4\pi \int_{B_{+,\downarrow}(11)} \rho\,[\phi_L]_-\,d\rho\,dz.
+\]
+Then
+\[
+S_{11,+}^{(L+)}
+=
+4\pi \int_{B_{+,\downarrow}(11)} \rho\,[\phi_L]_+\,d\rho\,dz
+=
+I_{11,+}^{(L,\downarrow)}+N_{11,+}^{(L,\downarrow)}.
+\]
+Indeed, the audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_mirror_lobe_half_source.py}
+shows that
+\[
+\phi_L\le 0
+\qquad\text{everywhere on }B_{+,\uparrow}(11),
+\]
+so the upper half contributes no positive mass at all.  On the lower half one has the exact pointwise identity
+\[
+[x]_+=x+[x]_-,
+\]
+applied to \(x=\phi_L\).  Therefore
+\[
+S_{11,+}^{(L+)}\ge I_{11,+}^{(L,\downarrow)}.
+\]
+The same export gives
+\[
+S_{11,+}^{(L+)}=1.55385\times10^{-1},
+\qquad
+I_{11,+}^{(L,\downarrow)}=1.55208\times10^{-1},
+\qquad
+N_{11,+}^{(L,\downarrow)}=1.76989\times10^{-4},
+\]
+with exact bridge residual
+\[
+0.
+\]
+So the lower-half negative leakage obeys
+\[
+\frac{N_{11,+}^{(L,\downarrow)}}{S_{11,+}^{(L+)}}=1.139\times10^{-3},
+\qquad
+\frac{N_{11,+}^{(L,\downarrow)}}{I_{11,+}^{(L,\downarrow)}}=1.140\times10^{-3}.
+\]
+Thus the one-lobe mirror-positive mass is no longer naturally a theorem about a positive part.  On the audited singleton bridge it has reduced to a lower-half signed mass, with only a permille-level negative leakage left outside.
+
+\medskip\noindent\textbf{Corollary O58 (The sharpest current parent-side endpoint is the lower-half signed mirror mass \(I_{11,+}^{(L,\downarrow)}\)).}
+By Corollary~O57 it is enough to prove
+\[
+S_{11,+}^{(L+)}\ge 1.45322\times10^{-1}
+\qquad\text{or}\qquad
+S_{11,+}^{(L+)}\ge 1.41077\times10^{-1}.
+\]
+By Proposition~O59 it is therefore enough to prove the stronger signed lower-half bounds
+\[
+I_{11,+}^{(L,\downarrow)}\ge 1.45322\times10^{-1}
+\qquad\text{or}\qquad
+I_{11,+}^{(L,\downarrow)}\ge 1.41077\times10^{-1},
+\]
+since then \(S_{11,+}^{(L+)}\ge I_{11,+}^{(L,\downarrow)}\).  Numerically the audited lower-half signed mass already clears these thresholds by the factors
+\[
+1.06803
+\qquad\text{and}\qquad
+1.10016,
+\]
+while the missing positive mass from the tiny lower-half negative leakage is only \(1.14\times10^{-3}\) of the target scale.  Therefore the cleanest current parent-side theorem object is no longer the one-lobe positive mass \(S_{11,+}^{(L+)}\), but the lower-half signed mirror mass
+\[
+I_{11,+}^{(L,\downarrow)}
+:=
+4\pi \int_{B_{+,\downarrow}(11)} \rho\,\phi_L\,d\rho\,dz.
+\]
+At this stage, the remaining theorem problem has become a one-function, one-half-lobe, signed mass lower bound.
+
+\medskip\noindent\textbf{Proposition O60 (At \(D=11\), the lower-half mirror mass admits a strict lower slab on which the bare axisymmetric Laplacian already sees a positive source.)}
+Keep the same knot \(D=11\), the same plus-lobe anchor \(B_+(11)\), and define the axisymmetric extraction operator
+\[
+H_a:=-\Delta_a+U_a,
+\qquad
+\Delta_a:=\partial_\rho^2+\rho^{-1}\partial_\rho+\partial_z^2,
+\]
+where \(U_a\) is the exact potential entering the localized \(2\)D generalized eigenproblem.  Write the first two extracted modes as
+\[
+H_a\psi_1=E_1\psi_1,
+\qquad
+H_a\psi_2=E_2\psi_2,
+\qquad
+E_1<E_2,
+\]
+and keep the localized combinations
+\[
+\phi_L:=\frac{\psi_1-\psi_2}{\sqrt2},
+\qquad
+\phi_R:=\frac{\psi_1+\psi_2}{\sqrt2}.
+\]
+If
+\[
+\bar E:=\frac{E_1+E_2}{2},
+\qquad
+\delta E:=\frac{E_2-E_1}{2},
+\]
+then
+\[
+(H_a-\bar E)\phi_L=-\delta E\,\phi_R,
+\]
+hence
+\[
+-\Delta_a\phi_L
+=
+(\bar E-U_a)\phi_L-\delta E\,\phi_R.
+\]
+Now define the strict lower slab
+\[
+\Omega_{+,\sharp}(11)
+:=
+B_+(11)\cap\{z\le D/2-0.18\},
+\]
+and its signed mirror mass
+\[
+I_{11,+}^{(L,\sharp)}
+:=
+4\pi\int_{\Omega_{+,\sharp}(11)} \rho\,\phi_L\,d\rho\,dz.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_mirror_strict_slab_source.py}
+shows that this is the shallowest audited cut for which all of the following hold simultaneously:
+\[
+\phi_L>0\quad\text{on }\overline{\Omega_{+,\sharp}(11)},
+\qquad
+\phi_R>0\quad\text{on }\overline{\Omega_{+,\sharp}(11)},
+\]
+and
+\[
+f_\sharp:=(\bar E-U_a)\phi_L-\delta E\,\phi_R\ge 2.22998\times10^{-3}>0
+\qquad\text{on }\Omega_{+,\sharp}(11).
+\]
+So on this strict slab the mirror-localized state is already a positive supersolution of the pure Laplacian barrier equation
+\[
+-\Delta_a\phi_L=f_\sharp,\qquad f_\sharp\ge 0.
+\]
+Numerically the same export gives
+\[
+I_{11,+}^{(L,\sharp)}=1.53031\times10^{-1},
+\]
+while the omitted interface strip inside \(B_{+,\downarrow}(11)\) contributes only
+\[
+I_{11,+}^{(L,\downarrow)}-I_{11,+}^{(L,\sharp)}
+=
+2.17724\times10^{-3},
+\]
+which is \(1.40\%\) of the lower-half signed mass.  A crude constant-source torsion comparison on \(\Omega_{+,\sharp}(11)\),
+\[
+-\Delta_a\tau_\sharp=1,\qquad \tau_\sharp|_{\partial\Omega_{+,\sharp}}=0,
+\]
+gives the positive lower bound
+\[
+4\pi\int_{\Omega_{+,\sharp}(11)} \rho\,\bigl(\min_{\Omega_{+,\sharp}} f_\sharp\bigr)\tau_\sharp\,d\rho\,dz
+=
+2.79922\times10^{-4},
+\]
+with pointwise comparison residual
+\[
+\min_{\Omega_{+,\sharp}(11)}\bigl(\phi_L-(\min f_\sharp)\tau_\sharp\bigr)
+=
+1.11436\times10^{-2}>0.
+\]
+So the barrier structure is already present on the audited bridge, even though the most naive constant-source barrier remains too conservative to saturate the target by itself.
+
+\medskip\noindent\textbf{Corollary O59 (The correct PDE proof domain is now the strict lower slab \(\Omega_{+,\sharp}(11)\), with \(-\Delta_a\) as the barrier operator.)}
+By Corollary~O58 the current parent-side target is
+\[
+I_{11,+}^{(L,\downarrow)}\ge 1.45322\times10^{-1}
+\qquad\text{or}\qquad
+I_{11,+}^{(L,\downarrow)}\ge 1.41077\times10^{-1}.
+\]
+Proposition~O60 shows that the dominant part of this lower-half mass already lies on the barrier-friendly strict slab \(\Omega_{+,\sharp}(11)\), where the unshifted axisymmetric Laplacian satisfies
+\[
+-\Delta_a\phi_L=f_\sharp,\qquad f_\sharp\ge 0,
+\]
+with strictly positive boundary trace and strictly positive interior source on the audited export.  Moreover,
+\[
+\frac{I_{11,+}^{(L,\sharp)}}{1.45322\times10^{-1}}=1.05305,
+\qquad
+\frac{I_{11,+}^{(L,\sharp)}}{1.41077\times10^{-1}}=1.08473.
+\]
+Therefore the remaining analytic task is no longer to discover a new support or a new carrier object.  The right proof problem has become: obtain an a priori lower bound for the strict-slab signed mass \(I_{11,+}^{(L,\sharp)}\) using \(-\Delta_a\), together with only a small interface-strip control outside that slab.  In particular, \(-\Delta_a\) should now be regarded as a proof tool for the existing mass route, not as a replacement theorem object.
+
+\medskip\noindent\textbf{Proposition O61 (On the strict slab, the mirror mass admits an exact Dirichlet split into a dominant boundary lift and a smaller positive source potential).}
+Keep the same strict slab \(\Omega_{+,\sharp}(11)\) from Proposition~O60 and the same source
+\[
+f_\sharp:=(\bar E-U_a)\phi_L-\delta E\,\phi_R.
+\]
+Define \(u_\sharp\) as the zero-boundary source potential solving
+\[
+-\Delta_a u_\sharp=f_\sharp
+\qquad\text{on }\Omega_{+,\sharp}(11),
+\qquad
+u_\sharp|_{\partial\Omega_{+,\sharp}(11)}=0,
+\]
+and define the boundary lift
+\[
+h_\sharp:=\phi_L-u_\sharp.
+\]
+Then
+\[
+-\Delta_a h_\sharp=0
+\qquad\text{on }\Omega_{+,\sharp}(11),
+\qquad
+h_\sharp|_{\partial\Omega_{+,\sharp}(11)}=\phi_L|_{\partial\Omega_{+,\sharp}(11)},
+\]
+and the strict-slab signed mass decomposes exactly as
+\[
+I_{11,+}^{(L,\sharp)}
+=
+I_{\partial,\sharp}+I_{{\rm src},\sharp},
+\]
+where
+\[
+I_{\partial,\sharp}
+:=
+4\pi\int_{\Omega_{+,\sharp}(11)} \rho\,h_\sharp\,d\rho\,dz,
+\qquad
+I_{{\rm src},\sharp}
+:=
+4\pi\int_{\Omega_{+,\sharp}(11)} \rho\,u_\sharp\,d\rho\,dz.
+\]
+On the audited bridge this decomposition is exported exactly by
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_dirichlet_split_source.py},
+with reconstruction residual
+\[
+1.39\times10^{-17}.
+\]
+Moreover the same export shows
+\[
+u_\sharp>0,
+\qquad
+h_\sharp>0
+\qquad\text{everywhere on }\Omega_{+,\sharp}(11),
+\]
+with
+\[
+\min_{\Omega_{+,\sharp}(11)} u_\sharp
+=
+8.79343\times10^{-5},
+\qquad
+\min_{\Omega_{+,\sharp}(11)} h_\sharp
+=
+1.10620\times10^{-2}.
+\]
+Numerically,
+\[
+I_{11,+}^{(L,\sharp)}=1.53031\times10^{-1},
+\qquad
+I_{\partial,\sharp}=1.41805\times10^{-1},
+\qquad
+I_{{\rm src},\sharp}=1.12253\times10^{-2},
+\]
+so
+\[
+\frac{I_{\partial,\sharp}}{I_{11,+}^{(L,\sharp)}}=0.926647,
+\qquad
+\frac{I_{{\rm src},\sharp}}{I_{11,+}^{(L,\sharp)}}=0.0733531.
+\]
+Thus the strict-slab mirror mass is carried primarily by the positive boundary lift, while the positive source potential supplies a smaller but still quantitatively relevant completion.
+
+\medskip\noindent\textbf{Corollary O60 (The remaining proof task is now chiefly a boundary-trace theorem on the strict slab, with the source potential supplying the final completion).}
+By Corollary~O59 the current global target is
+\[
+I_{11,+}^{(L,\sharp)}\ge 1.45322\times10^{-1}.
+\]
+By Proposition~O61, it is enough to prove
+\[
+I_{\partial,\sharp}+I_{{\rm src},\sharp}\ge 1.45322\times10^{-1},
+\]
+with \(I_{{\rm src},\sharp}\ge 0\) automatically available from the positive source equation on \(\Omega_{+,\sharp}(11)\).  On the audited bridge the boundary lift already reaches
+\[
+\frac{I_{\partial,\sharp}}{1.45322\times10^{-1}}=0.975804,
+\]
+so it misses the global target by only
+\[
+1.45322\times10^{-1}-I_{\partial,\sharp}
+=
+3.51625\times10^{-3}.
+\]
+The exact positive source potential contributes
+\[
+I_{{\rm src},\sharp}=1.12253\times10^{-2},
+\]
+which exceeds that remaining global deficit by the factor
+\[
+3.19240.
+\]
+At the weaker local threshold
+\[
+1.41077\times10^{-1},
+\]
+the boundary lift alone already closes the target:
+\[
+\frac{I_{\partial,\sharp}}{1.41077\times10^{-1}}=1.00516.
+\]
+By contrast, the most naive constant-source torsion barrier from Proposition~O60 contributes only
+\[
+2.79922\times10^{-4},
+\]
+so even
+\[
+I_{\partial,\sharp}+I_{{\rm crude},\sharp}
+\]
+reaches only \(97.77\%\) of the global target.  Therefore the proof-side picture is now sharp: the right PDE route is not a crude constant-source torsion estimate on the whole slab, but a boundary-trace theorem for the harmonic lift \(h_\sharp\), supplemented by a genuinely nontrivial positive-source lower bound for \(u_\sharp\).  In that precise sense, \(-\Delta_a\) has now become an effective proof tool rather than a new theorem object.
+
+\medskip\noindent\textbf{Proposition O62 (The strict-slab boundary lift splits exactly by boundary edge type, and the artificial top cap carries only a small remainder).}
+Keep the same strict slab \(\Omega_{+,\sharp}(11)\), the same discrete strict-slab operator \(K_\sharp\), and the same boundary lift \(h_\sharp\) from Proposition~O61.  On the audited bridge, define the exact boundary defect
+\[
+b_\sharp:=K_\sharp \phi_L-M_\sharp f_\sharp = K_\sharp h_\sharp,
+\]
+and split its support into the disjoint audited boundary pieces
+\[
+\Gamma_{\rm lb},\ \Gamma_{\rm lt},\ \Gamma_{\rm rb},\ \Gamma_{\rm rt},\ \Gamma_{\rm axis},\ \Gamma_{\rm out},\ \Gamma_{\rm bot},\ \Gamma_{\rm top},
+\]
+corresponding respectively to the lower-left corner, upper-left corner, lower-right corner, upper-right corner, the axis edge, the outer radial wall, the bottom edge, and the artificial top-cap edge of \(\Omega_{+,\sharp}(11)\).  If \(b_\sharp^{(\sigma)}\) denotes the restriction of \(b_\sharp\) to \(\Gamma_\sigma\), and \(h_\sharp^{(\sigma)}\) is defined by
+\[
+K_\sharp h_\sharp^{(\sigma)}=b_\sharp^{(\sigma)},
+\]
+then linearity gives the exact decomposition
+\[
+h_\sharp=\sum_{\sigma} h_\sharp^{(\sigma)},
+\qquad
+I_{\partial,\sharp}=\sum_{\sigma} I_{\partial,\sharp}^{(\sigma)},
+\]
+where
+\[
+I_{\partial,\sharp}^{(\sigma)}
+:=
+4\pi\int_{\Omega_{+,\sharp}(11)} \rho\,h_\sharp^{(\sigma)}\,d\rho\,dz.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_boundary_edge_source.py}
+verifies this edgewise split with reconstruction residual
+\[
+3.12\times10^{-16}.
+\]
+Numerically,
+\[
+I_{\partial,\sharp}^{(\rm out)}=8.20377\times10^{-2},
+\qquad
+I_{\partial,\sharp}^{(\rm bot)}=4.78795\times10^{-2},
+\qquad
+I_{\partial,\sharp}^{(\rm axis)}=6.48\times10^{-18},
+\]
+while the corner lifts are
+\[
+I_{\partial,\sharp}^{(\rm lb)}=5.68899\times10^{-4},
+\quad
+I_{\partial,\sharp}^{(\rm lt)}=7.77352\times10^{-5},
+\quad
+I_{\partial,\sharp}^{(\rm rb)}=4.11332\times10^{-3},
+\quad
+I_{\partial,\sharp}^{(\rm rt)}=5.89740\times10^{-4},
+\]
+and the top-edge lift is
+\[
+I_{\partial,\sharp}^{(\rm top)}=6.53837\times10^{-3}.
+\]
+Define the physical-boundary and top-cap groups by
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+:=
+I_{\partial,\sharp}^{(\rm axis)}
++
+I_{\partial,\sharp}^{(\rm out)}
++
+I_{\partial,\sharp}^{(\rm bot)}
++
+I_{\partial,\sharp}^{(\rm lb)}
++
+I_{\partial,\sharp}^{(\rm rb)},
+\]
+\[
+I_{\partial,\sharp}^{(\rm cap)}
+:=
+I_{\partial,\sharp}^{(\rm top)}
++
+I_{\partial,\sharp}^{(\rm lt)}
++
+I_{\partial,\sharp}^{(\rm rt)}.
+\]
+Then
+\[
+I_{\partial,\sharp}^{(\rm phys)}=1.34599\times10^{-1},
+\qquad
+I_{\partial,\sharp}^{(\rm cap)}=7.20585\times10^{-3},
+\]
+so
+\[
+\frac{I_{\partial,\sharp}^{(\rm phys)}}{I_{\partial,\sharp}}=0.949185,
+\qquad
+\frac{I_{\partial,\sharp}^{(\rm cap)}}{I_{\partial,\sharp}}=0.0508151.
+\]
+Thus the harmonic boundary lift is already carried almost entirely by the non-top physical edges of the strict slab, while the artificial top cap contributes only about five percent of the boundary mass.
+
+\medskip\noindent\textbf{Corollary O61 (The global strict-slab target already closes using only the physical boundary trace plus the positive source potential; the artificial top cap is not a bottleneck).}
+Keep the same notation as in Proposition~O62.  Since
+\[
+I_{11,+}^{(L,\sharp)}
+=
+I_{\partial,\sharp}^{(\rm phys)}
++
+I_{\partial,\sharp}^{(\rm cap)}
++
+I_{{\rm src},\sharp},
+\]
+it is enough for the global target to prove
+\[
+I_{\partial,\sharp}^{(\rm phys)}+I_{{\rm src},\sharp}\ge 1.45322\times10^{-1}.
+\]
+On the audited bridge,
+\[
+I_{\partial,\sharp}^{(\rm phys)}+I_{{\rm src},\sharp}
+=
+1.45825\times10^{-1},
+\]
+so
+\[
+\frac{I_{\partial,\sharp}^{(\rm phys)}+I_{{\rm src},\sharp}}{1.45322\times10^{-1}}
+=
+1.00346,
+\qquad
+\frac{I_{\partial,\sharp}^{(\rm phys)}+I_{{\rm src},\sharp}}{1.41077\times10^{-1}}
+=
+1.03365.
+\]
+Thus even after discarding the entire artificial top-cap lift \(I_{\partial,\sharp}^{(\rm cap)}\), the remaining physical boundary trace together with the positive source potential already closes both the global and local strict-slab targets.  So the current parent-side proof problem narrows once more: the remaining theorem target is no longer a trace theorem on the whole strict-slab boundary, but a trace theorem on the physical edges (outer wall, bottom edge, and the lower corners, with the axis contribution negligible), together with the already-positive source completion \(I_{{\rm src},\sharp}\).
+
+\medskip\noindent\textbf{Proposition O63 (The physical strict-slab boundary trace has an exact adjoint-Poisson representation, dominated by the outer wall and bottom edge).}
+Keep the same strict-slab matrix \(K_\sharp\), the same mass weights \(\omega_\sharp\), and the same physical boundary defect
+\[
+b_\sharp^{(\rm phys)}
+:=
+b_\sharp^{(\rm axis)}
++
+b_\sharp^{(\rm out)}
++
+b_\sharp^{(\rm bot)}
++
+b_\sharp^{(\rm lb)}
++
+b_\sharp^{(\rm rb)}
+\]
+from Proposition~O62.  Define the adjoint Poisson weight \(p_\sharp\) by
+\[
+K_\sharp^T p_\sharp=\omega_\sharp.
+\]
+Then, by discrete Green duality,
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+=
+\omega_\sharp^T K_\sharp^{-1} b_\sharp^{(\rm phys)}
+=
+p_\sharp^T b_\sharp^{(\rm phys)}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_physical_trace_source.py}
+verifies the adjoint representation with residual
+\[
+2.78\times10^{-17},
+\]
+and also verifies agreement with the edgewise harmonic-lift grouping from Proposition~O62 to
+\[
+3.33\times10^{-16}.
+\]
+Numerically,
+\[
+I_{\partial,\sharp}^{(\rm phys)}=1.34599\times10^{-1},
+\qquad
+\sum_{\Gamma_{\rm phys}} b_\sharp=6.22908\times10^{2},
+\qquad
+\overline p_{\rm phys}:=
+\frac{p_\sharp^T b_\sharp^{(\rm phys)}}{\sum_{\Gamma_{\rm phys}} b_\sharp}
+=2.16082\times10^{-4}.
+\]
+The physical trace splits as
+\[
+I_{\partial,\sharp}^{(\rm out)}=8.20377\times10^{-2},
+\qquad
+I_{\partial,\sharp}^{(\rm bot)}=4.78795\times10^{-2},
+\qquad
+I_{\partial,\sharp}^{(\rm corners,low)}=4.68222\times10^{-3},
+\]
+with the axis contribution \(6.48\times10^{-18}\).  Thus
+\[
+\frac{I_{\partial,\sharp}^{(\rm out)}}{I_{\partial,\sharp}^{(\rm phys)}}=0.609495,
+\qquad
+\frac{I_{\partial,\sharp}^{(\rm bot)}}{I_{\partial,\sharp}^{(\rm phys)}}=0.355719,
+\qquad
+\frac{I_{\partial,\sharp}^{(\rm corners,low)}}{I_{\partial,\sharp}^{(\rm phys)}}=0.0347863.
+\]
+So the physical trace is not spread evenly over the boundary: it is carried almost entirely by the outer radial wall and the bottom edge, with the lower corners supplying the final few percent.
+
+\medskip\noindent\textbf{Corollary O62 (After the source potential is retained, the physical-boundary theorem target is a tight but closed trace lower bound).}
+By Corollary~O61, once the positive source potential is retained it is enough to prove
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+\ge
+1.45322\times10^{-1}-I_{{\rm src},\sharp}.
+\]
+On the audited bridge,
+\[
+I_{{\rm src},\sharp}=1.12253\times10^{-2},
+\]
+so the required physical-boundary floor is
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+\ge
+1.34096\times10^{-1}.
+\]
+The adjoint-Poisson trace gives
+\[
+I_{\partial,\sharp}^{(\rm phys)}=1.34599\times10^{-1},
+\]
+and therefore
+\[
+\frac{I_{\partial,\sharp}^{(\rm phys)}}{1.34096\times10^{-1}}=1.00375.
+\]
+The dominant pair alone gives
+\[
+I_{\partial,\sharp}^{(\rm out)}+I_{\partial,\sharp}^{(\rm bot)}
+=
+1.29917\times10^{-1},
+\]
+which is \(96.8836\%\) of the required physical trace.  Adding the lower-right corner gives
+\[
+I_{\partial,\sharp}^{(\rm out)}+I_{\partial,\sharp}^{(\rm bot)}+I_{\partial,\sharp}^{(\rm rb)}
+=
+1.34031\times10^{-1},
+\]
+which reaches \(99.9510\%\) of the required physical trace and misses by only
+\[
+6.57\times10^{-5}.
+\]
+The lower-left corner contribution
+\[
+I_{\partial,\sharp}^{(\rm lb)}=5.68899\times10^{-4}
+\]
+then closes the remaining gap.  Thus the next analytic theorem target is very narrow: prove a parent-side lower bound for the adjoint-Poisson physical trace on the outer wall, bottom edge, and lower corners of \(\Omega_{+,\sharp}(11)\), while the positive source potential remains the already-available completion.
+
+\medskip\noindent\textbf{Proposition O64 (The physical-boundary trace closes as four adjoint-Poisson edge products).}
+Keep the adjoint Poisson weight \(p_\sharp\) from Proposition~O63.  For each physical edge \(\Gamma_\sigma\), define
+\[
+B_\sigma:=\sum_{\Gamma_\sigma} b_\sharp,
+\qquad
+\bar p_\sigma:=\frac{p_\sharp^T b_\sharp^{(\sigma)}}{B_\sigma},
+\qquad
+I_\sigma:=\bar p_\sigma B_\sigma.
+\]
+Then
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+=
+I_{\rm out}+I_{\rm bot}+I_{\rm rb}+I_{\rm lb}+I_{\rm axis}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_edge_product_source.py}
+verifies this product decomposition against the physical trace with zero residual.  The non-negligible factors are
+\[
+B_{\rm out}=2.83410\times10^{2},
+\qquad
+\bar p_{\rm out}=2.89467\times10^{-4},
+\qquad
+I_{\rm out}=8.20377\times10^{-2},
+\]
+\[
+B_{\rm bot}=2.73854\times10^{2},
+\qquad
+\bar p_{\rm bot}=1.74836\times10^{-4},
+\qquad
+I_{\rm bot}=4.78795\times10^{-2},
+\]
+\[
+B_{\rm rb}=6.32852\times10^{1},
+\qquad
+\bar p_{\rm rb}=6.49966\times10^{-5},
+\qquad
+I_{\rm rb}=4.11332\times10^{-3},
+\]
+and
+\[
+B_{\rm lb}=2.36003,
+\qquad
+\bar p_{\rm lb}=2.41056\times10^{-4},
+\qquad
+I_{\rm lb}=5.68899\times10^{-4}.
+\]
+The axis contribution is \(6.48\times10^{-18}\).  Hence
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+=
+1.34599\times10^{-1}.
+\]
+Equivalently, if
+\[
+B_{\rm phys}:=\sum_{\Gamma_{\rm phys}}b_\sharp,
+\qquad
+\bar p_{\rm phys}:=\frac{I_{\partial,\sharp}^{(\rm phys)}}{B_{\rm phys}},
+\]
+then
+\[
+B_{\rm phys}=6.22908\times10^{2},
+\qquad
+\bar p_{\rm phys}=2.16082\times10^{-4},
+\qquad
+I_{\partial,\sharp}^{(\rm phys)}=\bar p_{\rm phys}B_{\rm phys}.
+\]
+
+\medskip\noindent\textbf{Corollary O63 (The global closure now reduces to a tight edge-product inequality; the local closure is already carried by the outer wall and bottom edge).}
+After the source potential is retained, the required physical trace is
+\[
+T_{\rm phys}^{(g)}
+:=
+1.45322\times10^{-1}-I_{{\rm src},\sharp}
+=
+1.34096\times10^{-1}.
+\]
+By Proposition~O64,
+\[
+\frac{I_{\partial,\sharp}^{(\rm phys)}}{T_{\rm phys}^{(g)}}=1.00375.
+\]
+The outer wall and bottom edge alone give
+\[
+I_{\rm out}+I_{\rm bot}=1.29917\times10^{-1}
+=0.968836\,T_{\rm phys}^{(g)}.
+\]
+Adding the lower-right corner gives
+\[
+I_{\rm out}+I_{\rm bot}+I_{\rm rb}
+=1.34031\times10^{-1}
+=0.999510\,T_{\rm phys}^{(g)},
+\]
+leaving only
+\[
+T_{\rm phys}^{(g)}-(I_{\rm out}+I_{\rm bot}+I_{\rm rb})
+=6.57187\times10^{-5}.
+\]
+The lower-left corner contributes
+\[
+I_{\rm lb}=5.68899\times10^{-4},
+\]
+which is \(8.65657\) times that final gap.  Therefore the global target is closed by the four physical edge products
+\[
+I_{\rm out}+I_{\rm bot}+I_{\rm rb}+I_{\rm lb}\ge T_{\rm phys}^{(g)}.
+\]
+At the local threshold the situation is even cleaner: \(I_{\rm out}+I_{\rm bot}\) already reaches \(1.00050\) times the required physical trace after source.  Thus the remaining parent-side analytic task is now a small finite set of edge-product bounds for \(B_{\rm out},B_{\rm bot},B_{\rm rb},B_{\rm lb}\) and their adjoint Poisson weights, rather than a theorem on the full physical boundary.
+
+\medskip\noindent\textbf{Proposition O65 (A rounded four-edge product certificate closes the physical trace).}
+Keep the notation of Proposition~O64.  Let \(B_\sigma^-\) and \(p_\sigma^-\) denote candidate parent-side lower bounds for the boundary defect mass and the adjoint-Poisson average on the four non-negligible physical edge pieces.  The following rounded certificate is sufficient:
+\[
+\begin{array}{c|cc|c}
+\sigma & B_\sigma^- & p_\sigma^- & B_\sigma^-p_\sigma^-\\
+\hline
+{\rm out} & 2.834\times10^2 & 2.894\times10^{-4} & 8.20160\times10^{-2}\\
+{\rm bot} & 2.738\times10^2 & 1.748\times10^{-4} & 4.78602\times10^{-2}\\
+{\rm rb} & 6.32\times10^1 & 6.49\times10^{-5} & 4.10168\times10^{-3}\\
+{\rm lb} & 2.36 & 2.41\times10^{-4} & 5.68760\times10^{-4}.
+\end{array}
+\]
+Indeed, \(K_\sharp\) is the Dirichlet matrix for the positive axisymmetric operator \(-\Delta_a\) on the strict slab, hence it is an \(M\)-matrix on the audited bridge and
+\[
+K_\sharp^{-1}\ge0,\qquad K_\sharp^{-T}\ge0,\qquad p_\sharp=K_\sharp^{-T}\omega_\sharp\ge0.
+\]
+The boundary defects \(b_\sharp^{(\sigma)}\) are nonnegative edgewise.  Therefore \(B_\sigma\ge0\), \(\bar p_\sigma\ge0\), and the scalar inequalities
+\[
+B_\sigma\ge B_\sigma^-,
+\qquad
+\bar p_\sigma\ge p_\sigma^-,
+\qquad
+\sigma\in\{{\rm out},{\rm bot},{\rm rb},{\rm lb}\},
+\]
+imply the rigorous product lower bound
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+\ge
+\sum_{\sigma}B_\sigma^-p_\sigma^-
+=
+1.3454664\times10^{-1}.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_edge_certificate_source.py}
+verifies all eight scalar lower bounds with positive slack and produces the figure
+\path{/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_edge_certificate_source_figure.png}.
+The certified lower edge sum exceeds the required global physical trace after source,
+\[
+T_{\rm phys}^{(g)}=1.3409629777610438\times10^{-1},
+\]
+by
+\[
+1.3454664\times10^{-1}-T_{\rm phys}^{(g)}
+=4.50342\times10^{-4},
+\qquad
+\frac{1.3454664\times10^{-1}}{T_{\rm phys}^{(g)}}=1.00336.
+\]
+The certificate is intentionally rounded downward: its total is only \(5.28\times10^{-5}\) below the exact audited edge product sum \(1.3459947765481273\times10^{-1}\).
+
+\medskip\noindent\textbf{Corollary O64 (The remaining analytic lift is reduced to eight scalar lower bounds on the already-fixed physical edges).}
+Combining Proposition~O65 with the positive source potential from Proposition~O61 gives
+\[
+I_{\partial,\sharp}^{(\rm phys)}+I_{{\rm src},\sharp}
+\ge
+1.3454664\times10^{-1}
++1.1225272657607257\times10^{-2}
+=
+1.4577191265760725\times10^{-1}.
+\]
+Thus
+\[
+\frac{
+1.4577191265760725\times10^{-1}
+}{
+1.4532157043371163\times10^{-1}
+}
+=1.00310,
+\]
+so the rounded four-edge certificate still closes the global strict-slab target.  The local threshold is already closed before either lower corner is used:
+\[
+B_{\rm out}^-p_{\rm out}^-+B_{\rm bot}^-p_{\rm bot}^-
+=1.2987620\times10^{-1}
+=1.00019\,T_{\rm phys}^{(\ell)}.
+\]
+For the global threshold, the first three certified products leave only
+\[
+T_{\rm phys}^{(g)}
+-
+\left(
+B_{\rm out}^-p_{\rm out}^-
++B_{\rm bot}^-p_{\rm bot}^-
++B_{\rm rb}^-p_{\rm rb}^-
+\right)
+=1.18418\times10^{-4},
+\]
+whereas the certified lower-left corner alone supplies
+\[
+B_{\rm lb}^-p_{\rm lb}^-=5.68760\times10^{-4},
+\]
+which is \(4.80300\) times that remaining certified gap.  Hence the parent-side theorem has now been reduced, without introducing any new support or carrier, to proving the four boundary-mass floors and four adjoint-Poisson average floors listed in Proposition~O65.
+
+\medskip\noindent\textbf{Proposition O66 (The four-edge product certificate admits a fully local pointwise certificate).}
+The scalar edge averages in Proposition~O65 are not the only way to close the trace.  A more local certificate is obtained by working directly pointwise on the same four physical edges.  For each audited boundary point \(q\) on
+\[
+\Gamma_{\rm out}\cup\Gamma_{\rm bot}\cup\Gamma_{\rm rb}\cup\Gamma_{\rm lb},
+\]
+write
+\[
+b_q:=b_\sharp(q),
+\qquad
+p_q:=p_\sharp(q),
+\qquad
+I_{\rm phys}^{(4{\rm e})}:=\sum_q b_qp_q.
+\]
+By the \(M\)-matrix / maximum-principle positivity used in Proposition~O65,
+\[
+b_q\ge0,\qquad p_q\ge0.
+\]
+Therefore any pointwise lower floors \(0\le b_q^-\le b_q\) and \(0\le p_q^-\le p_q\) imply
+\[
+I_{\rm phys}^{(4{\rm e})}
+=
+\sum_q b_qp_q
+\ge
+\sum_q b_q^-p_q^-.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_edge_point_certificate_source.py}
+takes \(b_q^-\) and \(p_q^-\) to be the four-significant-digit downward roundings of \(b_q\) and \(p_q\), respectively, and verifies all pointwise inequalities on the \(33+10+1+1=45\) points of the fixed physical edges.  The corresponding edge sums are
+\[
+\sum_{\Gamma_{\rm out}} b_q^-p_q^-=8.20001038\times10^{-2},
+\]
+\[
+\sum_{\Gamma_{\rm bot}} b_q^-p_q^-=4.78595834\times10^{-2},
+\]
+\[
+\sum_{\Gamma_{\rm rb}} b_q^-p_q^-=4.1125672\times10^{-3},
+\qquad
+\sum_{\Gamma_{\rm lb}} b_q^-p_q^-=5.68760\times10^{-4}.
+\]
+Thus the purely pointwise certified four-edge trace is
+\[
+\sum_q b_q^-p_q^-
+=
+1.345410144\times10^{-1}.
+\]
+The exact four-edge product sum is
+\[
+1.3459947765481273\times10^{-1},
+\]
+so the loss caused by the pointwise downward rounding is only
+\[
+5.84633\times10^{-5}.
+\]
+
+\medskip\noindent\textbf{Corollary O65 (The global trace closure no longer requires an edge-average theorem; pointwise edge barriers suffice).}
+The global after-source physical trace target remains
+\[
+T_{\rm phys}^{(g)}=1.3409629777610438\times10^{-1}.
+\]
+By Proposition~O66,
+\[
+\sum_q b_q^-p_q^-
+-
+T_{\rm phys}^{(g)}
+=
+4.44717\times10^{-4},
+\qquad
+\frac{\sum_q b_q^-p_q^-}{T_{\rm phys}^{(g)}}=1.003316.
+\]
+After adding the already-positive source potential, this gives
+\[
+1.345410144\times10^{-1}
++1.1225272657607257\times10^{-2}
+=1.4576628705760725\times10^{-1},
+\]
+and hence
+\[
+\frac{1.4576628705760725\times10^{-1}}{1.4532157043371163\times10^{-1}}
+=1.003060.
+\]
+The local threshold is still closed by the first two physical edges alone:
+\[
+\sum_{\Gamma_{\rm out}\cup\Gamma_{\rm bot}}b_q^-p_q^-
+=1.298596872\times10^{-1}
+=1.000059\,T_{\rm phys}^{(\ell)}.
+\]
+For the global threshold, the certified outer wall, bottom edge, and lower-right corner leave
+\[
+T_{\rm phys}^{(g)}
+-
+\sum_{\Gamma_{\rm out}\cup\Gamma_{\rm bot}\cup\Gamma_{\rm rb}}b_q^-p_q^-
+=1.24043\times10^{-4},
+\]
+while the certified lower-left corner supplies
+\[
+\sum_{\Gamma_{\rm lb}}b_q^-p_q^-
+=5.68760\times10^{-4},
+\]
+namely \(4.58517\) times that remaining pointwise certified gap.  Thus the remaining parent-side analytic lift can be stated in the sharpest local form: prove lower barriers for \(b_\sharp(q)\) and \(p_\sharp(q)=K_\sharp^{-T}\omega_\sharp(q)\) on the same \(45\) fixed physical-edge points, or replace those point floors by continuous edge barriers; no new support, carrier, or edge-average theorem is required.
+
+\medskip\noindent\textbf{Proposition O67 (The pointwise adjoint-Poisson floors are certified by a strict maximum-principle subsolution).}
+Keep the strict-slab adjoint equation
+\[
+K_\sharp^Tp_\sharp=\omega_\sharp.
+\]
+Let
+\[
+\theta:=0.999999,
+\qquad
+K_\sharp^T\underline p_\sharp=\theta\,\omega_\sharp.
+\]
+Then
+\[
+K_\sharp^T(p_\sharp-\underline p_\sharp)
+=(1-\theta)\omega_\sharp\ge0.
+\]
+Since \(K_\sharp\) is an \(M\)-matrix on the fixed strict slab, \(K_\sharp^{-T}\ge0\), and therefore
+\[
+p_\sharp-\underline p_\sharp
+=
+K_\sharp^{-T}\bigl((1-\theta)\omega_\sharp\bigr)
+\ge0.
+\]
+Thus \(\underline p_\sharp\) is a genuine adjoint-Poisson lower barrier for \(p_\sharp\).  The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_adjoint_barrier_certificate_source.py}
+verifies, on the same \(45\) physical-edge points as Proposition~O66, that this strict lower barrier still dominates the four-significant-digit point floors \(p_q^-\):
+\[
+\underline p_\sharp(q)\ge p_q^-,
+\qquad
+q\in
+\Gamma_{\rm out}\cup\Gamma_{\rm bot}\cup\Gamma_{\rm rb}\cup\Gamma_{\rm lb}.
+\]
+The same audit checks the subsolution residual directly:
+\[
+\min_q\{\omega_\sharp-K_\sharp^T\underline p_\sharp\}_q
+=6.78584\times10^{-10},
+\qquad
+\max_q\{\omega_\sharp-K_\sharp^T\underline p_\sharp\}_q
+=1.56074\times10^{-8},
+\]
+with agreement against the expected residual \((1-\theta)\omega_\sharp\) to
+\[
+8.67\times10^{-19}.
+\]
+Consequently the pointwise certificate from Proposition~O66 is now backed by the maximum principle rather than only by reading off \(p_\sharp\).
+
+\medskip\noindent\textbf{Corollary O66 (The O66 pointwise trace closure is stable under a strict adjoint-barrier proof of the Poisson weights).}
+Use the same four-significant-digit \(b_q^-\) and \(p_q^-\) floors from Proposition~O66.  Proposition~O67 supplies
+\[
+p_\sharp(q)\ge\underline p_\sharp(q)\ge p_q^-,
+\]
+while the boundary-defect floors give \(b_\sharp(q)\ge b_q^-\).  Therefore
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+\ge
+\sum_q b_q^-p_q^-
+=1.345410144\times10^{-1}.
+\]
+The intermediate barrier product with the same \(b_q^-\) is
+\[
+\sum_q b_q^-\underline p_\sharp(q)=1.3457028305021287\times10^{-1},
+\]
+so the rounded point floors sit \(2.92687\times10^{-5}\) below the actual adjoint barrier.  The certified trace ratio remains
+\[
+\frac{\sum_q b_q^-p_q^-}{T_{\rm phys}^{(g)}}=1.003316,
+\]
+and the source-completed global ratio remains
+\[
+\frac{
+1.345410144\times10^{-1}+1.1225272657607257\times10^{-2}
+}{
+1.4532157043371163\times10^{-1}
+}
+=1.003060.
+\]
+Also,
+\[
+\sum_{\Gamma_{\rm out}\cup\Gamma_{\rm bot}}b_q^-p_q^-
+=1.298596872\times10^{-1}
+=1.000059\,T_{\rm phys}^{(\ell)},
+\]
+so the local threshold is still carried by the first two physical edges alone.  The only remaining parent-side burden on the Poisson side is now to replace the finite lower barrier \(\underline p_\sharp\) by a closed-form or monotone comparison barrier; the support, edge set, and target inequality are already fixed.
+
+\medskip\noindent\textbf{Proposition O68 (The pointwise boundary-defect floors are certified by the missing-neighbor flux formula).}
+Keep the same strict slab \(S=\Omega_{+,\sharp}(11)\), and write \(K_{\rm full}\) for the full discrete matrix of the bare axisymmetric operator \(-\Delta_a\) before restricting to \(S\).  Since the localized state satisfies the full-grid identity
+\[
+K_{\rm full}\phi_L=M f_L,
+\qquad
+f_L=(\bar E-U_a)\phi_L-\delta E\,\phi_R,
+\]
+the restricted boundary defect
+\[
+b_\sharp:=K_\sharp\phi_{L,S}-M_S f_{L,S}
+\]
+has the exact flux representation
+\[
+b_\sharp(q)
+=
+-\sum_{r\notin S}K_{\rm full}(q,r)\phi_L(r)
+=
+\sum_{r\in N(q)\setminus S}c_{qr}\phi_L(r),
+\qquad
+c_{qr}:=-K_{\rm full}(q,r)\ge0.
+\]
+On the audited finite-volume grid,
+\[
+c_{(i,j),(i+1,j)}=\frac{\rho_{i+1/2}}{\Delta\rho^2},
+\qquad
+c_{(i,j),(i-1,j)}=\frac{\rho_{i-1/2}}{\Delta\rho^2},
+\qquad
+c_{(i,j),(i,j\pm1)}=\frac{\rho_i}{\Delta z^2}.
+\]
+The axis has no adverse missing radial flux because \(\rho_{-1/2}=0\).  Therefore any lower floors \(\phi_L(r)\ge\phi_r^-\ge0\) on the exterior missing neighbors imply
+\[
+b_\sharp(q)\ge
+\sum_{r\in N(q)\setminus S}c_{qr}\phi_r^-.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_boundary_flux_certificate_source.py}
+uses five-significant-digit downward floors for the exterior \(\phi_L\) values and verifies the flux certificate for the same \(45\) physical-edge points from Proposition~O66.  There are \(46\) missing-neighbor flux components: \(33\) on the outer wall, \(10\) on the bottom edge, two at the lower-right corner, and one at the lower-left corner.  The exact flux reconstruction residual satisfies
+\[
+\max_q
+\left|
+b_\sharp(q)-\sum_{r\in N(q)\setminus S}c_{qr}\phi_L(r)
+\right|
+=1.31\times10^{-13}.
+\]
+The certified flux floors sum to
+\[
+\sum_q\sum_{r\in N(q)\setminus S}c_{qr}\phi_r^-
+=6.229032\times10^2,
+\]
+while the four-significant-digit point floors used in Proposition~O66 sum to
+\[
+\sum_q b_q^-=6.22792\times10^2.
+\]
+Thus the flux certificate exceeds the \(b_q^-\) floors by
+\[
+1.11200\times10^{-1},
+\qquad
+\frac{6.229032\times10^2}{6.22792\times10^2}=1.000179.
+\]
+
+\medskip\noindent\textbf{Corollary O67 (The O66 pointwise trace certificate is now supported on both sides: boundary flux for \(b_q\) and adjoint barrier for \(p_q\)).}
+Combining Proposition~O68 with Proposition~O67 gives, on every one of the fixed physical-edge points,
+\[
+b_\sharp(q)\ge b_q^-,
+\qquad
+p_\sharp(q)\ge p_q^-.
+\]
+Hence
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+\ge
+\sum_q b_q^-p_q^-
+=1.345410144\times10^{-1}.
+\]
+If one uses the flux-certified \(b\)-side floor directly together with the same \(p_q^-\), the product is slightly stronger:
+\[
+\sum_q
+\left(
+\sum_{r\in N(q)\setminus S}c_{qr}\phi_r^-
+\right)p_q^-
+=1.34568861723\times10^{-1},
+\]
+which is \(1.003524\) times the global after-source trace target.  The rounded O66 product is the deliberately smaller certificate and still gives
+\[
+\frac{1.345410144\times10^{-1}}{T_{\rm phys}^{(g)}}=1.003316,
+\qquad
+\frac{
+1.345410144\times10^{-1}+1.1225272657607257\times10^{-2}
+}{
+1.4532157043371163\times10^{-1}
+}
+=1.003060.
+\]
+The local threshold remains closed by the outer wall and bottom edge alone:
+\[
+\sum_{\Gamma_{\rm out}\cup\Gamma_{\rm bot}}b_q^-p_q^-
+=1.298596872\times10^{-1}
+=1.000059\,T_{\rm phys}^{(\ell)}.
+\]
+Thus the remaining parent-side work has narrowed again: replace the finite exterior \(\phi_L\) floors and the finite adjoint subsolution \(\underline p_\sharp\) by closed-form or monotone barriers.  The trace identity, edge set, point set, and numerical closure are already fixed.
+
+\medskip\noindent\textbf{Proposition O69 (The exterior \(\phi_L\) trace floors are certified by a parent-side trace subsolution).}
+Let
+\[
+E_\partial:=
+\{r\notin S:\ r\in N(q)\ {\rm for\ one\ of\ the\ }45\ {\rm physical\ edge\ points}\ q\}.
+\]
+This is not a new support object; it is exactly the missing-neighbor trace already used in Proposition~O68.  On the audited grid it contains \(46\) points.  Let \(K_E\) and \(M_E\) be the restrictions of the parent bare operator and mass matrix to this trace set, and write
+\[
+g_E:=K_E\phi_{L,E}-M_E f_{L,E},
+\qquad
+f_L=(\bar E-U_a)\phi_L-\delta E\,\phi_R.
+\]
+The vector \(g_E\) is precisely the outward flux from the complement of the trace set \(E_\partial\).  The restricted matrix \(K_E\) is a strictly diagonally dominant \(Z\)-matrix, hence a nonsingular \(M\)-matrix.  Therefore \(K_E^{-1}\ge0\).  For
+\[
+\theta_\phi:=0.9999995,
+\qquad
+\underline\phi_E:=\theta_\phi\,\phi_{L,E},
+\]
+one has
+\[
+K_E(\phi_{L,E}-\underline\phi_E)
+=(1-\theta_\phi)K_E\phi_{L,E}
+=(1-\theta_\phi)(M_Ef_{L,E}+g_E).
+\]
+Thus \(f_{L,E}\ge0\) and \(g_E\ge0\) imply, by the discrete maximum principle on the parent trace system, that
+\[
+\phi_{L,E}\ge\underline\phi_E.
+\]
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_exterior_phi_barrier_source.py}
+verifies the hypotheses and compares \(\underline\phi_E\) against four-significant-digit downward floors \(\phi_r^{--}\).  Numerically,
+\[
+\min_{E_\partial} f_L=8.23807\times10^{-3},
+\qquad
+\min_{E_\partial} g_E=4.71653,
+\qquad
+\min_{\partial_1E_\partial}\phi_L=1.09922\times10^{-2}.
+\]
+The \(M\)-matrix diagnostics are
+\[
+\begin{aligned}
+\min_i (K_E)_{ii}&=8.33333\times10^1,\\
+\max_{i\ne j}(K_E)_{ij}&=-1.66667\times10^1,\\
+\min_i\left((K_E)_{ii}-\sum_{j\ne i}|(K_E)_{ij}|\right)&=6.66667\times10^1.
+\end{aligned}
+\]
+Moreover,
+\[
+\max_{r\in E_\partial}\frac{\phi_r^{--}}{\phi_L(r)}
+=0.99999933598
+<\theta_\phi,
+\qquad
+\min_{r\in E_\partial}(\underline\phi_E(r)-\phi_r^{--})
+=1.01840\times10^{-8}.
+\]
+The comparison residual is strictly positive,
+\[
+\min_E(1-\theta_\phi)(M_Ef_{L,E}+g_E)=2.36068\times10^{-6},
+\]
+and agrees with the directly computed \(K_E(\phi_{L,E}-\underline\phi_E)\) to
+\[
+1.88\times10^{-14}.
+\]
+Hence all exterior four-significant-digit \(\phi_L\) trace floors used below are backed by a parent-side maximum-principle certificate.
+
+\medskip\noindent\textbf{Corollary O68 (The physical trace closes directly from the exterior trace barrier and the adjoint point floors).}
+Use the same adjoint floors \(p_q^-\) from Proposition~O66/O67, but instead of first certifying the old \(b_q^-\) floors pointwise, insert the four-significant-digit exterior trace floors directly into the missing-neighbor flux:
+\[
+\widehat b_q:=
+\sum_{r\in N(q)\setminus S}c_{qr}\phi_r^{--}.
+\]
+By Proposition~O68 and Proposition~O69,
+\[
+b_\sharp(q)\ge\widehat b_q,
+\qquad
+p_\sharp(q)\ge p_q^-,
+\]
+and therefore
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+\ge
+\sum_q \widehat b_q p_q^-
+=1.3455686726\times10^{-1}.
+\]
+This direct flux product is
+\[
+\begin{aligned}
+\frac{1.3455686726\times10^{-1}}{T_{\rm phys}^{(g)}}&=1.003435,\\
+\frac{
+1.3455686726\times10^{-1}+1.1225272657607257\times10^{-2}
+}{
+1.4532157043371163\times10^{-1}
+}
+&=1.003169.
+\end{aligned}
+\]
+The local threshold is still closed by the outer wall and bottom edge alone:
+\[
+\sum_{\Gamma_{\rm out}\cup\Gamma_{\rm bot}}\widehat b_qp_q^-
+=1.298757133666667\times10^{-1}
+=1.000182\,T_{\rm phys}^{(\ell)}.
+\]
+This route is deliberately different from the old \(b_q^-\)-floor route: with only four-significant-digit exterior \(\phi_L\) floors, \(17\) of the old pointwise \(b_q^-\) checks fail, and the right-bottom corner flux is \(2.66667\times10^{-3}\) below the old corner \(b\)-floor.  Nevertheless the direct flux product has a larger final margin than the rounded O66 product.  Thus the remaining parent-side burden is no longer a five-digit boundary-defect floor theorem; it is a four-digit exterior trace barrier, already certified here, plus the still-finite adjoint \(p_q^-\) comparison from Proposition~O67.
+
+\medskip\noindent\textbf{Proposition O70 (The adjoint-Poisson side is certified by monotone finite Gauss--Seidel barriers).}
+Let
+\[
+A:=K_\sharp^T=D-L-U,
+\qquad
+L,U\ge0,
+\]
+be the standard lower/upper \(M\)-matrix splitting of the strict-slab adjoint operator.  Starting from \(p^{(0)}=0\), define the monotone lower sequence
+\[
+(D-L)p^{(n+1)}=\omega_\sharp+U p^{(n)}.
+\]
+Since \(D-L\) is triangular with positive diagonal and nonpositive off-diagonal entries, \((D-L)^{-1}\ge0\).  Hence \(p^{(n+1)}\ge p^{(n)}\ge0\).  Moreover
+\[
+\omega_\sharp-Ap^{(n+1)}
+=U(p^{(n+1)}-p^{(n)})\ge0.
+\]
+The \(M\)-matrix property of \(A\) gives
+\[
+p_\sharp-p^{(n+1)}
+=A^{-1}\bigl(\omega_\sharp-Ap^{(n+1)}\bigr)\ge0.
+\]
+Thus every finite iterate \(p^{(n)}\) is a rigorous parent-side lower barrier for the exact adjoint Poisson weight \(p_\sharp\); no exact solve for \(p_\sharp\) is used in the proof.
+
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_adjoint_gs_barrier_source.py}
+uses the same \(420\)-point strict slab and the same \(45\) physical edge points.  The adjoint matrix diagnostics are
+\[
+\min_i A_{ii}=8.33333\times10^1,
+\qquad
+\max_{i\ne j}A_{ij}=-1.66667\times10^1,
+\]
+and the nonnegative coupling matrix \(B=L+U=-A+{\rm diag}(A)\) has off-diagonal entries in
+\[
+[1.66667\times10^1,\,7.66667\times10^2].
+\]
+At the product-closing sweep \(n=548\), the minimum increment is
+\[
+\min_i(p^{(548)}-p^{(547)})_i=1.58824\times10^{-10},
+\]
+and the residual identity
+\[
+\omega_\sharp-Ap^{(548)}
+=U(p^{(548)}-p^{(547)})
+\]
+agrees to \(4.10\times10^{-16}\).  At the optional point-floor sweep \(n=859\), the minimum increment is \(2.37799\times10^{-12}\), and the same residual identity agrees to \(4.80\times10^{-16}\).
+
+\medskip\noindent\textbf{Corollary O69 (The O69 exterior-flux trace closure now has a parent-side adjoint barrier, with an optional point-floor completion).}
+Let
+\[
+\widehat b_q=\sum_{r\in N(q)\setminus S}c_{qr}\phi_r^{--}
+\]
+be the four-significant-digit exterior-flux floor from Corollary~O68.  Combining Proposition~O69 with Proposition~O70 gives
+\[
+b_\sharp(q)\ge\widehat b_q,
+\qquad
+p_\sharp(q)\ge p^{(548)}(q),
+\]
+and hence
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+\ge
+\sum_q \widehat b_q\,p^{(548)}(q)
+=1.345329256808323\times10^{-1}.
+\]
+This gives
+\[
+\begin{aligned}
+\frac{1.345329256808323\times10^{-1}}{T_{\rm phys}^{(g)}}&=1.003256,\\
+\frac{
+1.345329256808323\times10^{-1}+1.1225272657607257\times10^{-2}
+}{
+1.4532157043371163\times10^{-1}
+}
+&=1.003005.
+\end{aligned}
+\]
+The local threshold is still closed by the outer wall and bottom edge alone, now with the fully monotone adjoint barrier:
+\[
+\sum_{\Gamma_{\rm out}\cup\Gamma_{\rm bot}}
+\widehat b_q\,p^{(548)}(q)
+=1.2985251408265905\times10^{-1}
+=1.000003\,T_{\rm phys}^{(\ell)}.
+\]
+If one wants compatibility with the older four-significant-digit \(p_q^-\) floors, the same monotone sequence supplies it at sweep \(n=859\):
+\[
+\min_q\frac{p^{(859)}(q)}{p_q^-}=1.000000033.
+\]
+The corresponding direct flux product is
+\[
+\sum_q \widehat b_q\,p^{(859)}(q)
+=1.3458547480326316\times10^{-1},
+\qquad
+\frac{1.3458547480326316\times10^{-1}}{T_{\rm phys}^{(g)}}=1.003648.
+\]
+Thus both sides of the physical trace certificate now come from parent-side maximum-principle constructions: the \(b\)-side from the exterior \(\phi_L\) trace barrier of Proposition~O69, and the \(p\)-side from the finite monotone adjoint barriers above.  The remaining work is presentation-level compression or optional convergence-rate polishing, not a new support, carrier, or trace theorem.
+
+\medskip\noindent\textbf{Proposition O71 (Synthesis: the strict-slab physical trace certificate is parent-side closed).}
+The preceding reductions can be read as one fixed certificate on the same strict slab
+\[
+S=\Omega_{+,\sharp}(11).
+\]
+No support, carrier, trace set, or split is introduced beyond the fixed objects already audited:
+\[
+\begin{array}{ll}
+\text{physical edge points} & 45,\\
+\text{missing-neighbor exterior trace points} & 46,\\
+\text{strict-slab adjoint points} & 420.
+\end{array}
+\]
+The proof chain is:
+\[
+\begin{aligned}
+b_\sharp(q)
+&=
+\sum_{r\in N(q)\setminus S}c_{qr}\phi_L(r)
+&&\text{(missing-neighbor flux identity)},\\
+&\ge
+\sum_{r\in N(q)\setminus S}c_{qr}\phi_r^{--}
+=:\widehat b_q
+&&\text{(exterior \(\phi_L\) trace barrier)},\\
+p_\sharp(q)
+&\ge p^{(548)}(q)
+&&\text{(finite monotone adjoint \(M\)-matrix barrier)}.
+\end{aligned}
+\]
+Consequently
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+\ge
+\sum_q\widehat b_qp^{(548)}(q)
+=1.345329256808323\times10^{-1}.
+\]
+The synthesis audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_trace_synthesis_source.py}
+combines only previously exported certificates and records the closed pieces as follows:
+\[
+\begin{array}{ll}
+\text{boundary flux identity} & \text{closed},\\
+\text{exterior \(\phi_L\) trace floors} & \text{closed},\\
+\text{adjoint GS product barrier} & \text{closed},\\
+\text{optional old \(p_q^-\) point floors} & \text{closed at sweep }859.
+\end{array}
+\]
+The main \(548\)-sweep certificate has
+\[
+\frac{1.345329256808323\times10^{-1}}{T_{\rm phys}^{(g)}}=1.003256,
+\qquad
+1.345329256808323\times10^{-1}-T_{\rm phys}^{(g)}
+=4.36628\times10^{-4}.
+\]
+The outer wall and bottom edge alone give
+\[
+\sum_{\Gamma_{\rm out}\cup\Gamma_{\rm bot}}\widehat b_qp^{(548)}(q)
+=1.2985251408265905\times10^{-1}
+=1.000003\,T_{\rm phys}^{(\ell)}.
+\]
+For comparison, the optional sweep \(859\) point-floor completion gives
+\[
+\sum_q\widehat b_qp^{(859)}(q)
+=1.3458547480326316\times10^{-1},
+\qquad
+\min_q\frac{p^{(859)}(q)}{p_q^-}=1.000000033.
+\]
+
+\medskip\noindent\textbf{Corollary O70 (Roadmap closure for this strict-slab line).}
+Adding the already-positive source potential
+\[
+I_{{\rm src},\sharp}=1.1225272657607257\times10^{-2}
+\]
+to the main parent-side trace certificate gives
+\[
+I_{\partial,\sharp}^{(\rm phys)}+I_{{\rm src},\sharp}
+\ge
+1.4575819833843956\times10^{-1}.
+\]
+Therefore
+\[
+\frac{
+1.4575819833843956\times10^{-1}
+}{
+1.4532157043371163\times10^{-1}
+}
+=1.003005.
+\]
+Thus the strict-slab line is parent-side closed on the current audited bridge.  The only remaining useful work is secondary tightening of the presentation and of the finite GS sweep-count explanation.  The next proposition records this tightening without introducing any new support, object, carrier, or trace theorem.
+
+\medskip\noindent\textbf{Proposition O72 (Secondary tightening: the finite GS sweep counts have a componentwise rate certificate).}
+Keep the same strict-slab adjoint splitting
+\[
+A=K_\sharp^T=D-L-U,\qquad L,U\ge0,
+\]
+and define
+\[
+G:=(D-L)^{-1}U\ge0,\qquad
+c:=(D-L)^{-1}\omega_\sharp\ge0.
+\]
+Then the monotone GS barriers satisfy
+\[
+p^{(n+1)}=c+Gp^{(n)},\qquad p^{(0)}=0.
+\]
+For the increments
+\[
+d_n:=p^{(n)}-p^{(n-1)}\qquad(n\ge1),
+\]
+one has the exact recurrence
+\[
+d_{n+1}=Gd_n.
+\]
+Suppose that at a checkpoint \(n\)
+\[
+0\le d_{n+1}\le\alpha_n d_n,\qquad \alpha_n<1,
+\]
+componentwise.  Since \(G\ge0\), induction gives
+\[
+0\le d_{n+k}\le \alpha_n^k d_n,\qquad k\ge1.
+\]
+Consequently the exact adjoint tail obeys the one-sided bound
+\[
+0\le p_\sharp-p^{(n)}
+=\sum_{k\ge1}d_{n+k}
+\le
+\frac{\alpha_n}{1-\alpha_n}\,d_n.
+\]
+For the nonnegative trace functional
+\[
+F(v):=\sum_q\widehat b_q\,v(q),
+\qquad
+F_{\rm ob}(v):=
+\sum_{q\in\Gamma_{\rm out}\cup\Gamma_{\rm bot}}\widehat b_q\,v(q),
+\]
+this implies
+\[
+\begin{aligned}
+0\le F(p_\sharp)-F(p^{(n)})
+&\le
+\frac{\alpha_n}{1-\alpha_n}F(d_n),\\
+0\le F_{\rm ob}(p_\sharp)-F_{\rm ob}(p^{(n)})
+&\le
+\frac{\alpha_n}{1-\alpha_n}F_{\rm ob}(d_n).
+\end{aligned}
+\]
+This is an analytic convergence-rate certificate for the same finite GS sequence used in Proposition~O70; the exact solve for \(p_\sharp\) is not used in the lower-bound proof.
+
+The audit
+\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_gs_rate_source.py}
+verifies the componentwise subeigenvector inequalities at the relevant checkpoints.  The first sweep at which the global trace product closes is \(384\), while the first sweep at which the global and outer--bottom local inequalities close simultaneously is \(548\).  The old four-significant-digit point floors are first dominated at sweep \(859\).  At the main product-closing sweep,
+\[
+\alpha_{548}=0.9865813608269858,
+\qquad
+\frac{\alpha_{548}}{1-\alpha_{548}}=73.52320515563653.
+\]
+Moreover
+\[
+F(d_{548})=7.256039748535137\times10^{-7},
+\]
+so
+\[
+F(p_\sharp)-F(p^{(548)})
+\le
+5.334872990490022\times10^{-5}.
+\]
+As an external numerical validation only, the exact adjoint solve gives
+\[
+F(p_\sharp)-F(p^{(548)})
+=5.3347881092041805\times10^{-5},
+\]
+inside the certified tail bound.  At the point-floor sweep,
+\[
+\alpha_{859}=0.9865811034998516,
+\qquad
+\frac{\alpha_{859}}{1-\alpha_{859}}=73.52177606325098,
+\]
+and
+\[
+F(p_\sharp)-F(p^{(859)})
+\le
+7.987593427350412\times10^{-7},
+\]
+while the exact validation gap is
+\[
+7.987586611857278\times10^{-7}.
+\]
+Thus the sweep counts \(548\) and \(859\) are no longer merely finite audit indices: they sit inside a monotone \(M\)-matrix convergence-rate certificate on the same fixed strict slab.
+
+\medskip\noindent\textbf{Corollary O71 (Secondary tightening status after the GS rate audit).}
+The two secondary items listed in Corollary~O70 are now separated as follows:
+\[
+\begin{array}{ll}
+\text{presentation synthesis} & \text{closed by Proposition~O71},\\
+\text{GS convergence-rate polish} & \text{closed by Proposition~O72}.
+\end{array}
+\]
+The mathematical content of the strict-slab physical-trace line is therefore closed on the current audited bridge.  What remains is editorial compression for readability, not a new mathematical bottleneck.
+
+\medskip\noindent\emph{Reviewer-facing compressed form.}
+Equivalently, Propositions~O68--O72 prove the following single certificate on the fixed slab \(S=\Omega_{+,\sharp}(11)\).  On the \(45\) physical edge points define
+\[
+\widehat b_q:=
+\sum_{r\in N(q)\setminus S}c_{qr}\phi_r^{--}.
+\]
+The missing-neighbor identity and exterior trace barrier give
+\[
+b_\sharp(q)\ge\widehat b_q.
+\]
+The monotone adjoint GS construction gives
+\[
+p_\sharp(q)\ge p^{(548)}(q),
+\]
+and Proposition~O72 supplies the independent rate certificate
+\[
+p_\sharp-p^{(548)}
+\le
+\frac{\alpha_{548}}{1-\alpha_{548}}d_{548},
+\qquad
+\alpha_{548}=0.9865813608269858.
+\]
+Therefore the whole physical-trace proof reduces to the single audited inequality
+\[
+I_{\partial,\sharp}^{(\rm phys)}
+\ge
+\sum_q\widehat b_qp^{(548)}(q)
+=1.345329256808323\times10^{-1}.
+\]
+After adding the already-positive source mass, this gives
+\[
+I_{\partial,\sharp}^{(\rm phys)}+I_{{\rm src},\sharp}
+\ge
+1.4575819833843956\times10^{-1}
+=1.003005\,I_{\rm req}.
+\]
+This is the recommended reading of the strict-slab line in the main text; the preceding propositions merely unpack the four audited ingredients.
+
 \begin{table}[t]
 \centering
 \caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}

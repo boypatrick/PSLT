@@ -533,7 +533,69 @@ Numerically, using PDG 2024 inputs~\cite{PDG2024} and $p_B=0.30$, we obtain repr
 
 \subsection{High-\texorpdfstring{$N$}{N} Neutral Saturation}
 For layers $N > 3$, we set $B_N = B_3 = 1$ (neutral saturation). In the baseline scan, high-$N$ control is provided by the bounded two-dimensional phase-space tail prescription and finite-volume clipping in the $g_N$ module; the $\kappa_g$ factor in Eq.~\eqref{eq:gN_reg} is retained only for legacy Cardy-comparator runs. This keeps the visibility block from introducing an additional high-$N$ damping factor on top of the phase-space regulator.\footnote{An alternative approach with explicit $B_N$ tail suppression ($B_N \propto \ee^{-\beta_B(N-3)^2}$) was explored; see Appendix~\ref{app:ablation} for comparison.}
-This saturation should not be read as an ad hoc removal of a fourth layer: it is deliberately neutral, in the sense that once $N>3$ the visibility block inserts no additional suppression beyond $B_3=1$. In the current action-derived benchmark, no audited $D$ point supports a fourth bound level on the single-track spectrum, and the companion one-dimensional kinetic proxy keeps the candidate $N=4$ excitation above the continuum threshold, $E_4=\omega_4^2-m_0^2>0$, throughout the tested window. Moreover, forcing the same quasi-channel continuation to $N=4$ does not produce an additional small-width hierarchy relative to $N=3$. The present evidence therefore favors a threshold/binding-loss interpretation of the high-$N$ decoupling over an engineered visibility cutoff or an already-established $\Gamma_4\to 0$ theorem; a sharper mode-resolved derivation remains a next-step first-principles target rather than a claimed result here.
+This saturation should not be read as an ad hoc removal of a fourth layer: it is deliberately neutral, in the sense that once $N>3$ the visibility block inserts no additional suppression beyond $B_3=1$. In the current action-derived benchmark, no audited $D$ point supports a fourth bound level on the single-track spectrum, and the companion one-dimensional kinetic proxy keeps the candidate $N=4$ excitation above the continuum threshold, $E_4=\omega_4^2-m_0^2>0$, throughout the tested window. Moreover, forcing the same quasi-channel continuation to $N=4$ does not produce an additional small-width hierarchy relative to $N=3$. The theorem below is the current mode-resolved reading: high-$N$ decoupling is a threshold/binding-loss statement on the audited operator, not an engineered visibility cutoff or a hidden $\Gamma_4\to0$ assumption.
+
+\medskip\noindent\textbf{Proposition N1 (Mode-resolved high-\texorpdfstring{$N$}{N} threshold theorem on the audited kinetic chain).}
+For fixed \(D\), let
+\[
+H_D=-\frac{d^2}{dz^2}+U(z;D)
+\]
+denote the action-derived one-dimensional kinetic operator in bound-state convention, so that a mode is bound exactly when
+\[
+E_j(D)=\omega_j(D)^2-m_0^2<0.
+\]
+Let \(H_D^{(L,h)}\) be the Dirichlet finite-volume tridiagonal discretization on \([-L,L]\), with diagonal entries \(a_i=2h^{-2}+U(z_i;D)\) and off-diagonal entries \(b_i=-h^{-2}\).  Define the zero-threshold Sturm pivots
+\[
+p_1=a_1,\qquad
+p_i=a_i-\frac{b_{i-1}^2}{p_{i-1}},\qquad i\ge2,
+\]
+with the usual limiting interpretation if a pivot vanishes.  The number of negative pivots is exactly the number \(n_-^{(L,h)}(D)\) of discrete eigenvalues below the continuum threshold \(E=0\).  Therefore, if
+\[
+n_-^{(L,h)}(D)\le 3
+\]
+on the audited \(D\)-window, the discretized kinetic chain supports no fourth bound level on that window.  If, more sharply,
+\[
+E_3^{(L,h)}(D)>0,
+\]
+then even the third and fourth entries of the one-dimensional proxy are continuum-threshold entries rather than additional bound states.  In either case the neutral saturation \(B_{N>3}=1\) does not hide a fourth-generation visibility cutoff: a candidate \(N=4\) mode is absent already at the mode-resolved threshold level.
+\emph{Proof.}
+The finite-volume operator \(H_D^{(L,h)}\) is a real symmetric Jacobi matrix.  By the min-max principle, its ordered eigenvalues satisfy
+\[
+E_j^{(L,h)}(D)
+=
+\min_{\dim V=j}\max_{0\ne\psi\in V}
+\frac{\langle\psi,H_D^{(L,h)}\psi\rangle}{\|\psi\|^2}.
+\]
+Hence the number of bound modes below the continuum threshold is the inertia count of \(H_D^{(L,h)}\) below zero.  The tridiagonal \(LDL^T\) factorization gives
+\[
+H_D^{(L,h)}=L\,{\rm diag}(p_1,\dots,p_M)\,L^T,
+\]
+where the pivots obey the Sturm recursion above.  Sylvester's law of inertia then implies that the number of negative pivots equals the number of negative eigenvalues.  Equivalently, this is the finite-difference form of the Sturm oscillation theorem: the zero-energy Sturm index counts the modes below threshold.  Thus \(n_-^{(L,h)}\le3\) excludes a fourth bound mode, and \(E_3^{(L,h)}>0\) gives the stronger statement that the one-dimensional proxy has at most two bound modes.
+\emph{Verified numerics.}
+The certificate audit \path{code/audit_highN_threshold_theorem.py} exports \path{output/highN_decoupling/highN_threshold_theorem_detail.csv} and \path{output/highN_decoupling/highN_threshold_theorem_summary.csv}.  On the primary finite-volume certificate \((L,N_z)=(80,8001)\), the audited integer window \(D=4,\dots,20\) has
+\[
+\begin{aligned}
+\max_D n_-^{(80,h)}(D)&=2,\\
+\min_D E_3^{(80,h)}(D)&=5.6366674\times10^{-3},\\
+\min_D E_4^{(80,h)}(D)&=5.6379261\times10^{-3},
+\end{aligned}
+\]
+with the worst threshold margin at \(D=4\).  The same Sturm count remains \(\max n_-=2\) on all tested box/grid variants \((L,N_z)=(60,6001),(80,4001),(80,12001),(100,10001)\), and the smallest audited \(E_4\) over those variants is still positive, \(4.1701167\times10^{-3}\).  At fixed \(L=80\), refining the grid changes \(E_3\) and \(E_4\) by at most \(9.44\times10^{-9}\) and \(1.01\times10^{-8}\), respectively.  The independent single-track benchmark is weaker but still sufficient for the actual fourth-layer question: it has \(\max n_{\rm bound}=3\) and \(\max{\bf 1}_{\{N=4\ {\rm bound}\}}=0\).  Finally, the forced \(N=4\) quasi-channel confirms that the missing fourth layer is not a hidden tiny-width hierarchy: on the same one-dimensional chain,
+\[
+\Gamma_{4,\ell=1}^{\rm geo}/\Gamma_{3,\ell=1}^{\rm geo}
+\in[1.0000036,\,1.0000125],
+\]
+so the forced \(N=4\) continuation is essentially a continuum continuation of the \(N=3\) rate rather than a separately suppressed bound channel.
+
+\medskip\noindent\textbf{Corollary N1 (Status of the high-\texorpdfstring{$N$}{N} line).}
+On the present audited domain, the fourth-layer question is closed as a mode-resolved threshold statement.  The closed ingredients are:
+\begin{enumerate}
+\item neutral saturation \(B_{N>3}=1\), which contributes no extra high-\(N\) damping;
+\item the single-track bound-count audit, which never supports \(N=4\);
+\item the one-dimensional Sturm certificate, which gives at most two negative kinetic-proxy modes and positive \(E_3,E_4\) margins on the audited window;
+\item the forced quasi-channel check, which shows no additional \(\Gamma_4\) suppression hierarchy.
+\end{enumerate}
+What remains is not a new visibility object and not a new high-\(N\) damping ansatz.  The only possible strengthening is a continuum-tail version of the same Sturm/min-max certificate, replacing the present finite-volume audit by a fully analytic bound on the half-line tails and the \(D\)-continuous interpolation between audited knots.
 
 \subsection{Roadmap: Action-Derived Effective Yukawa Operator}
 \label{sec:yukawa_roadmap}
@@ -1303,6 +1365,82 @@ Therefore the remaining normalization-side work after \(U7\) is truly only polis
 \text{either keep }b_4=0.4244007\text{ as final on the audited domain, or pursue only sub-}10^{-3}\text{ benchmark cleanup.}
 \]
 No further structural expansion of the \(A_\star\) chain is needed.
+
+\medskip\noindent\textbf{Proposition U9 (Reviewer-facing closure of the \texorpdfstring{$A_\star$}{A*} normalization line).}
+Combining Propositions U6--U8, the current diagonal UV+LL-RG normalization line has a closed parent-side reading on the audited domain:
+\[
+\mu_{\mu\mu}^{\rm pred}
+=
+\frac{A_\star x_\mu}
+{1+s_\Gamma\!\left[
+A_\star x_\mu
+\left(
+\mathrm{BR}_\mu^{\rm SM}
++\mathrm{BR}_e^{\rm SM}\frac{R_{e/\mu}}{R_{e/\mu}^\star}
++\mathrm{BR}_\tau^{\rm SM}\frac{R_{\tau/\mu}}{R_{\tau/\mu}^\star}
+\right)
+-\sum_{\ell=e,\mu,\tau}\mathrm{BR}_\ell^{\rm SM}
+\right]},
+\]
+where the two ratio constants are not independent normalization freedoms in the present diagonal chain: \(R_{e/\mu}^\star\) is fixed by the invariant-ratio audit at the accepted-region level, and \(R_{\tau/\mu}^\star\) is an exact UV-tree invariant.  The remaining scalar amplitude is
+\[
+A_\star
+=
+Z_{{\rm diag},\star}^{-2}
+\left[
+y_2^{\rm raw}(D_\star)\,
+\frac{P_2^{\rm kin}(D_\star,\eta_\star)}{M_2^2(D_\star)}
+\right]^{-2},
+\]
+with
+\[
+y_2^{\rm raw}(D)
+=
+y_{\mu,2}^{\rm flavor}(D)
+=
+\bigl(g_{\mu2}^{\rm UV}(D)\bigr)^2
+=
+\sum_k w_{2k}(D)\left|\left\langle u_k(D),K_\mu(D)\right\rangle\right|.
+\]
+The parent-side kernel entering this last overlap is already fixed to the finite-box Gaussian midplane bridge
+\[
+K_\mu(\rho,z;D)
+=
+A_\mu^{\rm(box)}(D)
+\exp\!\left[-\frac{\rho^2+z^2}{\sigma_\mu(D)^2}\right]
+\]
+up to the audited box-normalization floor.  Its width is fixed, to the current parent-side accuracy, by the EYMH curvature jet
+\[
+\sigma_\mu(D)
+=
+c_\sigma^{\rm(analytic)}(D)\,\bar\kappa_\mu(D)^{-1/4}
+\Bigl[1+b_4\bigl(q_{4,\mu}(D)-q_{4,\mu}(D_\star)\bigr)\Bigr],
+\]
+where
+\[
+c_\sigma^{\rm(analytic)}(D)
+=
+c_\sigma^{\rm(self)}
+\left(1+\frac{\delta\kappa_{\rm mirror}(D)}{\kappa_{\rm self}}\right)^{1/4},
+\qquad
+c_\sigma^{\rm(self)}=\sigma_\mu\,\kappa_{\rm self}^{1/4}.
+\]
+Thus the \(A_\star\) line no longer contains an open support choice, a new kernel family, or an independent observable-side reference anchor.  It has reduced to the already-audited windowed mu-flavor overlap block, with the one-center EYMH core setting the bulk normalization and the two-center mirror and quartic terms acting only as secondary corrections.
+\emph{Verified numerics.}
+The exact pieces close at machine or structural precision: \(\max|\Delta R_{e/\mu}^{\rm UV\to IR}|=6.05\times10^{-13}\), \(\max|\Delta R_{\tau/\mu}^{\rm UV\to IR}|=3.23\times10^{-14}\), the amplitude-factorization residual is \(9.32\times10^{-17}\), the single-layer tree residual is \(9.76\times10^{-17}\), the identity \(y_2^{\rm raw}=(g_{\mu2}^{\rm UV})^2\) closes with residual \(9.87\times10^{-17}\), and the exact Gaussian kernel factorization has relative sup residual \(3.05\times10^{-15}\).  The finite-box bridge floor is \(9.45\times10^{-5}\).  The uncorrected curvature width is already within \(1.01\times10^{-3}\), the quartic correction lowers this to \(8.47\times10^{-7}\), and the corrected finite-box kernel defect is \(9.47\times10^{-5}\).  For the bridge coefficient, the one-center core gives \(c_\sigma^{\rm(self)}=22.3198\), the extracted local band excluding the known \(D=5\) outlier is \([22.2825,22.3100]\), the analytic two-center jet tracks \(c_\sigma(D)\) with maximum relative error \(4.21\times10^{-5}\), and the projected-box benchmark improves from one-center maximum relative \(y_2\) error \(9.26\times10^{-3}\) to \(9.89\times10^{-4}\) after the analytic mirror correction.  The remaining quartic scalar is stable at \(b_4=0.4244007048874373\), with subset refits changing it only from \(10^{-6}\) to \(10^{-3}\) in relative terms.
+
+\medskip\noindent\textbf{Corollary U9 (Roadmap status after the \texorpdfstring{$A_\star$}{A*} synthesis).}
+On the present audited domain, the \(H\to\mu\mu\) absolute-normalization line should be treated as reviewer-facing closed at the synthesis level.  The closed blocks are:
+\begin{enumerate}
+\item the reference-normalization rewrite into \((A_\star,R_{e/\mu}^\star,R_{\tau/\mu}^\star)\);
+\item the diagonal-chain invariance of \(R_{e/\mu}^\star\) and \(R_{\tau/\mu}^\star\);
+\item the exact factorization \(A_\star=A_\star^{\rm(tree)}Z_{{\rm diag},\star}^{-2}\);
+\item the exact single-layer reduction through \(y_2^{\rm raw}(P_2^{\rm kin}/M_2^2)\);
+\item the exact identity of \(y_2^{\rm raw}\) with the mu-flavor UV overlap block;
+\item the finite-box Gaussian midplane kernel shape and curvature/quartic width profile;
+\item the one-center EYMH source plus analytic mirror refinement for the bridge coefficient.
+\end{enumerate}
+Only secondary tightening remains: a cleaner prose derivation of the continuum one-center constant, a sharper analytic bound on the mirror remainder, and optional sub-\(10^{-3}\) projected-box polish.  None of these should be treated as a new support/object search.  In roadmap terms, the normalization mainline is closed on the audited domain; the separate high-\(N\) threshold line is now addressed by Proposition N1 / Corollary N1, leaving only optional continuum-tail strengthening there.
 
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain
@@ -2192,7 +2330,7 @@ The use of mixed-resolution ingredients is a deliberate design choice: action-de
     \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and inject its full scan-grid action-derived profile in the global map. The remaining gap is a full $(D,\eta,N)$ localized projection.
     \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). The original multi-anchor + holdout calibration remains in place, but the line is now much narrower than a generic reservoir ansatz: on the audited knot set, $\kappa_{\rm env}$ is isolated as a scalar amplitude modulus, the localized two-level projection leaves only the leading $\sigma_z/\sigma_x$ directions, and the effective kernels are on-shell samples of a single gap-locked single-pole response family with $\tau_{{\rm env},a}=\omega_{1,a}^{-1}$ to machine precision. The sharp remaining theorem target is parent-side: show that the projected EYMH Schur resolvent admits a first-mode-dominant truncation on $\omega\in\{0,\Delta E_a\}$ with leading pole scale $\Omega_{1,a}=\omega_{1,a}$ and uniformly small higher-mode remainder. Until that step is taken, this block remains outside baseline figures.
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map, while the release baseline keeps strict D-grid lookup and the automatic chain remains a comparator. The release-production path now pairs active-grid direct two-dimensional spectra for $g_N(D)$ with per-cell direct evaluation of $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ while keeping baseline $B_N$ profile closure; on both release audits it matches the release baseline exactly ($\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch $=0$, $\max|\Delta\mu_{\mu\mu}|=0$). The tuned visibility path should therefore be read as a release-qualified risk-weighted visibility parity check, not as a strict all-direct closure of $B_N$. Separately, the broader-grid strict all-direct validator is parked at its current case-aware endpoint on the two validation surfaces, so this line should be reopened only for a genuinely new observable-side mechanism class rather than another local blend retune. For the UV-to-EFT map, the refreshed diagonal-threshold comparator and the absolute/loop-improved EYMH comparators show the same pattern: zero acceptance mismatch, exact basis reconstruction, and only small deformation. The remaining UV-to-EFT gap is therefore no longer the existence of a stable local absolute witness, but the derivation of its prefactor from a bona fide parent EYMH loop calculation.
-    \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization. The audited single-track benchmark does not exhibit a fourth bound layer on the tested $D$ window, and the current one-dimensional kinetic proxy favors threshold loss of binding over a proven exponentially small-$\Gamma_4$ mechanism. A mode-resolved no-fourth-layer theorem is therefore not claimed here.
+    \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization. The audited single-track benchmark does not exhibit a fourth bound layer on the tested $D$ window, and Proposition N1 / Corollary N1 promote the one-dimensional kinetic proxy to a mode-resolved finite-volume Sturm threshold theorem: on the audited domain the fourth-layer absence is a threshold/binding-loss statement, not an engineered visibility cutoff or a hidden exponentially small-$\Gamma_4$ mechanism. The only remaining strengthening is a continuum-tail / $D$-continuous interpolation version of the same certificate.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan; a geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate} but is not yet propagated into the reported baseline figures.
     \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; map-level impact is mild in profile-scaled mode but this closure is not yet propagated into baseline figures.
     \item \textbf{Barrier-leakage channel normalization}: the baseline maps now use action-derived profile factors $(A_1,A_2)=(\tilde A_1(D),\tilde A_2(D))$ from Appendix~\ref{app:superrad_candidate} (historical ``superrad'' artifact filenames retained for reproducibility). The remaining gap is to replace profile-level insertion with a fully localized, channel-resolved extraction across the full scan grid.

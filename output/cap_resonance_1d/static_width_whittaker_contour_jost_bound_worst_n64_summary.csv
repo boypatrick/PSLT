@@ -1,0 +1,3 @@
+group,n_rows,n_contour_jost_pass,boundary_ratio_direct_max,boundary_ratio_transfer_max,boundary_product_margin_min,boundary_product_margin_median,boundary_jost_product_min,boundary_required_product_max,jost_a_boundary_min,jost_b_boundary_min,winding_abs_max,contour_jost_theorem_status
+D=18,4.0,4.0,0.026058097410195515,0.026058097409256846,38.37578715968492,184374029.12123114,306.82232930986595,50.93957856856696,0.008289379779879489,37013.90664408991,0.0,has_uniform_contour_jost_box_bound
+global,4.0,4.0,0.026058097410195515,0.026058097409256846,38.37578715968492,184374029.12123114,306.82232930986595,50.93957856856696,0.008289379779879489,37013.90664408991,0.0,has_uniform_contour_jost_box_bound

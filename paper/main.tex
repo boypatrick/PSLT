@@ -1107,6 +1107,169 @@ The conservative convex-segment denominator bound is still too pessimistic.  Rep
 \medskip\noindent\textbf{Corollary S12 (The remaining static-width gap is analytic Jost-product control, not backend design).}
 The static-width obstruction is now sharply localized.  Full Whittaker DtN roots are locally isolated, the finite-radius parent lift fails at small \(R_C\), crude infinitesimal condition numbers are too pessimistic, but the finite-amplitude projective endpoint transfer is already contractive on the audited grid at \(R_C=1600\to3200\).  This is strong numerical evidence for a parent outgoing-Weyl Cauchy limit in the same family.  It is not yet a promoted static width, because the paper still lacks an analytic lower bound for \(|u_a(R)u_b(R)|\), or equivalently a parent-side exclusion of the relevant Jost projective pole, uniform over the local argument contours.  Until that analytic lift is supplied, the reported strict static surrogate remains \(\Gamma_{N,\ell}^{\rm(geo)}\).
 
+\medskip\noindent\textbf{Proposition S13 (Endpoint Jost-product and projective pole-exclusion lower bound).}
+For the dyadic endpoint data of Proposition S12, the exact Wronskian identity reduces the parent transfer theorem to the scalar lower bound
+\[
+P_{ab}(R;E,D):=|u_a(R)u_b(R)|
+>
+P_{\rm req}:=\frac{|a-b|}{B_p^{(m)}} .
+\]
+Indeed,
+\[
+|T(a)-T(b)|=\frac{|a-b|}{P_{ab}(R;E,D)},
+\]
+so \(P_{ab}>P_{\rm req}\) implies the local Rouché budget inequality
+\[
+|T(a)-T(b)|<B_p^{(m)} .
+\]
+The same statement has a projective pole-exclusion form.  If
+\[
+u_s(R)=A+Bs=B(s-p),\qquad p=-A/B,
+\]
+then
+\[
+P_{ab}(R;E,D)=|B|^2|a-p||b-p|.
+\]
+Thus the endpoint theorem can be proved by a lower bound on the projective slope coefficient \(|B|\) and endpoint distances from the transfer pole \(p\).  This is intentionally weaker than the S12 convex-segment denominator floor: it excludes the pole only from the two physical outgoing endpoint data, not from the whole straight segment between them.
+
+The audit \path{code/audit_static_width_whittaker_jost_product_bound.py} reads the S12 projective-transfer rows and exports \path{output/cap_resonance_1d/static_width_whittaker_jost_product_bound_detail.csv}, \path{output/cap_resonance_1d/static_width_whittaker_jost_product_bound_summary.csv}, and \path{output/cap_resonance_1d/static_width_whittaker_jost_product_bound_budget.png}.  On the parent dyadic pair \(1600\to3200\), it finds
+\[
+N_{\rm Jost}=48/48,\qquad
+\min\frac{P_{ab}}{P_{\rm req}}=697.076,
+\qquad
+{\rm median}\frac{P_{ab}}{P_{\rm req}}=1.84\times10^8 .
+\]
+The required product is modest,
+\[
+P_{\rm req}\in[3.10,\ 103.58],
+\]
+whereas the observed endpoint product satisfies
+\[
+P_{ab}\in[5.5867\times10^3,\ 2.5823\times10^{15}].
+\]
+After inserting a \(10^{-6}\) relative slack and using the transfer-envelope error from S12, the lower-bound margin still satisfies
+\[
+\min\frac{P_{ab}^{\rm(lb)}}{P_{\rm req}}=697.075 .
+\]
+The projective pole-exclusion factorization independently passes all rows:
+\[
+N_{\rm pole}=48/48,\qquad
+\min\frac{|B|_{\rm floor}^2|a-p||b-p|}{P_{\rm req}}=697.074 .
+\]
+The worst case is the \(D=18,\ R=120\) even/odd pair, where the near endpoint is close to the pole,
+\[
+|a-p|=2.67\times10^{-8},
+\]
+but the slope coefficient remains large enough,
+\[
+|B|_{\rm floor}=1.33\times10^6,\qquad
+|b-p|=0.11858,
+\]
+so the endpoint product remains \(697\) times above the required Rouché threshold.  The two independent estimates of \(|B|\) agree to relative error at most \(3.04\times10^{-8}\), and the pole-product identity error is bounded by the same scale.
+
+\medskip\noindent\textbf{Corollary S13 (The audited parent-side lift is endpoint-specific and still conservative in reporting).}
+On the audited \(D=\{6,12,18\}\), \(R=\{60,80,100,120\}\), even/odd grid, the parent-side endpoint Jost-product lower bound is now numerically closed for the existing Whittaker-DtN family at \(1600\to3200\).  This provides a concrete theorem target: prove a uniform lower bound for \(|B|^2|a-p||b-p|\) over the local argument contours, rather than a global Lipschitz estimate over all intermediate slopes.  Because this last step is still an audited numerical theorem target rather than a symbolic contour-uniform proof, the manuscript remains conservative: the promoted static width is not introduced, and \(\Gamma_{N,\ell}^{\rm(geo)}\) stays the strict static surrogate.
+
+\medskip\noindent\textbf{Proposition S14 (Contour-uniform Jost-product lift on the audited local boxes).}
+The endpoint S13 inequality can be promoted to the full S8 local argument boxes without changing backend, branch family, or promotion object.  Fix one audited row \(p=(D,R,R_C,\pi)\) and its S8 rectangle \(Q_p\).  Let \(R_0=1600\), \(R_1=3200\), and define on \(Q_p\)
+\[
+a(E)=m_\infty^{W}(R_0,E;D),
+\qquad
+b(E)=m_{R_1}^{W}(R_0,E;D),
+\]
+where \(a\) is the exact outgoing Whittaker logarithmic derivative at \(R_0\), and \(b\) is the logarithmic derivative obtained by initializing the same outgoing Whittaker data at \(R_1\) and propagating it inward to \(R_0\).  Let \(u_a(\cdot,E)\) and \(u_b(\cdot,E)\) solve the common action-derived second-order equation on \([R,R_0]\), normalized by
+\[
+u_a(R_0,E)=u_b(R_0,E)=1,\qquad
+u_a'(R_0,E)=a(E),\qquad
+u_b'(R_0,E)=b(E).
+\]
+The transferred slopes at the numerical interface are
+\[
+T(a;E)=\frac{u_a'(R,E)}{u_a(R,E)},\qquad
+T(b;E)=\frac{u_b'(R,E)}{u_b(R,E)}.
+\]
+As in S12--S13, the Wronskian gives the exact identity
+\[
+T(a;E)-T(b;E)
+=
+\frac{a(E)-b(E)}{u_a(R,E)u_b(R,E)}.
+\]
+Let
+\[
+B_p^{(m)}=\frac{h_p}{2}\min_{E\in\partial Q_p}|F_p(E)|
+\]
+be the S8 local residual budget written in logarithmic-derivative units, and set
+\[
+G_p(E)=
+\frac{a(E)-b(E)}
+{B_p^{(m)}u_a(R,E)u_b(R,E)}.
+\]
+If
+\[
+\rho_p:=\sup_{E\in\partial Q_p}|G_p(E)|<1,
+\qquad
+\operatorname{wind}_{\partial Q_p}u_a(R,E)
+=
+\operatorname{wind}_{\partial Q_p}u_b(R,E)=0,
+\]
+then neither \(u_a(R,\cdot)\) nor \(u_b(R,\cdot)\) has a zero in \(Q_p\).  Hence \(G_p\) is holomorphic in \(Q_p\), and the maximum-modulus principle gives
+\[
+\sup_{E\in Q_p}|G_p(E)|\le \rho_p<1.
+\]
+Consequently the whole box satisfies the strict parent dyadic transfer gate
+\[
+\sup_{E\in Q_p}|T(a;E)-T(b;E)|
+<
+B_p^{(m)}.
+\]
+Equivalently, in residual units,
+\[
+\frac{2}{h_p}\sup_{E\in Q_p}
+\bigl|T(a;E)-T(b;E)\bigr|
+<
+\min_{E\in\partial Q_p}|F_p(E)|,
+\]
+so the far-tail Whittaker dyadic replacement \(R_0\to R_1\) is Rouché-small throughout the same local box used by the S8 zero count.
+
+The executable audit \path{code/audit_static_width_whittaker_contour_jost_bound.py} implements this contour-uniform gate directly on the S8 boxes and exports \path{output/cap_resonance_1d/static_width_whittaker_contour_jost_bound_detail.csv}, \path{output/cap_resonance_1d/static_width_whittaker_contour_jost_bound_summary.csv}, and \path{output/cap_resonance_1d/static_width_whittaker_contour_jost_bound_budget.png}.  On the full \(48\)-row grid, using a \(16\)-point boundary contour per box, it finds
+\[
+N_{\rm contour\ Jost}=48/48,\qquad
+\max_{\partial Q_p}|G_p|=2.6058\times10^{-2},
+\]
+and the pointwise boundary margin obeys
+\[
+\min_{p}\min_{E\in\partial Q_p}
+\frac{|u_a(R,E)u_b(R,E)|}
+{|a(E)-b(E)|/B_p^{(m)}}
+=38.3758.
+\]
+The worst row is again the \(D=18,\ R=120\) endpoint block.  There the boundary Jost product remains at least
+\[
+\min_{\partial Q_p}|u_a(R,E)u_b(R,E)|
+=3.0682\times10^2,
+\]
+while the largest required product on the same boundary is
+\[
+\max_{\partial Q_p}\frac{|a(E)-b(E)|}{B_p^{(m)}}
+=8.1492.
+\]
+Both endpoint Jost factors have zero winding on every audited box:
+\[
+\max_p\left(
+|\operatorname{wind}_{\partial Q_p}u_a(R,E)|,\,
+|\operatorname{wind}_{\partial Q_p}u_b(R,E)|
+\right)=0.
+\]
+As a mesh-density stress check, the same worst \(D=18,\ R=120\) block was rerun with \(64\) boundary points and returned the identical displayed bottleneck values,
+\[
+\max |G_p|=2.6058\times10^{-2},\qquad
+\min {\rm margin}=38.3758,\qquad
+\max |\operatorname{wind}|=0 .
+\]
+
+\medskip\noindent\textbf{Corollary S14 (The remaining static-width blocker is not tail backend or local contour control).}
+The far-tail Whittaker dyadic transfer \(1600\to3200\) is now closed not only at the endpoint roots but uniformly on the already-audited local argument boxes.  Thus the static-width line should no longer spend effort on CAP retuning, truncated-tail starts, unconstrained ECS branch selection, or another special-function backend.  The conservative reporting choice is unchanged: \(\Gamma_{N,\ell}^{\rm(geo)}\) remains the strict static surrogate.  What remains, if this line is continued, is a parent-side coherence theorem connecting these boxwise far-tail Cauchy estimates to a single \(R\)-stable complex pole of the underlying static operator, not a new root family.
+
 \textbf{Rank-2 truncation justification:} Within the present hierarchy convention, the $\hat{\omega}_N^{4\ell+4}$ factor keeps higher-$\ell$ channels parametrically small for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
 \begin{equation}
 \frac{\Gamma_{N,3}}{\Gamma_{N,2}} \sim \hat{\omega}_N^4 \sim 10^{-4}.
@@ -11187,7 +11350,7 @@ Detailed coarse/mid/fine values and implementation provenance are retained in th
 \end{equation}
 The fine full-scan profile over $D=4,\dots,20$ yields $\tilde A_1\in[8.54\times10^{-6},\,4.10\times10^5]$ and $\tilde A_2\in[3.95\times10^{-6},\,4.92\times10^6]$, indicating a very stiff $D$-dependence in this preliminary closure.
 
-As a strict-upgrade check, we also connected a minimal complex-absorbing-potential solver to the same 1D action-derived operator chain and scanned benchmark windows in the absorber strength $\eta$ and absorber onset $z_{\rm cap}$. This pilot confirms that the non-Hermitian extraction pipeline is operational, but the benchmark mode remains in an absorber-linear or mixed regime rather than a plateau regime. A follow-up finite-radius Siegert/Robin audit, summarized in Proposition S1, reaches the same conservative conclusion from the outgoing-boundary side: the roots are parity-degenerate but strongly \(R\)-dependent, so they are still boundary-sensitive rather than stable complex poles. The combined physical extractor \path{code/extract_static_width_physical.py} now enforces both gates and marks the benchmark rows as \(\texttt{not\_promoted}\). Proposition S2 adds the first Riccati-DtN replacement of the local Robin exterior; it lowers the candidate widths but still fails both \(R\)- and \(R_{\rm tail}\)-stability. Proposition S3 then replaces the WKB exterior start by an analytic Coulomb-tail normalization; this removes the most ad hoc tail datum but still fails the exterior-stability gates. Proposition S4 adds the independent ECS cross-check; it solves the complex-scaled eigenproblem to roundoff residuals, but the tracked branch remains sensitive to \(\theta\), \(R_0\), and \(L\). Proposition S5 then removes the single-branch-selection loophole by tracking optimistic nearest-neighbor continuations over the resolved ECS spectrum; no seed-qualified branch passes. Proposition S6 implements the remaining full Coulomb/Whittaker outgoing DtN with a complex \(\mathrm{U}\)-function backend and still finds \(R\)- and matching-radius sensitivity. Proposition S7 then applies the same optimistic nearest-neighbor branch-isolation idea directly to the Whittaker-DtN roots; again \(0/48\) anchor continuations pass. Proposition S8 applies local argument-principle contours and certifies that all \(48\) Whittaker roots are isolated local finite-radius zeros, so the obstruction is not local root existence but exterior-parameter displacement. Proposition S9 then turns that obstruction into an explicit parent-lift budget: the best audited branch still misses the square-contour cover condition by a factor \(27.38\) and the local residual budget by a factor \(43.48\). Proposition S10 then separates raw Coulomb-tail forcing from Riccati transfer conditioning: the raw tail is below \(1.64\times10^{-2}\) of the local budget, but only \(4/48\) rows pass after inward transfer and the worst miss is a factor \(88.60\). Proposition S11 tests that transfer obstruction directly: the finite dyadic pass count improves from \(4/48\) on \(400\to800\) to \(24/48\) on \(800\to1600\), but the infinitesimal condition-number route is too pessimistic, with \(K\) up to \(6.45\times10^6\) and \(0/48\) linear passes on \(800\to1600\). Proposition S12 then uses the exact projective/Jost finite-amplitude identity: the endpoint dyadic contraction at \(1600\to3200\) passes all \(48/48\) audited rows with maximum ratio \(1.435\times10^{-3}\), but an analytic Jost-product or pole-exclusion lower bound is still needed before promotion. Accordingly, the CAP, local-Siegert, Riccati-DtN, Coulomb-normalized DtN, ECS, and full Whittaker-DtN outputs are retained as infrastructure diagnostics only; the reported baseline continues to use $\Gamma_{N,\ell}^{\rm(geo)}$ as the leading static surrogate unless a future analytic parent Jost-product or projective pole-exclusion theorem changes the gate.
+As a strict-upgrade check, we also connected a minimal complex-absorbing-potential solver to the same 1D action-derived operator chain and scanned benchmark windows in the absorber strength $\eta$ and absorber onset $z_{\rm cap}$. This pilot confirms that the non-Hermitian extraction pipeline is operational, but the benchmark mode remains in an absorber-linear or mixed regime rather than a plateau regime. A follow-up finite-radius Siegert/Robin audit, summarized in Proposition S1, reaches the same conservative conclusion from the outgoing-boundary side: the roots are parity-degenerate but strongly \(R\)-dependent, so they are still boundary-sensitive rather than stable complex poles. The combined physical extractor \path{code/extract_static_width_physical.py} now enforces both gates and marks the benchmark rows as \(\texttt{not\_promoted}\). Proposition S2 adds the first Riccati-DtN replacement of the local Robin exterior; it lowers the candidate widths but still fails both \(R\)- and \(R_{\rm tail}\)-stability. Proposition S3 then replaces the WKB exterior start by an analytic Coulomb-tail normalization; this removes the most ad hoc tail datum but still fails the exterior-stability gates. Proposition S4 adds the independent ECS cross-check; it solves the complex-scaled eigenproblem to roundoff residuals, but the tracked branch remains sensitive to \(\theta\), \(R_0\), and \(L\). Proposition S5 then removes the single-branch-selection loophole by tracking optimistic nearest-neighbor continuations over the resolved ECS spectrum; no seed-qualified branch passes. Proposition S6 implements the remaining full Coulomb/Whittaker outgoing DtN with a complex \(\mathrm{U}\)-function backend and still finds \(R\)- and matching-radius sensitivity. Proposition S7 then applies the same optimistic nearest-neighbor branch-isolation idea directly to the Whittaker-DtN roots; again \(0/48\) anchor continuations pass. Proposition S8 applies local argument-principle contours and certifies that all \(48\) Whittaker roots are isolated local finite-radius zeros, so the obstruction is not local root existence but exterior-parameter displacement. Proposition S9 then turns that obstruction into an explicit parent-lift budget: the best audited branch still misses the square-contour cover condition by a factor \(27.38\) and the local residual budget by a factor \(43.48\). Proposition S10 then separates raw Coulomb-tail forcing from Riccati transfer conditioning: the raw tail is below \(1.64\times10^{-2}\) of the local budget, but only \(4/48\) rows pass after inward transfer and the worst miss is a factor \(88.60\). Proposition S11 tests that transfer obstruction directly: the finite dyadic pass count improves from \(4/48\) on \(400\to800\) to \(24/48\) on \(800\to1600\), but the infinitesimal condition-number route is too pessimistic, with \(K\) up to \(6.45\times10^6\) and \(0/48\) linear passes on \(800\to1600\). Proposition S12 then uses the exact projective/Jost finite-amplitude identity: the endpoint dyadic contraction at \(1600\to3200\) passes all \(48/48\) audited rows with maximum ratio \(1.435\times10^{-3}\), but an analytic Jost-product or pole-exclusion lower bound is still needed before promotion. Proposition S13 supplies the endpoint lower-bound audit itself: the required Jost product is only \(3.10\)--\(103.58\), the observed product is at least \(5.5867\times10^3\), and both the Jost-product and projective pole-factor margins are at least \(697\). Proposition S14 then lifts this same dyadic Jost-product gate uniformly to the S8 local argument boxes: all \(48/48\) boxes pass, the maximum boundary ratio is \(2.6058\times10^{-2}\), the minimum contour margin is \(38.3758\), and the bottleneck \(64\)-point rerun has zero Jost winding with the same displayed worst values. Accordingly, the CAP, local-Siegert, Riccati-DtN, Coulomb-normalized DtN, ECS, and full Whittaker-DtN outputs are retained as infrastructure diagnostics only; the reported baseline continues to use $\Gamma_{N,\ell}^{\rm(geo)}$ as the leading static surrogate unless a future parent-side \(R\)-coherence/single-pole theorem changes the gate.
 
 At current scan resolution, Table~\ref{tab:late_fp_profile_summary} shows that the $t_{\rm coh}$ and $\eta$ candidates are stable diagnostics whose map-level effects are below headline precision, while replacing the legacy constant-$A_\ell$ reference by the action-derived profile induces non-negligible shifts in $\mathcal{R}_3$ coverage. In the updated global scans of this manuscript, Eq.~\eqref{eq:superrad_A_profile} is used in baseline mode, and $(A_1,A_2)=(1,1)$ is retained only as a comparator.
 

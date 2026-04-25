@@ -1758,6 +1758,111 @@ on the \(60\to80\) moving tubes, or construct a contour transport that gives
 the same integral bound.  Further backend replacement, CAP/ECS scans, or new
 branch families are irrelevant to this remaining obstruction.
 
+\medskip\noindent\textbf{Proposition S21 (Parent-scale numerator-envelope closure for \(60\to80\)).}
+The last S20 obstruction is not a different resonance family and not a
+different special-function backend.  It is a scale question for the same
+integrated flowbox.  For the remaining segment \(R_a=60,\ R_b=80\), keep
+\[
+D=6,\qquad R_C=400,
+\]
+and define the parent-scale tube
+\[
+\Omega_R(c)=\{E:\ |E-\gamma(R)|<c\rho\},
+\qquad
+\rho=10^{-4}.
+\]
+Let
+\[
+B_c(R):=
+\sup_{E\in\Omega_R(c)}
+\frac{|\partial_RF_R(E)+\gamma'(R)\partial_EF_R(E)|}
+     {|\partial_EF_R(E)|}.
+\]
+If, for both parities,
+\[
+\int_{60}^{80} B_c(R)\,dR<c\rho,
+\]
+then the \(60\to80\) zero branch remains inside the parent-scale tube and the
+S20 bottleneck closes.
+
+\emph{Proof.}
+This is S20 applied with \(r=c\rho\) and \(R_a=60,\ R_b=80\).  Indeed, with
+\[
+Z(R):=E(R)-\gamma(R),
+\]
+one has
+\[
+Z'(R)=-
+\frac{\partial_RF_R(E(R))+\gamma'(R)\partial_EF_R(E(R))}
+     {\partial_EF_R(E(R))}.
+\]
+The displayed envelope gives
+\[
+|Z(R)|\le \int_{60}^{R}B_c(s)\,ds
+\le \int_{60}^{80}B_c(s)\,ds<c\rho,
+\]
+so the branch cannot first hit \(\partial\Omega_R(c)\).  The nonzero
+\(\partial_EF_R\) floor gives local continuation throughout the tube.
+
+\emph{Numerical status.}
+The audit uses the same executable gate
+\path{code/audit_static_width_whittaker_curved_flowbox.py}, but now only on
+the final \(D=6,\ R_C=400,\ 60\to80\) bottleneck.  It checks both the straight
+secant centerline and the four-anchor cubic centerline, using
+\[
+c\in\{384,512,640\},\qquad
+R\hbox{-nodes }0,\tfrac18,\tfrac14,\tfrac38,\tfrac12,\tfrac58,\tfrac34,\tfrac78,1,
+\qquad dE=10^{-3}c\rho.
+\]
+The outputs are
+\path{output/cap_resonance_1d/static_width_whittaker_curved_flowbox_d6rc400_r60_r80_parent_check_detail.csv},
+\path{output/cap_resonance_1d/static_width_whittaker_curved_flowbox_d6rc400_r60_r80_parent_check_summary.csv}, and
+\path{output/cap_resonance_1d/static_width_whittaker_curved_flowbox_d6rc400_r60_r80_parent_check_adaptive_summary.csv}.
+
+The parent-scale tube closes both parities:
+\[
+\begin{aligned}
+N_{\rm parent\ flowbox}(60\to80)&=2/2,\\
+\max_{\rm best}\frac{\int_{60}^{80}B_c(R)\,dR}{c\rho}&=0.918494,\\
+\operatorname{median}_{\rm best}\frac{\int_{60}^{80}B_c(R)\,dR}{c\rho}&=0.905757.
+\end{aligned}
+\]
+The best certified rows are
+\[
+\begin{array}{c|ccc}
+\pi & \gamma & c & \int B_c/(c\rho)\\
+\hline
+{\rm even} & {\rm secant} & 640 & 0.893020\\
+{\rm odd}  & {\rm cubic}  & 640 & 0.918494
+\end{array}
+\]
+with
+\[
+\min_{\rm best}|\partial_EF_R|=9.7093240\times10^1,
+\qquad
+\max_{\rm best}{\rm CR\ mismatch}=2.6098\times10^{-2}.
+\]
+Already at \(c=384\), the robust rerun closes both parities:
+\[
+\max_{\pi}\frac{\int B_{384}(R)\,dR}{384\rho}=0.989080
+\]
+for the cubic centerline and \(0.991661\) for the secant centerline.
+Increasing to \(c=640\) only adds margin.  The near equality of the secant and
+cubic results shows that changing coordinates or centerline curvature is not
+the decisive mechanism; the decisive mechanism is using a parent-scale tube
+large enough for the integrated numerator envelope.
+
+\medskip\noindent\textbf{Corollary S21 (The audited static-width bottleneck is now piecewise closed).}
+S18--S21 close the previously localized \(D=6,\ R_C=400\) obstruction on the
+audited Whittaker-DtN grid: large-tube Rouché and secant-flowbox estimates
+closed the late pieces, S20 closed \(80\to100\), and S21 closes the final
+\(60\to80\) parity pair.  This still should not be phrased as a promoted
+strict static width until the sampled envelopes are replaced by a written
+analytic slab bound for \(B_c(R)\) on the parent tube.  But the roadmap has
+changed: the remaining work is an analytic proof of the already-audited
+parent-scale envelope, not backend selection, coordinate-system redesign, CAP,
+ECS, or a new pole family.
+
 \textbf{Rank-2 truncation justification:} Within the present hierarchy convention, the $\hat{\omega}_N^{4\ell+4}$ factor keeps higher-$\ell$ channels parametrically small for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
 \begin{equation}
 \frac{\Gamma_{N,3}}{\Gamma_{N,2}} \sim \hat{\omega}_N^4 \sim 10^{-4}.

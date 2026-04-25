@@ -1,0 +1,2 @@
+n_segments,n_segments_with_adapted_flow_pass,max_best_centered_contraction_ratio,median_best_centered_contraction_ratio,min_best_dF_dE_abs,adapted_flow_status
+6.0,2.0,2.4088302311690857,1.155676731571102,115.6835062366542,adaptive_adapted_flow_not_closed

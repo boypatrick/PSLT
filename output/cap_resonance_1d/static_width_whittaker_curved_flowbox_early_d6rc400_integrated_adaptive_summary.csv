@@ -1,0 +1,2 @@
+n_segments,n_segments_with_curved_flow_pass,max_best_curved_contraction_ratio,median_best_curved_contraction_ratio,min_best_dF_dE_abs,max_best_cr_mismatch,curved_flow_status
+4.0,2.0,1.5930836752605757,1.1795852337058004,180.9024438966086,0.02609809829950771,adaptive_curved_flowbox_not_closed

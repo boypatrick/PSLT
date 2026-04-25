@@ -1461,6 +1461,303 @@ After S17, the static-width bottleneck has a quantitative scale.  The far-tail W
 \]
 inside a pole-free tube of this larger scale, or else construct a larger contour family and re-run the argument-principle count there.  Further local root polishing, backend replacement, or CAP/ECS branch selection does not address this quantified obstruction.
 
+\medskip\noindent\textbf{Proposition S18 (Large-tube Rouché/implicit-flow audit).}
+The next parent-side sufficient condition is the following large-contour version of Proposition~S16.  Fix one segment \(R_a<R_b\) in the same Whittaker-DtN family and a bounded Jordan domain \(\Omega\) whose boundary lies in a common analyticity region for \(F_{R_a}\) and \(F_{R_b}\).  Define
+\[
+M_a(\Omega):=\inf_{E\in\partial\Omega}|F_{R_a}(E)|,
+\qquad
+\Delta_{ab}(\Omega):=
+\sup_{E\in\partial\Omega}|F_{R_b}(E)-F_{R_a}(E)|,
+\qquad
+\eta_{ab}(\Omega):=\frac{\Delta_{ab}(\Omega)}{M_a(\Omega)}.
+\]
+If the argument index of \(F_{R_a}\) on \(\partial\Omega\) has absolute value one and
+\[
+\eta_{ab}(\Omega)<1,
+\]
+then \(F_{R_b}\) has exactly one zero in \(\Omega\) as well.  More generally, if
+\[
+\int_{R_a}^{R_b}
+\sup_{E\in\partial\Omega}|\,\partial_sF_s(E)\,|\,ds
+<
+M_a(\Omega),
+\]
+then the same zero count is preserved for every \(s\in[R_a,R_b]\).  For a simple zero branch, the equivalent implicit-flow form is
+\[
+\left|E'(s)\right|
+\le
+\frac{\sup_{\mathcal T}|\partial_sF_s(E)|}
+     {\inf_{\mathcal T}|\partial_EF_s(E)|},
+\qquad
+\mathcal T:=\{(s,E):s\in[R_a,R_b],\,E\in\Omega\},
+\]
+and the transported zero remains inside the tube whenever
+\[
+\int_{R_a}^{R_b}
+\frac{\sup_{\Omega_s}|\partial_sF_s|}
+     {\inf_{\Omega_s}|\partial_EF_s|}\,ds
+<
+\operatorname{dist}(E(R_a),\partial\Omega).
+\]
+
+\emph{Proof.}
+The endpoint statement is exactly Rouché's theorem: on \(\partial\Omega\), the perturbation \(F_{R_b}-F_{R_a}\) is strictly smaller than \(F_{R_a}\), so \(F_{R_a}\) and \(F_{R_b}\) have the same argument-principle count in \(\Omega\).  The continuous-in-\(R\) version follows by replacing the endpoint perturbation with
+\[
+F_s(E)-F_{R_a}(E)=\int_{R_a}^{s}\partial_\sigma F_\sigma(E)\,d\sigma
+\]
+and applying the same boundary inequality uniformly for \(s\in[R_a,R_b]\).  Finally, if the zero is simple and \(\partial_EF_s\ne0\) on the relevant tube, the implicit-function theorem gives
+\[
+E'(s)=-\frac{\partial_sF_s(E(s))}{\partial_EF_s(E(s))}.
+\]
+Integrating the displayed bound keeps the branch inside the tube and prevents a loss of the continued zero before the next contour in the chain is reached.
+
+\emph{Numerical status.}
+The audit \path{code/audit_static_width_whittaker_large_tube_rouche.py} evaluates this condition without solving new roots.  For adjacent endpoint roots \(E_a,E_b\), it uses the segment tube
+\[
+\Omega_{ab}(c):
+\quad
+|\Re(E-E_c)|\le \frac{|\Re(E_b-E_a)|}{2}+c\rho_x,
+\qquad
+|\Im(E-E_c)|\le \frac{|\Im(E_b-E_a)|}{2}+c\rho_y,
+\]
+where \(E_c=(E_a+E_b)/2\) and \((\rho_x,\rho_y)\) are the S8 local half-widths.  It then computes the direct large-tube argument indices and the Rouché ratio \(\eta_{ab}(\Omega_{ab}(c))\) on the same boundary.  The outputs are \path{output/cap_resonance_1d/static_width_whittaker_large_tube_rouche_segment_detail.csv}, \path{output/cap_resonance_1d/static_width_whittaker_large_tube_rouche_summary.csv}, \path{output/cap_resonance_1d/static_width_whittaker_large_tube_rouche_adaptive_summary.csv}, and \path{output/cap_resonance_1d/static_width_whittaker_large_tube_rouche_budget.png}.
+
+On the global \(36\)-segment sweep with \(c\in\{64,96,128,160,192,224,256,320,384\}\) and \(6\) points per side, the best fixed scale is already close but not closed:
+\[
+\begin{aligned}
+c=256:\qquad
+&N_{\rm index}=26/36,\qquad
+N_{\rm Rouche}=27/36,\\
+&\max\eta_{ab}=1.175524,\qquad
+\operatorname{median}\eta_{ab}=0.793302.
+\end{aligned}
+\]
+Allowing the contour size to be chosen segment-by-segment improves the sampled-grid status but still leaves gaps:
+\[
+N_{\rm some\ index}=36/36,\qquad
+N_{\rm some\ Rouche}=35/36,\qquad
+N_{\rm index+Rouche}=33/36,
+\]
+with
+\[
+\begin{aligned}
+\max_{\rm best,index}\eta_{ab}&=1.175524,\\
+\operatorname{median}_{\rm best,index}\eta_{ab}&=0.756179,
+\qquad
+\min M_a=1.388509.
+\end{aligned}
+\]
+The residual obstruction is localized.  A refined \(D=6,\ R_C=400\) run with \(c=200,216,\ldots,336\) and \(8\) points per side gives
+\[
+\begin{aligned}
+N_{\rm index+Rouche}&=2/6,\\
+\max_{\rm best,index}\eta_{ab}&=1.475069,\qquad
+\operatorname{median}_{\rm best,index}\eta_{ab}=1.138797.
+\end{aligned}
+\]
+The two \(100\to120\) parity segments pass at \(c=256\) with \(\eta_{ab}=0.827972\), while the \(60\to80\) and \(80\to100\) bottleneck segments remain above threshold when the index-one condition is enforced.  Therefore a raw axis-aligned large-rectangle Rouché proof is not yet a closed parent theorem, even though it has moved the obstruction from a \(60\)--\(75\)-box transport scale to a small, explicitly located set of early-\(R\) segments.
+
+\medskip\noindent\textbf{Corollary S18 (The remaining parent-side lift must be adapted or derivative-based).}
+S18 changes the next task but does not promote the static width.  The large-tube endpoint Rouché ratios are near threshold on most sampled segments, yet the refined \(D=6,\ R_C=400\) bottleneck prevents a reviewer-facing closure by fixed rectangular tubes.  Thus the next viable proof must either construct an adapted contour transport \(\Omega_s\) whose boundary floor tracks the residual geometry, or prove the implicit-flow estimate
+\[
+\int_{R_a}^{R_b}
+\left|
+\frac{\partial_sF_s(E(s))}{\partial_EF_s(E(s))}
+\right|\,ds
+<
+\operatorname{dist}(E(R_a),\partial\Omega_a)
+\]
+directly on the parent tube.  Further CAP scans, backend substitutions, full-path common rectangles, or additional local root polishing do not address the bottleneck identified here.  Until that adapted-contour or derivative estimate is proved, \(\Gamma_{N,\ell}^{\rm(geo)}\) remains the reported strict static surrogate.
+
+\medskip\noindent\textbf{Proposition S19 (Adapted-secant implicit-flow gate).}
+The derivative form of the S18 bottleneck can be made more targeted by moving the tube center with the observed secant rather than keeping a fixed rectangle.  For an adjacent segment \(R_a<R_b\), let \(E_a,E_b\) be the already-audited endpoint roots and define
+\[
+v_{ab}:=\frac{E_b-E_a}{R_b-R_a},
+\qquad
+\gamma_{ab}(R):=E_a+(R-R_a)v_{ab}.
+\]
+For a moving tube \(\Omega_R=\{E:\|E-\gamma_{ab}(R)\|<r\}\), set
+\[
+B_{ab}(r):=
+\sup_{\substack{R\in[R_a,R_b]\\ E\in\Omega_R}}
+\frac{\left|\partial_RF_R(E)+v_{ab}\partial_EF_R(E)\right|}
+     {\left|\partial_EF_R(E)\right|}.
+\]
+If \(F_R\) is analytic on the tube, \(\partial_EF_R\ne0\) there, and
+\[
+(R_b-R_a)B_{ab}(r)<r,
+\]
+then the simple zero starting at \(E_a\) remains inside the moving tube through the whole segment.  In particular \(F_{R_b}\) has the continued zero inside \(\Omega_{R_b}\).
+
+\emph{Proof.}
+Let \(E(R)\) be the local simple zero branch and write the deviation from the moving center as
+\[
+Z(R):=E(R)-\gamma_{ab}(R).
+\]
+Implicit differentiation gives
+\[
+E'(R)=-\frac{\partial_RF_R(E(R))}{\partial_EF_R(E(R))},
+\]
+and hence
+\[
+Z'(R)
+=
+-\frac{\partial_RF_R(E(R))}{\partial_EF_R(E(R))}-v_{ab}
+=
+-\frac{\partial_RF_R(E(R))+v_{ab}\partial_EF_R(E(R))}
+       {\partial_EF_R(E(R))}.
+\]
+As long as the branch remains in the tube, \(|Z'(R)|\le B_{ab}(r)\).  Since \(Z(R_a)=0\),
+\[
+|Z(R)|\le \int_{R_a}^{R}B_{ab}(r)\,ds
+\le (R_b-R_a)B_{ab}(r)<r.
+\]
+The branch therefore cannot first touch the boundary of the tube.  The nonvanishing \(\partial_EF_R\) condition gives local continuation by the implicit-function theorem, and the boundary contradiction gives continuation to \(R_b\).
+
+\emph{Numerical status.}
+The audit \path{code/audit_static_width_whittaker_adapted_flow.py} implements this test by finite-differencing \(F_R(E)\) in \(R\) and \(E\) on moving tubes around \(\gamma_{ab}\).  It exports \path{output/cap_resonance_1d/static_width_whittaker_adapted_flow_d6rc400_refined_detail.csv}, \path{output/cap_resonance_1d/static_width_whittaker_adapted_flow_d6rc400_refined_summary.csv}, and \path{output/cap_resonance_1d/static_width_whittaker_adapted_flow_d6rc400_refined_adaptive_summary.csv}.  The refined run targets the S18 bottleneck \(D=6,\ R_C=400\), uses \(R\)-nodes \(0,1/2,1\), \(16\) contour points per node plus the center point, \(dR=0.5\), and an \(E\)-derivative step equal to \(10^{-2}\) of the tube half-width.
+
+Across the six parity-resolved segments and tube factors
+\[
+c\in\{16,32,64,96,128,192\},
+\]
+the adaptive result is
+\[
+N_{\rm adapted\ flow}=2/6,\qquad
+\max_{\rm best}\frac{\int |Z'|\,dR}{r}=2.408830,\qquad
+\operatorname{median}_{\rm best}\frac{\int |Z'|\,dR}{r}=1.155677.
+\]
+The two closed segments are exactly the late \(100\to120\) even/odd segments, both at \(c=32\), with contraction ratio \(0.981107\).  The remaining best ratios are
+\[
+\begin{array}{c|ccc}
+\pi & 60\to80 & 80\to100 & 100\to120\\
+\hline
+{\rm even} & 1.540956 & 1.155677 & 0.664990\\
+{\rm odd}  & 2.408830 & 1.155677 & 0.664990
+\end{array}
+\]
+where the displayed \(100\to120\) best ratio occurs at a wider tube but the certified pass occurs at \(c=32\).  The minimum sampled derivative floor remains safely nonzero,
+\[
+\min |\partial_EF_R|=1.156835\times10^2,
+\]
+so this audit does not fail because of a small denominator.  It fails because the secant-subtracted numerator is still too large on the early-\(R\) bottleneck tubes.
+
+\medskip\noindent\textbf{Corollary S19 (The static-width obstruction is now an early-\(R\) flowbox).}
+S19 closes the late part of the refined \(D=6,\ R_C=400\) bottleneck but not the early part.  The remaining parent-side theorem should no longer be phrased as a global rectangle problem.  It is a local early-\(R\) flowbox problem: either construct a sharper adapted contour for \(60\to80\) and \(80\to100\), or prove an analytic cancellation bound for
+\[
+\partial_RF_R(E)+v_{ab}\partial_EF_R(E)
+\]
+on those two tubes.  Without that extra early-\(R\) estimate, the strict static width is still not promoted and \(\Gamma_{N,\ell}^{\rm(geo)}\) remains the conservative reported static surrogate.
+
+\medskip\noindent\textbf{Proposition S20 (Integrated curved-flowbox tightening).}
+The S19 estimate used the conservative bound
+\[
+(R_b-R_a)\sup_{R\in[R_a,R_b]}B(R,r)<r,
+\qquad
+B(R,r):=
+\sup_{E\in\Omega_R(r)}
+\frac{|\partial_RF_R(E)+\gamma'(R)\partial_EF_R(E)|}
+     {|\partial_EF_R(E)|}.
+\]
+For the early-\(R\) bottleneck it is sharper, and closer to the desired
+parent theorem, to integrate the flowbox envelope itself.  Let
+\(\gamma\in C^1([R_a,R_b];\mathbb C)\) be any centerline satisfying
+\[
+\gamma(R_a)=E_a,\qquad \gamma(R_b)=E_b,
+\qquad
+\Omega_R(r):=\{E:\ |E-\gamma(R)|<r\}.
+\]
+Assume \(F_R\) is analytic on the moving tube, \(\partial_EF_R\ne0\) there,
+and
+\[
+\int_{R_a}^{R_b} B(R,r)\,dR<r.
+\]
+Then the zero branch starting at \(E_a\) remains in \(\Omega_R(r)\) for the
+whole segment, and the continued zero at \(R_b\) lies in \(\Omega_{R_b}(r)\).
+
+\emph{Proof.}
+Set \(Z(R):=E(R)-\gamma(R)\).  As in S19, implicit differentiation gives
+\[
+Z'(R)=
+-\frac{\partial_RF_R(E(R))+\gamma'(R)\partial_EF_R(E(R))}
+       {\partial_EF_R(E(R))}.
+\]
+While the branch lies in the moving tube, \(|Z'(R)|\le B(R,r)\), hence
+\[
+|Z(R)|\le \int_{R_a}^{R}B(s,r)\,ds
+\le \int_{R_a}^{R_b}B(s,r)\,ds<r.
+\]
+Thus a first contact with \(\partial\Omega_R(r)\) is impossible.  The
+nonvanishing \(\partial_EF_R\) condition supplies local continuation, and the
+barrier argument supplies continuation to \(R_b\).
+
+\emph{Numerical status.}
+The audit \path{code/audit_static_width_whittaker_curved_flowbox.py} keeps the
+Whittaker-DtN residual and all S8 endpoint roots fixed.  It tests
+\[
+\gamma\in
+\{\hbox{secant},\ \hbox{one-sided quadratic},\ \hbox{four-anchor cubic}\}
+\]
+on only the remaining early \(D=6,\ R_C=400\) segments
+\[
+60\to80,\qquad 80\to100,
+\]
+for both parities.  The run
+\[
+c\in\{64,96,128\},\qquad
+R\hbox{-nodes }0,\tfrac14,\tfrac12,\tfrac34,1,
+\qquad dE=5\times10^{-3}r
+\]
+exports \path{output/cap_resonance_1d/static_width_whittaker_curved_flowbox_early_d6rc400_integrated_detail.csv},
+\path{output/cap_resonance_1d/static_width_whittaker_curved_flowbox_early_d6rc400_integrated_summary.csv}, and
+\path{output/cap_resonance_1d/static_width_whittaker_curved_flowbox_early_d6rc400_integrated_adaptive_summary.csv}.
+
+The integrated certificate closes the two \(80\to100\) pieces but not
+\(60\to80\):
+\[
+\begin{aligned}
+N_{\rm integrated\ flowbox}&=2/4,\\
+\max_{\rm best}\frac{\int B(R,r)\,dR}{r}&=1.593084,\\
+\operatorname{median}_{\rm best}\frac{\int B(R,r)\,dR}{r}&=1.179585.
+\end{aligned}
+\]
+More explicitly,
+\[
+\begin{array}{c|cc}
+\pi & 60\to80 & 80\to100\\
+\hline
+{\rm even} & 1.366139 & 0.993032\\
+{\rm odd}  & 1.593084 & 0.991175
+\end{array}
+\]
+where the \(80\to100\) closures occur at \(c=96\): the best even centerline is
+the forward quadratic centerline, and the best odd centerline is the backward
+quadratic centerline.  The remaining \(60\to80\) best values occur at
+\(c=128\), with secant best for even and the four-anchor cubic best for odd.
+The best-row derivative floor remains large,
+\[
+\min_{\rm best}|\partial_EF_R|=1.80902444\times10^2,
+\qquad
+\max_{\rm best}{\rm CR\ mismatch}=2.6098\times10^{-2}.
+\]
+Thus the failure is still not a small-denominator or backend-holomorphy
+failure.  The only surviving bottleneck is the parent-side numerator envelope
+on \(60\to80\).
+
+\medskip\noindent\textbf{Corollary S20 (The early flowbox has collapsed to \(60\to80\)).}
+S20 tightens S19 without changing the Whittaker-DtN object: the \(80\to100\)
+early pieces now satisfy the integrated flowbox certificate on the audited
+grid.  The static-width promotion is still not made, because the two
+\(60\to80\) parity segments have best integrated ratios \(1.366139\) and
+\(1.593084\).  The next theorem task is therefore strictly smaller: prove an
+analytic envelope for
+\[
+\partial_RF_R(E)+\gamma'(R)\partial_EF_R(E)
+\]
+on the \(60\to80\) moving tubes, or construct a contour transport that gives
+the same integral bound.  Further backend replacement, CAP/ECS scans, or new
+branch families are irrelevant to this remaining obstruction.
+
 \textbf{Rank-2 truncation justification:} Within the present hierarchy convention, the $\hat{\omega}_N^{4\ell+4}$ factor keeps higher-$\ell$ channels parametrically small for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
 \begin{equation}
 \frac{\Gamma_{N,3}}{\Gamma_{N,2}} \sim \hat{\omega}_N^4 \sim 10^{-4}.
@@ -11556,7 +11853,7 @@ Detailed coarse/mid/fine values and implementation provenance are retained in th
 \end{equation}
 The fine full-scan profile over $D=4,\dots,20$ yields $\tilde A_1\in[8.54\times10^{-6},\,4.10\times10^5]$ and $\tilde A_2\in[3.95\times10^{-6},\,4.92\times10^6]$, indicating a very stiff $D$-dependence in this preliminary closure.
 
-As a strict-upgrade check, we also connected a minimal complex-absorbing-potential solver to the same 1D action-derived operator chain and scanned benchmark windows in the absorber strength $\eta$ and absorber onset $z_{\rm cap}$. This pilot confirms that the non-Hermitian extraction pipeline is operational, but the benchmark mode remains in an absorber-linear or mixed regime rather than a plateau regime. A follow-up finite-radius Siegert/Robin audit, summarized in Proposition S1, reaches the same conservative conclusion from the outgoing-boundary side: the roots are parity-degenerate but strongly \(R\)-dependent, so they are still boundary-sensitive rather than stable complex poles. The combined physical extractor \path{code/extract_static_width_physical.py} now enforces both gates and marks the benchmark rows as \(\texttt{not\_promoted}\). Proposition S2 adds the first Riccati-DtN replacement of the local Robin exterior; it lowers the candidate widths but still fails both \(R\)- and \(R_{\rm tail}\)-stability. Proposition S3 then replaces the WKB exterior start by an analytic Coulomb-tail normalization; this removes the most ad hoc tail datum but still fails the exterior-stability gates. Proposition S4 adds the independent ECS cross-check; it solves the complex-scaled eigenproblem to roundoff residuals, but the tracked branch remains sensitive to \(\theta\), \(R_0\), and \(L\). Proposition S5 then removes the single-branch-selection loophole by tracking optimistic nearest-neighbor continuations over the resolved ECS spectrum; no seed-qualified branch passes. Proposition S6 implements the remaining full Coulomb/Whittaker outgoing DtN with a complex \(\mathrm{U}\)-function backend and still finds \(R\)- and matching-radius sensitivity. Proposition S7 then applies the same optimistic nearest-neighbor branch-isolation idea directly to the Whittaker-DtN roots; again \(0/48\) anchor continuations pass. Proposition S8 applies local argument-principle contours and certifies that all \(48\) Whittaker roots are isolated local finite-radius zeros, so the obstruction is not local root existence but exterior-parameter displacement. Proposition S9 then turns that obstruction into an explicit parent-lift budget: the best audited branch still misses the square-contour cover condition by a factor \(27.38\) and the local residual budget by a factor \(43.48\). Proposition S10 then separates raw Coulomb-tail forcing from Riccati transfer conditioning: the raw tail is below \(1.64\times10^{-2}\) of the local budget, but only \(4/48\) rows pass after inward transfer and the worst miss is a factor \(88.60\). Proposition S11 tests that transfer obstruction directly: the finite dyadic pass count improves from \(4/48\) on \(400\to800\) to \(24/48\) on \(800\to1600\), but the infinitesimal condition-number route is too pessimistic, with \(K\) up to \(6.45\times10^6\) and \(0/48\) linear passes on \(800\to1600\). Proposition S12 then uses the exact projective/Jost finite-amplitude identity: the endpoint dyadic contraction at \(1600\to3200\) passes all \(48/48\) audited rows with maximum ratio \(1.435\times10^{-3}\), but an analytic Jost-product or pole-exclusion lower bound is still needed before promotion. Proposition S13 supplies the endpoint lower-bound audit itself: the required Jost product is only \(3.10\)--\(103.58\), the observed product is at least \(5.5867\times10^3\), and both the Jost-product and projective pole-factor margins are at least \(697\). Proposition S14 then lifts this same dyadic Jost-product gate uniformly to the S8 local argument boxes: all \(48/48\) boxes pass, the maximum boundary ratio is \(2.6058\times10^{-2}\), the minimum contour margin is \(38.3758\), and the bottleneck \(64\)-point rerun has zero Jost winding with the same displayed worst values. Proposition S15 then tests the single-pole \(R\)-coherence necessary condition on the same boxes: S14 tail-box control holds on all \(39/39\) coherence groups, but \(0/39\) groups have a common box intersection; the full-case square-cover factors are \(36.5644\), \(36.9301\), and \(37.2734\) for \(D=6,12,18\), and even the pure fixed-\(R_C\), fixed-parity \(R\)-sweep needs factor \(28.7993\) at best. Proposition S16 formalizes the only viable promotion gate as a parent-side Rouché/implicit-flow theorem, and Proposition S17 quantifies the first finite-difference \(R\)-flow obstruction: all \(12/12\) fixed-\((D,R_C,\pi)\) paths retain S14 endpoint tail-box control, but \(0/12\) adjacent steps overlap on the current local boxes and the required transport tube is \(59.5\)--\(75.1\) box half-widths. Accordingly, the CAP, local-Siegert, Riccati-DtN, Coulomb-normalized DtN, ECS, and full Whittaker-DtN outputs are retained as infrastructure diagnostics only; the reported baseline continues to use $\Gamma_{N,\ell}^{\rm(geo)}$ as the leading static surrogate unless a future parent-side \(R\)-homotopy/single-pole theorem changes the gate.
+As a strict-upgrade check, we also connected a minimal complex-absorbing-potential solver to the same 1D action-derived operator chain and scanned benchmark windows in the absorber strength $\eta$ and absorber onset $z_{\rm cap}$. This pilot confirms that the non-Hermitian extraction pipeline is operational, but the benchmark mode remains in an absorber-linear or mixed regime rather than a plateau regime. A follow-up finite-radius Siegert/Robin audit, summarized in Proposition S1, reaches the same conservative conclusion from the outgoing-boundary side: the roots are parity-degenerate but strongly \(R\)-dependent, so they are still boundary-sensitive rather than stable complex poles. The combined physical extractor \path{code/extract_static_width_physical.py} now enforces both gates and marks the benchmark rows as \(\texttt{not\_promoted}\). Proposition S2 adds the first Riccati-DtN replacement of the local Robin exterior; it lowers the candidate widths but still fails both \(R\)- and \(R_{\rm tail}\)-stability. Proposition S3 then replaces the WKB exterior start by an analytic Coulomb-tail normalization; this removes the most ad hoc tail datum but still fails the exterior-stability gates. Proposition S4 adds the independent ECS cross-check; it solves the complex-scaled eigenproblem to roundoff residuals, but the tracked branch remains sensitive to \(\theta\), \(R_0\), and \(L\). Proposition S5 then removes the single-branch-selection loophole by tracking optimistic nearest-neighbor continuations over the resolved ECS spectrum; no seed-qualified branch passes. Proposition S6 implements the remaining full Coulomb/Whittaker outgoing DtN with a complex \(\mathrm{U}\)-function backend and still finds \(R\)- and matching-radius sensitivity. Proposition S7 then applies the same optimistic nearest-neighbor branch-isolation idea directly to the Whittaker-DtN roots; again \(0/48\) anchor continuations pass. Proposition S8 applies local argument-principle contours and certifies that all \(48\) Whittaker roots are isolated local finite-radius zeros, so the obstruction is not local root existence but exterior-parameter displacement. Proposition S9 then turns that obstruction into an explicit parent-lift budget: the best audited branch still misses the square-contour cover condition by a factor \(27.38\) and the local residual budget by a factor \(43.48\). Proposition S10 then separates raw Coulomb-tail forcing from Riccati transfer conditioning: the raw tail is below \(1.64\times10^{-2}\) of the local budget, but only \(4/48\) rows pass after inward transfer and the worst miss is a factor \(88.60\). Proposition S11 tests that transfer obstruction directly: the finite dyadic pass count improves from \(4/48\) on \(400\to800\) to \(24/48\) on \(800\to1600\), but the infinitesimal condition-number route is too pessimistic, with \(K\) up to \(6.45\times10^6\) and \(0/48\) linear passes on \(800\to1600\). Proposition S12 then uses the exact projective/Jost finite-amplitude identity: the endpoint dyadic contraction at \(1600\to3200\) passes all \(48/48\) audited rows with maximum ratio \(1.435\times10^{-3}\), but an analytic Jost-product or pole-exclusion lower bound is still needed before promotion. Proposition S13 supplies the endpoint lower-bound audit itself: the required Jost product is only \(3.10\)--\(103.58\), the observed product is at least \(5.5867\times10^3\), and both the Jost-product and projective pole-factor margins are at least \(697\). Proposition S14 then lifts this same dyadic Jost-product gate uniformly to the S8 local argument boxes: all \(48/48\) boxes pass, the maximum boundary ratio is \(2.6058\times10^{-2}\), the minimum contour margin is \(38.3758\), and the bottleneck \(64\)-point rerun has zero Jost winding with the same displayed worst values. Proposition S15 then tests the single-pole \(R\)-coherence necessary condition on the same boxes: S14 tail-box control holds on all \(39/39\) coherence groups, but \(0/39\) groups have a common box intersection; the full-case square-cover factors are \(36.5644\), \(36.9301\), and \(37.2734\) for \(D=6,12,18\), and even the pure fixed-\(R_C\), fixed-parity \(R\)-sweep needs factor \(28.7993\) at best. Proposition S16 formalizes the only viable promotion gate as a parent-side Rouché/implicit-flow theorem, and Proposition S17 quantifies the first finite-difference \(R\)-flow obstruction: all \(12/12\) fixed-\((D,R_C,\pi)\) paths retain S14 endpoint tail-box control, but \(0/12\) adjacent steps overlap on the current local boxes and the required transport tube is \(59.5\)--\(75.1\) box half-widths. Proposition S18 then tests the corresponding large-tube Rouché certificate directly: a coarse adaptive segment sweep closes \(33/36\) sampled segments, but the refined \(D=6,\ R_C=400\) rectangle bottleneck closes only \(2/6\), with maximum best index-compatible Rouché ratio \(1.475069\). Proposition S19 replaces the fixed rectangle by a secant-adapted implicit-flow tube on the same bottleneck; it closes the late \(100\to120\) even/odd pieces but only \(2/6\) segments overall, leaving the early \(60\to80\) and \(80\to100\) flowbox with maximum best contraction \(2.408830\) and median best contraction \(1.155677\). Proposition S20 then replaces the segment-supremum budget by an integrated curved-flowbox budget on the early pieces; it closes both \(80\to100\) parities at \(c=96\), but leaves \(60\to80\) with best ratios \(1.366139\) and \(1.593084\). Accordingly, the CAP, local-Siegert, Riccati-DtN, Coulomb-normalized DtN, ECS, and full Whittaker-DtN outputs are retained as infrastructure diagnostics only; the reported baseline continues to use $\Gamma_{N,\ell}^{\rm(geo)}$ as the leading static surrogate unless a future \(60\to80\) parent flowbox theorem changes the gate.
 
 At current scan resolution, Table~\ref{tab:late_fp_profile_summary} shows that the $t_{\rm coh}$ and $\eta$ candidates are stable diagnostics whose map-level effects are below headline precision, while replacing the legacy constant-$A_\ell$ reference by the action-derived profile induces non-negligible shifts in $\mathcal{R}_3$ coverage. In the updated global scans of this manuscript, Eq.~\eqref{eq:superrad_A_profile} is used in baseline mode, and $(A_1,A_2)=(1,1)$ is retained only as a comparator.
 

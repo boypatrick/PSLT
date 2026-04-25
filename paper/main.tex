@@ -1326,6 +1326,77 @@ Therefore S14 has closed the far-tail dyadic issue on each local box, but the ex
 \medskip\noindent\textbf{Corollary S15 (The static-width line is now an \(R\)-homotopy theorem target, not a backend target).}
 The audited state is now cleanly separated.  Local roots exist (S8), the far-tail dyadic Whittaker transfer is uniformly Rouché-small on those local boxes (S14), and the current boxes nevertheless have no common single-pole intersection (S15).  Hence the strict static width is still not promoted, and the manuscript should continue reporting \(\Gamma_{N,\ell}^{\rm(geo)}\) as the static surrogate.  Further progress, if pursued, must be a parent-side \(R\)-homotopy/coherence theorem: construct larger pole-free contours or prove an analytic zero-preserving flow as \(R\) moves.  It should not be another CAP scan, another special-function backend, another truncated-tail normalization, or a new root family.
 
+\medskip\noindent\textbf{Proposition S16 (Parent-side \(R\)-homotopy gate for a single static pole).}
+The next sufficient theorem can be stated without changing the Whittaker-DtN family.  Fix \(D,\ell\), parity \(\pi\), and write the exact outgoing residual from Proposition~S1 as
+\[
+F_R(E):=
+\psi_\pi'(R;E)-m_+^{\rm out}(E;R)\psi_\pi(R;E),
+\]
+where \(m_+^{\rm out}\) is the full outgoing Coulomb/Whittaker DtN value, not a CAP or local-Robin closure.  Let \(R_0<R_1<\cdots<R_K\) be a chain of matching radii.  Suppose that for each \(j\) there is a bounded Jordan domain \(\Omega_j\) in the \(E\)-plane and a contour transport \(\Psi_j:\partial\Omega_j\to\partial\Omega_{j+1}\) inside a common analyticity tube for the residuals.  Define
+\[
+M_j:=\inf_{E\in\partial\Omega_j}|F_{R_j}(E)|.
+\]
+If the transported residual perturbation obeys the Rouché bound
+\[
+\sup_{E\in\partial\Omega_j}
+\left|F_{R_{j+1}}(\Psi_j(E))-F_{R_j}(E)\right|
+<M_j
+\qquad (j=0,\ldots,K-1),
+\]
+then \(F_{R_j}\) and \(F_{R_{j+1}}\circ\Psi_j\) have the same zero count inside the transported contours.  In particular, since Proposition~S8 gives one isolated finite-radius zero on each audited local box, such a chain proves that the finite-radius zeros are continuations of one branch rather than unrelated roots.
+
+If, in addition, the continued zeros satisfy a Cauchy modulus
+\[
+|E(R_i)-E(R_j)|\le \varepsilon(R_i,R_j),
+\qquad
+\varepsilon(R_i,R_j)\to0
+\quad\text{as}\quad
+R_i,R_j\to\infty,
+\]
+then the branch has a unique parent limit \(E_\ast(D,\ell,\pi)\).  Only at that point may the strict static width be promoted as
+\[
+\Gamma_{N,\ell}^{\rm(strict)}
+=-2\,\Im\sqrt{m_0^2+E_\ast}.
+\]
+
+\emph{Proof.}
+The first statement is Rouché's theorem on each transported contour.  Because the residuals are analytic in the common tube and the boundary perturbation is strictly smaller than the boundary floor \(M_j\), the winding number of \(F_R(\partial\Omega)\) about the origin is invariant along the contour transport.  The argument-principle count therefore cannot change from \(R_j\) to \(R_{j+1}\).  S8 supplies the initial count: the local Whittaker boxes have argument index \(-1\), whose absolute value is one under the orientation convention used in the audit.  Hence every transported domain contains exactly one zero, and the zeros belong to a single analytic branch as long as the zero remains simple.  The Cauchy condition then gives convergence of that branch in the complex \(E\)-plane.  Passing to the frequency plane gives the displayed width formula, identical to Proposition~S1.
+
+\emph{Numerical status.}
+The current evidence closes only the far-tail part of this gate, not the \(R\)-homotopy part.  Proposition~S14 gives contour-uniform dyadic Whittaker control on the existing local boxes:
+\[
+N_{\rm contour\ Jost}=48/48,\qquad
+\max_{\partial Q}|G|=2.6058\times10^{-2},
+\qquad
+\min {\rm margin}=38.3758,
+\]
+with zero Jost winding on every audited box.  Proposition~S15 then shows why this still cannot be called a single parent pole: the same boxes have
+\[
+N_{\rm common\ intersection}=0/39,
+\qquad
+\max c_\square=37.2734,
+\qquad
+\min c_\square^{(R{\rm -sweep},R_C,\pi)}=28.7993.
+\]
+Thus the available \(10^{-4}\) local boxes are much too small to certify a common \(R\)-stable pole.  A positive S16-level theorem must either build larger pole-free contours and re-count the zero there, or prove a zero-preserving \(R\)-flow that transports the S8 zero between the disjoint boxes.
+
+\medskip\noindent\textbf{Corollary S16 (The first static-width theorem task is an \(R\)-flow bound).}
+For a simple zero \(E(R)\), implicit differentiation gives the exact projective branch equation
+\[
+\frac{dE}{dR}
+=
+-\,\frac{\partial_R F_R(E(R))}{\partial_E F_R(E(R))}.
+\]
+Therefore the narrowest analytic route after S15 is to bound the two factors on a pole-free tube:
+\[
+\int_{R_a}^{R_b}
+\left|
+\frac{\partial_R F_R(E(R))}{\partial_E F_R(E(R))}
+\right|\,dR
+\le r_{\rm tube},
+\]
+with \(r_{\rm tube}\) small enough to keep the transported zero inside the chosen contour family and, in the parent limit, to make \(E(R)\) Cauchy.  This is the next static-width object.  It is not a new damping family, not a CAP/ECS retry, and not a special-function backend replacement; it is the parent-side analytic lift needed before \(\Gamma_{N,\ell}^{\rm(strict)}\) can replace the conservative surrogate \(\Gamma_{N,\ell}^{\rm(geo)}\).
+
 \textbf{Rank-2 truncation justification:} Within the present hierarchy convention, the $\hat{\omega}_N^{4\ell+4}$ factor keeps higher-$\ell$ channels parametrically small for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
 \begin{equation}
 \frac{\Gamma_{N,3}}{\Gamma_{N,2}} \sim \hat{\omega}_N^4 \sim 10^{-4}.

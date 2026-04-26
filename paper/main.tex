@@ -43,6 +43,7 @@ The theoretical closure is achieved by unifying three key modules:
 (i) a \textbf{Micro-degeneracy module} ($g_N$) implemented through a bounded two-dimensional phase-space profile (microcanonical low-$N$ window + energy-gap tail prescription, phase-space normalized at $N=3$);
 (ii) a \textbf{Rank-2 Computable Kinetic module} ($\Gamma_N$) defined as the largest positive eigenvalue of a $2\times2$ growth matrix with explicit WKB tunneling suppression; and
 (iii) a \textbf{Visibility module} ($B_N$) implemented as a fully normalized EFT-operator profile, where overlap-extracted flavor-layer couplings and mediator scales feed finite one-loop + LL-RG-normalized operator kernels, with neutral high-$N$ saturation ($B_{N>3}=1$) so that no extra visibility-side damping is added on top of the $g_N$ regulator; a risk-weighted runtime-direct visibility parity branch is also available, but it is not interpreted as a strict all-direct closure.
+The neutral high-$N$ saturation is not used to hide a fourth generation: a separate mode-resolved Sturm/min--max certificate on the audited kinetic chain excludes a fourth bound layer on the tested finite-volume domain.
 The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates, within this baseline closure, a stable ``winner'' phase diagram with clear dominance of layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
 We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid), and (2) a scan-level EFT/Wilson-matched compatibility test using the ATLAS Run-2+Run-3 combined $H\to\mu\mu$ signal-strength input ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
 In the current UV+LL-RG baseline, the illustrative acceptance band is about $15.0\%$ of the scanned grid for $\chi^2<4$, providing a sharper falsifiable constraint on $(D,\eta)$.
@@ -65,9 +66,10 @@ In this work, we consolidate the complete theoretical framework of PSLT into a s
 
 Our primary contributions are:
 \begin{enumerate}
-    \item \textbf{Theoretical Motivation}: We present three convergent arguments for the micro-degeneracy $g_N$ (Route A: Mock-modular, Route B: ER=EPR, Route C: QG Template), and implement a scan-ready baseline through the bounded two-dimensional phase-space profile with controlled high-$N$ tail prescription.
+    \item \textbf{Theoretical Motivation}: We present three convergent arguments for the micro-degeneracy $g_N$ (Route A: Mock-modular, Route B: ER=EPR, Route C: QG Template), and implement a scan-ready baseline through the bounded two-dimensional phase-space profile with controlled high-$N$ tail prescription and an exact finite-volume low-mode counting certificate.
     \item \textbf{Rank-2 Computable Kinetics}: We replace heuristic growth rates with a rigorous eigenvalue problem for the formation matrix $\mathbf{M}_N$, incorporating numerical WKB tunneling suppression.
     \item \textbf{Fully Normalized EFT Visibility}: We promote $B_N$ to an EFT-operator-normalized baseline built from overlap-extracted flavor-layer couplings and mediator scales with finite one-loop + LL-RG normalization; overlap-only and Yukawa laws are retained only as legacy comparators/fallbacks, while runtime-direct visibility extraction is release-qualified only as a risk-weighted parity check, not as a strict all-direct closure.
+    \item \textbf{No-Fourth-Layer Threshold}: We separate high-$N$ stability from visibility damping: \(B_{N>3}=1\) is neutral, while a finite-volume Sturm/Sylvester threshold certificate shows that the audited kinetic chain has no fourth bound layer.
     \item \textbf{Verification}: We demonstrate stable three-generation dominance at $\mathcal{R}_3>90\%$ and a constrained EFT/Wilson-matched-compatible band for LHC $H\to\mu\mu$.
 \end{enumerate}
 
@@ -150,7 +152,7 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \midrule
 \parbox[t]{0.17\textwidth}{$\Omega(\rho,z;D)$ two-center geometry} & \parbox[t]{0.28\textwidth}{Projected-Poisson two-source Green solution} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Derive the same source from an explicit higher-dimensional parent} \\
 \parbox[t]{0.17\textwidth}{$V_{\rm eff}$, low modes, WKB action} & \parbox[t]{0.28\textwidth}{Action-derived and numerically converged} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Extend the same solver chain to the full $(D,\eta,N)$ map} \\
-\parbox[t]{0.17\textwidth}{$g_N$ phase-space profile} & \parbox[t]{0.28\textwidth}{Bounded two-dimensional phase-space baseline; direct spectral parity and risk-weighted visibility parity checks available} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Treat the strict all-direct broader-grid rule as parked at the current case-aware endpoint; reopen only for a genuinely new observable-side mechanism class} \\
+\parbox[t]{0.17\textwidth}{$g_N$ phase-space profile} & \parbox[t]{0.28\textwidth}{Bounded two-dimensional phase-space baseline anchored by exact low-$N$ projector counts; Cardy retained only as a legacy comparator} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Optional pure-integer replacement impact or continuum/D-continuous strengthening only; do not reopen Cardy as baseline} \\
 \parbox[t]{0.17\textwidth}{$\chi_N^{(LR)}(D)$ localized channel} & \parbox[t]{0.28\textwidth}{Full D-grid localized profile from 2D fine extraction; release-production parity path available} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep the current localized-direct parity path as the production support line; the longer-horizon upgrade is a fully localized extraction over $(D,\eta,N)$ rather than another profile-blend retune} \\
 \parbox[t]{0.17\textwidth}{$\Gamma_{N,\ell}$ channel normalization ($A_\ell$)} & \parbox[t]{0.28\textwidth}{Action-derived $\tilde A_\ell(D)$ baseline with stabilized localized-direct support; legacy constant-$A_\ell$ kept only as comparator} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Move to fully localized channel-resolved direct extraction over $(D,\eta,N)$} \\
 \parbox[t]{0.17\textwidth}{Open-system $\chi_{\rm eff}$ (Lindblad)} & \parbox[t]{0.28\textwidth}{Diagnostic only in the scan, but the exact-bridge bottleneck is reviewer-facing closed: overlap factorization, singleton carrier reduction, and strict-slab trace certificate are fixed on the audited bridge} & \parbox[t]{0.13\textwidth}{Diagnostic only} & \parbox[t]{0.24\textwidth}{No new support/object search; optional work is continuum/global lift or a microscopic EYMH bath derivation} \\
@@ -162,6 +164,58 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 
 \medskip\noindent\textbf{Reviewer-facing closure summary.}
 Several long appendix chains are used only to close natural review questions, not to introduce additional baseline observables.  Proposition O39 reduces the parity-contrast obstruction to one canonical adverse-band factorization plus three leakage channels, with residuals \(9.67\times10^{-17}\) and \(5.97\times10^{-14}\); Proposition O56 reduces the \(D=11\) positive carrier to the symmetry-projected half-lobe \(W_{11,{\rm sym}}^{(+)}=\frac12 W_{11}^{(+)}\), clearing the global half-threshold by \(1.06715\); and Propositions O71--O72 close the strict-slab trace with a fixed \(45\)-edge-point, \(46\)-trace-point, \(420\)-adjoint-point certificate giving \(I_{\partial,\sharp}^{(\rm phys)}+I_{{\rm src},\sharp}\ge1.003005\,I_{\rm req}\), where \(I_{\rm req}:=1.4532157043371163\times10^{-1}\).  Thus the open-system branch remains diagnostic for the global scan, but its audited exact-bridge bottleneck is closed at the reviewer-facing level; no new support, carrier, trace set, backend, or family is being introduced there.
+
+\medskip\noindent\textbf{Audit-certificate packaging.}
+To keep the main text readable, the code/CSV-heavy appendix derivations are grouped below into reviewer-facing certificate packages.  This table is a reading map rather than a new theorem object: each row points to an already stated proposition chain, its mathematical invariant, and the executable numerical gate that supports the claim on the audited domain.
+
+\begin{table}[htbp]
+\centering
+\caption{Reviewer-facing audit-certificate map.  ``Closed'' always means closed on the stated audited domain; extension beyond that domain is listed as optional strengthening rather than as a hidden baseline assumption.}
+\label{tab:audit_certificate_map}
+\tiny
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{0.92}
+\begin{tabular}{@{}l l l l@{}}
+\toprule
+\parbox[t]{0.15\textwidth}{\textbf{Package}} & \parbox[t]{0.27\textwidth}{\textbf{Mathematical invariant}} & \parbox[t]{0.26\textwidth}{\textbf{Executable/numerical gate}} & \parbox[t]{0.22\textwidth}{\textbf{Reader-facing status}} \\
+\midrule
+\parbox[t]{0.15\textwidth}{Fermionic lift (F1/C1)} &
+\parbox[t]{0.27\textwidth}{Scalar/action modes supply generation projectors; SM fermions live in the conformal Dirac spin bundle; no layer-dependent spin degeneracy enters \(g_N\).} &
+\parbox[t]{0.26\textwidth}{Dirac kinetic/Yukawa conformal powers \(=0\); common spin-factor probability residual \(=0\).} &
+\parbox[t]{0.22\textwidth}{Closed on the projected chart; only optional global spin-structure polish remains.} \\
+\addlinespace
+\parbox[t]{0.15\textwidth}{Low-\(N\) \(g_N\) counting (G1/C1)} &
+\parbox[t]{0.27\textwidth}{First three finite-volume spectral projectors have exact ranks \(1,2,3\); release \(g_N\) is shell-volume weighted, not Cardy or pure integer replacement.} &
+\parbox[t]{0.26\textwidth}{\(21/21\) fine \(D\)-points pass; min gaps \(4.16\times10^{-2}\), \(4.97\times10^{-2}\); rank error \(0\).} &
+\parbox[t]{0.22\textwidth}{Closed at finite-volume count level; pure-integer replacement is a separate future impact study.} \\
+\addlinespace
+\parbox[t]{0.15\textwidth}{No-fourth-layer threshold (N1/C1)} &
+\parbox[t]{0.27\textwidth}{Finite-volume Sturm/min--max inertia excludes an extra bound kinetic-proxy layer; neutral \(B_{N>3}=1\) is not doing the exclusion.} &
+\parbox[t]{0.26\textwidth}{Sturm certificate bounds the negative-mode count; independent single-track benchmark never supports \(N=4\).} &
+\parbox[t]{0.22\textwidth}{Closed on the audited finite-volume window; optional work is continuum-tail and \(D\)-continuous interpolation.} \\
+\addlinespace
+\parbox[t]{0.15\textwidth}{Strict static width (S25)} &
+\parbox[t]{0.27\textwidth}{Local parent-tube Rouch\'e/flowbox certificate for \(D=6,\ R_C=400,\ 60\to80,\ c=640\), not a new global pole family.} &
+\parbox[t]{0.26\textwidth}{S25 special-interval certificate: \(2/2\) parity branches close; max guarded/S24 \(0.888891\), max integrated ratio \(0.938387\).} &
+\parbox[t]{0.22\textwidth}{Closed on the certified tube; \(\Gamma_{N,\ell}^{(\rm geo)}\) remains fallback outside it.} \\
+\addlinespace
+\parbox[t]{0.15\textwidth}{Open-system exact bridge (O39/O56/O71--O72)} &
+\parbox[t]{0.27\textwidth}{Parity contrast, singleton carrier, physical-edge trace, source term, and adjoint/barrier pieces reduce to one strict-slab certificate.} &
+\parbox[t]{0.26\textwidth}{Residuals \(9.67\times10^{-17}\), \(5.97\times10^{-14}\); half-lobe factor \(1.06715\); trace/source \(1.003005\,I_{\rm req}\).} &
+\parbox[t]{0.22\textwidth}{Diagnostic for the global scan, but the exact-bridge bottleneck is reviewer-facing closed; no new support/object search.} \\
+\addlinespace
+\parbox[t]{0.15\textwidth}{EYMH \(H\to\mu\mu\) normalization (U1--U9)} &
+\parbox[t]{0.27\textwidth}{Observable bridge factorizes into UV-to-EFT witnesses, tree/source identities, projected kernel, width profile, and EYMH core normalization.} &
+\parbox[t]{0.26\textwidth}{Bridge/source residuals are machine-level; projected-box max relative error \(9.89\times10^{-4}\) with mirror-corrected \(c_\sigma(D)\).} &
+\parbox[t]{0.22\textwidth}{Closed on the audited domain; remaining work is prose polish or sub-\(10^{-3}\) mirror-remainder tightening.} \\
+\addlinespace
+\parbox[t]{0.15\textwidth}{Release/direct map parity} &
+\parbox[t]{0.27\textwidth}{Production direct spectral-selection closes \(g_N+\chi+\tilde A_\ell\) against \texttt{full\_direct}; visibility parity remains qualified.} &
+\parbox[t]{0.26\textwidth}{Both active release grids have zero acceptance mismatch; risk-weighted branch also passes with \(\max|\Delta\mu_{\mu\mu}|\le0.837269\).} &
+\parbox[t]{0.22\textwidth}{Closed as release-production parity plus a qualified visibility parity branch; strict all-direct broad-grid tuning is parked.} \\
+\bottomrule
+\end{tabular}
+\end{table}
 \clearpage
 
 
@@ -4267,7 +4321,7 @@ Stage group & Deliverables and checks \\
 \parbox[t]{0.24\textwidth}{Production maps and observables} & \parbox[t]{0.62\textwidth}{Regenerates phase diagrams, Higgs signal-strength maps, and UV-to-EFT matching summaries.} \\
 \parbox[t]{0.24\textwidth}{Release/direct validation} & \parbox[t]{0.62\textwidth}{Runs the full-direct release audit, localized-direct validation surfaces, chain-mode parity checks, and artifact-status registry.} \\
 \parbox[t]{0.24\textwidth}{First-principles profile diagnostics} & \parbox[t]{0.62\textwidth}{Recomputes localized $\chi$, bounded phase-space $g_N$, open-system diagnostics, and the $t_{\rm coh}$, $\eta$, and channel-normalization candidate profiles.} \\
-\parbox[t]{0.24\textwidth}{Packaging and provenance} & \parbox[t]{0.62\textwidth}{Collects figures, tables, logs, checksums, manifest metadata, and the per-artifact map under the reproducibility run directory.} \\
+\parbox[t]{0.24\textwidth}{Packaging and provenance} & \parbox[t]{0.62\textwidth}{Collects figures, tables, logs, checksums, manifest metadata, and the per-artifact map under the reproducibility run directory; Table~\ref{tab:audit_certificate_map} is the reader-facing certificate summary of the same provenance layer.} \\
 \hline\hline
 \end{tabular}
 \end{table}

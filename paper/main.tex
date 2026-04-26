@@ -2455,6 +2455,59 @@ u_N(\rho,z;D)\,f_L(\rho,z)\,f_R(\rho,z)\,\mathcal{W}_{\rm frame}(\rho,z;D).
 \end{equation}
 Here $f_{L,R}$ denote lepton profile functions and $\mathcal{W}_{\rm frame}$ collects fixed normalization factors from the chosen conformal-frame convention. In the minimal Dirac-conformal baseline implied by Eqs.~\eqref{eq:dirac_higgs_weyl}--\eqref{eq:yukawa_frame_cancel}, $\mathcal{W}_{\rm frame}=1$. Nonzero conformal-frame powers are kept only as diagnostic sensitivity directions and are not used in baseline figures. In this roadmap, the same 2D localized solver and convergence criteria as Appendix~\ref{app:chi_loc} are reused; scan-level runs now separate release-production per-cell direct $g_N+\chi+A$ closure from the promoted risk-weighted profile-blend runtime-direct visibility parity branch (canonical D-only profile blend $\alpha(D)$) and the strict no-cache stress branch.
 
+\medskip\noindent\textbf{Proposition F1 (Fermionic spin-bundle lift of the spectral generation labels).}
+\label{prop:fermionic_lift}
+Let \(M=\mathbb R_t\times\Sigma\) be the conformally flat projected background used in the action-derived scalar chain, with \(g_{\mu\nu}=\Omega^2\eta_{\mu\nu}\), \(\Omega>0\), and with the spin structure inherited from the projected chart.  Let \(\mathbb S_g\) be the corresponding Dirac spin bundle and let the scalar/action operator
+\[
+L_\Omega=-\Delta+V_{\rm eff}
+\]
+have normalized spatial modes \(u_N\) used to define the layer labels.  The PSLT generation label is the spectral projector \(\Pi_N\) onto \(u_N\); it is not a scalar-to-fermion transmutation rule.  The fermionic Standard-Model block is instead the Dirac/Yukawa sector on \(\mathbb S_g\otimes E_{\rm SM}\), projected against the same \(u_N\)-resolved background.
+
+With the vierbein \(e_\mu^{\ a}=\Omega\delta_\mu^{\ a}\), the Weyl rescaling
+\[
+\Psi=\Omega^{-3/2}\psi,\qquad H=\Omega^{-1}\varphi
+\]
+gives the conformal covariance identity
+\begin{equation}
+\mathcal D_g(\Omega^{-3/2}\psi)=\Omega^{-5/2}\mathcal D_\eta\psi,
+\label{eq:dirac_conformal_covariance_main}
+\end{equation}
+where \(\mathcal D_g=e^\mu_{\ a}\gamma^a(\partial_\mu+\frac14\omega_{\mu bc}\gamma^{bc})\).  Hence
+\begin{equation}
+\sqrt{-g}\,\bar\Psi\,\ii\mathcal D_g\Psi
+=\bar\psi\,\ii\mathcal D_\eta\psi,
+\qquad
+\sqrt{-g}\,y\,\bar\Psi_L H\Psi_R
+=y\,\bar\psi_L\varphi\psi_R.
+\label{eq:fermion_lift_flat_density}
+\end{equation}
+Both the kinetic density and the Yukawa density therefore carry zero residual conformal frame weight.  The mode-resolved Yukawa coefficient used in the overlap baseline is consequently
+\begin{equation}
+y_N^{\rm eff}
+=y_0\int_\Sigma u_N(\rho,z;D)\,f_L(\rho,z)\,f_R(\rho,z)\,\dd\mu_{\rm cyl},
+\qquad
+\dd\mu_{\rm cyl}=2\pi\rho\,\dd\rho\,\dd z,
+\label{eq:fermion_lift_yN}
+\end{equation}
+up to the flavor/profile factors already exported in the visibility audit.
+
+\emph{Proof.}
+On each tetrad patch the conformal spin connection satisfies
+\[
+\mathcal D_g
+=\Omega^{-1}\left(\mathcal D_\eta+\frac32\,\gamma^\mu\partial_\mu\log\Omega\right),
+\]
+so applying \(\mathcal D_g\) to \(\Omega^{-3/2}\psi\) cancels the \(\frac32\partial_\mu\log\Omega\) term and gives Eq.~\eqref{eq:dirac_conformal_covariance_main}.  Multiplication by \(\sqrt{-g}=\Omega^4\) and by the two spinor weights gives \(4-\frac32-\frac52=0\) for the kinetic density; multiplying the Yukawa density by the two spinor weights and the Higgs weight gives \(4-\frac32-1-\frac32=0\).  Local Lorentz covariance follows because if \(e'{}_\mu^{\ a}=\Lambda^a_{\ b}e_\mu^{\ b}\) and \(\Psi'=S(\Lambda)\Psi\), then \(S(\Lambda)^{-1}\gamma^aS(\Lambda)=\Lambda^a_{\ b}\gamma^b\), so the two densities in Eq.~\eqref{eq:fermion_lift_flat_density} are patch-independent.  The projectors \(\Pi_N\) act on the scalar/spatial mode label, while the spinor indices are contracted inside \(\bar\psi_L\varphi\psi_R\); hence the layer label and the spin representation are separate bundle factors.
+
+\medskip\noindent\textbf{Corollary F1 (No spin-degeneracy double counting in \(g_N\)).}
+Let the layer weights have the form \(W_N=d_{\rm spin}\,\widehat W_N\), where \(d_{\rm spin}>0\) is the common spin multiplicity of the chosen fermion channel after the Dirac/Yukawa contraction.  Then
+\[
+P_N=\frac{W_N}{\sum_K W_K}
+=\frac{\widehat W_N}{\sum_K\widehat W_K}.
+\]
+Thus a layer-independent spin multiplicity either factors out of the normalized probabilities or can be absorbed uniformly into all \(g_N\) without changing the generation competition.  Any nontrivial \(N\)-dependence must come from the spectral data \((u_N,\omega_N,g_N,\chi_N,A_N,B_N)\), not from the fermion spin bundle itself.
+\emph{Verified numerics.} The audit \path{code/check_minimal_dirac_conformal.py} exports \path{output/dirac_frame_check/minimal_dirac_conformal_check.csv} and \path{paper/minimal_dirac_conformal_check.csv}.  It verifies zero kinetic and Yukawa conformal powers, the baseline \(\mathcal W_{\rm frame}=1\) metadata on the \(17\)-point visibility profile, and invariance of normalized profile/probability data under a common spin lift \(d_{\rm spin}=2\).
+
 % ============================================================
 \section{Verification Results}
 \label{sec:results}
@@ -4308,6 +4361,11 @@ e_\mu^{\ a}=\Omega\,\delta_\mu^{\ a},\qquad
 e^\mu_{\ a}=\Omega^{-1}\delta^\mu_{\ a},\qquad
 \sqrt{-g}=\Omega^4.
 \end{equation}
+On overlapping tetrad patches \(e\) and \(e'=\Lambda e\), the spin lift \(S(\Lambda)\in{\rm Spin}(1,3)\) acts by \(\Psi'=S(\Lambda)\Psi\) and satisfies
+\begin{equation}
+S(\Lambda)^{-1}\gamma^a S(\Lambda)=\Lambda^a_{\ b}\gamma^b .
+\end{equation}
+Thus the construction is local-Lorentz covariant once the projected chart is endowed with its inherited spin structure.
 The curved-space Dirac action is
 \begin{equation}
 S_\Psi=\int d^4x\,\sqrt{-g}\;\ii\,\bar{\Psi}\,e^\mu_{\ a}\gamma^a\!
@@ -4318,6 +4376,20 @@ and the canonical Weyl rescaling
 \Psi=\Omega^{-3/2}\psi
 \end{equation}
 removes the first-derivative conformal piece from the spin connection, yielding the flat-frame kinetic normalization.
+Equivalently, the conformal covariance of the four-dimensional Dirac operator gives
+\begin{equation}
+\mathcal D_g(\Omega^{-3/2}\psi)=\Omega^{-5/2}\mathcal D_\eta\psi,
+\qquad
+\mathcal D_g=e^\mu_{\ a}\gamma^a\left(\partial_\mu+\frac14\omega_{\mu bc}\gamma^{bc}\right).
+\end{equation}
+Therefore
+\begin{equation}
+\sqrt{-g}\,\bar\Psi\,\ii\mathcal D_g\Psi
+=
+\Omega^4\Omega^{-3/2}\Omega^{-5/2}\,
+\bar\psi\,\ii\mathcal D_\eta\psi
+=\bar\psi\,\ii\mathcal D_\eta\psi.
+\end{equation}
 For the Higgs mode we use
 \begin{equation}
 H=\Omega^{-1}\varphi.
@@ -4332,7 +4404,20 @@ so the minimal overlap kernel has
 \end{equation}
 This is the baseline convention in the three-channel effective-Yukawa extraction; nonzero frame power is treated only as a diagnostic deformation.
 
-As a reproducibility check, the minimal Dirac-conformal audit exports a machine-readable CSV and paper copy verifying the zero net conformal power in both kinetic and Yukawa factors.
+The spinor and spectral indices are kept as distinct tensor factors.  The scalar/action operator \(L_\Omega=-\Delta+V_{\rm eff}\) supplies spatial projectors \(\Pi_N\) onto the modes \(u_N\), while \(\Psi\) is a section of the spin bundle tensored with the SM internal bundle.  Hence a mode-resolved Yukawa block has the schematic form
+\begin{equation}
+y_N^{\rm eff}\,\bar\psi_L\varphi\psi_R,\qquad
+y_N^{\rm eff}=y_0\int_\Sigma u_N f_L f_R\,\dd\mu_{\rm cyl},
+\end{equation}
+with the spinor indices contracted inside the Dirac bilinear.  Any spin multiplicity that remains after this contraction is a common factor \(d_{\rm spin}\) for the channel.  For normalized layer weights,
+\begin{equation}
+\frac{d_{\rm spin}W_N}{\sum_K d_{\rm spin}W_K}
+=
+\frac{W_N}{\sum_K W_K},
+\end{equation}
+so the spin bundle cannot by itself create an \(N\)-dependent entropy preference.  If one chooses to include spin in \(g_N\), it must be included as a uniform channel factor unless a separate, explicitly derived \(N\)-dependent spin interaction is introduced.
+
+As a reproducibility check, the minimal Dirac-conformal audit exports a machine-readable CSV and paper copy verifying the zero net conformal power in both kinetic and Yukawa factors, the baseline frame metadata, and the invariance of normalized layer probabilities under a common spin-degeneracy lift.
 
 \subsection{1D On-Axis Reduction}
 \label{app:1D}
@@ -4647,6 +4732,51 @@ The two-dimensional phase-space extraction exports both the low-$N$ profile tabl
 \begin{equation}
 \max_{\text{non-fine}}\left(\max_N\frac{|\hat g_N-\hat g_N^{\rm(fine)}|}{|\hat g_N^{\rm(fine)}|}\right)=2.35\times10^{-2}.
 \end{equation}
+
+\medskip\noindent\textbf{Proposition G1 (Finite-volume low-\(N\) microstate-count certificate for \(g_N\)).}
+Fix a finite axisymmetric extraction box, grid spacing, and boundary convention in the two-dimensional localized solver.  Let
+\[
+K_D u=\lambda M_D u,\qquad M_D>0,
+\]
+be the resulting symmetric generalized eigenproblem, and set
+\[
+H_D=M_D^{-1/2}K_D M_D^{-1/2},\qquad
+C_D(E)=\Tr {\bf 1}_{(-\infty,E]}(H_D).
+\]
+If the first three eigenvalues are strictly ordered,
+\[
+\lambda_1(D)<\lambda_2(D)<\lambda_3(D),
+\]
+then the exact finite-volume low-mode microstate count is
+\[
+C_D(\lambda_N(D))=N,\qquad N=1,2,3,
+\]
+and the spectral projectors
+\[
+\Pi_{\le N}(D)={\bf 1}_{(-\infty,\lambda_N(D)]}(H_D)
+\]
+have ranks \(1,2,3\), respectively.
+
+\emph{Proof.}
+Since \(M_D\) is positive definite and \(K_D\) is symmetric in the same finite-volume discretization, \(H_D\) is a real self-adjoint matrix.  The spectral theorem gives an orthonormal eigenbasis and the counting function \(C_D(E)\) is exactly the number of eigenvalues of \(H_D\), counted with multiplicity, not exceeding \(E\).  Under the strict-gap hypothesis above, no multiplicity occurs at \(\lambda_1,\lambda_2,\lambda_3\).  Therefore the rank of the spectral subspace below \(\lambda_N\) is exactly \(N\).  This proves the finite-volume count claim.
+
+\emph{Verified numerical certificate.}
+The audit \texttt{code/audit\_gn\_lowN\_microstate\_count.py} reads the exported profile and spectral tables from \texttt{code/extract\_gn\_phase\_space\_2d.py} and checks the fine \(D\)-grid directly.  On \(21\) fine-grid points it finds
+\[
+\min_D(\lambda_2-\lambda_1)=4.164426355\times10^{-2},\qquad
+\min_D(\lambda_3-\lambda_2)=4.968688976\times10^{-2},
+\]
+zero profile--spectrum eigenvalue mismatch at the exported precision, and exact projector ranks \(1,2,3\) at every audited \(D\).  Source files:
+\texttt{paper/gn\_lowN\_microstate\_count\_summary.csv} and
+\texttt{paper/gn\_lowN\_microstate\_count\_detail.csv}.
+
+\medskip\noindent\textbf{Corollary G1 (Status of the low-\(N\) \(g_N\) counting line).}
+Proposition G1 closes the exact finite-volume low-mode counting question: in the audited two-dimensional box the first three spectral layers carry projector ranks \(1,2,3\).  This count is deliberately separated from the bounded phase-space shell-volume weight used by the release baseline,
+\[
+g_{N,\rm raw}^{\rm(ps)}=1+N_{\rm ps}(\lambda_N)-N_{\rm ps}(\lambda_1).
+\]
+Thus the baseline \(g_N^{\rm(full)}\) should be read as a finite-volume shell-volume weight anchored on exactly counted low-mode projectors, not as a Cardy asymptotic formula and not as a literal integer-degeneracy replacement.  If one replaced the shell-volume ratios by the pure exact-count ratios, the normalized low-mode vector would be \((1/3,2/3,1)\); on the audited fine grid this differs from the current shell-volume profile by up to \(2.455960567\times10^{-1}\) for \(N=1\) and \(2.644305680\times10^{-1}\) for \(N=2\).  Hence an exact-integer replacement is a distinct future baseline variant, not a hidden assumption of the present release.
+
 As in the 1D candidate check, this benchmark is reported as a replacement candidate. To test map-level impact, we connected the baseline, legacy Cardy comparator, one-dimensional phase-space candidate, and two-dimensional phase-space candidate to the main scan through the reproducible script \texttt{scan\_gn\_profile\_impact.py}. Results in Table~\ref{tab:gn_profile_impact} show that the main conclusion is retained: relative to the bounded two-dimensional baseline, the largest absolute shift is $0.0669$ in $f(\mathcal{R}_3>0.90)$ (for the raw two-dimensional phase-space candidate), while high-$N$ runaway remains controlled with $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$ in all tested modes.
 
 \begin{table}[t]

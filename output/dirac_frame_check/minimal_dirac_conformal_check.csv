@@ -5,3 +5,8 @@ profile_frame_power_baseline,unique(frame_power),0,0 (if column exists),True
 profile_frame_model_tag,unique(frame_model),minimal_dirac_conformal,minimal_dirac_conformal (if column exists),True
 profile_yukawa_net_power,max_abs(yukawa_net_omega_power),0.0,0 (if column exists),True
 profile_points,len(profile_csv),17,>=1,True
+profile_raw_spin_factor_invariance,normalize(d_spin*y_eff_raw)-normalize(y_eff_raw),0.0,<1e-14,True
+profile_cumulative_spin_factor_invariance,(d_spin*y_eff_cum)/(d_spin*y_eff_cum_3)-y_eff_cum/y_eff_cum_3,0.0,<1e-14,True
+spin_factor_value,d_spin,2.0,>0 and layer-independent,True
+probability_spin_factor_invariance,"normalize(d_spin*[P1,P2,P3,Ptail])-normalize([P1,P2,P3,Ptail])",0.0,<1e-14,True
+winner_spin_factor_invariance,"argmax(P1,P2,P3) after common spin lift","3 rows, 2 probability blocks",unchanged,True

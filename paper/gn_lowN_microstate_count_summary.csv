@@ -1,0 +1,2 @@
+level,n_D,min_gap12,min_gap23,max_profile_spectrum_lambda_abs,max_rank_error,g1_hat_min,g1_hat_max,g2_hat_min,g2_hat_max,exact_ratio1,exact_ratio2,exact_ratio3,max_exact_ratio_delta_g1,max_exact_ratio_delta_g2,max_exact_ratio_delta_g3,all_strict_gap_pass,all_rank_count_pass,all_pass
+fine,21,0.041644263548268556,0.04968688976205282,0.0,0,0.0877372766570032,0.131962715968594,0.4022360986749095,0.5296497790147492,0.3333333333333333,0.6666666666666666,1.0,0.2455960566763301,0.2644305679917571,0.0,True,True,True

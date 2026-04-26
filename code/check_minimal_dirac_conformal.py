@@ -6,6 +6,8 @@ Checks:
   1) Dirac kinetic conformal power cancellation with Psi = Omega^{-3/2}.
   2) Yukawa conformal power cancellation with H = Omega^{-1}.
   3) Optional profile CSV metadata consistency (frame_power, frame model).
+  4) Common spin-degeneracy bookkeeping does not change normalized layer
+     probabilities or profile ratios.
 
 Outputs:
   - output/dirac_frame_check/minimal_dirac_conformal_check.csv
@@ -43,7 +45,21 @@ def main() -> None:
         default=ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv",
         help="Optional overlap-profile CSV to validate baseline frame metadata.",
     )
+    ap.add_argument(
+        "--probability-csv",
+        type=Path,
+        default=ROOT / "paper" / "surrogate_vs_action_points.csv",
+        help="Optional point-probability CSV used to audit common spin-factor invariance.",
+    )
+    ap.add_argument(
+        "--spin-factor",
+        type=float,
+        default=2.0,
+        help="Positive common spin degeneracy factor used in the invariance audit.",
+    )
     args = ap.parse_args()
+    if args.spin_factor <= 0:
+        raise ValueError("--spin-factor must be positive.")
 
     OUTDIR.mkdir(parents=True, exist_ok=True)
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
@@ -56,6 +72,7 @@ def main() -> None:
 
     kinetic_net = p_sqrtg + 2.0 * p_dirac + p_gamma
     yukawa_net = p_sqrtg + p_dirac + p_higgs + p_dirac
+    d_spin = float(args.spin_factor)
 
     rows: list[dict[str, Any]] = [
         {
@@ -126,6 +143,38 @@ def main() -> None:
                 },
             ]
         )
+
+        raw_cols = [f"y_eff_raw_{i}" for i in (1, 2, 3)]
+        if all(c in df.columns for c in raw_cols):
+            raw = df[raw_cols].to_numpy(dtype=float)
+            raw_norm = raw / np.maximum(np.sum(raw, axis=1, keepdims=True), 1e-300)
+            raw_lifted = (d_spin * raw) / np.maximum(np.sum(d_spin * raw, axis=1, keepdims=True), 1e-300)
+            raw_resid = float(np.nanmax(np.abs(raw_norm - raw_lifted)))
+            rows.append(
+                {
+                    "check": "profile_raw_spin_factor_invariance",
+                    "expression": "normalize(d_spin*y_eff_raw)-normalize(y_eff_raw)",
+                    "value": raw_resid,
+                    "target": "<1e-14",
+                    "pass": raw_resid < 1e-14,
+                }
+            )
+
+        cum_cols = [f"y_eff_cum_{i}" for i in (1, 2, 3)]
+        if all(c in df.columns for c in cum_cols):
+            cum = df[cum_cols].to_numpy(dtype=float)
+            base_b = cum / np.maximum(cum[:, [2]], 1e-300)
+            lifted_b = (d_spin * cum) / np.maximum(d_spin * cum[:, [2]], 1e-300)
+            b_resid = float(np.nanmax(np.abs(base_b - lifted_b)))
+            rows.append(
+                {
+                    "check": "profile_cumulative_spin_factor_invariance",
+                    "expression": "(d_spin*y_eff_cum)/(d_spin*y_eff_cum_3)-y_eff_cum/y_eff_cum_3",
+                    "value": b_resid,
+                    "target": "<1e-14",
+                    "pass": b_resid < 1e-14,
+                }
+            )
     else:
         rows.append(
             {
@@ -137,9 +186,58 @@ def main() -> None:
             }
         )
 
+    if args.probability_csv.exists():
+        pdf = pd.read_csv(args.probability_csv)
+        resid_max = 0.0
+        winner_ok = True
+        n_prob_rows = int(len(pdf))
+        n_blocks = 0
+        for suffix in ("surrogate", "direct"):
+            prob_cols = [f"P{i}_{suffix}" for i in (1, 2, 3)]
+            if not all(c in pdf.columns for c in prob_cols):
+                continue
+            probs3 = pdf[prob_cols].to_numpy(dtype=float)
+            tail = np.maximum(1.0 - np.sum(probs3, axis=1, keepdims=True), 0.0)
+            probs = np.concatenate([probs3, tail], axis=1)
+            lifted = d_spin * probs
+            lifted /= np.maximum(np.sum(lifted, axis=1, keepdims=True), 1e-300)
+            resid_max = max(resid_max, float(np.nanmax(np.abs(probs - lifted))))
+            winner_ok = winner_ok and bool(np.all(np.argmax(probs3, axis=1) == np.argmax(lifted[:, :3], axis=1)))
+            n_blocks += 1
+
+        rows.extend(
+            [
+                {
+                    "check": "spin_factor_value",
+                    "expression": "d_spin",
+                    "value": d_spin,
+                    "target": ">0 and layer-independent",
+                    "pass": d_spin > 0.0,
+                },
+                {
+                    "check": "probability_spin_factor_invariance",
+                    "expression": "normalize(d_spin*[P1,P2,P3,Ptail])-normalize([P1,P2,P3,Ptail])",
+                    "value": resid_max if n_blocks else "not_available",
+                    "target": "<1e-14",
+                    "pass": bool(n_blocks and resid_max < 1e-14),
+                },
+                {
+                    "check": "winner_spin_factor_invariance",
+                    "expression": "argmax(P1,P2,P3) after common spin lift",
+                    "value": f"{n_prob_rows} rows, {n_blocks} probability blocks",
+                    "target": "unchanged",
+                    "pass": bool(n_blocks and winner_ok),
+                },
+            ]
+        )
+
     out_csv = OUTDIR / "minimal_dirac_conformal_check.csv"
     with out_csv.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["check", "expression", "value", "target", "pass"])
+        writer = csv.DictWriter(
+            f,
+            fieldnames=["check", "expression", "value", "target", "pass"],
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(rows)
 

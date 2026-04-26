@@ -1,0 +1,2 @@
+n_parity_segments,n_cauchy_closed,max_cauchy_integral_ratio,median_cauchy_integral_ratio,max_remainder_over_reserve,max_beta_cauchy_over_s22_inflated,min_dF_dE_abs,max_dF_dE_CR_rel_mismatch,cauchy_slab_status
+2.0,2.0,0.9467613906063025,0.9319468682964581,0.5768239167507059,0.9798487579405071,,,cauchy_slab_bound_closed_on_grid

@@ -93,9 +93,10 @@ class PSLTParameters:
     Omega_H: float = 0.9    # Horizon proxy angular velocity [Mass] (scaled by M)
     A1: float = 1.0         # l=1 amplitude (dimensionless prefactor for rate)
     A2: float = 1.0         # l=2 amplitude (dimensionless prefactor for rate)
-    gamma_mode: str = "surrogate"  # "surrogate", "action_profile", "action_grid", "action_grid_strict", or "action_runtime_direct"
+    gamma_mode: str = "surrogate"  # "surrogate", "action_profile", "action_grid", "action_grid_strict", "action_runtime_direct", "action_tensor", or "action_tensor_grid_strict"
     gamma_superrad_csv: Optional[str] = None
     gamma_superrad_scale: float = 1.0
+    gamma_tensor_bound_policy: str = "all_valid"  # "all_valid" or "bound_only_fallback" for action_tensor modes
     gamma_eta_mode: str = "scan"  # "scan", "scaled_amp", "scaled_prob", "closed_amp", "closed_prob"
     gamma_eta_csv: Optional[str] = None
     chi: float = 0.2        # Rank-2 mixing parameter (dimensionless)
@@ -255,10 +256,12 @@ class PSLTParameters:
     def __post_init__(self):
         if self.chi_mode not in {"constant", "localized_interp", "localized_grid", "localized_grid_strict", "localized_runtime_direct", "open_system", "open_system_micro"}:
             raise ValueError(f"Unsupported chi_mode='{self.chi_mode}'.")
-        if self.gamma_mode not in {"surrogate", "action_profile", "action_grid", "action_grid_strict", "action_runtime_direct"}:
+        if self.gamma_mode not in {"surrogate", "action_profile", "action_grid", "action_grid_strict", "action_runtime_direct", "action_tensor", "action_tensor_grid_strict"}:
             raise ValueError(f"Unsupported gamma_mode='{self.gamma_mode}'.")
         if self.gamma_superrad_scale <= 0:
             raise ValueError("gamma_superrad_scale must be > 0.")
+        if self.gamma_tensor_bound_policy not in {"all_valid", "bound_only_fallback"}:
+            raise ValueError(f"Unsupported gamma_tensor_bound_policy='{self.gamma_tensor_bound_policy}'.")
         if self.gamma_eta_mode not in {"scan", "scaled_amp", "scaled_prob", "closed_amp", "closed_prob"}:
             raise ValueError(f"Unsupported gamma_eta_mode='{self.gamma_eta_mode}'.")
         if self.t_coh_mode not in {"input", "dephasing_profile", "dephasing_profile_capped"}:
@@ -628,6 +631,7 @@ class PSLTKinetics:
         self._runtime_superrad_params = None
         self._gamma_mode_active: str = "surrogate"
         self._gamma_superrad_profile: Optional[Dict[str, np.ndarray]] = None
+        self._gamma_superrad_tensor: Optional[Dict[str, np.ndarray]] = None
         self._gamma_eta_profile: Optional[Dict[str, np.ndarray]] = None
         self._gamma_eta_mode_active: str = "scan"
         self._tcoh_mode_active: str = "input"
@@ -2226,6 +2230,86 @@ class PSLTKinetics:
             return None
         return cands[-1]
 
+    def _load_superrad_tensor(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
+        if not path.exists():
+            return None
+        rows = self._load_csv_rows(path)
+        if not rows:
+            return None
+
+        entries: Dict[Tuple[float, int, int], float] = {}
+        bound_entries: Dict[Tuple[float, int], bool] = {}
+        for row in rows:
+            if row.get("D", "") in {"", None}:
+                continue
+            valid = str(row.get("valid_action", "true")).strip().lower()
+            if valid in {"false", "0", "no"}:
+                continue
+            raw_val = row.get("A_l_profile_refD_refN", "")
+            if raw_val in {"", None}:
+                raw_val = row.get("A_l_tensor", "")
+            if raw_val in {"", None}:
+                continue
+            dval = float(row["D"])
+            nval = int(float(row["N"]))
+            key = (dval, nval, int(float(row["ell"])))
+            bound_raw = str(row.get("bound_proxy", "true")).strip().lower()
+            bound_val = bound_raw not in {"false", "0", "no"}
+            bound_key = (dval, nval)
+            old_bound = bound_entries.get(bound_key)
+            if old_bound is not None and bool(old_bound) != bool(bound_val):
+                return None
+            bound_entries[bound_key] = bool(bound_val)
+            val = max(float(raw_val), 1e-30)
+            old = entries.get(key)
+            if old is not None:
+                if abs(old - val) / max(abs(old), abs(val), 1e-30) > 1e-10:
+                    return None
+                continue
+            entries[key] = val
+
+        if len(entries) < 2:
+            return None
+
+        d_sorted = np.array(sorted({k[0] for k in entries}), dtype=float)
+        n_sorted = np.array(sorted({k[1] for k in entries}), dtype=int)
+        bound = np.full((len(d_sorted), len(n_sorted)), False, dtype=bool)
+        for i, dval in enumerate(d_sorted):
+            for j, nval in enumerate(n_sorted):
+                bound[i, j] = bool(bound_entries.get((float(dval), int(nval)), True))
+        a_by_ell: Dict[int, np.ndarray] = {}
+        for ell in (1, 2):
+            vals = np.full((len(d_sorted), len(n_sorted)), np.nan, dtype=float)
+            for i, dval in enumerate(d_sorted):
+                for j, nval in enumerate(n_sorted):
+                    cur = entries.get((float(dval), int(nval), ell))
+                    if cur is not None:
+                        vals[i, j] = max(float(cur), 1e-30)
+            if not np.isfinite(vals).any():
+                return None
+            a_by_ell[ell] = vals
+
+        return {
+            "D": d_sorted,
+            "N": n_sorted,
+            "A1": a_by_ell[1],
+            "A2": a_by_ell[2],
+            "bound": bound,
+        }
+
+    def _auto_find_superrad_tensor_csv(self) -> Optional[Path]:
+        base = self.root_dir / "output" / "superrad_fp_1d"
+        if not base.exists():
+            return None
+        canonical = base / "channel_resolved_A_l_tensor_D4-20full_eta3_N1-2-3_l1-2.csv"
+        if canonical.exists():
+            return canonical
+        cands = sorted(base.glob("channel_resolved_A_l_tensor_*.csv"))
+        if not cands:
+            return None
+        non_summary = [p for p in cands if not p.name.endswith("_summary.csv")]
+        return non_summary[-1] if non_summary else cands[-1]
+
     def _load_eta_profile(self, path: Path) -> Optional[Dict[str, np.ndarray]]:
         if not path.exists():
             return None
@@ -2312,6 +2396,7 @@ class PSLTKinetics:
     def _init_gamma_profiles(self) -> None:
         self._gamma_mode_active = "surrogate"
         self._gamma_superrad_profile = None
+        self._gamma_superrad_tensor = None
         self._gamma_eta_profile = None
         self._gamma_eta_mode_active = "scan"
         self._tcoh_mode_active = "input"
@@ -2340,6 +2425,31 @@ class PSLTKinetics:
                 self._gamma_eta_profile = None
             elif sup_prof is not None:
                 self._gamma_superrad_profile = sup_prof
+                self._gamma_mode_active = mode
+                self._gamma_eta_mode_active = self.params.gamma_eta_mode
+                self._gamma_eta_profile = eta_prof
+        elif mode in {"action_tensor", "action_tensor_grid_strict"}:
+            sup_path = Path(self.params.gamma_superrad_csv) if self.params.gamma_superrad_csv else self._auto_find_superrad_tensor_csv()
+            eta_path = Path(self.params.gamma_eta_csv) if self.params.gamma_eta_csv else self._auto_find_eta_csv()
+            sup_tensor = self._load_superrad_tensor(sup_path) if sup_path is not None else None
+            eta_prof = self._load_eta_profile(eta_path) if eta_path is not None else None
+
+            if sup_tensor is None:
+                if sup_path is None:
+                    print(f"Warning: gamma_mode={mode} requested but no channel-resolved A_l tensor CSV found. Falling back to surrogate.")
+                else:
+                    print(f"Warning: failed to parse channel-resolved A_l tensor at {sup_path}. Falling back to surrogate.")
+            elif eta_prof is None and self.params.gamma_eta_mode != "scan":
+                if eta_path is None:
+                    print("Warning: gamma_eta_mode requires eta profile but no eta CSV found. Falling back to gamma_eta_mode=scan.")
+                else:
+                    print(f"Warning: failed to parse eta profile at {eta_path}. Falling back to gamma_eta_mode=scan.")
+                self._gamma_superrad_tensor = sup_tensor
+                self._gamma_mode_active = mode
+                self._gamma_eta_mode_active = "scan"
+                self._gamma_eta_profile = None
+            elif sup_tensor is not None:
+                self._gamma_superrad_tensor = sup_tensor
                 self._gamma_mode_active = mode
                 self._gamma_eta_mode_active = self.params.gamma_eta_mode
                 self._gamma_eta_profile = eta_prof
@@ -2456,11 +2566,69 @@ class PSLTKinetics:
             self._gamma_runtime_direct_cache[key] = (a1, a2)
         return a1, a2
 
-    def _gamma_action_A12(self, D: float) -> Tuple[float, float]:
+    def _gamma_tensor_A12(self, D: float, N: Optional[int]) -> Tuple[float, float]:
+        if self._gamma_superrad_tensor is None:
+            return float(self.params.A1), float(self.params.A2)
+
+        tensor = self._gamma_superrad_tensor
+        d_knots = np.asarray(tensor["D"], dtype=float)
+        n_knots = np.asarray(tensor["N"], dtype=int)
+        n_set = set(int(x) for x in n_knots)
+        strict = self._gamma_mode_active == "action_tensor_grid_strict"
+        n_req = int(self.params.runtime_direct_superrad_n_ref) if N is None else int(N)
+        if n_req not in n_set:
+            # The tensor audit is only a low-N channel table.  For N outside the
+            # exported tensor, keep the previous conservative N_ref profile slice
+            # instead of inventing a high-N channel family.
+            n_req = int(self.params.runtime_direct_superrad_n_ref)
+        if n_req not in n_set:
+            n_req = int(n_knots[0])
+
+        idx = int(np.where(n_knots == n_req)[0][0])
+        if self.params.gamma_tensor_bound_policy == "bound_only_fallback":
+            bound = tensor.get("bound")
+            if bound is not None:
+                bound_arr = np.asarray(bound, dtype=bool)
+                d_val = float(D)
+                d_idx = int(np.argmin(np.abs(d_knots - d_val)))
+                if strict:
+                    # Preserve strict lookup semantics; _grid_scalar will raise
+                    # the same detailed D-grid error below for off-grid requests.
+                    unbound_requested = abs(float(d_knots[d_idx]) - d_val) <= 1e-8 and not bool(bound_arr[d_idx, idx])
+                else:
+                    order = np.argsort(d_knots)
+                    d_sorted = d_knots[order]
+                    if d_val <= float(d_sorted[0]):
+                        support = order[:1]
+                    elif d_val >= float(d_sorted[-1]):
+                        support = order[-1:]
+                    else:
+                        right = int(np.searchsorted(d_sorted, d_val, side="right"))
+                        support = order[[right - 1, right]]
+                    unbound_requested = not bool(np.all(bound_arr[support, idx]))
+                if unbound_requested:
+                    n_ref = int(self.params.runtime_direct_superrad_n_ref)
+                    if n_ref in n_set:
+                        idx = int(np.where(n_knots == n_ref)[0][0])
+        a1_col = np.asarray(tensor["A1"], dtype=float)[:, idx]
+        a2_col = np.asarray(tensor["A2"], dtype=float)[:, idx]
+        if strict:
+            a1 = self._grid_scalar(float(D), d_knots, a1_col, fallback_interp=False)
+            a2 = self._grid_scalar(float(D), d_knots, a2_col, fallback_interp=False)
+        else:
+            a1 = self._interp_scalar(float(D), d_knots, a1_col)
+            a2 = self._interp_scalar(float(D), d_knots, a2_col)
+        scale = float(self.params.gamma_superrad_scale)
+        return max(float(a1) * scale, 1e-30), max(float(a2) * scale, 1e-30)
+
+    def _gamma_action_A12(self, D: float, N: Optional[int] = None) -> Tuple[float, float]:
         if self._gamma_mode_active == "action_runtime_direct":
             a1, a2 = self._runtime_direct_a12(float(D))
             scale = float(self.params.gamma_superrad_scale)
             return max(a1 * scale, 1e-30), max(a2 * scale, 1e-30)
+
+        if self._gamma_mode_active in {"action_tensor", "action_tensor_grid_strict"}:
+            return self._gamma_tensor_A12(float(D), N)
 
         if self._gamma_mode_active not in {"action_profile", "action_grid", "action_grid_strict"} or self._gamma_superrad_profile is None:
             return float(self.params.A1), float(self.params.A2)
@@ -3788,7 +3956,7 @@ class PSLTKinetics:
                 return 0.0
             return self.params.M * A * (alpha ** (4 * l + 4)) * delta_tilde  # [Mass]
 
-        A1_eff, A2_eff = self._gamma_action_A12(D)
+        A1_eff, A2_eff = self._gamma_action_A12(D, N=N)
         g1 = gamma_sr(1, 1, A1_eff)
         g2 = gamma_sr(2, 2, A2_eff)
 

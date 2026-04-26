@@ -1,0 +1,6 @@
+row_type,case,gamma_mode_active,gamma_tensor_bound_policy,n_points,f_R3_ge_0p90,f_R3_ge_0p95,f_hmumu_chi2_le_4,best_chi2,best_D,best_eta,winner_gt_3_fraction,acceptance_mismatch,winner_mismatch,max_abs_delta_mu_mumu,p95_abs_delta_mu_mumu,max_abs_delta_R3,p95_abs_delta_R3
+case,profile_Nref2_baseline,action_grid,all_valid,1260,0.926984126984127,0.9253968253968254,0.15,0.0005096471648422107,4.0,0.2,0.0,,,,,,
+case,tensor_N_resolved_strict,action_tensor_grid_strict,all_valid,1260,1.0,0.996031746031746,0.03333333333333333,0.6022370390391801,9.694915254237287,0.2,0.0,,,,,,
+case,tensor_bound_only_strict,action_tensor_grid_strict,bound_only_fallback,1260,0.926984126984127,0.9261904761904762,0.15,0.0005243332630820215,4.0,0.2,0.0,,,,,,
+delta,tensor_N_resolved_strict_minus_profile,action_tensor_grid_strict-vs-profile,all_valid,1260,,,,,,,,0.11666666666666667,0.6333333333333333,2823.168598876095,2650.6673049799974,1.0,1.0
+delta,tensor_bound_only_strict_minus_profile,action_tensor_grid_strict-vs-profile,bound_only_fallback,1260,,,,,,,,0.0,0.0,0.32929197113463715,0.11031885646947524,0.0027992630689506193,0.0005815036858451106

@@ -1,0 +1,16 @@
+metric,value,pass
+n_rows,1116,True
+n_D,62,True
+n_eta,3,True
+n_N,3,True
+n_ell,2,True
+all_actions_finite,True,True
+max_eta_collapse_abs,0.0,True
+max_eta_collapse_rel,0.0,True
+A1_profile_min,8.543060061548821e-06,True
+A1_profile_max,716975.9824821171,True
+A1_max_abs_log10_N_shape_vs_Nref,5.32666415142373,True
+A2_profile_min,3.952847154814521e-06,True
+A2_profile_max,14625703.128128678,True
+A2_max_abs_log10_N_shape_vs_Nref,3.461295309787196,True
+all_pass,True,True

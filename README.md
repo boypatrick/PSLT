@@ -99,7 +99,7 @@ This writes:
 - `output/repro/artifact_status.csv`
 - `paper/artifact_status.csv`
 
-Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `legacy_comparator`.
+Each row marks an artifact as `canonical_baseline`, `canonical_certificate`, `diagnostic_gate`, `diagnostic_variant`, `monitor_artifact`, or `legacy_comparator`.
 
 
 ## Requirements

@@ -1,5 +1,8 @@
 artifact_path,status,category,note,exists
 paper/main.pdf,canonical_baseline,manuscript,Current submission target PDF.,True
+ROADMAP_STATUS.md,canonical_certificate,submission_status,Operational roadmap: current closed/monitor/diagnostic reading for reviewer-facing theorem and profile gates.,True
+FAMILY_DECISION_TABLE.md,canonical_certificate,submission_status,"One-page family decision map: canonical reviewer branch, closed negatives, research-only ingredients, and reopen rules.",True
+paper/artifact_status.csv,canonical_certificate,submission_status,Generated artifact-status registry used to prevent diagnostic or legacy outputs from being read as baseline claims.,True
 paper/hll_signal_strength_summary.csv,canonical_baseline,observable_map,Baseline UV+LL-RG H->ll summary used in main text.,True
 paper/hll_uv_to_eft_summary.csv,canonical_baseline,uv_to_eft,Baseline UV-tree -> finite-match -> LL-RG summary.,True
 paper/core_param_robustness.csv,canonical_baseline,robustness,Main-text local one-at-a-time robustness table source.,True
@@ -21,6 +24,20 @@ output/kinetic_action_chain/full_direct_map_release_meta.json,canonical_baseline
 paper/hll_uv_envelope_summary.csv,canonical_baseline,uv_envelope,UV control envelope summary (nonzero finite-match center).,True
 paper/hll_uv_envelope_cases.csv,canonical_baseline,uv_envelope,Per-case UV envelope run details.,True
 paper/hll_uv_envelope_map.csv,canonical_baseline,uv_envelope,Pointwise mu_mumu envelope bounds over the active grid.,True
+output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_summary.csv,canonical_certificate,static_width,"S25 local strict static-width parent-tube certificate; adopted only on D=6, R_C=400, R=60->80, c=640.",True
+output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_aggregate_summary.csv,canonical_certificate,static_width,S25 aggregate certificate for the parity-uniform Whittaker special-function interval check.,True
+output/dirac_frame_check/minimal_dirac_conformal_check.csv,canonical_certificate,fermionic_lift,F1 conformal Dirac-frame certificate for the projected fermionic lift.,True
+output/gn_fp_2d/gn_lowN_microstate_count_summary.csv,canonical_certificate,lowN_counting,"G1 finite-volume low-N projector-rank certificate: ranks 1,2,3.",True
+output/highN_decoupling/highN_threshold_theorem_summary.csv,canonical_certificate,highN_threshold,N1 finite-volume Sturm/min-max threshold certificate; no fourth bound layer on the audited chain.,True
+output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_trace_synthesis_source_summary.csv,canonical_certificate,open_system_exact_bridge,O71 strict-slab physical trace synthesis certificate; closes the exact-bridge bottleneck for reviewer purposes.,True
+output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_gs_rate_source_summary.csv,canonical_certificate,open_system_exact_bridge,O72 secondary GS-rate certificate for the monotone adjoint-barrier sweep counts.,True
+output/hll_absolute_normalization/hll_absolute_normalization_synthesis_source_summary.csv,canonical_certificate,eymh_normalization,"U9 structural absolute-normalization synthesis; ratio constants, amplitude factorization, tree/source identities, kernel, and width profile closed on the audited domain.",True
+output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_summary.csv,diagnostic_gate,eymh_normalization,U10 direct y2raw(D*) impact gate; parent-point audited but diagnostic-only because it changes D21xE21 acceptance topology.,True
+paper/hll_uv_action_loop_eymh_feshbach_complement_summary_D21E21_fix.csv,canonical_certificate,eymh_normalization,U11 projected parent-kernel Feshbach-Schur complement budget; full-prefactor eps_F^(eq)<=2.33e-15 under the 1e-12 guard.,True
+output/superrad_fp_1d/channel_resolved_A_l_tensor_D4-20full_eta3_N1-2-3_l1-2_summary.csv,monitor_artifact,localized_channel_tensor,A1 localized channel tensor extraction; useful extraction upgrade but not an all-valid production replacement.,True
+output/superrad_fp_1d/channel_A_tensor_impact_Dgrid60_Egrid21_summary.csv,monitor_artifact,localized_channel_tensor,"A1 D60/E21 impact gate; bound-sector fallback is production-safe, strict all-valid tensor lookup is not.",True
+output/tcoh_fp_1d/tcoh_impact_gate_Dgrid60_Egrid21_summary.csv,diagnostic_gate,profile_gate,t_coh^(deph)(D) impact gate; diagnostic-only because it changes H->mumu acceptance and winner topology.,True
+output/eta_fp_1d/eta_impact_gate_Dgrid60_Egrid21_summary.csv,monitor_artifact,profile_gate,"eta_fp(D) impact gate; profile-scaled branches are adoption-safe, fully closed eta-axis variants remain diagnostic-only.",True
 paper/open_system_micro_baseline_candidate.csv,diagnostic_variant,open_system_gate,Open-system micro baseline-candidate gate decision (diagnostic track).,True
 paper/kappa_env_anchor_calibration.csv,diagnostic_variant,open_system_gate,Multi-anchor kappa_env calibration summary for open-system micro mode.,True
 paper/kappa_env_anchor_holdout.csv,diagnostic_variant,open_system_gate,Holdout validation metrics for multi-anchor kappa_env calibration.,True

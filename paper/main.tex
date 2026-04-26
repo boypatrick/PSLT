@@ -481,7 +481,7 @@ where $\omega_N^{(I)} > 0$ represents the decay rate due to tunneling or radiati
 
 For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from a rotating-background setup. In the static dual-center geometry considered here (no ergoregion), we no longer treat that same power as the physical origin of the escape width. Instead, the current baseline should be read as follows: the geometry-driven static surrogate is $\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}$, while Eq.~\eqref{eq:Gamma_channel} retains a Kerr-shaped power only as a legacy hierarchy convention absorbed into the action-derived profile factors $\tilde A_\ell(D)$. A full non-Hermitian width derivation for this static geometry is left as a dedicated upgrade path.
 
-\textbf{Reviewer-facing status of the static-width upgrade:} In the strict static formulation, the relevant object is the resonance problem for the same action-derived operator with outgoing boundary conditions, so that $\Gamma_{N,\ell}^{\rm(strict)}=-2\,\Im \omega_{N,\ell}$. We implemented a minimal complex-absorbing-potential pilot on the same 1D operator chain as Appendix~\ref{app:superrad_candidate} and scanned the benchmark set $D=\{6,12,18\}$ for the representative $(N,\ell)=(3,1)$ mode. The numerical chain is stable as infrastructure, but the extracted widths remain absorber-dominated over the tested $(\eta,z_{\rm cap})$ windows and do not yet exhibit a clean plateau. For that reason, the CAP outputs are not promoted into the reported baseline. At the current stage, the most conservative first-principles static surrogate is therefore the geometry-driven rate $\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}$ from Appendix~\ref{app:superrad_candidate}, while the full complex-pole extraction remains an explicit next-step upgrade rather than an over-claimed result.  The subsequent DtN/ECS/Whittaker/Jost audits sharpen but do not reverse this conclusion: the Whittaker-DtN roots are isolated finite-radius zeros, the dyadic Jost transfer gate passes the audited boxes, and the final \(D=6,\ R_C=400,\ 60\to80\) parent tube now has a \(5\%\)-inflated slab-envelope closure, a Cauchy/slab derivative-remainder realization of that reserve, and an intervalized parent-promotion version using one parity-uniform derivative envelope on the whole \(60\to80\) interval.  The remaining strict-promotion issue is therefore not another backend or pole-family search; it is only whether the displayed interval derivative constants are accepted as the special-function enclosure for the parent theorem.  Thus \(\Gamma_{N,\ell}^{\rm(geo)}\) remains the reported strict static surrogate unless that final interval certificate is adopted as the static-width promotion theorem.
+\textbf{Reviewer-facing status of the static-width upgrade:} In the strict static formulation, the relevant object is the resonance problem for the same action-derived operator with outgoing boundary conditions, so that $\Gamma_{N,\ell}^{\rm(strict)}=-2\,\Im \omega_{N,\ell}$. We implemented a minimal complex-absorbing-potential pilot on the same 1D operator chain as Appendix~\ref{app:superrad_candidate} and scanned the benchmark set $D=\{6,12,18\}$ for the representative $(N,\ell)=(3,1)$ mode. The numerical chain is stable as infrastructure, but the extracted widths remain absorber-dominated over the tested $(\eta,z_{\rm cap})$ windows and do not yet exhibit a clean plateau. For that reason, the CAP outputs are not promoted into the reported baseline. At the current stage, the most conservative first-principles static surrogate is therefore the geometry-driven rate $\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}$ from Appendix~\ref{app:superrad_candidate}, while the full complex-pole extraction remains an explicit next-step upgrade rather than an over-claimed result.  The subsequent DtN/ECS/Whittaker/Jost audits sharpen but do not reverse this conclusion: the Whittaker-DtN roots are isolated finite-radius zeros, the dyadic Jost transfer gate passes the audited boxes, and the final \(D=6,\ R_C=400,\ 60\to80\) parent tube now has a \(5\%\)-inflated slab-envelope closure, a Cauchy/slab derivative-remainder realization of that reserve, an intervalized parent-promotion version using one parity-uniform derivative envelope on the whole \(60\to80\) interval, and a direct Whittaker special-function check of those derivative constants.  The remaining strict-promotion issue is therefore not another backend or pole-family search; it is only whether the displayed special-function interval certificate is adopted as the parent theorem.  Thus \(\Gamma_{N,\ell}^{\rm(geo)}\) remains the reported strict static surrogate unless that final interval certificate is adopted as the static-width promotion theorem.
 
 \medskip\noindent\textbf{Proposition S1 (Siegert/DtN gate for promoting the static width).}
 For fixed \(D,\ell\), set
@@ -2100,11 +2100,11 @@ it is enough to supply the Cauchy envelopes \(L^{(C)}_{\pi,j}\) satisfying
 \((h_j/2)L^{(C)}_{\pi,j}\le0.05M_{\pi,j}\).  The audited fivefold node-slope
 guard stays comfortably inside this reserve.  S24 strengthens this last step
 by replacing the slabwise \(L^{(C)}_{\pi,j}\) by one interval derivative
-constant per parity over the full \(60\to80\) parent interval.  Consequently
-the remaining static-width work, if any is demanded by a referee, is only a
-special-function interval enclosure for those displayed constants; it is not a
-request for a new backend, a new \(R\)-split, CAP/ECS tuning, or a new pole
-family.
+constant per parity over the full \(60\to80\) parent interval, and S25 then
+checks those constants directly against the Whittaker-DtN special-function
+backend.  Consequently any remaining static-width work is only presentation
+adoption or polishing of this certificate; it is not a request for a new
+backend, a new \(R\)-split, CAP/ECS tuning, or a new pole family.
 
 \medskip\noindent\textbf{Proposition S24 (Intervalized parent-promotion form of S23).}
 Keep the notation of S23.  Suppose that for each parity \(\pi\) there is a
@@ -2194,13 +2194,106 @@ parent interval for that parity.
 
 \medskip\noindent\textbf{Corollary S24 (The final static-width bottleneck is intervalized).}
 The \(D=6,\ R_C=400,\ 60\to80,\ c=640\) parent tube now has an intervalized
-Cauchy/slab promotion theorem.  If a referee asks for a fully formal
-machine-interval version, the only remaining task is to certify the two
-displayed constants \(\Lambda^\sharp_{\rm even}\) and
-\(\Lambda^\sharp_{\rm odd}\) from the Whittaker-DtN special functions.  The
-object, tube, constants, and proof route are fixed; no CAP route, ECS branch
-tracking, backend replacement, wider \(R\)-family, or new pole family is part
-of the remaining roadmap.
+Cauchy/slab promotion theorem.  S25 below supplies the corresponding direct
+Whittaker-DtN special-function check of the two displayed constants
+\(\Lambda^\sharp_{\rm even}\) and \(\Lambda^\sharp_{\rm odd}\).  The object,
+tube, constants, and proof route are fixed; no CAP route, ECS branch tracking,
+backend replacement, wider \(R\)-family, or new pole family is part of the
+remaining roadmap.
+
+\medskip\noindent\textbf{Proposition S25 (Special-function interval certificate for the S24 constants).}
+Let \(\Lambda_\pi^\sharp\) be the parity-uniform S24 constants.  For each
+slab \(I_j\), let \({\cal S}_{\pi,j}\) be the finite skeleton consisting of
+the left, midpoint, and right \(R\)-stations and the five moving-tube points
+\[
+z\in\{0,\ r+ir,\ -r+ir,\ r-ir,\ -r-ir\}.
+\]
+Let \(\delta_R=0.15625\) and define the direct special-function centered
+difference
+\[
+D_RG_\pi(R,z):=
+\frac{G_\pi(R+\delta_R,z)-G_\pi(R-\delta_R,z)}{2\delta_R},
+\]
+where \(G_\pi\) is evaluated with the same full Whittaker-DtN residual used in
+S6--S24.  Suppose the local Cauchy/discretization enclosure on the skeleton
+cells satisfies
+\[
+\sup_{R\in[60,80],\ z\in{\cal Q}_r}|\partial_RG_\pi(R,z)|
+\le
+2\max_{j}\max_{(R,z)\in{\cal S}_{\pi,j}}|D_RG_\pi(R,z)|.
+\]
+If the right-hand side is at most \(\Lambda_\pi^\sharp\), then the S24
+interval-promotion theorem applies with a special-function backed derivative
+constant.
+
+\emph{Proof.}
+The displayed Cauchy/discretization enclosure gives an admissible parent
+derivative constant
+\[
+\Lambda_\pi^{\rm(sf)}
+:=
+2\max_{j}\max_{(R,z)\in{\cal S}_{\pi,j}}|D_RG_\pi(R,z)|.
+\]
+If \(\Lambda_\pi^{\rm(sf)}\le\Lambda_\pi^\sharp\), then every S24 slab
+remainder satisfies
+\[
+\frac{h_j}{2}\Lambda_\pi^{\rm(sf)}
+\le
+\frac{h_j}{2}\Lambda_\pi^\sharp .
+\]
+Thus all S24 inequalities, including both the \(5\%\)-reserve condition and
+the integrated tube condition, remain valid.  The zero-branch first-exit
+argument from S22 therefore closes the same parent tube.  The only new input
+relative to S24 is that the derivative constant is now checked by direct
+Whittaker-DtN special-function evaluations rather than by the node-slope proxy.
+
+\emph{Numerical special-function audit.}
+The executable certificate is
+\path{code/audit_static_width_whittaker_special_interval_certificate.py}.  It
+uses the S24 constants, evaluates \(D_RG_\pi\) on all \(32\) slabs for both
+parities, and writes
+\path{output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_samples.csv},
+\path{output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_slabs.csv},
+\path{output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_summary.csv}, and
+\path{output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_aggregate_summary.csv}.
+The audit uses \(480\) direct Whittaker-DtN derivative samples per parity and a
+factor-two special-function guard.  It closes both parity branches:
+\[
+\begin{aligned}
+N_{\rm sf\ interval}(60\to80)&=2/2,\\
+\max_\pi\frac{\Lambda_\pi^{\rm(sf)}}{\Lambda_\pi^\sharp}&=0.888891,\\
+\max_\pi\frac{\sum_jh_j\beta_{\pi,j}^{\rm(sf)}}{r}&=0.938387,\\
+\max_{\pi,j}\frac{(h_j/2)\Lambda_\pi^{\rm(sf)}}{0.05M_{\pi,j}}&=0.542851.
+\end{aligned}
+\]
+The parity-resolved values are
+\[
+\begin{array}{c|cccc}
+\pi & \max|D_RG_\pi| & \Lambda_\pi^{\rm(sf)}/\Lambda_\pi^\sharp &
+\max_j\theta_{\pi,j}^{\rm(sf)} &
+\sum_jh_j\beta_{\pi,j}^{\rm(sf)}/r\\
+\hline
+{\rm even} & 6.99042\times10^{-5} & 0.529451 & 0.329949 & 0.906726\\
+{\rm odd}  & 1.42403\times10^{-4} & 0.888891 & 0.542851 & 0.938387
+\end{array}
+\]
+with
+\[
+\min|\partial_EF_R|=96.9111,\qquad
+\max{\rm CR\ mismatch}=2.8945\times10^{-2}.
+\]
+Thus the S24 constants are not merely node-slope placeholders: after a
+factor-two guard, direct Whittaker-DtN special-function differentiation remains
+inside the interval certificate.
+
+\medskip\noindent\textbf{Corollary S25 (The final static-width task is no longer a backend search).}
+S22--S25 now give a fixed parent tube, a slab first-exit theorem, a Cauchy
+derivative remainder, a parity-uniform interval certificate, and a direct
+Whittaker special-function audit of the two interval constants.  Any remaining
+promotion choice is a presentation-level decision about accepting this
+certificate as the strict static-width theorem.  It is not a request for CAP
+tuning, ECS tracking, a new Whittaker backend, a new \(R\)-split, or a new pole
+family.
 
 \textbf{Rank-2 truncation justification:} Within the present hierarchy convention, the $\hat{\omega}_N^{4\ell+4}$ factor keeps higher-$\ell$ channels parametrically small for $\hat{\omega}_N < 1$ (our regime). Concretely, for $\hat{\omega}_N \sim 0.1$:
 \begin{equation}
@@ -12297,7 +12390,7 @@ Detailed coarse/mid/fine values and implementation provenance are retained in th
 \end{equation}
 The fine full-scan profile over $D=4,\dots,20$ yields $\tilde A_1\in[8.54\times10^{-6},\,4.10\times10^5]$ and $\tilde A_2\in[3.95\times10^{-6},\,4.92\times10^6]$, indicating a very stiff $D$-dependence in this preliminary closure.
 
-As a strict-upgrade check, we also connected a minimal complex-absorbing-potential solver to the same 1D action-derived operator chain and scanned benchmark windows in the absorber strength $\eta$ and absorber onset $z_{\rm cap}$. This pilot confirms that the non-Hermitian extraction pipeline is operational, but the benchmark mode remains in an absorber-linear or mixed regime rather than a plateau regime. A follow-up finite-radius Siegert/Robin audit, summarized in Proposition S1, reaches the same conservative conclusion from the outgoing-boundary side: the roots are parity-degenerate but strongly \(R\)-dependent, so they are still boundary-sensitive rather than stable complex poles. The combined physical extractor \path{code/extract_static_width_physical.py} now enforces both gates and marks the benchmark rows as \(\texttt{not\_promoted}\). Proposition S2 adds the first Riccati-DtN replacement of the local Robin exterior; it lowers the candidate widths but still fails both \(R\)- and \(R_{\rm tail}\)-stability. Proposition S3 then replaces the WKB exterior start by an analytic Coulomb-tail normalization; this removes the most ad hoc tail datum but still fails the exterior-stability gates. Proposition S4 adds the independent ECS cross-check; it solves the complex-scaled eigenproblem to roundoff residuals, but the tracked branch remains sensitive to \(\theta\), \(R_0\), and \(L\). Proposition S5 then removes the single-branch-selection loophole by tracking optimistic nearest-neighbor continuations over the resolved ECS spectrum; no seed-qualified branch passes. Proposition S6 implements the remaining full Coulomb/Whittaker outgoing DtN with a complex \(\mathrm{U}\)-function backend and still finds \(R\)- and matching-radius sensitivity. Proposition S7 then applies the same optimistic nearest-neighbor branch-isolation idea directly to the Whittaker-DtN roots; again \(0/48\) anchor continuations pass. Proposition S8 applies local argument-principle contours and certifies that all \(48\) Whittaker roots are isolated local finite-radius zeros, so the obstruction is not local root existence but exterior-parameter displacement. Proposition S9 then turns that obstruction into an explicit parent-lift budget: the best audited branch still misses the square-contour cover condition by a factor \(27.38\) and the local residual budget by a factor \(43.48\). Proposition S10 then separates raw Coulomb-tail forcing from Riccati transfer conditioning: the raw tail is below \(1.64\times10^{-2}\) of the local budget, but only \(4/48\) rows pass after inward transfer and the worst miss is a factor \(88.60\). Proposition S11 tests that transfer obstruction directly: the finite dyadic pass count improves from \(4/48\) on \(400\to800\) to \(24/48\) on \(800\to1600\), but the infinitesimal condition-number route is too pessimistic, with \(K\) up to \(6.45\times10^6\) and \(0/48\) linear passes on \(800\to1600\). Proposition S12 then uses the exact projective/Jost finite-amplitude identity: the endpoint dyadic contraction at \(1600\to3200\) passes all \(48/48\) audited rows with maximum ratio \(1.435\times10^{-3}\), but an analytic Jost-product or pole-exclusion lower bound is still needed before promotion. Proposition S13 supplies the endpoint lower-bound audit itself: the required Jost product is only \(3.10\)--\(103.58\), the observed product is at least \(5.5867\times10^3\), and both the Jost-product and projective pole-factor margins are at least \(697\). Proposition S14 then lifts this same dyadic Jost-product gate uniformly to the S8 local argument boxes: all \(48/48\) boxes pass, the maximum boundary ratio is \(2.6058\times10^{-2}\), the minimum contour margin is \(38.3758\), and the bottleneck \(64\)-point rerun has zero Jost winding with the same displayed worst values. Proposition S15 then tests the single-pole \(R\)-coherence necessary condition on the same boxes: S14 tail-box control holds on all \(39/39\) coherence groups, but \(0/39\) groups have a common box intersection; the full-case square-cover factors are \(36.5644\), \(36.9301\), and \(37.2734\) for \(D=6,12,18\), and even the pure fixed-\(R_C\), fixed-parity \(R\)-sweep needs factor \(28.7993\) at best. Proposition S16 formalizes the only viable promotion gate as a parent-side Rouché/implicit-flow theorem, and Proposition S17 quantifies the first finite-difference \(R\)-flow obstruction: all \(12/12\) fixed-\((D,R_C,\pi)\) paths retain S14 endpoint tail-box control, but \(0/12\) adjacent steps overlap on the current local boxes and the required transport tube is \(59.5\)--\(75.1\) box half-widths. Proposition S18 then tests the corresponding large-tube Rouché certificate directly: a coarse adaptive segment sweep closes \(33/36\) sampled segments, but the refined \(D=6,\ R_C=400\) rectangle bottleneck closes only \(2/6\), with maximum best index-compatible Rouché ratio \(1.475069\). Proposition S19 replaces the fixed rectangle by a secant-adapted implicit-flow tube on the same bottleneck; it closes the late \(100\to120\) even/odd pieces but only \(2/6\) segments overall, leaving the early \(60\to80\) and \(80\to100\) flowbox with maximum best contraction \(2.408830\) and median best contraction \(1.155677\). Proposition S20 then replaces the segment-supremum budget by an integrated curved-flowbox budget on the early pieces; it closes both \(80\to100\) parities at \(c=96\), but leaves \(60\to80\) with best ratios \(1.366139\) and \(1.593084\). Proposition S21 reruns exactly that final pair on parent-scale tubes and closes both parities, with maximum best contraction ratio \(0.918494\), median best ratio \(0.905757\), and derivative floor \(97.09324\). Proposition S22 then rewrites that last numerical closure in reviewer-facing slab form: on the \(D=6,\ R_C=400,\ 60\to80,\ c=640\) cubic tube, \(32\) equal slabs and a \(5\%\)-inflated upper-Darboux envelope close both parities with maximum inflated ratio \(0.969175\), median \(0.955463\), maximum uninflated upper-Darboux ratio \(0.923024\), minimum \(|\partial_EF_R|=97.09324\), and maximum CR mismatch \(2.8890\times10^{-2}\). Proposition S23 converts that \(5\%\) reserve into a Cauchy/slab derivative remainder: with a fivefold node-slope derivative guard, the maximum reserve usage is \(0.576824\), the maximum Cauchy-to-S22 beta ratio is \(0.979849\), and the maximum integrated Cauchy flowbox ratio is \(0.946761\). Proposition S24 then intervalizes the same derivative envelope by using one parity-uniform parent constant over \(60\to80\): the even/odd constants are \(2.64063\times10^{-4}\) and \(3.20405\times10^{-4}\), all \(64/64\) slab inequalities pass, the maximum reserve usage is \(0.793969\), the maximum beta-to-S22 ratio is \(0.990189\), and the maximum integrated interval ratio is \(0.954314\). Accordingly, the CAP, local-Siegert, Riccati-DtN, Coulomb-normalized DtN, ECS, and full Whittaker-DtN outputs are retained as infrastructure diagnostics only; the reported baseline continues to use $\Gamma_{N,\ell}^{\rm(geo)}$ as the leading static surrogate unless this final interval certificate is adopted as the promotion theorem.
+As a strict-upgrade check, we also connected a minimal complex-absorbing-potential solver to the same 1D action-derived operator chain and scanned benchmark windows in the absorber strength $\eta$ and absorber onset $z_{\rm cap}$. This pilot confirms that the non-Hermitian extraction pipeline is operational, but the benchmark mode remains in an absorber-linear or mixed regime rather than a plateau regime. A follow-up finite-radius Siegert/Robin audit, summarized in Proposition S1, reaches the same conservative conclusion from the outgoing-boundary side: the roots are parity-degenerate but strongly \(R\)-dependent, so they are still boundary-sensitive rather than stable complex poles. The combined physical extractor \path{code/extract_static_width_physical.py} now enforces both gates and marks the benchmark rows as \(\texttt{not\_promoted}\). Proposition S2 adds the first Riccati-DtN replacement of the local Robin exterior; it lowers the candidate widths but still fails both \(R\)- and \(R_{\rm tail}\)-stability. Proposition S3 then replaces the WKB exterior start by an analytic Coulomb-tail normalization; this removes the most ad hoc tail datum but still fails the exterior-stability gates. Proposition S4 adds the independent ECS cross-check; it solves the complex-scaled eigenproblem to roundoff residuals, but the tracked branch remains sensitive to \(\theta\), \(R_0\), and \(L\). Proposition S5 then removes the single-branch-selection loophole by tracking optimistic nearest-neighbor continuations over the resolved ECS spectrum; no seed-qualified branch passes. Proposition S6 implements the remaining full Coulomb/Whittaker outgoing DtN with a complex \(\mathrm{U}\)-function backend and still finds \(R\)- and matching-radius sensitivity. Proposition S7 then applies the same optimistic nearest-neighbor branch-isolation idea directly to the Whittaker-DtN roots; again \(0/48\) anchor continuations pass. Proposition S8 applies local argument-principle contours and certifies that all \(48\) Whittaker roots are isolated local finite-radius zeros, so the obstruction is not local root existence but exterior-parameter displacement. Proposition S9 then turns that obstruction into an explicit parent-lift budget: the best audited branch still misses the square-contour cover condition by a factor \(27.38\) and the local residual budget by a factor \(43.48\). Proposition S10 then separates raw Coulomb-tail forcing from Riccati transfer conditioning: the raw tail is below \(1.64\times10^{-2}\) of the local budget, but only \(4/48\) rows pass after inward transfer and the worst miss is a factor \(88.60\). Proposition S11 tests that transfer obstruction directly: the finite dyadic pass count improves from \(4/48\) on \(400\to800\) to \(24/48\) on \(800\to1600\), but the infinitesimal condition-number route is too pessimistic, with \(K\) up to \(6.45\times10^6\) and \(0/48\) linear passes on \(800\to1600\). Proposition S12 then uses the exact projective/Jost finite-amplitude identity: the endpoint dyadic contraction at \(1600\to3200\) passes all \(48/48\) audited rows with maximum ratio \(1.435\times10^{-3}\), but an analytic Jost-product or pole-exclusion lower bound is still needed before promotion. Proposition S13 supplies the endpoint lower-bound audit itself: the required Jost product is only \(3.10\)--\(103.58\), the observed product is at least \(5.5867\times10^3\), and both the Jost-product and projective pole-factor margins are at least \(697\). Proposition S14 then lifts this same dyadic Jost-product gate uniformly to the S8 local argument boxes: all \(48/48\) boxes pass, the maximum boundary ratio is \(2.6058\times10^{-2}\), the minimum contour margin is \(38.3758\), and the bottleneck \(64\)-point rerun has zero Jost winding with the same displayed worst values. Proposition S15 then tests the single-pole \(R\)-coherence necessary condition on the same boxes: S14 tail-box control holds on all \(39/39\) coherence groups, but \(0/39\) groups have a common box intersection; the full-case square-cover factors are \(36.5644\), \(36.9301\), and \(37.2734\) for \(D=6,12,18\), and even the pure fixed-\(R_C\), fixed-parity \(R\)-sweep needs factor \(28.7993\) at best. Proposition S16 formalizes the only viable promotion gate as a parent-side Rouché/implicit-flow theorem, and Proposition S17 quantifies the first finite-difference \(R\)-flow obstruction: all \(12/12\) fixed-\((D,R_C,\pi)\) paths retain S14 endpoint tail-box control, but \(0/12\) adjacent steps overlap on the current local boxes and the required transport tube is \(59.5\)--\(75.1\) box half-widths. Proposition S18 then tests the corresponding large-tube Rouché certificate directly: a coarse adaptive segment sweep closes \(33/36\) sampled segments, but the refined \(D=6,\ R_C=400\) rectangle bottleneck closes only \(2/6\), with maximum best index-compatible Rouché ratio \(1.475069\). Proposition S19 replaces the fixed rectangle by a secant-adapted implicit-flow tube on the same bottleneck; it closes the late \(100\to120\) even/odd pieces but only \(2/6\) segments overall, leaving the early \(60\to80\) and \(80\to100\) flowbox with maximum best contraction \(2.408830\) and median best contraction \(1.155677\). Proposition S20 then replaces the segment-supremum budget by an integrated curved-flowbox budget on the early pieces; it closes both \(80\to100\) parities at \(c=96\), but leaves \(60\to80\) with best ratios \(1.366139\) and \(1.593084\). Proposition S21 reruns exactly that final pair on parent-scale tubes and closes both parities, with maximum best contraction ratio \(0.918494\), median best ratio \(0.905757\), and derivative floor \(97.09324\). Proposition S22 then rewrites that last numerical closure in reviewer-facing slab form: on the \(D=6,\ R_C=400,\ 60\to80,\ c=640\) cubic tube, \(32\) equal slabs and a \(5\%\)-inflated upper-Darboux envelope close both parities with maximum inflated ratio \(0.969175\), median \(0.955463\), maximum uninflated upper-Darboux ratio \(0.923024\), minimum \(|\partial_EF_R|=97.09324\), and maximum CR mismatch \(2.8890\times10^{-2}\). Proposition S23 converts that \(5\%\) reserve into a Cauchy/slab derivative remainder: with a fivefold node-slope derivative guard, the maximum reserve usage is \(0.576824\), the maximum Cauchy-to-S22 beta ratio is \(0.979849\), and the maximum integrated Cauchy flowbox ratio is \(0.946761\). Proposition S24 then intervalizes the same derivative envelope by using one parity-uniform parent constant over \(60\to80\): the even/odd constants are \(2.64063\times10^{-4}\) and \(3.20405\times10^{-4}\), all \(64/64\) slab inequalities pass, the maximum reserve usage is \(0.793969\), the maximum beta-to-S22 ratio is \(0.990189\), and the maximum integrated interval ratio is \(0.954314\). Proposition S25 checks those constants directly against the Whittaker-DtN special-function backend: with \(480\) direct derivative samples per parity and a factor-two guard, both parity branches close, the maximum guarded-direct/S24 constant ratio is \(0.888891\), the maximum direct integrated ratio is \(0.938387\), and the maximum direct reserve usage is \(0.542851\). Accordingly, the CAP, local-Siegert, Riccati-DtN, Coulomb-normalized DtN, ECS, and full Whittaker-DtN outputs are retained as infrastructure diagnostics only; the reported baseline continues to use $\Gamma_{N,\ell}^{\rm(geo)}$ as the leading static surrogate unless this final special-function interval certificate is adopted as the promotion theorem.
 
 At current scan resolution, Table~\ref{tab:late_fp_profile_summary} shows that the $t_{\rm coh}$ and $\eta$ candidates are stable diagnostics whose map-level effects are below headline precision, while replacing the legacy constant-$A_\ell$ reference by the action-derived profile induces non-negligible shifts in $\mathcal{R}_3$ coverage. In the updated global scans of this manuscript, Eq.~\eqref{eq:superrad_A_profile} is used in baseline mode, and $(A_1,A_2)=(1,1)$ is retained only as a comparator.
 

@@ -885,6 +885,11 @@ Each row marks an artifact as `canonical_baseline`, `diagnostic_variant`, or `le
   (\zeta_p,\zeta_t)=(0,0),
   \]
   with exact determinant/Schur/weight/xi closure and zero anchor/onset residuals. The first nontrivial runner-up `(0.125,0.0)` already opens visible distortions (`part onset residual = 2.10e-03`, `tree onset residual = 9.63e-03`, `max det residual = 9.90e-04`, `max Schur residual = 6.59e-04`, `max weight residual = 1.18e-04`, `max xi residual = 9.47e-03`). This is the cleanest positive local statement so far: the natural projected parent-action variables are the zero-second-jet normal coordinates around the identity/background fixed points, and those normal coordinates are exactly the linear excess variables.
+- **EYMH projected parent-kernel complement guard:** after fixing the projected parent block, the remaining local truncation question is whether integrating out the complement could visibly move the exported parented response. The audit under
+  - `code/audit_hll_parent_kernel_feshbach_complement.py`
+  - `output/hll_uv_matching/hll_uv_action_loop_eymh_feshbach_complement_summary_D21E21_fix.csv`
+  - `paper/hll_uv_action_loop_eymh_feshbach_complement_summary_D21E21_fix.csv`
+  converts the residual between the exported parented response and the projected `logdet + Schur` response into the equivalent Feshbach norm budget `eps_F^(eq)=ell/(2+ell)`. On the canonical D21xE21 parented map, the response-level maximum is `4.44e-16` and the full-prefactor maximum is `2.33e-15`, both far below the explicit `1e-12` reviewer guard. This should be read narrowly: it closes the local projected complement budget needed by the current EYMH normalization theorem, not a global spectral theorem for the full `H_QQ` block.
 - **RG-window robustness (UV+LL-RG controls):** `code/scan_hll_rge_sensitivity.py` scans one-at-a-time windows for `mu_low`, `gamma_diag`, `gamma_offdiag`, `kappa_diag`, and `kappa_offdiag`, exporting:
   - `output/robustness/hll_rge_sensitivity_cases.csv`
   - `output/robustness/hll_rge_sensitivity_table.csv`

@@ -157,7 +157,7 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \parbox[t]{0.17\textwidth}{$\Gamma_{N,\ell}$ channel normalization ($A_\ell$)} & \parbox[t]{0.28\textwidth}{Action-derived $\tilde A_\ell(D)$ baseline plus a first localized tensor audit over $(D,\eta,N,\ell)$; the all-valid D60/E21 tensor gate is not baseline-promoted, while the bound-only policy is map-safe} & \parbox[t]{0.13\textwidth}{Yes, through the $N_{\rm ref}=2$ profile slice} & \parbox[t]{0.24\textwidth}{Adoption wording only: either retain the profile slice or promote the same tensor with positive-proxy rows falling back to $N_{\rm ref}$} \\
 \parbox[t]{0.17\textwidth}{Open-system $\chi_{\rm eff}$ (Lindblad)} & \parbox[t]{0.28\textwidth}{Diagnostic only in the scan, but the exact-bridge bottleneck is reviewer-facing closed: overlap factorization, singleton carrier reduction, and strict-slab trace certificate are fixed on the audited bridge} & \parbox[t]{0.13\textwidth}{Diagnostic only} & \parbox[t]{0.24\textwidth}{No new support/object search; optional work is continuum/global lift or a microscopic EYMH bath derivation} \\
 \parbox[t]{0.17\textwidth}{$B_N$ visibility profile from EFT normalization} & \parbox[t]{0.28\textwidth}{EFT-operator-normalized baseline; runtime-direct operator extraction promoted only in the risk-weighted parity branch} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep the release-qualified profile-blend branch separate from the parked strict all-direct endpoint; the real remaining upgrade is fully localized channel-resolved extraction, not another local blend retune} \\
-\parbox[t]{0.17\textwidth}{$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}]} & \parbox[t]{0.28\textwidth}{EFT/Wilson-matched baseline with U9 structural absolute-normalization closure and a U10 direct-\(y_2^{\rm raw}(D_\star)\) diagnostic gate} & \parbox[t]{0.13\textwidth}{Yes, release scalar retained} & \parbox[t]{0.24\textwidth}{Optional projector-continuation theorem or explicit topology-changing adoption decision; no new normalization family} \\
+\parbox[t]{0.17\textwidth}{$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}]} & \parbox[t]{0.28\textwidth}{EFT/Wilson-matched baseline with U9 structural absolute-normalization closure, U10 direct-\(y_2^{\rm raw}(D_\star)\) diagnostic gate, and U11 \(10^{-12}\)-guarded projected-kernel complement budget} & \parbox[t]{0.13\textwidth}{Yes, release scalar retained} & \parbox[t]{0.24\textwidth}{Optional projector-continuation theorem or explicit topology-changing adoption decision; no new normalization family} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -204,9 +204,9 @@ To keep the main text readable, the code/CSV-heavy appendix derivations are grou
 \parbox[t]{0.26\textwidth}{Residuals \(9.67\times10^{-17}\), \(5.97\times10^{-14}\); half-lobe factor \(1.06715\); trace/source \(1.003005\,I_{\rm req}\).} &
 \parbox[t]{0.22\textwidth}{Diagnostic for the global scan, but the exact-bridge bottleneck is reviewer-facing closed; no new support/object search.} \\
 \addlinespace
-\parbox[t]{0.15\textwidth}{EYMH \(H\to\mu\mu\) normalization (U1--U10)} &
-\parbox[t]{0.27\textwidth}{Observable bridge factorizes into UV-to-EFT witnesses, tree/source identities, projected kernel, width profile, EYMH core normalization, and a reference-point \(y_2^{\rm raw}(D_\star)\) stability gate.} &
-\parbox[t]{0.26\textwidth}{Exact blocks close at machine level; projected-box max relative error \(9.89\times10^{-4}\). U10 gate finds direct \(D_\star\) scalar changes acceptance topology by \(21/441\).} &
+\parbox[t]{0.15\textwidth}{EYMH \(H\to\mu\mu\) normalization (U1--U11)} &
+\parbox[t]{0.27\textwidth}{Observable bridge factorizes into UV-to-EFT witnesses, tree/source identities, projected kernel, width profile, EYMH core normalization, a reference-point \(y_2^{\rm raw}(D_\star)\) gate, and a Feshbach--Schur complement budget.} &
+\parbox[t]{0.26\textwidth}{Exact blocks close at machine level; projected-box max relative error \(9.89\times10^{-4}\). U10 changes acceptance by \(21/441\); U11 gives \(\varepsilon_F^{\rm(eq)}\le2.33\times10^{-15}\), passing the \(10^{-12}\) guard.} &
 \parbox[t]{0.22\textwidth}{Structurally closed; direct \(y_2^{\rm raw}(D_\star)\) is diagnostic-only, not strict baseline adoption-safe.} \\
 \addlinespace
 \parbox[t]{0.15\textwidth}{Barrier leakage tensor (A1/C1)} &
@@ -3955,7 +3955,7 @@ S_{\rm parent}=\log K_{11}+\log\widehat G_{\rm Schur}.
 The exact audits verify each algebraic step appearing in the theorem statement and support the canonical sector assignment used above: the earlier block-split closure identifies the participation and shell/tree diagonals themselves as the canonical projected sectors; the `logdet + Schur' witness reconstructs the response weight and parented prefactor to machine precision, with \(\max|\Delta A_{\rm resp}^{\rm logdet}|=2.22\times10^{-16}\) and \(\max|\Delta\Pi_{\rm parent}^{\rm logdet}|=9.71\times10^{-17}\); the background-normalized parent block-determinant / Schur audit gives \(\max|S_{\rm parent}-S_{\rm resp}|=5.55\times10^{-16}\), \(\max|\Delta(\det/K_{\rm bg})|=1.33\times10^{-15}\), and \(\max|\Delta \widehat G_{\rm Schur}|=6.66\times10^{-16}\); and the exact parent-kernel excess functional reproduces the direct mismatch functional with \(\max|J_{\rm direct}-J_{\rm parent}|=1.30\times10^{-18}\). Lemma~1 therefore reduces the remaining work to making the projected-Hessian construction from the parent action explicit enough that this already-exact numerical structure can be read as a genuine Gaussian fluctuation theorem on the localized two-mode sector.
 
 \emph{Local truncation remark.}
-What is still \emph{not} claimed here is a global spectral-completeness theorem for the full EYMH fluctuation operator. The current statement is local to the audited low-mode sector and assumes that the complement does not reorganize the projected closure at leading order. A stronger theorem would require an explicit control of the complement remainder, for example through a Feshbach/Schur estimate on the off-sector couplings \(H_{PQ},H_{QP}\) relative to the complement block \(H_{QQ}\), or an equivalent local spectral-separation bound. At present we use the exact bridge residuals as the empirical evidence that this remainder is negligible on the localized parented map, while leaving the fully quantified truncation bound as part of the remaining proof-level tightening.
+What is still \emph{not} claimed here is a global spectral-completeness theorem for the full EYMH fluctuation operator. The current statement is local to the audited low-mode sector and assumes that the complement does not reorganize the projected closure at leading order. A stronger global theorem would require a direct lower bound on the full complement block \(H_{QQ}\) and an a priori off-sector coupling estimate for \(H_{PQ},H_{QP}\). Proposition U11 below supplies the narrower result actually needed for the present manuscript: an audited Feshbach--Schur complement budget for the exported parented map, showing that the observed complement loss is already at the numerical floor on the localized domain.
 
 \noindent\textbf{Corollary 1 (Local complement remainder form).}
 Let \(Q:=I-P\), and write the quadratic fluctuation operator in \(P/Q\) block form
@@ -4016,6 +4016,123 @@ and the elementary bound \(|\log(1-x)|\le |x|/(1-|x|)\) for \(|x|<1\) yields
 \frac{2\|A\|}{1-\|A\|}.
 \]
 If, in addition, \(H_{QQ}\) is positive on the complement, then \(A\) is positive semidefinite and \(\|A\|<1\) implies \(I-A>0\); hence \(H_{\rm eff}\) is positive on the projected low-mode sector as well. Thus the remaining truncation error is controlled by the product of the off-sector couplings with the complement resolvent, which is exactly the quantity that the current theorem chain leaves as an audited local remainder rather than a global spectral statement.
+
+\medskip\noindent\textbf{Proposition U11 (Projected parent-kernel Feshbach--Schur complement estimate).}
+The complement error in Corollary~1 can be converted into a reviewer-facing norm budget without introducing a new EYMH kernel family.  Let
+\[
+B:=H_{QQ}^{-1/2}H_{QP}H_{PP}^{-1/2},
+\qquad
+A=B^\dagger B.
+\]
+If the localized complement block is positive and
+\[
+\|B\|^2=\|A\|\le \varepsilon_F<1,
+\]
+then
+\[
+H_{\rm eff}
+=
+H_{PP}^{1/2}(I-A)H_{PP}^{1/2},
+\qquad
+0\le A\le \varepsilon_F I_2.
+\]
+Consequently
+\[
+\left|
+\log\frac{\det H_{\rm eff}}{\det H_{PP}}
+\right|
+=
+|\log\det(I-A)|
+\le
+\frac{2\varepsilon_F}{1-\varepsilon_F},
+\]
+and the corresponding response-weight correction obeys
+\[
+\left|
+\left(\frac{\det H_{\rm eff}}{\det H_{PP}}\right)^{-1/2}-1
+\right|
+\le
+\frac{\varepsilon_F}{1-\varepsilon_F}.
+\]
+Equivalently, an observed log-determinant complement loss \(\ell\) is covered by the effective norm budget
+\[
+\varepsilon_F^{\rm(eq)}
+=
+\frac{\ell}{2+\ell},
+\qquad
+\ell:=
+\left|
+\log\frac{\det H_{\rm eff}}{\det H_{PP}}
+\right|.
+\]
+
+\emph{Proof.}
+The first two identities are the Feshbach--Schur reduction written in normalized coordinates.  Since \(A=B^\dagger B\), positivity of the complement gives \(A\ge0\).  The assumption \(\|A\|\le\varepsilon_F<1\) implies that both eigenvalues \(\alpha_1,\alpha_2\) of \(A\) lie in \([0,\varepsilon_F]\), hence
+\[
+|\log\det(I-A)|
+=
+\sum_{j=1}^2-\log(1-\alpha_j)
+\le
+\sum_{j=1}^2\frac{\alpha_j}{1-\alpha_j}
+\le
+\frac{2\varepsilon_F}{1-\varepsilon_F}.
+\]
+The response factor is \(\det(I-A)^{-1/2}\).  Since \(\det(I-A)\ge(1-\varepsilon_F)^2\), its relative drift is at most
+\[
+(1-\varepsilon_F)^{-1}-1
+=
+\frac{\varepsilon_F}{1-\varepsilon_F}.
+\]
+Solving \(\ell=2\varepsilon_F/(1-\varepsilon_F)\) gives the displayed equivalent budget.  Thus the complement estimate is a direct operator-norm consequence of the same projected Schur form already used in Corollary~1.
+
+\emph{Verified numerics.}
+The audit \path{code/audit_hll_parent_kernel_feshbach_complement.py} evaluates the complement loss on the canonical parented D21\(\times\)E21 map without changing any observable policy.  It compares the exported parented response
+\[
+A_{\rm exp}
+=
+\texttt{coeff\_participation\_access\_parented}\,
+\texttt{tree\_diag\_compressibility\_parented}
+\]
+with the projected Schur response
+\[
+A_{\rm proj}
+=
+\exp\!\left[-\frac12\left(\log K_{11}+\log G_{\rm Schur}\right)\right],
+\]
+and defines the empirical complement determinant factor by
+\[
+\widehat\theta
+=
+\left(\frac{A_{\rm exp}}{A_{\rm proj}}\right)^{-2},
+\qquad
+\widehat\ell=|\log\widehat\theta|.
+\]
+Across all \(441\) grid points, the response-level result is
+\[
+\max\widehat\ell=8.88\times10^{-16},
+\qquad
+\max\varepsilon_F^{\rm(eq)}=4.44\times10^{-16},
+\qquad
+\max\left|\frac{A_{\rm exp}}{A_{\rm proj}}-1\right|
+=4.44\times10^{-16}.
+\]
+Repeating the same estimate after multiplying by the shell-access and local heat-kernel prefactors gives the full prefactor-level certificate
+\[
+\max\widehat\ell_{\rm pref}=4.66\times10^{-15},
+\qquad
+\max\varepsilon_{F,{\rm pref}}^{\rm(eq)}=2.33\times10^{-15},
+\qquad
+\max\left|\frac{\Pi_{\rm exp}}{\Pi_{\rm proj}}-1\right|
+=2.33\times10^{-15}.
+\]
+Both pass the explicit reviewer guard \(\varepsilon_F=10^{-12}\): the log-determinant guard
+\[
+\frac{2\varepsilon_F}{1-\varepsilon_F}=2.000000000002\times10^{-12}
+\]
+exceeds the observed response and prefactor losses by factors \(2.25\times10^3\) and \(4.29\times10^2\), respectively.  The certificate files are \path{paper/hll_uv_action_loop_eymh_feshbach_complement_summary_D21E21_fix.csv}, \path{paper/hll_uv_action_loop_eymh_feshbach_complement_map_D21E21_fix.csv}, and \path{paper/hll_uv_action_loop_eymh_feshbach_complement_D21E21_fix.png}.
+
+\medskip\noindent\textbf{Corollary U11 (Status of the EYMH complement tightening).}
+On the audited parented D21\(\times\)E21 map, the projected EYMH parent kernel is stable under a \(10^{-12}\)-level Feshbach--Schur complement budget.  This closes the earlier ``complement estimate'' wording as a secondary tightening of the projected parent-kernel theorem: the exported parented response and full prefactor already sit at machine precision inside the two-mode projected Schur block.  The result should not be read as a global spectral theorem for \(H_{QQ}\); such a theorem would still require a direct parent-side lower bound on \(H_{QQ}\) and an a priori off-sector coupling estimate for \(B\).  For the present manuscript, however, the complement can no longer be treated as a visible normalization ambiguity, and U10 remains the only live normalization-side caveat.
 
 Once that projected block structure is fixed, all diagonal ambiguity is gone and only one matrix-level choice survives: the off-diagonal coupling between the participation sector and the shell/background sector. Lemma~2 addresses exactly that remaining freedom. Its role is narrower than Lemma~1, but also sharper: after the block decomposition has been fixed at the parent-action level, the mixed entry must still be chosen, and the claim is that only one positive homogeneous anchored coupling remains compatible with the same local symmetry and normalization structure.
 
@@ -4319,13 +4436,13 @@ We have presented a computable EFT-level demonstrator of the Projection Spectral
     \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated by the \texttt{fp\_2d\_full} microcanonical-window + tail prescription and the observable sector uses EFT-operator-normalized visibility profiles $B_N(D)$ with neutral high-$N$ saturation rather than an extra visibility-side cutoff.
     \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With full-grid action-derived $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ profiles, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $15.0\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
 \end{enumerate}
-At the same time, the present implementation keeps two EFT-level approximations explicit: map-level profile closure remains active in the baseline $B_N(D)$ visibility sector (while release-production and risk-weighted runtime-direct parity branches are both available) and a bounded nearest-neighbor flavor projector in the matched $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}. The absolute \(H\to\mu\mu\) normalization is structurally closed in the U9 sense, but the U10 direct inserted-history \(y_2^{\rm raw}(D_\star)\) scalar is retained only as a diagnostic because it changes the D21\(\times\)E21 acceptance topology. Therefore, the present manuscript supports a robust statement about spectral generation selection on the release baseline, and also about a release-qualified runtime-direct visibility parity path, but not yet a strict claim that the observable sector is closed by per-cell all-direct extraction at production level.
+At the same time, the present implementation keeps two EFT-level approximations explicit: map-level profile closure remains active in the baseline $B_N(D)$ visibility sector (while release-production and risk-weighted runtime-direct parity branches are both available) and a bounded nearest-neighbor flavor projector in the matched $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}. The absolute \(H\to\mu\mu\) normalization is structurally closed in the U9 sense and its projected parent-kernel complement budget is closed in the U11 sense, but the U10 direct inserted-history \(y_2^{\rm raw}(D_\star)\) scalar is retained only as a diagnostic because it changes the D21\(\times\)E21 acceptance topology. Therefore, the present manuscript supports a robust statement about spectral generation selection on the release baseline, and also about a release-qualified runtime-direct visibility parity path, but not yet a strict claim that the observable sector is closed by per-cell all-direct extraction at production level.
 
 \textbf{Limitations and outlook.}
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:
 The use of mixed-resolution ingredients is a deliberate design choice: action-derived extraction fixes low-mode profiles (\texttt{fp\_2d\_full} for $g_N$, EFT-operator-normalized $B_N(D)$ from overlap-extracted inputs, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$), while global-map evaluation is still an EFT-level closure rather than a full direct localized recomputation at every $(D,\eta,N)$ point.
 \begin{enumerate}
-    \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison now uses a scan-level EFT/Wilson-matched map with bounded flavor mixing and leptonic-width closure [Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:mu_pred_abs_bridge}]. The fixed point in Eq.~\eqref{eq:mu_pred} should be read only as a reference-normalization convention for the relative observable, while the stronger normalization-side evidence now comes from the U9/U10 audit chain. U9 reduces the apparent reference arbitrariness to the three scalar bridge constants $(A_\star,R_{e/\mu}^\star,R_{\tau/\mu}^\star)$, closes the ratio constants and amplitude factorization on the audited domain, and identifies the parent-side EYMH core plus mirror correction behind the finite-box bridge coefficient. U10 then isolates the remaining reference-point scalar issue: the direct inserted-history \(y_2^{\rm raw}(D_\star)\) value is parent-point audited, but it is not strict adoption-safe because it changes the D21\(\times\)E21 acceptance topology. The release scalar is therefore retained unless a separate reviewer-facing decision accepts that topology change or a sharper projector-continuation theorem removes the discrepancy.
+    \item \textbf{Observable mapping}: the $H\to\mu\mu$ comparison now uses a scan-level EFT/Wilson-matched map with bounded flavor mixing and leptonic-width closure [Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:mu_pred_abs_bridge}]. The fixed point in Eq.~\eqref{eq:mu_pred} should be read only as a reference-normalization convention for the relative observable, while the stronger normalization-side evidence now comes from the U9--U11 audit chain. U9 reduces the apparent reference arbitrariness to the three scalar bridge constants $(A_\star,R_{e/\mu}^\star,R_{\tau/\mu}^\star)$, closes the ratio constants and amplitude factorization on the audited domain, and identifies the parent-side EYMH core plus mirror correction behind the finite-box bridge coefficient. U10 then isolates the remaining reference-point scalar issue: the direct inserted-history \(y_2^{\rm raw}(D_\star)\) value is parent-point audited, but it is not strict adoption-safe because it changes the D21\(\times\)E21 acceptance topology. U11 closes the separate projected-kernel complement question: the full-prefactor Feshbach equivalent norm is at most \(2.33\times10^{-15}\), well inside a \(10^{-12}\) guard. The release scalar is therefore retained unless a separate reviewer-facing decision accepts that topology change or a sharper projector-continuation theorem removes the discrepancy.
     \item \textbf{Mixing channel}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and inject its full scan-grid action-derived profile in the global map. The remaining gap is a full $(D,\eta,N)$ localized projection.
     \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). The original multi-anchor + holdout calibration remains in place, but the line is now much narrower than a generic reservoir ansatz: on the audited knot set, $\kappa_{\rm env}$ is isolated as a scalar amplitude modulus, the localized two-level projection leaves only the leading $\sigma_z/\sigma_x$ directions, and the effective kernels are on-shell samples of a single gap-locked single-pole response family with $\tau_{{\rm env},a}=\omega_{1,a}^{-1}$ to machine precision. The sharp remaining theorem target is parent-side: show that the projected EYMH Schur resolvent admits a first-mode-dominant truncation on $\omega\in\{0,\Delta E_a\}$ with leading pole scale $\Omega_{1,a}=\omega_{1,a}$ and uniformly small higher-mode remainder. Until that step is taken, this block remains outside baseline figures.
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map, while the release baseline keeps strict D-grid lookup and the automatic chain remains a comparator. The release-production path now pairs active-grid direct two-dimensional spectra for $g_N(D)$ with per-cell direct evaluation of $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ while keeping baseline $B_N$ profile closure; on both release audits it matches the release baseline exactly ($\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch $=0$, $\max|\Delta\mu_{\mu\mu}|=0$). The tuned visibility path should therefore be read as a release-qualified risk-weighted visibility parity check, not as a strict all-direct closure of $B_N$. Separately, the broader-grid strict all-direct validator is parked at its current case-aware endpoint on the two validation surfaces, so this line should be reopened only for a genuinely new observable-side mechanism class rather than another local blend retune. For the UV-to-EFT map, the refreshed diagonal-threshold comparator and the absolute/loop-improved EYMH comparators show the same pattern: zero acceptance mismatch, exact basis reconstruction, and only small deformation. The remaining UV-to-EFT gap is no longer the existence of a stable local absolute witness; beyond the U9 structural closure, the only live choices are a sharper parent projector-continuation theorem for the U10 scalar or an explicit decision to keep the release scalar as the conservative baseline.
@@ -4382,10 +4499,10 @@ The appendices below are intentionally audit-heavy.  For review, the recommended
 \emph{Certificate files:} \path{output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_trace_synthesis_source_summary.csv} and \path{output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_gs_rate_source_summary.csv}.
 \emph{Numerical conclusion:} physical trace plus source gives \(1.003005\,I_{\rm req}\); the GS-rate polish closes the sweep-count explanation.
 
-\paragraph{EYMH \(H\to\mu\mu\) normalization \(U6\)--\(U10\).}
-\emph{Theorem status:} structurally closed at U9; U10 direct \(y_2^{\rm raw}(D_\star)\) scalar is diagnostic-only.
-\emph{Certificate files:} \path{output/hll_absolute_normalization/hll_absolute_normalization_synthesis_source_summary.csv} and \path{output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_summary.csv}.
-\emph{Numerical conclusion:} projected-box max error is \(9.89\times10^{-4}\); the direct scalar changes \(f(\chi^2_{\mu\mu}\le4)\) from \(0.095238\) to \(0.142857\), so the release scalar is retained.
+\paragraph{EYMH \(H\to\mu\mu\) normalization \(U6\)--\(U11\).}
+\emph{Theorem status:} structurally closed at U9; U10 direct \(y_2^{\rm raw}(D_\star)\) scalar is diagnostic-only; U11 closes the projected-kernel complement budget as secondary tightening.
+\emph{Certificate files:} \path{output/hll_absolute_normalization/hll_absolute_normalization_synthesis_source_summary.csv}, \path{output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_summary.csv}, and \path{paper/hll_uv_action_loop_eymh_feshbach_complement_summary_D21E21_fix.csv}.
+\emph{Numerical conclusion:} projected-box max error is \(9.89\times10^{-4}\); the direct scalar changes \(f(\chi^2_{\mu\mu}\le4)\) from \(0.095238\) to \(0.142857\), so the release scalar is retained; the full-prefactor Feshbach equivalent norm is at most \(2.33\times10^{-15}\), passing the \(10^{-12}\) complement guard.
 
 \paragraph{Fermions, low-\(N\), and high-\(N\) gates \(F1,G1,N1\).}
 \emph{Theorem status:} closed on the projected chart and finite-volume/Sturm domains; optional work is only global or continuum strengthening.

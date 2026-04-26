@@ -1,0 +1,4 @@
+candidate,description,ref_D,ref_eta_summary,y2_raw_ref,status
+current_release_reference,linear interpolation of canonical integer-D y_eff profile,9.6,1.0,0.00016598138027792002,current release value; not parent-point audited
+canonical_history_direct_reference,direct D_* solve inserted into the full D4--20 branch history,9.6,1.0,0.000184400649653,parent-point audited candidate; requires map-impact gate before adoption
+single_point_eigen_order,standalone D_* solve initialized by eigenvalue order,9.6,1.0,0.0001095835057003,diagnostic-only; wrong generation label near branch crossing

@@ -204,15 +204,20 @@ To keep the main text readable, the code/CSV-heavy appendix derivations are grou
 \parbox[t]{0.26\textwidth}{Residuals \(9.67\times10^{-17}\), \(5.97\times10^{-14}\); half-lobe factor \(1.06715\); trace/source \(1.003005\,I_{\rm req}\).} &
 \parbox[t]{0.22\textwidth}{Diagnostic for the global scan, but the exact-bridge bottleneck is reviewer-facing closed; no new support/object search.} \\
 \addlinespace
-\parbox[t]{0.15\textwidth}{EYMH \(H\to\mu\mu\) normalization (U1--U9)} &
-\parbox[t]{0.27\textwidth}{Observable bridge factorizes into UV-to-EFT witnesses, tree/source identities, projected kernel, width profile, and EYMH core normalization.} &
-\parbox[t]{0.26\textwidth}{Bridge/source residuals are machine-level; projected-box max relative error \(9.89\times10^{-4}\) with mirror-corrected \(c_\sigma(D)\).} &
-\parbox[t]{0.22\textwidth}{Closed on the audited domain; remaining work is prose polish or sub-\(10^{-3}\) mirror-remainder tightening.} \\
+\parbox[t]{0.15\textwidth}{EYMH \(H\to\mu\mu\) normalization (U1--U10)} &
+\parbox[t]{0.27\textwidth}{Observable bridge factorizes into UV-to-EFT witnesses, tree/source identities, projected kernel, width profile, EYMH core normalization, and a reference-point \(y_2^{\rm raw}(D_\star)\) stability gate.} &
+\parbox[t]{0.26\textwidth}{Exact blocks close at machine level; projected-box max relative error \(9.89\times10^{-4}\). U10 gate finds direct \(D_\star\) scalar changes acceptance topology by \(21/441\).} &
+\parbox[t]{0.22\textwidth}{Structurally closed; direct \(y_2^{\rm raw}(D_\star)\) is diagnostic-only, not strict baseline adoption-safe.} \\
 \addlinespace
 \parbox[t]{0.15\textwidth}{Barrier leakage tensor (A1/C1)} &
 \parbox[t]{0.27\textwidth}{The localized channel normalization separates as \(A_\ell^{\rm loc}(D,\eta,N)=A_\ell^{\rm fp}(D;N)\); the scanned \(\eta\) axis multiplies the channel rate but does not renormalize the barrier integral.} &
 \parbox[t]{0.26\textwidth}{Full \(D=4,\dots,20\) tensor: \(306\) rows, all actions finite, max \(\eta\)-collapse residual \(0\). All-valid D60/E21 gate has acceptance mismatch \(0.116667\); bound-only fallback restores mismatch \(0\) and winner mismatch \(0\).} &
 \parbox[t]{0.22\textwidth}{Extraction-side promoted. The safe tensor route is now a bound-sector policy on the same branch: positive-proxy rows fall back to \(N_{\rm ref}=2\), so no new family is introduced.} \\
+\addlinespace
+\parbox[t]{0.15\textwidth}{Profile gates (\(t_{\rm coh}\), \(\eta_{\rm fp}\))} &
+\parbox[t]{0.27\textwidth}{Candidate first-principles profiles are impact-gated one policy at a time against the fixed release map, so profile adoption is separated from new observable-family design.} &
+\parbox[t]{0.26\textwidth}{D60/E21: \(t_{\rm coh}^{\rm(deph)}\) gives acceptance mismatch \(0.016667\), winner mismatch \(0.005556\), and \(p95|\Delta\mu_{\mu\mu}|=4.95503\); profile-scaled \(\eta_{\rm fp}\) gives acceptance/winner mismatch \(0\) and \(p95|\Delta\mu_{\mu\mu}|\le2.0734\times10^{-2}\).} &
+\parbox[t]{0.22\textwidth}{\(t_{\rm coh}^{\rm(deph)}\) is diagnostic-only.  Profile-scaled \(\eta_{\rm fp}\) is adoption-safe, with \(\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)\) the conservative branch; fully closed eta-axis variants remain diagnostic-only.} \\
 \addlinespace
 \parbox[t]{0.15\textwidth}{Release/direct map parity} &
 \parbox[t]{0.27\textwidth}{Production direct spectral-selection closes \(g_N+\chi+\tilde A_\ell\) against \texttt{full\_direct}; visibility parity remains qualified.} &
@@ -436,7 +441,7 @@ r_N(D, \eta) = \eta \, \ee^{-2 S_N(D)}.
 \label{eq:rN}
 \end{equation}
 Here, $\eta$ is a dimensionless \emph{overlap amplitude} (not a probability), representing the effective strength of the dual-center interaction; values $\eta > 1$ are permitted, corresponding to collective or multi-channel enhancement. Because $r_N$ enters only as the coarse-grained prefactor multiplying the growth matrix in Eq.~\eqref{eq:rank2_linear_system}, it should not be interpreted as a literal single-particle transmission probability.
-An action-derived prefactor candidate $\eta_{\rm fp}(D)$ extracted from splitting--action data is reported in Appendix~\ref{app:eta_candidate}.  Its profile-scaled implementation is adoption-safe under the current D60/E21 impact gate; the release baseline nevertheless keeps $\eta$ as the scanned external control so that data-facing contours remain directly comparable.
+An action-derived prefactor candidate $\eta_{\rm fp}(D)$ extracted from splitting--action data is reported in Appendix~\ref{app:eta_candidate}.  Its profile-scaled implementation is adoption-safe under the current D60/E21 impact gate; the release baseline nevertheless keeps $\eta$ as the scanned external control so that data-facing contours remain directly comparable.  If this profile is adopted in future production wording, the conservative branch is $\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)$; fully closed eta-axis replacements are diagnostic-only rather than baseline replacements.
 
 \subsection{Dimensionality and Units}
 We adopt natural units $\hbar = c = 1$. The theory is defined relative to a fundamental mass scale $M_*$ (set to unity). The dual-center separation is parameterized by a dimensionless ratio $D$ (representing physical separation in units of the characteristic length scale $M_*^{-1}$). The field frequencies scale as $\omega_N \sim M_*/D$.
@@ -540,7 +545,7 @@ where $\omega_N^{(I)} > 0$ represents the decay rate due to tunneling or radiati
 
 For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from a rotating-background setup. In the static dual-center geometry considered here (no ergoregion), we no longer treat that same power as the physical origin of the escape width. Instead, outside the certified static-width tube below, the global baseline should be read as follows: the geometry-driven static surrogate is $\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}$, while Eq.~\eqref{eq:Gamma_channel} retains a Kerr-shaped power only as a legacy hierarchy convention absorbed into the action-derived profile factors $\tilde A_\ell(D)$. The non-Hermitian static-width upgrade is stated separately as the local S25 parent-tube promotion theorem rather than assumed globally.
 
-\textbf{Reviewer-facing status of the static-width upgrade:} In the strict static formulation, the relevant object is the resonance problem for the same action-derived operator with outgoing boundary conditions, so that $\Gamma_{N,\ell}^{\rm(strict)}=-2\,\Im \omega_{N,\ell}$. We implemented a minimal complex-absorbing-potential pilot on the same 1D operator chain as Appendix~\ref{app:superrad_candidate} and scanned the benchmark set $D=\{6,12,18\}$ for the representative $(N,\ell)=(3,1)$ mode. The numerical chain is stable as infrastructure, but the extracted widths remain absorber-dominated over the tested $(\eta,z_{\rm cap})$ windows and do not exhibit a clean plateau; the CAP outputs therefore remain diagnostics rather than promoted evidence. The later DtN/ECS/Whittaker/Jost audits sharpen the strict problem until the final \(D=6,\ R_C=400,\ 60\to80,\ c=640\) parent tube has a \(5\%\)-inflated slab-envelope closure, a Cauchy/slab derivative-remainder realization of that reserve, an intervalized parent-promotion version using one parity-uniform derivative envelope on the whole \(60\to80\) interval, and a direct Whittaker special-function check of those derivative constants.  We now adopt that S25 special-function interval certificate as the reviewer-facing strict static-width promotion theorem on the certified parent tube.  This adoption is deliberately local: it promotes the audited parent-tube statement, not a new global all-\(D,R_C,R\) pole family, and it does not reopen CAP, ECS, tail-backend, or unconstrained branch-picking searches.  Outside the S25 certified tube, the geometry-driven rate \(\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}\) from Appendix~\ref{app:superrad_candidate} remains the conservative comparator and fallback hierarchy.
+\textbf{Reviewer-facing status of the static-width upgrade:} In the strict static formulation, the relevant object is the resonance problem for the same action-derived operator with outgoing boundary conditions, so that $\Gamma_{N,\ell}^{\rm(strict)}=-2\,\Im \omega_{N,\ell}$. We implemented a minimal complex-absorbing-potential pilot on the same 1D operator chain as Appendix~\ref{app:superrad_candidate} and scanned the benchmark set $D=\{6,12,18\}$ for the representative $(N,\ell)=(3,1)$ mode. The numerical chain is stable as infrastructure, but the extracted widths remain absorber-dominated over the tested $(\eta,z_{\rm cap})$ windows and do not exhibit a clean plateau; the CAP outputs therefore remain diagnostics rather than promoted evidence. The later DtN/ECS/Whittaker/Jost audits sharpen the strict problem until the final \(D=6,\ R_C=400,\ 60\to80,\ c=640\) parent tube has a \(5\%\)-inflated slab-envelope closure, a Cauchy/slab derivative-remainder realization of that reserve, an intervalized parent-promotion version using one parity-uniform derivative envelope on the whole \(60\to80\) interval, and a direct Whittaker special-function check of those derivative constants.  We now adopt that S25 special-function interval certificate as the reviewer-facing strict static-width promotion theorem on the certified parent tube.  This adoption is deliberately local: it promotes the audited parent-tube statement, not a new global all-\(D,R_C,R\) pole family, and it does not reopen CAP, ECS, tail-backend, or unconstrained branch-picking searches.  The intermediate S1--S21 statements below retain their stage-local ``not promoted'' language as audit history; on the certified tube, that wording is superseded by S25 only.  Outside the S25 certified tube, the geometry-driven rate \(\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}\) from Appendix~\ref{app:superrad_candidate} remains the conservative comparator and fallback hierarchy.
 
 \medskip\noindent\textbf{Proposition S1 (Siegert/DtN gate for promoting the static width).}
 For fixed \(D,\ell\), set
@@ -2832,6 +2837,7 @@ y_2^{\rm raw}=1.65981\times10^{-4},\qquad
 \frac{P_2^{\rm kin}}{M_2^2}=2.62559\times10^{-1},\qquad
 C_{eH,\star}^{\mu\mu,\,\rm tree}=4.35798\times10^{-5},
 \]
+where the displayed \(y_2^{\rm raw}(D_\star)\) is the release value obtained by interpolating the canonical integer-\(D\) overlap profile.  Proposition U10 below separates this release interpolation from a direct \(D_\star\) continuity audit; that direct value is not folded into the baseline normalization without a separate map-impact gate.
 so the current absolute-normalization target may be written as
 \[
 A_\star
@@ -3299,7 +3305,7 @@ Therefore the remaining normalization-side work after \(U7\) is truly only polis
 No further structural expansion of the \(A_\star\) chain is needed.
 
 \medskip\noindent\textbf{Proposition U9 (Reviewer-facing closure of the \texorpdfstring{$A_\star$}{A*} normalization line).}
-Combining Propositions U6--U8, the current diagonal UV+LL-RG normalization line has a closed parent-side reading on the audited domain:
+Combining Propositions U6--U8, the current diagonal UV+LL-RG normalization line has a structurally closed parent-side reading on the audited domain:
 \[
 \mu_{\mu\mu}^{\rm pred}
 =
@@ -3362,7 +3368,7 @@ Thus the \(A_\star\) line no longer contains an open support choice, a new kerne
 The exact pieces close at machine or structural precision: \(\max|\Delta R_{e/\mu}^{\rm UV\to IR}|=6.05\times10^{-13}\), \(\max|\Delta R_{\tau/\mu}^{\rm UV\to IR}|=3.23\times10^{-14}\), the amplitude-factorization residual is \(9.32\times10^{-17}\), the single-layer tree residual is \(9.76\times10^{-17}\), the identity \(y_2^{\rm raw}=(g_{\mu2}^{\rm UV})^2\) closes with residual \(9.87\times10^{-17}\), and the exact Gaussian kernel factorization has relative sup residual \(3.05\times10^{-15}\).  The finite-box bridge floor is \(9.45\times10^{-5}\).  The uncorrected curvature width is already within \(1.01\times10^{-3}\), the quartic correction lowers this to \(8.47\times10^{-7}\), and the corrected finite-box kernel defect is \(9.47\times10^{-5}\).  For the bridge coefficient, the one-center core gives \(c_\sigma^{\rm(self)}=22.3198\), the extracted local band excluding the known \(D=5\) outlier is \([22.2825,22.3100]\), the analytic two-center jet tracks \(c_\sigma(D)\) with maximum relative error \(4.21\times10^{-5}\), and the projected-box benchmark improves from one-center maximum relative \(y_2\) error \(9.26\times10^{-3}\) to \(9.89\times10^{-4}\) after the analytic mirror correction.  The remaining quartic scalar is stable at \(b_4=0.4244007048874373\), with subset refits changing it only from \(10^{-6}\) to \(10^{-3}\) in relative terms.
 
 \medskip\noindent\textbf{Corollary U9 (Roadmap status after the \texorpdfstring{$A_\star$}{A*} synthesis).}
-On the present audited domain, the \(H\to\mu\mu\) absolute-normalization line should be treated as reviewer-facing closed at the synthesis level.  The closed blocks are:
+On the present audited domain, the \(H\to\mu\mu\) absolute-normalization line should be treated as reviewer-facing structurally closed at the synthesis level.  The closed blocks are:
 \begin{enumerate}
 \item the reference-normalization rewrite into \((A_\star,R_{e/\mu}^\star,R_{\tau/\mu}^\star)\);
 \item the diagonal-chain invariance of \(R_{e/\mu}^\star\) and \(R_{\tau/\mu}^\star\);
@@ -3372,7 +3378,68 @@ On the present audited domain, the \(H\to\mu\mu\) absolute-normalization line sh
 \item the finite-box Gaussian midplane kernel shape and curvature/quartic width profile;
 \item the one-center EYMH source plus analytic mirror refinement for the bridge coefficient.
 \end{enumerate}
-Only secondary tightening remains: a cleaner prose derivation of the continuum one-center constant, a sharper analytic bound on the mirror remainder, and optional sub-\(10^{-3}\) projected-box polish.  None of these should be treated as a new support/object search.  In roadmap terms, the normalization mainline is closed on the audited domain; the separate high-\(N\) threshold line is now addressed by Proposition N1 / Corollary N1, leaving only optional continuum-tail strengthening there.
+Only secondary tightening remains: a cleaner prose derivation of the continuum one-center constant, a sharper analytic bound on the mirror remainder, optional sub-\(10^{-3}\) projected-box polish, and the reference-point scalar caveat isolated in U10.  None of these should be treated as a new support/object search.  In roadmap terms, the normalization mainline is structurally closed on the audited domain; replacing the release \(y_2^{\rm raw}(D_\star)\) scalar is a separate one-policy gate, not a reopening of the normalization family.  The separate high-\(N\) threshold line is now addressed by Proposition N1 / Corollary N1, leaving only optional continuum-tail strengthening there.
+
+\medskip\noindent\textbf{Proposition U10 (Reference-point stability gate for \texorpdfstring{$y_2^{\rm raw}(D_\star)$}{y2raw(D*)}).}
+The exact overlap identity
+\[
+y_2^{\rm raw}(D)
+=
+y_{\mu,2}^{\rm flavor}(D)
+=
+\bigl(g_{\mu2}^{\rm UV}(D)\bigr)^2
+\]
+is a statement about a fixed generation-2 spectral projector.  Near a local branch crossing, the scalar value at a non-grid reference point must therefore be read with the same continuation rule used by the canonical \(D\)-profile.  Let \(\mathcal P_2^{\rm hist}(D_\star)\) denote the microcanonical generation-2 projector obtained by inserting \(D_\star\) into the full canonical \(D=4,\ldots,20\) tracking history.  The parent-point candidate is then
+\[
+y_{2,{\rm hist}}^{\rm raw}(D_\star)
+=
+\sum_k w_{2k}^{\rm hist}(D_\star)
+\left|\left\langle u_k(D_\star),K_\mu(D_\star)\right\rangle\right|.
+\]
+This is the same overlap object as in U6--U9; the new audit only separates the continuation/interpolation floor at \(D_\star\) from the exact identity itself.
+
+\emph{Verified numerics.}
+The audit \path{code/audit_hll_y2raw_refpoint_stability.py} reads the existing canonical integer-\(D\) overlap profile and the new direct \(D_\star=9.6\) overlap solves.  The current release reference is the integer-grid linear interpolation
+\[
+y_{2,{\rm rel}}^{\rm raw}(D_\star)=1.6598138027792\times10^{-4},
+\]
+with log-interpolation giving \(1.6336376928813\times10^{-4}\).  Inserting \(D_\star\) directly into the full canonical tracking history gives instead
+\[
+y_{2,{\rm hist}}^{\rm raw}(D_\star)=1.84400649653\times10^{-4},
+\]
+so the direct history value is \(11.097\%\) above the current linear-interpolated release scalar and \(12.877\%\) above the log-interpolated scalar.  The same direct solve also shows why standalone point extraction is unsafe here: a single-point eigenvalue-order initialization reports \(y_2^{\rm raw}=1.095835057003\times10^{-4}\), while a short \(D=\{9,9.6,10\}\) history reports \(6.6064790164\times10^{-5}\) for the second labelled branch.  In both cases the canonical target amplitude is present, but with a different local label.  On the full inserted-history audit, the target branch is stable across grid levels after relabelling by the canonical amplitude, with maximum relative deviation from the fine value \(6.74\times10^{-3}\).
+
+If the inserted-history value were adopted while leaving the smaller kinetic/mass and diagonal-dressing factors unchanged, then
+\[
+C_{\mu\mu,\star}^{\rm tree}
+\quad\text{would move from}\quad
+4.35798383654\times10^{-5}
+\quad\text{to}\quad
+4.84159758938\times10^{-5},
+\]
+and hence
+\[
+A_\star
+\quad\text{would move from}\quad
+5.20717136334\times10^{8}
+\quad\text{to}\quad
+4.21886589047\times10^{8},
+\]
+a \(-18.98\%\) reference-amplitude shift.  Therefore the direct \(D_\star\) value is a parent-point audited candidate, not an automatic baseline replacement.
+
+\medskip\noindent\textbf{Corollary U10 (Adoption policy for the \texorpdfstring{$y_2^{\rm raw}(D_\star)$}{y2raw(D*)} tightening).}
+The U10 audit closes a blind spot in the wording, not a new object.  The exact overlap identity remains closed, and the correct parent-side object is the windowed mu-flavor overlap with a specified generation-2 continuation projector.  However, the reference scalar itself now has a quantified interpolation/branch-history floor at \(D_\star=9.6\).  We therefore ran the promised one-policy \(H\to\mu\mu\) impact gate in \path{code/audit_hll_y2raw_adoption_impact_gate.py}, changing only
+\[
+A_\star\mapsto
+A_\star^{\rm(dir)}
+=
+A_\star^{\rm(rel)}
+\left(
+\frac{y_{2,{\rm rel}}^{\rm raw}(D_\star)}
+     {y_{2,{\rm hist}}^{\rm raw}(D_\star)}
+\right)^2,
+\]
+while holding the map rows, kinetic/mass factor, diagonal dressing, \(R_{e/\mu}^\star\), \(R_{\tau/\mu}^\star\), kernel, and family fixed.  The resulting amplitude ratio is \(A_\star^{\rm(dir)}/A_\star^{\rm(rel)}=0.810203\).  On the parented D21\(\times\)E21 \(H\to\mu\mu\) map, the direct scalar changes \(f(\chi^2_{\mu\mu}\le4)\) from \(0.095238\) to \(0.142857\), with \(21/441\) acceptance flips, all gains and no losses, concentrated on the \(D=8.0\) slice.  Pointwise drift is not negligible: mean, \(95\%\), and maximum \(|\Delta\mu_{\mu\mu}|\) are \(0.245044\), \(0.817693\), and \(3.13701\), respectively.  Thus the direct inserted-history scalar is not strict adoption-safe under the no-topology-change gate.  It remains a diagnostic parent-point candidate; the release normalization should keep the interpolated scalar unless a separate reviewer-facing decision deliberately accepts this changed acceptance topology or a sharper projector-continuation theorem removes the scalar discrepancy.  This is not a new kernel, support, overlap, or family search.
 
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain
@@ -4263,8 +4330,8 @@ The use of mixed-resolution ingredients is a deliberate design choice: action-de
     \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is now implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). The original multi-anchor + holdout calibration remains in place, but the line is now much narrower than a generic reservoir ansatz: on the audited knot set, $\kappa_{\rm env}$ is isolated as a scalar amplitude modulus, the localized two-level projection leaves only the leading $\sigma_z/\sigma_x$ directions, and the effective kernels are on-shell samples of a single gap-locked single-pole response family with $\tau_{{\rm env},a}=\omega_{1,a}^{-1}$ to machine precision. The sharp remaining theorem target is parent-side: show that the projected EYMH Schur resolvent admits a first-mode-dominant truncation on $\omega\in\{0,\Delta E_a\}$ with leading pole scale $\Omega_{1,a}=\omega_{1,a}$ and uniformly small higher-mode remainder. Until that step is taken, this block remains outside baseline figures.
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map, while the release baseline keeps strict D-grid lookup and the automatic chain remains a comparator. The release-production path now pairs active-grid direct two-dimensional spectra for $g_N(D)$ with per-cell direct evaluation of $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ while keeping baseline $B_N$ profile closure; on both release audits it matches the release baseline exactly ($\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch $=0$, $\max|\Delta\mu_{\mu\mu}|=0$). The tuned visibility path should therefore be read as a release-qualified risk-weighted visibility parity check, not as a strict all-direct closure of $B_N$. Separately, the broader-grid strict all-direct validator is parked at its current case-aware endpoint on the two validation surfaces, so this line should be reopened only for a genuinely new observable-side mechanism class rather than another local blend retune. For the UV-to-EFT map, the refreshed diagonal-threshold comparator and the absolute/loop-improved EYMH comparators show the same pattern: zero acceptance mismatch, exact basis reconstruction, and only small deformation. The remaining UV-to-EFT gap is therefore no longer the existence of a stable local absolute witness, but the derivation of its prefactor from a bona fide parent EYMH loop calculation.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization. The audited single-track benchmark does not exhibit a fourth bound layer on the tested $D$ window, and Proposition N1 / Corollary N1 promote the one-dimensional kinetic proxy to a mode-resolved finite-volume Sturm threshold theorem: on the audited domain the fourth-layer absence is a threshold/binding-loss statement, not an engineered visibility cutoff or a hidden exponentially small-$\Gamma_4$ mechanism. The only remaining strengthening is a continuum-tail / $D$-continuous interpolation version of the same certificate.
-    \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan.  A geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate}; the current D60/E21 impact gate shows that it is not promotion-safe for the reported baseline because it saturates the kinetic competition and produces nonzero $H\to\mu\mu$ acceptance flips.  It is therefore retained as a diagnostic profile rather than as a baseline replacement.
-    \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; the D60/E21 impact gate shows that the profile-scaled branches are adoption-safe (zero $H\to\mu\mu$ acceptance flips and zero winner flips), while the fully closed branches are retained as diagnostics because they remove the scanned $\eta$ axis and produce a small winner mismatch.
+    \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan.  A geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate}; the current D60/E21 impact gate shows that it is not promotion-safe for the reported baseline because it saturates the kinetic competition and produces nonzero $H\to\mu\mu$ acceptance flips.  It is therefore retained as a diagnostic profile rather than as a baseline replacement, and cap tuning is not reopened as a new family search.
+    \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; the D60/E21 impact gate shows that the profile-scaled branches are adoption-safe (zero $H\to\mu\mu$ acceptance flips and zero winner flips), while the fully closed branches are retained as diagnostics because they remove the scanned $\eta$ axis and produce a small winner mismatch. If this correction is adopted in production wording, the amplitude-scaled branch $\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)$ is the conservative map-safe option.
     \item \textbf{Barrier-leakage channel normalization}: the baseline maps now use action-derived profile factors $(A_1,A_2)=(\tilde A_1(D),\tilde A_2(D))$ from Appendix~\ref{app:superrad_candidate} (historical ``superrad'' artifact filenames retained for reproducibility). The first fully localized tensor extraction over $(D,\eta,N,\ell)$ is now audited in Proposition A1 / Corollary A1: the $\eta$ axis collapses exactly because $\eta_{\rm eff}$ is a formation multiplier, while the $N$ axis exposes the finite-channel shape currently hidden by the $N_{\rm ref}=2$ slice. The all-valid D60/E21 tensor-impact gate shows that blindly treating the positive-proxy \(N=3\) rows as bound-channel rows is not harmless: the strict tensor lookup reduces the illustrative $H\to\mu\mu$ accepted fraction from $0.1500$ to $0.0333$ and gives acceptance mismatch $0.116667$. The same tensor with the bound-sector policy restored profile-map parity on D60/E21 (acceptance mismatch \(0\), winner mismatch \(0\), \(p95|\Delta\mu_{\mu\mu}|=0.110319\)). Therefore the tensor is retained as an extraction upgrade, while any production promotion must use this bound-only fallback policy rather than opening a new channel-normalization family.
 \end{enumerate}
 
@@ -4325,7 +4392,7 @@ Stage group & Deliverables and checks \\
 \hline
 \parbox[t]{0.24\textwidth}{Production maps and observables} & \parbox[t]{0.62\textwidth}{Regenerates phase diagrams, Higgs signal-strength maps, and UV-to-EFT matching summaries.} \\
 \parbox[t]{0.24\textwidth}{Release/direct validation} & \parbox[t]{0.62\textwidth}{Runs the full-direct release audit, localized-direct validation surfaces, chain-mode parity checks, and artifact-status registry.} \\
-\parbox[t]{0.24\textwidth}{First-principles profile diagnostics} & \parbox[t]{0.62\textwidth}{Recomputes localized $\chi$, bounded phase-space $g_N$, open-system diagnostics, and the $t_{\rm coh}$, $\eta$, and channel-normalization candidate profiles.} \\
+\parbox[t]{0.24\textwidth}{First-principles profile diagnostics} & \parbox[t]{0.62\textwidth}{Recomputes localized $\chi$, bounded phase-space $g_N$, open-system diagnostics, and the $t_{\rm coh}$, $\eta$, and channel-normalization candidate profiles together with their D60/E21 impact-gate closure decisions.} \\
 \parbox[t]{0.24\textwidth}{Packaging and provenance} & \parbox[t]{0.62\textwidth}{Collects figures, tables, logs, checksums, manifest metadata, and the per-artifact map under the reproducibility run directory; Table~\ref{tab:audit_certificate_map} is the reader-facing certificate summary of the same provenance layer.} \\
 \hline\hline
 \end{tabular}

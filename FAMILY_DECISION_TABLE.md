@@ -1,14 +1,27 @@
 # PSLT Family Decision Table
 
-Last updated: 2026-03-31
+Last updated: 2026-04-26
 
-This file is the one-page decision map for family scans around the reviewer mainline. It is intentionally operational: the goal is to answer "should we keep investing in this family?" without reopening the whole audit history.
+This file is the one-page decision map for family scans and profile/theorem promotion gates around the reviewer mainline. It is intentionally operational: the goal is to answer "should we keep investing in this family?" without reopening the whole audit history.
 
 ## Canonical Reviewer Mainline
 
 | Family | Status | Why it stays canonical | Main evidence |
 | --- | --- | --- | --- |
 | `cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate` | `KEEP / MAINLINE` | Final publish smoke/regression checklist closes `22/22` gates and recommends the canonical branch switch. Relative to the historical reviewer baseline `cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost`, it keeps the repaired `D21` structure (`reviewer p95 2.10 -> 0.891`, complement preserved at `0.7570`) while preserving the `D60` reviewer gain (`31.29 -> 18.58`) and improving the dense-grid drift strip (`D100 1.0419 -> 0.9349`). | `output/kinetic_action_chain/observable_two_lobe_d8compd60snapmaplate_runtime_validation_summary.csv`, `output/kinetic_action_chain/observable_two_lobe_d8compd60snapmaplate_promotion_gate_checklist.csv`, `output/kinetic_action_chain/observable_two_lobe_d8compd60snapmaplate_promotion_gate_checklist_gates.csv`, `output/kinetic_action_chain/observable_two_lobe_d8compd60snapmaplate_publish_switch_checklist.csv`, `output/kinetic_action_chain/observable_two_lobe_d8compd60snapmaplate_publish_switch_checklist_gates.csv` |
+
+## Reviewer Closure / Profile-Gate Status
+
+These packages are synchronized with `ROADMAP_STATUS.md`. They are not new observable-family searches; they decide whether an already-audited theorem/profile is baseline-safe, locally theorem-safe, or diagnostic-only.
+
+| Package | Status | Operational reading | Main evidence |
+| --- | --- | --- | --- |
+| `S25` strict static-width parent tube | `CLOSED - LOCAL STRICT THEOREM` | Adopt S25 as the reviewer-facing strict static-width promotion theorem only on `D=6, R_C=400, R=60->80, c=640`. Outside that tube, keep `Gamma_{N,l}^{(geo)} = omega_N exp(-2 S_{N,l})` as fallback/comparator. Do not reopen CAP, ECS, backend replacement, or unconstrained branch-picking as new family design. | `paper/main.tex`, `output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_summary.csv`, `output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_aggregate_summary.csv` |
+| Fermionic lift / low-`N` counting | `CLOSED - FOUNDATIONAL` | F1/C1 closes the scalar-to-fermion ambiguity at the projected conformal chart level: scalar/action modes supply generation projectors, while SM fermions live in the conformal Dirac spin bundle. G1/C1 closes exact low-`N` projector counts `1,2,3`; the release `fp_2d_full` profile remains a shell-volume baseline, not Cardy and not a hidden pure-integer replacement. | `paper/main.tex`, `output/dirac_frame_check/minimal_dirac_conformal_check.csv`, `output/gn_fp_2d/gn_lowN_microstate_count_summary.csv` |
+| EYMH `H->mumu` absolute normalization | `CLOSED / DIAGNOSTIC U10 GATE` | U9 closes the normalization chain structurally: ratio constants, exact `A_*` factorization, tree/source identities, projected kernel, width profile, and EYMH core normalization are no longer open family searches. U10 isolates the remaining reference-scalar issue. The direct full-history `y_2^{raw}(D_*)` value is parent-point audited and `+11.097%` above release interpolation, but the one-policy map-impact gate is not strict adoption-safe: it changes D21xE21 `f(chi2_mumu<=4)` from `0.095238` to `0.142857` with `21/441` acceptance flips, all gains on `D=8.0`. Keep release scalar unless a separate decision accepts this topology change or a sharper projector theorem removes the discrepancy. | `paper/main.tex`, `code/audit_hll_absolute_normalization_synthesis_source.py`, `code/audit_hll_y2raw_refpoint_stability.py`, `code/audit_hll_y2raw_adoption_impact_gate.py`, `output/hll_absolute_normalization/hll_absolute_normalization_synthesis_summary.csv`, `output/hll_absolute_normalization/hll_y2raw_refpoint_stability_summary.csv`, `output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_summary.csv` |
+| Fully localized `A_l(D,eta,N)` tensor | `CLOSED / MONITOR` | The extraction tensor is useful and eta-separable, but the all-valid tensor is not baseline-safe on D60/E21. If production promotion is ever desired, only the existing `gamma_tensor_bound_policy=bound_only_fallback` route is safe: use tensor rows on bound-sector entries and fall back to the `N_ref=2` slice on positive-proxy rows. Do not open a new tensor family or split design. | `paper/main.tex`, `output/superrad_fp_1d/channel_A_tensor_impact_Dgrid60_Egrid21_summary.csv` |
+| `t_coh^(deph)(D)` profile gate | `CLOSED - DIAGNOSTIC ONLY` | The geometry-derived dephasing profile is stable as a diagnostic, but it is not baseline promotion-safe: D60/E21 moves `f_chi2<=4` from `0.150000` to `0.133333`, gives acceptance mismatch `0.016667`, winner mismatch `0.005556`, and `p95|Delta mu_mumu|=4.95503`. Do not tune caps as a new family search. | `paper/main.tex`, `output/tcoh_fp_1d/tcoh_impact_gate_Dgrid60_Egrid21_summary.csv` |
+| `eta_fp(D)` profile gate | `CLOSED - ADOPTION-SAFE SCALED ONLY` | Profile-scaled branches are map-safe on D60/E21. The conservative production-eligible wording is `eta_eff=eta*eta_amp(D)`, with acceptance mismatch `0`, winner mismatch `0`, and `p95|Delta mu_mumu|=0.0097896`. Fully closed eta-axis variants remain diagnostic-only because they remove the scanned eta axis and produce winner mismatch `0.005556`. | `paper/main.tex`, `output/eta_fp_1d/eta_impact_gate_Dgrid60_Egrid21_summary.csv` |
 
 ## Closed Negative Families
 
@@ -59,10 +72,12 @@ Use these rules before spending more time on a family:
 3. Treat `D60 D≈6.169/6.441` as the dominant reviewer-side hotspot pair.
 4. If a family only helps `D21` or only helps `D60`, record it as a directional witness, not a promotion candidate.
 5. For `prolate` and Schur-derived ideas, prefer extraction-side or conditional-feature audits before touching reviewer mainline.
+6. Do not reopen `t_coh` cap tuning, fully closed eta-axis replacement, all-valid `A_l` tensor lookup, CAP/ECS/backend replacement, or unconstrained pole-branch searches unless the mechanism class changes on the theorem side.
 
 ## Current Bottom Line
 
 - **Reviewer mainline now switches** to `cell_direct_runtime_release_fullwidthrefamp_pointamp2_widthboost_twolobe_d8compd60snapmaplate`.
+- **Closed theorem/profile gates are synchronized with the roadmap**: S25 is a local strict static-width theorem, F1/G1 are foundational closures, EYMH `H->mumu` normalization is structurally closed with the U10 direct-`y_2^{raw}(D_*)` scalar kept diagnostic-only, localized `A_l(D,eta,N)` is closed/monitor through `bound_only_fallback`, `t_coh^(deph)` is diagnostic-only, and `eta_fp(D)` is adoption-safe only in profile-scaled form.
 - **Do not** spend more time on `pointamp3`, `widthband`, `partialguard`, reviewer-scalar, reviewer ref-handoff, observable cloud, or monotone `Gamma_ref(D)` gates unless a new mechanism class is introduced.
 - **Keep alive as research ingredients**:
   - calibrated `prolate` extraction,

@@ -1,0 +1,10 @@
+{
+  "map_input": "/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_to_eft_map_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "summary_input": "/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_to_eft_summary_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "amp_constants_input": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_absolute_amp_source_constants.csv",
+  "y2_constants_input": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_y2raw_refpoint_stability_constants.csv",
+  "policy": "replace only y_2^{raw}(D_*) in A_*; hold ratios, map rows, kinetic/mass, dressing, kernel, and family fixed",
+  "mu_obs": 1.4,
+  "sigma_obs": 0.4,
+  "n_points": 441
+}

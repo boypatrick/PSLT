@@ -1,0 +1,7 @@
+quantity,value,description
+y2_raw_release,0.0001659813802779,release interpolated y_2^{raw}(D_*) scalar
+y2_raw_direct_inserted_history,0.000184400649653,direct D_* solve inserted into the full canonical branch history
+A_star_release,520717137.269355,live IR bridge amplitude reconstructed from the current map
+A_star_direct_inserted_history_y2,421886589.8045907,one-policy replacement A_* = A_release (y_release/y_direct)^2
+R_e_over_mu_star_fixed,0.0634233929648655,held fixed during the gate
+R_tau_over_mu_star_fixed,0.0082403913131339,held fixed during the gate

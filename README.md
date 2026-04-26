@@ -93,6 +93,7 @@ To avoid misreading old comparator outputs as baseline claims:
 
 ```bash
 python3 code/build_artifact_status_registry.py
+python3 code/check_artifact_status_hygiene.py
 ```
 
 This writes:
@@ -100,6 +101,7 @@ This writes:
 - `paper/artifact_status.csv`
 
 Each row marks an artifact as `canonical_baseline`, `canonical_certificate`, `diagnostic_gate`, `diagnostic_variant`, `monitor_artifact`, or `legacy_comparator`.
+The hygiene check verifies that the generated registries match the builder, all reviewer-ledger certificate paths are registered and present, and comparator/diagnostic/candidate artifacts are not marked as canonical baselines.
 
 
 ## Requirements

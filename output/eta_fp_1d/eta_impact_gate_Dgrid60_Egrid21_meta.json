@@ -1,0 +1,9 @@
+{
+  "tag": "Dgrid60_Egrid21",
+  "chi_profile_path": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/localized_direct_profiles_chi_Dgrid60.csv",
+  "chi_profile_mode": "localized_grid",
+  "superrad_profile_path": "/Users/boypatrick/codex/PSLT_quantam/output/kinetic_action_chain/localized_direct_profiles_superrad_Dgrid60.csv",
+  "superrad_profile_mode": "action_grid",
+  "eta_profile_csv": "/Users/boypatrick/codex/PSLT_quantam/output/eta_fp_1d/eta_prefactor_D4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20.csv",
+  "baseline_case": "baseline_eta_scan"
+}

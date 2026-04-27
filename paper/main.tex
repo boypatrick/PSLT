@@ -4,6 +4,7 @@
 \usepackage{amsmath,amssymb,bm}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\hypersetup{hidelinks}
 \usepackage{booktabs}
 \usepackage{xcolor}
 \usepackage{tabularx}
@@ -95,7 +96,7 @@ Figure~\ref{fig:framework} illustrates the logical flow of the PSLT framework.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\linewidth]{pslt_framework.png}
+    \includegraphics[width=0.95\linewidth]{pslt_framework.png}
     \caption{Schematic overview of the PSLT framework. Geometric inputs $(D, \eta)$ feed into three modules (micro-degeneracy $g_N$, kinetic rate $\Gamma_N$, visibility $B_N$), which combine in the master equation to yield the observable layer probabilities $P_N$ and the three-generation ratio $\mathcal{R}_3$. In the baseline chain, high-$N$ control is implemented by the bounded two-dimensional phase-space-tail prescription, while $B_{N>3}$ neutrally saturates to unity.}
     \label{fig:framework}
 \end{figure}
@@ -152,12 +153,12 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \midrule
 \parbox[t]{0.17\textwidth}{$\Omega(\rho,z;D)$ two-center geometry} & \parbox[t]{0.28\textwidth}{Projected-Poisson two-source Green solution} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Derive the same source from an explicit higher-dimensional parent} \\
 \parbox[t]{0.17\textwidth}{$V_{\rm eff}$, low modes, WKB action} & \parbox[t]{0.28\textwidth}{Action-derived and numerically converged} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Extend the same solver chain to the full $(D,\eta,N)$ map} \\
-\parbox[t]{0.17\textwidth}{$g_N$ phase-space profile} & \parbox[t]{0.28\textwidth}{Bounded two-dimensional phase-space baseline anchored by exact low-$N$ projector counts; Cardy retained only as a legacy comparator} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Optional pure-integer replacement impact or continuum/D-continuous strengthening only; do not reopen Cardy as baseline} \\
-\parbox[t]{0.17\textwidth}{$\chi_N^{(LR)}(D)$ localized channel} & \parbox[t]{0.28\textwidth}{Full D-grid localized profile from 2D fine extraction; release-production parity path available} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep the current localized-direct parity path as the production support line; the longer-horizon upgrade is a fully localized extraction over $(D,\eta,N)$ rather than another profile-blend retune} \\
-\parbox[t]{0.17\textwidth}{$\Gamma_{N,\ell}$ channel normalization ($A_\ell$)} & \parbox[t]{0.28\textwidth}{Action-derived $\tilde A_\ell(D)$ baseline plus a first localized tensor audit over $(D,\eta,N,\ell)$; the all-valid D60/E21 tensor gate is not baseline-promoted, while the bound-only policy is map-safe} & \parbox[t]{0.13\textwidth}{Yes, through the $N_{\rm ref}=2$ profile slice} & \parbox[t]{0.24\textwidth}{Adoption wording only: either retain the profile slice or promote the same tensor with positive-proxy rows falling back to $N_{\rm ref}$} \\
-\parbox[t]{0.17\textwidth}{Open-system $\chi_{\rm eff}$ (Lindblad)} & \parbox[t]{0.28\textwidth}{Diagnostic only in the scan, but the exact-bridge bottleneck is reviewer-facing closed: overlap factorization, singleton carrier reduction, and strict-slab trace certificate are fixed on the audited bridge} & \parbox[t]{0.13\textwidth}{Diagnostic only} & \parbox[t]{0.24\textwidth}{No new support/object search; optional work is continuum/global lift or a microscopic EYMH bath derivation} \\
-\parbox[t]{0.17\textwidth}{$B_N$ visibility profile from EFT normalization} & \parbox[t]{0.28\textwidth}{EFT-operator-normalized baseline; runtime-direct operator extraction promoted only in the risk-weighted parity branch} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep the release-qualified profile-blend branch separate from the parked strict all-direct endpoint; the real remaining upgrade is fully localized channel-resolved extraction, not another local blend retune} \\
-\parbox[t]{0.17\textwidth}{$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}]} & \parbox[t]{0.28\textwidth}{EFT/Wilson-matched baseline with U9 structural absolute-normalization closure, U10/U12 strict no-topology obstruction, U13 explicit monotone topology-adoption certificate, U14 margin-robustness certificate, and U11 \(10^{-12}\)-guarded projected-kernel complement budget} & \parbox[t]{0.13\textwidth}{Conservative release baseline; direct branch is U13/U14-qualified} & \parbox[t]{0.24\textwidth}{If the direct branch is elected, state the topology-changing acceptance expansion explicitly; no new normalization family} \\
+\parbox[t]{0.17\textwidth}{$g_N$ phase-space profile} & \parbox[t]{0.28\textwidth}{Bounded 2D phase-space baseline with exact low-\(N\) projector counts; Cardy is legacy only} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Optional integer replacement or continuum strengthening only; do not reopen Cardy as baseline} \\
+\parbox[t]{0.17\textwidth}{$\chi_N^{(LR)}(D)$ localized channel} & \parbox[t]{0.28\textwidth}{Full D-grid localized profile from 2D fine extraction; release-production parity path available} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep localized-direct parity as production support; longer-horizon upgrade is fully localized extraction over $(D,\eta,N)$} \\
+\parbox[t]{0.17\textwidth}{$\Gamma_{N,\ell}$ channel normalization ($A_\ell$)} & \parbox[t]{0.28\textwidth}{Action-derived $\tilde A_\ell(D)$ baseline; localized tensor audit is map-safe only under the bound-sector policy} & \parbox[t]{0.13\textwidth}{Yes, via $N_{\rm ref}=2$} & \parbox[t]{0.24\textwidth}{Either retain the profile slice or promote the tensor with positive-proxy rows falling back to $N_{\rm ref}$} \\
+\parbox[t]{0.17\textwidth}{Open-system $\chi_{\rm eff}$ (Lindblad)} & \parbox[t]{0.28\textwidth}{Scan diagnostic; exact-bridge bottleneck closed by overlap factorization, singleton carrier, and strict-slab trace certificates} & \parbox[t]{0.13\textwidth}{Diagnostic only} & \parbox[t]{0.24\textwidth}{No new support/object search; optional work is continuum/global lift or microscopic EYMH bath derivation} \\
+\parbox[t]{0.17\textwidth}{$B_N$ visibility profile from EFT normalization} & \parbox[t]{0.28\textwidth}{EFT-operator-normalized baseline; runtime-direct extraction is only a risk-weighted parity branch} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep release-qualified profile blend separate from the parked strict all-direct endpoint} \\
+\parbox[t]{0.17\textwidth}{$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}]} & \parbox[t]{0.28\textwidth}{EFT/Wilson baseline with U9 structural closure, U12 obstruction, U13 topology-adoption branch, U14 margin certificate, and U11 complement guard} & \parbox[t]{0.13\textwidth}{Release baseline; direct branch U13/U14-qualified} & \parbox[t]{0.24\textwidth}{If elected, state the topology-changing acceptance expansion; no new normalization family} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -166,7 +167,7 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 Several long appendix chains are used only to close natural review questions, not to introduce additional baseline observables.  Proposition O39 reduces the parity-contrast obstruction to one canonical adverse-band factorization plus three leakage channels, with residuals \(9.67\times10^{-17}\) and \(5.97\times10^{-14}\); Proposition O56 reduces the \(D=11\) positive carrier to the symmetry-projected half-lobe \(W_{11,{\rm sym}}^{(+)}=\frac12 W_{11}^{(+)}\), clearing the global half-threshold by \(1.06715\); and Propositions O71--O72 close the strict-slab trace with a fixed \(45\)-edge-point, \(46\)-trace-point, \(420\)-adjoint-point certificate giving \(I_{\partial,\sharp}^{(\rm phys)}+I_{{\rm src},\sharp}\ge1.003005\,I_{\rm req}\), where \(I_{\rm req}:=1.4532157043371163\times10^{-1}\).  Thus the open-system branch remains diagnostic for the global scan, but its audited exact-bridge bottleneck is closed at the reviewer-facing level; no new support, carrier, trace set, backend, or family is being introduced there.
 
 \medskip\noindent\textbf{Audit-certificate packaging.}
-To keep the main text readable, the code/CSV-heavy appendix derivations are grouped below into reviewer-facing certificate packages.  This table is a reading map rather than a new theorem object: each row points to an already stated proposition chain, its mathematical invariant, and the executable numerical gate that supports the claim on the audited domain.
+To keep the main text readable, the certificate-heavy appendix derivations are grouped below into reviewer-facing certificate packages.  This table is a reading map rather than a new theorem object: each row points to an already stated proposition chain, its mathematical invariant, and the executable numerical gate that supports the claim on the audited domain.
 At the submission-freeze point, the rows below are either baseline inputs, local reviewer certificates, monitor artifacts, or diagnostics.  None should be read as an active request to introduce a new family, backend, support set, or normalization object before submission.
 
 \begin{table}[htbp]
@@ -676,11 +677,7 @@ r_1=A,\quad r_2=B_\ell,\quad r_n=0\;(n\ge3).
 \]
 The audit uses this analytic Coulomb value at a matching radius \(R_C\), then propagates the full Riccati equation with the actual \(U_\ell(z;D)\) inward to the interface \(R\).  This removes the crude WKB start as an independent approximation while retaining the \(D\)-dependent \(O(z^{-3})\) tail between \(R_C\) and \(R\).
 
-The implementation is the Coulomb-series mode of \path{code/extract_static_width_exact_dtn.py},
-\[
-\texttt{--tail-mode coulomb\_series --coulomb-order 6 --tail-validation --fallback-guesses},
-\]
-and exports \path{output/cap_resonance_1d/static_width_coulomb_tail_dtn_o6_detail.csv} and \path{output/cap_resonance_1d/static_width_coulomb_tail_dtn_o6_summary.csv}.  On the same \(D=\{6,12,18\}\), \(R=\{60,80,100,120\}\), and \(R_C=\{400,800\}\) benchmark, fallback branch tracking gives
+The implementation is the Coulomb-series mode of \path{code/extract_static_width_exact_dtn.py}, with sixth-order tail normalization, tail validation, and fallback branch guesses enabled.  It exports \path{output/cap_resonance_1d/static_width_coulomb_tail_dtn_o6_detail.csv} and \path{output/cap_resonance_1d/static_width_coulomb_tail_dtn_o6_summary.csv}.  On the same \(D=\{6,12,18\}\), \(R=\{60,80,100,120\}\), and \(R_C=\{400,800\}\) benchmark, fallback branch tracking gives
 \[
 \max |F_{\rm e/o}|=5.41\times10^{-7},
 \qquad
@@ -762,14 +759,18 @@ N_{\rm pass}=0 .
 \]
 For the seed-qualified branches, the best candidates reproduce the same scaling drift as Proposition S4:
 \[
-\max_D{\rm span}_\theta(\Gamma_{\rm branch})=0.669,\qquad
-\max_D{\rm span}_{R_0}(\Gamma_{\rm branch})=0.223,\qquad
-\max_D{\rm span}_{L}(\Gamma_{\rm branch})=0.144,
+\begin{aligned}
+\max_D{\rm span}_\theta(\Gamma_{\rm branch})&=0.669,\\
+\max_D{\rm span}_{R_0}(\Gamma_{\rm branch})&=0.223,\\
+\max_D{\rm span}_{L}(\Gamma_{\rm branch})&=0.144,
+\end{aligned}
 \]
 with
 \[
-\max_D{\rm span}_{L}(E_{\rm branch})=1.15\times10^{-3},\qquad
-\min_D \min_p |\langle\psi_{\rm seed},B_a(p)\rangle|=0.864 .
+\begin{aligned}
+\max_D{\rm span}_{L}(E_{\rm branch})&=1.15\times10^{-3},\\
+\min_D \min_p |\langle\psi_{\rm seed},B_a(p)\rangle|&=0.864 .
+\end{aligned}
 \]
 The median seed-branch width is again on the \(3.5\times10^{-4}\) scale, but it is not stable:
 \[
@@ -816,7 +817,7 @@ m_W(R_C;E)
 -a\,\frac{\mathrm{U}(a+1,b+1,x)}{\mathrm{U}(a,b,x)}
 \right]_{x=-2ikR_C}.
 \]
-This is the requested full Coulomb/Whittaker DtN datum.  The implementation is the \texttt{whittaker} mode of \path{code/extract_static_width_exact_dtn.py}; it evaluates the complex \(\mathrm{U}\)-ratio with \texttt{mpmath} at \(50\) digits and then propagates the full Riccati equation for the actual \(U_\ell(z;D)\) inward from \(R_C\) to \(R\).
+This is the full Coulomb/Whittaker DtN datum.  The implementation is the \texttt{whittaker} mode of \path{code/extract_static_width_exact_dtn.py}; it evaluates the complex \(\mathrm{U}\)-ratio with \texttt{mpmath} at \(50\) digits and then propagates the full Riccati equation for the actual \(U_\ell(z;D)\) inward from \(R_C\) to \(R\).
 
 The audit exports \path{output/cap_resonance_1d/static_width_whittaker_dtn_dps50_detail.csv} and \path{output/cap_resonance_1d/static_width_whittaker_dtn_dps50_summary.csv}.  On \(D=\{6,12,18\}\), \(\ell=1\), \(N=3\), \(R=\{60,80,100,120\}\), and \(R_C=\{400,800\}\), the nonlinear residual gate is still met:
 \[
@@ -2349,7 +2350,7 @@ with
 \min|\partial_EF_R|=96.9111,\qquad
 \max{\rm CR\ mismatch}=2.8945\times10^{-2}.
 \]
-Thus the S24 constants are not merely node-slope placeholders: after a
+Thus the S24 constants are not merely node-slope fit parameters: after a
 factor-two guard, direct Whittaker-DtN special-function differentiation remains
 inside the interval certificate.
 
@@ -2622,7 +2623,7 @@ Crucially, we define the \textbf{Generation Ratio}:
 \label{eq:R3}
 \end{equation}
 With full scan-grid action-derived profiles for $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ from Appendix~\ref{app:chi_loc}, our numerical scan gives $\mathcal{R}_3 > 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid, while $f(\mathcal{R}_3>0.95)=0.2167$ in this setup. The profile support is anchored by the benchmark convergence set (Table~\ref{tab:chi_loc}) and the auxiliary full-scan support points (Table~\ref{tab:chi_loc_full}) in Appendix~\ref{app:chi_loc}. This still supports a dominant three-layer sector; the current baseline combines action-derived $g_N$, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$ profiles with EFT-operator-normalized $B_N(D)$.
-To quantify transfer bias from this surrogate interpolation step, we performed a point-level audit with direct localized fine extraction injected at each queried $D$ (recomputing $\chi_{LR}$ by the same 2D solver instead of using interpolated knots). The reproducible script is \texttt{scan\_surrogate\_vs\_action\_points.py}, with source table \texttt{paper/surrogate\_vs\_action\_points.csv}. As summarized in Table~\ref{tab:surrogate_action_points}, the direct-injection path changes $\chi$ by up to $\sim31\%$ at representative points, while winner labels remain unchanged (3/3 matches) and $\mathcal{R}_3$ stays numerically stable ($\max|\Delta \mathcal{R}_3|=5.27\times10^{-11}$); under EFT/Wilson-matched observables, $\mu_{\mu\mu}^{\rm pred}$ can vary strongly at off-band points, so acceptance-level robustness is additionally tracked by the map summaries and Tables~\ref{tab:core_param_robustness}, \ref{tab:first_principles_migration}.
+To quantify transfer bias from this surrogate interpolation step, we performed a point-level audit with direct localized fine extraction injected at each queried $D$ (recomputing $\chi_{LR}$ by the same 2D solver instead of using interpolated knots). The corresponding certificate is registered in the artifact layer. As summarized in Table~\ref{tab:surrogate_action_points}, the direct-injection path changes $\chi$ by up to $\sim31\%$ at representative points, while winner labels remain unchanged (3/3 matches) and $\mathcal{R}_3$ stays numerically stable ($\max|\Delta \mathcal{R}_3|=5.27\times10^{-11}$); under EFT/Wilson-matched observables, $\mu_{\mu\mu}^{\rm pred}$ can vary strongly at off-band points, so acceptance-level robustness is additionally tracked by the map summaries and Tables~\ref{tab:core_param_robustness}, \ref{tab:first_principles_migration}.
 
 \begin{figure}[htbp]
     \centering
@@ -2634,7 +2635,7 @@ To quantify transfer bias from this surrogate interpolation step, we performed a
 
 \begin{table}[t]
 \centering
-\caption{Point-level surrogate-vs-direct audit for the mixing-profile transfer. ``Surrogate'' uses $\chi_{LR}(D)$ from $D=\{6,12,18\}$ interpolation; ``direct'' recomputes fine-grid localized extraction at each listed $D$. Source CSV: \texttt{paper/surrogate\_vs\_action\_points.csv}.}
+\caption{Point-level surrogate-vs-direct audit for the mixing-profile transfer. ``Surrogate'' uses $\chi_{LR}(D)$ from $D=\{6,12,18\}$ interpolation; ``direct'' recomputes fine-grid localized extraction at each listed $D$. The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:surrogate_action_points}
 \small
 \begin{tabular}{ccccccc}
@@ -2652,7 +2653,7 @@ To propagate finite-$N$ surrogate uncertainty into map-level systematics, we als
 
 \begin{table}[t]
 \centering
-\caption{Local one-at-a-time robustness scan around baseline closure parameters, with the $p_B$ row retained only as a legacy visibility-comparator sensitivity because $p_B$ is inactive in the EFT-operator-normalized baseline. Fractions are measured on the same $60\times60$ map as the baseline scan. Source CSV: \texttt{paper/core\_param\_robustness.csv}.}
+\caption{Local one-at-a-time robustness scan around baseline closure parameters, with the $p_B$ row retained only as a legacy visibility-comparator sensitivity because $p_B$ is inactive in the EFT-operator-normalized baseline. Fractions are measured on the same $60\times60$ map as the baseline scan; the registered certificate is indexed in the artifact registry.}
 \label{tab:core_param_robustness}
 \scriptsize
 \begin{tabular}{ccccc}
@@ -2694,12 +2695,12 @@ scenario & grid & $n_{\rm points}$ & $f(\chi^2_{\mu\mu}<4)$ & best $\chi^2_{\mu\
 \end{tabular}}
 \end{table*}
 
-For the UV+LL-RG observable controls in the same baseline mode, we also scan one-at-a-time windows in $(\mu_{\rm low},\gamma_{\rm diag},\gamma_{\rm offdiag},\kappa_{\rm diag},\kappa_{\rm offdiag})$. Table~\ref{tab:hll_rge_sensitivity} summarizes the result (source CSV: \path{paper/hll_rge_sensitivity.csv}); across all tested windows, $f(\chi^2_{\mu\mu}<4)$ stays fixed at $0.1500$.
-To capture residual map-level drift in a nonzero finite-match setting, we additionally run a full-direct UV envelope scan with \path{code/scan_hll_uv_envelope.py}. On the D21$\times$E41 map the acceptance span remains zero ($f_{\min}=f_{\max}=0.1243$), while the pointwise half-width has mean $3.03\times10^{-4}$, $p95=1.50\times10^{-3}$, and max $3.89\times10^{-3}$ (source files: \path{paper/hll_uv_envelope_summary.csv} and \path{paper/hll_uv_envelope_map.csv}).
+For the UV+LL-RG observable controls in the same baseline mode, we also scan one-at-a-time windows in $(\mu_{\rm low},\gamma_{\rm diag},\gamma_{\rm offdiag},\kappa_{\rm diag},\kappa_{\rm offdiag})$. Table~\ref{tab:hll_rge_sensitivity} summarizes the registered numerical certificate; across all tested windows, $f(\chi^2_{\mu\mu}<4)$ stays fixed at $0.1500$.
+To capture residual map-level drift in a nonzero finite-match setting, we additionally run a full-direct UV envelope scan with \path{code/scan_hll_uv_envelope.py}. On the D21$\times$E41 map the acceptance span remains zero ($f_{\min}=f_{\max}=0.1243$), while the pointwise half-width has mean $3.03\times10^{-4}$, $p95=1.50\times10^{-3}$, and max $3.89\times10^{-3}$; the envelope map and summary certificates are indexed in the artifact registry.
 
 \begin{table}[t]
 \centering
-\caption{One-at-a-time robustness scan for UV+LL-RG observable controls. Source CSV: \texttt{paper/hll\_rge\_sensitivity.csv}.}
+\caption{One-at-a-time robustness scan for UV+LL-RG observable controls. The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:hll_rge_sensitivity}
 \small
 \begin{tabular}{lccc}
@@ -2775,7 +2776,7 @@ In the baseline \texttt{eft\_wilson\_uv\_rge} mode used for figures, we evaluate
 \end{equation}
 In the baseline figures we keep a fixed reference point $(D_0,\eta_0)=(10,1)$ for comparability across scan variants.
 This fixed point should be read as a \emph{reference-normalization convention} for the relative scan-level observable in Eq.~\eqref{eq:mu_pred}, not as a physical anchor of the Higgs sector itself. The stronger normalization-side information now comes from the absolute and loop-improved parent-action comparators below together with the reference-normalization-invariant Wilson-diagonal ratios reported later in the section.
-Equation~\eqref{eq:mu_pred} is implemented in \path{pslt_lib.py} as the UV+LL-RG Higgs observable; it remains a scan-level EFT module rather than a full loop-level EYMH$\rightarrow$EFT derivation.
+In the executable closure, Eq.~\eqref{eq:mu_pred} is the UV+LL-RG Higgs observable used for the scan-level EFT module; it remains a scan-level EFT module rather than a full loop-level EYMH$\rightarrow$EFT derivation.
 Writing
 \[
 x_\mu\equiv |C_{eH}^{\mu\mu}|^2,\qquad
@@ -3103,7 +3104,7 @@ c_{\sigma,\star}\,\bar\kappa_\mu(D)^{-1/4}
 \]
 On the representative projected-Yukawa benchmark \(D=\{6,12,18\}\), this residual bridge constant is already fixed in bulk by the one-center source \(c_\sigma^{\rm(self)}\) and saturated by the analytic two-center refinement \(c_\sigma^{\rm(analytic)}(D)\).
 \emph{Audit synthesis.}
-The new consolidation audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_hll_absolute_normalization_synthesis_source.py} reads the existing normalization-side summaries directly and confirms that the chain now separates into exact-closure stages and secondary-tightening stages.  On the exact side, the diagonal flavor ratios remain UV-tree invariants to machine precision (\(\max|\Delta R_{e/\mu}^{\rm UV\to IR}|=6.05\times10^{-13}\), \(\max|\Delta R_{\tau/\mu}^{\rm UV\to IR}|=3.23\times10^{-14}\)); the amplitude factorization \(A_\star=A_\star^{\rm(tree)}Z_{{\rm diag},\star}^{-2}\) closes with residual \(9.32\times10^{-17}\); the single-layer reduction \(C_{\mu\mu}^{\rm tree}=y_2^{\rm raw}(P_2^{\rm kin}/M_2^2)\) closes with residual \(9.76\times10^{-17}\) and exact \(N=2\) support; the overlap identity \(y_2^{\rm raw}=(g_{\mu2}^{\rm UV})^2\) closes with residual \(9.87\times10^{-17}\); and the Gaussian midplane kernel factorization closes with relative sup residual \(3.05\times10^{-15}\).  On the structural-but-not-final side, the finite-box Gaussian bridge already stays at \(9.45\times10^{-5}\) relative sup error, the curvature width law is within \(1.01\times10^{-3}\) of the canonical width, and the quartic correction collapses that drift to \(8.47\times10^{-7}\) while lowering the finite-box kernel defect to \(9.47\times10^{-5}\).  Excluding the known near-merger outlier at \(D=5\), the pointwise core-to-box inversion keeps \(c_\sigma\) on the narrow band \([22.2825,22.3100]\) with relative span \(1.23\times10^{-3}\).  The one-center EYMH source itself gives \(c_\sigma^{\rm(self)}=22.3198\), only \(7.37\times10^{-4}\) above the reference selector and \(4.61\times10^{-4}\) above the projected selector, while the analytic two-center jet tracks the extracted \(c_\sigma(D)\) with maximum relative error \(4.21\times10^{-5}\).  Finally, on the projected-box benchmark, the one-center source alone reproduces the overlap block with log-RMSE \(6.15\times10^{-3}\) and maximum relative \(y_2\) error \(9.26\times10^{-3}\), whereas the analytic mirror refinement improves this to log-RMSE \(6.29\times10^{-4}\) and maximum relative error \(9.89\times10^{-4}\), slightly better than the fixed projected selector itself.
+The new consolidation audit \path{code/audit_hll_absolute_normalization_synthesis_source.py} reads the existing normalization-side summaries directly and confirms that the chain now separates into exact-closure stages and secondary-tightening stages.  On the exact side, the diagonal flavor ratios remain UV-tree invariants to machine precision (\(\max|\Delta R_{e/\mu}^{\rm UV\to IR}|=6.05\times10^{-13}\), \(\max|\Delta R_{\tau/\mu}^{\rm UV\to IR}|=3.23\times10^{-14}\)); the amplitude factorization \(A_\star=A_\star^{\rm(tree)}Z_{{\rm diag},\star}^{-2}\) closes with residual \(9.32\times10^{-17}\); the single-layer reduction \(C_{\mu\mu}^{\rm tree}=y_2^{\rm raw}(P_2^{\rm kin}/M_2^2)\) closes with residual \(9.76\times10^{-17}\) and exact \(N=2\) support; the overlap identity \(y_2^{\rm raw}=(g_{\mu2}^{\rm UV})^2\) closes with residual \(9.87\times10^{-17}\); and the Gaussian midplane kernel factorization closes with relative sup residual \(3.05\times10^{-15}\).  On the structural-but-not-final side, the finite-box Gaussian bridge already stays at \(9.45\times10^{-5}\) relative sup error, the curvature width law is within \(1.01\times10^{-3}\) of the canonical width, and the quartic correction collapses that drift to \(8.47\times10^{-7}\) while lowering the finite-box kernel defect to \(9.47\times10^{-5}\).  Excluding the known near-merger outlier at \(D=5\), the pointwise core-to-box inversion keeps \(c_\sigma\) on the narrow band \([22.2825,22.3100]\) with relative span \(1.23\times10^{-3}\).  The one-center EYMH source itself gives \(c_\sigma^{\rm(self)}=22.3198\), only \(7.37\times10^{-4}\) above the reference selector and \(4.61\times10^{-4}\) above the projected selector, while the analytic two-center jet tracks the extracted \(c_\sigma(D)\) with maximum relative error \(4.21\times10^{-5}\).  Finally, on the projected-box benchmark, the one-center source alone reproduces the overlap block with log-RMSE \(6.15\times10^{-3}\) and maximum relative \(y_2\) error \(9.26\times10^{-3}\), whereas the analytic mirror refinement improves this to log-RMSE \(6.29\times10^{-4}\) and maximum relative error \(9.89\times10^{-4}\), slightly better than the fixed projected selector itself.
 
 \medskip\noindent\textbf{Corollary U6 (What is closed, and what remains only as secondary tightening, for \texorpdfstring{$A_\star$}{A*}).}
 On the current audited domain, the following normalization-side blocks are already structurally closed:
@@ -3155,7 +3156,7 @@ c_\sigma^{\rm(self)}
 \]
 so the entire \(D\)-dependence of the bridge coefficient is carried by a parametrically small mirror multiplier on top of the one-center EYMH core constant.
 \emph{Verified numerics.}
-The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_hll_csigma_tightening_synthesis.py} consolidates the current \(c_\sigma\)-side summaries and confirms that this is no longer merely a heuristic reading.  The extracted bridge coefficient itself already stays on the narrow D4--20 band
+The audit \path{code/audit_hll_csigma_tightening_synthesis.py} consolidates the current \(c_\sigma\)-side summaries and confirms that this is no longer merely a heuristic reading.  The extracted bridge coefficient itself already stays on the narrow D4--20 band
 \[
 22.2802\le c_\sigma^{\rm(exact)}(D)\le 22.3111,
 \qquad
@@ -3249,7 +3250,7 @@ b_4
 \right]^2.
 \]
 \emph{Verified numerics.}
-The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_hll_b4_tightening_synthesis.py}, together with the underlying curvature-correction detail table, shows that this last correction is already exhausted by one global scalar.  The fitted value is
+The audit \path{code/audit_hll_b4_tightening_synthesis.py}, together with the underlying curvature-correction detail table, shows that this last correction is already exhausted by one global scalar.  The fitted value is
 \[
 b_4=0.4244007048874373,
 \]
@@ -3300,9 +3301,7 @@ On the normalization mainline, the \(b_4\) problem is no longer a search for a n
 \item subset re-fits change \(b_4\) only at the \(10^{-6}\) to \(10^{-3}\) relative level.
 \end{enumerate}
 Therefore the remaining normalization-side work after \(U7\) is truly only polish:
-\[
-\text{either keep }b_4=0.4244007\text{ as final on the audited domain, or pursue only sub-}10^{-3}\text{ benchmark cleanup.}
-\]
+Either keep \(b_4=0.4244007\) as final on the audited domain, or pursue only sub-\(10^{-3}\) benchmark cleanup.
 No further structural expansion of the \(A_\star\) chain is needed.
 
 \medskip\noindent\textbf{Proposition U9 (Reviewer-facing closure of the \texorpdfstring{$A_\star$}{A*} normalization line).}
@@ -4725,13 +4724,22 @@ Using the same map-level EFT/Wilson-matched definition, we additionally evaluate
 \left|\frac{C_{eH}^{\ell\ell}(D,\eta)}{C_{eH}^{\ell\ell}(D_0,\eta_0)}\right|^2
 \left[\frac{\Gamma_{\rm tot}(D,\eta)}{\Gamma_{\rm tot}(D_0,\eta_0)}\right]^{-1}.
 \end{equation}
-Figure~\ref{fig:hll_proxy} summarizes the corresponding maps on the same $(D,\eta)$ grid; tabulated statistics are stored in \path{paper/hll_signal_strength_summary.csv}. This extension is still a scan-level EFT map (not full UV matching), while the visibility sector in the global scan uses baseline fully normalized EFT operator visibility built from overlap-extracted inputs with mode tracking and microcanonical windowing. The repository keeps the three-channel observation fields in \path{data/pdg_leptons.json} as a reproducible interface. The corresponding runtime-direct visibility branch is release-qualified only in the risk-weighted profile-blend form; the reported baseline maps remain full-direct and EFT-operator normalized unless stated otherwise.
+Figure~\ref{fig:hll_proxy} summarizes the corresponding maps on the same $(D,\eta)$ grid; the tabulated statistics are indexed in the artifact registry. This extension is still a scan-level EFT map (not full UV matching), while the visibility sector in the global scan uses baseline fully normalized EFT operator visibility built from overlap-extracted inputs with mode tracking and microcanonical windowing. The three-channel observation fields are held fixed by the reproducibility interface. The corresponding runtime-direct visibility branch is release-qualified only in the risk-weighted profile-blend form; the reported baseline maps remain full-direct and EFT-operator normalized unless stated otherwise.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\linewidth]{hll_signal_strength_maps.png}
     \caption{PSLT EFT/Wilson-matched extension from $H\to\mu\mu$ to three lepton channels on the same scan grid: $H\to ee$ (left), $H\to\mu\mu$ (middle), and $H\to\tau\tau$ (right). Each panel shows $\mu_{\ell\ell}^{\rm pred}$ from Eq.~\eqref{eq:mu_pred} with the same reference-normalization point $(D_0,\eta_0)=(10,1)$.}
     \label{fig:hll_proxy}
+\end{figure}
+
+The U9--U14 normalization audit leaves one reviewer-facing policy choice rather than a new normalization object: keep the conservative release scalar, or explicitly report the U13/U14 topology-changing direct branch. Figure~\ref{fig:y2raw_topology_policy} summarizes that choice on the audited D21\(\times\)E21 map.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\linewidth]{hll_y2raw_topology_policy.png}
+    \caption{Reviewer-facing U13/U14 topology-adoption policy for the direct inserted-history \(y_2^{\rm raw}(D_\star)\) scalar. Left: the accepted set grows from \(\{D=8.8,9.6\}\times E_{21}\) to \(\{D=8.0,8.8,9.6\}\times E_{21}\), adding one adjacent \(D=8.0\) slab with \(21\) gains, no losses, and one connected component before and after the change. Right: the decision chain separates U10's non-silent map impact, U12's no-topology obstruction, U13's monotone-expansion policy, and U14's margin certificate. The direct branch is optional and adoption-safe only with explicit topology-changing wording; the release scalar remains the conservative baseline.}
+    \label{fig:y2raw_topology_policy}
 \end{figure}
 
 % ============================================================
@@ -5201,7 +5209,7 @@ For interpolation support and reproducibility of scan-level diagnostics, we addi
 
 \begin{table}[t]
 \centering
-\caption{Auxiliary fine-grid localized profile points from the full-scan run ($D=4$--$20$). Source CSV: \texttt{output/chi\_fp\_2d/localized\_chi\_D4-5-...-20.csv}.}
+\caption{Auxiliary fine-grid localized profile points from the full-scan run ($D=4$--$20$). The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:chi_loc_full}
 \small
 \begin{tabular}{cccc}
@@ -5248,7 +5256,7 @@ The best-fit point moves within $(D,\eta)\approx(8.07\text{--}9.42,\ 1.29\text{-
 
 \begin{table*}[t]
 \centering
-\caption{Extended profile-sensitivity test for $\chi_N^{(LR)}(D)$ in the $60\times60$ global scan. Source data file: \texttt{paper/chi\_profile\_robustness.csv}.}
+\caption{Extended profile-sensitivity test for $\chi_N^{(LR)}(D)$ in the $60\times60$ global scan. The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:chi_profile_sensitivity}
 \small
 \begin{tabular}{lcccc}
@@ -5265,12 +5273,12 @@ Exp-fit $\times 1.2$ & $0.927$ & $0.217$ & $0.163$ & $(8.88,\;2.13)$ \\
 \end{tabular}
 \end{table*}
 
-As a stronger stress test, we further rescaled the localized profile by large factors and tracked boundary movement directly on the $(D,\eta)$ grid. Figure~\ref{fig:chi_scale_stress} shows that, at the present $60\times60$ scan resolution, the $\mathcal{R}_3>0.90$ mask is stable up to $\times10^4$ and first shifts at $\times10^5$, while the $H\to\mu\mu$ acceptance mask already shifts for the user-requested $\times0.5$ and $\times2$ cases (changed-cell fractions $0.0331$ and $0.0258$, respectively).
+As a stronger stress test, we further rescaled the localized profile by large factors and tracked boundary movement directly on the $(D,\eta)$ grid. Figure~\ref{fig:chi_scale_stress} shows that, at the present $60\times60$ scan resolution, the $\mathcal{R}_3>0.90$ mask is stable up to $\times10^4$ and first shifts at $\times10^5$, while the $H\to\mu\mu$ acceptance mask already shifts for the representative $\times0.5$ and $\times2$ cases (changed-cell fractions $0.0331$ and $0.0258$, respectively).
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.95\linewidth]{chi_scale_stress_test.png}
-    \caption{Strong $\chi$-amplitude stress test on the global map. Left: overlay of $\chi^2_{\mu\mu}\leq4$ boundary for selected scales, including the requested $\times0.5$ and $\times2$. Right: changed-cell fractions versus scale (relative to baseline $\times1$), showing early movement for the $H\to\mu\mu$ mask and delayed movement for the $\mathcal{R}_3$ mask. Source data file: \texttt{output/chi\_fp\_2d/chi\_scale\_stress\_test.csv}.}
+    \caption{Strong $\chi$-amplitude stress test on the global map. Left: overlay of $\chi^2_{\mu\mu}\leq4$ boundary for selected scales, including representative $\times0.5$ and $\times2$ stress factors. Right: changed-cell fractions versus scale (relative to baseline $\times1$), showing early movement for the $H\to\mu\mu$ mask and delayed movement for the $\mathcal{R}_3$ mask. The registered numerical certificate is indexed in the artifact registry.}
 \label{fig:chi_scale_stress}
 \end{figure*}
 
@@ -5353,9 +5361,7 @@ The audit \texttt{code/audit\_gn\_lowN\_microstate\_count.py} reads the exported
 \min_D(\lambda_2-\lambda_1)=4.164426355\times10^{-2},\qquad
 \min_D(\lambda_3-\lambda_2)=4.968688976\times10^{-2},
 \]
-zero profile--spectrum eigenvalue mismatch at the exported precision, and exact projector ranks \(1,2,3\) at every audited \(D\).  Source files:
-\texttt{paper/gn\_lowN\_microstate\_count\_summary.csv} and
-\texttt{paper/gn\_lowN\_microstate\_count\_detail.csv}.
+zero profile--spectrum eigenvalue mismatch at the exported precision, and exact projector ranks \(1,2,3\) at every audited \(D\).  The numerical certificates are \path{paper/gn_lowN_microstate_count_summary.csv} and \path{paper/gn_lowN_microstate_count_detail.csv}.
 
 \medskip\noindent\textbf{Corollary G1 (Status of the low-\(N\) \(g_N\) counting line).}
 Proposition G1 closes the exact finite-volume low-mode counting question: in the audited two-dimensional box the first three spectral layers carry projector ranks \(1,2,3\).  This count is deliberately separated from the bounded phase-space shell-volume weight used by the release baseline,
@@ -5385,13 +5391,13 @@ $D$ & $\lambda_1$ & $\lambda_2$ & $\lambda_3$ & $\hat g_1$ & $\hat g_2$ \\
 \begin{figure*}[t]
     \centering
     \includegraphics[width=0.98\textwidth]{gn_cardy_vs_phase_space.png}
-    \caption{Low-$N$ comparison between legacy Cardy reference and 2D phase-space profile on $D=\{6,12,18\}$, shown as normalized ratios $g_N/g_3$ (log scale). The highlighted band marks $N=1,2,3$. Source files: \texttt{paper/gn\_cardy\_vs\_phase\_space.png}, \texttt{paper/gn\_cardy\_vs\_phase\_space.csv}.}
+    \caption{Low-$N$ comparison between legacy Cardy reference and 2D phase-space profile on $D=\{6,12,18\}$, shown as normalized ratios $g_N/g_3$ (log scale). The highlighted band marks $N=1,2,3$; the registered figure and data certificates are indexed in the artifact registry.}
     \label{fig:gn_cardy_vs_phase_space}
 \end{figure*}
 
 \begin{table}[ht]
 \centering
-\caption{Map-level impact of first-principles $g_N$ profiles on the $60\times60$ scan (baseline is \texttt{fp\_2d\_full}; legacy Cardy retained as comparator). Source CSV: \texttt{paper/gn\_profile\_impact.csv}.}
+\caption{Map-level impact of first-principles $g_N$ profiles on the $60\times60$ scan (baseline is \texttt{fp\_2d\_full}; legacy Cardy retained as comparator). The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:gn_profile_impact}
 \small
 \begin{tabular}{lcccc}
@@ -5408,7 +5414,7 @@ $g_N$ fp\_2d profile & 0.860 & 0.1492 & 0.0003 & 0.1144 \\
 
 \begin{table}[t]
 \centering
-\caption{$N_{\max}$ convergence check for baseline and $g_N$ fp\_2d map-level summaries. Source CSV: \texttt{paper/gn\_nmax\_convergence.csv}.}
+\caption{$N_{\max}$ convergence check for baseline and $g_N$ fp\_2d map-level summaries. The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:gn_nmax_convergence}
 \small
 \begin{tabular}{lccccc}
@@ -5444,11 +5450,11 @@ For $N>3$,
 \hat g_N^{\rm(target)}=\left(\frac{\Delta N_{\rm ps}^{(N)}}{\Delta N_{\rm ps}^{(3)}}\right)^{s}
 \exp\!\left[-\beta\frac{\lambda_N-\lambda_3}{\lambda_3-\lambda_2}\right],
 \end{equation}
-followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present baseline run, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement} (source CSV: \texttt{paper/gn\_baseline\_replacement.csv}). Relative to baseline \texttt{fp\_2d\_full}, the legacy Cardy reference lowers $f(\mathcal{R}_3>0.90)$ by $0.0500$ (from $0.9269$ to $0.8769$), lowers $f(\chi^2_{\mu\mu}<4)$ by $0.0014$ (from $0.1500$ to $0.1486$), and keeps $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$. Therefore, the map-level main conclusion is retained under this baseline switch.
+followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present baseline run, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement}, with the registered certificate indexed in the artifact registry. Relative to baseline \texttt{fp\_2d\_full}, the legacy Cardy reference lowers $f(\mathcal{R}_3>0.90)$ by $0.0500$ (from $0.9269$ to $0.8769$), lowers $f(\chi^2_{\mu\mu}<4)$ by $0.0014$ (from $0.1500$ to $0.1486$), and keeps $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$. Therefore, the map-level main conclusion is retained under this baseline switch.
 
 \begin{table}[t]
 \centering
-\caption{Map-level baseline cross-check for $g_N$: \texttt{fp\_2d\_full} baseline versus legacy Cardy reference on the same $60\times60$ grid. Source CSV: \texttt{paper/gn\_baseline\_replacement.csv}.}
+\caption{Map-level baseline cross-check for $g_N$: \texttt{fp\_2d\_full} baseline versus legacy Cardy reference on the same $60\times60$ grid. The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:gn_baseline_replacement}
 \small
 \begin{tabular}{lcccc}
@@ -5461,7 +5467,7 @@ legacy Cardy reference & 0.8769 & 0.1486 & 0.0003 & -0.0500 \\
 \end{tabular}
 \end{table}
 
-Across $N_{\max}=20,30,40$, both rows in Table~\ref{tab:gn_baseline_replacement} are numerically stable in this setup (source CSV: \texttt{paper/gn\_baseline\_replacement\_nmax.csv}).
+Across $N_{\max}=20,30,40$, both rows in Table~\ref{tab:gn_baseline_replacement} are numerically stable in this setup; the convergence certificate is indexed in the artifact registry.
 
 \subsection{Geometry-Informed and Microscopic Lindblad Scan-Ready Module for Open-System \texorpdfstring{$\chi$}{chi}}
 \label{app:chi_open_scan}
@@ -5540,7 +5546,7 @@ Figure~\ref{fig:chi_open_parent_bath_potential} gives the representative late-st
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{chi_open_system_parent_bath_potential.png}
-    \caption{Projected parent-bath potential closure for the open-system module on the calibrated knot set. The normalized bath block admits a single-valued scalar primitive $\Phi_a$ whose direct reconstruction, anchor recovery, and chain recovery agree to machine precision: the maximum residuals are $1.42\times10^{-14}$ on the identifiable $\phi$ subset and $5.50\times10^{-13}$ on the mixing branch. Source files: \texttt{paper/chi\_open\_system\_parent\_bath\_potential\_*}.}
+    \caption{Projected parent-bath potential closure for the open-system module on the calibrated knot set. The normalized bath block admits a single-valued scalar primitive $\Phi_a$ whose direct reconstruction, anchor recovery, and chain recovery agree to machine precision: the maximum residuals are $1.42\times10^{-14}$ on the identifiable $\phi$ subset and $5.50\times10^{-13}$ on the mixing branch. The registered figure and data certificates are indexed in the artifact registry.}
     \label{fig:chi_open_parent_bath_potential}
 \end{figure}
 
@@ -6491,7 +6497,7 @@ and where the last two terms are the exact mix-side cocycle and potential envelo
 \|W^{\rm(exact)}\|_\infty \le \mathcal B_{\rm op}^{\rm(exact)}.
 \]
 
-\textit{Audit proof.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_operator_radius_bound.py} reads the factorization, statement, cocycle, and potential summaries directly and evaluates the envelope components
+\textit{Audit proof.} \path{code/audit_open_system_exact_operator_radius_bound.py} reads the factorization, statement, cocycle, and potential summaries directly and evaluates the envelope components
 \[
 \Delta_{\phi}^{\rm(fact)}=2.33\times10^{-10},
 \qquad
@@ -6537,7 +6543,7 @@ Equivalently,
 \qquad
 \frac{\tfrac12 r_{\max}^{\rm safe}}{\mathcal B_{\rm op}^{\rm(exact)}}=1.39\times10^{2}.
 \]
-Therefore the exported exact operator satisfies the witness-chart hypothesis of Proposition~O7 with half-radius room to spare, directly from the exact factorization/statement/cocycle/potential equations themselves rather than from the scan chart alone. Consequently the exact-lift conclusions of Corollary~O5 follow again for the exported operator on the audited knot set. The proof-level gap is now reduced to a final analytic upgrade: replace these exported exact residual constants by an operator theorem that bounds the same envelope a priori.
+Therefore the exported exact operator satisfies the witness-chart hypothesis of Proposition~O7 with half-radius room to spare, directly from the exact factorization, statement, cocycle, and potential equations themselves rather than from the scan chart alone. Consequently the exact-lift conclusions of Corollary~O5 follow again for the exported operator on the audited knot set. The proof-level gap is now reduced to a final analytic upgrade: replace these exported exact residual constants by an operator theorem that bounds the same envelope a priori.
 
 \medskip\noindent\textbf{Proposition O9 (Mix-side factorization witness half-radius bound).}
 The dominant term in the envelope of Proposition~O8 can itself be reduced to a simple quotient bound. Rowwise,
@@ -6565,7 +6571,7 @@ imply the operator bound
 \le \frac{\varepsilon_{\rm mix}}{m_{\rm mix}}.
 \]
 
-\textit{Audit proof.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_mix_factorization_source.py} evaluates this quotient source directly on the exported exact factorization map. The common numerator bound is
+\textit{Audit proof.} \path{code/audit_open_system_mix_factorization_source.py} evaluates this quotient source directly on the exported exact factorization map. The common numerator bound is
 \[
 \varepsilon_{\rm mix}=4.40\times10^{-14}.
 \]
@@ -6643,7 +6649,7 @@ g_x(D)^2 S_{xx}(D)\ge
 {2\,C_{\max}^{\rm ceil}\,\kappa_{\rm env}^{\max}}.
 \]
 
-\textit{Audit proof.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_gamma_mix_floor_source.py} verifies the exact identity above with
+\textit{Audit proof.} \path{code/audit_open_system_gamma_mix_floor_source.py} verifies the exact identity above with
 \[
 \max_D\left|
 \gamma_{\rm mix}(D)-\frac{\gamma_{\rm ref}(D)\chi_{\rm eff}(D)}{2C_{\max}(D)}
@@ -6739,7 +6745,7 @@ immediately implies
 \gamma_{\rm ref}(D)\ge (\omega_1^{\rm floor})^{11}=(\tau_{\rm env}^{\rm ceil})^{-11}.
 \]
 
-\textit{Audit proof.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_gamma_ref_floor_source.py} verifies on the exported exact bridge that
+\textit{Audit proof.} \path{code/audit_open_system_gamma_ref_floor_source.py} verifies on the exported exact bridge that
 \[
 \max_D|\gamma_{\rm ref}(D)-\omega_1(D)^{11}|=1.56\times10^{-11},
 \]
@@ -6809,7 +6815,7 @@ obeys the universal ceiling
 C_{\max}\le \frac12.
 \]
 
-\textit{Audit check.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_cmax_ceiling_source.py} verifies on the exported exact micro bridge that
+\textit{Audit check.} \path{code/audit_open_system_cmax_ceiling_source.py} verifies on the exported exact micro bridge that
 \[
 \max_D C_{\max}(D)=0.497539\ldots<\frac12,
 \]
@@ -6899,7 +6905,7 @@ A_\chi(D)\ge
 A_\chi^{\rm(sep\ floor)}.
 \]
 
-\textit{Audit check.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_chi_eff_floor_source.py} verifies on the exact exported bridge that
+\textit{Audit check.} \path{code/audit_open_system_chi_eff_floor_source.py} verifies on the exact exported bridge that
 \[
 \max_D\left|A_\chi-\frac{2\gamma_{\rm mix}}{\gamma_{\rm ref}}\right|=1.74\times10^{-16},
 \qquad
@@ -6999,7 +7005,7 @@ C_{\max}
 \right].
 \]
 
-\textit{Audit check.} \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_cmax_floor_source.py} verifies on the exported exact bridge that all rows are underdamped,
+\textit{Audit check.} \path{code/audit_open_system_cmax_floor_source.py} verifies on the exported exact bridge that all rows are underdamped,
 \[
 \min_D(\Delta E-\gamma_\phi)=2.59273\times10^{-1}>0,
 \qquad
@@ -7036,23 +7042,24 @@ On the audited exact parameter box, the same closed form is numerically monotone
 \]
 with audited derivative margins
 \[
-\min \partial_{\Delta E} C_{\max}=3.16\times10^{-3},
-\qquad
-\max \partial_{\gamma_\phi} C_{\max}=-3.98\times10^{-1},
-\qquad
-\max \partial_{\gamma_{\rm mix}} C_{\max}=-7.96\times10^{-1}.
+\begin{aligned}
+\min \partial_{\Delta E} C_{\max}&=3.16\times10^{-3},\\
+\max \partial_{\gamma_\phi} C_{\max}&=-3.98\times10^{-1},\\
+\max \partial_{\gamma_{\rm mix}} C_{\max}&=-7.96\times10^{-1}.
+\end{aligned}
 \]
 Therefore the exact bridge already admits the separated floor
 \[
-C_{\max}(D)\ge
-C_{\max}^{\rm(sep\ floor)}
-=
+\begin{aligned}
+C_{\max}(D)&\ge C_{\max}^{\rm(sep\ floor)}\\
+&=
 \frac{\Delta E_{\min}}
 {2\sqrt{\Gamma_{\max}^2+\omega_{\min}^2}}
 \exp\!\left[
 -\frac{\Gamma_{\max}}{\omega_{\min}}
 \arctan\!\left(\frac{\omega_{\min}}{\Gamma_{\max}}\right)
 \right],
+\end{aligned}
 \]
 where
 \[
@@ -7115,7 +7122,7 @@ F(a,b)
 \right].
 \]
 This representation is scale-free: the dependence on $\Delta E$ enters only through the ratios $(a,b)$.
-On the exported exact bridge, \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_cmax_ratio_floor_source.py} verifies that $F$ is monotone decreasing on the audited ratio box
+On the exported exact bridge, \path{code/audit_open_system_cmax_ratio_floor_source.py} verifies that $F$ is monotone decreasing on the audited ratio box
 \[
 0\le a\le a_{\max},
 \qquad
@@ -7182,7 +7189,7 @@ A_\chi(D)=\frac{2\gamma_{\rm mix}(D)}{\gamma_{\rm ref}(D)}
 =
 \kappa_{\rm env}\frac{2g_x(D)^2S_{xx}(D)}{\omega_1(D)^{11}}.
 \]
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_achi_amplitude_source.py} verifies the exact residuals
+\path{code/audit_open_system_achi_amplitude_source.py} verifies the exact residuals
 \[
 \max_D \left|A_\chi-\frac{2\gamma_{\rm mix}}{\omega_1^{11}}\right|
 =1.73\times10^{-16},
@@ -7256,7 +7263,7 @@ On the exported exact bridge,
 \[
 \gamma_{\rm mix}(D)=\kappa_{\rm env}\,g_x(D)^2\,S_{xx}(D).
 \]
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_gamma_mix_floor_alignment.py} verifies the exact reconstruction
+\path{code/audit_open_system_gamma_mix_floor_alignment.py} verifies the exact reconstruction
 \[
 \max_D \left|\gamma_{\rm mix}-\kappa_{\rm env} g_x^2 S_{xx}\right|
 =4.40\times10^{-14}.
@@ -7353,7 +7360,7 @@ g_z(D)=\frac12\left|\bigl(V_{\rm loc}^{(\delta V)}(D)\bigr)_{LL}-\bigl(V_{\rm lo
 =
 \left|V_{12}(D)\right|.
 \]
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_gx_floor_source.py} verifies on the exported exact bridge that
+\path{code/audit_open_system_gx_floor_source.py} verifies on the exported exact bridge that
 \[
 \max_D\left|g_x-\left|V_{LR}^{(\delta V)}\right|\right|=0,
 \]
@@ -7466,7 +7473,7 @@ so the exact contrast may be read as a one-center pair plus a mirror/cross remai
 \[
 V_{11}(D)-V_{22}(D)=2I_{\rm self}(D)+I_\times(D).
 \]
-The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_self_mirror_source.py} closes the additive split to machine precision,
+The audit \path{code/audit_open_system_parity_contrast_self_mirror_source.py} closes the additive split to machine precision,
 \[
 \max_D\|U_2-U_+-U_--U_\times\|_\infty
 =8.88\times10^{-15},
@@ -7546,7 +7553,7 @@ I_{\rm self,tail}^{(R)}(D)
 :=
 I_{\rm self,pair}(D)-I_{\rm self,core}^{(R)}(D).
 \]
-The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_self_floor_source.py} scans
+The audit \path{code/audit_open_system_parity_contrast_self_floor_source.py} scans
 \[
 R\in[1.20,1.40]
 \]
@@ -7662,7 +7669,7 @@ I_{\rm self,shell}^{(\rho_\#,z_\#)}(D)
 :=
 I_{\rm self,core}^{(R_\ast)}(D)-I_{\rm self,anchor}^{(\rho_\#,z_\#)}(D).
 \]
-The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_self_core_anchor_source.py} scans
+The audit \path{code/audit_open_system_parity_contrast_self_core_anchor_source.py} scans
 \[
 \rho_\#\in[0.55,0.85],\qquad z_\#\in[1.05,1.30],
 \]
@@ -7723,6 +7730,10 @@ Keep the canonical compact anchor
 \[
 B_{\rm anchor}(D):=B_{\rm box}(0.70,1.21;D).
 \]
+For compact display, write
+\[
+B_\pm^a(D):=B_\pm(D)\cap B_{\rm anchor}(D).
+\]
 Split the anchor integral into its same-center and mirror pieces:
 \[
 I_{\rm self,anchor}(D)=I_{\rm diag,anchor}(D)+I_{\rm mir,anchor}(D),
@@ -7731,22 +7742,22 @@ where
 \[
 I_{\rm diag,anchor}(D)
 :=
-\int_{B_+(D)\cap B_{\rm anchor}(D)}
+\int_{B_+^a(D)}
 \mathcal C(\rho,z;D)\,\delta V_+(\rho,z;D)\,d\rho\,dz
 +
-\int_{B_-(D)\cap B_{\rm anchor}(D)}
+\int_{B_-^a(D)}
 \mathcal C(\rho,z;D)\,\delta V_-(\rho,z;D)\,d\rho\,dz,
 \]
 \[
 I_{\rm mir,anchor}(D)
 :=
-\int_{B_+(D)\cap B_{\rm anchor}(D)}
+\int_{B_+^a(D)}
 \mathcal C(\rho,z;D)\,\delta V_-(\rho,z;D)\,d\rho\,dz
 +
-\int_{B_-(D)\cap B_{\rm anchor}(D)}
+\int_{B_-^a(D)}
 \mathcal C(\rho,z;D)\,\delta V_+(\rho,z;D)\,d\rho\,dz.
 \]
-The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_anchor_static_source.py} scans all same-center sub-boxes
+The audit \path{code/audit_open_system_parity_contrast_anchor_static_source.py} scans all same-center sub-boxes
 \[
 \rho_{\rm box}\in[0.40,0.70],\qquad
 z_{\rm box}\in[0.80,1.21],
@@ -7841,7 +7852,7 @@ I_{\rm diag,box}^{(\rho_\Box,\zeta_\Box)}(D)
 +
 I_{\rm diag,shell}^{(\rho_\Box,\zeta_\Box)}(D).
 \]
-The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_box_source.py} scans
+The audit \path{code/audit_open_system_parity_contrast_diag_anchor_box_source.py} scans
 \[
 \rho_\Box\in[0.40,0.70],\qquad
 \zeta_\Box\in[0.80,1.21],
@@ -7905,9 +7916,9 @@ q_{\rm diag}(\rho,z;D)
 :=
 \operatorname{sgn}\!\bigl(I_{\rm diag,anchor}(D)\bigr)\,
 \mathcal C(\rho,z;D)\Bigl(
-\delta V_+(\rho,z;D)\,\mathbf 1_{B_+(D)\cap B_{\rm anchor}(D)}
+\delta V_+(\rho,z;D)\,\mathbf 1_{B_+^a(D)}
 +
-\delta V_-(\rho,z;D)\,\mathbf 1_{B_-(D)\cap B_{\rm anchor}(D)}
+\delta V_-(\rho,z;D)\,\mathbf 1_{B_-^a(D)}
 \Bigr).
 \]
 Let
@@ -7920,7 +7931,7 @@ so that
 \[
 |I_{\rm diag,anchor}(D)|=P_{\rm diag}(D)-N_{\rm diag}(D).
 \]
-The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_moment_source.py} closes this split to machine precision,
+The audit \path{code/audit_open_system_parity_contrast_diag_anchor_moment_source.py} closes this split to machine precision,
 \[
 \max_D \Bigl||I_{\rm diag,anchor}(D)|-(P_{\rm diag}(D)-N_{\rm diag}(D))\Bigr|
 =
@@ -8026,7 +8037,7 @@ Then
 \frac{N_{\rm out}^{(\zeta_{\rm cut})}(D)}{P_{\rm in}^{(\zeta_{\rm cut})}(D)},
 \]
 because \(N_{\rm diag}=N_{\rm in}+N_{\rm out}\) and \(P_{\rm diag}\ge P_{\rm in}\).
-The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_cancellation_source.py}
+The audit \path{code/audit_open_system_parity_contrast_diag_anchor_cancellation_source.py}
 scans the nontrivial slab family
 \[
 \zeta_{\rm cut}\in[0.80,1.20]
@@ -8124,7 +8135,7 @@ Writing the full oriented anchor as
 I_{\rm mass,in}(D)+I_{\rm der,in}(D)+I_{\rm out}(D),
 \]
 with \(I_{\rm der,in}\) the derivative-sector correction on the same inner slab and \(I_{\rm out}\) the residual oriented shell term, the audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_cancellation_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_mass_cancellation_source.py}
 shows that the same shell-isolating cut remains optimal for the mass-net floor:
 \[
 \zeta_{\rm cut}^{\ast}=1.20.
@@ -8196,7 +8207,7 @@ P_{\rm mass,in}(D)\ge P_{\rm mass,box}^{(\rho_\Box,\zeta_\Box)}(D)
 \]
 for every such subbox.
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_positive_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_mass_positive_source.py}
 scans
 \[
 \rho_\Box\in[0.35,0.70],
@@ -8286,7 +8297,7 @@ Therefore
 \frac{N_{\rm mass,tail}^{(\rho_{\min},\zeta_{\Box})}(D)}{P_{\rm mass,in}(D)}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_negative_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_mass_negative_source.py}
 scans
 \[
 \rho_{\min}\in[0.03,0.30],
@@ -8377,7 +8388,7 @@ N_{\rm mass,cap}^{(\rho_{\min},\zeta_{\Box})}(D),
 N_{\rm mass,cap}^{(\rho_{\min},\zeta_{\Box})}(D)\ge 0.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_annulus_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_mass_annulus_source.py}
 scans
 \[
 \rho_{\min}\in[0.15,0.30],
@@ -8478,7 +8489,7 @@ N_{\rm mass,rim}^{(\rho_{\rm sh},1.20)}(D),
 N_{\rm mass,rim}^{(\rho_{\rm sh},1.20)}(D)\ge 0.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_shoulder_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_mass_shoulder_source.py}
 scans strict radial trims
 \[
 \rho_{\rm sh}\in[0.16,0.30]
@@ -8594,7 +8605,7 @@ N_{\rm mass,core}^{(0.20;\zeta_{\rm low},1.20)}(D),
 N_{\rm mass,core}^{(0.20;\zeta_{\rm low},1.20)}(D)\ge 0.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_shoulder_band_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_mass_shoulder_band_source.py}
 scans genuine hollows
 \[
 \zeta_{\rm low}\in[0.10,0.40]
@@ -8699,16 +8710,17 @@ N_{\rm mass,corner}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D).
 \]
 Because \([q_{\rm mass}]_-\ge 0\), one has the exact monotone split
 \[
+\begin{aligned}
 N_{\rm mass,band}^{(0.20;0.10,1.20)}(D)
-=
-N_{\rm mass,corner}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D)
-+
-N_{\rm mass,cap}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D),
-\qquad
-N_{\rm mass,cap}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D)\ge 0.
+&=
+N_{\rm mass,corner}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D)\\
+&\quad+
+N_{\rm mass,cap}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D),\\
+N_{\rm mass,cap}^{(\rho_{\rm corner};\zeta_{\rm corner},1.20)}(D)&\ge 0.
+\end{aligned}
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_band_corner_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_mass_band_corner_source.py}
 scans genuinely strict corner trims
 \[
 \rho_{\rm corner}\in[0.22,0.30],
@@ -8764,32 +8776,30 @@ Thus support-side localization is already exhausted at the full adverse-band sca
 \medskip\noindent\textbf{Corollary O31 (The cancellation gap stabilizes at the full adverse-band scale).}
 Combining Proposition~O32 with Corollary~O30 gives
 \[
+\begin{aligned}
 \nu_{\rm diag,int}^{(\pm,m)}(D)
-\le
+&\le
 \frac{N_{\rm mass,corner}^{(0.22;0.10,1.20)}(D)}
 {P_{\rm mass,in}(D)}
-+
-6.35145\times10^{-2}
-+
-4.19214\times10^{-2}
-+
-5.38319\times10^{-2}
-+
-4.81178\times10^{-2}.
++6.35145\times10^{-2}
++4.19214\times10^{-2}\\
+&\quad
++5.38319\times10^{-2}
++4.81178\times10^{-2}.
+\end{aligned}
 \]
 At the exact worst cancellation knot \(D=11\), this reads
 \[
+\begin{aligned}
 0.957812
-=
+&=
 0.750427
-+
-6.35145\times10^{-2}
-+
-4.19214\times10^{-2}
-+
-5.38319\times10^{-2}
-+
-4.81178\times10^{-2}.
++6.35145\times10^{-2}
++4.19214\times10^{-2}\\
+&\quad
++5.38319\times10^{-2}
++4.81178\times10^{-2}.
+\end{aligned}
 \]
 So the dominant adverse band has now been tested against a genuinely strict corner localization and survives as the stable proof-side target: the remaining gap is best read as the full canonical adverse band plus only small cap, shoulder-core, inner-rim, and axial-core leakages.
 
@@ -8820,7 +8830,7 @@ Then on the canonical band one has the exact pointwise factorization
 K_{\rm band}^{\rm mass}(\rho,z;D)\,W_{\rm band}^{(-)}(\rho,z;D),
 \]
 provided \(K_{\rm band}^{\rm mass}>0\) there. The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_mass_band_magnitude_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_mass_band_magnitude_source.py}
 verifies precisely this structure across all audited knots \(D=4,\dots,20\):
 \[
 \max_D \|[q_{\rm mass}]_- - K_{\rm band}^{\rm mass}W_{\rm band}^{(-)}\|_\infty = 0,
@@ -8952,7 +8962,7 @@ and the weighted radial factor
 \frac{W_{\rm band}^{(-)}(D)}{2\pi\,M_{\rm band}^{(-)}(D)}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_negative_carrier_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_band_negative_carrier_source.py}
 verifies the exact factorization
 \[
 \max_D \|W_{\rm band}^{(-)}-2\pi\rho\,M_{\rm band}^{(-)}\|_\infty
@@ -9090,7 +9100,7 @@ M_{\rm band}^{\rm(abs)}(D)
 2\int_{B_{\rm neg}^{(0.20;0.10,1.20)}(D)} |\phi_R(\rho,z;D)\phi_L(\rho,z;D)|\,d\rho\,dz.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_overlap_moment_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_band_overlap_moment_source.py}
 verifies both identities to machine precision:
 \[
 \max_D \left|M_{\rm band}^{(-)}-\frac{M_{\rm band}^{\rm(abs)}-R_{\rm band}^{\rm(sgn)}}{2}\right|
@@ -9228,7 +9238,7 @@ and the weighted local averages
 \frac{M_{\rm band}^{\rm(abs)}(D)}{2\,S_{\rm band}^{\rm(mir)}(D)}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_absolute_overlap_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_band_absolute_overlap_source.py}
 verifies the exact factorization
 \[
 \max_D\left|M_{\rm band}^{\rm(abs)}-2\,S_{\rm band}^{\rm(self)}\,\bar\Phi_{\rm band}^{\rm(mir|self)}\right|
@@ -9360,7 +9370,7 @@ where
 {\left(\int \Phi_{\rm self}\right)\left(\int \Phi_{\rm mir}\right)}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_mirror_average_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_band_mirror_average_source.py}
 verifies this factorization with zero residual:
 \[
 \max_D\left|\bar\Phi_{\rm band}^{\rm(mir|self)}-\Xi_{\rm band}^{\rm(self)}\bar\Phi_{\rm band}^{\rm(mir)}\right|
@@ -9462,7 +9472,7 @@ Then the ordinary mirror-band mean satisfies the exact identity
 \Lambda_{\rm band}^{\rm(mir|self)}(D)\,\bar\Phi_{\rm band}^{\rm(self)}(D).
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_diag_anchor_band_mirror_ratio_source.py}
+\path{code/audit_open_system_parity_contrast_diag_anchor_band_mirror_ratio_source.py}
 verifies this factorization with machine-level residual
 \[
 \max_D\left|
@@ -9553,7 +9563,7 @@ Equivalently, the normalized interior mass-sector cancellation ratio satisfies
 \frac{N_{\rm mass,tail}^{(0.15,1.20)}(D)}{P_{\rm mass,in}(D)}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_parity_contrast_synthesis_source.py}
+\path{code/audit_open_system_parity_contrast_synthesis_source.py}
 verifies both identities on the exact audited knot set with residuals
 \[
 \max_D\left|
@@ -9666,13 +9676,11 @@ So the right reading is now stable: the dense exact-family scan sets the benchma
 
 \medskip\noindent\textbf{Proposition O40 (Synthesis of the dominant-pole source chain on the audited exact bridge).}
 Combining Propositions~O1--O9, Corollaries~O1--O8, and Benchmark~O1, the dominant-pole line on the current audited exact bridge separates into three structural blocks:
-\[
-\text{on-shell defect closure},\qquad
-\text{determinant-deficit gap budget},\qquad
-\text{exact operator witness-envelope inclusion}.
-\]
+\begin{center}
+on-shell defect closure; determinant-deficit gap budget; exact operator witness-envelope inclusion.
+\end{center}
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_dominant_pole_synthesis_source.py}
+\path{code/audit_open_system_dominant_pole_synthesis_source.py}
 compresses these blocks into one reviewer-facing summary on the exported D4--20 knot set.  First, the defect side is already closed:
 \[
 \max_a|\delta_{q,a}|=4.44\times10^{-16},
@@ -9823,7 +9831,7 @@ Equivalently, since \(\kappa_{\rm env}^{\max}=4.31\times10^{5}\) on the same kno
 \[
 \gamma_{\rm mix}(D)\ge 3.94\times10^{-4}.
 \]
-The new audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_lift_scalar_source.py}
+The new audit \path{code/audit_open_system_exact_schur_lift_scalar_source.py}
 shows that the current exported exact bridge already exceeds this threshold in several independent ways:
 \[
 \min_D g_x(D)^2S_{xx}(D)=1.2147\times10^{-9},
@@ -9865,7 +9873,7 @@ gives the exact-bridge lower estimate
 =3.47553\times10^{-4}.
 \]
 The new audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_lift_overlap_bridge.py}
+\path{code/audit_open_system_exact_schur_lift_overlap_bridge.py}
 compares this directly with the scalar Schur-lift threshold from Proposition~O41,
 \[
 \gamma_{{\rm mix},\ast}=3.93829\times10^{-4},
@@ -9944,7 +9952,7 @@ implies the sufficient static parity threshold
 2\sqrt{\frac{m_{{\rm mix},\ast}}{S_\ast}}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_lift_parity_threshold_source.py}
+\path{code/audit_open_system_exact_schur_lift_parity_threshold_source.py}
 evaluates this threshold for the two response inputs already isolated in Propositions~O17 and O41.  With the globally valid response floor
 \[
 S_\ast=S_{xx}^{\rm floor}=1.01493,
@@ -10030,7 +10038,7 @@ Thus
 V_{11}(D)-V_{22}(D)=J_{\rm core}^{(R)}(D)+J_{\rm tail}^{(R)}(D).
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_total_core_tightening_source.py}
+\path{code/audit_open_system_exact_total_core_tightening_source.py}
 rescans the same interval
 \[
 R\in[1.20,1.40]
@@ -10123,7 +10131,7 @@ from Proposition~O44.  Do not change the support family or the radius; instead, 
 \mathcal D_{\rm R}=\{12,\dots,20\}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_total_core_window_split_source.py}
+\path{code/audit_open_system_exact_total_core_window_split_source.py}
 reuses the exact-total core/tail data from Proposition~O44 and shows that the same-family exact split
 \[
 V_{11}(D)-V_{22}(D)=J_{\rm core}^{(R_\ast)}(D)+J_{\rm tail}^{(R_\ast)}(D)
@@ -10272,7 +10280,7 @@ throughout the audited on-shell window.  By Proposition~O43, this already exceed
 
 \medskip\noindent\textbf{Corollary O45 (What remains is no longer family design, but only a parent-side proof of the same piecewise bounds).}
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_piecewise_parent_lift_source.py}
+\path{code/audit_open_system_exact_schur_piecewise_parent_lift_source.py}
 shows that the constants in Proposition~O46 are already realized on the exported bridge:
 \[
 \eta_{\rm L}=0.520215\ldots,\quad
@@ -10371,7 +10379,7 @@ Hence the remaining parent-side analytic lift is no longer a whole-window family
 
 \medskip\noindent\textbf{Corollary O46 (The right window is formally demoted, and the left window alone sets the remaining parent-side proof target).}
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_left_window_bottleneck_source.py}
+\path{code/audit_open_system_exact_schur_left_window_bottleneck_source.py}
 shows that
 \[
 \frac{(1-\eta_{\rm R})C_{\rm R}}{6.00420\times10^{-5}}=2.31625,
@@ -10398,7 +10406,7 @@ into the two contiguous subwindows
 \mathcal D_{\rm L2}=\{11\}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_left_window_split_source.py}
+\path{code/audit_open_system_exact_schur_left_window_split_source.py}
 shows that the best same-family split occurs exactly at
 \[
 D_{\rm cut}=10.
@@ -10478,7 +10486,7 @@ into the two contiguous windows
 \mathcal D_{\rm L1b}=\{7,\dots,10\}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_left_window_hierarchical_split_source.py}
+\path{code/audit_open_system_exact_schur_left_window_hierarchical_split_source.py}
 shows that the best secondary same-family cut occurs at
 \[
 D_{\rm cut}^{(2)}=6.
@@ -10565,7 +10573,7 @@ at \(D=11\) is smaller than both interval floors, the audited bridge now has a u
 
 \medskip\noindent\textbf{Proposition O50 (After the audited hierarchical split, the remaining parent-side lift is equivalent to a single-knot core-floor theorem at \(D=11\)).}
 Keep the same exact-total split and the same family \(B_{\rm core}(R_\ast)\) with \(R_\ast=1.35\).  At the isolated bottleneck knot \(D=11\), the audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_knot_source.py}
+\path{code/audit_open_system_exact_schur_singleton_knot_source.py}
 shows
 \[
 V_{11}(11)-V_{22}(11)=J_{\rm core}^{(R_\ast)}(11)+J_{\rm tail}^{(R_\ast)}(11),
@@ -10644,7 +10652,7 @@ J_{-,{\rm core}}^{(R_\ast)}(11)
 J_{\times,{\rm core}}^{(R_\ast)}(11),
 \]
 where the first two terms come from the two one-center same-sign pieces and the last term is the cross correction, all integrated on the same core region \(B_{\rm core}(R_\ast;11)\).  The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_parent_source.py}
+\path{code/audit_open_system_exact_schur_singleton_parent_source.py}
 gives
 \[
 J_{+,{\rm core}}^{(R_\ast)}(11)=8.68591\times10^{-5},
@@ -10702,6 +10710,7 @@ Keep the same singleton knot \(D=11\), the same radius \(R_\ast=1.35\), and the 
 \[
 B_{\rm anchor}(11):=B_{\rm box}(0.70,1.21;11)\subset B_{\rm core}(R_\ast;11).
 \]
+Set \(B_\pm^a:=B_\pm(11)\cap B_{\rm anchor}(11)\) in this proposition.
 Split the same-center pair core as
 \[
 J_{{\rm self\text{-}pair},{\rm core}}^{(R_\ast)}(11)
@@ -10731,19 +10740,19 @@ with
 \[
 J_{{\rm diag},\rm anchor}(11)
 :=
-\int_{B_+(11)\cap B_{\rm anchor}(11)} \mathcal C(\rho,z;11)\,\delta V_+(\rho,z;11)\,d\rho\,dz
+\int_{B_+^a} \mathcal C(\rho,z;11)\,\delta V_+(\rho,z;11)\,d\rho\,dz
 +
-\int_{B_-(11)\cap B_{\rm anchor}(11)} \mathcal C(\rho,z;11)\,\delta V_-(\rho,z;11)\,d\rho\,dz
+\int_{B_-^a} \mathcal C(\rho,z;11)\,\delta V_-(\rho,z;11)\,d\rho\,dz
 \]
 and
 \[
 J_{{\rm mir},\rm anchor}(11)
 :=
-\int_{B_+(11)\cap B_{\rm anchor}(11)} \mathcal C(\rho,z;11)\,\delta V_-(\rho,z;11)\,d\rho\,dz
+\int_{B_+^a} \mathcal C(\rho,z;11)\,\delta V_-(\rho,z;11)\,d\rho\,dz
 +
-\int_{B_-(11)\cap B_{\rm anchor}(11)} \mathcal C(\rho,z;11)\,\delta V_+(\rho,z;11)\,d\rho\,dz.
+\int_{B_-^a} \mathcal C(\rho,z;11)\,\delta V_+(\rho,z;11)\,d\rho\,dz.
 \]
-The audit \path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_static_anchor_source.py},
+The audit \path{code/audit_open_system_exact_schur_singleton_static_anchor_source.py},
 which composes the already-exported singleton-parent and compact-anchor audits, gives
 \[
 |J_{{\rm self\text{-}pair},{\rm core}}^{(R_\ast)}(11)|=1.33812\times10^{-4},
@@ -10856,7 +10865,7 @@ where
 \frac{N_{\rm diag}(11)}{P_{\rm diag}(11)}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_diag_moment_source.py}
+\path{code/audit_open_system_exact_schur_singleton_diag_moment_source.py}
 reads the already-exported moment split at this singleton knot and gives
 \[
 P_{\rm diag}(11)=1.87136\times10^{-3},
@@ -10946,7 +10955,7 @@ Integrating over \(B_{\rm anchor}(11)\) gives the exact lower bound
 P_{\rm diag}(11)\ge P_{\rm mass}(11)-N_{\rm der}(11).
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_diag_mass_bridge_source.py}
+\path{code/audit_open_system_exact_schur_singleton_diag_mass_bridge_source.py}
 evaluates this inequality on the exported singleton bridge and gives
 \[
 P_{\rm mass}(11)=1.88085\times10^{-3},
@@ -11043,7 +11052,7 @@ q_{\rm mass}
 \mathcal C_{11}^{\rm(or)}\,K_{{\rm mass},11}^{\rm(anc)}.
 \]
 The singleton audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_pmass_kernel_source.py}
+\path{code/audit_open_system_exact_schur_singleton_pmass_kernel_source.py}
 shows that
 \[
 K_{{\rm mass},11}^{\rm(anc)}>0
@@ -11204,7 +11213,7 @@ W_{11,{\rm sym}}^{(+)}:=\frac12 W_{11}^{(+)}.
 This is only a notation for the reflected continuum value, not a new support object.  The separate lobe values printed below are raw finite-grid diagnostics and are not used as independent theorem-side carriers.
 
 The singleton audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_single_lobe_carrier_source.py}
+\path{code/audit_open_system_exact_schur_singleton_single_lobe_carrier_source.py}
 records the raw grid-lobe diagnostics
 \[
 W_{11,+}^{(+)}=1.01723\times10^{-2},
@@ -11300,7 +11309,7 @@ In particular,
 W_{11,+}^{(+)}\ge W_{11,+}^{(++)}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_single_lobe_overlap_source.py}
+\path{code/audit_open_system_exact_schur_singleton_single_lobe_overlap_source.py}
 gives
 \[
 W_{11,+}^{(+)}=1.01723\times10^{-2},
@@ -11392,7 +11401,7 @@ S_{11,+}^{(R+)}\,\bar\Phi_{L,11,+}^{(+|R+)}
 S_{11,+}^{(L+)}\,\bar\Phi_{R,11,+}^{(+|L+)}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_single_lobe_pp_factor_source.py}
+\path{code/audit_open_system_exact_schur_singleton_single_lobe_pp_factor_source.py}
 gives
 \[
 W_{11,+}^{(++)}=1.01659\times10^{-2},
@@ -11487,7 +11496,7 @@ S_{11,+}^{(L+)}
 I_{11,+}^{(L,\downarrow)}+N_{11,+}^{(L,\downarrow)}.
 \]
 Indeed, the audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_mirror_lobe_half_source.py}
+\path{code/audit_open_system_exact_schur_singleton_mirror_lobe_half_source.py}
 shows that
 \[
 \phi_L\le 0
@@ -11598,7 +11607,7 @@ I_{11,+}^{(L,\sharp)}
 4\pi\int_{\Omega_{+,\sharp}(11)} \rho\,\phi_L\,d\rho\,dz.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_mirror_strict_slab_source.py}
+\path{code/audit_open_system_exact_schur_singleton_mirror_strict_slab_source.py}
 shows that this is the shallowest audited cut for which all of the following hold simultaneously:
 \[
 \phi_L>0\quad\text{on }\overline{\Omega_{+,\sharp}(11)},
@@ -11701,7 +11710,7 @@ I_{{\rm src},\sharp}
 4\pi\int_{\Omega_{+,\sharp}(11)} \rho\,u_\sharp\,d\rho\,dz.
 \]
 On the audited bridge this decomposition is exported exactly by
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_dirichlet_split_source.py},
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_dirichlet_split_source.py},
 with reconstruction residual
 \[
 1.39\times10^{-17}.
@@ -11810,7 +11819,7 @@ I_{\partial,\sharp}^{(\sigma)}
 4\pi\int_{\Omega_{+,\sharp}(11)} \rho\,h_\sharp^{(\sigma)}\,d\rho\,dz.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_boundary_edge_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_boundary_edge_source.py}
 verifies this edgewise split with reconstruction residual
 \[
 3.12\times10^{-16}.
@@ -11825,13 +11834,12 @@ I_{\partial,\sharp}^{(\rm axis)}=6.48\times10^{-18},
 \]
 while the corner lifts are
 \[
-I_{\partial,\sharp}^{(\rm lb)}=5.68899\times10^{-4},
-\quad
-I_{\partial,\sharp}^{(\rm lt)}=7.77352\times10^{-5},
-\quad
-I_{\partial,\sharp}^{(\rm rb)}=4.11332\times10^{-3},
-\quad
-I_{\partial,\sharp}^{(\rm rt)}=5.89740\times10^{-4},
+\begin{aligned}
+I_{\partial,\sharp}^{(\rm lb)}&=5.68899\times10^{-4},&
+I_{\partial,\sharp}^{(\rm lt)}&=7.77352\times10^{-5},\\
+I_{\partial,\sharp}^{(\rm rb)}&=4.11332\times10^{-3},&
+I_{\partial,\sharp}^{(\rm rt)}&=5.89740\times10^{-4},
+\end{aligned}
 \]
 and the top-edge lift is
 \[
@@ -11935,7 +11943,7 @@ I_{\partial,\sharp}^{(\rm phys)}
 p_\sharp^T b_\sharp^{(\rm phys)}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_physical_trace_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_physical_trace_source.py}
 verifies the adjoint representation with residual
 \[
 2.78\times10^{-17},
@@ -12035,7 +12043,7 @@ I_{\partial,\sharp}^{(\rm phys)}
 I_{\rm out}+I_{\rm bot}+I_{\rm rb}+I_{\rm lb}+I_{\rm axis}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_edge_product_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_edge_product_source.py}
 verifies this product decomposition against the physical trace with zero residual.  The non-negligible factors are
 \[
 B_{\rm out}=2.83410\times10^{2},
@@ -12159,9 +12167,9 @@ I_{\partial,\sharp}^{(\rm phys)}
 1.3454664\times10^{-1}.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_edge_certificate_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_edge_certificate_source.py}
 verifies all eight scalar lower bounds with positive slack and produces the figure
-\path{/Users/boypatrick/codex/PSLT_quantam/output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_edge_certificate_source_figure.png}.
+\path{output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_edge_certificate_source_figure.png}.
 The certified lower edge sum exceeds the required global physical trace after source,
 \[
 T_{\rm phys}^{(g)}=1.3409629777610438\times10^{-1},
@@ -12243,7 +12251,7 @@ I_{\rm phys}^{(4{\rm e})}
 \sum_q b_q^-p_q^-.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_edge_point_certificate_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_edge_point_certificate_source.py}
 takes \(b_q^-\) and \(p_q^-\) to be the four-significant-digit downward roundings of \(b_q\) and \(p_q\), respectively, and verifies all pointwise inequalities on the \(33+10+1+1=45\) points of the fixed physical edges.  The corresponding edge sums are
 \[
 \sum_{\Gamma_{\rm out}} b_q^-p_q^-=8.20001038\times10^{-2},
@@ -12341,7 +12349,7 @@ K_\sharp^{-T}\bigl((1-\theta)\omega_\sharp\bigr)
 \ge0.
 \]
 Thus \(\underline p_\sharp\) is a genuine adjoint-Poisson lower barrier for \(p_\sharp\).  The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_adjoint_barrier_certificate_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_adjoint_barrier_certificate_source.py}
 verifies, on the same \(45\) physical-edge points as Proposition~O66, that this strict lower barrier still dominates the four-significant-digit point floors \(p_q^-\):
 \[
 \underline p_\sharp(q)\ge p_q^-,
@@ -12435,7 +12443,7 @@ b_\sharp(q)\ge
 \sum_{r\in N(q)\setminus S}c_{qr}\phi_r^-.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_boundary_flux_certificate_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_boundary_flux_certificate_source.py}
 uses five-significant-digit downward floors for the exterior \(\phi_L\) values and verifies the flux certificate for the same \(45\) physical-edge points from Proposition~O66.  There are \(46\) missing-neighbor flux components: \(33\) on the outer wall, \(10\) on the bottom edge, two at the lower-right corner, and one at the lower-left corner.  The exact flux reconstruction residual satisfies
 \[
 \max_q
@@ -12484,14 +12492,12 @@ If one uses the flux-certified \(b\)-side floor directly together with the same 
 \]
 which is \(1.003524\) times the global after-source trace target.  The rounded O66 product is the deliberately smaller certificate and still gives
 \[
-\frac{1.345410144\times10^{-1}}{T_{\rm phys}^{(g)}}=1.003316,
-\qquad
-\frac{
-1.345410144\times10^{-1}+1.1225272657607257\times10^{-2}
-}{
-1.4532157043371163\times10^{-1}
-}
-=1.003060.
+\begin{aligned}
+\frac{1.345410144\times10^{-1}}{T_{\rm phys}^{(g)}}&=1.003316,\\
+\frac{1.345410144\times10^{-1}+1.1225272657607257\times10^{-2}}
+{I_{\rm req}}
+&=1.003060.
+\end{aligned}
 \]
 The local threshold remains closed by the outer wall and bottom edge alone:
 \[
@@ -12530,7 +12536,7 @@ Thus \(f_{L,E}\ge0\) and \(g_E\ge0\) imply, by the discrete maximum principle on
 \phi_{L,E}\ge\underline\phi_E.
 \]
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_exterior_phi_barrier_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_exterior_phi_barrier_source.py}
 verifies the hypotheses and compares \(\underline\phi_E\) against four-significant-digit downward floors \(\phi_r^{--}\).  Numerically,
 \[
 \min_{E_\partial} f_L=8.23807\times10^{-3},
@@ -12629,7 +12635,7 @@ p_\sharp-p^{(n+1)}
 Thus every finite iterate \(p^{(n)}\) is a rigorous parent-side lower barrier for the exact adjoint Poisson weight \(p_\sharp\); no exact solve for \(p_\sharp\) is used in the proof.
 
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_adjoint_gs_barrier_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_adjoint_gs_barrier_source.py}
 uses the same \(420\)-point strict slab and the same \(45\) physical edge points.  The adjoint matrix diagnostics are
 \[
 \min_i A_{ii}=8.33333\times10^1,
@@ -12738,7 +12744,7 @@ I_{\partial,\sharp}^{(\rm phys)}
 =1.345329256808323\times10^{-1}.
 \]
 The synthesis audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_trace_synthesis_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_trace_synthesis_source.py}
 combines only previously exported certificates and records the closed pieces as follows:
 \[
 \begin{array}{ll}
@@ -12849,7 +12855,7 @@ this implies
 This is an analytic convergence-rate certificate for the same finite GS sequence used in Proposition~O70; the exact solve for \(p_\sharp\) is not used in the lower-bound proof.
 
 The audit
-\path{/Users/boypatrick/codex/PSLT_quantam/code/audit_open_system_exact_schur_singleton_strict_slab_gs_rate_source.py}
+\path{code/audit_open_system_exact_schur_singleton_strict_slab_gs_rate_source.py}
 verifies the componentwise subeigenvector inequalities at the relevant checkpoints.  The first sweep at which the global trace product closes is \(384\), while the first sweep at which the global and outer--bottom local inequalities close simultaneously is \(548\).  The old four-significant-digit point floors are first dominated at sweep \(859\).  At the main product-closing sweep,
 \[
 \alpha_{548}=0.9865813608269858,
@@ -12945,7 +12951,7 @@ No support, carrier, trace set, backend, or new family remains open in this stri
 
 \begin{table}[t]
 \centering
-\caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. Source CSV: \texttt{output/chi\_open\_system/chi\_open\_system\_geometry\_D6-12-18.csv}.}
+\caption{Geometry-informed open-system demonstrator at $D=\{6,12,18\}$. The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:chi_open_geom}
 \small
 \begin{tabular}{ccccccc}
@@ -12961,7 +12967,7 @@ $D$ & $\gamma_\phi$ & $\gamma_{\rm mix}$ & $C_{\max}$ & $\chi_{\rm eff}^{\rm(pro
 
 \begin{table}[t]
 \centering
-\caption{Microscopic open-system sensitivity scan with profiled $(\gamma_\phi,\gamma_{\rm mix})$ on the $60\times60$ map. Source CSV: \texttt{paper/chi\_open\_system\_micro\_sensitivity.csv}.}
+\caption{Microscopic open-system sensitivity scan with profiled $(\gamma_\phi,\gamma_{\rm mix})$ on the $60\times60$ map. The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:chi_open_sensitivity}
 \small
 \begin{tabular}{lccc}
@@ -12979,10 +12985,10 @@ $\phi\times1$, mix$\times2$ & 0.034 & 0.412 & 0.208 \\
 \end{table}
 
 Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.9269$, $f(\mathcal{R}_3>0.95)=0.2167$, $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$), while the $H\to\mu\mu$ acceptance fraction remains fixed at $f(\chi^2_{\mu\mu}<4)=0.1500$ in this setup. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, the open-system microscopic branch is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
-The explicit gate file \texttt{output/chi\_open\_system/open\_system\_micro\_baseline\_candidate.csv} records that this diagnostic passes the multi-anchor + holdout candidate gates (including holdout RMSE/max-abs thresholds), but we keep it outside baseline until the bath-side microscopic derivation is completed.
+The registered open-system numerical gate records that this diagnostic passes the multi-anchor + holdout candidate gates (including holdout RMSE/max-abs thresholds), but we keep it outside baseline until the bath-side microscopic derivation is completed.
 
 \subsection{Cross-Module Migration Snapshot}
-To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three reviewer-facing scenarios: the release baseline, a legacy Cardy comparator, and the open-system microscopic diagnostic. Exact mode flags and file-level provenance are retained in the artifact registry; Fig.~\ref{fig:first_principles_migration} shows the resulting summary.
+To compare the two main migration directions on the same map-level metrics under the updated baseline, we aggregate three reviewer-facing scenarios: the release baseline, a legacy Cardy comparator, and the open-system microscopic diagnostic. Exact mode flags and mode-level provenance are retained in the artifact registry; Fig.~\ref{fig:first_principles_migration} shows the resulting summary.
 
 \begin{figure}[t]
     \centering
@@ -13015,11 +13021,11 @@ Because Eq.~\eqref{eq:mu_pred} is currently reported as a relative scan-level ob
     \item extract three candidate reference points: fixed-grid point, $\chi^2$-best [Eq.~\eqref{eq:anchor_chi2_best}], and robust-center [Eq.~\eqref{eq:anchor_robust_center}];
     \item re-normalize Eq.~\eqref{eq:mu_pred} with each candidate and recompute map summaries.
 \end{enumerate}
-Table~\ref{tab:ref_anchor_candidates} summarizes the selector outputs, and Fig.~\ref{fig:ref_anchor_sensitivity} shows the full grid-level sensitivity maps. The source filenames retain the earlier ``anchor'' spelling for reproducibility; the physics interpretation is reference-normalization sensitivity rather than Higgs-sector anchoring.
+Table~\ref{tab:ref_anchor_candidates} summarizes the selector outputs, and Fig.~\ref{fig:ref_anchor_sensitivity} shows the full grid-level sensitivity maps. The registered artifact names retain the earlier ``anchor'' spelling for reproducibility; the physics interpretation is reference-normalization sensitivity rather than Higgs-sector anchoring.
 
 \begin{table}[t]
 \centering
-\caption{Reference-normalization candidates and re-normalized map metrics. Source CSV: \texttt{paper/reference\_anchor\_candidates.csv}; selector JSON: \texttt{paper/reference\_anchor\_choice.json} (historical artifact filenames retained for reproducibility).}
+\caption{Reference-normalization candidates and re-normalized map metrics. The registered selector and numerical certificate are indexed in the artifact registry.}
 \label{tab:ref_anchor_candidates}
 \small
 \begin{tabular}{lcccc}
@@ -13036,7 +13042,7 @@ robust-center & $(9.42,\ 3.87)$ & $1.39\times10^{-3}$ & $0.1381$ & $4.74\times10
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{reference_anchor_sensitivity.png}
-    \caption{Systematic sensitivity over reference-normalization points $(D_0,\eta_0)$ under the EFT/Wilson-matched UV+LL-RG map. Left: $f(\chi^2_{\mu\mu}<4)$; right: best $\chi^2$. Overlaid markers indicate baseline fixed, $\chi^2$-best, and robust-center selectors. Source files: \texttt{paper/reference\_anchor\_sensitivity.csv}, \texttt{paper/reference\_anchor\_sensitivity.png}.}
+    \caption{Systematic sensitivity over reference-normalization points $(D_0,\eta_0)$ under the EFT/Wilson-matched UV+LL-RG map. Left: $f(\chi^2_{\mu\mu}<4)$; right: best $\chi^2$. Overlaid markers indicate baseline fixed, $\chi^2$-best, and robust-center selectors; the registered figure and data certificates are indexed in the artifact registry.}
     \label{fig:ref_anchor_sensitivity}
 \end{figure}
 
@@ -13073,7 +13079,7 @@ f(\mathcal R_3\ge0.90)=1.000000,\qquad
 f(\mathcal R_3\ge0.95)=1.000000,\qquad
 f(\chi^2_{\mu\mu}\le4)=0.133333.
 \end{equation}
-Relative to the constant-input baseline, the raw and \(10^4\)-capped profiles both have acceptance mismatch \(0.016667\), winner mismatch \(0.005556\), \(p95|\Delta\mu_{\mu\mu}|=4.95503\), and \(p95|\Delta\mathcal R_3|=0.96245\) on D60/E21.  The prolate-mesh cross-check profile gives the same decision within rounding.  Therefore Eq.~\eqref{eq:tcoh_dephasing} is a useful first-principles diagnostic of the dephasing scale, but it is not promoted into the baseline reported figures.  The summary artifacts are \path{paper/tcoh_impact_gate_Dgrid60_Egrid21_summary.csv} and \path{output/tcoh_fp_1d/tcoh_impact_gate_Dgrid60_Egrid21_summary.csv}.
+Relative to the constant-input baseline, the raw and \(10^4\)-capped profiles both have acceptance mismatch \(0.016667\), winner mismatch \(0.005556\), \(p95|\Delta\mu_{\mu\mu}|=4.95503\), and \(p95|\Delta\mathcal R_3|=0.96245\) on D60/E21.  The prolate-mesh cross-check profile gives the same decision within rounding.  Therefore Eq.~\eqref{eq:tcoh_dephasing} is a useful first-principles diagnostic of the dephasing scale, but it is not promoted into the baseline reported figures.  The registered summary certificates are indexed in the artifact registry.
 
 \subsection{Splitting-Prefactor First-Principles Candidate for \texorpdfstring{$\eta$}{eta}}
 \label{app:eta_candidate}
@@ -13105,7 +13111,7 @@ f(\mathcal R_3\ge0.90)=0.926984,\qquad
 f(\mathcal R_3\ge0.95)=0.926190,\qquad
 f(\chi^2_{\mu\mu}\le4)=0.150000,
 \end{equation}
-with acceptance mismatch \(0\), winner mismatch \(0\), \(p95|\Delta\mu_{\mu\mu}|=9.7896\times10^{-3}\), and \(p95|\Delta\mathcal R_3|=3.2316\times10^{-5}\).  The probability-scaled branch \(\eta_{\rm eff}=\eta\,\eta_{\rm prob}(D)\) is also map-safe, with the same headline fractions, acceptance mismatch \(0\), winner mismatch \(0\), \(p95|\Delta\mu_{\mu\mu}|=2.0734\times10^{-2}\), and \(p95|\Delta\mathcal R_3|=6.8392\times10^{-5}\).  Therefore the profile-scaled \(\eta_{\rm fp}\) branches are adoption-safe under the current impact gate, with \(\eta_{\rm amp}\) the conservative amplitude-level choice.  By contrast, the fully closed branches \(\eta_{\rm eff}=\eta_{\rm amp}(D)\) or \(\eta_{\rm prob}(D)\) are kept diagnostic-only: they preserve the \(H\to\mu\mu\) accepted fraction but collapse the scanned $\eta$ axis and produce winner mismatch \(0.005556\).  The summary artifacts are \path{paper/eta_impact_gate_Dgrid60_Egrid21_summary.csv} and \path{output/eta_fp_1d/eta_impact_gate_Dgrid60_Egrid21_summary.csv}.
+with acceptance mismatch \(0\), winner mismatch \(0\), \(p95|\Delta\mu_{\mu\mu}|=9.7896\times10^{-3}\), and \(p95|\Delta\mathcal R_3|=3.2316\times10^{-5}\).  The probability-scaled branch \(\eta_{\rm eff}=\eta\,\eta_{\rm prob}(D)\) is also map-safe, with the same headline fractions, acceptance mismatch \(0\), winner mismatch \(0\), \(p95|\Delta\mu_{\mu\mu}|=2.0734\times10^{-2}\), and \(p95|\Delta\mathcal R_3|=6.8392\times10^{-5}\).  Therefore the profile-scaled \(\eta_{\rm fp}\) branches are adoption-safe under the current impact gate, with \(\eta_{\rm amp}\) the conservative amplitude-level choice.  By contrast, the fully closed branches \(\eta_{\rm eff}=\eta_{\rm amp}(D)\) or \(\eta_{\rm prob}(D)\) are kept diagnostic-only: they preserve the \(H\to\mu\mu\) accepted fraction but collapse the scanned $\eta$ axis and produce winner mismatch \(0.005556\).  The registered summary certificates are indexed in the artifact registry.
 
 \subsection{Action-Derived First-Principles Candidate for Barrier-Leakage Channel Scaling}
 \label{app:superrad_candidate}
@@ -13188,7 +13194,7 @@ where the larger upper endpoints include the \(N=1\) slice at small \(D\).  The 
 \max|\log_{10}(A_2(D,N)/A_2(D,N_{\rm ref}))|&=3.461295.
 \end{aligned}
 \end{equation}
-The \(N=3\) rows are kept in the tensor for diagnostic continuity but are marked with \(E_3>0\) on this window, so they are not a new bound-layer claim and remain consistent with Proposition N1 / Corollary N1.  The summary artifacts are \path{paper/channel_resolved_A_l_tensor_D4-20full_eta3_N1-2-3_l1-2_summary.csv} and \path{output/superrad_fp_1d/channel_resolved_A_l_tensor_D4-20full_eta3_N1-2-3_l1-2_summary.csv}.
+The \(N=3\) rows are kept in the tensor for diagnostic continuity but are marked with \(E_3>0\) on this window, so they are not a new bound-layer claim and remain consistent with Proposition N1 / Corollary N1.  The registered summary certificates are indexed in the artifact registry.
 
 \medskip\noindent\emph{Scan-impact gate.}
 The strict tensor lookup has also been wired into \path{code/pslt_lib.py} under the non-default modes \(\texttt{action\_tensor}\) and \(\texttt{action\_tensor\_grid\_strict}\), with \(N>N_{\rm max}^{\rm tensor}\) conservatively falling back to the \(N_{\rm ref}=2\) profile slice rather than opening a high-\(N\) channel family.  The dedicated impact gate \path{code/scan_channel_A_tensor_impact.py} builds a D60-aligned tensor, includes the required reference knots \(D=10,12\), and compares the strict tensor branch against the current \(N_{\rm ref}=2\) action-grid profile on the D60/E21 map.  The profile baseline gives
@@ -13224,7 +13230,7 @@ f(\chi^2_{\mu\mu}\le4)&=0.150000,&
 \chi^2_{\rm best}&=5.2433\times10^{-4}.
 \end{aligned}
 \end{equation}
-Against the current profile baseline, this policy branch has acceptance mismatch \(0\), winner mismatch \(0\), \(p95|\Delta\mu_{\mu\mu}|=1.10319\times10^{-1}\), \(\max|\Delta\mathcal R_3|=2.799\times10^{-3}\), and \(p95|\Delta\mathcal R_3|=5.815\times10^{-4}\).  Thus the all-valid tensor lookup is retained only as an extraction stress test, while the physically admissible tensor promotion route is the bound-sector fallback policy in Eq.~\eqref{eq:Aell_bound_sector_policy}.  The summary artifacts are \path{paper/channel_A_tensor_impact_Dgrid60_Egrid21_summary.csv} and \path{output/superrad_fp_1d/channel_A_tensor_impact_Dgrid60_Egrid21_summary.csv}.
+Against the current profile baseline, this policy branch has acceptance mismatch \(0\), winner mismatch \(0\), \(p95|\Delta\mu_{\mu\mu}|=1.10319\times10^{-1}\), \(\max|\Delta\mathcal R_3|=2.799\times10^{-3}\), and \(p95|\Delta\mathcal R_3|=5.815\times10^{-4}\).  Thus the all-valid tensor lookup is retained only as an extraction stress test, while the physically admissible tensor promotion route is the bound-sector fallback policy in Eq.~\eqref{eq:Aell_bound_sector_policy}.  The registered summary certificates are indexed in the artifact registry.
 
 \paragraph{Reviewer-facing compression of the static-width audit chain.}
 The detailed S1--S25 propositions record provenance and failure modes.  The appendix-level reading is the following five-step certificate chain.

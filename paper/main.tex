@@ -157,7 +157,7 @@ For transparency, Table~\ref{tab:assumption_status} separates action-derived com
 \parbox[t]{0.17\textwidth}{$\Gamma_{N,\ell}$ channel normalization ($A_\ell$)} & \parbox[t]{0.28\textwidth}{Action-derived $\tilde A_\ell(D)$ baseline plus a first localized tensor audit over $(D,\eta,N,\ell)$; the all-valid D60/E21 tensor gate is not baseline-promoted, while the bound-only policy is map-safe} & \parbox[t]{0.13\textwidth}{Yes, through the $N_{\rm ref}=2$ profile slice} & \parbox[t]{0.24\textwidth}{Adoption wording only: either retain the profile slice or promote the same tensor with positive-proxy rows falling back to $N_{\rm ref}$} \\
 \parbox[t]{0.17\textwidth}{Open-system $\chi_{\rm eff}$ (Lindblad)} & \parbox[t]{0.28\textwidth}{Diagnostic only in the scan, but the exact-bridge bottleneck is reviewer-facing closed: overlap factorization, singleton carrier reduction, and strict-slab trace certificate are fixed on the audited bridge} & \parbox[t]{0.13\textwidth}{Diagnostic only} & \parbox[t]{0.24\textwidth}{No new support/object search; optional work is continuum/global lift or a microscopic EYMH bath derivation} \\
 \parbox[t]{0.17\textwidth}{$B_N$ visibility profile from EFT normalization} & \parbox[t]{0.28\textwidth}{EFT-operator-normalized baseline; runtime-direct operator extraction promoted only in the risk-weighted parity branch} & \parbox[t]{0.13\textwidth}{Yes} & \parbox[t]{0.24\textwidth}{Keep the release-qualified profile-blend branch separate from the parked strict all-direct endpoint; the real remaining upgrade is fully localized channel-resolved extraction, not another local blend retune} \\
-\parbox[t]{0.17\textwidth}{$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}]} & \parbox[t]{0.28\textwidth}{EFT/Wilson-matched baseline with U9 structural absolute-normalization closure, U10 direct-\(y_2^{\rm raw}(D_\star)\) diagnostic gate, and U11 \(10^{-12}\)-guarded projected-kernel complement budget} & \parbox[t]{0.13\textwidth}{Yes, release scalar retained} & \parbox[t]{0.24\textwidth}{Optional projector-continuation theorem or explicit topology-changing adoption decision; no new normalization family} \\
+\parbox[t]{0.17\textwidth}{$H\to\mu\mu$ mapping [Eq.~\eqref{eq:mu_pred}]} & \parbox[t]{0.28\textwidth}{EFT/Wilson-matched baseline with U9 structural absolute-normalization closure, U10/U12 strict no-topology obstruction, U13 explicit monotone topology-adoption certificate, U14 margin-robustness certificate, and U11 \(10^{-12}\)-guarded projected-kernel complement budget} & \parbox[t]{0.13\textwidth}{Conservative release baseline; direct branch is U13/U14-qualified} & \parbox[t]{0.24\textwidth}{If the direct branch is elected, state the topology-changing acceptance expansion explicitly; no new normalization family} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -167,6 +167,7 @@ Several long appendix chains are used only to close natural review questions, no
 
 \medskip\noindent\textbf{Audit-certificate packaging.}
 To keep the main text readable, the code/CSV-heavy appendix derivations are grouped below into reviewer-facing certificate packages.  This table is a reading map rather than a new theorem object: each row points to an already stated proposition chain, its mathematical invariant, and the executable numerical gate that supports the claim on the audited domain.
+At the submission-freeze point, the rows below are either baseline inputs, local reviewer certificates, monitor artifacts, or diagnostics.  None should be read as an active request to introduce a new family, backend, support set, or normalization object before submission.
 
 \begin{table}[htbp]
 \centering
@@ -204,10 +205,10 @@ To keep the main text readable, the code/CSV-heavy appendix derivations are grou
 \parbox[t]{0.26\textwidth}{Residuals \(9.67\times10^{-17}\), \(5.97\times10^{-14}\); half-lobe factor \(1.06715\); trace/source \(1.003005\,I_{\rm req}\).} &
 \parbox[t]{0.22\textwidth}{Diagnostic for the global scan, but the exact-bridge bottleneck is reviewer-facing closed; no new support/object search.} \\
 \addlinespace
-\parbox[t]{0.15\textwidth}{EYMH \(H\to\mu\mu\) normalization (U1--U11)} &
-\parbox[t]{0.27\textwidth}{Observable bridge factorizes into UV-to-EFT witnesses, tree/source identities, projected kernel, width profile, EYMH core normalization, a reference-point \(y_2^{\rm raw}(D_\star)\) gate, and a Feshbach--Schur complement budget.} &
-\parbox[t]{0.26\textwidth}{Exact blocks close at machine level; projected-box max relative error \(9.89\times10^{-4}\). U10 changes acceptance by \(21/441\); U11 gives \(\varepsilon_F^{\rm(eq)}\le2.33\times10^{-15}\), passing the \(10^{-12}\) guard.} &
-\parbox[t]{0.22\textwidth}{Structurally closed; direct \(y_2^{\rm raw}(D_\star)\) is diagnostic-only, not strict baseline adoption-safe.} \\
+\parbox[t]{0.15\textwidth}{EYMH \(H\to\mu\mu\) normalization (U1--U14)} &
+\parbox[t]{0.27\textwidth}{Observable bridge factorizes into UV-to-EFT witnesses, tree/source identities, projected kernel, width profile, EYMH core normalization, a reference-point \(y_2^{\rm raw}(D_\star)\) gate, an explicit topology-adoption policy, and a Feshbach--Schur complement budget.} &
+\parbox[t]{0.26\textwidth}{Exact blocks close at machine level; projected-box max relative error \(9.89\times10^{-4}\). U10 changes acceptance by \(21/441\); U12 first crosses at \(s=0.457084\); U13 certifies a monotone no-loss one-component slab expansion; U14 gives direct-branch uniform \(\mu\)-margin \(0.145404\), larger than release \(0.104937\); U11 gives \(\varepsilon_F^{\rm(eq)}\le2.33\times10^{-15}\).} &
+\parbox[t]{0.22\textwidth}{Structurally closed; conservative release scalar remains available, while direct \(y_2^{\rm raw}(D_\star)\) is adoption-safe only as an explicit topology-changing, margin-certified branch.} \\
 \addlinespace
 \parbox[t]{0.15\textwidth}{Barrier leakage tensor (A1/C1)} &
 \parbox[t]{0.27\textwidth}{The localized channel normalization separates as \(A_\ell^{\rm loc}(D,\eta,N)=A_\ell^{\rm fp}(D;N)\); the scanned \(\eta\) axis multiplies the channel rate but does not renormalize the barrier integral.} &
@@ -2837,7 +2838,7 @@ y_2^{\rm raw}=1.65981\times10^{-4},\qquad
 \frac{P_2^{\rm kin}}{M_2^2}=2.62559\times10^{-1},\qquad
 C_{eH,\star}^{\mu\mu,\,\rm tree}=4.35798\times10^{-5},
 \]
-where the displayed \(y_2^{\rm raw}(D_\star)\) is the release value obtained by interpolating the canonical integer-\(D\) overlap profile.  Proposition U10 below separates this release interpolation from a direct \(D_\star\) continuity audit; that direct value is not folded into the baseline normalization without a separate map-impact gate.
+where the displayed \(y_2^{\rm raw}(D_\star)\) is the release value obtained by interpolating the canonical integer-\(D\) overlap profile.  Propositions U10, U12, and U13 below separate this release interpolation from a direct \(D_\star\) continuity audit, prove the fixed-bridge continuation obstruction under the strict no-topology gate, and then isolate the only reviewer-facing way to adopt the direct value: an explicit monotone topology-changing branch.
 so the current absolute-normalization target may be written as
 \[
 A_\star
@@ -3439,7 +3440,314 @@ A_\star^{\rm(rel)}
      {y_{2,{\rm hist}}^{\rm raw}(D_\star)}
 \right)^2,
 \]
-while holding the map rows, kinetic/mass factor, diagonal dressing, \(R_{e/\mu}^\star\), \(R_{\tau/\mu}^\star\), kernel, and family fixed.  The resulting amplitude ratio is \(A_\star^{\rm(dir)}/A_\star^{\rm(rel)}=0.810203\).  On the parented D21\(\times\)E21 \(H\to\mu\mu\) map, the direct scalar changes \(f(\chi^2_{\mu\mu}\le4)\) from \(0.095238\) to \(0.142857\), with \(21/441\) acceptance flips, all gains and no losses, concentrated on the \(D=8.0\) slice.  Pointwise drift is not negligible: mean, \(95\%\), and maximum \(|\Delta\mu_{\mu\mu}|\) are \(0.245044\), \(0.817693\), and \(3.13701\), respectively.  Thus the direct inserted-history scalar is not strict adoption-safe under the no-topology-change gate.  It remains a diagnostic parent-point candidate; the release normalization should keep the interpolated scalar unless a separate reviewer-facing decision deliberately accepts this changed acceptance topology or a sharper projector-continuation theorem removes the scalar discrepancy.  This is not a new kernel, support, overlap, or family search.
+while holding the map rows, kinetic/mass factor, diagonal dressing, \(R_{e/\mu}^\star\), \(R_{\tau/\mu}^\star\), kernel, and family fixed.  The resulting amplitude ratio is \(A_\star^{\rm(dir)}/A_\star^{\rm(rel)}=0.810203\).  On the parented D21\(\times\)E21 \(H\to\mu\mu\) map, the direct scalar changes \(f(\chi^2_{\mu\mu}\le4)\) from \(0.095238\) to \(0.142857\), with \(21/441\) acceptance flips, all gains and no losses, concentrated on the \(D=8.0\) slice.  Pointwise drift is not negligible: mean, \(95\%\), and maximum \(|\Delta\mu_{\mu\mu}|\) are \(0.245044\), \(0.817693\), and \(3.13701\), respectively.  Thus the direct inserted-history scalar is not strict adoption-safe under the no-topology-change gate.  It remains a diagnostic parent-point candidate; the release normalization should keep the interpolated scalar unless a separate reviewer-facing decision deliberately accepts this changed acceptance topology or a non-current compensating bridge theorem changes another scalar in the same observable map.  This is not a new kernel, support, overlap, or family search.
+
+\medskip\noindent\textbf{Proposition U12 (Fixed-bridge projector-continuation obstruction for the U10 direct scalar).}
+Keep the same parented D21\(\times\)E21 map, the same kinetic/mass factor, diagonal dressing, \(R_{e/\mu}^\star\), \(R_{\tau/\mu}^\star\), kernel, and family as in Corollary U10.  Introduce the one-parameter projector-continuation scalar
+\[
+y_2(s)=y_{2,{\rm rel}}^{\rm raw}(D_\star)
+\exp\!\left[
+s\log\!\left(
+\frac{y_{2,{\rm hist}}^{\rm raw}(D_\star)}
+     {y_{2,{\rm rel}}^{\rm raw}(D_\star)}
+\right)
+\right],
+\]
+equivalently, after simplifying the notation,
+\[
+y_2(s)=y_{\rm rel}\exp(s\Delta_y),
+\qquad
+\Delta_y:=\log(y_{\rm hist}/y_{\rm rel})>0,
+\qquad
+s\in[0,1].
+\]
+The induced bridge amplitude is
+\[
+A_\star(s)=A_\star^{\rm(rel)}\exp(-2s\Delta_y).
+\]
+For each map row \(i\), set
+\[
+x_i:=|C_{i,\mu\mu}^{\rm IR}|^2,\qquad
+F_i:=
+\mathrm{BR}_\mu^{\rm SM}
++\mathrm{BR}_e^{\rm SM}\frac{R_{e/\mu,i}}{R_{e/\mu}^\star}
++\mathrm{BR}_\tau^{\rm SM}\frac{R_{\tau/\mu,i}}{R_{\tau/\mu}^\star},
+\]
+and write
+\[
+a:=1-s_\Gamma\sum_\ell \mathrm{BR}_\ell^{\rm SM},
+\qquad
+b_i:=s_\Gamma F_i,
+\qquad
+L_i(s):=A_\star(s)x_i.
+\]
+Then the fixed-bridge prediction is the fractional-linear function
+\[
+\mu_i(s)=\frac{L_i(s)}{a+b_iL_i(s)}.
+\]
+On the audited map \(a=0.936779995>0\), so
+\[
+\frac{d\mu_i}{ds}
+=
+-\frac{2\Delta_y\,a\,L_i(s)}
+       {(a+b_iL_i(s))^2}
+<0.
+\]
+Thus every row has at most one acceptance-boundary crossing along this U10 projector-continuation path.  Let
+\[
+U:=\mu_{\rm obs}+2\sigma_{\rm obs}=2.2,
+\qquad
+L:=\mu_{\rm obs}-2\sigma_{\rm obs}=0.6.
+\]
+If a row starts above the upper boundary and enters the accepted interval, the crossing amplitude is exactly
+\[
+A_i^\times
+=
+\frac{Ua}{x_i(1-Ub_i)}.
+\]
+If a row starts accepted and exits through the lower boundary, the analogous expression is
+\[
+\widetilde A_i^\times
+=
+\frac{La}{x_i(1-Lb_i)}.
+\]
+The corresponding continuation coordinate is
+\[
+s_i^\times
+=
+\frac{\log(A_i^\times/A_\star^{\rm(rel)})}
+       {\log(A_\star^{\rm(dir)}/A_\star^{\rm(rel)})},
+\]
+with \(A_i^\times\) replaced by \(\widetilde A_i^\times\) for lower-bound losses.
+
+The audit
+\path{code/audit_hll_y2raw_projector_continuation.py}
+applies this formula without changing any other map ingredient.  It finds \(42/441\) accepted rows at \(s=0\), \(63/441\) accepted rows at \(s=1\), and \(21/441\) crossings.  All crossings are upper-bound gains, all lie on the \(D=8.0\) slice, and there are no lower-bound losses.  The first crossing occurs at
+\[
+s_\times=0.4570843082747914,
+\qquad
+\Delta_y s_\times=0.04810136733556645.
+\]
+Equivalently,
+\[
+\frac{y_2(s_\times)}{y_{\rm rel}}=1.0492770123488282,
+\qquad
+\frac{A_\star(s_\times)}{A_\star^{\rm(rel)}}=0.9082798575834581.
+\]
+The full direct inserted-history endpoint is instead
+\[
+\frac{y_{\rm hist}}{y_{\rm rel}}=1.1109719014522044,
+\qquad
+\frac{A_\star^{\rm(dir)}}{A_\star^{\rm(rel)}}=0.8102030058333926,
+\qquad
+s=1.
+\]
+Therefore the direct endpoint exceeds the first no-topology-change crossing by the factor
+\[
+\frac{1}{s_\times}=2.1877802013689274
+\]
+in the log-linear projector-continuation coordinate.  Substituting the closed-form \(A_i^\times\) back into the bridge equation gives \(\mu_i=2.2\) with maximum validation error
+\[
+4.44\times10^{-16}.
+\]
+
+\medskip\noindent\textbf{Corollary U12 (The sharper U10 projector-continuation theorem closes negatively under the fixed-bridge adoption policy).}
+Proposition U12 proves that the U10 acceptance flip is not a scan artifact, branch-label typo, or unresolved EYMH complement effect.  Under the fixed bridge used in Corollary U10, the \(H\to\mu\mu\) observable is a monotone fractional-linear function of the projector-continuation scalar, and the direct inserted-history endpoint crosses the D21\(\times\)E21 acceptance boundary before reaching halfway along the log-linear \(y_2\) path.  Consequently a sharper projector-continuation theorem cannot make the direct \(s=1\) scalar strict adoption-safe while keeping all other bridge constants fixed.
+
+The exact no-topology-change budget is now quantified:
+\[
+y_2/y_{\rm rel}<1.0492770123488282
+\quad\text{or equivalently}\quad
+A_\star/A_\star^{\rm(rel)}>0.9082798575834581
+\]
+is required before the first \(D=8.0\) acceptance gain appears.  The audited direct value requires
+\[
+y_2/y_{\rm rel}=1.1109719014522044
+\quad\text{and}\quad
+A_\star/A_\star^{\rm(rel)}=0.8102030058333926.
+\]
+Thus the U10 line is now closed in the narrow sense relevant for submission: the direct parent-point scalar is not a silent no-topology replacement, while the release scalar remains the conservative baseline.  Promoting the direct value requires either an explicit reviewer-facing decision to accept the changed acceptance topology, or a different compensating theorem that changes another bridge constant together with \(y_2^{\rm raw}(D_\star)\).  Proposition U13 supplies the first option.  A future compensation theorem would be a different observable-map decision, not a reopening of EYMH normalization, not a new kernel family, and not a new support/object search.
+
+\medskip\noindent\textbf{Proposition U13 (Explicit monotone topology-changing adoption for the U10 direct scalar).}
+Retain the fixed bridge and the parented D21\(\times\)E21 map used in Corollary U10 and Proposition U12.  Let
+\[
+\mathcal A_{\rm rel}:=\{i:\ 0.6\le\mu_i(0)\le2.2\},
+\qquad
+\mathcal A_{\rm dir}:=\{i:\ 0.6\le\mu_i(1)\le2.2\}
+\]
+be the release and direct accepted sets along the log-linear projector-continuation path of Proposition U12.  Replace the strict no-topology gate by the explicit monotone-expansion policy
+\[
+\mathsf P_{\rm mono}:
+\quad
+\mathcal A_{\rm rel}\subseteq\mathcal A_{\rm dir},
+\quad
+\mathcal A_{\rm dir}\setminus\mathcal A_{\rm rel}
+\text{ attaches to the old accepted component,}
+\]
+with the manuscript required to report the resulting acceptance expansion rather than calling it topology-neutral.  In the D21\(\times\)E21 rectangular grid we use the nearest-neighbor graph in the \((D,\eta)\) grid directions to define connected components.
+
+This policy is checkable directly from Proposition U12.  Since each \(\mu_i(s)\) is monotone decreasing in \(s\), a row in \(\mathcal A_{\rm rel}\) can be lost only by crossing the lower boundary \(0.6\), and a new row can be gained only by entering through the upper boundary \(2.2\).  Thus \(\mathcal A_{\rm rel}\subseteq\mathcal A_{\rm dir}\) is equivalent, on this fixed bridge, to the absence of lower-bound loss crossings on \(s\in[0,1]\).  Proposition U12 already gives \(21\) upper-bound gain crossings and \(0\) lower-bound loss crossings, so the set inclusion is not an extra assumption.
+
+The adoption-policy audit
+\path{code/audit_hll_y2raw_topology_adoption_policy.py}
+then checks the component and slab geometry.  It finds
+\[
+|\mathcal A_{\rm rel}|=42,\qquad
+|\mathcal A_{\rm dir}|=63,\qquad
+|\mathcal A_{\rm dir}\setminus\mathcal A_{\rm rel}|=21,
+\qquad
+|\mathcal A_{\rm rel}\setminus\mathcal A_{\rm dir}|=0.
+\]
+More explicitly,
+\[
+\mathcal A_{\rm rel}=\{D=8.8,9.6\}\times E_{21},
+\qquad
+\mathcal A_{\rm dir}=\{D=8.0,8.8,9.6\}\times E_{21},
+\]
+so the direct scalar adds exactly the single full \(D=8.0\) eta slab:
+\[
+\mathcal A_{\rm dir}\setminus\mathcal A_{\rm rel}
+=
+\{D=8.0\}\times E_{21}.
+\]
+The accepted set has one connected component before and after the change, and the added slab has one connected component attached to the old accepted rectangle.  The corresponding acceptance fraction changes from
+\[
+0.0952380952380952
+\quad\text{to}\quad
+0.1428571428571428,
+\]
+with no accepted row removed.  The direct branch also improves the best local \(H\to\mu\mu\) fit on this audited map:
+\[
+\chi^2_{\rm best}:\ 0.2109105392944258
+\longrightarrow
+0.0328420209239433.
+\]
+The crossing coordinates agree with Proposition U12:
+\[
+s_{\rm cross}\in
+[0.4570843082747914,\ 0.4570846900113364],
+\qquad
+\max|\mu_i(A_i^\times)-2.2|=4.44\times10^{-16}.
+\]
+
+Therefore, under \(\mathsf P_{\rm mono}\), the direct inserted-history scalar
+\[
+\frac{y_{2,{\rm hist}}^{\rm raw}(D_\star)}
+     {y_{2,{\rm rel}}^{\rm raw}(D_\star)}
+=1.1109719014522044,
+\qquad
+\frac{A_\star^{\rm(dir)}}{A_\star^{\rm(rel)}}
+=0.8102030058333926
+\]
+is adoption-safe as an explicit topology-changing monotone expansion.  It is still not adoption-safe under the older no-topology-change policy.
+
+\medskip\noindent\textbf{Corollary U13 (Reviewer-facing reading of the direct-scalar adoption branch).}
+The U10/U12 obstruction and the U13 adoption certificate are compatible, not contradictory.  U12 says that the direct scalar cannot be promoted while pretending the accepted region is unchanged.  U13 says that if the paper explicitly changes the policy to monotone topology-changing adoption, then the direct scalar passes the natural safety tests: no accepted point is lost, no new disconnected island is introduced, and the entire change is the addition of one adjacent \(D=8.0\) eta slab.
+
+Consequently the submission text has two honest readings.  The conservative reading keeps \(y_{2,{\rm rel}}^{\rm raw}(D_\star)\) as the baseline scalar and cites U10/U12 as the reason.  The topology-adoption reading reports \(y_{2,{\rm hist}}^{\rm raw}(D_\star)\) as the direct scalar, but must also report the acceptance expansion \(0.095238\to0.142857\) and the added \(D=8.0\) slab.  In either reading, EYMH normalization remains structurally closed: the choice is a transparent observable-map policy choice, not a new kernel, family, complement, support, or backend design.
+
+\medskip\noindent\textbf{Proposition U14 (Margin robustness of the explicit U13 topology branch).}
+Keep the same fixed bridge and the same D21\(\times\)E21 map as in Propositions U12--U13.  For any branch \(b\in\{{\rm rel},{\rm dir}\}\), define its accepted set
+\[
+\mathcal A_b:=\{i:\ L\le \mu_i^{(b)}\le U\},
+\qquad
+L=0.6,\quad U=2.2,
+\]
+and define the uniform prediction-margin radius
+\[
+r_b:=
+\min\left\{
+\min_{i\in\mathcal A_b}{\rm dist}\bigl(\mu_i^{(b)},\{L,U\}\bigr),
+\min_{i\notin\mathcal A_b}{\rm dist}\bigl(\mu_i^{(b)},[L,U]\bigr)
+\right\}.
+\]
+Then any perturbation satisfying
+\[
+\max_i|\delta\mu_i|<r_b
+\]
+leaves the accepted set \(\mathcal A_b\) unchanged.  Indeed, accepted points remain inside the interval because their distance to the boundary is \(>|\delta\mu_i|\), while rejected points remain outside because their distance to the interval is \(>|\delta\mu_i|\).
+
+For the fixed-bridge direct branch, Proposition U12 also gives a monotonicity check.  Since
+\[
+\mu_i(A)=\frac{Ax_i}{a+b_iAx_i},
+\qquad
+a=0.936779995>0,
+\]
+we have
+\[
+\frac{\partial \mu_i}{\partial A}
+=
+\frac{a x_i}{(a+b_iAx_i)^2}>0.
+\]
+The direct scalar has \(A_\star^{\rm(dir)}/A_\star^{\rm(rel)}=0.8102030058333926<1\), so
+\[
+\mu_i^{\rm(dir)}\le \mu_i^{\rm(rel)}
+\qquad\text{for every audited row }i.
+\]
+Thus the U13 topology change can only be a downward move through the upper boundary or, if too large, a downward loss through the lower boundary.  U13 has already excluded the latter; U14 now measures the resulting safety margin.
+
+The margin audit
+\path{code/audit_hll_y2raw_topology_margin_certificate.py}
+finds
+\[
+r_{\rm rel}=0.10493685123702917,
+\qquad
+r_{\rm dir}=0.1454037407902904.
+\]
+Thus the explicit direct branch has a larger uniform \(\mu\)-set-invariance radius than the conservative release branch:
+\[
+\frac{r_{\rm dir}}{r_{\rm rel}}=1.3856308730081432.
+\]
+The worst accepted direct row is the newly added \(D=8.0\) slab at \(\eta=0.2\):
+\[
+\mu_{\rm dir}=2.05459625920971,
+\qquad
+U-\mu_{\rm dir}=0.1454037407902904.
+\]
+The worst rejected direct row is at \(D=10.4,\eta=3.43\):
+\[
+\mu_{\rm dir}=0.402543482286482,
+\qquad
+L-\mu_{\rm dir}=0.19745651771351785.
+\]
+Consequently the direct accepted set is invariant under every uniform observable perturbation with size below \(0.1454037407902904\).  On the added slab, the same statement in \(z\)-score form is
+\[
+\max_{i\in\mathcal A_{\rm dir}\setminus\mathcal A_{\rm rel}}
+\frac{|\mu_i^{\rm(dir)}-\mu_{\rm obs}|}{\sigma_{\rm obs}}
+=1.6364906480242747,
+\]
+so the new slab lies inside the \(2\sigma\) acceptance window with slack
+\[
+2-1.6364906480242747
+=0.3635093519757253
+\]
+standard deviations.  Before the direct scalar is applied, the same slab lies outside the window with
+\[
+\min_{i\in\mathcal A_{\rm dir}\setminus\mathcal A_{\rm rel}}
+\left(
+\frac{|\mu_i^{\rm(rel)}-\mu_{\rm obs}|}{\sigma_{\rm obs}}-2
+\right)
+=0.31163023903606435.
+\]
+Finally, the best local fit improves on the same audited map:
+\[
+\chi^2_{\rm best,rel}=0.2109105392944258,
+\qquad
+\chi^2_{\rm best,dir}=0.0328420209239433,
+\]
+with improvement factor
+\[
+\chi^2_{\rm best,rel}/\chi^2_{\rm best,dir}
+=6.421972015146686.
+\]
+
+\medskip\noindent\textbf{Corollary U14 (The U13 direct branch is margin-certified, not merely topology-certified).}
+U13 proves that the direct \(y_2^{\rm raw}(D_\star)\) scalar is safe if and only if the manuscript explicitly accepts the topology-changing expansion from
+\(\{D=8.8,9.6\}\times E_{21}\) to
+\(\{D=8.0,8.8,9.6\}\times E_{21}\).
+Proposition U14 strengthens this from a qualitative topology statement to a quantitative margin statement.  The added \(D=8.0\) slab is not a boundary-grazing numerical artifact: after direct-scalar adoption it sits at least \(0.145404\) away from the \(\mu\)-acceptance boundary, or \(0.363509\sigma\) inside the \(2\sigma\) band.  Moreover, the whole direct accepted set has a larger uniform perturbation radius than the conservative release set.
+
+Therefore the final reviewer-facing choice is clean.  A no-topology submission reading keeps the release scalar.  A direct-scalar reading is mathematically defensible only as an explicit U13/U14 branch: it changes the accepted topology in a monotone, no-loss, one-component way, and that changed accepted set is locally more margin-stable than the release accepted set on the audited D21\(\times\)E21 map.
 
 \medskip\noindent\textbf{Proposition U1 (UV-to-EFT witness).}
 On the audited map, the scan-level chain
@@ -4436,18 +4744,18 @@ We have presented a computable EFT-level demonstrator of the Projection Spectral
     \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated by the \texttt{fp\_2d\_full} microcanonical-window + tail prescription and the observable sector uses EFT-operator-normalized visibility profiles $B_N(D)$ with neutral high-$N$ saturation rather than an extra visibility-side cutoff.
     \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With full-grid action-derived $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ profiles, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $15.0\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
 \end{enumerate}
-At the same time, the present implementation keeps two EFT-level approximations explicit: map-level profile closure remains active in the baseline $B_N(D)$ visibility sector (while release-production and risk-weighted runtime-direct parity branches are both available) and a bounded nearest-neighbor flavor projector in the matched $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}. The absolute \(H\to\mu\mu\) normalization is structurally closed in the U9 sense and its projected parent-kernel complement budget is closed in the U11 sense, but the U10 direct inserted-history \(y_2^{\rm raw}(D_\star)\) scalar is retained only as a diagnostic because it changes the D21\(\times\)E21 acceptance topology. Therefore, the present manuscript supports a robust statement about spectral generation selection on the release baseline, and also about a release-qualified runtime-direct visibility parity path, but not yet a strict claim that the observable sector is closed by per-cell all-direct extraction at production level.
+At the same time, the present implementation keeps two EFT-level approximations explicit: map-level profile closure remains active in the baseline $B_N(D)$ visibility sector (while release-production and risk-weighted runtime-direct parity branches are both available) and a bounded nearest-neighbor flavor projector in the matched $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}. The absolute \(H\to\mu\mu\) normalization is structurally closed in the U9 sense and its projected parent-kernel complement budget is closed in the U11 sense.  The U10 direct inserted-history \(y_2^{\rm raw}(D_\star)\) scalar has two admissible reviewer-facing readings: U12 rules out silent no-topology promotion, while U13 certifies explicit monotone topology-changing adoption as a no-loss one-component slab expansion and U14 certifies that this direct accepted set has uniform \(\mu\)-margin \(0.145404\). Therefore, the present manuscript supports a robust statement about spectral generation selection on the release baseline, and also about a release-qualified runtime-direct visibility parity path, but not yet a strict claim that the observable sector is closed by per-cell all-direct extraction at production level.
 
 \textbf{Limitations and outlook.}
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:
 The use of mixed-resolution ingredients is a deliberate design choice: action-derived extraction fixes low-mode profiles (\texttt{fp\_2d\_full} for $g_N$, EFT-operator-normalized $B_N(D)$ from overlap-extracted inputs, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$), while global-map evaluation is still an EFT-level closure rather than a full direct localized recomputation at every $(D,\eta,N)$ point.
 For reviewer-facing reading, the status words below are intentional: ``closed'' means closed only within the stated theorem or certificate scope, ``monitor'' means an audited extraction artifact not promoted as a production-map replacement, and ``diagnostic'' means a controlled non-baseline branch retained for falsifiability or sensitivity checks.
 \begin{enumerate}
-    \item \textbf{Observable mapping and EYMH normalization}: the $H\to\mu\mu$ comparison now uses a scan-level EFT/Wilson-matched map with bounded flavor mixing and leptonic-width closure [Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:mu_pred_abs_bridge}]. The fixed point in Eq.~\eqref{eq:mu_pred} should be read only as a reference-normalization convention for the relative observable, while the stronger normalization-side evidence now comes from the U9--U11 audit chain. The reviewer-facing status is deliberately asymmetric: U9 is structurally closed, U10 is diagnostic-only, and U11 closes the projected-kernel complement. More explicitly, U9 reduces the apparent reference arbitrariness to the three scalar bridge constants $(A_\star,R_{e/\mu}^\star,R_{\tau/\mu}^\star)$, closes the ratio constants and amplitude factorization on the audited domain, and identifies the parent-side EYMH core plus mirror correction behind the finite-box bridge coefficient. U10 isolates the remaining reference-point scalar issue: the direct inserted-history \(y_2^{\rm raw}(D_\star)\) value is parent-point audited, but it is not strict adoption-safe because it changes the D21\(\times\)E21 acceptance topology. U11 closes the separate projected-kernel complement question: the full-prefactor Feshbach equivalent norm is at most \(2.33\times10^{-15}\), well inside a \(10^{-12}\) guard. The release scalar is therefore retained unless a separate reviewer-facing decision accepts that topology change or a sharper projector-continuation theorem removes the discrepancy.
+    \item \textbf{Observable mapping and EYMH normalization}: the $H\to\mu\mu$ comparison now uses a scan-level EFT/Wilson-matched map with bounded flavor mixing and leptonic-width closure [Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:mu_pred_abs_bridge}]. The fixed point in Eq.~\eqref{eq:mu_pred} should be read only as a reference-normalization convention for the relative observable, while the stronger normalization-side evidence now comes from the U9--U14 audit chain. The reviewer-facing status is deliberately asymmetric: U9 is structurally closed, U10 is diagnostic-only under the strict no-topology gate, and U11 closes the projected-kernel complement; U12 adds that the fixed-bridge projector-continuation route closes negatively, while U13 supplies the explicit topology-changing adoption branch and U14 supplies its margin certificate. More explicitly, U9 reduces the apparent reference arbitrariness to the three scalar bridge constants $(A_\star,R_{e/\mu}^\star,R_{\tau/\mu}^\star)$, closes the ratio constants and amplitude factorization on the audited domain, and identifies the parent-side EYMH core plus mirror correction behind the finite-box bridge coefficient. U10 isolates the remaining reference-point scalar issue: the direct inserted-history \(y_2^{\rm raw}(D_\star)\) value is parent-point audited, but it is not strict adoption-safe because it changes the D21\(\times\)E21 acceptance topology. U12 proves that, with all other bridge constants fixed, this topology change is an exact one-scalar threshold crossing rather than a removable projector-continuation artifact. U13 proves that the same topology change is nevertheless safe under an explicit monotone-expansion policy: the accepted set grows from \(\{D=8.8,9.6\}\times E_{21}\) to \(\{D=8.0,8.8,9.6\}\times E_{21}\), with no losses and no new disconnected island. U14 adds that the changed direct accepted set has uniform \(\mu\)-margin \(0.145404\), larger than the release margin \(0.104937\), and that the newly added slab sits \(0.363509\sigma\) inside the \(2\sigma\) band. U11 closes the separate projected-kernel complement question: the full-prefactor Feshbach equivalent norm is at most \(2.33\times10^{-15}\), well inside a \(10^{-12}\) guard. The release scalar remains the conservative no-topology baseline, while the direct scalar may be reported only as an explicit topology-changing, margin-certified adoption branch.
     \item \textbf{Static-width extraction}: S25 is adopted as a local strict parent-tube theorem on the certified \(D=6,\ R_C=400,\ R=60\to80,\ c=640\) tube. It is not a global complex-pole theorem and not a new global pole family for all \(D,R_C,R\). Outside the S25 tube, the reported strict static surrogate remains \(\Gamma_{N,\ell}^{\rm(geo)}\); the CAP, ECS, DtN, Whittaker, and Jost-transfer outputs are retained as audit provenance or diagnostics rather than as reopened backend or family searches.
     \item \textbf{Mixing channel and \(A_\ell\) tensor}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and inject its full scan-grid action-derived profile in the global map. The subsequent channel-resolved \(A_\ell(D,\eta,N)\) tensor extraction is a monitor artifact: the bound-sector fallback policy is production-safe, while an all-valid tensor lookup is not baseline-safe.
     \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). The exact-bridge bottleneck behind that diagnostic has, however, been compressed to a reviewer-facing closed certificate: the overlap synthesis, singleton positive-carrier reduction, and strict-slab trace/source proof culminate in Propositions O39, O56, and O71--O72, with the physical trace plus source reaching \(1.003005\,I_{\rm req}\). Thus this branch remains outside the reported baseline maps as a reservoir mechanism, but the reviewer-facing exact-bridge problem is closed. Any remaining work belongs only to optional continuum/global lift or a microscopic EYMH bath derivation, not to a new support/object/family search.
-    \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map, while the release baseline keeps strict D-grid lookup and the automatic chain remains a comparator. The release-production path now pairs active-grid direct two-dimensional spectra for $g_N(D)$ with per-cell direct evaluation of $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ while keeping baseline $B_N$ profile closure; on both release audits it matches the release baseline exactly ($\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch $=0$, $\max|\Delta\mu_{\mu\mu}|=0$). The tuned visibility path should therefore be read as a release-qualified risk-weighted visibility parity check, not as a strict all-direct closure of $B_N$. Separately, the broader-grid strict all-direct validator is parked at its current case-aware endpoint on the two validation surfaces, so this line should be reopened only for a genuinely new observable-side mechanism class rather than another local blend retune. For the UV-to-EFT map, the refreshed diagonal-threshold comparator and the absolute/loop-improved EYMH comparators show the same pattern: zero acceptance mismatch, exact basis reconstruction, and only small deformation. The remaining UV-to-EFT gap is no longer the existence of a stable local absolute witness; beyond the U9 structural closure, the only live choices are a sharper parent projector-continuation theorem for the U10 scalar or an explicit decision to keep the release scalar as the conservative baseline.
+    \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map, while the release baseline keeps strict D-grid lookup and the automatic chain remains a comparator. The release-production path now pairs active-grid direct two-dimensional spectra for $g_N(D)$ with per-cell direct evaluation of $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ while keeping baseline $B_N$ profile closure; on both release audits it matches the release baseline exactly ($\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch $=0$, $\max|\Delta\mu_{\mu\mu}|=0$). The tuned visibility path should therefore be read as a release-qualified risk-weighted visibility parity check, not as a strict all-direct closure of $B_N$. Separately, the broader-grid strict all-direct validator is parked at its current case-aware endpoint on the two validation surfaces, so this line should be reopened only for a genuinely new observable-side mechanism class rather than another local blend retune. For the UV-to-EFT map, the refreshed diagonal-threshold comparator and the absolute/loop-improved EYMH comparators show the same pattern: zero acceptance mismatch, exact basis reconstruction, and only small deformation. The remaining UV-to-EFT gap is no longer the existence of a stable local absolute witness; beyond the U9 structural closure, U12 fixed-bridge obstruction, U13 explicit topology-adoption certificate, and U14 margin certificate, the live choice is editorial policy rather than another normalization theorem: conservative release scalar or explicitly reported direct-scalar slab expansion.
     \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization. The audited single-track benchmark does not exhibit a fourth bound layer on the tested $D$ window, and Proposition N1 / Corollary N1 promote the one-dimensional kinetic proxy to a mode-resolved finite-volume Sturm threshold theorem: on the audited domain the fourth-layer absence is a threshold/binding-loss statement, not an engineered visibility cutoff or a hidden exponentially small-$\Gamma_4$ mechanism. The only remaining strengthening is a continuum-tail / $D$-continuous interpolation version of the same certificate.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan.  A geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate}; the current D60/E21 impact gate shows that it is not promotion-safe for the reported baseline because it saturates the kinetic competition and produces nonzero $H\to\mu\mu$ acceptance flips.  It is therefore diagnostic-only rather than a baseline replacement, and cap tuning is not reopened as a new family search.
     \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; the D60/E21 impact gate shows that \(\eta_{\rm fp}\) is scaled-only adoption-safe: the profile-scaled branches have zero $H\to\mu\mu$ acceptance flips and zero winner flips, while the fully closed branches are retained as diagnostics because they remove the scanned $\eta$ axis and produce a small winner mismatch. If this correction is adopted in production wording, the amplitude-scaled branch $\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)$ is the conservative map-safe option.
@@ -4501,10 +4809,10 @@ The appendices below are intentionally audit-heavy.  For review, the recommended
 \emph{Certificate files:} \path{output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_trace_synthesis_source_summary.csv} and \path{output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_gs_rate_source_summary.csv}.
 \emph{Numerical conclusion:} physical trace plus source gives \(1.003005\,I_{\rm req}\); the GS-rate polish closes the sweep-count explanation.
 
-\paragraph{EYMH \(H\to\mu\mu\) normalization \(U6\)--\(U11\).}
-\emph{Theorem status:} structurally closed at U9; U10 direct \(y_2^{\rm raw}(D_\star)\) scalar is diagnostic-only; U11 closes the projected-kernel complement budget as secondary tightening.
-\emph{Certificate files:} \path{output/hll_absolute_normalization/hll_absolute_normalization_synthesis_source_summary.csv}, \path{output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_summary.csv}, and \path{paper/hll_uv_action_loop_eymh_feshbach_complement_summary_D21E21_fix.csv}.
-\emph{Numerical conclusion:} projected-box max error is \(9.89\times10^{-4}\); the direct scalar changes \(f(\chi^2_{\mu\mu}\le4)\) from \(0.095238\) to \(0.142857\), so the release scalar is retained; the full-prefactor Feshbach equivalent norm is at most \(2.33\times10^{-15}\), passing the \(10^{-12}\) complement guard.
+\paragraph{EYMH \(H\to\mu\mu\) normalization \(U6\)--\(U14\).}
+\emph{Theorem status:} structurally closed at U9; U10 direct \(y_2^{\rm raw}(D_\star)\) scalar is diagnostic-only under strict no-topology adoption; U12 closes the fixed-bridge projector-continuation route negatively; U13 certifies explicit monotone topology-changing adoption; U14 certifies the direct branch margin; U11 closes the projected-kernel complement budget as secondary tightening.
+\emph{Certificate files:} \path{output/hll_absolute_normalization/hll_absolute_normalization_synthesis_source_summary.csv}, \path{output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_summary.csv}, \path{output/hll_absolute_normalization/hll_y2raw_projector_continuation_summary.csv}, \path{output/hll_absolute_normalization/hll_y2raw_topology_adoption_policy_summary.csv}, \path{output/hll_absolute_normalization/hll_y2raw_topology_margin_certificate_summary.csv}, and \path{paper/hll_uv_action_loop_eymh_feshbach_complement_summary_D21E21_fix.csv}.
+\emph{Numerical conclusion:} projected-box max error is \(9.89\times10^{-4}\); the direct scalar changes \(f(\chi^2_{\mu\mu}\le4)\) from \(0.095238\) to \(0.142857\); the fixed-bridge continuation first crosses the acceptance boundary at \(s=0.457084\), while the direct endpoint is \(s=1\); U13 shows this is a no-loss one-component expansion from \(\{8.8,9.6\}\times E_{21}\) to \(\{8.0,8.8,9.6\}\times E_{21}\); U14 gives direct uniform \(\mu\)-margin \(0.145404\), release margin \(0.104937\), and gain-slab \(2\sigma\) slack \(0.363509\sigma\); the full-prefactor Feshbach equivalent norm is at most \(2.33\times10^{-15}\), passing the \(10^{-12}\) complement guard.
 
 \paragraph{Fermions, low-\(N\), and high-\(N\) gates \(F1,G1,N1\).}
 \emph{Theorem status:} closed on the projected chart and finite-volume/Sturm domains; optional work is only global or continuum strengthening.

@@ -1,0 +1,4 @@
+set_name,component_count,components_json
+release_acceptance,1,"[{""max_d_index"": 7, ""max_eta_index"": 20, ""min_d_index"": 6, ""min_eta_index"": 0, ""size"": 42}]"
+direct_acceptance,1,"[{""max_d_index"": 7, ""max_eta_index"": 20, ""min_d_index"": 5, ""min_eta_index"": 0, ""size"": 63}]"
+direct_minus_release_gains,1,"[{""max_d_index"": 5, ""max_eta_index"": 20, ""min_d_index"": 5, ""min_eta_index"": 0, ""size"": 21}]"

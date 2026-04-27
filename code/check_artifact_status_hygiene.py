@@ -40,6 +40,9 @@ EXPECTED_STATUS_BY_PATH = {
     "output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_aggregate_summary.csv": "canonical_certificate",
     "output/hll_absolute_normalization/hll_absolute_normalization_synthesis_source_summary.csv": "canonical_certificate",
     "output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_summary.csv": "diagnostic_gate",
+    "output/hll_absolute_normalization/hll_y2raw_projector_continuation_summary.csv": "canonical_certificate",
+    "output/hll_absolute_normalization/hll_y2raw_topology_adoption_policy_summary.csv": "canonical_certificate",
+    "output/hll_absolute_normalization/hll_y2raw_topology_margin_certificate_summary.csv": "canonical_certificate",
     "paper/hll_uv_action_loop_eymh_feshbach_complement_summary_D21E21_fix.csv": "canonical_certificate",
     "output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_trace_synthesis_source_summary.csv": "canonical_certificate",
     "output/chi_open_system/chi_open_system_exact_schur_singleton_strict_slab_gs_rate_source_summary.csv": "canonical_certificate",
@@ -62,7 +65,8 @@ BASELINE_FORBIDDEN_PATH_RE = re.compile(
 
 REQUIRED_MAIN_TEXT = [
     "For reviewer-facing reading, the status words below are intentional",
-    "U9 is structurally closed, U10 is diagnostic-only, and U11 closes the projected-kernel complement",
+    "U9 is structurally closed, U10 is diagnostic-only under the strict no-topology gate, and U11 closes the projected-kernel complement",
+    "U14 certifies the direct branch margin",
     "S25 is adopted as a local strict parent-tube theorem",
     "It is not a global complex-pole theorem and not a new global pole family",
     "tensor extraction is a monitor artifact",

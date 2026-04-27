@@ -1,0 +1,8 @@
+{
+  "map_input": "/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_to_eft_map_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "summary_input": "/Users/boypatrick/codex/PSLT_quantam/paper/hll_uv_to_eft_summary_uv_action_loop_eymh_parented_D21E21_fix.csv",
+  "amp_constants_input": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_absolute_amp_source_constants.csv",
+  "y2_constants_input": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_y2raw_refpoint_stability_constants.csv",
+  "parameterization": "log-linear y2(s)=y_release*exp(s*log(y_direct/y_release)); A(s)=A_release*exp(-2*s*log(y_direct/y_release))",
+  "verdict": "obstructed_direct_projector_continuation_crosses_acceptance_boundary"
+}

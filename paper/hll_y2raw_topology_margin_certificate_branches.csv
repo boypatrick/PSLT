@@ -1,0 +1,3 @@
+branch,n_accept,n_reject,accepted_margin_min,accepted_margin_worst_D,accepted_margin_worst_eta,accepted_margin_worst_mu,rejected_margin_min,rejected_margin_worst_D,rejected_margin_worst_eta,rejected_margin_worst_mu,uniform_mu_set_invariance_radius
+release,42,399,0.39999999541986797,9.6,0.5800000000000001,0.9999999954198678,0.10493685123702917,10.4,3.43,0.4950631487629707,0.10493685123702917
+direct,63,378,0.1454037407902904,8.0,0.2,2.05459625920971,0.19745651771351785,10.4,3.43,0.402543482286482,0.1454037407902904

@@ -230,6 +230,24 @@ def rows() -> List[Dict[str, object]]:
             "note": "U10 direct y2raw(D*) impact gate; parent-point audited but diagnostic-only because it changes D21xE21 acceptance topology.",
         },
         {
+            "artifact_path": "output/hll_absolute_normalization/hll_y2raw_projector_continuation_summary.csv",
+            "status": "canonical_certificate",
+            "category": "eymh_normalization",
+            "note": "U12 fixed-bridge projector-continuation certificate; direct y2raw(D*) crosses the D21xE21 acceptance boundary before the full direct endpoint.",
+        },
+        {
+            "artifact_path": "output/hll_absolute_normalization/hll_y2raw_topology_adoption_policy_summary.csv",
+            "status": "canonical_certificate",
+            "category": "eymh_normalization",
+            "note": "U13 explicit topology-changing adoption certificate; direct y2raw(D*) is a monotone no-loss one-component acceptance expansion under the fixed bridge.",
+        },
+        {
+            "artifact_path": "output/hll_absolute_normalization/hll_y2raw_topology_margin_certificate_summary.csv",
+            "status": "canonical_certificate",
+            "category": "eymh_normalization",
+            "note": "U14 margin-robustness certificate for the explicit U13 topology-changing direct-y2raw branch.",
+        },
+        {
             "artifact_path": "paper/hll_uv_action_loop_eymh_feshbach_complement_summary_D21E21_fix.csv",
             "status": "canonical_certificate",
             "category": "eymh_normalization",

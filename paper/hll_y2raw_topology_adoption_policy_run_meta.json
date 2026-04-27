@@ -1,0 +1,8 @@
+{
+  "impact_detail": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_detail.csv",
+  "impact_summary": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_summary.csv",
+  "continuation_detail": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_y2raw_projector_continuation_detail.csv",
+  "continuation_summary": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_y2raw_projector_continuation_summary.csv",
+  "policy": "monotone acceptance enlargement: release accepted set is contained in direct accepted set, no losses, no added disconnected accepted component, gain slab attaches to the old component",
+  "verdict": "adoption_safe_under_explicit_monotone_topology_expansion"
+}

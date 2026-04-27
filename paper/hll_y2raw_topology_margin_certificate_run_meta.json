@@ -1,0 +1,8 @@
+{
+  "impact_detail": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_detail.csv",
+  "impact_summary": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_y2raw_adoption_impact_gate_summary.csv",
+  "continuation_summary": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_y2raw_projector_continuation_summary.csv",
+  "topology_summary": "/Users/boypatrick/codex/PSLT_quantam/output/hll_absolute_normalization/hll_y2raw_topology_adoption_policy_summary.csv",
+  "policy": "uniform-mu boundary margin around the U13 direct topology branch",
+  "verdict": "margin_robust_explicit_topology_branch"
+}

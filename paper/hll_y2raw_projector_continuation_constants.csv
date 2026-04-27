@@ -1,0 +1,7 @@
+quantity,value,description
+first_cross_projector_fraction_s,0.4570843082747914,largest log-linear y2 continuation fraction before the first acceptance-boundary crossing
+max_no_flip_y2_raw,0.00017416044680352964,supremal y2 value at the first D21xE21 topology crossing; strict no-flip requires a smaller value
+max_no_flip_y2_over_release,1.0492770123488282,relative y2 movement allowed before the first topology crossing
+min_no_flip_amp_over_release,0.9082798575834581,relative A* movement at the same crossing
+direct_y2_over_release,1.1109719014522044,full inserted-history direct y2 movement
+direct_amp_over_release,0.8102030058333926,full inserted-history direct A* movement

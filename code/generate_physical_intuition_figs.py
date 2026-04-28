@@ -206,7 +206,7 @@ def draw_chain_figure(path: Path):
 
 
 def draw_mixing_contrast(path: Path):
-    fig, axes = plt.subplots(1, 2, figsize=(12.8, 5.0))
+    fig, axes = plt.subplots(1, 2, figsize=(12.8, 5.25))
 
     # Panel A: symmetry cancellation.
     ax = axes[0]
@@ -221,7 +221,13 @@ def draw_mixing_contrast(path: Path):
     ax.set_ylabel("Integrand")
     ax.text(-2.55, 0.29, r"$+$ area", color="#2359b8", fontsize=9)
     ax.text(1.75, -0.26, r"$-$ area", color="#ba2b3b", fontsize=9)
-    ax.text(-2.55, -0.36, r"$\int \psi_1^*\delta V\psi_2\,d^3x\approx 0$", fontsize=9)
+    ax.text(
+        -2.55,
+        -0.36,
+        r"$\int \psi_1^*\delta V\psi_2\,d^3x\approx 0$",
+        fontsize=9,
+        bbox=dict(facecolor="white", edgecolor="none", alpha=0.82, pad=1.5),
+    )
     ax.grid(alpha=0.25)
     ax.legend(loc="upper right", fontsize=9)
 
@@ -240,9 +246,25 @@ def draw_mixing_contrast(path: Path):
         xytext=(0.6, e1),
         arrowprops=dict(arrowstyle="<->", lw=1.3, color="#7a1fa2"),
     )
-    ax.text(0.72, (e1 + e2) / 2.0, r"$\Delta E=E_2-E_1$", color="#7a1fa2", fontsize=9, va="center")
-    ax.text(-2.7, 0.21, r"$M_{LR}^{(H)}=\Delta E/2$", fontsize=10, weight="bold")
-    ax.text(-2.7, 0.13, r"$\chi_N^{(LR)}=|M_{LR}^{(H)}|/\bar{\Gamma}_N$", fontsize=10)
+    ax.text(
+        0.72,
+        (e1 + e2) / 2.0,
+        r"$\Delta E=E_2-E_1$",
+        color="#7a1fa2",
+        fontsize=9,
+        va="center",
+        bbox=dict(facecolor="white", edgecolor="none", alpha=0.82, pad=1.0),
+    )
+    ax.text(
+        0.42,
+        0.88,
+        r"$M_{LR}^{(H)}=\Delta E/2$" + "\n" + r"$\chi_N^{(LR)}=|M_{LR}^{(H)}|/\bar{\Gamma}_N$",
+        transform=ax.transAxes,
+        fontsize=9.2,
+        va="top",
+        ha="center",
+        bbox=dict(boxstyle="round,pad=0.35", facecolor="white", edgecolor="#9aa7b8", alpha=0.92),
+    )
     ax.text(-2.65, -0.24, r"$\psi_L$", fontsize=10, color="#1b5e20")
     ax.text(2.35, -0.24, r"$\psi_R$", fontsize=10, color="#1b5e20")
     ax.set_title(r"Localized Basis: Nonzero $\chi_N^{(LR)}$")
@@ -251,8 +273,8 @@ def draw_mixing_contrast(path: Path):
     ax.set_ylim(-0.33, 0.3)
     ax.grid(alpha=0.25)
 
-    fig.suptitle("Why the Mixing Channel Must Be Redefined", fontsize=13, weight="bold")
-    fig.tight_layout(rect=[0, 0, 1, 0.95])
+    fig.suptitle("Why the Mixing Channel Must Be Redefined", fontsize=12.5, weight="bold")
+    fig.tight_layout(rect=[0, 0, 1, 0.94], w_pad=2.5)
     fig.savefig(path, dpi=260)
     plt.close(fig)
 

@@ -16,7 +16,8 @@ These items are not new theorem/object/family searches.  They are submission-fac
 | --- | --- | --- |
 | Table III WKB consistency | `RESOLVED / GATED` | The canonical artifact is `output/true_single_track/true_results.json`.  `paper/true_unified_table.tex` is regenerated from that artifact by `python3 code/check_table_iii_wkb_consistency.py --rewrite-table`, and the standing gate `python3 code/check_table_iii_wkb_consistency.py` enforces the displayed relation `r_1 = exp(-2 S_1)`.  Current pass: `max_D |log r_1(D) + 2 S_1(D)| = 2.182020e-04` for displayed rounded values. |
 | Flavor-mixing "projector" terminology | `RESOLVED / WORDING GATED` | The matched `H->mumu` diagnostic map now calls the non-idempotent matrix a bounded nearest-neighbor row-stochastic flavor-mixing kernel, not a projector.  The text records the non-idempotence check, the eigenvalues `1`, `1-epsilon_mix`, `1-2 epsilon_mix`, and the positivity guard `epsilon_max < 1/2` with executable release setting `epsilon_max=0.25`. |
-| Three-generation claim calibration | `SUBMISSION WORDING BLOCKER` | Align abstract, introduction, conclusion, limitations, and status tables with the defensible claim: baseline spectral-layer occupancy is dominated by `N=1,2,3`, and the audited kinetic proxy has no fourth bound layer on the certified domain.  Do not phrase the current submission as a full action-level proof of exactly three SM fermion generations. |
+| Three-generation claim calibration | `RESOLVED / WORDING GATED` | Abstract, introduction, conclusion, limitations, README, and the submission status wording now use the defensible claim: baseline spectral-layer occupancy is concentrated in `N=1,2,3`, and the audited kinetic proxy has no fourth bound layer on the certified domain.  The current submission is not phrased as a full action-level proof of exactly three SM fermion generations. |
+| Fig. 05 / `R3` plot-generator parity | `RESOLVED / GATED` | The canonical map table is now `output/gn_fp_impact/gn_baseline_replacement.csv`, with `baseline_fp_2d_full` reporting `f_R3_gt_0p90 = 0.9272222222`, `f_R3_gt_0p95 = 0.9263888889`, and `f_winner_gt_3 = 0.0002777778`.  The executable gate `python3 code/check_fig05_r3_parity.py` compares those fractions against the live `code/generate_plots.py` Fig. 05 plotting path before regenerated PNGs are accepted for the manuscript. |
 
 | Area | Submission status | Operational reading |
 | --- | --- | --- |
@@ -35,10 +36,11 @@ These items are not new theorem/object/family searches.  They are submission-fac
 
 1. Keep the Table III WKB consistency gate passing with `python3 code/check_table_iii_wkb_consistency.py`.
 2. Keep the non-idempotent matched-map flavor kernel wording and positivity guard intact.
-3. Run the three-generation claim-calibration pass across abstract, front status table, limitations, appendix ledger, README, and roadmap.
-4. Final PDF build and visual spot-check.
-5. Artifact hygiene and registry consistency check.
-6. Final commit/push after any wording-only readiness edits.
+3. Keep the three-generation claim calibration wording intact: report baseline first-three-layer occupancy plus audited no-fourth kinetic layer, not a full exactly-three SM-generation theorem.
+4. Keep the Fig. 05 / `R3` plot-generator parity gate passing with `python3 code/check_fig05_r3_parity.py`.
+5. Final PDF build and visual spot-check.
+6. Artifact hygiene and registry consistency check.
+7. Final commit/push after any wording-only readiness edits.
 
 No active item above requires new support/object/family searches.  The Table III item is now a gated numerical-consistency repair rather than a new physics line.
 

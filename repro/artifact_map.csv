@@ -3,7 +3,7 @@ figure,fig01,Fig_01_pslt_framework.png,paper/pslt_framework.png,1,Framework over
 figure,fig02,Fig_02_veff_true_D12.png,output/true_single_track/Veff_true_D12.png,1,Action-derived profile figure
 figure,fig03,Fig_03_true_single_track.png,output/true_single_track/true_single_track.png,1,Single-track spectrum+tunneling figure
 figure,fig04,Fig_04_pslt_mixing_channels.png,paper/pslt_mixing_channels.png,1,Mixing-channel intuition diagram
-figure,fig05,Fig_05_three_generation_phase_diagram.png,output/three_generation_phase_diagram.png,1,Winner map and R3 map
+figure,fig05,Fig_05_three_generation_phase_diagram.png,output/three_generation_phase_diagram.png,1,Winner map and first-three-layer occupancy map
 figure,fig06,Fig_06_three_generation_bars.png,output/three_generation_bars.png,1,Representative layer probability bars
 figure,fig07,Fig_07_hmumu_exclusion.png,output/hmumu_exclusion.png,1,H->mumu exclusion proxy map
 figure,fig08,Fig_08_hmumu_signal_strength.png,output/hmumu_signal_strength.png,1,H->mumu signal-strength proxy map

@@ -128,9 +128,9 @@ def build_summary() -> pd.DataFrame:
 
 def make_plot(df: pd.DataFrame, out_png: Path) -> None:
     labels = [
-        "baseline\nfp_2d_full+action_grid+overlap",
-        "legacy\ncardy+action_grid+overlap",
-        "chi open\nfp_2d_full+open_micro+overlap",
+        "baseline",
+        "Cardy",
+        "open\nsystem",
     ]
     x = np.arange(len(labels))
     colors = ["#5b6770", "#1f77b4", "#d97706"]

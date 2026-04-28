@@ -2,11 +2,15 @@
 """
 Generate Plots for PSLT Paper (generate_plots.py)
 
-This script reproduces all figures used in the PSLT verification paper.
+This script is the legacy plot-generation utility for figures used in the PSLT
+verification paper.
 It uses the unified `pslt_lib.py` library.
+For submission Fig. 05, see ROADMAP_STATUS.md: the current live code path must
+match the frozen R3 fractions before its regenerated PNG may replace the paper
+artifact.
 
 Outputs:
-1. Three-generation phase diagram (Winner map & Generation Ratio)
+1. First-three-layer occupancy phase diagram (winner map & R3)
 2. H->mumu exclusion map and signal strength
 3. Yukawa visibility hierarchy
 4. Example layer probability distributions
@@ -43,6 +47,7 @@ PAPER_BASELINE = {
     "kappa_g": 0.03,
     "g_mode": "fp_2d_full",
     "g_fp_norm_mode": "phase_space",
+    "g_fp_blend": 1.0,
     "g_fp_full_window_blend": 0.8,
     "g_fp_full_tail_beta": 1.1,
     "g_fp_full_tail_shell_power": 0.0,
@@ -83,6 +88,7 @@ def make_baseline_kinetics() -> PSLTKinetics:
         kappa_g=PAPER_BASELINE["kappa_g"],
         g_mode=PAPER_BASELINE["g_mode"],
         g_fp_norm_mode=PAPER_BASELINE["g_fp_norm_mode"],
+        g_fp_blend=PAPER_BASELINE["g_fp_blend"],
         g_fp_full_window_blend=PAPER_BASELINE["g_fp_full_window_blend"],
         g_fp_full_tail_beta=PAPER_BASELINE["g_fp_full_tail_beta"],
         g_fp_full_tail_shell_power=PAPER_BASELINE["g_fp_full_tail_shell_power"],
@@ -118,7 +124,7 @@ def make_baseline_kinetics() -> PSLTKinetics:
     return PSLTKinetics(params)
 
 # =============================================================================
-# Figure 1: Three-Generation Phase Diagram
+# Figure 1: First-Three-Layer Occupancy Phase Diagram
 # =============================================================================
 def plot_phase_diagram():
     print("Generating Phase Diagrams...")
@@ -161,25 +167,22 @@ def plot_phase_diagram():
     cbar1 = plt.colorbar(im1, ax=axes[0], ticks=range(1, N_max + 1))
     cbar1.set_label("Layer Index N", fontsize=12)
     
-    # Add representative labels dynamically (avoid hard-coded generation assignment)
+    # Add representative labels dynamically without asserting a generation theorem.
     for (d_anno, eta_anno) in [(6.0, 2.0), (15.0, 2.0)]:
         _, _, meta_anno = kinetics.get_probabilities(d_anno, eta_anno, t_coh, N_max)
         w = int(meta_anno["winner"])
-        if w <= 3:
-            label = f"Gen {w} (N={w})"
-        else:
-            label = f"Layer {w} (N={w})"
+        label = f"Layer {w} (N={w})"
         axes[0].text(d_anno, eta_anno, label, color='white', ha='center', fontweight='bold',
                      bbox=dict(facecolor='black', alpha=0.5))
 
-    # Right: Generation Ratio
+    # Right: first-three-layer occupancy ratio.
     im2 = axes[1].imshow(ratios, origin='lower', aspect='auto',
                          extent=[D_vals.min(), D_vals.max(), eta_vals.min(), eta_vals.max()],
                          cmap='YlGn', vmin=0, vmax=1)
-    axes[1].set_title(r"Generation Ratio $(P_1+P_2+P_3)/\Sigma P_N$", fontsize=15)
+    axes[1].set_title(r"First-three-layer occupancy $\mathcal{R}_3$", fontsize=15)
     axes[1].set_xlabel("D", fontsize=12)
     axes[1].set_ylabel(r"$\eta$", fontsize=12)
-    plt.colorbar(im2, ax=axes[1], label="Ratio")
+    plt.colorbar(im2, ax=axes[1], label="Occupancy ratio")
     
     # Contours
     cs = axes[1].contour(D_vals, eta_vals, ratios, levels=[0.9, 0.95], colors=['orange', 'lime'], linewidths=2)

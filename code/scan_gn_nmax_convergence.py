@@ -33,7 +33,12 @@ from action_grid_profile_utils import scan_d_values, select_chi_profile, select_
 
 OUTDIR = ROOT / "output" / "gn_fp_impact"
 PAPER_DIR = ROOT / "paper"
-G_FP_BLEND = 0.01
+G_FP_BLEND = 1.0
+G_FP_FULL_WINDOW_BLEND = 0.8
+G_FP_FULL_TAIL_BETA = 1.1
+G_FP_FULL_TAIL_SHELL_POWER = 0.0
+G_FP_FULL_TAIL_CLIP_MIN = 1e-3
+G_FP_FULL_TAIL_CLIP_MAX = 0.95
 B_OVERLAP_CSV = ROOT / "output" / "y_eff_2d" / "y_eff_2d_three_channel_profile.csv"
 _ACTION_PROFILES: tuple[dict, dict] | None = None
 
@@ -42,6 +47,7 @@ _ACTION_PROFILES: tuple[dict, dict] | None = None
 class Case:
     name: str
     g_mode: str
+    g_fp_blend: float
 
 
 def get_action_profiles() -> tuple[dict, dict]:
@@ -52,15 +58,20 @@ def get_action_profiles() -> tuple[dict, dict]:
     return _ACTION_PROFILES
 
 
-def make_kinetics(g_mode: str) -> PSLTKinetics:
+def make_kinetics(case: Case) -> PSLTKinetics:
     chi_profile, superrad_profile = get_action_profiles()
     params = PSLTParameters(
         c_eff=0.5,
         nu=5.0,
         kappa_g=0.03,
-        g_mode=g_mode,
+        g_mode=case.g_mode,
         g_fp_norm_mode="phase_space",
-        g_fp_blend=G_FP_BLEND,
+        g_fp_blend=case.g_fp_blend,
+        g_fp_full_window_blend=G_FP_FULL_WINDOW_BLEND,
+        g_fp_full_tail_beta=G_FP_FULL_TAIL_BETA,
+        g_fp_full_tail_shell_power=G_FP_FULL_TAIL_SHELL_POWER,
+        g_fp_full_tail_clip_min=G_FP_FULL_TAIL_CLIP_MIN,
+        g_fp_full_tail_clip_max=G_FP_FULL_TAIL_CLIP_MAX,
         chi=0.2,
         chi_mode=str(chi_profile["mode"]),
         chi_lr_D=tuple(float(x) for x in chi_profile["d"]),
@@ -81,7 +92,7 @@ def make_kinetics(g_mode: str) -> PSLTKinetics:
 
 
 def eval_case_nmax(case: Case, n_max: int) -> Dict[str, float]:
-    kin = make_kinetics(case.g_mode)
+    kin = make_kinetics(case)
     D_vals = np.linspace(4.0, 20.0, 60)
     eta_vals = np.linspace(0.2, 4.0, 60)
     t_coh = 1.0
@@ -125,6 +136,7 @@ def eval_case_nmax(case: Case, n_max: int) -> Dict[str, float]:
     return {
         "case": case.name,
         "g_mode": case.g_mode,
+        "g_fp_blend": float(case.g_fp_blend),
         "n_max": int(n_max),
         "f_R3_gt_0p90": float(np.mean(r3 >= 0.90)),
         "f_R3_gt_0p95": float(np.mean(r3 >= 0.95)),
@@ -172,8 +184,8 @@ def main() -> None:
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
 
     cases = [
-        Case(name="baseline_fp_2d_full", g_mode="fp_2d_full"),
-        Case(name="first_principles_fp_2d", g_mode="fp_2d"),
+        Case(name="baseline_fp_2d_full", g_mode="fp_2d_full", g_fp_blend=G_FP_BLEND),
+        Case(name="first_principles_fp_2d", g_mode="fp_2d", g_fp_blend=0.01),
     ]
 
     rows: List[Dict[str, float]] = []

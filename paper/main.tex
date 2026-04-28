@@ -30,7 +30,7 @@
 
 \begin{document}
 
-\title{\Large \bf \texorpdfstring{The Projection Spectral Layer Theory (PSLT):\\ A Rank-2 Computable Closure for the Three-Generation Structure\\ and Higgs Signal Strength}{The Projection Spectral Layer Theory (PSLT): A Rank-2 Computable Closure for the Three-Generation Structure and Higgs Signal Strength}}
+\title{\Large \bf \texorpdfstring{The Projection Spectral Layer Theory (PSLT):\\ A Rank-2 Computable Closure for Spectral-Layer Occupancy\\ and Higgs Signal Strength}{The Projection Spectral Layer Theory (PSLT): A Rank-2 Computable Closure for Spectral-Layer Occupancy and Higgs Signal Strength}}
 
 \author{Bo-Yu Chen}
 \affiliation{Independent Researcher}
@@ -38,15 +38,15 @@
 \date{February 2, 2026}
 
 \begin{abstract}
-We present a comprehensive, computable EFT-level ``closed chain'' for the Projection Spectral Layer Theory (PSLT) in which a self-consistent three-generation structure emerges on the baseline closure from competing spectral entropy, kinetics, and visibility.
+We present a comprehensive, computable EFT-level ``closed chain'' for the Projection Spectral Layer Theory (PSLT) in which the release baseline produces a first-three-layer occupancy concentration from competing spectral entropy, kinetics, and visibility.
 The framework is built on a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action with non-minimal curvature coupling, where the background geometry induces a layer-indexed spectral scale $\omega_N$.
 The theoretical closure is achieved by unifying three key modules:
 (i) a \textbf{Micro-degeneracy module} ($g_N$) implemented through a bounded two-dimensional phase-space profile (microcanonical low-$N$ window + energy-gap tail prescription, phase-space normalized at $N=3$);
 (ii) a \textbf{Rank-2 Computable Kinetic module} ($\Gamma_N$) defined as the largest positive eigenvalue of a $2\times2$ growth matrix with explicit WKB tunneling suppression; and
 (iii) a \textbf{Visibility module} ($B_N$) implemented as a fully normalized EFT-operator profile, where overlap-extracted flavor-layer couplings and mediator scales feed finite one-loop + LL-RG-normalized operator kernels, with neutral high-$N$ saturation ($B_{N>3}=1$) so that no extra visibility-side damping is added on top of the $g_N$ regulator; a risk-weighted runtime-direct visibility parity branch is also available, but it is not interpreted as a strict all-direct closure.
 The neutral high-$N$ saturation is not used to hide a fourth generation: a separate mode-resolved Sturm/min--max certificate on the audited kinetic chain excludes a fourth bound layer on the tested finite-volume domain.
-The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates, within this baseline closure, a stable ``winner'' phase diagram with clear dominance of layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
-We verify the closure against two benchmarks: (1) internal stability of the three-generation hierarchy (Generation Ratio $> 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid), and (2) a scan-level EFT/Wilson-matched compatibility test using the ATLAS Run-2+Run-3 combined $H\to\mu\mu$ signal-strength input ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
+The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates, within this baseline closure, a stable ``winner'' phase diagram with clear occupancy concentration in layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
+We verify the closure against two benchmarks: (1) internal stability of the first-three-layer occupancy fraction ($\mathcal{R}_3>90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid), and (2) a scan-level EFT/Wilson-matched compatibility test using the ATLAS Run-2+Run-3 combined $H\to\mu\mu$ signal-strength input ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
 In the current UV+LL-RG baseline, the illustrative acceptance band is about $15.0\%$ of the scanned grid for $\chi^2<4$, providing a sharper falsifiable constraint on $(D,\eta)$.
 \end{abstract}
 
@@ -58,12 +58,12 @@ In the current UV+LL-RG baseline, the illustrative acceptance band is about $15.
 \section{Introduction}
 \label{sec:intro}
 
-The existence of exactly three generations of fermions is one of the most persistent puzzles in the Standard Model (SM) of particle physics. While the SM accommodates three families through the CKM and PMNS mixing matrices, it offers no dynamical reason for why the number is three, nor why the mass hierarchy spans such a vast range. Traditional attempts to explain this structure often rely on complex discrete symmetries or string logic compactifications that, while elegant, can be difficult to falsify directly.
+The observed three-generation pattern of fermions is one of the most persistent puzzles in the Standard Model (SM) of particle physics. While the SM accommodates three families through the CKM and PMNS mixing matrices, it offers no dynamical reason for the family count nor for why the mass hierarchy spans such a vast range. Traditional attempts to explain this structure often rely on complex discrete symmetries or string logic compactifications that, while elegant, can be difficult to falsify directly.
 
-The Projection Spectral Layer Theory (PSLT) proposes a different paradigm: \emph{Generation structure is a spectral consequence of the underlying projection geometry of spacetime.} In this framework, "generations" are not ad-hoc copies but rather distinct \emph{spectral layers} ($N=1,2,3,\dots$) of vacuum excitations, selected by a competition between microstate degeneracy (entropy) and geometric formation rates (kinetics).
+The Projection Spectral Layer Theory (PSLT) explores a different paradigm: the generation labels used by the EFT closure are represented by distinct \emph{spectral layers} ($N=1,2,3,\dots$) of vacuum excitations, selected by a competition between microstate degeneracy (entropy) and geometric formation rates (kinetics).
 This structural viewpoint is complementary to recent Clifford-algebra work where three families emerge from an intrinsic $S_3$ organization rather than manual generation copying~\cite{Gresnigt2026CliffordS3}; the emphasis here is different: a map-level computable closure with explicit scan-level falsifiability.
 
-In this work, we consolidate the complete theoretical framework of PSLT into a single, falsifiable "closed chain". We upgrade earlier effective descriptions to a \textbf{computable} rank-2 dynamical system with an action-derived extraction subchain and an action-informed global scan chain, where $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ are now injected on the full scan grid from direct action-derived profiles. The core deliverable is a map from geometric control parameters $(D, \eta)$---representing dual-center separation and overlap---to an experimentally observable layer probability $P_N$.
+In this work, we consolidate the current EFT-level PSLT implementation into a single, falsifiable "closed chain". We upgrade earlier effective descriptions to a \textbf{computable} rank-2 dynamical system with an action-derived extraction subchain and an action-informed global scan chain, where $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ are now injected on the full scan grid from direct action-derived profiles. The core deliverable is a map from geometric control parameters $(D, \eta)$---representing dual-center separation and overlap---to an observable layer probability $P_N$. This submission therefore claims baseline first-three-layer occupancy concentration and an audited no-fourth-bound-layer kinetic threshold on the stated finite-volume domain, not a full action-level theorem proving exactly three SM fermion generations.
 
 Our primary contributions are:
 \begin{enumerate}
@@ -71,7 +71,7 @@ Our primary contributions are:
     \item \textbf{Rank-2 Computable Kinetics}: We replace heuristic growth rates with a rigorous eigenvalue problem for the formation matrix $\mathbf{M}_N$, incorporating numerical WKB tunneling suppression.
     \item \textbf{Fully Normalized EFT Visibility}: We promote $B_N$ to an EFT-operator-normalized baseline built from overlap-extracted flavor-layer couplings and mediator scales with finite one-loop + LL-RG normalization; overlap-only and Yukawa laws are retained only as legacy comparators/fallbacks, while runtime-direct visibility extraction is release-qualified only as a risk-weighted parity check, not as a strict all-direct closure.
     \item \textbf{No-Fourth-Layer Threshold}: We separate high-$N$ stability from visibility damping: \(B_{N>3}=1\) is neutral, while a finite-volume Sturm/Sylvester threshold certificate shows that the audited kinetic chain has no fourth bound layer.
-    \item \textbf{Verification}: We demonstrate stable three-generation dominance at $\mathcal{R}_3>90\%$ and a constrained EFT/Wilson-matched-compatible band for LHC $H\to\mu\mu$.
+    \item \textbf{Verification}: We demonstrate stable first-three-layer occupancy at $\mathcal{R}_3>90\%$ and a constrained EFT/Wilson-matched-compatible band for LHC $H\to\mu\mu$.
 \end{enumerate}
 
 % ============================================================
@@ -97,7 +97,7 @@ Figure~\ref{fig:framework} illustrates the logical flow of the PSLT framework.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\linewidth]{pslt_framework.png}
-    \caption{Schematic overview of the PSLT framework. Geometric inputs $(D, \eta)$ feed into three modules (micro-degeneracy $g_N$, kinetic rate $\Gamma_N$, visibility $B_N$), which combine in the master equation to yield the observable layer probabilities $P_N$ and the three-generation ratio $\mathcal{R}_3$. In the baseline chain, high-$N$ control is implemented by the bounded two-dimensional phase-space-tail prescription, while $B_{N>3}$ neutrally saturates to unity.}
+    \caption{Schematic overview of the PSLT framework. Geometric inputs $(D, \eta)$ feed into three modules (micro-degeneracy $g_N$, kinetic rate $\Gamma_N$, visibility $B_N$), which combine in the master equation to yield the observable layer probabilities $P_N$ and the first-three-layer occupancy ratio $\mathcal{R}_3$. In the baseline chain, high-$N$ control is implemented by the bounded two-dimensional phase-space-tail prescription, while $B_{N>3}$ neutrally saturates to unity.}
     \label{fig:framework}
 \end{figure}
 
@@ -128,7 +128,7 @@ Under conformal rescaling $\Phi \to \Omega^{-1} \tilde{\Phi}$, the scalar equati
 \end{equation}
 where the effective potential $V_{\rm eff}$ is determined by the conformal factor $\Omega(x)$ and the specific projection geometry (e.g., stereographic projection of dual centers).
 
-The layer index $N$ emerges naturally as the discrete principal-like label of this spectrum. In Section~\ref{sec:worked_example}, we derive the spectral scale $\mu(D)$ explicitly from a two-center geometry; the result supports a power-law scaling $\mu(D) \propto D^{-\gamma}$ with $\gamma \approx 0.1$ in the demonstrator regime. In the reported baseline, $\omega_N(D)$ is taken from the action-derived spectrum (or its audited interpolation), while the older hydrogenic $1-1/(2N^2)$ form is retained only as a \textbf{legacy comparator} for early demonstrator bookkeeping. We therefore write
+The layer index $N$ serves as the discrete principal-like label of this spectrum. In Section~\ref{sec:worked_example}, we derive the spectral scale $\mu(D)$ explicitly from a two-center geometry; the result supports a power-law scaling $\mu(D) \propto D^{-\gamma}$ with $\gamma \approx 0.1$ in the demonstrator regime. In the reported baseline, $\omega_N(D)$ is taken from the action-derived spectrum (or its audited interpolation), while the older hydrogenic $1-1/(2N^2)$ form is retained only as a \textbf{legacy comparator} for early demonstrator bookkeeping. We therefore write
 \begin{equation}
 \omega_N(D) \equiv \omega_N^{\rm(exact)}(D), \qquad \mu(D) = \mu_0 \, D^{-\gamma},
 \label{eq:omega_N}
@@ -2610,26 +2610,26 @@ Based on stability analysis, we use the baseline parameters summarized in Table~
 \end{tabular}
 \end{table}
 
-\subsection{Three-Generation Phase Diagram}
+\subsection{First-Three-Layer Occupancy Phase Diagram}
 The winner map $N^\star(D, \eta)$ (Fig.~\ref{fig:phase}) reveals a robust structure:
 \begin{itemize}
     \item For $D \lesssim 8$, Layer 3 ($N=3$) dominates.
     \item For $D \gtrsim 8$, Layer 2 ($N=2$) dominates.
     \item Layer 1 ($N=1$) is enhanced by $B_1$ but is kinetically suppressed at large $D$.
 \end{itemize}
-Crucially, we define the \textbf{Generation Ratio}:
+Crucially, we define the \textbf{first-three-layer occupancy ratio} (historically, the Generation Ratio):
 \begin{equation}
 \mathcal{R}_3 \equiv \sum_{N=1}^{3} P_N = \frac{\sum_{N=1}^{3} W_N}{\sum_{K=1}^{N_{\max}} W_K}.
 \label{eq:R3}
 \end{equation}
-With full scan-grid action-derived profiles for $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ from Appendix~\ref{app:chi_loc}, our numerical scan gives $\mathcal{R}_3 > 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid, while $f(\mathcal{R}_3>0.95)=0.2167$ in this setup. The profile support is anchored by the benchmark convergence set (Table~\ref{tab:chi_loc}) and the auxiliary full-scan support points (Table~\ref{tab:chi_loc_full}) in Appendix~\ref{app:chi_loc}. This still supports a dominant three-layer sector; the current baseline combines action-derived $g_N$, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$ profiles with EFT-operator-normalized $B_N(D)$.
+With full scan-grid action-derived profiles for $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ from Appendix~\ref{app:chi_loc}, our numerical scan gives $\mathcal{R}_3 > 90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid, while $f(\mathcal{R}_3>0.95)=0.9264$ in this setup. The profile support is anchored by the benchmark convergence set (Table~\ref{tab:chi_loc}) and the auxiliary full-scan support points (Table~\ref{tab:chi_loc_full}) in Appendix~\ref{app:chi_loc}. This supports a dominant first-three-layer occupancy sector in the release baseline; the current baseline combines action-derived $g_N$, $\chi_N^{(LR)}(D)$, and $\tilde A_\ell(D)$ profiles with EFT-operator-normalized $B_N(D)$.
 To quantify transfer bias from this surrogate interpolation step, we performed a point-level audit with direct localized fine extraction injected at each queried $D$ (recomputing $\chi_{LR}$ by the same 2D solver instead of using interpolated knots). The corresponding certificate is registered in the artifact layer. As summarized in Table~\ref{tab:surrogate_action_points}, the direct-injection path changes $\chi$ by up to $\sim31\%$ at representative points, while winner labels remain unchanged (3/3 matches) and $\mathcal{R}_3$ stays numerically stable ($\max|\Delta \mathcal{R}_3|=5.27\times10^{-11}$); under EFT/Wilson-matched observables, $\mu_{\mu\mu}^{\rm pred}$ can vary strongly at off-band points, so acceptance-level robustness is additionally tracked by the map summaries and Tables~\ref{tab:core_param_robustness}, \ref{tab:first_principles_migration}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.48\linewidth]{three_generation_phase_diagram.png}
     \includegraphics[width=0.48\linewidth]{three_generation_bars.png}
-    \caption{Left: Winner phase diagram showing regions dominated by Gen 2 and Gen 3. Right: Detailed probability distributions showing robust three-generation dominance ($\mathcal{R}_3 > 90\%$) in relevant regions.}
+    \caption{Left: Winner phase diagram showing the dominant spectral-layer label in the release baseline. Right: Detailed probability distributions showing robust first-three-layer occupancy ($\mathcal{R}_3 > 90\%$) in representative regions.}
     \label{fig:phase}
 \end{figure}
 
@@ -2649,7 +2649,7 @@ $(11.0,1.4)$ & $2/2$ & $2.51\times10^{-4}$ & $3.06\times10^{-4}$ & $0$ & $2.85\t
 \end{tabular}
 \end{table}
 
-To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and the legacy visibility-comparator exponent $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map and full-grid action-derived $\chi_{LR}(D)$/$\tilde A_\ell(D)$ profiles). Results are summarized in Table~\ref{tab:core_param_robustness}. Since $p_B$ is inactive in the EFT-operator-normalized baseline, that row is retained as a legacy-comparator sensitivity check rather than an active closure knob. Across this local window, the key fractions remain unchanged: $f(\mathcal{R}_3>0.90)=0.9269$, $f(\chi^2_{\mu\mu}<4)=0.1500$, and $f(N_{\rm win}>3)\approx2.78\times10^{-4}$.
+To propagate finite-$N$ surrogate uncertainty into map-level systematics, we also perform a one-at-a-time local-parameter robustness scan around the baseline closure values: $c_{\rm eff}\in[0.45,0.55]$, $\nu\in[4.80,5.20]$, and the legacy visibility-comparator exponent $p_B\in[0.28,0.32]$ (with the same $60\times 60$ map and full-grid action-derived $\chi_{LR}(D)$/$\tilde A_\ell(D)$ profiles). Results are summarized in Table~\ref{tab:core_param_robustness}. Since $p_B$ is inactive in the EFT-operator-normalized baseline, that row is retained as a legacy-comparator sensitivity check rather than an active closure knob. Across this local window, the key fractions remain unchanged: $f(\mathcal{R}_3>0.90)=0.9272$, $f(\chi^2_{\mu\mu}<4)=0.1500$, and $f(N_{\rm win}>3)\approx2.78\times10^{-4}$.
 
 \begin{table}[t]
 \centering
@@ -2660,9 +2660,9 @@ To propagate finite-$N$ surrogate uncertainty into map-level systematics, we als
 \hline\hline
 Parameter & Window & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & Max drift \\
 \hline
-$c_{\rm eff}$ & $0.45/0.50/0.55$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
-$\nu$ & $4.80/5.00/5.20$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
-$p_B$ & $0.28/0.30/0.32$ & $0.9269/0.9269/0.9269$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$c_{\rm eff}$ & $0.45/0.50/0.55$ & $0.9272/0.9272/0.9272$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$\nu$ & $4.80/5.00/5.20$ & $0.9272/0.9272/0.9272$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
+$p_B$ & $0.28/0.30/0.32$ & $0.9272/0.9272/0.9272$ & $0.1500/0.1500/0.1500$ & $\Delta f_{\mathcal{R}_3}=0,\ \Delta f_{\chi^2}=0$ \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -4758,7 +4758,7 @@ The U9--U14 normalization audit leaves one reviewer-facing policy choice rather 
 
 We have presented a computable EFT-level demonstrator of the Projection Spectral Layer Theory. By closing the loop between geometric inputs and observable layer probabilities, we have shown that:
 \begin{enumerate}
-    \item \textbf{Generations are spectral within the baseline closure}: The ``three generation'' structure is not imposed as an input; it emerges on the current release baseline as a dynamical output of competing entropy ($g_N$), kinetics ($\Gamma_N$), and visibility ($B_N$).
+    \item \textbf{First-three-layer occupancy is spectral within the baseline closure}: The concentration in \(N=1,2,3\) is not inserted by an explicit high-\(N\) visibility cutoff; on the current release baseline it is a dynamical output of competing entropy ($g_N$), kinetics ($\Gamma_N$), and visibility ($B_N$), with the generation interpretation kept as an EFT layer assignment rather than a full action-level theorem for exactly three SM families.
     \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated by the \texttt{fp\_2d\_full} microcanonical-window + tail prescription and the observable sector uses EFT-operator-normalized visibility profiles $B_N(D)$ with neutral high-$N$ saturation rather than an extra visibility-side cutoff.
     \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With full-grid action-derived $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ profiles, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $15.0\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
 \end{enumerate}
@@ -4774,7 +4774,7 @@ For reviewer-facing reading, the status words below are intentional: ``closed'' 
     \item \textbf{Mixing channel and \(A_\ell\) tensor}: under the parity-symmetric first-principles definition [Eq.~\eqref{eq:chi_first_principles}], we obtain $\chi_N^{\rm(sym)}\sim 10^{-19}$ for $D=\{6,12,18\}$ (Appendix~\ref{app:chi_sym}), i.e., symmetry-protected cancellation. We therefore redefine the channel in localized basis, extract $\chi_N^{(LR)}$ (Appendix~\ref{app:chi_loc}), and inject its full scan-grid action-derived profile in the global map. The subsequent channel-resolved \(A_\ell(D,\eta,N)\) tensor extraction is a monitor artifact: the bound-sector fallback policy is production-safe, while an all-valid tensor lookup is not baseline-safe.
     \item \textbf{Open-system extension}: a Lindblad-type $\chi_{\rm eff}$ mechanism is implemented as a scan-ready diagnostic mode with profiled $\gamma_\phi(D),\gamma_{\rm mix}(D)$ (Appendix~\ref{app:chi_open_scan}). The exact-bridge bottleneck behind that diagnostic has, however, been compressed to a reviewer-facing closed certificate: the overlap synthesis, singleton positive-carrier reduction, and strict-slab trace/source proof culminate in Propositions O39, O56, and O71--O72, with the physical trace plus source reaching \(1.003005\,I_{\rm req}\). Thus this branch remains outside the reported baseline maps as a reservoir mechanism, but the reviewer-facing exact-bridge problem is closed. Any remaining work belongs only to optional continuum/global lift or a microscopic EYMH bath derivation, not to a new support/object/family search.
     \item \textbf{Model-chain unification}: $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ are injected from action-derived full-grid profiles in the global $(D,\eta)$ map, while the release baseline keeps strict D-grid lookup and the automatic chain remains a comparator. The release-production path now pairs active-grid direct two-dimensional spectra for $g_N(D)$ with per-cell direct evaluation of $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ while keeping baseline $B_N$ profile closure; on both release audits it matches the release baseline exactly ($\Delta f(\chi^2_{\mu\mu}<4)=0$, mismatch $=0$, $\max|\Delta\mu_{\mu\mu}|=0$). The tuned visibility path should therefore be read as a release-qualified risk-weighted visibility parity check, not as a strict all-direct closure of $B_N$. Separately, the broader-grid strict all-direct validator is parked at its current case-aware endpoint on the two validation surfaces, so this line should be reopened only for a genuinely new observable-side mechanism class rather than another local blend retune. For the UV-to-EFT map, the refreshed diagonal-threshold comparator and the absolute/loop-improved EYMH comparators show the same pattern: zero acceptance mismatch, exact basis reconstruction, and only small deformation. The remaining UV-to-EFT gap is no longer the existence of a stable local absolute witness; beyond the U9 structural closure, U12 fixed-bridge obstruction, U13 explicit topology-adoption certificate, and U14 margin certificate, the live choice is editorial policy rather than another normalization theorem: conservative release scalar or explicitly reported direct-scalar slab expansion.
-    \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization. The audited single-track benchmark does not exhibit a fourth bound layer on the tested $D$ window, and Proposition N1 / Corollary N1 promote the one-dimensional kinetic proxy to a mode-resolved finite-volume Sturm threshold theorem: on the audited domain the fourth-layer absence is a threshold/binding-loss statement, not an engineered visibility cutoff or a hidden exponentially small-$\Gamma_4$ mechanism. The only remaining strengthening is a continuum-tail / $D$-continuous interpolation version of the same certificate.
+    \item \textbf{Spectral tower}: the baseline validation is strongest for the low-lying bound sector ($N=1,2$ in the physical-gap scan), while the high-$N$ contribution is treated at EFT level through $(g_N,B_N)$ regularization. The audited single-track benchmark does not exhibit a fourth bound layer on the tested $D$ window, and Proposition N1 / Corollary N1 promote the one-dimensional kinetic proxy to a mode-resolved finite-volume Sturm threshold theorem: on the audited domain the fourth-layer absence is a threshold/binding-loss statement, not an engineered visibility cutoff or a hidden exponentially small-$\Gamma_4$ mechanism. This supports a baseline no-fourth-bound-layer statement on the audited operator chain; it should not be read as a global full-operator proof of exactly three SM fermion generations. The only remaining strengthening is a continuum-tail / $D$-continuous interpolation version of the same certificate.
     \item \textbf{Finite-time dynamics}: $t_{\rm coh}$ is treated as a control parameter in the baseline scan.  A geometry-closed dephasing candidate $t_{\rm coh}^{\rm(deph)}(D)=\pi/\Delta\omega_{12}(D)$ is benchmarked in Appendix~\ref{app:tcoh_candidate}; the current D60/E21 impact gate shows that it is not promotion-safe for the reported baseline because it saturates the kinetic competition and produces nonzero $H\to\mu\mu$ acceptance flips.  It is therefore diagnostic-only rather than a baseline replacement, and cap tuning is not reopened as a new family search.
     \item \textbf{Overlap amplitude}: $\eta$ is scanned as an external control in the baseline maps. A first-principles prefactor candidate $\eta_{\rm fp}(D)$ from splitting--action data is benchmarked in Appendix~\ref{app:eta_candidate}; the D60/E21 impact gate shows that \(\eta_{\rm fp}\) is scaled-only adoption-safe: the profile-scaled branches have zero $H\to\mu\mu$ acceptance flips and zero winner flips, while the fully closed branches are retained as diagnostics because they remove the scanned $\eta$ axis and produce a small winner mismatch. If this correction is adopted in production wording, the amplitude-scaled branch $\eta_{\rm eff}=\eta\,\eta_{\rm amp}(D)$ is the conservative map-safe option.
     \item \textbf{Barrier-leakage channel normalization}: the baseline maps now use action-derived profile factors $(A_1,A_2)=(\tilde A_1(D),\tilde A_2(D))$ from Appendix~\ref{app:superrad_candidate} (historical ``superrad'' artifact filenames retained for reproducibility). The first fully localized tensor extraction over $(D,\eta,N,\ell)$ is now audited in Proposition A1 / Corollary A1: the $\eta$ axis collapses exactly because $\eta_{\rm eff}$ is a formation multiplier, while the $N$ axis exposes the finite-channel shape currently hidden by the $N_{\rm ref}=2$ slice. The all-valid D60/E21 tensor-impact gate shows that blindly treating the positive-proxy \(N=3\) rows as bound-channel rows is not harmless: the strict tensor lookup reduces the illustrative $H\to\mu\mu$ accepted fraction from $0.1500$ to $0.0333$ and gives acceptance mismatch $0.116667$. The same tensor with the bound-sector policy restored profile-map parity on D60/E21 (acceptance mismatch \(0\), winner mismatch \(0\), \(p95|\Delta\mu_{\mu\mu}|=0.110319\)). Therefore the tensor is retained as an extraction upgrade, while any production promotion must use this bound-only fallback policy rather than opening a new channel-normalization family.
@@ -5259,10 +5259,10 @@ Figure~\ref{fig:chi_loc_modes} shows the fine-grid 2D parity eigenmodes used in 
 To test profile uncertainty in the global map, we benchmarked six $\chi_N^{(LR)}(D)$ choices built from the same fine-grid knots $(D,\chi_N^{(LR)})=\{(6,4.02\times10^{-4}),\,(12,2.21\times10^{-4}),\,(18,2.13\times10^{-4})\}$: linear interpolation, log-linear exponential fit $\ln\chi = -7.5956 - 0.05282\,D$, and $\pm20\%$ amplitude rescalings of each profile. Re-running the full $60\times60$ scan keeps the generation fractions fixed and yields a narrow $H\to\mu\mu$ acceptance spread:
 \begin{equation}
 f(\mathcal{R}_3>0.90)=0.927,\quad
-f(\mathcal{R}_3>0.95)=0.217,\quad
-f(\chi^2_{\mu\mu}<4)\in[0.1625,\,0.1681].
+f(\mathcal{R}_3>0.95)=0.926,\quad
+f(\chi^2_{\mu\mu}<4)=0.150.
 \end{equation}
-The best-fit point moves within $(D,\eta)\approx(8.07\text{--}9.42,\ 1.29\text{--}3.10)$ across these six profiles. Thus, at current scan resolution, profile-interpolation uncertainty is subdominant for $\mathcal{R}_3$ and controlled for the $H\to\mu\mu$ acceptance metric.
+The best-fit grid point remains $(D,\eta)\approx(4.00,\ 0.264)$ across these six profiles. Thus, at current scan resolution, profile-interpolation uncertainty is subdominant for $\mathcal{R}_3$ and controlled for the $H\to\mu\mu$ acceptance metric.
 
 \begin{table*}[t]
 \centering
@@ -5273,12 +5273,12 @@ The best-fit point moves within $(D,\eta)\approx(8.07\text{--}9.42,\ 1.29\text{-
 \hline\hline
 Profile & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & Best $(D,\eta)$ \\
 \hline
-Linear interpolation & $0.927$ & $0.217$ & $0.168$ & $(9.42,\;1.29)$ \\
-Exponential fit      & $0.927$ & $0.217$ & $0.163$ & $(9.15,\;1.94)$ \\
-Linear $\times 0.8$  & $0.927$ & $0.217$ & $0.167$ & $(8.61,\;3.03)$ \\
-Linear $\times 1.2$  & $0.927$ & $0.217$ & $0.168$ & $(8.07,\;2.26)$ \\
-Exp-fit $\times 0.8$ & $0.927$ & $0.217$ & $0.163$ & $(8.61,\;3.10)$ \\
-Exp-fit $\times 1.2$ & $0.927$ & $0.217$ & $0.163$ & $(8.88,\;2.13)$ \\
+Linear interpolation & $0.927$ & $0.926$ & $0.150$ & $(4.00,\;0.264)$ \\
+Exponential fit      & $0.927$ & $0.926$ & $0.150$ & $(4.00,\;0.264)$ \\
+Linear $\times 0.8$  & $0.927$ & $0.926$ & $0.150$ & $(4.00,\;0.264)$ \\
+Linear $\times 1.2$  & $0.927$ & $0.926$ & $0.150$ & $(4.00,\;0.264)$ \\
+Exp-fit $\times 0.8$ & $0.927$ & $0.926$ & $0.150$ & $(4.00,\;0.264)$ \\
+Exp-fit $\times 1.2$ & $0.927$ & $0.926$ & $0.150$ & $(4.00,\;0.264)$ \\
 \hline\hline
 \end{tabular}
 \end{table*}
@@ -5380,7 +5380,7 @@ g_{N,\rm raw}^{\rm(ps)}=1+N_{\rm ps}(\lambda_N)-N_{\rm ps}(\lambda_1).
 \]
 Thus the baseline \(g_N^{\rm(full)}\) should be read as a finite-volume shell-volume weight anchored on exactly counted low-mode projectors, not as a Cardy asymptotic formula and not as a literal integer-degeneracy replacement.  If one replaced the shell-volume ratios by the pure exact-count ratios, the normalized low-mode vector would be \((1/3,2/3,1)\); on the audited fine grid this differs from the current shell-volume profile by up to \(2.455960567\times10^{-1}\) for \(N=1\) and \(2.644305680\times10^{-1}\) for \(N=2\).  Hence an exact-integer replacement is a distinct future baseline variant, not a hidden assumption of the present release.
 
-As in the 1D candidate check, this benchmark is reported as a replacement candidate. To test map-level impact, we connected the baseline, legacy Cardy comparator, one-dimensional phase-space candidate, and two-dimensional phase-space candidate to the main scan through the reproducible script \texttt{scan\_gn\_profile\_impact.py}. Results in Table~\ref{tab:gn_profile_impact} show that the main conclusion is retained: relative to the bounded two-dimensional baseline, the largest absolute shift is $0.0669$ in $f(\mathcal{R}_3>0.90)$ (for the raw two-dimensional phase-space candidate), while high-$N$ runaway remains controlled with $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$ in all tested modes.
+As in the 1D candidate check, this benchmark is reported as a replacement candidate. To test map-level impact, we connected the baseline, legacy Cardy comparator, one-dimensional phase-space candidate, and two-dimensional phase-space candidate to the main scan through the reproducible script \texttt{scan\_gn\_profile\_impact.py}. Results in Table~\ref{tab:gn_profile_impact} show that the main conclusion is retained: relative to the bounded two-dimensional baseline, the tested comparator profiles leave $f(\mathcal{R}_3>0.90)$ unchanged at the displayed resolution, shift $f(\mathcal{R}_3>0.95)$ only at the percent level, and keep high-$N$ runaway controlled with $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$ in all tested modes.
 
 \begin{table}[t]
 \centering
@@ -5414,10 +5414,10 @@ $D$ & $\lambda_1$ & $\lambda_2$ & $\lambda_3$ & $\hat g_1$ & $\hat g_2$ \\
 \hline\hline
 case & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & mean tail prob. \\
 \hline
-baseline fp\_2d\_full & 0.927 & 0.1500 & 0.0003 & 0.1267 \\
-legacy Cardy reference & 0.877 & 0.1486 & 0.0003 & 0.1125 \\
-$g_N$ fp\_1d profile & 0.860 & 0.1486 & 0.0003 & 0.1137 \\
-$g_N$ fp\_2d profile & 0.860 & 0.1492 & 0.0003 & 0.1144 \\
+baseline fp\_2d\_full & 0.927 & 0.1500 & 0.0003 & 0.0891 \\
+legacy Cardy reference & 0.927 & 0.1486 & 0.0003 & 0.0813 \\
+$g_N$ fp\_1d profile & 0.927 & 0.1486 & 0.0003 & 0.0816 \\
+$g_N$ fp\_2d profile & 0.927 & 0.1492 & 0.0003 & 0.0817 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -5426,17 +5426,17 @@ $g_N$ fp\_2d profile & 0.860 & 0.1492 & 0.0003 & 0.1144 \\
 \centering
 \caption{$N_{\max}$ convergence check for baseline and $g_N$ fp\_2d map-level summaries. The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:gn_nmax_convergence}
-\small
+\scriptsize
 \begin{tabular}{lccccc}
 \hline\hline
 case & $N_{\max}$ & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & mean tail prob. \\
 \hline
-baseline fp\_2d\_full & 20 & 0.927 & 0.1500 & 0.0003 & 0.126709 \\
-baseline fp\_2d\_full & 30 & 0.927 & 0.1500 & 0.0003 & 0.126709 \\
-baseline fp\_2d\_full & 40 & 0.927 & 0.1500 & 0.0003 & 0.126709 \\
-$g_N$ fp\_2d profile & 20 & 0.860 & 0.1492 & 0.0003 & 0.114352 \\
-$g_N$ fp\_2d profile & 30 & 0.860 & 0.1492 & 0.0003 & 0.114352 \\
-$g_N$ fp\_2d profile & 40 & 0.860 & 0.1492 & 0.0003 & 0.114352 \\
+baseline fp\_2d\_full & 20 & 0.927 & 0.1500 & 0.0003 & 0.089093 \\
+baseline fp\_2d\_full & 30 & 0.927 & 0.1500 & 0.0003 & 0.089093 \\
+baseline fp\_2d\_full & 40 & 0.927 & 0.1500 & 0.0003 & 0.089093 \\
+$g_N$ fp\_2d profile & 20 & 0.927 & 0.1492 & 0.0003 & 0.081716 \\
+$g_N$ fp\_2d profile & 30 & 0.927 & 0.1492 & 0.0003 & 0.081716 \\
+$g_N$ fp\_2d profile & 40 & 0.927 & 0.1492 & 0.0003 & 0.081716 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -5460,19 +5460,19 @@ For $N>3$,
 \hat g_N^{\rm(target)}=\left(\frac{\Delta N_{\rm ps}^{(N)}}{\Delta N_{\rm ps}^{(3)}}\right)^{s}
 \exp\!\left[-\beta\frac{\lambda_N-\lambda_3}{\lambda_3-\lambda_2}\right],
 \end{equation}
-followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present baseline run, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement}, with the registered certificate indexed in the artifact registry. Relative to baseline \texttt{fp\_2d\_full}, the legacy Cardy reference lowers $f(\mathcal{R}_3>0.90)$ by $0.0500$ (from $0.9269$ to $0.8769$), lowers $f(\chi^2_{\mu\mu}<4)$ by $0.0014$ (from $0.1500$ to $0.1486$), and keeps $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$. Therefore, the map-level main conclusion is retained under this baseline switch.
+followed by the same per-step finite-volume clipping used in \texttt{pslt\_lib.py}. In the present baseline run, we use $(\alpha,\beta,s)=(0.8,1.1,0.0)$. Results are summarized in Table~\ref{tab:gn_baseline_replacement}, with the registered certificate indexed in the artifact registry. Relative to baseline \texttt{fp\_2d\_full}, the legacy Cardy reference leaves $f(\mathcal{R}_3>0.90)$ unchanged at $0.9272$, lowers $f(\mathcal{R}_3>0.95)$ by $0.0092$ (from $0.9264$ to $0.9172$), lowers $f(\chi^2_{\mu\mu}<4)$ by $0.0014$ (from $0.1500$ to $0.1486$), and keeps $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$. Therefore, the map-level main conclusion is retained under this baseline switch.
 
 \begin{table}[t]
 \centering
 \caption{Map-level baseline cross-check for $g_N$: \texttt{fp\_2d\_full} baseline versus legacy Cardy reference on the same $60\times60$ grid. The registered numerical certificate is indexed in the artifact registry.}
 \label{tab:gn_baseline_replacement}
-\small
-\begin{tabular}{lcccc}
+\scriptsize
+\begin{tabular}{lccccc}
 \hline\hline
-case & $f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & $\Delta f(\mathcal{R}_3>0.90)$ vs baseline \\
+case & $f(\mathcal{R}_3>0.90)$ & $f(\mathcal{R}_3>0.95)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ & $\Delta f(\mathcal{R}_3>0.90)$ vs baseline \\
 \hline
-baseline fp\_2d\_full & 0.9269 & 0.1500 & 0.0003 & 0.0000 \\
-legacy Cardy reference & 0.8769 & 0.1486 & 0.0003 & -0.0500 \\
+baseline fp\_2d\_full & 0.9272 & 0.9264 & 0.1500 & 0.0003 & 0.0000 \\
+legacy Cardy reference & 0.9272 & 0.9172 & 0.1486 & 0.0003 & 0.0000 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -12985,16 +12985,16 @@ $D$ & $\gamma_\phi$ & $\gamma_{\rm mix}$ & $C_{\max}$ & $\chi_{\rm eff}^{\rm(pro
 case & ratio min & ratio max & ratio mean \\
 \hline
 baseline localized & 1.000 & 1.000 & 1.000 \\
-open-micro base $(1,1)$ & 0.017 & 0.327 & 0.138 \\
-$\phi\times0.5$, mix$\times1$ & 0.017 & 0.327 & 0.138 \\
-$\phi\times2$, mix$\times1$ & 0.017 & 0.327 & 0.138 \\
-$\phi\times1$, mix$\times0.5$ & 0.009 & 0.220 & 0.082 \\
-$\phi\times1$, mix$\times2$ & 0.034 & 0.412 & 0.208 \\
+open-micro base $(1,1)$ & 0.085 & 0.213 & 0.127 \\
+$\phi\times0.5$, mix$\times1$ & 0.126 & 0.293 & 0.183 \\
+$\phi\times2$, mix$\times1$ & 0.054 & 0.152 & 0.084 \\
+$\phi\times1$, mix$\times0.5$ & 0.053 & 0.144 & 0.081 \\
+$\phi\times1$, mix$\times2$ & 0.129 & 0.303 & 0.189 \\
 \hline\hline
 \end{tabular}
 \end{table}
 
-Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.9269$, $f(\mathcal{R}_3>0.95)=0.2167$, $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$), while the $H\to\mu\mu$ acceptance fraction remains fixed at $f(\chi^2_{\mu\mu}<4)=0.1500$ in this setup. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, the open-system microscopic branch is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
+Across all sensitivity cases in Table~\ref{tab:chi_open_sensitivity}, the generation metrics remain unchanged on this grid ($f(\mathcal{R}_3>0.90)=0.9272$, $f(\mathcal{R}_3>0.95)=0.9264$, $f(N_{\rm win}>3)\simeq2.78\times10^{-4}$), while the $H\to\mu\mu$ acceptance fraction remains fixed at $f(\chi^2_{\mu\mu}<4)=0.1500$ in this setup. These values are model-dependent because the Lindblad structure is still an effective environment ansatz and not yet a microscopic EYMH bath derivation; therefore, the open-system microscopic branch is treated as scan-ready diagnostic only and is not propagated into baseline reported figures.
 The registered open-system numerical gate records that this diagnostic passes the multi-anchor + holdout candidate gates (including holdout RMSE/max-abs thresholds), but we keep it outside baseline until the bath-side microscopic derivation is completed.
 
 \subsection{Cross-Module Migration Snapshot}
@@ -13017,8 +13017,8 @@ To compare the two main migration directions on the same map-level metrics under
 scenario & $f(\mathcal{R}_3>0.90)$ & $\Delta f(\mathcal{R}_3>0.90)$ & $f(\chi^2_{\mu\mu}<4)$ & $f(N_{\rm win}>3)$ \\
 \hline
 release baseline & 0.927 & 0.0000 & 0.1500 & 0.0003 \\
-legacy Cardy comparator & 0.877 & -0.0500 & 0.1486 & 0.0003 \\
-open-system diagnostic & 0.927 & 0.0000 & 0.1500 & 0.0003 \\
+legacy Cardy comparator & 0.927 & 0.0000 & 0.1486 & 0.0003 \\
+open-system diagnostic & 0.927 & -0.0003 & 0.1500 & 0.0003 \\
 \hline\hline
 \end{tabular}
 \end{table}
@@ -13295,7 +13295,7 @@ Candidate & Local benchmark & Full/profile range & Map-level impact \\
 \section{Ansatz Ablation Study}
 \label{app:ablation}
 
-To demonstrate that the three-generation structure is robust and not an artifact of a particular ansatz choice, we compare the baseline EFT-operator-normalized $B_N(D)$ profile (this work) against the alternative ``inverse Yukawa'' ansatz explored in earlier versions.
+To demonstrate that the first-three-layer occupancy concentration is robust against a visible ansatz change, we compare the baseline EFT-operator-normalized $B_N(D)$ profile (this work) against the alternative ``inverse Yukawa'' ansatz explored in earlier versions.
 
 \subsection{Inverse Yukawa Ansatz (Ablation A)}
 The inverse Yukawa ansatz sets $B_N^{\rm (inv)} \propto 1/\sum_{f \in \text{Gen } N} y_f$, yielding:
@@ -13306,7 +13306,7 @@ This massive hierarchy ($B_1 \gg B_2 \gg B_3$) directly encodes the answer by ov
 
 \subsection{Comparison}
 \begin{itemize}
-    \item \textbf{Baseline (EFT-operator-normalized profile)}: $B_N(D)$ remains smooth and bounded across the scanned range, with shape inherited from tracked microcanonical overlap extraction and operator normalization. The three-generation structure emerges from the $g_N$--$\Gamma_N$ competition modulated by these profile differences.
+    \item \textbf{Baseline (EFT-operator-normalized profile)}: $B_N(D)$ remains smooth and bounded across the scanned range, with shape inherited from tracked microcanonical overlap extraction and operator normalization. The first-three-layer occupancy concentration is produced by the $g_N$--$\Gamma_N$ competition modulated by these profile differences.
     \item \textbf{Ablation A (Inverse Yukawa)}: $B_1 \gg B_2 \gg B_3$. Layer 1 is artificially boosted; the selection mechanism is less falsifiable.
 \end{itemize}
 

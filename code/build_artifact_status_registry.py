@@ -32,6 +32,18 @@ def rows() -> List[Dict[str, object]]:
             "note": "Current submission target PDF.",
         },
         {
+            "artifact_path": "output/true_single_track/true_results.json",
+            "status": "canonical_certificate",
+            "category": "single_track_wkb",
+            "note": "Canonical single-track source for Table III; paper/true_unified_table.tex is regenerated from this artifact and checked by code/check_table_iii_wkb_consistency.py.",
+        },
+        {
+            "artifact_path": "paper/true_unified_table.tex",
+            "status": "canonical_certificate",
+            "category": "single_track_wkb",
+            "note": "Generated Table III source whose displayed r_1 column is gated against output/true_single_track/true_results.json.",
+        },
+        {
             "artifact_path": "ROADMAP_STATUS.md",
             "status": "canonical_certificate",
             "category": "submission_status",

@@ -1,12 +1,22 @@
 # PSLT Roadmap Status
 
-Last updated: 2026-04-27
+Last updated: 2026-04-29
 
 This file is the submission-facing roadmap freeze.  It replaces the earlier running audit log with a compact decision map: what is active for submission, what is closed and should not be reopened before submission, and what remains only as optional future strengthening.  Detailed provenance is preserved in `paper/main.tex`, `FAMILY_DECISION_TABLE.md`, `paper/artifact_status.csv`, `output/repro/artifact_status.csv`, and the git history.
 
 ## Submission Freeze Reading
 
 The current paper is in submission-closure mode.  The manuscript should not open new support/object/family searches before submission.  The only active work is packaging, consistency, reproducibility hygiene, and final PDF/readability checks.
+
+## Submission Blockers
+
+These items are not new theorem/object/family searches.  They are submission-facing consistency blockers exposed by the reviewer-style audit.  Any unresolved row below must be resolved before a final submission tag.
+
+| Item | Status | Required resolution |
+| --- | --- | --- |
+| Table III WKB consistency | `RESOLVED / GATED` | The canonical artifact is `output/true_single_track/true_results.json`.  `paper/true_unified_table.tex` is regenerated from that artifact by `python3 code/check_table_iii_wkb_consistency.py --rewrite-table`, and the standing gate `python3 code/check_table_iii_wkb_consistency.py` enforces the displayed relation `r_1 = exp(-2 S_1)`.  Current pass: `max_D |log r_1(D) + 2 S_1(D)| = 2.182020e-04` for displayed rounded values. |
+| Flavor-mixing "projector" terminology | `SUBMISSION MATH/WORDING BLOCKER` | The matrix in the matched `H->mumu` diagnostic map is row-stochastic but not idempotent, so it should not be called a projector.  Rename it consistently as a bounded nearest-neighbor flavor-mixing kernel, and keep the positivity guard tied to the audited `epsilon_max < 1/2` regime. |
+| Three-generation claim calibration | `SUBMISSION WORDING BLOCKER` | Align abstract, introduction, conclusion, limitations, and status tables with the defensible claim: baseline spectral-layer occupancy is dominated by `N=1,2,3`, and the audited kinetic proxy has no fourth bound layer on the certified domain.  Do not phrase the current submission as a full action-level proof of exactly three SM fermion generations. |
 
 | Area | Submission status | Operational reading |
 | --- | --- | --- |
@@ -23,12 +33,14 @@ The current paper is in submission-closure mode.  The manuscript should not open
 
 ## Active For Submission
 
-1. Final PDF build and visual spot-check.
-2. Artifact hygiene and registry consistency check.
-3. Consistency pass across abstract, front status table, limitations, appendix ledger, README, and roadmap.
-4. Final commit/push after any wording-only readiness edits.
+1. Keep the Table III WKB consistency gate passing with `python3 code/check_table_iii_wkb_consistency.py`.
+2. Rename the non-idempotent matched-map "projector" as a bounded nearest-neighbor flavor-mixing kernel.
+3. Run the three-generation claim-calibration pass across abstract, front status table, limitations, appendix ledger, README, and roadmap.
+4. Final PDF build and visual spot-check.
+5. Artifact hygiene and registry consistency check.
+6. Final commit/push after any wording-only readiness edits.
 
-No active item above requires new mathematics, new scans, or new theorem objects.
+No active item above requires new support/object/family searches.  The Table III item is now a gated numerical-consistency repair rather than a new physics line.
 
 ## Frozen / Do Not Reopen Before Submission
 
@@ -72,6 +84,7 @@ Run these before a final submission tag:
 ```bash
 python3 code/build_artifact_status_registry.py
 python3 code/check_artifact_status_hygiene.py
+python3 code/check_table_iii_wkb_consistency.py
 latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex  # from paper/
 ```
 

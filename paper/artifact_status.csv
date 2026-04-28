@@ -1,5 +1,7 @@
 artifact_path,status,category,note,exists
 paper/main.pdf,canonical_baseline,manuscript,Current submission target PDF.,True
+output/true_single_track/true_results.json,canonical_certificate,single_track_wkb,Canonical single-track source for Table III; paper/true_unified_table.tex is regenerated from this artifact and checked by code/check_table_iii_wkb_consistency.py.,True
+paper/true_unified_table.tex,canonical_certificate,single_track_wkb,Generated Table III source whose displayed r_1 column is gated against output/true_single_track/true_results.json.,True
 ROADMAP_STATUS.md,canonical_certificate,submission_status,Operational roadmap: current closed/monitor/diagnostic reading for reviewer-facing theorem and profile gates.,True
 FAMILY_DECISION_TABLE.md,canonical_certificate,submission_status,"One-page family decision map: canonical reviewer branch, closed negatives, research-only ingredients, and reopen rules.",True
 paper/artifact_status.csv,canonical_certificate,submission_status,Generated artifact-status registry used to prevent diagnostic or legacy outputs from being read as baseline claims.,True

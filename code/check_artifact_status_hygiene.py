@@ -36,6 +36,8 @@ ALLOWED_STATUSES = {
 
 EXPECTED_STATUS_BY_PATH = {
     "paper/main.pdf": "canonical_baseline",
+    "output/true_single_track/true_results.json": "canonical_certificate",
+    "paper/true_unified_table.tex": "canonical_certificate",
     "output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_summary.csv": "canonical_certificate",
     "output/cap_resonance_1d/static_width_whittaker_special_interval_certificate_d6rc400_r60_r80_c640_aggregate_summary.csv": "canonical_certificate",
     "output/hll_absolute_normalization/hll_absolute_normalization_synthesis_source_summary.csv": "canonical_certificate",

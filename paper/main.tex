@@ -113,7 +113,7 @@ For implementation-level clarity, Figure~\ref{fig:action_chain_onepage} summariz
 \end{figure}
 
 \subsection{Geometric Foundation: Minimal EYMH + Curvature}
-We start from a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action supplemented by a non-minimal curvature coupling $\xi R|\Phi|^2$:
+We start from a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action supplemented by a non-minimal curvature coupling $\xi R|\Phi|^2$, in the standard curved-field convention~\cite{BirrellDavies1982}:
 \begin{equation}
 S = \int \dd^4x \sqrt{-g} \left[ \frac{\Mpl^2}{2} R - \frac{1}{4} F_{\mu\nu}^a F^{a\mu\nu} - (D_\mu \Phi)^\dagger (D^\mu \Phi) - \lambda(|\Phi|^2 - v^2)^2 - \xi R |\Phi|^2 \right].
 \label{eq:action}
@@ -432,7 +432,7 @@ with $U(z)=V_{\rm eff}(z)-m_0^2$ from the same action-derived geometry. The naiv
 The kinetic rate $\Gamma_N$ determines how strictly the geometry selects specific layers. We upgrade previous heuristic models to a rigorous Rank-2 system.
 
 \subsection{Dual-Center Tunneling Suppression}
-The formation of a layer requires tunneling through the potential barrier created by the dual-center geometry. We model this via a WKB action integral:
+The formation of a layer requires tunneling through the potential barrier created by the dual-center geometry. We model this via a WKB action integral~\cite{BenderOrszag1999,Teschl2014}:
 \begin{equation}
 S_N(D) = \int_{x_-}^{x_+} \dd x \sqrt{V_{\rm eff}(x; D) - \omega_N^2},
 \label{eq:SN}
@@ -547,7 +547,7 @@ where $\omega_N^{(I)} > 0$ represents the decay rate due to tunneling or radiati
 
 For Kerr superradiance~\cite{DetweilerSuperrad1980}, the scaling $\Gamma \propto (\omega M)^{4\ell+5}$ arises from a rotating-background setup. In the static dual-center geometry considered here (no ergoregion), we no longer treat that same power as the physical origin of the escape width. Instead, outside the certified static-width tube below, the global baseline should be read as follows: the geometry-driven static surrogate is $\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}$, while Eq.~\eqref{eq:Gamma_channel} retains a Kerr-shaped power only as a legacy hierarchy convention absorbed into the action-derived profile factors $\tilde A_\ell(D)$. The non-Hermitian static-width upgrade is stated separately as the local S25 parent-tube promotion theorem rather than assumed globally.
 
-\textbf{Reviewer-facing status of the static-width upgrade:} In the strict static formulation, the relevant object is the resonance problem for the same action-derived operator with outgoing boundary conditions, so that $\Gamma_{N,\ell}^{\rm(strict)}=-2\,\Im \omega_{N,\ell}$. We implemented a minimal complex-absorbing-potential pilot on the same 1D operator chain as Appendix~\ref{app:superrad_candidate} and scanned the benchmark set $D=\{6,12,18\}$ for the representative $(N,\ell)=(3,1)$ mode. The numerical chain is stable as infrastructure, but the extracted widths remain absorber-dominated over the tested $(\eta,z_{\rm cap})$ windows and do not exhibit a clean plateau; the CAP outputs therefore remain diagnostics rather than promoted evidence. The later DtN/ECS/Whittaker/Jost audits sharpen the strict problem until the final \(D=6,\ R_C=400,\ 60\to80,\ c=640\) parent tube has a \(5\%\)-inflated slab-envelope closure, a Cauchy/slab derivative-remainder realization of that reserve, an intervalized parent-promotion version using one parity-uniform derivative envelope on the whole \(60\to80\) interval, and a direct Whittaker special-function check of those derivative constants.  We now adopt that S25 special-function interval certificate as the reviewer-facing strict static-width promotion theorem on the certified parent tube.  This adoption is deliberately local: it promotes the audited parent-tube statement, not a new global all-\(D,R_C,R\) pole family, and it does not reopen CAP, ECS, tail-backend, or unconstrained branch-picking searches.  The intermediate S1--S21 statements below retain their stage-local ``not promoted'' language as audit history; on the certified tube, that wording is superseded by S25 only.  Outside the S25 certified tube, the geometry-driven rate \(\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}\) from Appendix~\ref{app:superrad_candidate} remains the conservative comparator and fallback hierarchy.
+\textbf{Reviewer-facing status of the static-width upgrade:} In the strict static formulation, the relevant object is the resonance problem for the same action-derived operator with outgoing boundary conditions~\cite{Siegert1939,Teschl2014}, so that $\Gamma_{N,\ell}^{\rm(strict)}=-2\,\Im \omega_{N,\ell}$. We implemented a minimal complex-absorbing-potential pilot on the same 1D operator chain as Appendix~\ref{app:superrad_candidate}, using the standard non-Hermitian resonance framework~\cite{Moiseyev2011}, and scanned the benchmark set $D=\{6,12,18\}$ for the representative $(N,\ell)=(3,1)$ mode. The numerical chain is stable as infrastructure, but the extracted widths remain absorber-dominated over the tested $(\eta,z_{\rm cap})$ windows and do not exhibit a clean plateau; the CAP outputs therefore remain diagnostics rather than promoted evidence. The later DtN/ECS/Whittaker/Jost audits sharpen the strict problem using standard exterior-spectral tools~\cite{AguilarCombes1971,BalslevCombes1971,Olver2010} until the final \(D=6,\ R_C=400,\ 60\to80,\ c=640\) parent tube has a \(5\%\)-inflated slab-envelope closure, a Cauchy/slab derivative-remainder realization of that reserve, an intervalized parent-promotion version using one parity-uniform derivative envelope on the whole \(60\to80\) interval, and a direct Whittaker special-function check of those derivative constants.  We now adopt that S25 special-function interval certificate as the reviewer-facing strict static-width promotion theorem on the certified parent tube.  This adoption is deliberately local: it promotes the audited parent-tube statement, not a new global all-\(D,R_C,R\) pole family, and it does not reopen CAP, ECS, tail-backend, or unconstrained branch-picking searches.  The intermediate S1--S21 statements below retain their stage-local ``not promoted'' language as audit history; on the certified tube, that wording is superseded by S25 only.  Outside the S25 certified tube, the geometry-driven rate \(\Gamma_{N,\ell}^{\rm(geo)}=\omega_N e^{-2S_{N,\ell}}\) from Appendix~\ref{app:superrad_candidate} remains the conservative comparator and fallback hierarchy.
 
 \medskip\noindent\textbf{Proposition S1 (Siegert/DtN gate for promoting the static width).}
 For fixed \(D,\ell\), set
@@ -692,7 +692,7 @@ However the promotion gates still fail:
 The largest parity split in this stress run is \(9.19\times10^{-2}\).  Thus the analytic Coulomb-tail normalization is useful as a negative control--it removes the purely ad hoc WKB start--but it does not yet produce an exterior-stable pole.  The remaining static-width path should therefore be an ECS cross-check or a fully analytic Coulomb/Whittaker DtN implementation, not a further CAP scan.
 
 \medskip\noindent\textbf{Proposition S4 (Exterior complex scaling also rejects the current static-width promotion).}
-The next independent exterior check is exterior complex scaling.  For \(x\in[-L,L]\), define the piecewise analytic contour
+The next independent exterior check is exterior complex scaling~\cite{AguilarCombes1971,BalslevCombes1971}.  For \(x\in[-L,L]\), define the piecewise analytic contour
 \[
 Z_{\theta,R_0}(x)=
 \begin{cases}
@@ -796,7 +796,7 @@ x=-2ikz,\qquad
 \kappa=-\frac{iA}{2k},\qquad
 \mu=\sqrt{B_\ell+\frac14}.
 \]
-Since \(d/dz=(-2ik)d/dx\), the equation becomes the Whittaker equation
+Since \(d/dz=(-2ik)d/dx\), the equation becomes the Whittaker equation~\cite{Olver2010}
 \[
 \frac{d^2W}{dx^2}
 +\left(-\frac14+\frac{\kappa}{x}+\frac{1/4-\mu^2}{x^2}\right)W=0 .
@@ -927,7 +927,7 @@ The local zero-count gate is now positive, while the resolved-branch stability g
 strong enough to beat the observed \(R\)- and \(R_C\)-drift.  Until such a bound is proved, the static-width result remains diagnostic rather than promoted.
 
 \medskip\noindent\textbf{Proposition S9 (Parent-lift criterion for finite Whittaker-DtN zeros).}
-The finite-radius zeros can be pushed to a parent static-width pole only through a Rouché/conditioning estimate, not through another local root solve.  Let \(m_\infty(R,E;D)\) denote the exact outgoing Weyl logarithmic derivative for the action-derived half-line tail, and let \(m_{R_C}^{W}(R,E;D)\) denote the Whittaker-initialized Riccati DtN value used in Proposition S6.  On the same finite-difference interior grid, define
+The finite-radius zeros can be pushed to a parent static-width pole only through a Rouché/conditioning estimate~\cite{Ahlfors1979}, not through another local root solve.  Let \(m_\infty(R,E;D)\) denote the exact outgoing Weyl logarithmic derivative for the action-derived half-line tail~\cite{Teschl2014}, and let \(m_{R_C}^{W}(R,E;D)\) denote the Whittaker-initialized Riccati DtN value used in Proposition S6.  On the same finite-difference interior grid, define
 \[
 F_{\infty,p}(E)
 :=F_p(E)\ \hbox{with }m_{R_C}^{W}(R,E;D)
@@ -2456,7 +2456,7 @@ Hence the number of bound modes below the continuum threshold is the inertia cou
 \[
 H_D^{(L,h)}=L\,{\rm diag}(p_1,\dots,p_M)\,L^T,
 \]
-where the pivots obey the Sturm recursion above.  Sylvester's law of inertia then implies that the number of negative pivots equals the number of negative eigenvalues.  Equivalently, this is the finite-difference form of the Sturm oscillation theorem: the zero-energy Sturm index counts the modes below threshold.  Thus \(n_-^{(L,h)}\le3\) excludes a fourth bound mode, and \(E_3^{(L,h)}>0\) gives the stronger statement that the one-dimensional proxy has at most two bound modes.
+where the pivots obey the Sturm recursion above.  Sylvester's law of inertia~\cite{HornJohnson2012} then implies that the number of negative pivots equals the number of negative eigenvalues.  Equivalently, this is the finite-difference form of the Sturm oscillation theorem~\cite{Teschl2014}: the zero-energy Sturm index counts the modes below threshold.  Thus \(n_-^{(L,h)}\le3\) excludes a fourth bound mode, and \(E_3^{(L,h)}>0\) gives the stronger statement that the one-dimensional proxy has at most two bound modes.
 \emph{Verified numerics.}
 The certificate audit \path{code/audit_highN_threshold_theorem.py} exports \path{output/highN_decoupling/highN_threshold_theorem_detail.csv} and \path{output/highN_decoupling/highN_threshold_theorem_summary.csv}.  On the primary finite-volume certificate \((L,N_z)=(80,8001)\), the audited integer window \(D=4,\dots,20\) has
 \[
@@ -2489,7 +2489,7 @@ With the EFT-operator-normalized baseline now in place, the release-production c
 \begin{equation}
 \mathcal{L}_{Y} = -y_0\,\bar{L}H\ell_R + \mathrm{h.c.}, \qquad g_{\mu\nu}=\Omega^2\eta_{\mu\nu}.
 \end{equation}
-In the minimal conformal setup, we use the vierbein form
+In the minimal conformal setup~\cite{BirrellDavies1982,LawsonMichelsohn1989}, we use the vierbein form
 \begin{equation}
 S_\Psi=\int d^4x\,\sqrt{-g}\;\ii\,\bar{\Psi}\,e^\mu_{\ a}\gamma^a\!\left(\partial_\mu+\frac{1}{4}\omega_{\mu bc}\gamma^{bc}\right)\!\Psi,
 \qquad e_\mu^{\ a}=\Omega\,\delta_\mu^{\ a},
@@ -2523,7 +2523,7 @@ Here $f_{L,R}$ denote lepton profile functions and $\mathcal{W}_{\rm frame}$ col
 
 \medskip\noindent\textbf{Proposition F1 (Fermionic spin-bundle lift of the spectral generation labels).}
 \label{prop:fermionic_lift}
-Let \(M=\mathbb R_t\times\Sigma\) be the conformally flat projected background used in the action-derived scalar chain, with \(g_{\mu\nu}=\Omega^2\eta_{\mu\nu}\), \(\Omega>0\), and with the spin structure inherited from the projected chart.  Let \(\mathbb S_g\) be the corresponding Dirac spin bundle and let the scalar/action operator
+Let \(M=\mathbb R_t\times\Sigma\) be the conformally flat projected background used in the action-derived scalar chain, with \(g_{\mu\nu}=\Omega^2\eta_{\mu\nu}\), \(\Omega>0\), and with the spin structure inherited from the projected chart.  Let \(\mathbb S_g\) be the corresponding Dirac spin bundle~\cite{LawsonMichelsohn1989} and let the scalar/action operator
 \[
 L_\Omega=-\Delta+V_{\rm eff}
 \]
@@ -4298,7 +4298,7 @@ and its determinant differs from the projected determinant by
 \frac{2\|A\|}{1-\|A\|}.
 \]
 \emph{Proof sketch.}
-The Schur/Feshbach reduction on the complement gives the exact identity
+The Schur/Feshbach reduction on the complement~\cite{Feshbach1958,HornJohnson2012} gives the exact identity
 \[
 H_{\rm eff}
 =
@@ -4948,7 +4948,7 @@ At $\xi = \xi_c = 1/6$ (conformal coupling): $V_{\rm eff} \to m_0^2\Omega^2$, an
 \subsection{Minimal Dirac Coupling in the Conformal Background}
 \label{app:dirac_conformal}
 
-To make the visibility block explicitly compatible with the fermionic Yukawa origin, we summarize the minimal conformal Dirac reduction used by the baseline overlap kernel.
+To make the visibility block explicitly compatible with the fermionic Yukawa origin, we summarize the minimal conformal Dirac reduction used by the baseline overlap kernel~\cite{BirrellDavies1982,LawsonMichelsohn1989}.
 
 For $g_{\mu\nu}=\Omega^2\eta_{\mu\nu}$, choose
 \begin{equation}
@@ -12519,7 +12519,7 @@ g_E:=K_E\phi_{L,E}-M_E f_{L,E},
 \qquad
 f_L=(\bar E-U_a)\phi_L-\delta E\,\phi_R.
 \]
-The vector \(g_E\) is precisely the outward flux from the complement of the trace set \(E_\partial\).  The restricted matrix \(K_E\) is a strictly diagonally dominant \(Z\)-matrix, hence a nonsingular \(M\)-matrix.  Therefore \(K_E^{-1}\ge0\).  For
+The vector \(g_E\) is precisely the outward flux from the complement of the trace set \(E_\partial\).  The restricted matrix \(K_E\) is a strictly diagonally dominant \(Z\)-matrix, hence a nonsingular \(M\)-matrix~\cite{Varga2000}.  Therefore \(K_E^{-1}\ge0\).  For
 \[
 \theta_\phi:=0.9999995,
 \qquad

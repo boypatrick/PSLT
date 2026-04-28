@@ -3,18 +3,18 @@
 Tree-level EFT/Wilson matching utilities for PSLT H->ll observables.
 
 This module currently supports two map-level matching closures:
-  - projector-matched closure:
+  - kernel-matched closure:
       y_raw(N), P_N^(kin), chi_eff(D) -> C_{eH}^{ij}
   - UV-inspired tree closure:
       g_{iN}(D), P_N^(kin), M_N^2(D) -> C_{eH}^{ij}
       with C = G diag(P_N/M_N^2) G^T.
 
 Design notes:
-  - In the strict diagonal limit (mix_scale=0), the projector-matched mode
+  - In the strict diagonal limit (mix_scale=0), the kernel-matched mode
     reduces to C_ii = y_raw_i * P_i when basis_mode="sqrt_yraw", reproducing
     the old diagonal ansatz at map level.
   - The UV-inspired tree closure removes the bounded nearest-neighbor flavor
-    projector and uses overlap-extracted flavor-layer couplings directly.
+    mixing kernel and uses overlap-extracted flavor-layer couplings directly.
 """
 
 from __future__ import annotations
@@ -91,9 +91,12 @@ def mixing_epsilon(chi_eff: float, eta_val: float, cfg: EFTWilsonMatchConfig) ->
     return float(np.clip(eps, 0.0, cfg.mix_max))
 
 
-def flavor_projector(eps: float, floor: float = 1e-30) -> np.ndarray:
+def flavor_mixing_kernel(eps: float, floor: float = 1e-30) -> np.ndarray:
     """
-    Build a bounded row-stochastic flavor-layer projector.
+    Build a bounded row-stochastic flavor-layer mixing kernel.
+
+    This matrix is intentionally not an idempotent projector.  Its eigenvalues
+    are 1, 1-eps, and 1-2 eps, so the executable guard keeps eps below 1/2.
     Rows = flavors (e,mu,tau), cols = layers (N=1,2,3).
     """
     eps = float(np.clip(eps, 0.0, 0.49))
@@ -124,9 +127,9 @@ def flavor_layer_couplings(
     else:
         raise ValueError(f"Unsupported basis_mode='{cfg.basis_mode}'.")
 
-    proj = flavor_projector(eps, floor=cfg.floor)
-    # Row-wise flavor amplitudes with layer projection.
-    return np.diag(base) @ proj
+    kernel = flavor_mixing_kernel(eps, floor=cfg.floor)
+    # Row-wise flavor amplitudes with bounded nearest-neighbor layer mixing.
+    return np.diag(base) @ kernel
 
 
 def wilson_matrix(

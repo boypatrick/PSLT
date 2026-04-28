@@ -2730,17 +2730,27 @@ P_N^{\rm(kin)}(D,\eta)=\frac{\tilde q_N(D,\eta)}{\sum_{K=1}^{N_{\max}}\tilde q_K
 \label{eq:epsilon_hll_match}
 \end{equation}
 \begin{equation}
-\Pi(\epsilon_{\rm mix})=
+\mathsf K_{\rm fl}(\epsilon_{\rm mix})=
 \begin{pmatrix}
 1-\epsilon_{\rm mix} & \epsilon_{\rm mix} & 0\\
 \epsilon_{\rm mix}/2 & 1-\epsilon_{\rm mix} & \epsilon_{\rm mix}/2\\
 0 & \epsilon_{\rm mix} & 1-\epsilon_{\rm mix}
 \end{pmatrix},
 \qquad
-Y_{iN}(D,\eta)=\sqrt{y_N^{\rm eff,raw}(D)}\,\Pi_{iN}(\epsilon_{\rm mix}),
-\label{eq:flavor_projector}
+Y_{iN}(D,\eta)=\sqrt{y_N^{\rm eff,raw}(D)}\,\mathsf K_{{\rm fl},iN}(\epsilon_{\rm mix}),
+\label{eq:flavor_mixing_kernel}
 \end{equation}
-The bounded projector in Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:flavor_projector} is retained for matched-mode diagnostics; the baseline \texttt{eft\_wilson\_uv\_rge} maps use the UV-tree closure below.
+The matrix \(\mathsf K_{\rm fl}\) in Eqs.~\eqref{eq:epsilon_hll_match}--\eqref{eq:flavor_mixing_kernel} is a bounded nearest-neighbor row-stochastic flavor-mixing kernel, not a projection operator.
+Indeed each row sums to one, while generically \(\mathsf K_{\rm fl}^2\neq \mathsf K_{\rm fl}\); for example
+\[
+(\mathsf K_{\rm fl}^2-\mathsf K_{\rm fl})_{11}
+=\frac{\epsilon_{\rm mix}(3\epsilon_{\rm mix}-2)}{2},
+\qquad
+(\mathsf K_{\rm fl}^2-\mathsf K_{\rm fl})_{22}
+=\epsilon_{\rm mix}(2\epsilon_{\rm mix}-1).
+\]
+Its eigenvalues are \(1\), \(1-\epsilon_{\rm mix}\), and \(1-2\epsilon_{\rm mix}\), so the matched diagnostic branch is kept in the entrywise-nonnegative and spectrum-positive regime by the explicit guard \(0\le\epsilon_{\rm mix}\le\epsilon_{\max}<1/2\) (the executable release setting uses \(\epsilon_{\max}=0.25\)).
+This kernel is retained for matched-mode diagnostics; the baseline \texttt{eft\_wilson\_uv\_rge} maps use the UV-tree closure below.
 \begin{equation}
 C_{eH}^{\rm tree,\,ij}(D,\eta)=\sum_{N=1}^{3}g_{iN}(D)\,
 \frac{P_N^{\rm(kin)}(D,\eta)}{M_N^2(D)}\,g_{jN}(D),
@@ -4752,7 +4762,7 @@ We have presented a computable EFT-level demonstrator of the Projection Spectral
     \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated by the \texttt{fp\_2d\_full} microcanonical-window + tail prescription and the observable sector uses EFT-operator-normalized visibility profiles $B_N(D)$ with neutral high-$N$ saturation rather than an extra visibility-side cutoff.
     \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With full-grid action-derived $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ profiles, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $15.0\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
 \end{enumerate}
-At the same time, the present implementation keeps two EFT-level approximations explicit: map-level profile closure remains active in the baseline $B_N(D)$ visibility sector (while release-production and risk-weighted runtime-direct parity branches are both available) and a bounded nearest-neighbor flavor projector in the matched $H\to\mu\mu$ map of Eq.~\eqref{eq:mu_pred}. The absolute \(H\to\mu\mu\) normalization is structurally closed in the U9 sense and its projected parent-kernel complement budget is closed in the U11 sense.  The U10 direct inserted-history \(y_2^{\rm raw}(D_\star)\) scalar has two admissible reviewer-facing readings: U12 rules out silent no-topology promotion, while U13 certifies explicit monotone topology-changing adoption as a no-loss one-component slab expansion and U14 certifies that this direct accepted set has uniform \(\mu\)-margin \(0.145404\). Therefore, the present manuscript supports a robust statement about spectral generation selection on the release baseline, and also about a release-qualified runtime-direct visibility parity path, but not yet a strict claim that the observable sector is closed by per-cell all-direct extraction at production level.
+At the same time, the present implementation keeps two EFT-level approximations explicit: map-level profile closure remains active in the baseline $B_N(D)$ visibility sector (while release-production and risk-weighted runtime-direct parity branches are both available) and a bounded nearest-neighbor flavor-mixing kernel in the matched $H\to\mu\mu$ diagnostic map of Eq.~\eqref{eq:mu_pred}. The absolute \(H\to\mu\mu\) normalization is structurally closed in the U9 sense and its projected parent-kernel complement budget is closed in the U11 sense.  The U10 direct inserted-history \(y_2^{\rm raw}(D_\star)\) scalar has two admissible reviewer-facing readings: U12 rules out silent no-topology promotion, while U13 certifies explicit monotone topology-changing adoption as a no-loss one-component slab expansion and U14 certifies that this direct accepted set has uniform \(\mu\)-margin \(0.145404\). Therefore, the present manuscript supports a robust statement about spectral generation selection on the release baseline, and also about a release-qualified runtime-direct visibility parity path, but not yet a strict claim that the observable sector is closed by per-cell all-direct extraction at production level.
 
 \textbf{Limitations and outlook.}
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:

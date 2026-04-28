@@ -15,7 +15,7 @@ These items are not new theorem/object/family searches.  They are submission-fac
 | Item | Status | Required resolution |
 | --- | --- | --- |
 | Table III WKB consistency | `RESOLVED / GATED` | The canonical artifact is `output/true_single_track/true_results.json`.  `paper/true_unified_table.tex` is regenerated from that artifact by `python3 code/check_table_iii_wkb_consistency.py --rewrite-table`, and the standing gate `python3 code/check_table_iii_wkb_consistency.py` enforces the displayed relation `r_1 = exp(-2 S_1)`.  Current pass: `max_D |log r_1(D) + 2 S_1(D)| = 2.182020e-04` for displayed rounded values. |
-| Flavor-mixing "projector" terminology | `SUBMISSION MATH/WORDING BLOCKER` | The matrix in the matched `H->mumu` diagnostic map is row-stochastic but not idempotent, so it should not be called a projector.  Rename it consistently as a bounded nearest-neighbor flavor-mixing kernel, and keep the positivity guard tied to the audited `epsilon_max < 1/2` regime. |
+| Flavor-mixing "projector" terminology | `RESOLVED / WORDING GATED` | The matched `H->mumu` diagnostic map now calls the non-idempotent matrix a bounded nearest-neighbor row-stochastic flavor-mixing kernel, not a projector.  The text records the non-idempotence check, the eigenvalues `1`, `1-epsilon_mix`, `1-2 epsilon_mix`, and the positivity guard `epsilon_max < 1/2` with executable release setting `epsilon_max=0.25`. |
 | Three-generation claim calibration | `SUBMISSION WORDING BLOCKER` | Align abstract, introduction, conclusion, limitations, and status tables with the defensible claim: baseline spectral-layer occupancy is dominated by `N=1,2,3`, and the audited kinetic proxy has no fourth bound layer on the certified domain.  Do not phrase the current submission as a full action-level proof of exactly three SM fermion generations. |
 
 | Area | Submission status | Operational reading |
@@ -34,7 +34,7 @@ These items are not new theorem/object/family searches.  They are submission-fac
 ## Active For Submission
 
 1. Keep the Table III WKB consistency gate passing with `python3 code/check_table_iii_wkb_consistency.py`.
-2. Rename the non-idempotent matched-map "projector" as a bounded nearest-neighbor flavor-mixing kernel.
+2. Keep the non-idempotent matched-map flavor kernel wording and positivity guard intact.
 3. Run the three-generation claim-calibration pass across abstract, front status table, limitations, appendix ledger, README, and roadmap.
 4. Final PDF build and visual spot-check.
 5. Artifact hygiene and registry consistency check.

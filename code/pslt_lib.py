@@ -473,7 +473,7 @@ class PSLTParameters:
         if self.hll_match_mix_scale < 0.0:
             raise ValueError("hll_match_mix_scale must be >= 0.")
         if not (0.0 <= self.hll_match_mix_max <= 0.49):
-            raise ValueError("hll_match_mix_max must be in [0, 0.49].")
+            raise ValueError("hll_match_mix_max must stay below the 1/2 flavor-kernel positivity boundary.")
         if self.hll_match_eta_ref <= 0.0:
             raise ValueError("hll_match_eta_ref must be > 0.")
         if self.hll_match_width_mode not in {

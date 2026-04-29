@@ -38,16 +38,16 @@
 \date{February 2, 2026}
 
 \begin{abstract}
-We present a comprehensive, computable EFT-level ``closed chain'' for the Projection Spectral Layer Theory (PSLT) in which the release baseline produces a first-three-layer occupancy concentration from competing spectral entropy, kinetics, and visibility.
-The framework is built on a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action with non-minimal curvature coupling, where the background geometry induces a layer-indexed spectral scale $\omega_N$.
+We present a comprehensive, computable EFT-level conditional ``closed chain'' for the Projection Spectral Layer Theory (PSLT) in which the release baseline produces a first-three-layer occupancy concentration from competing spectral entropy, kinetics, and visibility.
+The framework is organized around a minimal Einstein--Yang--Mills--Higgs (EYMH) effective action with non-minimal curvature coupling, evaluated on a fixed projected conformal background where the geometry induces a layer-indexed spectral scale $\omega_N$.
 The theoretical closure is achieved by unifying three key modules:
 (i) a \textbf{Micro-degeneracy module} ($g_N$) implemented through a bounded two-dimensional phase-space profile (microcanonical low-$N$ window + energy-gap tail prescription, phase-space normalized at $N=3$);
 (ii) a \textbf{Rank-2 Computable Kinetic module} ($\Gamma_N$) defined as the largest positive eigenvalue of a $2\times2$ growth matrix with explicit WKB tunneling suppression; and
 (iii) a \textbf{Visibility module} ($B_N$) implemented as a fully normalized EFT-operator profile, where overlap-extracted flavor-layer couplings and mediator scales feed finite one-loop + LL-RG-normalized operator kernels, with neutral high-$N$ saturation ($B_{N>3}=1$) so that no extra visibility-side damping is added on top of the $g_N$ regulator; a risk-weighted runtime-direct visibility parity branch is also available, but it is not interpreted as a strict all-direct closure.
 The neutral high-$N$ saturation is not used to hide a fourth generation: a separate mode-resolved Sturm/min--max certificate on the audited kinetic chain excludes a fourth bound layer on the tested finite-volume domain.
 The resulting normalized layer probability $P_N(t_{\rm coh})$ demonstrates, within this baseline closure, a stable ``winner'' phase diagram with clear occupancy concentration in layers $N=1,2,3$ over a significant region of the geometric parameter space $(D, \eta)$.
-We verify the closure against two benchmarks: (1) internal stability of the first-three-layer occupancy fraction ($\mathcal{R}_3>90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid), and (2) a scan-level EFT/Wilson-matched compatibility test using the ATLAS Run-2+Run-3 combined $H\to\mu\mu$ signal-strength input ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
-In the current UV+LL-RG baseline, the illustrative acceptance band is about $15.0\%$ of the scanned grid for $\chi^2<4$, providing a sharper falsifiable constraint on $(D,\eta)$.
+We verify the closure against two benchmarks: (1) internal stability of the first-three-layer occupancy fraction ($\mathcal{R}_3>90\%$ over $92.7\%$ of the sampled $(D,\eta)$ grid), and (2) a reference-normalized scan-level EFT/Wilson-matched comparison with the ATLAS Run-2+Run-3 combined $H\to\mu\mu$ signal-strength input ($\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$).
+In the current UV+LL-RG baseline, the illustrative acceptance band is about $15.0\%$ of the scanned grid for $\chi^2<4$, providing a reference-normalized target region for $(D,\eta)$ rather than a formal likelihood or exclusion claim.
 \end{abstract}
 
 \maketitle
@@ -63,7 +63,7 @@ The observed three-generation pattern of fermions is one of the most persistent 
 The Projection Spectral Layer Theory (PSLT) explores a different paradigm: the generation labels used by the EFT closure are represented by distinct \emph{spectral layers} ($N=1,2,3,\dots$) of vacuum excitations, selected by a competition between microstate degeneracy (entropy) and geometric formation rates (kinetics).
 This structural viewpoint is complementary to recent Clifford-algebra work where three families emerge from an intrinsic $S_3$ organization rather than manual generation copying~\cite{Gresnigt2026CliffordS3}; the emphasis here is different: a map-level computable closure with explicit scan-level falsifiability.
 
-In this work, we consolidate the current EFT-level PSLT implementation into a single, falsifiable "closed chain". We upgrade earlier effective descriptions to a \textbf{computable} rank-2 dynamical system with an action-derived extraction subchain and an action-informed global scan chain, where $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ are now injected on the full scan grid from direct action-derived profiles. The core deliverable is a map from geometric control parameters $(D, \eta)$---representing dual-center separation and overlap---to an observable layer probability $P_N$. This submission therefore claims baseline first-three-layer occupancy concentration and an audited no-fourth-bound-layer kinetic threshold on the stated finite-volume domain, not a full action-level theorem proving exactly three SM fermion generations.
+In this work, we consolidate the current EFT-level PSLT implementation into a single, falsifiable scan-level closure. We upgrade earlier effective descriptions to a \textbf{computable} rank-2 dynamical system with an action-derived extraction subchain and an action-informed global scan chain, where $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ are now injected on the full scan grid from direct action-derived profiles. The core deliverable is a map from geometric control parameters $(D, \eta)$---representing dual-center separation and overlap---to an observable layer probability $P_N$. This submission therefore claims baseline first-three-layer occupancy concentration and an audited no-fourth-bound-layer kinetic threshold on the stated finite-volume domain, not a full action-level theorem proving exactly three SM fermion generations.
 
 Our primary contributions are:
 \begin{enumerate}
@@ -71,7 +71,7 @@ Our primary contributions are:
     \item \textbf{Rank-2 Computable Kinetics}: We replace heuristic growth rates with a rigorous eigenvalue problem for the formation matrix $\mathbf{M}_N$, incorporating numerical WKB tunneling suppression.
     \item \textbf{Fully Normalized EFT Visibility}: We promote $B_N$ to an EFT-operator-normalized baseline built from overlap-extracted flavor-layer couplings and mediator scales with finite one-loop + LL-RG normalization; overlap-only and Yukawa laws are retained only as legacy comparators/fallbacks, while runtime-direct visibility extraction is release-qualified only as a risk-weighted parity check, not as a strict all-direct closure.
     \item \textbf{No-Fourth-Layer Threshold}: We separate high-$N$ stability from visibility damping: \(B_{N>3}=1\) is neutral, while a finite-volume Sturm/Sylvester threshold certificate shows that the audited kinetic chain has no fourth bound layer.
-    \item \textbf{Verification}: We demonstrate stable first-three-layer occupancy at $\mathcal{R}_3>90\%$ and a constrained EFT/Wilson-matched-compatible band for LHC $H\to\mu\mu$.
+    \item \textbf{Verification}: We demonstrate stable first-three-layer occupancy at $\mathcal{R}_3>90\%$ and a reference-normalized EFT/Wilson-matched scan band for LHC $H\to\mu\mu$.
 \end{enumerate}
 
 % ============================================================
@@ -100,6 +100,18 @@ Figure~\ref{fig:framework} illustrates the logical flow of the PSLT framework.
     \caption{Schematic overview of the PSLT framework. Geometric inputs $(D, \eta)$ feed into three modules (micro-degeneracy $g_N$, kinetic rate $\Gamma_N$, visibility $B_N$), which combine in the master equation to yield the observable layer probabilities $P_N$ and the first-three-layer occupancy ratio $\mathcal{R}_3$. In the baseline chain, high-$N$ control is implemented by the bounded two-dimensional phase-space-tail prescription, while $B_{N>3}$ neutrally saturates to unity.}
     \label{fig:framework}
 \end{figure}
+
+\subsection{Submission Assumption Map}
+\label{sec:submission_assumptions}
+Theorems, propositions, and numerical certificates in this manuscript should be read as conditional statements on the following model-chain assumptions and on their explicitly stated audited domains:
+\begin{description}
+    \item[A1.] The conformal background is the fixed projected two-source solution of the Poisson problem in Eq.~\eqref{eq:Omega_poisson}; deriving the same source from a complete higher-dimensional EYMH parent is future work rather than a hidden premise.
+    \item[A2.] The scalar spectral label \(N\) is used as the EFT generation-layer label in the scan closure.  Fermionic spin degrees of freedom live in the conformal Dirac bundle discussed in the fermionic-lift certificate and do not add a layer-dependent degeneracy factor to \(g_N\).
+    \item[A3.] The release \(g_N\) is the specified bounded two-dimensional phase-space/shell-volume profile with its low-\(N\) count certificate and high-\(N\) tail prescription; Cardy-type formulas are motivations and legacy comparators, not the baseline derivation.
+    \item[A4.] The Rank-2 matrix is the coarse-grained kinetic closure used to map WKB/static surrogate data into \(\Gamma_N(D,\eta)\).  Strict static-width promotion is local to the S25 parent tube unless explicitly stated otherwise.
+    \item[A5.] The visibility and \(H\to\mu\mu\) sectors define reference-normalized EFT/Wilson-inspired scan observables.  Their acceptance bands are diagnostic target regions, not formal global likelihoods, confidence-level exclusions, or claims of experimental validation.
+\end{description}
+With this convention, ``closed'' means closed within A1--A5 and the stated certificate domain.  Statements that require a global EYMH parent derivation, a continuum no-fourth-layer theorem, or an absolute Higgs-sector normalization are listed as optional future strengthening, not as active assumptions of the release baseline.
 
 \subsection{Action-Derived Chain at a Glance}
 \label{sec:action_chain_glance}
@@ -2717,7 +2729,8 @@ $\kappa_{\rm offdiag}$ & $-1.0/0.0/1.0$ & $0.1500/0.1500/0.1500$ & $0$ \\
 \end{table}
 
 \subsection{\texorpdfstring{$H\to\mu\mu$ Signal Strength}{H to mumu Signal Strength} (EFT/Wilson-Matched Mapping, UV+LL-RG Baseline)}
-We confront the theory with the ATLAS Run-2+Run-3 combined $H\to\mu\mu$ signal-strength input, $\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$ (combined uncertainty)~\cite{ATLAS_Hmumu}. The same ATLAS evidence result reports a Run-3-only signal strength near $\mu_{\mu\mu}=1.6\pm0.6$; all scan maps in this manuscript use the combined input above.
+We compare the scan-level PSLT map with the ATLAS Run-2+Run-3 combined $H\to\mu\mu$ signal-strength input, $\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$ (combined uncertainty)~\cite{ATLAS_Hmumu}. The same ATLAS evidence result reports a Run-3-only signal strength near $\mu_{\mu\mu}=1.6\pm0.6$; all scan maps in this manuscript use the combined input above.
+This subsection is a reference-normalized EFT/Wilson diagnostic.  It does not by itself define a formal global likelihood, a confidence-level exclusion, or an experimental-validation claim; those would require an independently fixed absolute normalization and a trials-corrected statistical model.
 
 Within the PSLT closure, we construct a scan-level EFT/Wilson-matched map (evaluated in baseline \texttt{eft\_wilson\_uv\_rge} mode) by combining kinetic occupancy with overlap-extracted raw couplings:
 \begin{equation}
@@ -4708,12 +4721,12 @@ p_{\rm local}(D,\eta)=1-F_{\chi^2_1}\!\left(\chi^2(D,\eta)\right)
 =\mathrm{erfc}\!\left(\sqrt{\chi^2(D,\eta)/2}\right).
 \label{eq:plocal_hmumu}
 \end{equation}
-Figure~\ref{fig:hmumu} shows the \textbf{EFT/Wilson-matched acceptance region} in two equivalent languages,
+Figure~\ref{fig:hmumu} shows the \textbf{EFT/Wilson-matched illustrative acceptance region} in two equivalent languages,
 \begin{equation}
 \chi^2<4 \quad \Longleftrightarrow \quad p_{\rm local}>4.55\times10^{-2}\qquad(\text{dof}=1).
 \label{eq:chi2_plocal_equiv}
 \end{equation}
-We use this threshold only as an \emph{illustrative acceptance band} for map-level comparison and do not claim a formal 95\% CL exclusion. Because the $(D,\eta)$ scan is a multiple-comparison procedure (look-elsewhere) and no global trials correction is applied, this band is interpreted only as a falsifiable target region. In the present full-grid action-derived profile scan, the accepted fraction is
+We use this threshold only as an \emph{illustrative acceptance band} for map-level comparison and do not claim a formal confidence-level exclusion. Because the $(D,\eta)$ scan is a multiple-comparison procedure (look-elsewhere) and no global trials correction is applied, this band is interpreted only as a reference-normalized diagnostic target region. In the present full-grid action-derived profile scan, the accepted fraction is
 \begin{equation}
 f(\chi^2<4)=f\!\left(p_{\rm local}>4.55\times10^{-2}\right)=0.1500,
 \end{equation}
@@ -4723,7 +4736,7 @@ with best grid point $\chi^2\simeq 2.21\times10^{-5}$ at $(D,\eta)\approx(4.00,0
     \centering
     \includegraphics[width=0.48\linewidth]{hmumu_exclusion.png}
     \includegraphics[width=0.48\linewidth]{hmumu_signal_strength.png}
-    \caption{Compatibility with $H\to\mu\mu$ under the EFT/Wilson-matched UV+LL-RG map. Left: $\chi^2$ map showing a restricted illustrative accepted band ($\chi^2<4$, equivalently $p_{\rm local}>4.55\times10^{-2}$ for dof$=1$). Right: predicted $\mu_{\mu\mu}^{\rm pred}$.}
+    \caption{Reference-normalized scan-level comparison with $H\to\mu\mu$ under the EFT/Wilson-matched UV+LL-RG map. Left: $\chi^2$ map showing a restricted illustrative accepted band ($\chi^2<4$, equivalently $p_{\rm local}>4.55\times10^{-2}$ for dof$=1$). Right: predicted $\mu_{\mu\mu}^{\rm pred}$.}
     \label{fig:hmumu}
 \end{figure}
 
@@ -4760,9 +4773,9 @@ We have presented a computable EFT-level demonstrator of the Projection Spectral
 \begin{enumerate}
     \item \textbf{First-three-layer occupancy is spectral within the baseline closure}: The concentration in \(N=1,2,3\) is not inserted by an explicit high-\(N\) visibility cutoff; on the current release baseline it is a dynamical output of competing entropy ($g_N$), kinetics ($\Gamma_N$), and visibility ($B_N$), with the generation interpretation kept as an EFT layer assignment rather than a full action-level theorem for exactly three SM families.
     \item \textbf{Stability without ad-hoc cutoffs}: The infinite tower of layers becomes numerically and physically stable once micro-degeneracy is regulated by the \texttt{fp\_2d\_full} microcanonical-window + tail prescription and the observable sector uses EFT-operator-normalized visibility profiles $B_N(D)$ with neutral high-$N$ saturation rather than an extra visibility-side cutoff.
-    \item \textbf{Falsifiability}: The closure yields concrete predictions for the winner phase diagram. With full-grid action-derived $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ profiles, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $15.0\%$ of the scan and defines a falsifiable target region in $(D,\eta)$.
+    \item \textbf{Map-level constraint visualization}: The closure yields concrete predictions for the winner phase diagram. With full-grid action-derived $\chi_N^{(LR)}(D)$ and $\tilde A_\ell(D)$ profiles, the $H\to\mu\mu$ illustrative EFT/Wilson-matched acceptance band ($\chi^2<4 \Leftrightarrow p_{\rm local}>4.55\times10^{-2}$, dof$=1$) covers about $15.0\%$ of the scan and defines a reference-normalized target region in $(D,\eta)$.
 \end{enumerate}
-At the same time, the present implementation keeps two EFT-level approximations explicit: map-level profile closure remains active in the baseline $B_N(D)$ visibility sector (while release-production and risk-weighted runtime-direct parity branches are both available) and a bounded nearest-neighbor flavor-mixing kernel in the matched $H\to\mu\mu$ diagnostic map of Eq.~\eqref{eq:mu_pred}. The absolute \(H\to\mu\mu\) normalization is structurally closed in the U9 sense and its projected parent-kernel complement budget is closed in the U11 sense.  The U10 direct inserted-history \(y_2^{\rm raw}(D_\star)\) scalar has two admissible reviewer-facing readings: U12 rules out silent no-topology promotion, while U13 certifies explicit monotone topology-changing adoption as a no-loss one-component slab expansion and U14 certifies that this direct accepted set has uniform \(\mu\)-margin \(0.145404\). Therefore, the present manuscript supports a robust statement about spectral generation selection on the release baseline, and also about a release-qualified runtime-direct visibility parity path, but not yet a strict claim that the observable sector is closed by per-cell all-direct extraction at production level.
+At the same time, the present implementation keeps two EFT-level approximations explicit: map-level profile closure remains active in the baseline $B_N(D)$ visibility sector (while release-production and risk-weighted runtime-direct parity branches are both available) and a bounded nearest-neighbor flavor-mixing kernel in the matched $H\to\mu\mu$ diagnostic map of Eq.~\eqref{eq:mu_pred}. The absolute \(H\to\mu\mu\) normalization is structurally closed in the U9 sense and its projected parent-kernel complement budget is closed in the U11 sense.  The U10 direct inserted-history \(y_2^{\rm raw}(D_\star)\) scalar has two admissible reviewer-facing readings: U12 rules out silent no-topology promotion, while U13 certifies explicit monotone topology-changing adoption as a no-loss one-component slab expansion and U14 certifies that this direct accepted set has uniform \(\mu\)-margin \(0.145404\). Therefore, the present manuscript justifies a conditional statement about spectral-layer occupancy selection on the release baseline, and also a release-qualified runtime-direct visibility parity path, but not yet a strict claim that the observable sector is closed by per-cell all-direct extraction at production level.
 
 \textbf{Limitations and outlook.}
 The present closure is internally consistent but remains an EFT-level demonstrator in several places:

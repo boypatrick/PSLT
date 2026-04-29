@@ -11,7 +11,7 @@ artifact.
 
 Outputs:
 1. First-three-layer occupancy phase diagram (winner map & R3)
-2. H->mumu exclusion map and signal strength
+2. H->mumu reference-normalized scan-level comparison
 3. Yukawa visibility hierarchy
 4. Example layer probability distributions
 
@@ -291,7 +291,7 @@ def plot_hmumu_check():
     )
     plt.colorbar(im, label=r"$\chi^2$")
     ax.contour(D_vals, eta_vals, chi2, levels=[1.0, 4.0], colors=["green", "orange"], linewidths=2)
-    ax.set_title(rf"H$\to\mu\mu$ Compatibility ({cfg.mode}: $\chi^2<4$)")
+    ax.set_title(rf"H$\to\mu\mu$ scan-level comparison ({cfg.mode}: illustrative $\chi^2<4$)")
     ax.set_xlabel("D")
     ax.set_ylabel(r"$\eta$")
 
@@ -308,7 +308,7 @@ def plot_hmumu_check():
     )
     plt.colorbar(im, label=r"$\mu_{\rm pred}$")
     ax.contour(D_vals, eta_vals, mu_pred, levels=[mu_obs], colors="white", linestyles="--")
-    ax.set_title(f"Predicted Signal Strength ({cfg.mode}, Obs: {mu_obs} ± {sigma_obs})")
+    ax.set_title(f"Reference-normalized signal map ({cfg.mode}, obs. input: {mu_obs} ± {sigma_obs})")
     ax.set_xlabel("D")
     ax.set_ylabel(r"$\eta$")
 

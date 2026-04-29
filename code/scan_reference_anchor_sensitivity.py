@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Systematic sensitivity scan over reference anchors (D0, eta0).
+Systematic sensitivity scan over reference-normalization points (D0, eta0).
 
 Outputs:
   - output/hll_reference_anchor/reference_anchor_sensitivity.csv
@@ -196,14 +196,14 @@ def make_plot(rows: List[Dict[str, float | str]], out_png: Path) -> None:
     extent = [min(d_unique), max(d_unique), min(eta_unique), max(eta_unique)]
 
     im0 = axes[0].imshow(mat_frac, origin="lower", aspect="auto", extent=extent, cmap="viridis")
-    axes[0].set_title(r"$f(\chi^2_{\mu\mu}<4)$ vs reference anchor")
+    axes[0].set_title(r"$f(\chi^2_{\mu\mu}<4)$ vs reference-normalization point")
     axes[0].set_xlabel(r"reference $D_0$")
     axes[0].set_ylabel(r"reference $\eta_0$")
     cb0 = fig.colorbar(im0, ax=axes[0])
     cb0.set_label("accepted fraction")
 
     im1 = axes[1].imshow(mat_best, origin="lower", aspect="auto", extent=extent, cmap="magma")
-    axes[1].set_title(r"best $\chi^2$ vs reference anchor")
+    axes[1].set_title(r"best $\chi^2$ vs reference-normalization point")
     axes[1].set_xlabel(r"reference $D_0$")
     axes[1].set_ylabel(r"reference $\eta_0$")
     cb1 = fig.colorbar(im1, ax=axes[1])
@@ -224,13 +224,13 @@ def make_plot(rows: List[Dict[str, float | str]], out_png: Path) -> None:
             axes[0].scatter([d0], [e0], s=80, marker=marker, c=color, edgecolors="black", linewidths=0.6)
             axes[1].scatter([d0], [e0], s=80, marker=marker, c=color, edgecolors="black", linewidths=0.6)
 
-    fig.suptitle("Reference-anchor sensitivity under EFT/Wilson-matched map", fontsize=12.5)
+    fig.suptitle("Reference-normalization sensitivity under EFT/Wilson-matched map", fontsize=12.5)
     fig.savefig(out_png, dpi=220)
     plt.close(fig)
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Systematic sensitivity scan over reference anchors.")
+    ap = argparse.ArgumentParser(description="Systematic sensitivity scan over reference-normalization points.")
     ap.add_argument("--fixed-ref-d", type=float, default=10.0)
     ap.add_argument("--fixed-ref-eta", type=float, default=1.0)
     args = ap.parse_args()

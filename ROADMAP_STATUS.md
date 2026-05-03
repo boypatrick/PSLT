@@ -1,6 +1,6 @@
 # PSLT Roadmap Status
 
-Last updated: 2026-04-30
+Last updated: 2026-05-03
 
 This file is the submission-facing roadmap freeze.  It replaces the earlier running audit log with a compact decision map: what is active for submission, what is closed and should not be reopened before submission, and what remains only as optional future strengthening.  Detailed provenance is preserved in `paper/main.tex`, `FAMILY_DECISION_TABLE.md`, `paper/artifact_status.csv`, `output/repro/artifact_status.csv`, and the git history.
 
@@ -33,6 +33,7 @@ These items are not new theorem/object/family searches.  They are submission-fac
 | Open-system exact bridge | `REVIEWER CLOSED / DIAGNOSTIC IN SCAN` | O39/O56/O71/O72 close the exact-bridge bottleneck; no new support/object/carrier/trace theorem before submission. |
 | EYMH normalization | `STRUCTURALLY CLOSED / U14 MARGIN-CERTIFIED TOPOLOGY BRANCH` | U9 closes the structural normalization; U10 direct `y_2^{raw}(D_*)` is not strict no-topology adoption-safe; U12 proves the fixed-bridge crossing obstruction; U13 certifies explicit monotone topology-changing adoption as a no-loss one-component slab expansion; U14 certifies the direct branch margin; U11 closes the complement/Feshbach budget. |
 | Fermionic lift and low-N counting | `FOUNDATIONAL CLOSED` | F1 closes the projected conformal Dirac lift; G1 closes low-mode ranks `1,2,3`; N1 closes the audited no-fourth-layer threshold. |
+| Protected `Spin^c` index family-count upgrade | `OPTIONAL / DIMENSION-FLAG BRIDGE ONLY` | A conditional first-principles theorem may be developed later under explicit inputs `C=CP^1`, `R=p_+ + p_-`, `L_R=O(2)`, a protected `Spin^c` Dolbeault-Dirac carrier, and no extra unpaired SM-charged kernels.  The standalone bridge note `paper/protected_spinc_bridge_lemma_note.md` and gate `python3 code/check_spinc_bridge_lemma.py` now prove only dimension/flag compatibility between the protected index flag and the existing `N=1,2,3` spectral projector ranks.  Canonical promotion remains open until an anchor-overlap/intertwiner certificate is supplied. |
 | Localized `A_l(D,eta,N)` tensor | `MONITOR / BOUND-ONLY SAFE` | Tensor extraction is useful, but all-valid lookup is not baseline-safe; only `bound_only_fallback` is production-safe. |
 | `t_coh` and `eta_fp` gates | `DIAGNOSTIC / SCALED-ONLY SAFE` | `t_coh^(deph)` is diagnostic-only; `eta_fp(D)` is adoption-safe only as profile-scaled `eta_eff=eta*eta_amp(D)`. |
 
@@ -57,6 +58,7 @@ No active item above requires new support/object/family searches.  The Table III
 - Do not promote all-valid `A_l(D,eta,N)` tensor lookup; use bound-sector fallback if production promotion is ever desired.
 - Do not tune `t_coh` caps or promote `t_coh^(deph)` as baseline.
 - Do not adopt fully closed eta-axis replacements; keep only profile-scaled `eta_fp(D)` as adoption-safe.
+- Do not promote the protected `Spin^c` index route into the submission baseline.  It can become a future conditional family-count theorem only after a bridge lemma identifies the three protected zero modes with the current `N=1,2,3` spectral-layer projectors without changing the conservative A1--A5 wording.
 - Do not reopen closed-negative reviewer families such as `pointamp3`, `widthband`, `partialguard`, reviewer-scalar, reviewer ref-handoff, observable cloud, monotone `Gamma_ref(D)`, `twolobe_latedstrip`, `twolobe_maplate`, or `twolobe_d8compd724snapmaplate` unless the mechanism class changes.
 
 ## Optional Future Strengthening
@@ -70,7 +72,20 @@ These are post-submission or revision-triggered items only:
 | Static-width domain broadening | Would extend S25 beyond the local parent tube. | Only after submission; not a baseline blocker. |
 | Open-system continuum/global lift | Would globalize the reviewer-closed exact bridge. | Only if the reservoir diagnostic becomes a baseline claim. |
 | Microscopic EYMH bath derivation | Would turn the diagnostic Lindblad reservoir into a parent-side physical bath. | Only for a future mechanism paper or a direct reviewer request. |
+| Protected `Spin^c` index three-family theorem | Would replace the weakest scan-level family-count intuition by a conditional index theorem: `R=p_+ + p_-`, `L_R=O(2)`, `h^0(CP^1,O(2))=3`, `h^1(CP^1,O(2))=0`, and a product Dirac reduction to three unpaired SM-charged chiral families.  It remains optional because these are explicit geometric/protection assumptions, not consequences of the current EYMH parent.  The first bridge pass is now closed only at the dimension/flag level: the protected flag `span{1} subset span{1,zeta} subset span{1,zeta,zeta^2}` matches the audited cumulative spectral-rank flag `1,2,3`, but no canonical embedding `T_D` or anchor-overlap matrix has been certified. | Reopen only if a revision asks for a stronger exactly-three mechanism, or if we deliberately write a companion mechanism paper.  Next deliverable: construct or refute an anchor-overlap/intertwiner certificate `A_{nk}(D)=<u_n(D),T_D e_k>` with `sigma_min(A(D))>0`, controlled `P_{>3}T_D` tail, and fixed phase convention.  Current gate: `python3 code/check_spinc_bridge_lemma.py` writes `output/spinc_bridge/spinc_bridge_lemma_summary.csv` and returns `CONDITIONAL_DIMENSION_FLAG_BRIDGE_ONLY`; no scan retuning. |
 | Research ingredients from `FAMILY_DECISION_TABLE.md` | Prolate, Lorentz, Schur/logdet conditional features, and non-monotone D/eta ideas remain useful signals. | Only with a genuinely new mechanism class and all existing guards preserved. |
+
+## Protected `Spin^c` Bridge Verification Queue
+
+This queue is explicitly outside the submission baseline.  It does not modify `paper/main.tex`, baseline maps, figure generation, or the A1--A5 submission wording.  The aim is to verify, one gate at a time, whether the optional protected-index route can ever be promoted beyond dimension/flag compatibility.
+
+| Gate | Status | Verification target | Deliverable |
+| --- | --- | --- | --- |
+| V0: dimension/flag bridge | `CLOSED / CONDITIONAL` | Exact index side: `h^0(CP^1,O(2))=3`, `h^1(CP^1,O(2))=0`; anomaly side: one SM Weyl family cancels gravitational, `U(1)^3`, `SU(3)^3`, and Witten `SU(2)` anomalies; spectral side: G1 cumulative ranks are `1,2,3` with strict gaps on the audited `D` grid. | `paper/protected_spinc_bridge_lemma_note.md`; `python3 code/check_spinc_bridge_lemma.py`; `output/spinc_bridge/spinc_bridge_lemma_summary.csv`; current verdict `CONDITIONAL_DIMENSION_FLAG_BRIDGE_ONLY`. |
+| V1: moment / polynomial anchor overlap | `NEXT / RECOMMENDED` | Construct a concrete pullback/embedding `T_D` of the polynomial basis `{1,zeta,zeta^2}` into the finite-volume solver grid and test the overlap matrix `A_{nk}(D)=<u_n(D),T_D e_k>`.  Promotion requires `min_D sigma_min(A(D))>0`, a controlled `max_D ||P_{>3}(D)T_D||` tail, and a fixed phase/normalization convention. | Future script `code/check_spinc_anchor_overlap.py`; future artifacts `output/spinc_bridge/spinc_anchor_overlap_summary.csv` and detail table. |
+| V2: nodal/Sturm ordering anchor | `SECONDARY` | If V1 is ambiguous, test whether the protected basis can be paired to the spectral chain by nodal count, parity/sign convention, or Sturm ordering: `1 <-> u_1`, `zeta <-> u_2`, `zeta^2 <-> u_3`.  This is more physically readable but weaker unless phase and branch labels are made invariant. | Future diagnostic note plus nodal/order certificate; only use as support for V1 or as a negative diagnostic. |
+| V3: negative diagnostic closure | `FALLBACK` | If no natural `T_D` or invariant nodal anchor exists, close the route as a companion protected-family mechanism rather than a promotion of the present spectral-layer baseline. | Roadmap wording update only: `dimension/flag bridge yes; canonical spectral embedding no`. |
+| V4: submission stop rule | `ACTIVE GUARD` | If the goal is final submission packaging, stop at V0 and keep this line optional.  Do not change main claims, figures, or scan normalizations before submission. | No manuscript change. |
 
 ## Current Release Gate Snapshot
 

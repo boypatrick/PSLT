@@ -1,0 +1,7 @@
+check,value,target,pass,status
+cp1_o2_dolbeault_index,h0=3; h1=0; index=3,h0=3; h1=0; index=3,True,exact
+sm_family_anomaly_cancellation,"Y=(Q:1/6,u:-2/3,d:1/3,L:-1/2,e:1,H:1/2); grav=0; u1cubed=0; su3=0; su2_doublets=4",all anomalies zero; even SU(2) doublets,True,exact
+finite_volume_spectral_rank_flag,n_D=21; min_gap12=0.0416442635483; min_gap23=0.0496868897621; max_rank_error=0,"strict gaps; ranks 1,2,3 at every audited D",True,audited_G1_artifact
+dimension_flag_bridge,"index flag dimensions (1,2,3) match spectral projector ranks (1,2,3)",compatible protected-index flag and low-mode spectral flag,True,conditional
+canonical_anchor_intertwiner,not_available,anchor overlap/invertibility artifact with row_pass=True,False,missing
+bridge_promotion_status,CONDITIONAL_DIMENSION_FLAG_BRIDGE_ONLY,do not promote unless canonical_anchor_intertwiner passes,True,CONDITIONAL_DIMENSION_FLAG_BRIDGE_ONLY

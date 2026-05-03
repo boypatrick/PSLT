@@ -1,0 +1,2 @@
+n_D,n_rows,D_min,D_max,expected_parity_pattern,expected_node_pattern,max_expected_parity_resid,min_wrong_parity_resid,max_parity_ratio,parity_ratio_tol,parity_abs_guard,max_abs_axial_node_error,max_abs_dominant_line_node_error,all_parity_pass,all_axial_nodes_pass,all_dominant_line_nodes_pass,all_row_pass,status,baseline_changed
+21,63,4.0,20.0,"even,odd,even","0,1,2",0.0009996528052344774,1.9999997501735516,0.0004998264650521739,0.001,0.002,0,0,True,True,True,True,NODAL_STURM_ORDER_CONFIRMED,False

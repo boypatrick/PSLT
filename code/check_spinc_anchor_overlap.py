@@ -55,7 +55,7 @@ class AnchorConfig:
     sigma: float = 2.5
     tol: float = 1e-8
     maxiter: int = 30000
-    n_modes: int = 3
+    n_eigs: int = 40
     sigma_min_tol: float = 1e-6
     strong_tail_tol: float = 0.50
 
@@ -128,7 +128,11 @@ def solve_modes(D: float, cfg: AnchorConfig):
     v0 = deterministic_v0(k_mat.shape[0])
     evals, evecs = eigsh(
         k_mat,
-        k=max(3, int(cfg.n_modes)),
+        # Match the G1 extraction convention: compute a sufficiently large
+        # shift-invert window, sort the returned Ritz values, and only then
+        # take the lowest three.  Asking ARPACK for k=3 with sigma=2.5 would
+        # return the three modes nearest the shift, not the G1 low-mode flag.
+        k=max(6, int(cfg.n_eigs)),
         M=m_mat,
         sigma=float(cfg.sigma),
         which="LM",
@@ -219,6 +223,7 @@ def main() -> None:
     ap.add_argument("--sigma", type=float, default=2.5)
     ap.add_argument("--tol", type=float, default=1e-8)
     ap.add_argument("--maxiter", type=int, default=30000)
+    ap.add_argument("--n-eigs", type=int, default=40)
     ap.add_argument("--sigma-min-tol", type=float, default=1e-6)
     ap.add_argument(
         "--strict-invertible",
@@ -242,6 +247,7 @@ def main() -> None:
         sigma=float(args.sigma),
         tol=float(args.tol),
         maxiter=int(args.maxiter),
+        n_eigs=int(args.n_eigs),
         sigma_min_tol=float(args.sigma_min_tol),
         strong_tail_tol=float(args.strong_tail_tol),
     )

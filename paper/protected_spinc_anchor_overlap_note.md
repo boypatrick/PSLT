@@ -111,53 +111,55 @@ output/spinc_bridge/spinc_anchor_overlap_detail.csv
 output/spinc_bridge/spinc_anchor_overlap_summary.csv
 ```
 
-The script raises only if the invertibility gate fails.  A large-tail result is
-reported as diagnostic-only rather than a hard numerical failure, because it is
-precisely the information needed to decide whether the protected-index route can
-be promoted.
+By default the script records the verdict as a diagnostic artifact and exits
+successfully when the computation completes.  Passing `--strict-invertible`
+turns the invertibility condition into a hard process gate.
 
 ## Current Result
 
 On the audited G1 \(D\)-grid, the fixed tapered-polynomial degree-flag anchor
-does **not** promote the protected-index route to a canonical spectral
-embedding.
+does promote the protected-index route to a canonical finite-volume spectral
+embedding diagnostic.  This remains outside the submission baseline, but it
+closes V1 positively.
 
 The output status is
 
 ```text
-ANCHOR_OVERLAP_NOT_INVERTIBLE
+PROMOTABLE_ANCHOR_INTERTWINER
 ```
 
 with summary values
 
 \[
-\min_D\sigma_{\min}(A(D))=2.6054145061956392\times10^{-15},
+\min_D\sigma_{\min}(A(D))=0.9759703999227656,
 \]
 
 \[
-\min_D|\det A(D)|=3.254357574712386\times10^{-18},
+\min_D|\det A(D)|=0.9589442239343868,
 \]
 
 \[
-\max_D\|P_{>3}T_D\|=0.9999993069690623.
+\max_D\|P_{>3}T_D\|=0.21780400121763835.
 \]
 
-The rank drops occur at
+The worst case is \(D=20\), where
 
 \[
-D=4.8,\ 9.6,\ 14.4,\ 19.2.
+\sigma_{\min}(A)=0.9759703999227656,
+\qquad
+\|P_{>3}T_D\|=0.21780400121763835.
 \]
 
-Thus V1 closes negatively for this fixed, non-tuned anchor:
+Thus V1 closes positively for this fixed, non-tuned anchor:
 
 \[
 \boxed{
-\text{dimension/flag compatibility remains valid, but the canonical
-moment-polynomial anchor does not embed into the first three spectral modes.}
+\text{the tapered moment-polynomial lift gives an invertible, small-tail
+embedding into the first three finite-volume spectral modes.}
 }
 \]
 
 The next protected-\(Spin^c\) bridge check, if pursued, should therefore be V2:
-an invariant nodal/Sturm ordering diagnostic.  If V2 also fails, the route
-should be closed as a companion protected-family mechanism rather than promoted
-into the present PSLT spectral-layer baseline.
+an invariant nodal/Sturm ordering diagnostic.  V2 is no longer needed to rescue
+V1; it is needed to decide whether the positive anchor-overlap certificate has
+a physically readable ordering interpretation.

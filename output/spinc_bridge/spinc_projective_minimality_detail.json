@@ -1,0 +1,119 @@
+{
+  "scope": "optional Spin^c V3 projective-minimality diagnostic; no baseline scan change",
+  "minimality_axiom": "The projected two-center parent is required to be connected, single-sheet, compact, and free of hidden continuous internal curve/Picard moduli beyond the explicit PSLT scan variables.",
+  "theorem": "Under the minimality axiom, the only compact connected Riemann-surface candidate among the tested genera is genus zero; by the classification of compact genus-zero Riemann surfaces this gives C = CP^1.",
+  "no_go": "Without the minimality axiom, Riemann-Roch gives chi(L)=3 whenever deg L = genus + 2, so the family count alone does not force CP^1.",
+  "marked_points": 2,
+  "g_max": 8,
+  "summary_status": "CONDITIONAL_CP1_SELECTED_BY_NO_HIDDEN_MODULI",
+  "detail_rows": [
+    {
+      "genus": 0,
+      "marked_points": 2,
+      "curve_moduli_dim_C": 0,
+      "pic_degree_moduli_dim_C": 0,
+      "hidden_moduli_dim_C": 0,
+      "degree_required_for_index3": 2,
+      "spinc_index": 3,
+      "passes_no_hidden_moduli": true,
+      "selected_by_projective_minimality": true,
+      "interpretation": "rigid genus-zero candidate; compact curve is CP1"
+    },
+    {
+      "genus": 1,
+      "marked_points": 2,
+      "curve_moduli_dim_C": 2,
+      "pic_degree_moduli_dim_C": 1,
+      "hidden_moduli_dim_C": 3,
+      "degree_required_for_index3": 3,
+      "spinc_index": 3,
+      "passes_no_hidden_moduli": false,
+      "selected_by_projective_minimality": false,
+      "interpretation": "rejected by hidden complex/Picard moduli"
+    },
+    {
+      "genus": 2,
+      "marked_points": 2,
+      "curve_moduli_dim_C": 5,
+      "pic_degree_moduli_dim_C": 2,
+      "hidden_moduli_dim_C": 7,
+      "degree_required_for_index3": 4,
+      "spinc_index": 3,
+      "passes_no_hidden_moduli": false,
+      "selected_by_projective_minimality": false,
+      "interpretation": "rejected by hidden complex/Picard moduli"
+    },
+    {
+      "genus": 3,
+      "marked_points": 2,
+      "curve_moduli_dim_C": 8,
+      "pic_degree_moduli_dim_C": 3,
+      "hidden_moduli_dim_C": 11,
+      "degree_required_for_index3": 5,
+      "spinc_index": 3,
+      "passes_no_hidden_moduli": false,
+      "selected_by_projective_minimality": false,
+      "interpretation": "rejected by hidden complex/Picard moduli"
+    },
+    {
+      "genus": 4,
+      "marked_points": 2,
+      "curve_moduli_dim_C": 11,
+      "pic_degree_moduli_dim_C": 4,
+      "hidden_moduli_dim_C": 15,
+      "degree_required_for_index3": 6,
+      "spinc_index": 3,
+      "passes_no_hidden_moduli": false,
+      "selected_by_projective_minimality": false,
+      "interpretation": "rejected by hidden complex/Picard moduli"
+    },
+    {
+      "genus": 5,
+      "marked_points": 2,
+      "curve_moduli_dim_C": 14,
+      "pic_degree_moduli_dim_C": 5,
+      "hidden_moduli_dim_C": 19,
+      "degree_required_for_index3": 7,
+      "spinc_index": 3,
+      "passes_no_hidden_moduli": false,
+      "selected_by_projective_minimality": false,
+      "interpretation": "rejected by hidden complex/Picard moduli"
+    },
+    {
+      "genus": 6,
+      "marked_points": 2,
+      "curve_moduli_dim_C": 17,
+      "pic_degree_moduli_dim_C": 6,
+      "hidden_moduli_dim_C": 23,
+      "degree_required_for_index3": 8,
+      "spinc_index": 3,
+      "passes_no_hidden_moduli": false,
+      "selected_by_projective_minimality": false,
+      "interpretation": "rejected by hidden complex/Picard moduli"
+    },
+    {
+      "genus": 7,
+      "marked_points": 2,
+      "curve_moduli_dim_C": 20,
+      "pic_degree_moduli_dim_C": 7,
+      "hidden_moduli_dim_C": 27,
+      "degree_required_for_index3": 9,
+      "spinc_index": 3,
+      "passes_no_hidden_moduli": false,
+      "selected_by_projective_minimality": false,
+      "interpretation": "rejected by hidden complex/Picard moduli"
+    },
+    {
+      "genus": 8,
+      "marked_points": 2,
+      "curve_moduli_dim_C": 23,
+      "pic_degree_moduli_dim_C": 8,
+      "hidden_moduli_dim_C": 31,
+      "degree_required_for_index3": 10,
+      "spinc_index": 3,
+      "passes_no_hidden_moduli": false,
+      "selected_by_projective_minimality": false,
+      "interpretation": "rejected by hidden complex/Picard moduli"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+check,value,target,pass,status
+two_center_rigid_curve_selection,selected_genus=[0],unique selected genus is 0,True,conditional_on_no_hidden_moduli
+positive_genus_hidden_moduli_rejection,rejected_positive_genus=8 of 8,all genera 1..8 have hidden_moduli_dim_C > 0,True,moduli_count
+index_count_no_go_without_minimality,deg L = genus + 2 gives Spin^c index 3 for every tested genus,record that index=3 alone does not imply CP1,True,no_go
+cp1_o2_exact_index,h0=3; h1=0; index=3,h0=3; h1=0; index=3,True,exact
+v3_projective_minimality_status,CONDITIONAL_CP1_SELECTED_BY_NO_HIDDEN_MODULI,do not read as unconditional EYMH derivation,True,CONDITIONAL_CP1_SELECTED_BY_NO_HIDDEN_MODULI

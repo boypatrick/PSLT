@@ -1,0 +1,10 @@
+genus,marked_points,curve_moduli_dim_C,pic_degree_moduli_dim_C,hidden_moduli_dim_C,degree_required_for_index3,spinc_index,passes_no_hidden_moduli,selected_by_projective_minimality,interpretation
+0,2,0,0,0,2,3,True,True,rigid genus-zero candidate; compact curve is CP1
+1,2,2,1,3,3,3,False,False,rejected by hidden complex/Picard moduli
+2,2,5,2,7,4,3,False,False,rejected by hidden complex/Picard moduli
+3,2,8,3,11,5,3,False,False,rejected by hidden complex/Picard moduli
+4,2,11,4,15,6,3,False,False,rejected by hidden complex/Picard moduli
+5,2,14,5,19,7,3,False,False,rejected by hidden complex/Picard moduli
+6,2,17,6,23,8,3,False,False,rejected by hidden complex/Picard moduli
+7,2,20,7,27,9,3,False,False,rejected by hidden complex/Picard moduli
+8,2,23,8,31,10,3,False,False,rejected by hidden complex/Picard moduli

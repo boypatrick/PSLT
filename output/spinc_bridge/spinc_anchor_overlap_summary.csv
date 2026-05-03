@@ -1,0 +1,2 @@
+anchor,n_D,D_min,D_max,sigma_min_floor,sigma_min_tol,det_abs_min,cond_max,tail_max,strong_tail_tol,proj_min,min_gap12,min_gap23,all_invertible_pass,all_strong_tail_pass,all_row_pass,status,baseline_changed
+tapered_polynomial_degree_flag,21,4.0,20.0,2.6054145061956392e-15,1e-06,3.254357574712386e-18,21580194046525.168,0.9999993069690623,0.5,1.3860613950636179e-06,0.25319249047289905,0.2727423411975325,False,False,False,ANCHOR_OVERLAP_NOT_INVERTIBLE,False

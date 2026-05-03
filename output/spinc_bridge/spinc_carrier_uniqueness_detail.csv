@@ -1,0 +1,4 @@
+carrier,base_spinor_plus,parent_twist,positive_bundle,positive_degree,h0_positive,h1_positive,index,uses_v4_flux,requires_extra_flux,matches_three_mode_bridge,verdict
+kahler_dolbeault_spinc,"Lambda^{0,0}",O(2),O(2),2,3,0,3,True,False,True,selected_protected_family_carrier
+ordinary_spin_same_flux,K^{1/2}=O(-1),O(2),O(1),1,2,0,2,True,False,False,legal_but_wrong_count_for_this_parent_flux
+ordinary_spin_compensated_to_three,K^{1/2}=O(-1),O(3),O(2),2,3,0,3,False,True,True,would_match_count_only_by_violating_v4_flux_lock

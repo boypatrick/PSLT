@@ -1,0 +1,7 @@
+check,value,target,pass,status
+dolbeault_spinc_o2_count,h0=3; h1=0; index=3,Spin^c Dolbeault carrier with O(2) gives three positive protected modes,True,exact
+ordinary_spin_same_flux_count,Khalf=O(-1); Khalf tensor O(2)=O(1); index=2,"ordinary spin with the same V4 flux gives two, not three",True,legal_but_wrong_carrier
+ordinary_spin_compensation_no_go,"ordinary spin needs O(3), extra_flux=1, to get index=3",three ordinary-spin modes require changing the V4 line bundle,True,no_go
+todd_shift,Spin^c index - ordinary-spin same-flux index = 1,Todd/Spin^c shift supplies the missing +1 mode,True,exact
+spectral_three_mode_compatibility,anchor_status=PROMOTABLE_ANCHOR_INTERTWINER; nodal_status=NODAL_STURM_ORDER_CONFIRMED,"V1/V2 certify a three-mode bridge, not a two-mode carrier",True,audited_bridge
+v5_carrier_selection_status,CONDITIONAL_SPINC_CARRIER_SELECTED_OVER_ORDINARY_SPIN,do not claim ordinary spin is illegal; it is legal but not this parent carrier,True,CONDITIONAL_SPINC_CARRIER_SELECTED_OVER_ORDINARY_SPIN

@@ -1,0 +1,62 @@
+{
+  "scope": "optional Spin^c V5 carrier uniqueness; no baseline scan change",
+  "inputs": {
+    "curve": "CP^1 from V3",
+    "line_bundle": "L_R=O(2) from V4",
+    "canonical_bundle": "K=O(-2)",
+    "ordinary_spin_square_root": "K^(1/2)=O(-1)"
+  },
+  "theorem": "Given the V4 parent line L_R=O(2) and the requirement of a three-mode projective/Dolbeault family flag compatible with V1/V2, the K\u00e4hler Spin^c carrier Lambda^{0,*}T^*C tensor L_R is selected.  The ordinary spin carrier with the same flux gives only two positive holomorphic modes.",
+  "ordinary_spin_caveat": "Ordinary spin is mathematically legal on CP^1.  It is rejected only as the protected family-count carrier for this parent line bundle.  It could be forced to count three modes by changing the twist to O(3), but that adds one flux unit and violates the V4 ramification-flux lock.",
+  "carrier_rows": [
+    {
+      "carrier": "kahler_dolbeault_spinc",
+      "base_spinor_plus": "Lambda^{0,0}",
+      "parent_twist": "O(2)",
+      "positive_bundle": "O(2)",
+      "positive_degree": 2,
+      "h0_positive": 3,
+      "h1_positive": 0,
+      "index": 3,
+      "uses_v4_flux": true,
+      "requires_extra_flux": false,
+      "matches_three_mode_bridge": true,
+      "verdict": "selected_protected_family_carrier"
+    },
+    {
+      "carrier": "ordinary_spin_same_flux",
+      "base_spinor_plus": "K^{1/2}=O(-1)",
+      "parent_twist": "O(2)",
+      "positive_bundle": "O(1)",
+      "positive_degree": 1,
+      "h0_positive": 2,
+      "h1_positive": 0,
+      "index": 2,
+      "uses_v4_flux": true,
+      "requires_extra_flux": false,
+      "matches_three_mode_bridge": false,
+      "verdict": "legal_but_wrong_count_for_this_parent_flux"
+    },
+    {
+      "carrier": "ordinary_spin_compensated_to_three",
+      "base_spinor_plus": "K^{1/2}=O(-1)",
+      "parent_twist": "O(3)",
+      "positive_bundle": "O(2)",
+      "positive_degree": 2,
+      "h0_positive": 3,
+      "h1_positive": 0,
+      "index": 3,
+      "uses_v4_flux": false,
+      "requires_extra_flux": true,
+      "matches_three_mode_bridge": true,
+      "verdict": "would_match_count_only_by_violating_v4_flux_lock"
+    }
+  ],
+  "bridge_inputs": {
+    "anchor_summary": "/Users/boypatrick/codex/PSLT_quantam/output/spinc_bridge/spinc_anchor_overlap_summary.csv",
+    "anchor_status": "PROMOTABLE_ANCHOR_INTERTWINER",
+    "nodal_summary": "/Users/boypatrick/codex/PSLT_quantam/output/spinc_bridge/spinc_nodal_sturm_summary.csv",
+    "nodal_status": "NODAL_STURM_ORDER_CONFIRMED"
+  },
+  "summary_status": "CONDITIONAL_SPINC_CARRIER_SELECTED_OVER_ORDINARY_SPIN"
+}

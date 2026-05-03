@@ -1,13 +1,13 @@
 {
-  "generated_at_utc": "2026-03-08T14:24:38Z",
-  "run_id": "presubmit",
+  "generated_at_utc": "2026-05-03T02:12:46Z",
+  "run_id": "20260503T021245Z_81559a0_prd_freeze",
   "git": {
     "branch": "main",
-    "commit": "5eed2289ebcb6f650c1cdf08fc8d2444e82a05e3",
+    "commit": "81559a09bd6bfd0f2a272dcb9945abbdc072d0bd",
     "dirty": true
   },
   "key_metrics": {
-    "f_R3_gt_0p90_baseline": 0.9269444444444443,
+    "f_R3_gt_0p90_baseline": 0.9272222222222222,
     "f_chi2_le_4_mumu": 0.15,
     "best_chi2_mumu": 2.2079807637329057e-05,
     "uv_max_abs_delta_mu_mumu": 0.009738090743724115,
@@ -148,13 +148,13 @@
   "files": [
     {
       "path": "paper/main.tex",
-      "size_bytes": 147484,
-      "sha256": "7d4632be06d24163fddf6096b86e1987a405ce907fe856f0fdbf758ab7850d94"
+      "size_bytes": 672394,
+      "sha256": "31e812a2cb80e1613c5da3778b87113ad63c12ebdc229c0453df95378d6b9756"
     },
     {
       "path": "paper/main.pdf",
-      "size_bytes": 3506954,
-      "sha256": "4f56b0005f6423764a9c40ab49c2df937eec33c3dc2a063fe41f0a50ec7f6955"
+      "size_bytes": 4721567,
+      "sha256": "18b4653e1f8c56ccfc929e58c8bb0da6d15d563989fdfa87f5ee15123cb234ed"
     },
     {
       "path": "paper/hll_signal_strength_summary.csv",
@@ -178,8 +178,8 @@
     },
     {
       "path": "output/first_principles_migration/first_principles_migration_summary.csv",
-      "size_bytes": 858,
-      "sha256": "88d3601b4e3cd6e990f4f9420343fc64a2b146521e82cc4319e832b954d7df81"
+      "size_bytes": 860,
+      "sha256": "f7a7f208d82b7999de5c648c3d08118938504af63edaefdff988b54db23e8420"
     },
     {
       "path": "output/hll_signal_strength/hll_signal_strength_run_meta_baseline.json",

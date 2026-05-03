@@ -1,0 +1,7 @@
+check,value,target,pass,status
+birkhoff_grothendieck_reduction,tested_line_summands=O(-6)..O(6),on CP^1 every holomorphic bundle splits into line bundles,True,theorem_input
+serre_dual_vectorlike_pairing,all net indices zero=True,chi(O(n)) + chi(K tensor O(n)^*) = 0,True,exact
+positive_gap_floor,mass_floor=1.0; bochner_floor=1.0,paired zero modes and nonzero modes have positive lower bound,True,conditional_gap_assumption
+unpaired_exotic_no_go,unpaired_nonzero_index_examples=12,unpaired SM-charged summands with nonzero index would be exotics,True,no_go
+protected_sector_excluded,protected O(2) index=3,do not gap the selected protected family carrier,True,guard
+v6_no_exotics_status,CONDITIONAL_NO_EXOTICS_WITH_COMPLETE_VECTORLIKE_GAP_CERTIFICATE,requires complete parent-side inventory of all non-protected SM-charged sectors,True,CONDITIONAL_NO_EXOTICS_WITH_COMPLETE_VECTORLIKE_GAP_CERTIFICATE

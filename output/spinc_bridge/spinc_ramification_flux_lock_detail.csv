@@ -1,0 +1,26 @@
+m_plus,m_minus,degree,faithful_two_center,unit_two_center,minimal_faithful,line_bundle_class_on_CP1,h0,h1,index,interpretation
+0,0,0,False,False,False,O(0),1,0,1,not faithful to both centers
+0,1,1,False,False,False,O(1),2,0,2,not faithful to both centers
+0,2,2,False,False,False,O(2),3,0,3,not faithful to both centers
+0,3,3,False,False,False,O(3),4,0,4,not faithful to both centers
+0,4,4,False,False,False,O(4),5,0,5,not faithful to both centers
+1,0,1,False,False,False,O(1),2,0,2,not faithful to both centers
+1,1,2,True,True,True,O(2),3,0,3,selected R=p_+ + p_-
+1,2,3,True,False,False,O(3),4,0,4,faithful but higher ramification; rejected by unit/minimality
+1,3,4,True,False,False,O(4),5,0,5,faithful but higher ramification; rejected by unit/minimality
+1,4,5,True,False,False,O(5),6,0,6,faithful but higher ramification; rejected by unit/minimality
+2,0,2,False,False,False,O(2),3,0,3,not faithful to both centers
+2,1,3,True,False,False,O(3),4,0,4,faithful but higher ramification; rejected by unit/minimality
+2,2,4,True,False,False,O(4),5,0,5,faithful but higher ramification; rejected by unit/minimality
+2,3,5,True,False,False,O(5),6,0,6,faithful but higher ramification; rejected by unit/minimality
+2,4,6,True,False,False,O(6),7,0,7,faithful but higher ramification; rejected by unit/minimality
+3,0,3,False,False,False,O(3),4,0,4,not faithful to both centers
+3,1,4,True,False,False,O(4),5,0,5,faithful but higher ramification; rejected by unit/minimality
+3,2,5,True,False,False,O(5),6,0,6,faithful but higher ramification; rejected by unit/minimality
+3,3,6,True,False,False,O(6),7,0,7,faithful but higher ramification; rejected by unit/minimality
+3,4,7,True,False,False,O(7),8,0,8,faithful but higher ramification; rejected by unit/minimality
+4,0,4,False,False,False,O(4),5,0,5,not faithful to both centers
+4,1,5,True,False,False,O(5),6,0,6,faithful but higher ramification; rejected by unit/minimality
+4,2,6,True,False,False,O(6),7,0,7,faithful but higher ramification; rejected by unit/minimality
+4,3,7,True,False,False,O(7),8,0,8,faithful but higher ramification; rejected by unit/minimality
+4,4,8,True,False,False,O(8),9,0,9,faithful but higher ramification; rejected by unit/minimality

@@ -58,10 +58,31 @@ In the current UV+LL-RG baseline, the illustrative acceptance band is about $15.
 \section{Introduction}
 \label{sec:intro}
 
-The observed three-generation pattern of fermions is one of the most persistent puzzles in the Standard Model (SM) of particle physics. While the SM accommodates three families through the CKM and PMNS mixing matrices, it offers no dynamical reason for the family count nor for why the mass hierarchy spans such a vast range. Traditional attempts to explain this structure often rely on complex discrete symmetries or string logic compactifications that, while elegant, can be difficult to falsify directly.
+The observed three-generation pattern of fermions is one of the most persistent puzzles in the Standard Model (SM) of particle physics. While the SM accommodates three families through the CKM and PMNS mixing matrices~\cite{Cabibbo1963,KobayashiMaskawa1973,MakiNakagawaSakata1962,PDG2024}, it offers no dynamical reason for the family count nor for why the mass hierarchy spans such a vast range. Traditional attempts to explain this structure often rely on flavor symmetries, non-Abelian discrete symmetries, or string compactifications~\cite{FroggattNielsen1979,AltarelliFeruglio2010,Feruglio2015,CandelasHorowitzStromingerWitten1985}; while elegant, these approaches can be difficult to falsify directly.
 
 The Projection Spectral Layer Theory (PSLT) explores a different paradigm: the generation labels used by the EFT closure are represented by distinct \emph{spectral layers} ($N=1,2,3,\dots$) of vacuum excitations, selected by a competition between microstate degeneracy (entropy) and geometric formation rates (kinetics).
 This structural viewpoint is complementary to recent Clifford-algebra work where three families emerge from an intrinsic $S_3$ organization rather than manual generation copying~\cite{Gresnigt2026CliffordS3}; the emphasis here is different: a map-level computable closure with explicit scan-level falsifiability.
+
+It is also complementary to standard gauge-unification embeddings rather than a replacement for them.  Minimal \(SU(5)\) and \(SO(10)\) organize SM matter into unified representations~\cite{GeorgiGlashow1974,FritzschMinkowski1975}; Pati--Salam unification organizes one quark--lepton family by treating lepton number as a fourth color~\cite{PatiSalam1974}; \(E_6\) unification packages a family-sized chiral sector inside the fundamental exceptional representation~\cite{GurseyRamondSikivie1976}; and broader \(SU(6)\) or exceptional-group constructions are best viewed as representation-theoretic model-building frameworks~\cite{Slansky1981}.  These approaches efficiently address gauge quantum numbers and charge organization, but the number of replicated families is typically an external multiplicity.  PSLT asks a different, narrower question: within the stated projected spectral closure, why the observable layer weight concentrates in the first three spectral layers.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{center}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\parbox[t]{0.18\textwidth}{\raggedright Framework} & \parbox[t]{0.36\textwidth}{\raggedright Primary role} & \parbox[t]{0.36\textwidth}{\raggedright Relation to PSLT} \\
+\midrule
+\parbox[t]{0.18\textwidth}{\raggedright \(SU(5)\) / \(SO(10)\)} & \parbox[t]{0.36\textwidth}{\raggedright Organize SM matter into unified gauge representations.} & \parbox[t]{0.36\textwidth}{\raggedright Complementary charge unification; family multiplicity is not fixed by the representation alone.} \\
+\parbox[t]{0.18\textwidth}{\raggedright Pati--Salam} & \parbox[t]{0.36\textwidth}{\raggedright Embeds quarks and leptons of one family in a unified color--lepton structure.} & \parbox[t]{0.36\textwidth}{\raggedright Complementary gauge organization; family replication remains external to the representation.} \\
+\parbox[t]{0.18\textwidth}{\raggedright \(E_6\) GUT} & \parbox[t]{0.36\textwidth}{\raggedright Places a family-sized chiral sector in an exceptional representation with additional vectorlike/exotic content depending on breaking.} & \parbox[t]{0.36\textwidth}{\raggedright Complementary representation embedding; PSLT does not replace the charge-unification sector.} \\
+\parbox[t]{0.18\textwidth}{\raggedright \(SU(6)\)-type models} & \parbox[t]{0.36\textwidth}{\raggedright Provide model-dependent higher-rank unification/representation-building templates.} & \parbox[t]{0.36\textwidth}{\raggedright Useful comparison class only; not adopted as a PSLT baseline family-count mechanism.} \\
+\parbox[t]{0.18\textwidth}{\raggedright PSLT baseline} & \parbox[t]{0.36\textwidth}{\raggedright Computes conditional spectral-layer occupancies from \(g_N\), \(\Gamma_N\), and \(B_N\) on a fixed projected background.} & \parbox[t]{0.36\textwidth}{\raggedright Addresses first-three-layer occupancy concentration, not a full GUT embedding of SM charges.} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\endgroup
 
 In this work, we consolidate the current EFT-level PSLT implementation into a single, falsifiable scan-level closure. We upgrade earlier effective descriptions to a \textbf{computable} rank-2 dynamical system with an action-derived extraction subchain and an action-informed global scan chain, where $\chi_{LR}(D)$ and $\tilde A_\ell(D)$ are now injected on the full scan grid from direct action-derived profiles. The core deliverable is a map from geometric control parameters $(D, \eta)$---representing dual-center separation and overlap---to an observable layer probability $P_N$. This submission therefore claims baseline first-three-layer occupancy concentration and an audited no-fourth-bound-layer kinetic threshold on the stated finite-volume domain, not a full action-level theorem proving exactly three SM fermion generations.
 

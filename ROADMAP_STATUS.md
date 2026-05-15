@@ -1,6 +1,6 @@
 # PSLT Roadmap Status
 
-Last updated: 2026-05-03
+Last updated: 2026-05-15
 
 This file is the submission-facing roadmap freeze.  It replaces the earlier running audit log with a compact decision map: what is active for submission, what is closed and should not be reopened before submission, and what remains only as optional future strengthening.  Detailed provenance is preserved in `paper/main.tex`, `FAMILY_DECISION_TABLE.md`, `paper/artifact_status.csv`, `output/repro/artifact_status.csv`, and the git history.
 
@@ -22,6 +22,7 @@ These items are not new theorem/object/family searches.  They are submission-fac
 | Static-width wording consistency | `RESOLVED / WORDING GATED` | The front audit table, S25 paragraph, limitations, and appendix ledger now read S25 as local to `D=6, R_C=400, R=60->80, c=640`.  Older `not_promoted` statements remain audit history superseded only on the certified tube; outside the tube, `Gamma_{N,l}^{(geo)}` remains the fallback/comparator.  No global pole family, backend replacement, or branch-picking theorem is reopened. |
 | `H->mumu` statistical wording guard | `RESOLVED / WORDING GATED` | The ATLAS `mu_mumu=1.4+-0.4` comparison is now described as a reference-normalized scan-level EFT/Wilson diagnostic and illustrative target region, not as experimental validation.  The HLL section states no formal global likelihood or confidence-level exclusion is claimed; Fig. 8 captions and live plot titles use scan-level/reference-normalized language, and Fig. 17 remains the reference-normalization sensitivity audit. |
 | Submission positioning sentence | `RESOLVED / WORDING GATED` | Abstract, introduction, conclusion, limitations, and the front status map consistently position the manuscript as a computable EFT-level spectral-layer occupancy closure with first-three-layer concentration and an audited finite-domain no-fourth-bound-layer certificate, not a full action-level theorem proving exactly three Standard Model generations. |
+| GUT/flavor/string comparison positioning | `RESOLVED / WORDING GATED` | The introduction and README now include short reviewer-facing citations and comparison wording: CKM/PMNS, flavor-symmetry and string-compactification backgrounds are referenced; gauge-unification frameworks such as `SU(5)`, `SO(10)`, Pati-Salam, `E6`, and `SU(6)` organize SM charge assignments or family-sized representations, while PSLT addresses conditional first-three-layer spectral occupancy under A1--A5.  This is not a new GUT, flavor-model, string-compactification, charge-unification, or family-count theorem line. |
 
 | Area | Submission status | Operational reading |
 | --- | --- | --- |
@@ -45,7 +46,8 @@ These items are not new theorem/object/family searches.  They are submission-fac
 4. Keep the Fig. 05 / `R3` plot-generator parity gate passing with `python3 code/check_fig05_r3_parity.py`.
 5. Keep the final PDF build and targeted visual spot-check passing after any last edits.
 6. Keep artifact hygiene and registry consistency checks passing.
-7. Final commit/push after any wording-only readiness edits.
+7. Keep the GUT/flavor/string comparison wording as a short positioning guard only; do not open an `SU(5)`, `SO(10)`, Pati-Salam, `E6`, `SU(6)`, flavor-model, or string-compactification line before submission.
+8. Final commit/push after any wording-only readiness edits.
 
 No active item above requires new support/object/family searches.  The Table III item is now a gated numerical-consistency repair rather than a new physics line.
 

@@ -270,6 +270,13 @@ At the submission-freeze point, the rows below are either baseline inputs, local
 
 This section demonstrates the complete derivation chain $\Omega(x;D) \to V_{\rm eff}(x) \to \omega_N(D)$, establishing the geometry-to-spectrum correspondence as a computational reality rather than an ansatz.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.96\linewidth]{figures/two_center_conformal_dumbbell.png}
+    \caption{Geometry-only visualization of the two-center conformal dumbbell used in the worked example.  The displayed height is the normalized compressed profile $\log\Omega$; it is not an additional potential term.  The two projected centers $p_-$ and $p_+$ generate a necked conformal landscape, from which the effective double-well potential is derived by Eq.~\eqref{eq:Veff_true}.}
+    \label{fig:two_center_conformal_dumbbell}
+\end{figure}
+
 \subsection{Two-Center Harmonic Conformal Factor}
 \label{sec:two_center}
 
@@ -463,6 +470,13 @@ with $U(z)=V_{\rm eff}(z)-m_0^2$ from the same action-derived geometry. The naiv
 \label{sec:kinetics}
 
 The kinetic rate $\Gamma_N$ determines how strictly the geometry selects specific layers. We upgrade previous heuristic models to a rigorous Rank-2 system.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.96\linewidth]{figures/spectral_layers_double_well.png}
+    \caption{Schematic topology behind the Rank-2 kinetic closure.  The shifted double-well profile represents the effective two-center geometry; the low-lying layer labels \(N=1,2,3\) sit inside the wells, higher layers fade toward the continuum threshold, and the forbidden bridge \(\mathcal B_N\) gives the WKB action in Eq.~\eqref{eq:SN}.  The left/right localized lobes span the two-center subspace \(\mathcal C_N=\mathrm{span}\{|N,L\rangle,|N,R\rangle\}\), explaining why the kinetic closure is naturally Rank-2 rather than an abstract matrix ansatz.}
+    \label{fig:spectral_layers_double_well}
+\end{figure}
 
 \subsection{Dual-Center Tunneling Suppression}
 The formation of a layer requires tunneling through the potential barrier created by the dual-center geometry. We model this via a WKB action integral~\cite{BenderOrszag1999,Teschl2014}:

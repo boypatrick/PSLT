@@ -215,3 +215,130 @@ Next recommended implementation step:
 2. use the fixed-\(D\) endpoint runs only as checkpoint anchors;
 3. keep finite-volume references as source of truth and treat the neural model
    as a differentiable emulator, not a replacement eigensolver.
+
+## V2.2 Parametric-D Scaffold
+
+Script:
+
+- `train_v2_parametric_d_multimode_ritz_pinn.py`
+
+The V2.2 network takes \((s,z,D)\) and outputs a \(K=3\) trial subspace.  For
+each checkpoint \(D\), the code assembles the projected matrices
+
+\[
+H_{ij}(D)=\mathfrak h_D[u_i(D),u_j(D)],
+\qquad
+G_{ij}(D)=\mathfrak g[u_i(D),u_j(D)],
+\]
+
+then compares the small generalized Ritz spectrum
+
+\[
+H(D)c=E(D)G(D)c
+\]
+
+against the fixed finite-volume references stored in
+`v2_fixed_endpoint_summary.csv`.
+
+Suggested first run:
+
+```bash
+pinn/.venv/bin/python pinn/train_v2_parametric_d_multimode_ritz_pinn.py \
+  --anchors pinn/v2_fixed_endpoint_summary.csv \
+  --D-min 6 \
+  --D-max 18 \
+  --modes 3 \
+  --n-s 28 \
+  --n-z 80 \
+  --steps 2000 \
+  --hidden 96 \
+  --layers 4 \
+  --w-reference 160 \
+  --w-orth 2 \
+  --log-every 400 \
+  --device auto \
+  --run-name v2_parametric_D6_18_K3_first_2000
+```
+
+Gate targets for the first scaffold run:
+
+\[
+\max_{\mathrm{anchor}\ D,k}
+\frac{|E^{\rm Ritz}_k(D)-E^{\rm FV}_k(D)|}{|E^{\rm FV}_k(D)|}
+<10^{-2},
+\]
+
+\[
+\max_{\mathrm{anchor}\ D,i\ne j}
+\left|
+\frac{G_{ij}(D)}{\sqrt{G_{ii}(D)G_{jj}(D)}}
+\right|
+<0.05,
+\]
+
+and
+
+\[
+\max_{\mathrm{anchor}\ D,k}
+\|H_Du_k-E_k u_k\|_2/\|u_k\|_2<0.30.
+\]
+
+These are parametric-emulator gates, not new finite-volume spectral theorems.
+
+## V2.2 Parametric-D Status
+
+Tracked summaries:
+
+- `v2_parametric_anchor_summary.csv`
+- `v2_parametric_anchor_detail.csv`
+
+Runs completed:
+
+```text
+run                                           max_rel_E   max_corr_offdiag  max_residual_L2
+v2_parametric_D6_18_K3_first_2000            3.32e-02    3.07e-01          1.87e-01
+v2_parametric_D6_18_K3_continue_orth_2000    9.65e-03    1.91e-03          1.18e-01
+```
+
+Reading:
+
+- The cold-start V2.2 run did not pass: the energy error was still \(3.3\%\)
+  and the learned subspace was not Gram-stable.
+- Continuing from that checkpoint with a stronger Gram penalty produced the
+  first gate-passing parametric-\(D\), \(K=3\) emulator:
+
+\[
+\max_{\mathrm{anchor}\ D,k}
+\frac{|E^{\rm Ritz}_k(D)-E^{\rm FV}_k(D)|}{|E^{\rm FV}_k(D)|}
+=9.65\times10^{-3}<10^{-2},
+\]
+
+\[
+\max_{\mathrm{anchor}\ D,i\ne j}
+\left|
+\frac{G_{ij}(D)}{\sqrt{G_{ii}(D)G_{jj}(D)}}
+\right|
+=1.91\times10^{-3}<0.05,
+\]
+
+and
+
+\[
+\max_{\mathrm{anchor}\ D,k}
+\|H_Du_k-E_ku_k\|_2/\|u_k\|_2
+=1.18\times10^{-1}<0.30.
+\]
+
+Current V2 status:
+
+```text
+V2.2 CLOSED POSITIVE / PARAMETRIC-D K=3 ANCHORS PASSED
+```
+
+Next recommended implementation step:
+
+1. add a dense-\(D\) evaluator for the saved V2.2 model;
+2. check monotonicity, Gram stability, and residuals on intermediate
+   \(D=7.5,9,10.5,13.5,15,16.5\);
+3. trigger finite-volume checks only for suspicious cells, rather than
+   broadening the neural model immediately.

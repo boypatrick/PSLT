@@ -1,0 +1,3 @@
+run,steps,modes,n_s,n_z,init_from_run,selected_checkpoint_step,max_anchor_E_rel_error,max_anchor_corr_offdiag,max_anchor_strong_residual_l2_over_rms_u,selected_checkpoint_score
+v2_parametric_D6_18_K3_first_2000,2000,3,28,80,,2000,0.03323589960596828,0.3066469132900238,0.1872406005859375,0.33721813559532166
+v2_parametric_D6_18_K3_continue_orth_2000,2000,3,28,80,v2_parametric_D6_18_K3_first_2000,2000,0.009652744445225285,0.0019061920465901494,0.11849953979253769,0.010512650944292545

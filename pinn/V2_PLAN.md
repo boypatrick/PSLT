@@ -163,3 +163,55 @@ Next recommended implementation step:
    spacing differs most from the \(D=12\) midpoint;
 3. only after \(D=6,12,18\) pass should V2 consider a parametric-\(D\), K=3
    network.
+
+## V2.1 Endpoint Status
+
+Tracked endpoint summary:
+
+- `v2_fixed_endpoint_summary.csv`
+
+Endpoint runs:
+
+```text
+D   max_rel_E   max_residual_L2  max_corr_offdiag
+6   2.69e-03    4.48e-02         4.34e-03
+12  3.22e-03    9.31e-02         2.89e-03
+18  2.52e-03    1.17e-01         2.81e-03
+```
+
+All three fixed-\(D\), \(K=3\) endpoint/midpoint smokes pass the V2 gate:
+
+\[
+\max_D\max_k
+\frac{|E^{\rm Ritz}_k(D)-E^{\rm FV}_k(D)|}{|E^{\rm FV}_k(D)|}
+=3.22\times 10^{-3}<5\times10^{-3},
+\]
+
+\[
+\max_D \max_{i\ne j}
+\left|
+\frac{G_{ij}}{\sqrt{G_{ii}G_{jj}}}
+\right|
+=4.34\times10^{-3}<0.15,
+\]
+
+and
+
+\[
+\max_D\max_k
+\|H_Uu_k^{\rm Ritz}-E_ku_k^{\rm Ritz}\|_2/\|u_k^{\rm Ritz}\|_2
+=1.17\times10^{-1}<2.5\times10^{-1}.
+\]
+
+Current V2 status:
+
+```text
+V2.1 CLOSED POSITIVE / FIXED-D ENDPOINTS PASSED
+```
+
+Next recommended implementation step:
+
+1. open a separate V2.2 parametric-\(D\), \(K=3\) scaffold;
+2. use the fixed-\(D\) endpoint runs only as checkpoint anchors;
+3. keep finite-volume references as source of truth and treat the neural model
+   as a differentiable emulator, not a replacement eigensolver.

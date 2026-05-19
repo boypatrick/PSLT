@@ -79,6 +79,8 @@ harder spectral/eigenvalue problem.
   self-adjoint Ritz-PINN scaffold.
 - `v2_fixed_d12_smoke_summary.csv`: first D=12, K=3 multi-mode smoke summary;
   V2.0 fixed-D midpoint smoke passes with best-checkpoint selection.
+- `v2_fixed_endpoint_summary.csv`: V2.1 fixed-\(D\), K=3 endpoint summary for
+  \(D=6,12,18\); all three fixed-D gates pass.
 - `v1_dense_eval_dstep1p5_summary.csv`: dense intermediate-\(D\) diagnostic
   summary for the gate-passing continuation model.
 - `v1_dense_eval_dstep0p75_summary.csv`: finer dense-\(D\) diagnostic summary

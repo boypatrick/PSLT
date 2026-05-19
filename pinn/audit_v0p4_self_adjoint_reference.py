@@ -41,6 +41,7 @@ def parse_args():
     p.add_argument("--L-rho", type=float, default=4.0)
     p.add_argument("--L-z", type=float, default=20.0)
     p.add_argument("--k", type=int, default=8)
+    p.add_argument("--skip-legacy", action="store_true", help="Skip the legacy nonsymmetric solver comparison.")
     p.add_argument("--run-name", default=None)
     return p.parse_args()
 
@@ -150,23 +151,29 @@ def main():
     artifact = load_artifact(args.D)
 
     legacy = None
-    try:
-        run_name = args.run_name or f"v0p4_selfadjoint_reference_D{args.D:g}"
-        run_dir = RUNS_DIR / run_name
-        os.environ.setdefault("MPLCONFIGDIR", str(run_dir / ".mplconfig"))
-        os.environ.setdefault("XDG_CACHE_HOME", str(run_dir / ".mplconfig"))
-        (run_dir / ".mplconfig").mkdir(parents=True, exist_ok=True)
-        sys.path.insert(0, str(ROOT / "code"))
-        from true_single_track_solver import TrueSolver  # noqa: WPS433
-
-        solver = TrueSolver(args.D, n_rho=nr, n_z=nz, L_rho=args.L_rho, L_z=args.L_z)
-        legacy_vals = solver.solve(n_eigenvalues=args.k)
-        legacy = [float(x) for x in legacy_vals]
-    except Exception as exc:  # pragma: no cover - audit only
-        legacy = {"error": repr(exc)}
+    if args.skip_legacy:
         run_name = args.run_name or f"v0p4_selfadjoint_reference_D{args.D:g}"
         run_dir = RUNS_DIR / run_name
         run_dir.mkdir(parents=True, exist_ok=True)
+        legacy = {"skipped": True}
+    else:
+        try:
+            run_name = args.run_name or f"v0p4_selfadjoint_reference_D{args.D:g}"
+            run_dir = RUNS_DIR / run_name
+            os.environ.setdefault("MPLCONFIGDIR", str(run_dir / ".mplconfig"))
+            os.environ.setdefault("XDG_CACHE_HOME", str(run_dir / ".mplconfig"))
+            (run_dir / ".mplconfig").mkdir(parents=True, exist_ok=True)
+            sys.path.insert(0, str(ROOT / "code"))
+            from true_single_track_solver import TrueSolver  # noqa: WPS433
+
+            solver = TrueSolver(args.D, n_rho=nr, n_z=nz, L_rho=args.L_rho, L_z=args.L_z)
+            legacy_vals = solver.solve(n_eigenvalues=args.k)
+            legacy = [float(x) for x in legacy_vals]
+        except Exception as exc:  # pragma: no cover - audit only
+            legacy = {"error": repr(exc)}
+            run_name = args.run_name or f"v0p4_selfadjoint_reference_D{args.D:g}"
+            run_dir = RUNS_DIR / run_name
+            run_dir.mkdir(parents=True, exist_ok=True)
 
     metrics = {
         "target": "V0.4.1 self-adjoint cylindrical reference audit",

@@ -29,6 +29,8 @@ import os
 from datetime import datetime
 from pathlib import Path
 
+from accelerator_utils import select_torch_device
+
 
 ROOT = Path(__file__).resolve().parent.parent
 RUNS_DIR = ROOT / "pinn" / "runs"
@@ -60,6 +62,7 @@ def parse_args():
     p.add_argument("--base-mode", choices=["box", "two-lobe", "mixed"], default="box")
     p.add_argument("--rho-width", type=float, default=0.8)
     p.add_argument("--z-width", type=float, default=1.2)
+    p.add_argument("--device", choices=["auto", "cpu", "mps", "cuda"], default="auto")
     p.add_argument("--seed", type=int, default=31)
     p.add_argument("--log-every", type=int, default=200)
     p.add_argument("--n-residual", type=int, default=4096)
@@ -74,15 +77,21 @@ def parse_args():
 def load_reference_energy(D: float, explicit: float | None):
     if explicit is not None:
         return {"E0_selfadjoint_reference": float(explicit), "source": "--reference-E"}
-    sweep_reference = RUNS_DIR / f"v0p5p1_selfadjoint_D{format_d_label(D)}_n50x500" / "metrics.json"
-    if sweep_reference.exists():
-        data = json.loads(sweep_reference.read_text())
+    d_label = format_d_label(D)
+    reference_candidates = [
+        RUNS_DIR / f"v0p5p1_selfadjoint_D{d_label}_n50x500" / "metrics.json",
+        RUNS_DIR / f"v1_selfadjoint_D{d_label}_n50x500_k4" / "metrics.json",
+    ]
+    for reference_path in reference_candidates:
+        if not reference_path.exists():
+            continue
+        data = json.loads(reference_path.read_text())
         values = data.get("E_selfadjoint") or []
         if values:
             return {
                 "E0_selfadjoint_reference": float(values[0]),
                 "omega0_selfadjoint_reference": float(data.get("omega_selfadjoint", [math.nan])[0]),
-                "source": str(sweep_reference.relative_to(ROOT)),
+                "source": str(reference_path.relative_to(ROOT)),
             }
     if abs(D - 12.0) < 1.0e-12 and SELFADJOINT_REFERENCE.exists():
         data = json.loads(SELFADJOINT_REFERENCE.read_text())
@@ -114,7 +123,10 @@ def main() -> None:
         ) from exc
 
     torch.manual_seed(args.seed)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    try:
+        device, accelerator = select_torch_device(torch, args.device)
+    except Exception as exc:
+        raise SystemExit(str(exc)) from exc
     dtype = torch.float32
     s_max = args.L_rho * args.L_rho
 
@@ -264,6 +276,7 @@ def main() -> None:
         "potential": float(potential.detach().cpu()),
         "base": float(model.base.detach().cpu()),
         "device": str(device),
+        "accelerator": accelerator,
         "reference": reference,
     }
     if reference is not None:

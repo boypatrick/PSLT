@@ -55,9 +55,16 @@ harder spectral/eigenvalue problem.
   PINN entrypoint, where the network learns only the homogeneous correction.
 - `train_harmonic_correction_pinn.py`: V0.3 nonzero harmonic boundary/domain
   deformation test on top of the analytic singular split.
+- `accelerator_utils.py`: conservative Torch accelerator selection helpers.
+- `check_torch_accelerator.py`: reports CUDA/MPS availability and optional
+  Torch matmul benchmark.
 - `validate_singular_split.py`: autograd validation of
   \(L_s\Omega_{\rm sing}+4\pi\sigma=0\) across selected \(D\) values.
 - `V1_PLAN.md`: branch-tracked parametric-\(D\) plan after V0.5.1.
+- `v1_reference_summary.csv`: self-adjoint checkpoint references for
+  \(D=6,9,12,15,18\).
+- `v1_anchor_summary.csv`: fixed-\(D\) Ritz-PINN anchor results for the same
+  checkpoint set.
 - `requirements.txt`: optional PINN dependencies.
 
 ## Quick Checks
@@ -81,6 +88,35 @@ pinn/.venv/bin/python pinn/train_two_center_poisson_pinn.py --steps 2000 --n-int
 ```
 
 Outputs go under `pinn/runs/`, which is ignored by git.
+
+## Accelerator Check
+
+On Apple Silicon, PyTorch may expose the Metal Performance Shaders backend as
+`mps`.  The sandbox uses conservative device selection: `--device auto` uses
+CUDA if available, then MPS only if a real tensor probe succeeds, otherwise CPU.
+This avoids silently thinking a PINN is GPU-accelerated when the local runtime
+cannot execute MPS kernels.
+
+Check the current runtime:
+
+```bash
+pinn/.venv/bin/python pinn/check_torch_accelerator.py --device auto
+```
+
+Optional small benchmark:
+
+```bash
+pinn/.venv/bin/python pinn/check_torch_accelerator.py --device auto --benchmark --n 512 --repeat 10
+```
+
+The self-adjoint Ritz-PINN accepts the same selector:
+
+```bash
+pinn/.venv/bin/python pinn/train_ritz_2d_selfadjoint_pinn.py --device auto
+```
+
+Finite-volume references based on `scipy.sparse.linalg.eigsh` remain CPU-side;
+the accelerator path applies to PyTorch PINN training.
 
 ## V0.2 Analytic Singular Split
 

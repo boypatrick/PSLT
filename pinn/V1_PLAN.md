@@ -395,3 +395,53 @@ Reading: V1.2 is the first gate-passing parametric-\(D\) checkpoint emulator.
 It should still be treated as a checkpoint result, not a dense-\(D\)
 certificate.  The next step is to evaluate dense intermediate \(D\) points and
 verify suspicious cells with the self-adjoint finite-volume solver.
+
+## V1.3 Dense-D Diagnostic Evaluation
+
+Implemented file:
+
+- `evaluate_v1_parametric_d.py`
+
+Tracked summary:
+
+- `v1_dense_eval_dstep1p5_summary.csv`
+
+Command:
+
+```bash
+pinn/.venv/bin/python pinn/evaluate_v1_parametric_d.py \
+  --run v1_parametric_D6_18_n32_z80_continue_4000 \
+  --D-min 6 \
+  --D-max 18 \
+  --D-step 1.5 \
+  --device auto \
+  --run-name v1_dense_eval_dstep1p5
+```
+
+Dense diagnostic result:
+
+```text
+D     E_parametric  strong_L2  monotone_ok  residual_ok
+6.0   0.7411381602  2.3086e-02  yes         yes
+7.5   0.7497829795  2.4004e-02  yes         yes
+9.0   0.7606557012  2.5132e-02  yes         yes
+10.5  0.7739714384  2.6241e-02  yes         yes
+12.0  0.7900170088  2.7156e-02  yes         yes
+13.5  0.8091673255  2.7809e-02  yes         yes
+15.0  0.8319070935  2.8292e-02  yes         yes
+16.5  0.8588642478  2.8866e-02  yes         yes
+18.0  0.8908556700  3.0036e-02  yes         yes
+```
+
+Gate reading:
+
+```text
+monotone_ok = true
+max_dense_strong_L2 = 3.0036e-02 < 5e-2
+needs_finite_volume_check = false
+```
+
+This is not a continuum theorem, but it is a clean dense diagnostic for the
+trained checkpoint model.  Since no monotonicity or residual anomaly appears on
+the \(1.5\)-spaced dense grid, no immediate finite-volume suspicious-cell check
+is triggered by V1.3.

@@ -71,6 +71,10 @@ harder spectral/eigenvalue problem.
   run summary; diagnostic, not gate-passing.
 - `v1_parametric_continuation_summary.csv`: gate-passing continuation
   parametric-\(D\) checkpoint summary.
+- `evaluate_v1_parametric_d.py`: dense-\(D\) diagnostic evaluator for trained
+  V1 parametric models.
+- `v1_dense_eval_dstep1p5_summary.csv`: dense intermediate-\(D\) diagnostic
+  summary for the gate-passing continuation model.
 - `requirements.txt`: optional PINN dependencies.
 
 ## Quick Checks

@@ -61,6 +61,8 @@ harder spectral/eigenvalue problem.
 - `validate_singular_split.py`: autograd validation of
   \(L_s\Omega_{\rm sing}+4\pi\sigma=0\) across selected \(D\) values.
 - `V1_PLAN.md`: branch-tracked parametric-\(D\) plan after V0.5.1.
+- `V2_PLAN.md`: fixed-\(D\) multi-mode self-adjoint Ritz-PINN plan after V1
+  closure.
 - `v1_reference_summary.csv`: self-adjoint checkpoint references for
   \(D=6,9,12,15,18\).
 - `v1_anchor_summary.csv`: fixed-\(D\) Ritz-PINN anchor results for the same
@@ -73,6 +75,10 @@ harder spectral/eigenvalue problem.
   parametric-\(D\) checkpoint summary.
 - `evaluate_v1_parametric_d.py`: dense-\(D\) diagnostic evaluator for trained
   V1 parametric models.
+- `train_v2_fixed_d_multimode_ritz_pinn.py`: fixed-\(D\), multi-mode
+  self-adjoint Ritz-PINN scaffold.
+- `v2_fixed_d12_smoke_summary.csv`: first D=12, K=3 multi-mode smoke summary;
+  V2.0 fixed-D midpoint smoke passes with best-checkpoint selection.
 - `v1_dense_eval_dstep1p5_summary.csv`: dense intermediate-\(D\) diagnostic
   summary for the gate-passing continuation model.
 - `v1_dense_eval_dstep0p75_summary.csv`: finer dense-\(D\) diagnostic summary

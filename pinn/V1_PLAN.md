@@ -245,3 +245,153 @@ max strong_L2 = 2.0674e-02 < 5e-2
 This closes the fixed-checkpoint anchor stage for the lowest self-adjoint
 branch.  The next V1 implementation step can be a narrow parametric-\(D\)
 network with checkpoint loss against these anchors.
+
+## V1.1 Parametric-D Scaffold Status
+
+Implemented file:
+
+- `train_v1_parametric_d_ritz_pinn.py`
+
+This is a scaffold for the lowest-branch parametric emulator
+
+```math
+u_\theta=u_\theta(s,z,D),
+\qquad
+E_\theta(D)=E_D[u_\theta(\cdot,\cdot,D)].
+```
+
+It reads `v1_anchor_summary.csv`, minimizes the checkpoint Ritz average, and
+adds a branch-coherence penalty
+
+```math
+\mathcal L_{\rm chk}
+=\frac1{|\mathcal D_{\rm chk}|}
+\sum_{D_j}
+\left(
+\frac{E_\theta(D_j)-E^{\rm FV}_0(D_j)}
+     {\max(1,|E^{\rm FV}_0(D_j)|)}
+\right)^2.
+```
+
+It also records the accelerator diagnostic from `--device auto`, so MPS/CUDA
+usage cannot be silently misreported.
+
+Smoke command:
+
+```bash
+pinn/.venv/bin/python pinn/train_v1_parametric_d_ritz_pinn.py \
+  --n-s 16 \
+  --n-z 32 \
+  --steps 3 \
+  --hidden 24 \
+  --layers 2 \
+  --log-every 1 \
+  --n-residual 128 \
+  --device auto \
+  --run-name v1_parametric_smoke_3
+```
+
+The three-step smoke intentionally does not pass the physical gate; it only
+checks that the loss, checkpoint metrics, residual metrics, CSV/JSON output,
+and accelerator fallback work.  The first real training run should keep the
+same checkpoint set and use the acceptance gates above.
+
+## V1.1 First Formal Parametric Run
+
+Tracked summary:
+
+- `v1_parametric_first_run_summary.csv`
+
+Command:
+
+```bash
+pinn/.venv/bin/python pinn/train_v1_parametric_d_ritz_pinn.py \
+  --n-s 32 \
+  --n-z 80 \
+  --steps 2000 \
+  --hidden 80 \
+  --layers 4 \
+  --log-every 250 \
+  --n-residual 1024 \
+  --device auto \
+  --run-name v1_parametric_D6_18_n32_z80_2000
+```
+
+Result:
+
+```text
+D   E_ref         E_parametric  rel_error    strong_L2
+6   0.7409156024  0.7426179051  2.2976e-03  8.1964e-02
+9   0.7604497941  0.7620103955  2.0522e-03  8.4729e-02
+12  0.7898376934  0.7916654944  2.3141e-03  8.9925e-02
+15  0.8317674017  0.8335520625  2.1456e-03  9.4871e-02
+18  0.8907781421  0.8938794136  3.4815e-03  1.1577e-01
+```
+
+Gate status:
+
+```text
+max_rel_error = 3.4815e-03 > 5e-4
+median_rel_error = 2.2976e-03 > 3e-4
+max_strong_L2 = 1.1577e-01 > 5e-2
+```
+
+Reading: the cold-start parametric network is directionally useful but not
+gate-safe.  It moves the checkpoint energies from order-one relative error to
+the \(2\times10^{-3}\)--\(3.5\times10^{-3}\) band, but the residual remains
+too high.  The next parametric attempt should not simply be longer cold-start
+training.  It should add continuation/pretraining from the fixed-\(D\) anchors
+or a checkpoint-conditioned basis head.
+
+## V1.2 Continuation Parametric Run
+
+Tracked summary:
+
+- `v1_parametric_continuation_summary.csv`
+
+The second formal run initializes from the cold-start parametric model and uses
+a smaller learning rate with a slightly stronger checkpoint penalty.  This is
+the minimal continuation/pretraining variant: same physics target, same
+checkpoint set, but no random restart.
+
+Command:
+
+```bash
+pinn/.venv/bin/python pinn/train_v1_parametric_d_ritz_pinn.py \
+  --n-s 32 \
+  --n-z 80 \
+  --steps 4000 \
+  --hidden 80 \
+  --layers 4 \
+  --lr 5e-4 \
+  --w-checkpoint 300 \
+  --log-every 500 \
+  --n-residual 1024 \
+  --device auto \
+  --init-from-run v1_parametric_D6_18_n32_z80_2000 \
+  --run-name v1_parametric_D6_18_n32_z80_continue_4000
+```
+
+Result:
+
+```text
+D   E_ref         E_parametric  rel_error    strong_L2
+6   0.7409156024  0.7411381602  3.0038e-04  2.6193e-02
+9   0.7604497941  0.7606557012  2.7077e-04  2.8688e-02
+12  0.7898376934  0.7900170088  2.2703e-04  3.1394e-02
+15  0.8317674017  0.8319070935  1.6795e-04  3.3578e-02
+18  0.8907781421  0.8908556700  8.7034e-05  3.6608e-02
+```
+
+Gate status:
+
+```text
+max_rel_error = 3.0038e-04 < 5e-4
+median_rel_error = 2.2703e-04 < 3e-4
+max_strong_L2 = 3.6608e-02 < 5e-2
+```
+
+Reading: V1.2 is the first gate-passing parametric-\(D\) checkpoint emulator.
+It should still be treated as a checkpoint result, not a dense-\(D\)
+certificate.  The next step is to evaluate dense intermediate \(D\) points and
+verify suspicious cells with the self-adjoint finite-volume solver.

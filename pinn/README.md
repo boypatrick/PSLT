@@ -65,6 +65,12 @@ harder spectral/eigenvalue problem.
   \(D=6,9,12,15,18\).
 - `v1_anchor_summary.csv`: fixed-\(D\) Ritz-PINN anchor results for the same
   checkpoint set.
+- `train_v1_parametric_d_ritz_pinn.py`: first branch-tracked parametric-\(D\)
+  lowest-branch Ritz-PINN scaffold.
+- `v1_parametric_first_run_summary.csv`: first formal cold-start parametric
+  run summary; diagnostic, not gate-passing.
+- `v1_parametric_continuation_summary.csv`: gate-passing continuation
+  parametric-\(D\) checkpoint summary.
 - `requirements.txt`: optional PINN dependencies.
 
 ## Quick Checks

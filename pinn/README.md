@@ -79,6 +79,8 @@ harder spectral/eigenvalue problem.
   self-adjoint Ritz-PINN scaffold.
 - `train_v2_parametric_d_multimode_ritz_pinn.py`: V2.2 parametric-\(D\),
   multi-mode self-adjoint Ritz-PINN scaffold.
+- `evaluate_v2_parametric_d.py`: V2.3 dense-\(D\) evaluator for a saved
+  V2.2 model, with suspicious-cell finite-volume follow-up policy.
 - `v2_fixed_d12_smoke_summary.csv`: first D=12, K=3 multi-mode smoke summary;
   V2.0 fixed-D midpoint smoke passes with best-checkpoint selection.
 - `v2_fixed_endpoint_summary.csv`: V2.1 fixed-\(D\), K=3 endpoint summary for
@@ -86,6 +88,10 @@ harder spectral/eigenvalue problem.
 - `v2_parametric_anchor_summary.csv`: V2.2 parametric-\(D\), K=3 anchor
   summary; continuation run passes the first emulator gate.
 - `v2_parametric_anchor_detail.csv`: per-anchor detail for the same V2.2 runs.
+- `v2_dense_midpoint_summary.csv`: V2.3 dense midpoint diagnostic for
+  \(D=7.5,9,10.5,13.5,15,16.5\).
+- `v2_dense_midpoint_fv_comparison.csv`: deterministic finite-volume
+  follow-up for every suspicious V2.3 midpoint.
 - `v1_dense_eval_dstep1p5_summary.csv`: dense intermediate-\(D\) diagnostic
   summary for the gate-passing continuation model.
 - `v1_dense_eval_dstep0p75_summary.csv`: finer dense-\(D\) diagnostic summary

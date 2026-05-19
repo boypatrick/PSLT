@@ -342,3 +342,81 @@ Next recommended implementation step:
    \(D=7.5,9,10.5,13.5,15,16.5\);
 3. trigger finite-volume checks only for suspicious cells, rather than
    broadening the neural model immediately.
+
+## V2.3 Dense-D Evaluator Status
+
+Script:
+
+- `evaluate_v2_parametric_d.py`
+
+Tracked outputs:
+
+- `v2_dense_midpoint_summary.csv`
+- `v2_dense_midpoint_fv_comparison.csv`
+
+Dense diagnostic command:
+
+```bash
+pinn/.venv/bin/python pinn/evaluate_v2_parametric_d.py \
+  --run v2_parametric_D6_18_K3_continue_orth_2000 \
+  --D-values 7.5,9,10.5,13.5,15,16.5 \
+  --device auto \
+  --run-name v2_dense_eval_midpoints
+```
+
+Dense result:
+
+```text
+max_dense_corr_offdiag = 6.58e-01
+max_dense_residual_L2 = 9.95e-01
+anchor_consistent_monotone_ok = false
+suspicious_D = 7.5, 9, 10.5, 13.5, 15, 16.5
+```
+
+Following the V2.3 policy, deterministic self-adjoint finite-volume references
+were generated only for suspicious cells without existing references:
+
+```text
+D = 7.5, 10.5, 13.5, 16.5
+```
+
+Existing V1 finite-volume references were reused for
+
+```text
+D = 9, 15.
+```
+
+Finite-volume comparison:
+
+```text
+D     max_rel_E_vs_FV  Gram offdiag  residual_L2
+7.5   1.60e-01         5.17e-01      4.28e-01
+9.0   6.54e-01         6.58e-01      7.00e-01
+10.5  5.12e-01         4.74e-01      9.95e-01
+13.5  1.48e-01         1.30e-01      5.47e-01
+15.0  3.53e-01         9.44e-02      7.07e-01
+16.5  3.31e-01         3.04e-01      5.85e-01
+```
+
+Reading:
+
+- V2.3 is a negative diagnostic: the three-anchor parametric-\(D\), \(K=3\)
+  emulator passes anchor gates but fails at all requested intermediate cells.
+- The failure is not a finite-volume false alarm; direct FV follow-up confirms
+  large intermediate errors.
+- This does not invalidate V2.1 fixed-\(D\) gates.  It only says that the
+  global three-anchor parametric emulator is too weak for dense-D use.
+
+Current V2.3 status:
+
+```text
+CLOSED NEGATIVE / DENSE-D GLOBAL EMULATOR NOT ADOPTION-SAFE
+```
+
+Next recommended implementation step:
+
+1. do not use `v2_parametric_D6_18_K3_continue_orth_2000` as a dense surrogate;
+2. either add the six FV midpoints as anchors and retrain, or split the model
+   into local windows `[6,10.5]`, `[10.5,13.5]`, `[13.5,18]`;
+3. keep the current result as a useful diagnostic showing why sparse anchor-only
+   training is insufficient for multi-mode branch geometry.

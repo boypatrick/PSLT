@@ -75,6 +75,8 @@ harder spectral/eigenvalue problem.
   V1 parametric models.
 - `v1_dense_eval_dstep1p5_summary.csv`: dense intermediate-\(D\) diagnostic
   summary for the gate-passing continuation model.
+- `v1_dense_eval_dstep0p75_summary.csv`: finer dense-\(D\) diagnostic summary
+  for the same model.
 - `requirements.txt`: optional PINN dependencies.
 
 ## Quick Checks

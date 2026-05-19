@@ -445,3 +445,49 @@ This is not a continuum theorem, but it is a clean dense diagnostic for the
 trained checkpoint model.  Since no monotonicity or residual anomaly appears on
 the \(1.5\)-spaced dense grid, no immediate finite-volume suspicious-cell check
 is triggered by V1.3.
+
+### Finer `D`-step 0.75 check
+
+Tracked summary:
+
+- `v1_dense_eval_dstep0p75_summary.csv`
+
+Command:
+
+```bash
+pinn/.venv/bin/python pinn/evaluate_v1_parametric_d.py \
+  --run v1_parametric_D6_18_n32_z80_continue_4000 \
+  --D-min 6 \
+  --D-max 18 \
+  --D-step 0.75 \
+  --device auto \
+  --run-name v1_dense_eval_dstep0p75
+```
+
+Gate reading:
+
+```text
+monotone_ok = true
+max_dense_strong_L2 = 3.0036e-02 < 5e-2
+needs_finite_volume_check = false
+```
+
+The finer grid keeps the same maximum residual because the endpoint \(D=18\)
+is still the residual maximum.  No intermediate point violates monotonicity or
+the residual threshold.  This makes V1 dense diagnostics stable at two nested
+grid spacings, \(1.5\) and \(0.75\).
+
+## Updated V1 Recommendation After Dense Diagnostics
+
+V1 has now reached a reasonable sandbox closure:
+
+1. self-adjoint references exist at \(D=6,9,12,15,18\);
+2. fixed-\(D\) anchors pass the checkpoint gates;
+3. the continuation parametric model passes checkpoint gates;
+4. dense diagnostics at \(D\)-steps \(1.5\) and \(0.75\) are monotone and below
+   the residual threshold.
+
+The next step should be to commit the V1 dense-diagnostic package.  Further
+PINN work should move to either uncertainty/seed stability or a separate V2
+multi-mode line, not keep tightening this lowest-branch V1 diagnostic without a
+new reason.

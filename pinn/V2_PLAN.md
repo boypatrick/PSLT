@@ -420,3 +420,89 @@ Next recommended implementation step:
    into local windows `[6,10.5]`, `[10.5,13.5]`, `[13.5,18]`;
 3. keep the current result as a useful diagnostic showing why sparse anchor-only
    training is insufficient for multi-mode branch geometry.
+
+## V2.4 Augmented-Anchor Retrain Status
+
+Tracked outputs:
+
+- `v2_augmented_anchor_summary.csv`
+- `v2_augmented_parametric_summary.csv`
+- `v2_augmented_parametric_detail.csv`
+- `v2_augmented_dense_midpoint_summary.csv`
+
+V2.4 tests the first V2.3 recommendation: add all six finite-volume midpoint
+references to the training anchors and retry the global parametric-\(D\),
+\(K=3\) model before giving up and splitting into local windows.
+
+The augmented anchor set is
+
+```text
+D = 6, 7.5, 9, 10.5, 12, 13.5, 15, 16.5, 18.
+```
+
+Retraining sequence:
+
+```text
+run                                                 max_rel_E   max_corr_offdiag  max_residual_L2
+v2_parametric_D6_18_K3_augmented_1800              1.68e-02    2.45e-02          1.40e-01
+v2_parametric_D6_18_K3_augmented_continue_1200     1.48e-02    2.61e-02          1.31e-01
+v2_parametric_D6_18_K3_augmented_ref800_1200       1.09e-02    2.72e-02          1.23e-01
+v2_parametric_D6_18_K3_augmented_final_800         8.46e-03    2.80e-02          1.23e-01
+```
+
+The final augmented run passes the V2 parametric-emulator gate:
+
+\[
+\max_{D,k}
+\frac{|E^{\rm Ritz}_k(D)-E^{\rm FV}_k(D)|}{|E^{\rm FV}_k(D)|}
+=8.46\times10^{-3}<10^{-2},
+\]
+
+\[
+\max_{D,i\ne j}
+\left|
+\frac{G_{ij}(D)}{\sqrt{G_{ii}(D)G_{jj}(D)}}
+\right|
+=2.80\times10^{-2}<0.05,
+\]
+
+and
+
+\[
+\max_{D,k}
+\|H_Du_k-E_ku_k\|_2/\|u_k\|_2
+=1.23\times10^{-1}<0.30.
+\]
+
+Rechecking the original V2.3 midpoint set against the augmented model gives
+
+```text
+max_dense_corr_offdiag = 2.29e-02
+max_dense_residual_L2 = 1.23e-01
+anchor_consistent_monotone_ok = true
+suspicious_D = none
+needs_finite_volume_check = false
+```
+
+Reading:
+
+- V2.3's negative result was caused by under-anchored global interpolation, not
+  by a failure of the multi-mode Ritz-PINN machinery.
+- V2.4 supplies the first adoption-safe dense midpoint emulator on the audited
+  \(D=6,\ldots,18\) nine-point anchor set.
+- This remains a sandbox differentiable emulator.  Finite-volume references are
+  still the source of truth.
+
+Current V2.4 status:
+
+```text
+CLOSED POSITIVE / AUGMENTED GLOBAL EMULATOR PASSED AUDITED MIDPOINTS
+```
+
+Next recommended implementation step:
+
+1. do a true holdout check at quarter-step points, e.g.
+   \(D=6.75,8.25,9.75,11.25,12.75,14.25,15.75,17.25\);
+2. if holdout fails, split into local windows;
+3. if holdout passes, freeze V2 as a useful PINN emulator package and do not
+   claim it as a proof-level replacement for finite-volume certificates.

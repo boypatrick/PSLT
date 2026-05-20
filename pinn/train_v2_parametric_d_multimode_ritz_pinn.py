@@ -69,7 +69,11 @@ def load_anchors(path: str, modes: int):
                 if key not in row:
                     raise ValueError(f"Anchor file {path} is missing {key}")
                 refs.append(float(row[key]))
-            rows.append({"D": float(row["D"]), "E_ref": refs, "source": row.get("run", "")})
+            rows.append({
+                "D": float(row["D"]),
+                "E_ref": refs,
+                "source": row.get("run", "") or row.get("reference_run", ""),
+            })
     if not rows:
         raise ValueError(f"No anchors found in {path}")
     return rows

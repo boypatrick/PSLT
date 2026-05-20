@@ -92,6 +92,14 @@ harder spectral/eigenvalue problem.
   \(D=7.5,9,10.5,13.5,15,16.5\).
 - `v2_dense_midpoint_fv_comparison.csv`: deterministic finite-volume
   follow-up for every suspicious V2.3 midpoint.
+- `v2_augmented_anchor_summary.csv`: V2.4 nine-point finite-volume anchor table
+  for \(D=6,7.5,\ldots,18\).
+- `v2_augmented_parametric_summary.csv`: V2.4 midpoint-anchored global
+  parametric-\(D\), K=3 training summary.
+- `v2_augmented_parametric_detail.csv`: per-anchor detail for the V2.4
+  augmented retraining sequence.
+- `v2_augmented_dense_midpoint_summary.csv`: V2.4 dense midpoint recheck; the
+  previously suspicious cells no longer trigger finite-volume follow-up.
 - `v1_dense_eval_dstep1p5_summary.csv`: dense intermediate-\(D\) diagnostic
   summary for the gate-passing continuation model.
 - `v1_dense_eval_dstep0p75_summary.csv`: finer dense-\(D\) diagnostic summary

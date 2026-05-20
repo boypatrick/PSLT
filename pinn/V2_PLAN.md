@@ -506,3 +506,70 @@ Next recommended implementation step:
 2. if holdout fails, split into local windows;
 3. if holdout passes, freeze V2 as a useful PINN emulator package and do not
    claim it as a proof-level replacement for finite-volume certificates.
+
+## V2.5 Quarter-Step Holdout Status
+
+Tracked output:
+
+- `v2_quarter_holdout_summary.csv`
+
+Command:
+
+```bash
+pinn/.venv/bin/python pinn/evaluate_v2_parametric_d.py \
+  --run v2_parametric_D6_18_K3_augmented_final_800 \
+  --D-values 6.75,8.25,9.75,11.25,12.75,14.25,15.75,17.25 \
+  --e2-turning-D 13.5 \
+  --device auto \
+  --run-name v2_dense_eval_quarter_holdout_turn13p5
+```
+
+The `--e2-turning-D 13.5` setting is required because the augmented
+finite-volume anchor table shows the third Ritz branch turns over near
+\(D=13.5\), not \(D=12\).
+
+Quarter-step result:
+
+```text
+max_dense_corr_offdiag = 4.998e-02 < 5e-2
+max_dense_residual_L2  = 1.195e-01 < 3e-1
+anchor_consistent_monotone_ok = true
+suspicious_D = none
+needs_finite_volume_check = false
+```
+
+Per-point summary:
+
+```text
+D      max_corr_offdiag  max_residual_L2  suspicious
+6.75   9.12e-03          7.49e-02         no
+8.25   7.65e-03          7.74e-02         no
+9.75   1.51e-02          8.45e-02         no
+11.25  5.80e-03          1.04e-01         no
+12.75  3.04e-02          1.20e-01         no
+14.25  4.998e-02         1.12e-01         no
+15.75  1.82e-02          8.56e-02         no
+17.25  1.23e-02          1.03e-01         no
+```
+
+Current V2 status:
+
+```text
+V2.5 CLOSED POSITIVE / AUGMENTED EMULATOR HOLDOUT PASSED
+```
+
+Final V2 reading:
+
+- V2 fixed-\(D\) multi-mode Ritz-PINN gates are positive.
+- Sparse three-anchor global interpolation is not adoption-safe.
+- Nine-anchor augmented global interpolation is adoption-safe on audited
+  anchors, audited midpoints, and quarter-step holdouts.
+- The result remains a PINN-assisted differentiable emulator.  Deterministic
+  finite-volume references remain the proof/certificate source of truth.
+
+Recommended stop rule:
+
+```text
+Freeze V2 unless the next task specifically needs local-window emulation,
+uncertainty/seed stability, or coupling to the downstream PSLT map.
+```

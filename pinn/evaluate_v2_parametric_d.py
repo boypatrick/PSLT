@@ -32,6 +32,7 @@ def parse_args():
     p.add_argument("--n-residual", type=int, default=None)
     p.add_argument("--gram-threshold", type=float, default=0.05)
     p.add_argument("--residual-threshold", type=float, default=0.30)
+    p.add_argument("--e2-turning-D", type=float, default=13.5, help="Expected E2 turn-over location for anchor-consistent monotonicity.")
     p.add_argument("--run-name", default=None)
     return p.parse_args()
 
@@ -243,7 +244,9 @@ def main() -> None:
     rows.sort(key=lambda row: row["D"])
 
     # Anchor-consistent monotonicity: E0/E1 are increasing across the endpoint
-    # anchors, while E2 rises on [6,12] and falls on [12,18].
+    # anchors.  E2 has a finite-volume turn-over near the augmented anchor
+    # specified by --e2-turning-D; intervals straddling that turning point are
+    # not forced to be monotone.
     monotone_flags = {
         "E0_anchor_increase_ok": True,
         "E1_anchor_increase_ok": True,
@@ -255,9 +258,9 @@ def main() -> None:
             monotone_flags["E0_anchor_increase_ok"] = False
         if cur["E1_ritz"] + 1.0e-10 < prev["E1_ritz"]:
             monotone_flags["E1_anchor_increase_ok"] = False
-        if prev["D"] < 12.0 and cur["D"] <= 12.0 and cur["E2_ritz"] + 1.0e-10 < prev["E2_ritz"]:
+        if prev["D"] < args.e2_turning_D and cur["D"] <= args.e2_turning_D and cur["E2_ritz"] + 1.0e-10 < prev["E2_ritz"]:
             monotone_flags["E2_left_increase_ok"] = False
-        if prev["D"] >= 12.0 and cur["D"] > 12.0 and cur["E2_ritz"] > prev["E2_ritz"] + 1.0e-10:
+        if prev["D"] >= args.e2_turning_D and cur["D"] > args.e2_turning_D and cur["E2_ritz"] > prev["E2_ritz"] + 1.0e-10:
             monotone_flags["E2_right_decrease_ok"] = False
 
     monotone_ok = all(monotone_flags.values())
@@ -287,6 +290,7 @@ def main() -> None:
         "n_z": n_z,
         "gram_threshold": args.gram_threshold,
         "residual_threshold": args.residual_threshold,
+        "e2_turning_D": args.e2_turning_D,
         "max_dense_corr_offdiag": max(row["max_abs_corr_offdiag"] for row in rows),
         "max_dense_strong_residual_l2_over_rms_u": max(row["max_strong_residual_l2_over_rms_u"] for row in rows),
         "monotone_flags": monotone_flags,

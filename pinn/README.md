@@ -100,6 +100,8 @@ harder spectral/eigenvalue problem.
   augmented retraining sequence.
 - `v2_augmented_dense_midpoint_summary.csv`: V2.4 dense midpoint recheck; the
   previously suspicious cells no longer trigger finite-volume follow-up.
+- `v2_quarter_holdout_summary.csv`: V2.5 quarter-step holdout for the
+  augmented emulator; no suspicious cells are triggered.
 - `v1_dense_eval_dstep1p5_summary.csv`: dense intermediate-\(D\) diagnostic
   summary for the gate-passing continuation model.
 - `v1_dense_eval_dstep0p75_summary.csv`: finer dense-\(D\) diagnostic summary

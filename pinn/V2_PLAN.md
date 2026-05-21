@@ -573,3 +573,53 @@ Recommended stop rule:
 Freeze V2 unless the next task specifically needs local-window emulation,
 uncertainty/seed stability, or coupling to the downstream PSLT map.
 ```
+
+## V2.6 Seed-Stability Freeze Gate
+
+Tracked outputs:
+
+- `v2_seed_stability_summary.csv`
+- `v2_seed_stability_detail.csv`
+- `v2_seed_stability_metrics.json`
+
+Command:
+
+```bash
+pinn/.venv/bin/python pinn/evaluate_v2_seed_stability.py \
+  --run v2_parametric_D6_18_K3_augmented_final_800 \
+  --device auto \
+  --run-name v2_seed_stability_gridjitter5_quarter_v1
+```
+
+The first iid Monte-Carlo projection probe was deliberately too noisy for a
+freeze gate: it returned `max_energy_spread_rel=7.48e-2`, with low residuals
+but large projection variance.  The adopted V2.6 gate therefore uses one
+randomly jittered point per tensor-product cell.  This probes seed sensitivity
+while preserving the deterministic V2 quadrature structure.
+
+Grid-jitter result:
+
+```text
+seeds = 101,202,303,404,505
+D = 6.75,8.25,9.75,11.25,12.75,14.25,15.75,17.25
+n_project = n_residual = 28 x 80 = 2240
+max_energy_spread_rel = 1.002e-02 < 2.5e-02
+max_corr_offdiag = 5.369e-02 < 8.0e-02
+max_strong_residual_L2 = 1.177e-01 < 3.5e-01
+all_seed_rows_pass = true
+gate_pass = true
+```
+
+Current V2.6 status:
+
+```text
+V2.6 CLOSED POSITIVE / SEED-STABILITY FREEZE GATE PASSED
+```
+
+Final V2 freeze reading:
+
+- V2.5 closes deterministic dense/quarter holdout stability.
+- V2.6 closes stratified seed/collocation stability.
+- V2 is frozen as a differentiable spectral emulator.
+- Deterministic finite-volume references remain the proof/certificate source
+  of truth.

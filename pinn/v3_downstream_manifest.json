@@ -1,0 +1,15 @@
+{
+  "target": "PINN V3.0 downstream spectral adapter",
+  "status": "OPENED_POSITIVE_EXPORT_ONLY",
+  "source_run": "pinn/runs/v2_parametric_D6_18_K3_augmented_final_800",
+  "spectral_table": "pinn/v3_downstream_spectral_table.csv",
+  "metrics": "pinn/v3_downstream_spectral_metrics.json",
+  "D_grid": "6.0..18.0 step 0.25",
+  "modes": 3,
+  "max_corr_offdiag": 0.04998364299535751,
+  "max_residual_l2_over_rms_u": 0.12340289354324341,
+  "e2_turning_D": 14.0,
+  "needs_finite_volume_check": false,
+  "policy": "emulator-to-downstream input only; not a physical P_N map or proof-level replacement for finite-volume certificates",
+  "blocked_next_bridge": "derive/audit an energy-to-action adapter S_N[D,E_N] before computing r_N, Gamma_N, or P_N from this table"
+}

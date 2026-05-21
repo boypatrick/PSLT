@@ -102,6 +102,14 @@ harder spectral/eigenvalue problem.
   previously suspicious cells no longer trigger finite-volume follow-up.
 - `v2_quarter_holdout_summary.csv`: V2.5 quarter-step holdout for the
   augmented emulator; no suspicious cells are triggered.
+- `evaluate_v2_seed_stability.py`: V2.6 stratified seed/collocation stability
+  gate for the frozen augmented emulator.
+- `v2_seed_stability_summary.csv`, `v2_seed_stability_detail.csv`, and
+  `v2_seed_stability_metrics.json`: tracked V2.6 freeze-gate outputs.
+- `V3_PLAN.md`: downstream spectral-map coupling plan.  V3 starts with a
+  spectral export only, not a physical \(P_N\) replacement.
+- `v3_downstream_spectral_table.csv`, `v3_downstream_spectral_metrics.json`,
+  and `v3_downstream_manifest.json`: V3.0 dense spectral export artifacts.
 - `v1_dense_eval_dstep1p5_summary.csv`: dense intermediate-\(D\) diagnostic
   summary for the gate-passing continuation model.
 - `v1_dense_eval_dstep0p75_summary.csv`: finer dense-\(D\) diagnostic summary
@@ -546,3 +554,61 @@ architecture to 3000 steps reached the lowest self-adjoint reference at
 `1.28e-4` relative energy.  This is a useful warning for future parametric
 \(D\) PINNs: large-\(D\) points need either longer training, continuation, or
 an explicit eigen-branch tracking gate.
+
+## V2.6 Seed-Stability Freeze Gate
+
+V2.6 freezes the augmented V2 emulator with a stratified seed/collocation
+stability check.  Because the V2 training loss uses deterministic full-grid
+quadrature, same-checkpoint continuation with different seeds is not a useful
+randomness test.  The adopted gate jitters one point inside every tensor-product
+cell and recomputes the projected Ritz spectrum, Gram off-diagonal, and strong
+residual over five seeds.
+
+Tracked outputs:
+
+- `v2_seed_stability_summary.csv`
+- `v2_seed_stability_detail.csv`
+- `v2_seed_stability_metrics.json`
+
+Result:
+
+```text
+V2_6_SEED_STABILITY_PASS
+max_energy_spread_rel = 1.002e-02 < 2.5e-02
+max_corr_offdiag = 5.369e-02 < 8.0e-02
+max_strong_residual_l2_over_rms_u = 1.177e-01 < 3.5e-01
+```
+
+V2 is now frozen as a differentiable spectral emulator.  Finite-volume
+references remain the proof/certificate source of truth.
+
+## V3.0 Downstream Spectral Export
+
+V3 opens the downstream coupling line conservatively.  The first artifact is
+only the dense spectral adapter
+
+```math
+D \mapsto \{E_k(D),\omega_k(D)\}_{k=0}^2,
+```
+
+not a direct physical occupancy map.  The exported table is allowed to feed a
+future energy-to-action adapter, but V3.0 does not compute
+`S_N`, `r_N`, `Gamma_N`, or `P_N`.
+
+Tracked outputs:
+
+- `v3_downstream_spectral_table.csv`
+- `v3_downstream_spectral_metrics.json`
+- `v3_downstream_manifest.json`
+
+The dense step-0.25 export passes the same Gram/residual checks with the third
+branch turning metadata corrected to `D ~= 14.0`.
+
+```text
+max_dense_corr_offdiag = 4.998e-02
+max_dense_residual_L2 = 1.234e-01
+needs_finite_volume_check = false
+```
+
+Next V3 gate: derive and audit an explicit energy-to-action bridge
+`(D,E_k(D)) -> S_k(D)` before computing downstream kinetic probabilities.

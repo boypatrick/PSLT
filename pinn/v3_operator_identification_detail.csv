@@ -1,0 +1,7 @@
+check,value,pass_for_direct_identification,interpretation
+canonical_single_track_energy_sign,all_negative,False,Canonical WKB artifact is a negative-energy bound-state chain.
+pinn_selfadjoint_energy_sign,all_positive,False,V3 PINN export is a positive finite-volume self-adjoint branch table.
+finite_volume_anchor_negative_count,0,False,Augmented self-adjoint anchors have no negative eigenbranches.
+canonical_turning_structure,all_four_turning,True,Canonical single-track action uses a fixed four-turning-point bound geometry.
+pinn_action_component_uniformity,63/147 central,False,PINN V3 action rows are mixed central-barrier/nearest-island components.
+v3p1_adapter_validation,True,True,The adapter itself is valid on the canonical deterministic artifact.

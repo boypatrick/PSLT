@@ -187,3 +187,92 @@ V3.2 operator-identification gate: decide whether the self-adjoint cylindrical
 PINN spectrum can be mapped to the single-track WKB action object, or close the
 V3 line as a diagnostic spectral emulator only.
 ```
+
+## V3.2 Operator-Identification Gate Status
+
+Tracked outputs:
+
+- `v3_operator_identification_detail.csv`
+- `v3_operator_identification_summary.json`
+
+Command:
+
+```bash
+pinn/.venv/bin/python pinn/check_v3_operator_identification.py
+```
+
+The gate compares three objects:
+
+```math
+\{E_{\rm true}^{\rm single-track}(D)\},
+\qquad
+\{E_k^{\rm PINN}(D)\}_{k=0}^2,
+\qquad
+\mathcal A[D,E]\mapsto S(D,E).
+```
+
+Numerical evidence:
+
+```text
+true_energy_range          = [-0.9205263085, -0.0723988815]
+selfadjoint_energy_range   = [ 0.7413694263,  1.1093039513]
+selfadjoint_anchor_n_neg   = 0
+central_barrier_fraction   = 63 / 147 = 0.4285714286
+direct_operator_identification_pass = false
+```
+
+Current V3.2 status:
+
+```text
+CLOSED NEGATIVE / DIAGNOSTIC ONLY
+```
+
+Mathematical reading:
+
+- V3.1 validates the action functional on the canonical deterministic
+  single-track artifact;
+- the V3 PINN export is a positive finite-volume self-adjoint spectral table,
+  while the canonical single-track WKB artifact is a negative-energy bound
+  chain;
+- the action components induced by the PINN table are not uniformly central
+  barrier components;
+- therefore there is no direct operator identification and no permission to
+  feed \(S_k^{\rm PINN}\) into \(r_N\), \(\Gamma_N\), \(P_N\), or release maps.
+
+## V4/V5 Quarantine And Closure
+
+Tracked outputs:
+
+- `v4_downstream_quarantine_summary.json`
+- `v5_pinn_closure_summary.json`
+
+Commands:
+
+```bash
+pinn/.venv/bin/python pinn/check_v4_downstream_quarantine.py
+pinn/.venv/bin/python pinn/check_v5_pinn_closure.py
+```
+
+V4 passes because V3.2 is negative and no PINN-derived release-map artifacts
+exist:
+
+```text
+status = QUARANTINE_PASS_DIAGNOSTIC_ONLY
+blocked = r_N, Gamma_N, P_N, release maps, paper baseline figures
+```
+
+V5 closes the full PINN line:
+
+```text
+status = PINN_SANDBOX_CLOSED_DIAGNOSTIC_ONLY
+closure_pass = true
+```
+
+Final policy:
+
+```text
+The PINN line is frozen as an optional differentiable spectral
+emulator/diagnostic package.  It can nominate deterministic finite-volume
+follow-up points or diagnostic plots, but it does not alter paper/main.tex,
+the release baseline, Gamma_N, P_N, or submission figures.
+```

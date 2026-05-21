@@ -1,0 +1,22 @@
+{
+  "target": "PINN V4 downstream quarantine gate",
+  "status": "QUARANTINE_PASS_DIAGNOSTIC_ONLY",
+  "quarantine_pass": true,
+  "operator_identification_verdict": "NO_DIRECT_OPERATOR_IDENTIFICATION_DIAGNOSTIC_ONLY",
+  "direct_operator_identification_pass": false,
+  "blocked_quantities": [
+    "r_N",
+    "Gamma_N",
+    "P_N",
+    "release maps",
+    "paper baseline figures"
+  ],
+  "allowed_quantities": [
+    "D -> E_k(D) spectral export",
+    "D,E -> S diagnostic adapter",
+    "finite-volume cross-check prompts",
+    "visual/diagnostic emulator plots"
+  ],
+  "existing_disallowed_artifacts": [],
+  "policy": "PINN outputs remain outside the manuscript baseline.  They may suggest where to run deterministic finite-volume checks, but they must not define Gamma_N, P_N, or release-map acceptance."
+}

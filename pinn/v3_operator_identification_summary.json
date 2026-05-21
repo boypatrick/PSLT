@@ -1,0 +1,29 @@
+{
+  "target": "PINN V3.2 operator-identification gate",
+  "status": "CLOSED_NEGATIVE_DIAGNOSTIC_ONLY",
+  "verdict": "NO_DIRECT_OPERATOR_IDENTIFICATION_DIAGNOSTIC_ONLY",
+  "direct_operator_identification_pass": false,
+  "action_adapter_valid_on_true_artifact": true,
+  "true_energy_min": -0.9205263084737675,
+  "true_energy_max": -0.07239888153241779,
+  "true_all_negative": true,
+  "true_all_four_turning": true,
+  "selfadjoint_energy_min": 0.7413694262504578,
+  "selfadjoint_energy_max": 1.1093039512634277,
+  "selfadjoint_all_positive": true,
+  "selfadjoint_anchor_n_negative_max": 0,
+  "selfadjoint_anchor_no_negative": true,
+  "n_action_rows": 147,
+  "n_central_barrier_rows": 63,
+  "n_nearest_forbidden_island_rows": 84,
+  "central_barrier_fraction": 0.42857142857142855,
+  "central_barrier_uniform": false,
+  "policy": "Do not feed V3.1 PINN S_adapter values into r_N, Gamma_N, P_N, or release maps.",
+  "inputs": {
+    "spectral_table": "pinn/v3_downstream_spectral_table.csv",
+    "action_summary": "pinn/v3_energy_to_action_summary.json",
+    "action_detail": "pinn/v3_energy_to_action_detail.csv",
+    "true_artifact": "output/true_single_track/true_results.json",
+    "anchor_summary": "pinn/v2_augmented_anchor_summary.csv"
+  }
+}

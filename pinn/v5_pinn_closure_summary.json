@@ -1,0 +1,41 @@
+{
+  "target": "PINN V5 final sandbox closure",
+  "status": "PINN_SANDBOX_CLOSED_DIAGNOSTIC_ONLY",
+  "closure_pass": true,
+  "checks": [
+    {
+      "name": "V2.6 seed-stability freeze",
+      "pass": true,
+      "status": "V2_6_SEED_STABILITY_PASS"
+    },
+    {
+      "name": "V3.0 downstream spectral export",
+      "pass": true,
+      "status": "OPENED_POSITIVE_EXPORT_ONLY"
+    },
+    {
+      "name": "V3.1 energy-to-action adapter",
+      "pass": true,
+      "status": "DIAGNOSTIC_BRIDGE_ONLY"
+    },
+    {
+      "name": "V3.2 operator-identification gate",
+      "pass": true,
+      "status": "CLOSED_NEGATIVE_DIAGNOSTIC_ONLY"
+    },
+    {
+      "name": "V4 downstream quarantine",
+      "pass": true,
+      "status": "QUARANTINE_PASS_DIAGNOSTIC_ONLY"
+    }
+  ],
+  "final_policy": "The PINN line is frozen as an optional differentiable spectral emulator/diagnostic package.  It does not alter paper/main.tex, the release baseline, Gamma_N, P_N, or submission figures.",
+  "next_allowed_use": "Use PINN only to nominate deterministic finite-volume follow-up points or to produce explicitly diagnostic companion plots.",
+  "inputs": {
+    "v2_6": "pinn/v2_seed_stability_metrics.json",
+    "v3_0": "pinn/v3_downstream_manifest.json",
+    "v3_1": "pinn/v3_energy_to_action_summary.json",
+    "v3_2": "pinn/v3_operator_identification_summary.json",
+    "v4_0": "pinn/v4_downstream_quarantine_summary.json"
+  }
+}

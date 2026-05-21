@@ -114,6 +114,19 @@ harder spectral/eigenvalue problem.
   `(D,E_k(D)) -> S_k(D)`.
 - `v3_energy_to_action_true_crosscheck.csv`, `v3_energy_to_action_detail.csv`,
   and `v3_energy_to_action_summary.json`: V3.1 diagnostic bridge outputs.
+- `check_v3_operator_identification.py`: V3.2 gate deciding whether the V3
+  self-adjoint PINN spectrum can be identified with the canonical single-track
+  WKB object.
+- `v3_operator_identification_summary.json` and
+  `v3_operator_identification_detail.csv`: V3.2 negative identification
+  certificate; current verdict is diagnostic-only.
+- `check_v4_downstream_quarantine.py`: V4 policy gate preventing PINN-derived
+  actions from entering \(r_N\), \(\Gamma_N\), \(P_N\), release maps, or paper
+  baseline figures.
+- `v4_downstream_quarantine_summary.json`: V4 quarantine output.
+- `check_v5_pinn_closure.py`: V5 final sandbox closure/freeze gate.
+- `v5_pinn_closure_summary.json`: V5 final closure output; current status is
+  `PINN_SANDBOX_CLOSED_DIAGNOSTIC_ONLY`.
 - `v1_dense_eval_dstep1p5_summary.csv`: dense intermediate-\(D\) diagnostic
   summary for the gate-passing continuation model.
 - `v1_dense_eval_dstep0p75_summary.csv`: finer dense-\(D\) diagnostic summary

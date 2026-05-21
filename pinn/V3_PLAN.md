@@ -112,3 +112,78 @@ V3 remains outside the paper baseline.  It is a PINN-assisted differentiable
 emulator interface, not a replacement for finite-volume certificates or the
 existing PSLT release maps.
 ```
+
+## V3.1 Energy-to-Action Bridge Status
+
+Tracked outputs:
+
+- `v3_energy_to_action_true_crosscheck.csv`
+- `v3_energy_to_action_detail.csv`
+- `v3_energy_to_action_summary.json`
+
+Command:
+
+```bash
+pinn/.venv/bin/python pinn/bridge_v3_energy_to_action.py \
+  --out-prefix v3_energy_to_action
+```
+
+The adapter uses the action-derived axial shifted potential
+
+```math
+U(0,z;D)
+=m_0^2(\Omega^2-1)
++(1-6\xi)\Omega^{-1}\Delta\Omega
+```
+
+and computes
+
+```math
+S(D,E)=\int_{\mathcal B(D,E)}
+\sqrt{(U(0,z;D)-E)_+}\,dz,
+```
+
+where \(\mathcal B(D,E)\) is the central forbidden component when one exists.
+For negative-energy single-track bound states, the script uses the same inner
+turning-crossing convention as `output/true_single_track/true_results.json`.
+
+Canonical deterministic cross-check:
+
+```text
+true_crosscheck_max_abs_S_error = 3.55e-15
+true_crosscheck_max_rel_S_error = 2.30e-16
+true_crosscheck_pass = true
+```
+
+Applying the same adapter to the V3.0 PINN self-adjoint spectral export gives:
+
+```text
+n_bridge_rows = 147
+status_counts = CENTRAL_BARRIER: 63, NEAREST_FORBIDDEN_ISLAND: 84
+mode 0 central-barrier D range: 6.0..11.75
+mode 1 central-barrier D range: 6.0..11.75
+mode 2 central-barrier D range: 6.0..9.5
+```
+
+Current V3.1 status:
+
+```text
+DIAGNOSTIC BRIDGE ONLY / ADAPTER VALIDATED, OPERATOR IDENTIFICATION NOT CLOSED
+```
+
+Reading:
+
+- the action adapter exactly reproduces the canonical deterministic
+  single-track WKB artifact;
+- the PINN V3.0 self-adjoint spectrum is not the same spectral object as the
+  legacy negative-energy single-track bound artifact;
+- therefore V3.1 must not be promoted to \(\Gamma_N\), \(P_N\), or a release
+  map without a separate operator-identification gate.
+
+Recommended next step:
+
+```text
+V3.2 operator-identification gate: decide whether the self-adjoint cylindrical
+PINN spectrum can be mapped to the single-track WKB action object, or close the
+V3 line as a diagnostic spectral emulator only.
+```

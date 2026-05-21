@@ -1,0 +1,47 @@
+{
+  "target": "PINN V3.1 energy-to-action bridge",
+  "status": "DIAGNOSTIC_BRIDGE_ONLY",
+  "spectral_table": "pinn/v3_downstream_spectral_table.csv",
+  "true_artifact": "output/true_single_track/true_results.json",
+  "rho_axis": 0.02,
+  "n_points": 3000,
+  "true_crosscheck_max_abs_S_error": 3.552713678800501e-15,
+  "true_crosscheck_max_rel_S_error": 2.2999011607939117e-16,
+  "true_crosscheck_pass": true,
+  "n_bridge_rows": 147,
+  "status_counts": {
+    "CENTRAL_BARRIER": 63,
+    "NEAREST_FORBIDDEN_ISLAND": 84
+  },
+  "n_positive_action_rows": 147,
+  "n_central_barrier_rows": 63,
+  "mode_status_counts": {
+    "0": {
+      "CENTRAL_BARRIER": 24,
+      "NEAREST_FORBIDDEN_ISLAND": 25
+    },
+    "1": {
+      "CENTRAL_BARRIER": 24,
+      "NEAREST_FORBIDDEN_ISLAND": 25
+    },
+    "2": {
+      "CENTRAL_BARRIER": 15,
+      "NEAREST_FORBIDDEN_ISLAND": 34
+    }
+  },
+  "central_barrier_D_ranges_by_mode": {
+    "0": {
+      "min_D": 6.0,
+      "max_D": 11.75
+    },
+    "1": {
+      "min_D": 6.0,
+      "max_D": 11.75
+    },
+    "2": {
+      "min_D": 6.0,
+      "max_D": 9.5
+    }
+  },
+  "policy": "Adapter is validated against the canonical single-track S artifact, but the PINN V3.0 self-adjoint spectrum is not the same spectral object as the legacy negative-energy single-track artifact.  Do not promote to Gamma_N or P_N without a separate operator-identification gate."
+}

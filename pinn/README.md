@@ -110,6 +110,10 @@ harder spectral/eigenvalue problem.
   spectral export only, not a physical \(P_N\) replacement.
 - `v3_downstream_spectral_table.csv`, `v3_downstream_spectral_metrics.json`,
   and `v3_downstream_manifest.json`: V3.0 dense spectral export artifacts.
+- `bridge_v3_energy_to_action.py`: V3.1 action-adapter/cross-check script for
+  `(D,E_k(D)) -> S_k(D)`.
+- `v3_energy_to_action_true_crosscheck.csv`, `v3_energy_to_action_detail.csv`,
+  and `v3_energy_to_action_summary.json`: V3.1 diagnostic bridge outputs.
 - `v1_dense_eval_dstep1p5_summary.csv`: dense intermediate-\(D\) diagnostic
   summary for the gate-passing continuation model.
 - `v1_dense_eval_dstep0p75_summary.csv`: finer dense-\(D\) diagnostic summary
@@ -612,3 +616,36 @@ needs_finite_volume_check = false
 
 Next V3 gate: derive and audit an explicit energy-to-action bridge
 `(D,E_k(D)) -> S_k(D)` before computing downstream kinetic probabilities.
+
+## V3.1 Energy-to-Action Bridge
+
+V3.1 adds the adapter
+
+```math
+S(D,E)=\int_{\mathcal B(D,E)}
+\sqrt{(U(0,z;D)-E)_+}\,dz,
+```
+
+where \(U=V_{\rm eff}-m_0^2\) is the action-derived axial shifted potential.
+The adapter first cross-checks against the canonical deterministic
+single-track WKB artifact, then applies the same rule to the V3.0 PINN spectral
+export.
+
+Tracked outputs:
+
+- `v3_energy_to_action_true_crosscheck.csv`
+- `v3_energy_to_action_detail.csv`
+- `v3_energy_to_action_summary.json`
+
+Result:
+
+```text
+true_crosscheck_pass = true
+true_crosscheck_max_abs_S_error = 3.55e-15
+status_counts = CENTRAL_BARRIER: 63, NEAREST_FORBIDDEN_ISLAND: 84
+```
+
+Interpretation: the adapter is correct for the deterministic single-track WKB
+object, but the V3.0 self-adjoint PINN spectrum is not automatically the same
+object.  V3.1 is therefore diagnostic-only until an operator-identification
+gate is closed.

@@ -1,0 +1,79 @@
+{
+  "claim_firewall": {
+    "baseline_change": false,
+    "main_tex_change": false,
+    "defines_Gamma_N": false,
+    "interpretation": "toy Hamiltonian Floquet phase ordering only; no growth-rate claim"
+  },
+  "profile": {
+    "A": 15.947599366191568,
+    "Delta": 1.0,
+    "I_LO": "int_0^1 Omega_LO dx = |beta| atan(|beta|)",
+    "q_tau": "I_LO(tau) - mean(I_LO)",
+    "q_mean": 0.4152761757221536
+  },
+  "toy_operator": "y_N'' + [omega_N^2 + kappa q(tau)] y_N = 0, omega_N=pi(N-1/2)",
+  "overall_verdict": "D2_TOY_FLOQUET_PHASE_ORDERING_STABLE_NO_GROWTH_CLAIM",
+  "summary_rows": [
+    {
+      "gate": "D2",
+      "kappa": "0",
+      "modes": 6,
+      "steps": 8000,
+      "A": "1.5947599366191568e+01",
+      "q_mean": "4.1527617572215358e-01",
+      "stable_all": true,
+      "ordering_pass": true,
+      "min_quasi_frequency_gap": "3.1415926535878071e+00",
+      "max_abs_log_multiplier": "6.9944050551385107e-15",
+      "max_det_residual": "1.3766765505351941e-14",
+      "max_abs_quasi_shift": "3.1334934647020418e-12",
+      "verdict": "TOY_FLOQUET_PHASE_ORDERING_STABLE_NO_GROWTH_CLAIM"
+    },
+    {
+      "gate": "D2",
+      "kappa": "0.25",
+      "modes": 6,
+      "steps": 8000,
+      "A": "1.5947599366191568e+01",
+      "q_mean": "4.1527617572215358e-01",
+      "stable_all": true,
+      "ordering_pass": true,
+      "min_quasi_frequency_gap": "3.1415818255576164e+00",
+      "max_abs_log_multiplier": "7.2164496600635443e-15",
+      "max_det_residual": "1.3766765505351941e-14",
+      "max_abs_quasi_shift": "1.0372276388226354e-05",
+      "verdict": "TOY_FLOQUET_PHASE_ORDERING_STABLE_NO_GROWTH_CLAIM"
+    },
+    {
+      "gate": "D2",
+      "kappa": "0.5",
+      "modes": 6,
+      "steps": 8000,
+      "A": "1.5947599366191568e+01",
+      "q_mean": "4.1527617572215358e-01",
+      "stable_all": true,
+      "ordering_pass": true,
+      "min_quasi_frequency_gap": "3.1415493419832021e+00",
+      "max_abs_log_multiplier": "7.9936057773011586e-15",
+      "max_det_residual": "1.5987211554602254e-14",
+      "max_abs_quasi_shift": "4.1488246317555877e-05",
+      "verdict": "TOY_FLOQUET_PHASE_ORDERING_STABLE_NO_GROWTH_CLAIM"
+    },
+    {
+      "gate": "D2",
+      "kappa": "1",
+      "modes": 6,
+      "steps": 8000,
+      "A": "1.5947599366191568e+01",
+      "q_mean": "4.1527617572215358e-01",
+      "stable_all": true,
+      "ordering_pass": true,
+      "min_quasi_frequency_gap": "3.1414194097883561e+00",
+      "max_abs_log_multiplier": "3.9968028886505557e-15",
+      "max_det_residual": "8.4376949871511897e-15",
+      "max_abs_quasi_shift": "1.6594349880616477e-04",
+      "verdict": "TOY_FLOQUET_PHASE_ORDERING_STABLE_NO_GROWTH_CLAIM"
+    }
+  ]
+}

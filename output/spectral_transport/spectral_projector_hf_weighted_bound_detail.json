@@ -1,0 +1,39 @@
+{
+  "claim_firewall": {
+    "baseline_change": false,
+    "main_tex_change": false,
+    "continuum_no_crossing_claimed": false,
+    "meaning": "finite-grid weighted Hellmann-Feynman/projector derivative bound for the current G1 operator chain"
+  },
+  "summary": {
+    "gate": "T3a",
+    "verdict": "T3A_WEIGHTED_HF_PROJECTOR_BOUND_PASS",
+    "level": "fine",
+    "n_D": 21,
+    "D_min": 4.0,
+    "D_max": 20.0,
+    "rho_max": 3.0,
+    "z_margin": 6.0,
+    "dr": 0.06,
+    "dz": 0.03,
+    "sigma": 2.5,
+    "n_eigs": 40,
+    "n_low": 3,
+    "max_lambda_abs_diff_vs_g1_spectrum": 2.0892176877396196e-12,
+    "all_lambda_match_g1_spectrum": true,
+    "max_hf_abs_diag_lambda_prime": 0.003779455755604381,
+    "max_weighted_rms_dD_U": 0.3890159737257284,
+    "max_weighted_std_dD_U": 0.3890080784559226,
+    "max_included_projector_derivative_bound": 0.02785252488812737,
+    "max_tail_projector_derivative_bound": 0.057494130960578885,
+    "max_total_projector_derivative_bound": 0.08409504588944938,
+    "max_total_projector_bound_tol": 0.25,
+    "pass_projector_bound_tol": true,
+    "t1_max_fd_slope_N1": 0.0087783006441935,
+    "t1_max_fd_slope_N2": 0.017481426266184,
+    "t1_max_fd_slope_N3": 0.0448975865906271,
+    "t2_fixed_grid_supnorm": 59.95892701435896,
+    "hf_diag_over_t2_supnorm": 6.303407922392068e-05,
+    "interpretation": "weighted low-mode matrix elements avoid the Plummer-core sup-norm spike; still a finite-grid certificate unless paired with inter-knot operator control"
+  }
+}

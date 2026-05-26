@@ -1,0 +1,36 @@
+{
+  "claim_firewall": {
+    "baseline_change": false,
+    "main_tex_change": false,
+    "literal_g1_variable_box_claimed": false,
+    "meaning": "fixed-box pullback step certificate plus Davis-Kahan residual comparator"
+  },
+  "summary": {
+    "gate": "T3b",
+    "verdict": "T3B_FIXED_BOX_PROJECTOR_STEP_PASS_RAW_DK_LOOSE",
+    "level": "fine",
+    "n_D": 21,
+    "n_steps": 20,
+    "D_min": 4.0,
+    "D_max": 20.0,
+    "fixed_z_max": 16.0,
+    "rho_max": 3.0,
+    "dr": 0.06,
+    "dz": 0.03,
+    "n_eigs": 40,
+    "n_low": 3,
+    "rank_one_drift_tol": 0.05,
+    "cluster_drift_tol": 0.075,
+    "path_bound_tol": 0.25,
+    "max_rank_one_projector_sin": 0.041167738779789895,
+    "all_rank_one_drift_pass": true,
+    "max_cluster_sin_theta": 0.028715419399639706,
+    "all_cluster_drift_pass": true,
+    "max_t3a_integrated_path_bound": 0.0672760367115592,
+    "all_t3a_path_bound_pass": true,
+    "max_raw_davis_kahan_bound_unclipped": 3.680697023022397,
+    "raw_davis_kahan_all_pass_unclipped": false,
+    "max_abs_fixed_box_lambda_diff_vs_g1_variable_box_low3": 0.26734335884564975,
+    "interpretation": "fixed-box projectors drift mildly and T3a path bound passes; raw residual Davis-Kahan bound is recorded but too conservative because it sees core/tail residuals"
+  }
+}

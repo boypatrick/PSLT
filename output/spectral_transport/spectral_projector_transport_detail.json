@@ -1,0 +1,43 @@
+{
+  "claim_firewall": {
+    "baseline_change": false,
+    "main_tex_change": false,
+    "continuum_theorem_claimed_by_script": false,
+    "interpretation": "finite-grid support for a conditional Kato/Riesz projector transport theorem; the continuum theorem still requires an analytic open-gap assumption between audited D knots"
+  },
+  "theorem_inputs_checked": {
+    "strict_grid_gaps": true,
+    "rank_count_rows_pass": true,
+    "adjacent_displacement_over_gap_pass": true
+  },
+  "summary": {
+    "gate": "T1",
+    "verdict": "CONDITIONAL_PROJECTOR_TRANSPORT_COHERENCE_SUPPORTED_ON_G1_GRID",
+    "level": "fine",
+    "n_D": 21,
+    "D_min": 4.0,
+    "D_max": 20.0,
+    "delta_D_min": 0.7999999999999972,
+    "delta_D_max": 0.8000000000000043,
+    "contour_fraction": 0.45,
+    "max_step_gap_ratio_tol": 0.25,
+    "rank_count_rows_pass": true,
+    "all_strict_gap_pass": true,
+    "all_step_ratio_pass": true,
+    "min_nearest_gap_N1": 0.041644263548268556,
+    "min_nearest_gap_N2": 0.041644263548268556,
+    "min_nearest_gap_N3": 0.04968688976205282,
+    "min_riesz_radius_N1": 0.01873991859672085,
+    "min_riesz_radius_N2": 0.01873991859672085,
+    "min_riesz_radius_N3": 0.02235910039292377,
+    "max_step_gap_ratio_N1": 0.0757806277234115,
+    "max_step_gap_ratio_N2": 0.15091229039053536,
+    "max_step_gap_ratio_N3": 0.21451494180792025,
+    "max_abs_lambda_slope_N1": 0.00877830064419355,
+    "max_abs_lambda_slope_N2": 0.017481426266184045,
+    "max_abs_lambda_slope_N3": 0.04489758659062718,
+    "total_variation_lambda_N1": 0.07219682942650563,
+    "total_variation_lambda_N2": 0.13018572279987595,
+    "total_variation_lambda_N3": 0.26987030413167257
+  }
+}

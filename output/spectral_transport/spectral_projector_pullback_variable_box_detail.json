@@ -1,0 +1,39 @@
+{
+  "claim_firewall": {
+    "baseline_change": false,
+    "main_tex_change": false,
+    "release_spectrum_replaced": false,
+    "meaning": "literal variable-box coordinate-pullback finite-grid projector step certificate"
+  },
+  "summary": {
+    "gate": "T3c",
+    "verdict": "T3C_VARIABLE_BOX_PULLBACK_PROJECTOR_STEP_PASS_RAW_DK_LOOSE",
+    "level": "fine",
+    "n_D": 21,
+    "n_steps": 20,
+    "D_min": 4.0,
+    "D_max": 20.0,
+    "rho_max": 3.0,
+    "z_margin": 6.0,
+    "dr": 0.06,
+    "ny_ref": 1067,
+    "dy_ref": 0.0018744142455482662,
+    "dz_phys_min": 0.01499531396438613,
+    "dz_phys_max": 0.02999062792877226,
+    "dz_target": 0.03,
+    "n_eigs": 40,
+    "n_low": 3,
+    "rank_one_drift_tol": 0.05,
+    "cluster_drift_tol": 0.075,
+    "raw_dk_bound_tol": 0.25,
+    "max_rank_one_projector_sin": 0.013928181522331775,
+    "all_rank_one_drift_pass": true,
+    "max_cluster_sin_theta": 0.011846382262997952,
+    "all_cluster_drift_pass": true,
+    "max_raw_davis_kahan_bound_unclipped": 1.2324618065225783,
+    "raw_davis_kahan_all_pass_unclipped": false,
+    "max_abs_pullback_lambda_diff_vs_g1_low3": 0.0008025737978598624,
+    "operator_formula": "K_pull=K_rho+L(D)^(-2)K_y+diag(rho U(rho,L(D)y;D)); M_pull=diag(rho)",
+    "interpretation": "literal variable-box coordinate pullback keeps L(D), axial kinetic scaling, measure, and boundaries on a fixed y-Hilbert space; projector drift passes while raw residual DK remains conservative"
+  }
+}

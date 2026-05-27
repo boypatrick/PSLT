@@ -17,5 +17,6 @@
   "hmumu_f_chi2_le_4": 0.15,
   "max_tail_prob": 1.0,
   "mean_tail_prob": 0.0890926060351153,
+  "table_iii_max_log_residual_display": 0.00021820202962175017,
   "winner_gt_3": 0.0002777777777777778
 }

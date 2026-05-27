@@ -25,12 +25,13 @@ Initial deliverables:
 | Short-paper directory | `CREATED` | Use `paper_prd/main.tex` as the PRD-short source and `paper_prd/README.md` as the page-budget / supplement-split map. |
 | Page-budget skeleton | `CREATED` | Fill sections without exceeding the <= 40 page target; keep the assumption map before theorem/result language. |
 | Figure plan | `CREATED / FIRST FIGURES GENERATED` | `code/generate_prd_short_figures.py` now writes the short-paper master closure diagram, R3 occupancy map, no-fourth certificate, H->mumu diagnostic map, projector-transport margins, and release-number JSON under `paper_prd/figures/`. |
+| Generated release table/macros | `CREATED / WIRED` | The same script writes `paper_prd/generated/prd_short_release_macros.tex` and `paper_prd/generated/prd_short_release_results_table.tex`; `paper_prd/main.tex` inputs these files so the headline release table is no longer hand-numbered. |
 | Supplement split | `CREATED` | Avoid long internal path prose in the short paper; point readers to versioned supplement/artifact registry instead. |
 
 Execution order for this track:
 
 1. Compile the skeleton and fix only mechanical LaTeX/bibliography/figure issues.
-2. Replace manual result prose in `paper_prd/main.tex` with generated tables/macros from `paper_prd/figures/prd_short_release_numbers.json`.
+2. Keep release-result numbers generated through `paper_prd/generated/prd_short_release_macros.tex` and `paper_prd/generated/prd_short_release_results_table.tex`, sourced from `paper_prd/figures/prd_short_release_numbers.json`.
 3. Keep compact figures wired to `code/generate_prd_short_figures.py`: master-equation diagram, `R3` occupancy map, no-fourth finite-domain certificate, reference-normalized `H->mumu` diagnostic, optional projector-transport margin plot.
 4. Run a page-count and visual spot-check; cut prose before adding more theorem text.
 5. Only after the short manuscript is stable, decide whether to cite the long `paper/main.pdf` as supplement, split appendices, or generate a separate supplemental PDF.

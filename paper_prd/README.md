@@ -65,3 +65,5 @@ Run `python3 code/generate_prd_short_figures.py` from the repository root, or `p
 - `paper_prd/figures/prd_hmumu_diagnostic_map.png`
 - `paper_prd/figures/prd_projector_transport_margins.png`
 - `paper_prd/figures/prd_short_release_numbers.json`
+- `paper_prd/generated/prd_short_release_macros.tex`
+- `paper_prd/generated/prd_short_release_results_table.tex`

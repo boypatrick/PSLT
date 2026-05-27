@@ -8,6 +8,33 @@ This file is the submission-facing roadmap freeze.  It replaces the earlier runn
 
 The current paper is in submission-closure mode.  The manuscript should not open new support/object/family searches before submission.  The only active work is packaging, consistency, reproducibility hygiene, and final PDF/readability checks.
 
+## PRD Short Manuscript Track
+
+Status: `ACTIVE / NEW SUBMISSION PACKAGING TRACK`.
+
+The long manuscript in `paper/` is now treated as the technical companion / supplement.  The PRD-facing article should be developed in `paper_prd/` with a hard target of <= 40 pages and with the following claim boundary:
+
+- Main claim: a conditional EFT-level spectral-layer occupancy closure on a fixed projected two-center conformal background, with first-three-layer occupancy concentration and a finite-domain no-fourth-bound-layer kinetic certificate.
+- Explicit non-claim: no full EYMH parent derivation of exactly three SM fermion generations, no global complex-pole/static-width family, no formal Higgs likelihood or absolute Higgs-sector prediction.
+- Supplement policy: O/S/U/A proposition chains, CAP/ECS/Whittaker/static-width audits, open-system exact-bridge certificates, protected `Spin^c` V0--V6, DSS/Floquet D0--D3, and long artifact paths remain in the technical companion unless a reviewer specifically asks for promotion.
+
+Initial deliverables:
+
+| Deliverable | Status | Required next action |
+| --- | --- | --- |
+| Short-paper directory | `CREATED` | Use `paper_prd/main.tex` as the PRD-short source and `paper_prd/README.md` as the page-budget / supplement-split map. |
+| Page-budget skeleton | `CREATED` | Fill sections without exceeding the <= 40 page target; keep the assumption map before theorem/result language. |
+| Figure plan | `CREATED / FIRST FIGURES GENERATED` | `code/generate_prd_short_figures.py` now writes the short-paper master closure diagram, R3 occupancy map, no-fourth certificate, H->mumu diagnostic map, projector-transport margins, and release-number JSON under `paper_prd/figures/`. |
+| Supplement split | `CREATED` | Avoid long internal path prose in the short paper; point readers to versioned supplement/artifact registry instead. |
+
+Execution order for this track:
+
+1. Compile the skeleton and fix only mechanical LaTeX/bibliography/figure issues.
+2. Replace manual result prose in `paper_prd/main.tex` with generated tables/macros from `paper_prd/figures/prd_short_release_numbers.json`.
+3. Keep compact figures wired to `code/generate_prd_short_figures.py`: master-equation diagram, `R3` occupancy map, no-fourth finite-domain certificate, reference-normalized `H->mumu` diagnostic, optional projector-transport margin plot.
+4. Run a page-count and visual spot-check; cut prose before adding more theorem text.
+5. Only after the short manuscript is stable, decide whether to cite the long `paper/main.pdf` as supplement, split appendices, or generate a separate supplemental PDF.
+
 ## Submission Blockers
 
 These items are not new theorem/object/family searches.  They are submission-facing consistency blockers exposed by the reviewer-style audit.  Any unresolved row below must be resolved before a final submission tag.

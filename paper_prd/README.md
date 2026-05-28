@@ -42,6 +42,21 @@ Keep these in the technical companion unless a reviewer asks for promotion:
 - DSS/Floquet D0--D3 diagnostic/negative package.
 - Long artifact paths and old comparator branches.
 
+Status tags used when reading the companion:
+
+- `Baseline input`: used in release numbers.
+- `Certificate`: finite-domain proof or numerical guard for the baseline.
+- `Diagnostic / monitor`: checked but not propagated into release numbers.
+- `Negative result`: failed route retained for transparency and to avoid repeated searches.
+- `Future route`: possible strengthening not assumed by the short manuscript.
+
+Parameter-set convention:
+
+- Release baseline scan is the only source for headline `R3`, no-fourth, and `H->mumu` diagnostic numbers.
+- Demonstrator geometries are for formula/sign/WKB inspection only.
+- Physical-gap and finite-volume validation sets support certificates.
+- Legacy comparators and stress tests are not replacement baselines unless a later adoption gate promotes them.
+
 ## Build
 
 From this directory:

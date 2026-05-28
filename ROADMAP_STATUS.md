@@ -1,6 +1,6 @@
 # PSLT Roadmap Status
 
-Last updated: 2026-05-27
+Last updated: 2026-05-29
 
 This file is the submission-facing roadmap freeze.  It replaces the earlier running audit log with a compact decision map: what is active for submission, what is closed and should not be reopened before submission, and what remains only as optional future strengthening.  Detailed provenance is preserved in `paper/main.tex`, `FAMILY_DECISION_TABLE.md`, `paper/artifact_status.csv`, `output/repro/artifact_status.csv`, and the git history.
 
@@ -28,14 +28,16 @@ Initial deliverables:
 | Figure plan | `CREATED / FIRST FIGURES GENERATED` | `code/generate_prd_short_figures.py` now writes the short-paper master closure diagram, R3 occupancy map, no-fourth certificate, H->mumu diagnostic map, projector-transport margins, and release-number JSON under `paper_prd/figures/`. |
 | Generated release table/macros | `CREATED / WIRED` | The same script writes `paper_prd/generated/prd_short_release_macros.tex` and `paper_prd/generated/prd_short_release_results_table.tex`; `paper_prd/main.tex` inputs these files so the headline release table is no longer hand-numbered. |
 | Supplement split | `CREATED` | Avoid long internal path prose in the short paper; point readers to versioned supplement/artifact registry instead. |
+| Supplement readability pass | `DRAFTED / COMPILES / VISUAL CHECKED` | `paper_prd/main.tex` now adds a companion status legend, a parameter-set taxonomy, and an explicit reference-normalization sensitivity range for the `H->mumu` diagnostic.  LaTeX builds to 20 pages with no unresolved references/citations and no overfull/underfull box warnings; rendered pages 4--5 and 15--18 pass the local visual spot-check.  These changes keep the long `paper/` manuscript as a technical audit companion rather than a second baseline-claim paper. |
 
 Execution order for this track:
 
 1. Compile the skeleton and fix only mechanical LaTeX/bibliography/figure issues.
 2. Keep release-result numbers generated through `paper_prd/generated/prd_short_release_macros.tex` and `paper_prd/generated/prd_short_release_results_table.tex`, sourced from `paper_prd/figures/prd_short_release_numbers.json`.
 3. Keep compact figures wired to `code/generate_prd_short_figures.py`: master-equation diagram, `R3` occupancy map, no-fourth finite-domain certificate, reference-normalized `H->mumu` diagnostic, optional projector-transport margin plot.
-4. Run a page-count and visual spot-check after the first body expansion; cut prose before adding more theorem text.
-5. Only after the short manuscript is stable, decide whether to cite the long `paper/main.pdf` as supplement, split appendices, or generate a separate supplemental PDF.
+4. Keep the supplement status legend and parameter-set taxonomy visible before any long-companion reading map.
+5. Run a page-count and visual spot-check after the first body expansion; cut prose before adding more theorem text.
+6. Only after the short manuscript is stable, decide whether to cite the long `paper/main.pdf` as supplement, split appendices, or generate a separate supplemental PDF.
 
 ## Submission Blockers
 

@@ -187,6 +187,40 @@ A5 & \(B_N\) and Eq.~\eqref{eq:hmumu_pred} & No visible-sector diagnostic map. \
 \end{tabular}
 \end{table}
 
+\subsection{Parameter-set taxonomy}
+
+Several numerical parameter sets appear in the long audit companion.
+They should not be read as interchangeable baselines.
+The short paper uses the release scan only for the reported occupancy and Higgs-diagnostic numbers; other parameter sets are demonstrators, validation tests, or historical comparators.
+Table~\ref{tab:param_taxonomy} fixes this convention.
+
+\begin{table}[htbp]
+\centering
+\caption{Parameter-set taxonomy used when reading the short paper together with the long supplement.}
+\label{tab:param_taxonomy}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\parbox[t]{0.22\textwidth}{\textbf{Name}} & \parbox[t]{0.34\textwidth}{\textbf{Role}} & \parbox[t]{0.32\textwidth}{\textbf{How it may be used}} \\
+\midrule
+\parbox[t]{0.22\textwidth}{Release baseline scan} &
+\parbox[t]{0.34\textwidth}{The canonical source of the reported \(\Rthree\), no-fourth, and \(H\to\mu\mu\) diagnostic numbers.} &
+\parbox[t]{0.32\textwidth}{Use for all headline release statements and figures in this short paper.} \\
+\parbox[t]{0.22\textwidth}{Demonstrator geometry} &
+\parbox[t]{0.34\textwidth}{Transparent worked examples of the Plummer two-center operator and WKB action convention.} &
+\parbox[t]{0.32\textwidth}{Use to inspect formulas and signs; do not substitute into release fractions.} \\
+\parbox[t]{0.22\textwidth}{Physical-gap and finite-volume validation sets} &
+\parbox[t]{0.34\textwidth}{Grid, Sturm/min--max, low-mode, and projector-coherence audits.} &
+\parbox[t]{0.32\textwidth}{Use as certificates for finite-domain statements, not as separate phenomenological baselines.} \\
+\parbox[t]{0.22\textwidth}{Legacy comparators and stress tests} &
+\parbox[t]{0.34\textwidth}{Cardy-style weights, Yukawa visibility laws, CAP/ECS/static-width trials, DSS/Floquet trials, and other diagnostic branches.} &
+\parbox[t]{0.32\textwidth}{Use only for uncertainty, failure-mode, or motivation discussion unless explicitly promoted.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Projected Two-Center Spectral Operator}
 \label{sec:operator}
 
@@ -576,6 +610,13 @@ This wording is deliberately more prosaic than ``projector'' because the matrix 
 
 The observed ATLAS input is used only through the one-dimensional target value \(\mu_{\mu\mu}=1.4\pm0.4\)~\cite{ATLAS_Hmumu}.
 The short paper therefore reports the fraction of scan points in a simple \(\chi^2\le4\) target band and the best grid value, but it does not claim a look-elsewhere-corrected exclusion, a global posterior, or an absolute Standard Model EFT Wilson coefficient measurement.
+For the fixed reference-normalization point used in the release figures, the target-band fraction is \(f(\chi^2_{\mu\mu}\le4)=\PRDShortHmumuChiTwoLeFour\).
+The long companion's reference-normalization audit varies the reference point over 53 anchors and gives
+\begin{equation}
+    f(\chi^2_{\mu\mu}\le4)\in[0.0333,\,0.2411].
+    \label{eq:hmumu_ref_sensitivity}
+\end{equation}
+This spread is not a failure of the diagnostic; it is the reason the short manuscript treats Fig.~\ref{fig:hmumu_diag} as a target-region visualization rather than as experimental support for a unique absolute normalization.
 Turning Fig.~\ref{fig:hmumu_diag} into a genuine prediction would require an independent normalization theorem for \(C_{eH}^{\mu\mu}\), a nuisance-parameter model, and a pre-specified likelihood.
 
 \begin{figure}[htbp]
@@ -615,7 +656,38 @@ Until such a theorem exists, the Higgs map remains a diagnostic.
 \label{sec:repro}
 
 The long manuscript and repository artifacts serve as the technical companion for this short paper.
-The intended split is shown in Table~\ref{tab:supplement_map}.
+Before using the companion, the reader should distinguish the status tags in Table~\ref{tab:supplement_status_legend}.
+The intended topical split is then shown in Table~\ref{tab:supplement_map}.
+
+\begin{table}[htbp]
+\centering
+\caption{Status legend for the long technical companion.}
+\label{tab:supplement_status_legend}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\parbox[t]{0.21\textwidth}{\textbf{Status tag}} & \parbox[t]{0.34\textwidth}{\textbf{Meaning}} & \parbox[t]{0.33\textwidth}{\textbf{Effect on the short-paper claim}} \\
+\midrule
+\parbox[t]{0.21\textwidth}{Baseline input} &
+\parbox[t]{0.34\textwidth}{Used directly in the release numbers reported in the short paper.} &
+\parbox[t]{0.33\textwidth}{May support headline statements when A1--A5 and the stated audit domain apply.} \\
+\parbox[t]{0.21\textwidth}{Certificate} &
+\parbox[t]{0.34\textwidth}{Proves or numerically certifies a finite-domain statement used to guard the baseline.} &
+\parbox[t]{0.33\textwidth}{Supports robustness, but does not automatically globalize the claim.} \\
+\parbox[t]{0.21\textwidth}{Diagnostic / monitor} &
+\parbox[t]{0.34\textwidth}{Checked for sensitivity, mechanism insight, or reviewer transparency but not propagated into the release baseline.} &
+\parbox[t]{0.33\textwidth}{Cannot be used as a new input without a separate adoption gate.} \\
+\parbox[t]{0.21\textwidth}{Negative result} &
+\parbox[t]{0.34\textwidth}{A route that failed its adoption gate or was closed as too weak.} &
+\parbox[t]{0.33\textwidth}{Preserved to prevent repeated searches and selective reporting.} \\
+\parbox[t]{0.21\textwidth}{Future route} &
+\parbox[t]{0.34\textwidth}{A possible strengthening, such as a parent derivation or protected-index completion.} &
+\parbox[t]{0.33\textwidth}{Not assumed by the present release.} \\
+\bottomrule
+\end{tabular}
+\end{table}
 \clearpage
 
 \begin{table}[htbp]

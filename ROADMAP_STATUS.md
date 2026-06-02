@@ -1,6 +1,6 @@
 # PSLT Roadmap Status
 
-Last updated: 2026-05-29
+Last updated: 2026-06-02
 
 This file is the submission-facing roadmap freeze.  It replaces the earlier running audit log with a compact decision map: what is active for submission, what is closed and should not be reopened before submission, and what remains only as optional future strengthening.  Detailed provenance is preserved in `paper/main.tex`, `FAMILY_DECISION_TABLE.md`, `paper/artifact_status.csv`, `output/repro/artifact_status.csv`, and the git history.
 
@@ -38,6 +38,30 @@ Execution order for this track:
 4. Keep the supplement status legend and parameter-set taxonomy visible before any long-companion reading map.
 5. Run a page-count and visual spot-check after the first body expansion; cut prose before adding more theorem text.
 6. Only after the short manuscript is stable, decide whether to cite the long `paper/main.pdf` as supplement, split appendices, or generate a separate supplemental PDF.
+
+## EPJC Preparation Track
+
+Status: `ACTIVE / PREFERRED JOURNAL-TARGET PREPARATION TRACK`.
+
+The current preferred first-choice target is EPJC rather than Annals of Physics.  The EPJC-facing article is prepared in `paper_epjc/` as a separate folder so that journal-target wording, class/template choices, availability statements, and supplement policy can evolve without overwriting `paper_prd/`.
+
+Current state:
+
+| Deliverable | Status | Required next action |
+| --- | --- | --- |
+| EPJC folder | `CREATED` | `paper_epjc/` now contains an EPJC-facing copy of the short article, copied figures, generated release macros/table, and a target-specific README. |
+| Journal-neutral wording | `FIRST PASS DONE` | Reader-facing `PRD-short` / `Draft PRD` wording has been removed from `paper_epjc/main.tex`; remaining `PRDShort...` names are internal generated macro names only. |
+| Generic article build | `COMPILES / LOG CLEAN` | `paper_epjc/main.tex` builds under a generic `article` class to `paper_epjc/main.pdf` at 16 pages.  Current log has no unresolved citations/references, no underfull/overfull boxes, and the final rendered contact sheet passes the local visual spot-check. |
+| EPJC availability language | `DRAFTED` | `paper_epjc/main.tex` now includes a `Data, code, and supplement availability` subsection.  Final submission still needs a versioned archive/DOI decision. |
+| Generated assets | `COPIED + EPJC MASTER FIGURE` | The EPJC folder reuses copied release assets from `paper_prd/` where the figure content is canonical, and locally regenerates `figures/epjc_master_closure_diagram.png` with journal-neutral wording through `paper_epjc/generate_epjc_figures.py`.  Remaining `prd_*` filenames and `PRDShort...` macros are historical/internal names only.  If EPJC becomes final, either rename assets/macros or make the release figure generator output-directory aware. |
+
+Execution order for this track:
+
+1. Keep `paper_epjc/` separate from `paper_prd/`; do not overwrite the PRD track while EPJC targeting is being tested.
+2. Keep table layout/underfull warnings clean and repeat the EPJC visual spot-check after any figure or template change.
+3. Decide whether to keep the generic `article` class for arXiv/pre-submission or migrate to the current Springer/EPJC template.
+4. Replace historical `prd_*` generated filenames/macros only after the EPJC text stabilizes or after the generator becomes output-directory aware.
+5. Add final code/data/supplement archive identifiers before submission.
 
 ## Submission Blockers
 
@@ -112,8 +136,22 @@ These are post-submission or revision-triggered items only:
 | Spectral projector transport / `D_sep` coherence | Would strengthen the optional bridge between protected low-mode mechanisms and the current G1 finite-volume spectral flag by proving coherent labels `N=1,2,3` along the scanned `D_sep` interval. | T1 is closed conditionally on the G1 grid; T2 closes the explicit two-center `||H'(D)||` envelope with verdict `T2_ANALYTIC_HPRIME_ENVELOPE_VERIFIED_SUPNORM_LOOSE`; T3a closes the weighted Hellmann-Feynman/projector derivative certificate with verdict `T3A_WEIGHTED_HF_PROJECTOR_BOUND_PASS`; T3b closes the fixed-box step certificate; T3c closes the literal variable-box coordinate-pullback certificate with verdict `T3C_VARIABLE_BOX_PULLBACK_PROJECTOR_STEP_PASS_RAW_DK_LOOSE`.  Reopen only for a formal write-up into the manuscript or a denser-mesh refinement.  No baseline scan retuning. |
 | Large-`d` DSS/Floquet parent feasibility | D0--D2 are useful toy checks, but D3 closes the present projected-conformal bridge negative: the domain-safe axial `C^2` gate fails, so the line cannot control `V_eff`, `omega_N`, or `S_N` for the current PSLT two-center background. | Reopen only with a genuinely new projection mechanism, not by retuning the current two-lobe period-average candidate or using the `x>1` analytic extension as a physical bridge.  Do not cite it as proving PSLT. |
 | Protected `Spin^c` index three-family theorem | Would replace the weakest scan-level family-count intuition by a conditional index theorem: `R=p_+ + p_-`, `L_R=O(2)`, `h^0(CP^1,O(2))=3`, `h^1(CP^1,O(2))=0`, and a product Dirac reduction to three unpaired SM-charged chiral families.  It remains optional because these are explicit geometric/protection assumptions, not consequences of the current EYMH parent.  The bridge package is now a conditional first-principles completion package: V0 closes dimension/flag compatibility, V1 supplies a fixed tapered-polynomial anchor-overlap certificate, V2 confirms the physical `even,odd,even` / `0,1,2` nodal-Sturm ordering, V3 conditionally selects `C=CP^1`, V4 conditionally locks `R=p_+ + p_-`, `L_R=O(2)`, V5 conditionally selects the Dolbeault `Spin^c` carrier over ordinary spin with the same V4 flux, and V6 supplies a conditional vectorlike no-exotics gap certificate. | Reopen only if a revision asks for a stronger exactly-three mechanism, or if we deliberately write a companion mechanism paper.  Current gates: `python3 code/check_spinc_bridge_lemma.py` returns `CONDITIONAL_DIMENSION_FLAG_BRIDGE_ONLY`; `python3 code/check_spinc_anchor_overlap.py` returns `PROMOTABLE_ANCHOR_INTERTWINER`; `python3 code/check_spinc_nodal_sturm_order.py` returns `NODAL_STURM_ORDER_CONFIRMED`; `python3 code/check_spinc_projective_minimality.py` returns `CONDITIONAL_CP1_SELECTED_BY_NO_HIDDEN_MODULI`; `python3 code/check_spinc_ramification_flux_lock.py` returns `CONDITIONAL_O2_LOCKED_BY_UNIT_TWO_CENTER_FLUX`; `python3 code/check_spinc_carrier_uniqueness.py` returns `CONDITIONAL_SPINC_CARRIER_SELECTED_OVER_ORDINARY_SPIN`; `python3 code/check_spinc_no_exotics_gap.py` returns `CONDITIONAL_NO_EXOTICS_WITH_COMPLETE_VECTORLIKE_GAP_CERTIFICATE`.  The whole route remains outside the submission baseline unless the conditional parent axioms and complete non-protected sector inventory are promoted.  No scan retuning and no submission-baseline change. |
+| Rare-B / `b -> s mu+ mu-` WET diagnostic bridge | Would test whether the existing PSLT kinetic layer weights can be connected to electroweak-penguin flavor observables through a weak-effective-theory bridge for `Delta C_9^mu`, `Delta C_10^mu`, and primed coefficients.  This is potentially more discriminating than the reference-normalized `H->mumu` map, but it needs a new quark flavor-changing overlap tensor `g_bs,N` or `Theta^q_{bs,N}` that is not part of A1--A5. | Reopen only as an optional diagnostic module after submission or by explicit user/reviewer request.  It must not be used as evidence that PSLT explains the LHCb anomaly, must not redefine the `H->mumu` visibility baseline, and must not add a new family/kernel/normalization object unless the no-retune gates below pass. |
 | PINN downstream operator-identification and quarantine gates | V3.2 now closes this negative: the canonical single-track artifact has `E<0` and four-turning bound geometry, while the PINN self-adjoint export has `E_k>0`, self-adjoint anchors have `n_negative_selfadjoint=0`, and only `63/147` action rows are central-barrier components.  V4 quarantine passes and V5 closes the sandbox as diagnostic-only. | Reopen only if a new parent-side operator theorem identifies the positive self-adjoint cylindrical spectrum with the legacy negative-energy WKB action object without changing the release baseline.  Otherwise use PINN only to nominate deterministic follow-up points or explicitly diagnostic companion plots. |
 | Research ingredients from `FAMILY_DECISION_TABLE.md` | Prolate, Lorentz, Schur/logdet conditional features, and non-monotone D/eta ideas remain useful signals. | Only with a genuinely new mechanism class and all existing guards preserved. |
+
+## Rare-B / `b -> s mu+ mu-` WET Diagnostic Queue
+
+This queue is explicitly outside the submission baseline.  It does not modify `paper_prd/main.tex`, the `H->mumu` reference-normalized diagnostic, the release maps, or the A1--A5 assumption wording.  The narrow question is whether the existing PSLT kinetic occupancy skeleton can be connected to weak-effective-theory flavor coefficients without retuning the baseline or inventing a new family object.
+
+| Gate | Status | Verification target | Deliverable |
+| --- | --- | --- | --- |
+| B0: claim and source firewall | `OPTIONAL / NOT STARTED` | Treat recent `B^0 -> K^{*0} mu+ mu-` / `b -> s mu+ mu-` reports as rare-B electroweak-penguin inputs, not as a Higgs result and not as PSLT validation.  Record the target as a diagnostic `Delta C_9^mu` bridge with long-distance charm and nonlocal-amplitude caveats. | Roadmap wording only until the line is explicitly opened. |
+| B1: WET convention and sign algebra | `OPTIONAL / NOT STARTED` | Freeze the weak effective Hamiltonian convention for `O_9^mu`, `O_10^mu`, `O_9'^mu`, and `O_10'^mu`; derive the tree-level mediator matching and verify the sign of `Delta C_9^mu`.  The normalization must specify whether `g_mu,V=(g_mu,L+g_mu,R)/2` or `(g_mu,L+g_mu,R)` is used and which `alpha_e` scale is adopted. | Proposed first script: `code/check_rare_b_wet_matching.py`; no manuscript change unless the diagnostic is opened. |
+| B2: no-new-family overlap gate | `OPTIONAL / NOT STARTED` | Test whether existing PSLT ingredients can define a quark flavor-changing current overlap `Theta^q_{bs,N}(D)` and muon-current overlap `Theta^mu_N(D)` without reusing the diagonal `H->mumu` visibility `B_N` as a flavor-changing object.  If `g_bs,N` cannot be derived from existing structures, close the route as diagnostic-only. | Proposed note: `paper/rare_b_wet_diagnostic_note.md`; no scan retuning. |
+| B3: coefficient-scale sanity check | `OPTIONAL / NOT STARTED` | Check whether the required scale `g_bs g_mu / M_X^2 = O(10^{-9}) GeV^{-2}` for `Delta C_9^mu = O(-1)` is naturally compatible with any non-retuned overlap normalization.  This is a magnitude gate, not a fit. | Proposed output: `output/rare_b_wet/rare_b_wet_matching_summary.csv`. |
+| B4: flavor-constraint firewall | `OPTIONAL / NOT STARTED` | Any candidate `Delta C_9^mu` map must also track `B_s` mixing, `B_s -> mu+ mu-`, `B -> K(*) nu nubar`, electron-channel analogues, `R_K`, `R_K*`, and CP-asymmetry constraints.  Real Wilson coefficients are the first safe diagnostic because the reported CP asymmetries are not a new-CP-phase target. | No adoption if a one-observable fit breaks standard flavor constraints. |
+| B5: stop/adoption rule | `ACTIVE GUARD` | If the only way to hit `Delta C_9^mu` is to fit a new `g_q g_mu / Lambda_flav^2` scale to the anomaly, label the route as a fitted flavor diagnostic, not a prediction.  No baseline adoption unless the quark-current overlap, scale, and constraints are fixed independently of the rare-B target. | No PRD-short baseline change; optional supplement only after explicit decision. |
 
 ## Protected `Spin^c` Bridge Verification Queue
 

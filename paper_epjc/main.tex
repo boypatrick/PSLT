@@ -1,0 +1,759 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------- packages --------
+\usepackage{amsmath,amssymb,bm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xurl}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+% -------- graphics path --------
+\graphicspath{{figures/}{../paper/}{../paper/figures/}{../output/}{../output/figures/}}
+
+% -------- macros --------
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\Order}{\mathcal{O}}
+\newcommand{\Mpl}{M_{\rm Pl}}
+\newcommand{\Rthree}{\mathcal{R}_3}
+\newcommand{\Dsep}{D_{\rm sep}}
+\setlength{\emergencystretch}{1.5em}
+\input{generated/prd_short_release_macros.tex}
+
+\title{\Large\bf \texorpdfstring{A Computable Spectral-Layer Occupancy Closure\\ on a Projected Two-Center Background}{A Computable Spectral-Layer Occupancy Closure on a Projected Two-Center Background}}
+
+\author{Bo-Yu Chen\\Independent Researcher}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present a compact, journal-facing version of the Projection Spectral Layer Theory (PSLT) as a conditional EFT-level spectral-layer occupancy closure on a fixed projected two-center conformal background.
+The central object is a normalized layer probability
+\(P_N=W_N/\sum_K W_K\), where \(W_N\) combines an effective phase-space weight \(g_N\), a rank-2 kinetic rate \(\Gamma_N\), and a visibility factor \(B_N\).
+The claim of this short article is deliberately calibrated: under the stated assumptions and finite audit domains, the release baseline shows first-three-layer occupancy concentration and a finite-domain no-fourth-bound-layer kinetic certificate.
+It is not presented as a complete EYMH derivation of exactly three Standard Model fermion generations, nor as an absolute Higgs-sector prediction.
+The long technical manuscript is treated as a supplementary audit companion containing the proposition chains, certificates, artifact registry, and negative/diagnostic branches.
+\end{abstract}
+
+\section{Introduction and Claim Calibration}
+\label{sec:intro}
+
+The Standard Model accommodates three fermion families but does not determine the family count dynamically.
+Traditional flavor, GUT, and compactification approaches organize charges or correlations among Yukawa couplings, while the family multiplicity is often supplied as an external input or model-building choice~\cite{Cabibbo1963,KobayashiMaskawa1973,MakiNakagawaSakata1962,FroggattNielsen1979,AltarelliFeruglio2010,Feruglio2015,CandelasHorowitzStromingerWitten1985,GeorgiGlashow1974,FritzschMinkowski1975,PatiSalam1974,GurseyRamondSikivie1976,Slansky1981}.
+PSLT asks a narrower question: whether a projected geometric spectral problem, combined with a specified EFT closure, yields a reproducible concentration of observable weight in the first three spectral layers.
+
+The reason for this narrower formulation is not merely rhetorical.
+In a conventional family-count theorem one would first identify a microscopic Hilbert space of chiral Standard Model fermions and then prove that its protected low-energy multiplicity is exactly three.
+The current PSLT release does not yet provide that theorem.
+Instead, it supplies a computable chain
+\begin{equation}
+    \Omega(\rho,z;\Dsep)
+    \longrightarrow
+    V_{\rm eff}
+    \longrightarrow
+    \{\omega_N,S_N\}
+    \longrightarrow
+    \Gamma_N
+    \longrightarrow
+    P_N,
+    \label{eq:chain_intro}
+\end{equation}
+and asks whether this chain is internally stable, reproducible, and physically interpretable under explicitly stated assumptions.
+The distinction matters for review: the evidence presented below supports the conditional closure in Eq.~\eqref{eq:chain_intro}; it should not be read as a hidden proof of an ultraviolet completion.
+
+\subsection{Relation to familiar flavor and unification programs}
+
+Gauge-unification frameworks such as \(SU(5)\), \(SO(10)\), Pati--Salam, \(E_6\), and related group-theoretic embeddings organize one Standard Model family into larger representations and constrain charge assignments.
+Flavor-symmetry models organize observed mixing patterns and Yukawa hierarchies.
+String or geometric compactifications can produce family multiplicities through topological data, but the multiplicity is then tied to the chosen compactification and bundle sector.
+The present work is deliberately orthogonal to those goals.
+It does not propose a new charge-unification group and does not replace CKM/PMNS flavor phenomenology.
+It proposes a projected spectral-layer occupancy model whose output is a normalized scan weight.
+
+This positioning is important because the same integer ``three'' can mean three different things:
+\begin{enumerate}
+    \item three unpaired chiral Standard Model families in a microscopic fermion theory;
+    \item three bound or low-lying layers of a projected scalar spectral operator;
+    \item first-three-layer dominance of a normalized EFT occupancy measure.
+\end{enumerate}
+Only the third item is the baseline claim of this short article.
+The first item is reserved for a future protected-index completion, and the second item is not generally true at every audited value of \(\Dsep\): the finite-domain kinetic proxy certifies absence of a fourth bound layer, not the existence of exactly three bound modes everywhere.
+
+This short article is designed to be read independently of the long technical companion.
+Its physics claims are:
+\begin{enumerate}
+    \item A fixed projected two-center conformal background defines a computable scalar spectral operator and WKB barrier data.
+    \item A rank-2 two-center kinetic closure maps localized spectral information into \(\Gamma_N(\Dsep,\eta)\).
+    \item A bounded effective phase-space weight \(g_N\), kinetic rate \(\Gamma_N\), and visibility factor \(B_N\) define the scan-level occupancy probability \(P_N\).
+    \item On the audited release grid, the first-three-layer occupancy ratio \(\Rthree=P_1+P_2+P_3\) is concentrated over most of the sampled domain, and the audited finite-volume kinetic proxy has no fourth bound layer.
+    \item The \(H\to\mu\mu\) map is a reference-normalized diagnostic target-region comparison to ATLAS data~\cite{ATLAS_Hmumu}, not a formal global likelihood, exclusion, or absolute Higgs-sector prediction.
+\end{enumerate}
+
+The manuscript does \emph{not} claim a full action-level theorem proving exactly three Standard Model generations.
+Optional protected \(\mathrm{Spin}^c\), DSS/Floquet, open-system, and static-width packages are treated as supplementary or diagnostic material unless explicitly promoted in a future revision.
+
+\subsection{What would falsify or weaken the present closure}
+
+Because the present article is a conditional computational closure, the relevant failure modes are also concrete.
+The release would be weakened if the live figure-generation path failed to reproduce the registered \(\Rthree\) fractions, if the WKB table failed the relation \(r_1=\exp(-2S_1)\), if the high-\(N\) kinetic audit supported a fourth bound layer on the certified domain, or if the reference-normalized Higgs diagnostic were described as an absolute prediction.
+Conversely, none of the following would by itself invalidate the present short claim: failure of the optional DSS/Floquet parent attempt, non-promotion of global static-width poles, or the absence of a complete protected \(\mathrm{Spin}^c\) family-count theorem.
+Those are future strengthening routes, not assumptions silently used in the release numbers.
+
+\section{Assumption Map}
+\label{sec:assumptions}
+
+All propositions in this short article are conditional on the assumptions in Table~\ref{tab:assumptions}.
+The purpose of the table is to prevent the short article from overclaiming what is actually established by the current audited chain.
+The assumptions are not hidden fit knobs.
+They are the boundary conditions under which the release figures, tables, and certificates are to be interpreted.
+In particular, the finite-domain numerical checks certify the closure \emph{inside} this assumption map; they do not erase the need for a future parent derivation or a future microscopic flavor theorem.
+
+\begin{table}[htbp]
+\centering
+\caption{Submission assumption map for the short-article manuscript.}
+\label{tab:assumptions}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\parbox[t]{0.11\textwidth}{\raggedright \textbf{Label}} & \parbox[t]{0.36\textwidth}{\raggedright \textbf{Assumption}} & \parbox[t]{0.40\textwidth}{\raggedright \textbf{Operational reading}} \\
+\midrule
+\parbox[t]{0.11\textwidth}{\raggedright A1} & \parbox[t]{0.36\textwidth}{\raggedright Fixed projected two-source conformal background.} & \parbox[t]{0.40\textwidth}{\raggedright The conformal factor is the projected Poisson/Plummer two-center solution; deriving the same source from a complete higher-dimensional EYMH parent is future work.} \\
+\parbox[t]{0.11\textwidth}{\raggedright A2} & \parbox[t]{0.36\textwidth}{\raggedright Spectral label as EFT generation-layer label.} & \parbox[t]{0.40\textwidth}{\raggedright The scalar spectral index \(N\) labels scan layers; it is not by itself a proof of SM chiral family multiplicity.} \\
+\parbox[t]{0.11\textwidth}{\raggedright A3} & \parbox[t]{0.36\textwidth}{\raggedright Effective phase-space weight.} & \parbox[t]{0.40\textwidth}{\raggedright The release \(g_N\) is a bounded two-dimensional phase-space/shell-volume profile with low-mode certificates and a high-\(N\) tail prescription; Cardy-style formulas are motivational comparators only.} \\
+\parbox[t]{0.11\textwidth}{\raggedright A4} & \parbox[t]{0.36\textwidth}{\raggedright Rank-2 kinetic closure.} & \parbox[t]{0.40\textwidth}{\raggedright The two-center localized subspace gives a coarse-grained \(2\times2\) growth matrix; strict static-width promotion remains local to its certified parent tube.} \\
+\parbox[t]{0.11\textwidth}{\raggedright A5} & \parbox[t]{0.36\textwidth}{\raggedright Reference-normalized visibility and Higgs diagnostic.} & \parbox[t]{0.40\textwidth}{\raggedright \(B_N\) and \(H\to\mu\mu\) define scan-level EFT/Wilson-inspired diagnostics, not absolute experimental validation.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Dependency of the claims on A1--A5}
+
+The role of each assumption can be summarized as follows.
+A1 fixes the operator domain and the geometry entering \(V_{\rm eff}\).
+A2 is the interpretive bridge allowing the scalar index \(N\) to be used as an EFT layer label in the scan.
+A3 supplies the effective shell weight multiplying each layer.
+A4 supplies the kinetic time scale through \(\Gamma_N\).
+A5 supplies the map from the occupancy variables to visible-sector diagnostics.
+Thus the baseline theorem schema is not
+\begin{equation}
+    S_{\rm EYMH}\Longrightarrow N_{\rm SM}=3,
+\end{equation}
+but rather
+\begin{equation}
+    \begin{aligned}
+    &\text{A1--A5 plus audited finite domains}
+    \\
+    &\quad\Longrightarrow
+    \text{first-three-layer concentration}
+    \\
+    &\qquad\text{and no audited fourth bound layer}.
+    \end{aligned}
+    \label{eq:claim_schema}
+\end{equation}
+
+This schema is intentionally conservative.
+For example, the optional protected \(\mathrm{Spin}^c\) route would replace part of A2 by an index-theoretic family-count theorem, while a future higher-dimensional EYMH derivation would replace A1 by a parent-side result.
+Neither replacement is assumed in the numbers reported here.
+
+\begin{table}[htbp]
+\centering
+\caption{Where each assumption enters the short-article chain.}
+\label{tab:assumption_dependency}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\textbf{Assumption} & \textbf{First equation affected} & \textbf{Failure mode if removed} \\
+\midrule
+A1 & \(\Omega\) and \(V_{\rm eff}\) in Eqs.~\eqref{eq:omega_twocenter}--\eqref{eq:veff} & No unique projected operator or WKB barrier. \\
+A2 & Layer label \(N\) in Eq.~\eqref{eq:spectral_operator} & Occupancy layers lose generation-layer interpretation. \\
+A3 & \(g_N\) in Eq.~\eqref{eq:master} & High-\(N\) weights are undefined. \\
+A4 & \(\Gamma_N\) in Eqs.~\eqref{eq:rank2_matrix}--\eqref{eq:wkb_action} & No kinetic formation clock for \(P_N\). \\
+A5 & \(B_N\) and Eq.~\eqref{eq:hmumu_pred} & No visible-sector diagnostic map. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Parameter-set taxonomy}
+
+Several numerical parameter sets appear in the long audit companion.
+They should not be read as interchangeable baselines.
+The short article uses the release scan only for the reported occupancy and Higgs-diagnostic numbers; other parameter sets are demonstrators, validation tests, or historical comparators.
+Table~\ref{tab:param_taxonomy} fixes this convention.
+
+\begin{table}[htbp]
+\centering
+\caption{Parameter-set taxonomy used when reading the short article together with the long supplement.}
+\label{tab:param_taxonomy}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\parbox[t]{0.22\textwidth}{\raggedright \textbf{Name}} & \parbox[t]{0.34\textwidth}{\raggedright \textbf{Role}} & \parbox[t]{0.32\textwidth}{\raggedright \textbf{How it may be used}} \\
+\midrule
+\parbox[t]{0.22\textwidth}{\raggedright Release baseline scan} &
+\parbox[t]{0.34\textwidth}{\raggedright The canonical source of the reported \(\Rthree\), no-fourth, and \(H\to\mu\mu\) diagnostic numbers.} &
+\parbox[t]{0.32\textwidth}{\raggedright Use for all headline release statements and figures in this short article.} \\
+\parbox[t]{0.22\textwidth}{\raggedright Demonstrator geometry} &
+\parbox[t]{0.34\textwidth}{\raggedright Transparent worked examples of the Plummer two-center operator and WKB action convention.} &
+\parbox[t]{0.32\textwidth}{\raggedright Use to inspect formulas and signs; do not substitute into release fractions.} \\
+\parbox[t]{0.22\textwidth}{\raggedright Physical-gap and finite-volume validation sets} &
+\parbox[t]{0.34\textwidth}{\raggedright Grid, Sturm/min--max, low-mode, and projector-coherence audits.} &
+\parbox[t]{0.32\textwidth}{\raggedright Use as certificates for finite-domain statements, not as separate phenomenological baselines.} \\
+\parbox[t]{0.22\textwidth}{\raggedright Legacy comparators and stress tests} &
+\parbox[t]{0.34\textwidth}{\raggedright Cardy-style weights, Yukawa visibility laws, CAP/ECS/static-width trials, DSS/Floquet trials, and other diagnostic branches.} &
+\parbox[t]{0.32\textwidth}{\raggedright Use only for uncertainty, failure-mode, or motivation discussion unless explicitly promoted.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Projected Two-Center Spectral Operator}
+\label{sec:operator}
+
+The geometric input is a static conformally flat background,
+\begin{equation}
+    g_{\mu\nu}(x)=\Omega^2(x)\eta_{\mu\nu},
+\end{equation}
+with two projected centers separated by \(\Dsep\).
+For a Plummer regulator \(\epsilon\), the working conformal factor is
+\begin{equation}
+    \Omega(\rho,z;\Dsep)=1+a\left(\frac{1}{r_+}+\frac{1}{r_-}\right),\qquad
+    r_\pm=\sqrt{\rho^2+(z\mp \Dsep/2)^2+\epsilon^2}.
+    \label{eq:omega_twocenter}
+\end{equation}
+It solves the projected Poisson equation with two smeared unit sources.
+Indeed, for
+\begin{equation}
+    f_\epsilon(r)=(r^2+\epsilon^2)^{-1/2},
+\end{equation}
+the three-dimensional radial Laplacian gives
+\begin{equation}
+    \nabla^2 f_\epsilon
+    =f_\epsilon''+\frac{2}{r}f_\epsilon'
+    =-\frac{3\epsilon^2}{(r^2+\epsilon^2)^{5/2}}.
+    \label{eq:plummer_laplacian}
+\end{equation}
+Thus, if
+\begin{equation}
+    \rho_\epsilon(r)=\frac{3\epsilon^2}{4\pi(r^2+\epsilon^2)^{5/2}},
+    \qquad
+    \int_{\mathbb R^3}\rho_\epsilon(r)\,\dd^3x=1,
+\end{equation}
+then Eq.~\eqref{eq:omega_twocenter} obeys
+\begin{equation}
+    \nabla^2\Omega
+    =
+    -4\pi a\left[
+        \rho_\epsilon(x-x_+)+\rho_\epsilon(x-x_-)
+    \right].
+    \label{eq:projected_poisson}
+\end{equation}
+
+\subsection{Conformal Klein--Gordon reduction}
+
+For a scalar test field with non-minimal curvature coupling~\cite{BirrellDavies1982}, the conformal reduction gives
+\begin{equation}
+    \left[-\nabla^2+V_{\rm eff}(x)\right]\psi_N=\omega_N^2\psi_N,
+    \label{eq:spectral_operator}
+\end{equation}
+where
+\begin{equation}
+    V_{\rm eff}=m_0^2\Omega^2+(1-6\xi)\Omega^{-1}\nabla^2\Omega.
+    \label{eq:veff}
+\end{equation}
+For completeness, we give the derivation because it is one of the few analytic steps in the release chain that should be easy to audit.
+Start from
+\begin{equation}
+    (\Box_g-m_0^2-\xi R)\Phi=0,\qquad
+    \Phi(t,x)=\ee^{-i\omega t}\Omega^{-1}(x)\psi(x).
+\end{equation}
+In four dimensions,
+\begin{equation}
+    \left(\Box_g-\frac{1}{6}R\right)\Omega^{-1}\psi
+    =
+    \Omega^{-3}\Box_\eta\psi.
+    \label{eq:conformal_identity}
+\end{equation}
+Substitution gives
+\begin{equation}
+    \Box_\eta\psi-m_0^2\Omega^2\psi+\left(\frac{1}{6}-\xi\right)\Omega^2R\psi=0.
+\end{equation}
+With a static \(\Omega\) and \(g_{\mu\nu}=\Omega^2\eta_{\mu\nu}\),
+\begin{equation}
+    R=-6\Omega^{-3}\nabla^2\Omega,
+\end{equation}
+and Eq.~\eqref{eq:veff} follows after separating the time dependence.
+This derivation is local and kinematic.
+It does not claim that Eq.~\eqref{eq:projected_poisson} has already been obtained as the unique solution of a complete backreacted EYMH system.
+
+\subsection{Finite-volume operator used in the audits}
+
+The numerical release works with finite-volume discretizations of Eq.~\eqref{eq:spectral_operator}.
+Abstractly, let \(\mathcal D_L\) be the audited cylindrical or one-dimensional projected domain and impose the boundary condition used by the relevant certificate.
+The finite-volume operator is
+\begin{equation}
+    H_{\Dsep}^{(L,h)}
+    =
+    -\Delta_h+V_{\rm eff}^{(h)}(\Dsep),
+    \label{eq:finite_volume_operator}
+\end{equation}
+with \(h\) denoting the mesh scale.
+Self-adjointness at the matrix level is not optional: it is what allows the spectral ordering, Sturm/min--max counting, and Riesz-projector transport statements later in the paper to be meaningful.
+The short article therefore reports only certified statements that can be traced back to a specified finite-volume operator chain.
+
+Figure~\ref{fig:dumbbell} shows the physical geometry behind this operator.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{two_center_conformal_dumbbell.png}
+    \caption{Projected two-center conformal dumbbell used as the fixed background in the release closure.  The figure is a physical visualization of Eq.~\eqref{eq:omega_twocenter}, not a new independent model input.}
+    \label{fig:dumbbell}
+\end{figure}
+
+\section{Rank-2 Occupancy Closure}
+\label{sec:closure}
+
+The scan observable is the normalized layer probability
+\begin{equation}
+    P_N(t_{\rm coh};\Dsep,\eta)=\frac{W_N(t_{\rm coh};\Dsep,\eta)}{\sum_K W_K(t_{\rm coh};\Dsep,\eta)},
+    \qquad
+    W_N=B_N g_N\left(1-\ee^{-\Gamma_N(\Dsep,\eta)t_{\rm coh}}\right).
+    \label{eq:master}
+\end{equation}
+The three factors have distinct roles: \(g_N\) is an effective phase-space weight, \(\Gamma_N\) is a kinetic formation rate, and \(B_N\) is a visibility weight.
+Figure~\ref{fig:master_closure} summarizes the short-article closure chain and the associated claim firewall.
+
+The normalization in Eq.~\eqref{eq:master} is conditional on the chosen scan window and on the set of layers retained in the denominator.
+It is therefore a relative occupancy measure, not a conserved probability derived from a microscopic unitary time evolution.
+For small \(\Gamma_Nt_{\rm coh}\), the kinetic factor behaves as
+\begin{equation}
+    1-\ee^{-\Gamma_Nt_{\rm coh}}
+    =
+    \Gamma_Nt_{\rm coh}+\Order((\Gamma_Nt_{\rm coh})^2),
+\end{equation}
+so the early-time ordering is controlled by \(B_Ng_N\Gamma_N\).
+For large \(\Gamma_Nt_{\rm coh}\), the same factor saturates and the ordering is controlled by \(B_Ng_N\).
+This simple interpolation is the reason \(t_{\rm coh}\) is treated as a closure parameter rather than as a directly measured lifetime.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\linewidth]{epjc_master_closure_diagram.png}
+    \caption{short-article closure diagram.  The figure exposes the intended logical order: fixed projected background, spectral operator, WKB/two-lobe data, rank-2 kinetics, effective phase-space and visibility weights, and finally the normalized occupancy \(P_N\).  The bottom line is part of the claim boundary: this is a conditional occupancy closure, not a complete first-principles proof of exactly three SM generations.}
+    \label{fig:master_closure}
+\end{figure}
+
+For the kinetic module, the two localized lobes define an effective rank-2 subspace.
+A representative closure matrix is
+\begin{equation}
+    M_N=r_N
+    \begin{pmatrix}
+        \Gamma_{N,a} & \chi\sqrt{\Gamma_{N,a}\Gamma_{N,b}}\\
+        \chi\sqrt{\Gamma_{N,a}\Gamma_{N,b}} & \Gamma_{N,b}
+    \end{pmatrix},
+    \qquad r_N=\eta\ee^{-2S_N}.
+    \label{eq:rank2_matrix}
+\end{equation}
+The formation rate is the positive part of the largest eigenvalue,
+\begin{equation}
+    \Gamma_N=\max\{0,\lambda_+(M_N)\}.
+\end{equation}
+Explicitly,
+\begin{equation}
+    \lambda_+(M_N)
+    =
+    r_N\left[
+    \frac{\Gamma_{N,a}+\Gamma_{N,b}}{2}
+    +
+    \sqrt{
+        \left(\frac{\Gamma_{N,a}-\Gamma_{N,b}}{2}\right)^2
+        +
+        \chi^2\Gamma_{N,a}\Gamma_{N,b}
+    }
+    \right].
+    \label{eq:rank2_lamplus}
+\end{equation}
+Thus \(M_N\) is positive semidefinite whenever \(r_N\ge0\), \(\Gamma_{N,a,b}\ge0\), and \(|\chi|\le1\).
+When \(\eta>1\), the factor \(r_N=\eta\ee^{-2S_N}\) should not be called a literal single-particle tunneling probability; it is a coarse-grained rate multiplier built from a WKB suppression and an effective amplitude scale.
+The WKB action entering \(r_N\) is
+\begin{equation}
+    S_N=\int_{\mathcal B_N}\sqrt{(V_{\rm eff}-\omega_N^2)_+}\,\dd s.
+    \label{eq:wkb_action}
+\end{equation}
+
+\subsection{Two-center reduction and Feshbach interpretation}
+
+The rank-2 form in Eq.~\eqref{eq:rank2_matrix} can be read as a controlled ansatz for a two-lobe collective subspace.
+Let \(P_N^{(2)}\) project onto the two localized lobe states \(|N,+\rangle\) and \(|N,-\rangle\), and let \(Q_N^{(2)}=1-P_N^{(2)}\).
+If the eliminated complement has a stable gap, a Feshbach--Schur reduction~\cite{Feshbach1958} gives an effective operator
+\begin{equation}
+    K_N^{\rm eff}(E)
+    =
+    P_N^{(2)}K_NP_N^{(2)}
+    -
+    P_N^{(2)}K_NQ_N^{(2)}
+    (Q_N^{(2)}K_NQ_N^{(2)}-E)^{-1}
+    Q_N^{(2)}K_NP_N^{(2)}.
+    \label{eq:feshbach_rank2}
+\end{equation}
+The release rank-2 matrix is the finite-dimensional closure of this structure after the diagonal lobe rates and off-diagonal coherent mixing are compressed to \(\Gamma_{N,a}\), \(\Gamma_{N,b}\), and \(\chi\).
+The short article does not require a full microscopic derivation of \(K_N\), but it does require the rank-2 compression to be stated as an assumption rather than smuggled in as a theorem.
+
+\subsection{Effective phase-space and visibility weights}
+
+The release \(g_N\) is best read as an effective shell-volume weight.
+Legacy Cardy-like or holographic motivations remain useful background, but the baseline number entering Eq.~\eqref{eq:master} is the bounded two-dimensional phase-space profile audited in the long companion.
+Likewise, \(B_N\) is a visibility factor: it controls how strongly an occupied layer appears in the chosen visible-sector diagnostic.
+The neutral choice \(B_{N>3}=1\) is important because it prevents the absence of a fourth visible layer from being engineered by a visibility cutoff.
+In the release interpretation, high-\(N\) control comes from the phase-space/tail prescription and the independent finite-domain kinetic certificate, not from hiding extra layers in \(B_N\).
+
+Figure~\ref{fig:spectral_layers} gives the physical picture: low layers are localized in the double-well structure, while higher layers approach the continuum.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{spectral_layers_double_well.png}
+    \caption{Spectral layers in a double-well topology.  The rank-2 matrix in Eq.~\eqref{eq:rank2_matrix} is the effective two-lobe description of localized modes, with WKB suppression controlled by Eq.~\eqref{eq:wkb_action}.}
+    \label{fig:spectral_layers}
+\end{figure}
+
+\section{Main Release Results}
+\label{sec:results}
+
+The long technical companion records the full numerical audit trail.
+The short-paper result set should be restricted to the minimal release observables in Table~\ref{tab:release_results}.
+The numerical values below are the current gated release values generated by \texttt{code/generate\_prd\_short\_figures.py} and recorded in \texttt{paper\_prd/figures/prd\_short\_release\_numbers.json}.
+\input{generated/prd_short_release_results_table.tex}
+
+\subsection{Reading the occupancy map}
+
+The release map in Fig.~\ref{fig:r3_map} should be read in two layers.
+The winner panel records which \(N\) has the largest normalized occupancy \(P_N\) at each sampled \((\Dsep,\eta)\).
+The \(\Rthree\) panel records the cumulative first-three weight
+\begin{equation}
+    \Rthree(\Dsep,\eta)=P_1(\Dsep,\eta)+P_2(\Dsep,\eta)+P_3(\Dsep,\eta).
+\end{equation}
+The headline statement is that \(\Rthree>0.90\) on \(\PRDShortRthreeGTNinety\) of the release grid and \(\Rthree>0.95\) on \(\PRDShortRthreeGTNinetyFive\) of the release grid.
+This is an occupancy statement.
+It does not assert that exactly three bound eigenvalues exist at every \(\Dsep\), nor does it assert that a microscopic chiral family-count theorem has been proved.
+
+\subsection{WKB consistency gate}
+
+The WKB action table is a useful example of the release philosophy.
+The displayed \(S_1\) and \(r_1\) values are accepted only if the canonical artifact satisfies
+\begin{equation}
+    \max_{\Dsep}\left|\log r_1(\Dsep)+2S_1(\Dsep)\right|
+    <\varepsilon_{\rm gate}
+    \label{eq:wkb_gate}
+\end{equation}
+after the same rounding conventions used in the paper.
+The current displayed residual is \(\PRDShortTableIIIResidual\), so the table is treated as a numerical-consistency pass rather than a hand-copied result.
+This gate is intentionally mundane.
+It protects the more interesting physics discussion from avoidable arithmetic drift between the manuscript, the generated table, and the release artifact.
+
+\subsection{No-fourth kinetic certificate}
+
+The no-fourth result is similarly narrow.
+The audited single-track kinetic proxy covers \(\PRDShortHighNDCount\) displayed \(\Dsep\) values, with negative bound-mode count ranging from \(\PRDShortHighNBoundMin\) to \(\PRDShortHighNBoundMax\), and with maximum fourth-layer support indicator \(\PRDShortHighNSupportsNFourMax\).
+The correct interpretation is
+\begin{equation}
+    \hbox{audited finite-volume kinetic proxy}
+    \Longrightarrow
+    \hbox{no certified fourth bound layer on the tested domain}.
+\end{equation}
+It is not
+\begin{equation}
+    \hbox{full continuum EYMH theory}
+    \Longrightarrow
+    \hbox{exactly three SM generations}.
+\end{equation}
+This wording preserves the useful threshold information without making the finite-volume certificate carry a claim it was not designed to prove.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\linewidth]{prd_r3_occupancy_map.png}
+    \caption{Release first-three-layer occupancy map.  The left panel shows the winner layer on the release scan, while the right panel shows \(\Rthree=P_1+P_2+P_3\).  The canonical Fig.~05 parity gate requires the live plotting path to reproduce the registered fractions before the map is accepted.}
+    \label{fig:r3_map}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.72\linewidth]{prd_no_fourth_bound_certificate.png}
+    \caption{Finite-domain no-fourth-bound-layer certificate.  The audited single-track kinetic proxy has one to three negative bound modes over the displayed \(D_{\rm sep}\) values, but no certified fourth bound layer.  This is a finite-domain statement, not a continuum theorem.}
+    \label{fig:no_fourth}
+\end{figure}
+
+\subsection{Numerical gate summary}
+
+The release gates used by the short article are deliberately simple enough to be repeated during submission packaging:
+\begin{table}[htbp]
+\centering
+\caption{Minimal executable gates behind the short-article results.}
+\label{tab:release_gates}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}p{0.24\textwidth} p{0.32\textwidth} p{0.33\textwidth}@{}}
+\toprule
+\textbf{Gate} & \textbf{Purpose} & \textbf{Short-paper role} \\
+\midrule
+WKB table gate & Checks Eq.~\eqref{eq:wkb_gate}. & Protects WKB table arithmetic. \\
+Fig.~05 parity gate & Compares live Fig.~05 path to registered fractions. & Protects \(\Rthree\) headline values. \\
+Short-article figure generator & Regenerates short-article figures and release macros. & Keeps table/figure numbers non-hand-entered. \\
+Short-article \LaTeX\ build & Compiles the submission draft. & Protects page count and layout. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Projector Coherence Along \texorpdfstring{\(\Dsep\)}{Dsep}}
+\label{sec:projector_transport}
+
+A useful optional strengthening is the spectral-projector transport theorem along \(\Dsep\).
+The point is modest but important: the low-mode labels \(N=1,2,3\) should be treated as transported projectors of a parameter-dependent operator family, not as unrelated pointwise eigenvectors.
+
+Let \(H(\Dsep)\) be the finite-volume self-adjoint operator associated with Eq.~\eqref{eq:spectral_operator}, after the coordinate pullback to a fixed reference domain.
+If a Riesz contour \(\Gamma_N(\Dsep)\) separates the \(N\)-th eigenvalue from the rest of the spectrum, then
+\begin{equation}
+    P_N(\Dsep)=\frac{1}{2\pi i}\oint_{\Gamma_N(\Dsep)}(z-H(\Dsep))^{-1}\,\dd z
+    \label{eq:riesz_projector}
+\end{equation}
+varies continuously, and differentiably when \(H'(\Dsep)\) exists in operator norm~\cite{Kato1995}.
+Differentiating the resolvent identity gives the standard expression
+\begin{equation}
+    P_N'(\Dsep)
+    =
+    \frac{1}{2\pi i}
+    \oint_{\Gamma_N(\Dsep)}
+    (z-H)^{-1}H'(\Dsep)(z-H)^{-1}
+    \,\dd z,
+    \label{eq:projector_derivative}
+\end{equation}
+where \(H=H(\Dsep)\) inside the integrand.
+If the contour has length \(|\Gamma_N|\) and distance at least \(\delta_N\) from the rest of the spectrum, then the elementary bound
+\begin{equation}
+    \|P_N'(\Dsep)\|
+    \le
+    \frac{|\Gamma_N|}{2\pi}
+    \frac{\|H'(\Dsep)\|}{\delta_N^2}
+    \label{eq:projector_derivative_bound}
+\end{equation}
+follows immediately.
+This bound is analytically clean but often numerically pessimistic because \(\|H'\|\) is dominated by the regulated Plummer core rather than by the low-mode matrix elements.
+
+The T-series audit therefore separates three levels.
+T2 gives an explicit analytic envelope for \(\|H'(\Dsep)\|\) from the derivative of the two-center \(\Omega\).
+T3a replaces the crude sup-norm route by weighted Hellmann--Feynman matrix elements in the low-mode sector.
+T3c performs the literal variable-box pullback \(z=L(\Dsep)y\), with \(L(\Dsep)=\Dsep/2+6\), so that changes of the axial box, kinetic scaling, measure, and boundary terms are tested on the same reference coordinate.
+The current T1--T3c package supports this statement on the audited finite grid, with the strongest numerical evidence coming from the literal variable-box coordinate pullback.
+This package remains optional; it does not change the baseline map.
+In the current certificate, T3a gives \(\max_n\|P'_n\|\le \PRDShortTThreeAMaxProjectorDerivative\), while T3c gives adjacent rank-one projector drift at most \(\PRDShortTThreeCRankOneDrift\), first-three cluster drift at most \(\PRDShortTThreeCClusterDrift\), and pullback-versus-G1 low-three eigenvalue drift at most \(\PRDShortTThreeCLambdaDrift\).
+
+The conceptual payoff is limited but useful.
+It allows the labels \(N=1,2,3\) to be discussed as coherent low-mode projectors along the scanned \(\Dsep\) interval, provided the certified gaps remain open.
+It does not convert the occupancy closure into a chiral family-count theorem, and it does not retune the release map.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.78\linewidth]{prd_projector_transport_margins.png}
+    \caption{Optional spectral-projector transport margins along \(D_{\rm sep}\).  The certified object is the actual variable-box coordinate-pullback projector step; the raw residual Davis--Kahan comparator remains intentionally conservative and is not used as the pass criterion.}
+    \label{fig:projector_transport}
+\end{figure}
+
+\section{Higgs-Diagnostic Map}
+\label{sec:higgs}
+
+The \(H\to\mu\mu\) comparison is retained only as a reference-normalized scan diagnostic.
+Schematically,
+\begin{equation}
+    \mu_{\mu\mu}^{\rm pred}(\Dsep,\eta)
+    =\left|\frac{C_{eH}^{\mu\mu}(\Dsep,\eta)}{C_{eH}^{\mu\mu}(\Dsep^0,\eta^0)}\right|^2
+    \left[\frac{\Gamma_{\rm tot}(\Dsep,\eta)}{\Gamma_{\rm tot}(\Dsep^0,\eta^0)}\right]^{-1}.
+    \label{eq:hmumu_pred}
+\end{equation}
+The reference point \((\Dsep^0,\eta^0)\) is a normalization convention, not an independent derivation of the absolute muon Yukawa coupling.
+We therefore describe this comparison as a reference-normalized diagnostic target region rather than experimental validation.
+
+The flavor-smearing object used in this diagnostic is a nearest-neighbor row-stochastic kernel,
+\begin{equation}
+    K_{\rm fl}(\epsilon_{\rm mix})
+    =
+    \begin{pmatrix}
+    1-\epsilon_{\rm mix} & \epsilon_{\rm mix} & 0\\
+    \epsilon_{\rm mix}/2 & 1-\epsilon_{\rm mix} & \epsilon_{\rm mix}/2\\
+    0 & \epsilon_{\rm mix} & 1-\epsilon_{\rm mix}
+    \end{pmatrix}.
+    \label{eq:flavor_kernel}
+\end{equation}
+It is not a projector:
+\begin{equation}
+    K_{\rm fl}^2\ne K_{\rm fl}
+\end{equation}
+for generic \(\epsilon_{\rm mix}\).
+Its eigenvalues are
+\begin{equation}
+    1,\qquad 1-\epsilon_{\rm mix},\qquad 1-2\epsilon_{\rm mix},
+\end{equation}
+so the release positivity guard keeps \(\epsilon_{\rm mix}\le1/2\).
+This wording is deliberately more prosaic than ``projector'' because the matrix is a bounded mixing kernel, not an idempotent projection onto a physical subspace.
+
+The observed ATLAS input is used only through the one-dimensional target value \(\mu_{\mu\mu}=1.4\pm0.4\)~\cite{ATLAS_Hmumu}.
+The short article therefore reports the fraction of scan points in a simple \(\chi^2\le4\) target band and the best grid value, but it does not claim a look-elsewhere-corrected exclusion, a global posterior, or an absolute Standard Model EFT Wilson coefficient measurement.
+For the fixed reference-normalization point used in the release figures, the target-band fraction is \(f(\chi^2_{\mu\mu}\le4)=\PRDShortHmumuChiTwoLeFour\).
+The long companion's reference-normalization audit varies the reference point over 53 anchors and gives
+\begin{equation}
+    f(\chi^2_{\mu\mu}\le4)\in[0.0333,\,0.2411].
+    \label{eq:hmumu_ref_sensitivity}
+\end{equation}
+This spread is not a failure of the diagnostic; it is the reason the short article treats Fig.~\ref{fig:hmumu_diag} as a target-region visualization rather than as experimental support for a unique absolute normalization.
+Turning Fig.~\ref{fig:hmumu_diag} into a genuine prediction would require an independent normalization theorem for \(C_{eH}^{\mu\mu}\), a nuisance-parameter model, and a pre-specified likelihood.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.78\linewidth]{prd_hmumu_diagnostic_map.png}
+    \caption{Reference-normalized \(H\to\mu\mu\) diagnostic map.  The color scale shows the clipped scan-level \(\chi^2_{\mu\mu}\), the contours mark \(\chi^2=1\) and \(\chi^2=4\), and the star marks the best grid point.  This figure visualizes a target region only; it is not a formal global likelihood or an absolute Higgs-sector prediction.}
+    \label{fig:hmumu_diag}
+\end{figure}
+
+\section{Limitations}
+\label{sec:limitations}
+
+The present closure has four front-facing limitations.
+First, the projected two-center background is fixed rather than derived from a complete EYMH parent.
+Second, the spectral label \(N\) is used as an EFT generation-layer label, while a protected chiral-family theorem remains a conditional companion route.
+Third, the no-fourth statement is finite-domain and operator-chain specific.
+Fourth, the Higgs comparison is reference-normalized and cannot be read as an absolute prediction without an independent normalization theorem.
+
+These limitations are not cosmetic; they define the honest boundary of the current release.
+They are also what makes the short article safer for journal review: the core claim is computational and conditional, while stronger first-principles completions are separated into the supplement or future work.
+
+\subsection{What would close the limitations}
+
+The first limitation would be closed by deriving Eq.~\eqref{eq:projected_poisson}, including the positive regulated two-source density and \(C^2\) control of \(\Omega\), from a parent variational or constraint problem.
+The \(C^2\) requirement is not optional because \(V_{\rm eff}\) depends on both \(\Omega\) and \(\nabla^2\Omega\).
+
+The second limitation would be closed by a bridge theorem identifying the current transported low-mode projectors with protected chiral fermion zero modes.
+The optional \(\mathrm{Spin}^c\) package gives a conditional template, but it requires geometric and no-exotics assumptions that are not consequences of the present scalar spectral closure.
+
+The third limitation would be closed by replacing the finite-volume no-fourth certificate with a continuum-tail and \(D_{\rm sep}\)-continuous theorem for the same operator class.
+That is a strengthening of the current certificate, not a reason to reopen high-\(N\) visibility damping or introduce a new family.
+
+The fourth limitation would be closed by an absolute matching theorem connecting the release \(C_{eH}^{\mu\mu}\) kernel to a standard SMEFT normalization without using the same \(H\to\mu\mu\) measurement as the reference point.
+Until such a theorem exists, the Higgs map remains a diagnostic.
+
+\section{Reproducibility and Supplement Map}
+\label{sec:repro}
+
+The long manuscript and repository artifacts serve as the technical companion for this short article.
+Before using the companion, the reader should distinguish the status tags in Table~\ref{tab:supplement_status_legend}.
+The intended topical split is then shown in Table~\ref{tab:supplement_map}.
+
+\begin{table}[htbp]
+\centering
+\caption{Status legend for the long technical companion.}
+\label{tab:supplement_status_legend}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\parbox[t]{0.21\textwidth}{\raggedright \textbf{Status tag}} & \parbox[t]{0.34\textwidth}{\raggedright \textbf{Meaning}} & \parbox[t]{0.33\textwidth}{\raggedright \textbf{Effect on the short-article claim}} \\
+\midrule
+\parbox[t]{0.21\textwidth}{\raggedright Baseline input} &
+\parbox[t]{0.34\textwidth}{\raggedright Used directly in the release numbers reported in the short article.} &
+\parbox[t]{0.33\textwidth}{\raggedright May support headline statements when A1--A5 and the stated audit domain apply.} \\
+\parbox[t]{0.21\textwidth}{\raggedright Certificate} &
+\parbox[t]{0.34\textwidth}{\raggedright Proves or numerically certifies a finite-domain statement used to guard the baseline.} &
+\parbox[t]{0.33\textwidth}{\raggedright Supports robustness, but does not automatically globalize the claim.} \\
+\parbox[t]{0.21\textwidth}{\raggedright Diagnostic / monitor} &
+\parbox[t]{0.34\textwidth}{\raggedright Checked for sensitivity, mechanism insight, or reviewer transparency but not propagated into the release baseline.} &
+\parbox[t]{0.33\textwidth}{\raggedright Cannot be used as a new input without a separate adoption gate.} \\
+\parbox[t]{0.21\textwidth}{\raggedright Negative result} &
+\parbox[t]{0.34\textwidth}{\raggedright A route that failed its adoption gate or was closed as too weak.} &
+\parbox[t]{0.33\textwidth}{\raggedright Preserved to prevent repeated searches and selective reporting.} \\
+\parbox[t]{0.21\textwidth}{\raggedright Future route} &
+\parbox[t]{0.34\textwidth}{\raggedright A possible strengthening, such as a parent derivation or protected-index completion.} &
+\parbox[t]{0.33\textwidth}{\raggedright Not assumed by the present release.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+\clearpage
+
+\begin{table}[htbp]
+\centering
+\caption{What remains in the short-article paper versus the long technical supplement.}
+\label{tab:supplement_map}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\parbox[t]{0.20\textwidth}{\raggedright \textbf{Topic}} & \parbox[t]{0.34\textwidth}{\raggedright \textbf{Short article}} & \parbox[t]{0.33\textwidth}{\raggedright \textbf{Supplement / technical companion}} \\
+\midrule
+\parbox[t]{0.20\textwidth}{\raggedright Projected operator} & \parbox[t]{0.34\textwidth}{\raggedright Definitions, conformal reduction, two-center figure.} & \parbox[t]{0.33\textwidth}{\raggedright Full derivation checks, table generation, numerical WKB audit.} \\
+\parbox[t]{0.20\textwidth}{\raggedright Occupancy closure} & \parbox[t]{0.34\textwidth}{\raggedright Master equation, rank-2 matrix, release result table.} & \parbox[t]{0.33\textwidth}{\raggedright Full proposition chains, branch histories, negative families.} \\
+\parbox[t]{0.20\textwidth}{\raggedright Open-system branch} & \parbox[t]{0.34\textwidth}{\raggedright One diagnostic-status sentence.} & \parbox[t]{0.33\textwidth}{\raggedright O-series exact-bridge certificates and reservoir audits.} \\
+\parbox[t]{0.20\textwidth}{\raggedright Static-width branch} & \parbox[t]{0.34\textwidth}{\raggedright Local-theorem status only.} & \parbox[t]{0.33\textwidth}{\raggedright CAP/ECS/Whittaker/DtN/S-series certificates.} \\
+\parbox[t]{0.20\textwidth}{\raggedright Protected \(\mathrm{Spin}^c\) route} & \parbox[t]{0.34\textwidth}{\raggedright Future/conditional route only.} & \parbox[t]{0.33\textwidth}{\raggedright V0--V6 conditional bridge package.} \\
+\parbox[t]{0.20\textwidth}{\raggedright DSS/Floquet route} & \parbox[t]{0.34\textwidth}{\raggedright Closed diagnostic/negative note only if mentioned.} & \parbox[t]{0.33\textwidth}{\raggedright D0--D3 feasibility and failure artifacts.} \\
+\parbox[t]{0.20\textwidth}{\raggedright Projector transport} & \parbox[t]{0.34\textwidth}{\raggedright Optional theorem sketch and final numerical margins.} & \parbox[t]{0.33\textwidth}{\raggedright T1--T3c scripts, CSVs, and detailed proof note.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A final submission package should include exact commit hashes, artifact checksums, and one-command reproduction instructions.
+The short article should cite the supplement by version rather than embedding long internal path names in prose.
+
+\subsection{Minimal reproduction commands}
+
+The short-article build is intentionally much smaller than the full technical companion.
+The minimal command sequence is:
+\begin{verbatim}
+cd paper_epjc
+latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+cd ..
+python3 code/check_table_iii_wkb_consistency.py
+python3 code/check_fig05_r3_parity.py
+\end{verbatim}
+The first command builds the EPJC-preparation PDF from the copied release figures, JSON, macros, and release table.
+The last two commands verify the canonical WKB relation \(r_1=\exp(-2S_1)\) and the live plot-generator parity for the \(\Rthree\) map.
+
+For the final submission archive, the generated PDF should be paired with the source commit, the release-number JSON, and checksums for the figures and generated TeX fragments.
+This is preferable to embedding long artifact paths inside the main text.
+The reader sees the physical statement in the article; the supplement and registry preserve the audit trail.
+
+\subsection{Data, code, and supplement availability}
+
+For an EPJC-style submission, the article should be accompanied by a versioned public repository archive containing the source commit, the generated release-number JSON, the figure-generation inputs, and the finite-domain certificate artifacts used in Tables~\ref{tab:release_results} and~\ref{tab:release_gates}.
+The long technical manuscript should be cited as a supplementary audit companion, not as a second independent baseline-claim paper.
+At final submission time, the repository archive should preferably be assigned a persistent identifier, and the manuscript should state that all numerical claims in the short article can be regenerated from the archived scripts and artifacts.
+This availability statement is part of the claim calibration: reproducibility supports the conditional closure, but it does not turn assumptions A1--A5 into first-principles theorems.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The short-article version of PSLT should be a calibrated computational-physics manuscript: it defines a projected two-center spectral problem, a rank-2 occupancy closure, and a release-grid diagnostic showing first-three-layer concentration under stated assumptions.
+The long paper remains valuable, but its role is technical certification rather than front-door exposition.
+This split gives reviewers a clear target: evaluate the conditional EFT closure and its reproducibility, without being asked to accept every optional mechanism branch as part of the main claim.
+
+The most important scientific output of the short version is therefore not a slogan about ``explaining three generations.''
+It is a reproducible map from a projected two-center operator to a normalized spectral-layer occupancy distribution, together with explicit gates showing where the current closure is robust and where it is only diagnostic.
+If future work promotes A1 or A2 to parent-side theorems, the same short-article architecture can absorb that strengthening.
+Until then, the defensible journal claim is the conditional one stated in Eq.~\eqref{eq:claim_schema}.
+
+\bibliographystyle{apsrev4-2}
+\bibliography{../paper/mainRefs}
+
+\end{document}

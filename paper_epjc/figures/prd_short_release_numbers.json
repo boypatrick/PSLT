@@ -1,0 +1,22 @@
+{
+  "R3_gt_0p90": 0.9272222222222222,
+  "R3_gt_0p95": 0.9263888888888889,
+  "T3a_max_projector_derivative_bound": 0.08409504588944938,
+  "T3c_max_cluster_sin_theta": 0.011846382262997952,
+  "T3c_max_pullback_lambda_diff_vs_g1_low3": 0.0008025737978598624,
+  "T3c_max_rank_one_projector_sin": 0.013928181522331775,
+  "highN_n_D": 8,
+  "highN_n_bound_max": 3,
+  "highN_n_bound_min": 1,
+  "highN_supports_N4_max": 0,
+  "hmumu_best_D": 4.0,
+  "hmumu_best_chi2": 2.2079807637329057e-05,
+  "hmumu_best_eta": 0.2644067796610169,
+  "hmumu_chi2_le_4_from_gn_gate": 0.15,
+  "hmumu_f_chi2_le_1": 0.0819444444444444,
+  "hmumu_f_chi2_le_4": 0.15,
+  "max_tail_prob": 1.0,
+  "mean_tail_prob": 0.0890926060351153,
+  "table_iii_max_log_residual_display": 0.00021820202962175017,
+  "winner_gt_3": 0.0002777777777777778
+}

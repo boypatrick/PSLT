@@ -213,10 +213,22 @@ def make_hmumu_map() -> None:
     ax.set_xlabel(r"$D_{\rm sep}$")
     ax.set_ylabel(r"$\eta$")
     ax.set_title(r"Reference-normalized $H\to\mu\mu$ diagnostic map")
-    ax.text(0.02, 0.04,
-            f"obs mu=1.4 +/- 0.4; f(chi2 <= 4)={pct(float(mumu['f_chi2_le_4']))}; best chi2={float(mumu['best_chi2']):.2e}",
-            transform=ax.transAxes, fontsize=9.5, color="white",
-            bbox=dict(facecolor="black", alpha=0.45, edgecolor="none", pad=4))
+    summary = (
+        r"$\mu_{\mu\mu}^{\rm obs}=1.4\pm0.4$" + "\n"
+        + rf"$f(\chi^2\leq 4)={tex_pct(float(mumu['f_chi2_le_4']), ndigits=2)}$" + "\n"
+        + rf"best $\chi^2={float(mumu['best_chi2']):.2e}$"
+    )
+    ax.text(
+        0.97,
+        0.96,
+        summary,
+        transform=ax.transAxes,
+        ha="right",
+        va="top",
+        fontsize=9.0,
+        color="#111111",
+        bbox=dict(facecolor="white", alpha=0.88, edgecolor="#333333", linewidth=0.6, pad=4),
+    )
     fig.tight_layout()
     fig.savefig(OUT / "prd_hmumu_diagnostic_map.png", dpi=220)
     plt.close(fig)

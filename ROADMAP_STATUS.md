@@ -1,6 +1,6 @@
 # PSLT Roadmap Status
 
-Last updated: 2026-06-02
+Last updated: 2026-06-03
 
 This file is the submission-facing roadmap freeze.  It replaces the earlier running audit log with a compact decision map: what is active for submission, what is closed and should not be reopened before submission, and what remains only as optional future strengthening.  Detailed provenance is preserved in `paper/main.tex`, `FAMILY_DECISION_TABLE.md`, `paper/artifact_status.csv`, `output/repro/artifact_status.csv`, and the git history.
 
@@ -43,7 +43,7 @@ Execution order for this track:
 
 Status: `ACTIVE / PREFERRED JOURNAL-TARGET PREPARATION TRACK`.
 
-The current preferred first-choice target is EPJC rather than Annals of Physics.  The EPJC-facing article is prepared in `paper_epjc/` as a separate folder so that journal-target wording, class/template choices, availability statements, and supplement policy can evolve without overwriting `paper_prd/`.
+The current preferred first-choice target is EPJC rather than Annals of Physics.  The EPJC-facing article is prepared in separate folders so that journal-target wording, class/template choices, availability statements, and supplement policy can evolve without overwriting `paper_prd/`: `paper_epjc/` remains the generic/article-class preparation copy, while `paper_epjc_official/` is the current Springer Nature official-template copy.
 
 Current state:
 
@@ -52,16 +52,18 @@ Current state:
 | EPJC folder | `CREATED` | `paper_epjc/` now contains an EPJC-facing copy of the short article, copied figures, generated release macros/table, and a target-specific README. |
 | Journal-neutral wording | `FIRST PASS DONE` | Reader-facing `PRD-short` / `Draft PRD` wording has been removed from `paper_epjc/main.tex`; remaining `PRDShort...` names are internal generated macro names only. |
 | Generic article build | `COMPILES / LOG CLEAN` | `paper_epjc/main.tex` builds under a generic `article` class to `paper_epjc/main.pdf` at 16 pages.  Current log has no unresolved citations/references, no underfull/overfull boxes, and the final rendered contact sheet passes the local visual spot-check. |
-| EPJC availability language | `DRAFTED` | `paper_epjc/main.tex` now includes a `Data, code, and supplement availability` subsection.  Final submission still needs a versioned archive/DOI decision. |
-| Generated assets | `COPIED + EPJC MASTER FIGURE` | The EPJC folder reuses copied release assets from `paper_prd/` where the figure content is canonical, and locally regenerates `figures/epjc_master_closure_diagram.png` with journal-neutral wording through `paper_epjc/generate_epjc_figures.py`.  Remaining `prd_*` filenames and `PRDShort...` macros are historical/internal names only.  If EPJC becomes final, either rename assets/macros or make the release figure generator output-directory aware. |
+| Official Springer/EPJC template build | `CREATED / COMPILES / VISUAL CHECKED` | `paper_epjc_official/main.tex` uses the downloaded Springer Nature December 2024 `sn-jnl` package with `\documentclass[pdflatex,sn-mathphys-num,iicol]{sn-jnl}`, inlines the release macros/table rather than using `\input`, copies figures into the official folder as `Fig*.png`, includes `sn-mathphys-num.bst`, and builds to `paper_epjc_official/main.pdf` at 15 pages.  Current checks: abstract length is 190 words, author affiliation location is set to `Hsinchu City, Taiwan`, no unresolved citations/references, no overfull hbox warnings, no exposed internal script paths or `PRDShort...` reader-facing tokens, and rendered page/contact-sheet spot-check passes.  The official folder also uses neutral `release_numbers.json` rather than the historical PRD-short JSON filename.  Remaining underfull hbox/vbox messages are Springer two-column line-breaking noise, not overlap/overflow defects.  The latest PDF pass also inspected pages 4 and 13 at full-page scale; the assumption/status tables are readable and not colliding.  After rechecking the EPJC/Springer author guidelines, the backmatter heading was aligned to `Statements and Declarations`, with a single-author contribution statement added. |
+| Logic / notation / data-source audit | `PASS / MICRO-CLEANUP DONE` | The EPJC official short稿 was reread against the current release artifacts after slimming.  The claim boundary remains conditional A1--A5 occupancy closure, not a hidden exactly-three SM-generation theorem.  Symbol checks found no misuse in the core chain `Omega -> V_eff -> {omega_N,S_N} -> Gamma_N -> P_N`; the row-stochastic flavor kernel and rank-2 eigenvalue formula were numerically rechecked; `python3 code/check_fig05_r3_parity.py` and `python3 code/check_table_iii_wkb_consistency.py` both pass.  Release-number JSON matches the canonical `R3`, high-`N`, and `H->mumu` summaries.  The ATLAS `H->mumu` input `mu=1.4+-0.4` and PRL 135, 231802 (2025) source were cross-checked against arXiv:2507.03595 / DOI `10.1103/gzdh-p159`; `paper_epjc_official/mainRefs.bib` now includes that DOI. |
+| EPJC availability language | `OFFICIAL-TEMPLATE CLEANUP DONE / GITHUB STATEMENT READY` | `paper_epjc_official/main.tex` now uses formal data/code/supplement-availability wording rather than internal TODO language.  It states that the short article will be paired with a versioned repository archive and a persistent archive identifier or temporary repository-version statement at final submission.  `paper_epjc_official/README.md` now records this as a pre-submission checklist rather than manuscript-facing prose.  The root `README.md` has also been retitled to the EPJC short-article claim boundary, adds `paper_epjc_official/` as the current official-template candidate, and downgrades the `H->mumu` statement to a reference-normalized diagnostic target region.  Final submission still needs the actual archive/DOI decision. |
+| Generated assets | `COPIED + EPJC MASTER FIGURE + FIG.7 CALLOUT CLEANED` | The EPJC folder reuses copied release assets from `paper_prd/` where the figure content is canonical, locally regenerates `figures/epjc_master_closure_diagram.png` with journal-neutral wording through `paper_epjc/generate_epjc_figures.py`, and now carries a refreshed `paper_epjc_official/Fig7_hmumu_diagnostic_map.png` with a readable white diagnostic-summary callout.  The official-template manuscript uses neutral `Release...` macros in its inlined table; remaining `prd_*` filenames and `PRDShort...` names in the PRD-track generator are historical/internal names only.  If EPJC becomes final, make the release figure generator output-directory aware before final archive packaging. |
 
 Execution order for this track:
 
 1. Keep `paper_epjc/` separate from `paper_prd/`; do not overwrite the PRD track while EPJC targeting is being tested.
 2. Keep table layout/underfull warnings clean and repeat the EPJC visual spot-check after any figure or template change.
-3. Decide whether to keep the generic `article` class for arXiv/pre-submission or migrate to the current Springer/EPJC template.
-4. Replace historical `prd_*` generated filenames/macros only after the EPJC text stabilizes or after the generator becomes output-directory aware.
-5. Add final code/data/supplement archive identifiers before submission.
+3. Keep `paper_epjc_official/` as the current EPJC submission-format candidate; keep `paper_epjc/` only as the generic/arXiv-safe fallback.
+4. Keep the official-template text free of exposed `prd_*` paths and `PRDShort...` tokens; only make the shared release figure generator output-directory aware if EPJC becomes the final archived source route.
+5. Add final code/data/supplement archive identifiers before submission, and flatten/zip the official source folder only after the final DOI/archive decision.
 
 ## Submission Blockers
 

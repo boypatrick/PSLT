@@ -1,0 +1,282 @@
+%% BioMed_Central_Bib_Style_v1.01
+
+\begin{thebibliography}{16}
+% BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
+\ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
+\ifx \binits  \undefined \def \binits#1{#1}\fi
+\ifx \bauthor  \undefined \def \bauthor#1{#1}\fi
+\ifx \batitle  \undefined \def \batitle#1{#1}\fi
+\ifx \bjtitle  \undefined \def \bjtitle#1{#1}\fi
+\ifx \bvolume  \undefined \def \bvolume#1{\textbf{#1}}\fi
+\ifx \byear  \undefined \def \byear#1{#1}\fi
+\ifx \bissue  \undefined \def \bissue#1{#1}\fi
+\ifx \bfpage  \undefined \def \bfpage#1{#1}\fi
+\ifx \blpage  \undefined \def \blpage #1{#1}\fi
+\ifx \burl  \undefined \def \burl#1{\textsf{#1}}\fi
+\ifx \doiurl  \undefined \def \doiurl#1{\url{https://doi.org/#1}}\fi
+\ifx \betal  \undefined \def \betal{\textit{et al.}}\fi
+\ifx \binstitute  \undefined \def \binstitute#1{#1}\fi
+\ifx \binstitutionaled  \undefined \def \binstitutionaled#1{#1}\fi
+\ifx \bctitle  \undefined \def \bctitle#1{#1}\fi
+\ifx \beditor  \undefined \def \beditor#1{#1}\fi
+\ifx \bpublisher  \undefined \def \bpublisher#1{#1}\fi
+\ifx \bbtitle  \undefined \def \bbtitle#1{#1}\fi
+\ifx \bedition  \undefined \def \bedition#1{#1}\fi
+\ifx \bseriesno  \undefined \def \bseriesno#1{#1}\fi
+\ifx \blocation  \undefined \def \blocation#1{#1}\fi
+\ifx \bsertitle  \undefined \def \bsertitle#1{#1}\fi
+\ifx \bsnm \undefined \def \bsnm#1{#1}\fi
+\ifx \bsuffix \undefined \def \bsuffix#1{#1}\fi
+\ifx \bparticle \undefined \def \bparticle#1{#1}\fi
+\ifx \barticle \undefined \def \barticle#1{#1}\fi
+\bibcommenthead
+\ifx \bconfdate \undefined \def \bconfdate #1{#1}\fi
+\ifx \botherref \undefined \def \botherref #1{#1}\fi
+\ifx \url \undefined \def \url#1{\textsf{#1}}\fi
+\ifx \bchapter \undefined \def \bchapter#1{#1}\fi
+\ifx \bbook \undefined \def \bbook#1{#1}\fi
+\ifx \bcomment \undefined \def \bcomment#1{#1}\fi
+\ifx \oauthor \undefined \def \oauthor#1{#1}\fi
+\ifx \citeauthoryear \undefined \def \citeauthoryear#1{#1}\fi
+\ifx \endbibitem  \undefined \def \endbibitem {}\fi
+\ifx \bconflocation  \undefined \def \bconflocation#1{#1}\fi
+\ifx \arxivurl  \undefined \def \arxivurl#1{\textsf{#1}}\fi
+\csname PreBibitemsHook\endcsname
+
+%%% 1
+\bibitem[\protect\citeauthoryear{Cabibbo}{1963}]{Cabibbo1963}
+\begin{barticle}
+\bauthor{\bsnm{Cabibbo}, \binits{N.}}:
+\batitle{Unitary symmetry and leptonic decays}.
+\bjtitle{Phys. Rev. Lett.}
+\bvolume{10},
+\bfpage{531}--\blpage{533}
+(\byear{1963})
+\doiurl{10.1103/PhysRevLett.10.531}
+\end{barticle}
+\endbibitem
+
+%%% 2
+\bibitem[\protect\citeauthoryear{Kobayashi and
+  Maskawa}{1973}]{KobayashiMaskawa1973}
+\begin{barticle}
+\bauthor{\bsnm{Kobayashi}, \binits{M.}},
+\bauthor{\bsnm{Maskawa}, \binits{T.}}:
+\batitle{{CP}-violation in the renormalizable theory of weak interaction}.
+\bjtitle{Prog. Theor. Phys.}
+\bvolume{49},
+\bfpage{652}--\blpage{657}
+(\byear{1973})
+\doiurl{10.1143/PTP.49.652}
+\end{barticle}
+\endbibitem
+
+%%% 3
+\bibitem[\protect\citeauthoryear{Maki et~al.}{1962}]{MakiNakagawaSakata1962}
+\begin{barticle}
+\bauthor{\bsnm{Maki}, \binits{Z.}},
+\bauthor{\bsnm{Nakagawa}, \binits{M.}},
+\bauthor{\bsnm{Sakata}, \binits{S.}}:
+\batitle{Remarks on the unified model of elementary particles}.
+\bjtitle{Prog. Theor. Phys.}
+\bvolume{28},
+\bfpage{870}--\blpage{880}
+(\byear{1962})
+\doiurl{10.1143/PTP.28.870}
+\end{barticle}
+\endbibitem
+
+%%% 4
+\bibitem[\protect\citeauthoryear{Froggatt and
+  Nielsen}{1979}]{FroggattNielsen1979}
+\begin{barticle}
+\bauthor{\bsnm{Froggatt}, \binits{C.D.}},
+\bauthor{\bsnm{Nielsen}, \binits{H.B.}}:
+\batitle{Hierarchy of quark masses, cabibbo angles and {CP} violation}.
+\bjtitle{Nucl. Phys. B}
+\bvolume{147},
+\bfpage{277}--\blpage{298}
+(\byear{1979})
+\doiurl{10.1016/0550-3213(79)90316-X}
+\end{barticle}
+\endbibitem
+
+%%% 5
+\bibitem[\protect\citeauthoryear{Altarelli and
+  Feruglio}{2010}]{AltarelliFeruglio2010}
+\begin{barticle}
+\bauthor{\bsnm{Altarelli}, \binits{G.}},
+\bauthor{\bsnm{Feruglio}, \binits{F.}}:
+\batitle{Discrete flavor symmetries and models of neutrino mixing}.
+\bjtitle{Rev. Mod. Phys.}
+\bvolume{82},
+\bfpage{2701}--\blpage{2729}
+(\byear{2010})
+\doiurl{10.1103/RevModPhys.82.2701}
+{\href{https://arxiv.org/abs/1002.0211}{{arXiv:1002.0211}}}
+{[hep-ph]}
+\end{barticle}
+\endbibitem
+
+%%% 6
+\bibitem[\protect\citeauthoryear{Feruglio}{2015}]{Feruglio2015}
+\begin{barticle}
+\bauthor{\bsnm{Feruglio}, \binits{F.}}:
+\batitle{Pieces of the flavour puzzle}.
+\bjtitle{Eur. Phys. J. C}
+\bvolume{75},
+\bfpage{373}
+(\byear{2015})
+\doiurl{10.1140/epjc/s10052-015-3576-5}
+{\href{https://arxiv.org/abs/1503.04071}{{arXiv:1503.04071}}}
+{[hep-ph]}
+\end{barticle}
+\endbibitem
+
+%%% 7
+\bibitem[\protect\citeauthoryear{Candelas
+  et~al.}{1985}]{CandelasHorowitzStromingerWitten1985}
+\begin{barticle}
+\bauthor{\bsnm{Candelas}, \binits{P.}},
+\bauthor{\bsnm{Horowitz}, \binits{G.T.}},
+\bauthor{\bsnm{Strominger}, \binits{A.}},
+\bauthor{\bsnm{Witten}, \binits{E.}}:
+\batitle{Vacuum configurations for superstrings}.
+\bjtitle{Nucl. Phys. B}
+\bvolume{258},
+\bfpage{46}--\blpage{74}
+(\byear{1985})
+\doiurl{10.1016/0550-3213(85)90602-9}
+\end{barticle}
+\endbibitem
+
+%%% 8
+\bibitem[\protect\citeauthoryear{Georgi and Glashow}{1974}]{GeorgiGlashow1974}
+\begin{barticle}
+\bauthor{\bsnm{Georgi}, \binits{H.}},
+\bauthor{\bsnm{Glashow}, \binits{S.L.}}:
+\batitle{Unity of all elementary-particle forces}.
+\bjtitle{Phys. Rev. Lett.}
+\bvolume{32},
+\bfpage{438}--\blpage{441}
+(\byear{1974})
+\doiurl{10.1103/PhysRevLett.32.438}
+\end{barticle}
+\endbibitem
+
+%%% 9
+\bibitem[\protect\citeauthoryear{Fritzsch and
+  Minkowski}{1975}]{FritzschMinkowski1975}
+\begin{barticle}
+\bauthor{\bsnm{Fritzsch}, \binits{H.}},
+\bauthor{\bsnm{Minkowski}, \binits{P.}}:
+\batitle{Unified interactions of leptons and hadrons}.
+\bjtitle{Ann. Phys.}
+\bvolume{93},
+\bfpage{193}--\blpage{266}
+(\byear{1975})
+\doiurl{10.1016/0003-4916(75)90211-0}
+\end{barticle}
+\endbibitem
+
+%%% 10
+\bibitem[\protect\citeauthoryear{Pati and Salam}{1974}]{PatiSalam1974}
+\begin{barticle}
+\bauthor{\bsnm{Pati}, \binits{J.C.}},
+\bauthor{\bsnm{Salam}, \binits{A.}}:
+\batitle{Lepton number as the fourth color}.
+\bjtitle{Phys. Rev. D}
+\bvolume{10},
+\bfpage{275}--\blpage{289}
+(\byear{1974})
+\doiurl{10.1103/PhysRevD.10.275} .
+\bcomment{Erratum: Phys. Rev. D 11, 703 (1975)}
+\end{barticle}
+\endbibitem
+
+%%% 11
+\bibitem[\protect\citeauthoryear{G{\"u}rsey
+  et~al.}{1976}]{GurseyRamondSikivie1976}
+\begin{barticle}
+\bauthor{\bsnm{G{\"u}rsey}, \binits{F.}},
+\bauthor{\bsnm{Ramond}, \binits{P.}},
+\bauthor{\bsnm{Sikivie}, \binits{P.}}:
+\batitle{A universal gauge theory model based on {E6}}.
+\bjtitle{Phys. Lett. B}
+\bvolume{60},
+\bfpage{177}--\blpage{180}
+(\byear{1976})
+\doiurl{10.1016/0370-2693(76)90417-2}
+\end{barticle}
+\endbibitem
+
+%%% 12
+\bibitem[\protect\citeauthoryear{Slansky}{1981}]{Slansky1981}
+\begin{barticle}
+\bauthor{\bsnm{Slansky}, \binits{R.}}:
+\batitle{Group theory for unified model building}.
+\bjtitle{Phys. Rep.}
+\bvolume{79},
+\bfpage{1}--\blpage{128}
+(\byear{1981})
+\doiurl{10.1016/0370-1573(81)90092-2}
+\end{barticle}
+\endbibitem
+
+%%% 13
+\bibitem[\protect\citeauthoryear{{ATLAS Collaboration}}{2025}]{ATLAS_Hmumu}
+\begin{barticle}
+\bauthor{\bsnm{{ATLAS Collaboration}}}:
+\batitle{Evidence for the dimuon decay of the higgs boson with the atlas
+  detector}.
+\bjtitle{Phys. Rev. Lett.}
+\bvolume{135},
+\bfpage{231802}
+(\byear{2025})
+\doiurl{10.1103/gzdh-p159}
+{\href{https://arxiv.org/abs/2507.03595}{{arXiv:2507.03595}}}
+{[hep-ex]}
+\end{barticle}
+\endbibitem
+
+%%% 14
+\bibitem[\protect\citeauthoryear{Birrell and Davies}{1982}]{BirrellDavies1982}
+\begin{bbook}
+\bauthor{\bsnm{Birrell}, \binits{N.D.}},
+\bauthor{\bsnm{Davies}, \binits{P.C.W.}}:
+\bbtitle{Quantum Fields in Curved Space}.
+\bsertitle{Cambridge Monographs on Mathematical Physics}.
+\bpublisher{Cambridge University Press},
+\blocation{Cambridge}
+(\byear{1982}).
+\doiurl{10.1017/CBO9780511622632}
+\end{bbook}
+\endbibitem
+
+%%% 15
+\bibitem[\protect\citeauthoryear{Feshbach}{1958}]{Feshbach1958}
+\begin{barticle}
+\bauthor{\bsnm{Feshbach}, \binits{H.}}:
+\batitle{Unified theory of nuclear reactions}.
+\bjtitle{Ann. Phys.}
+\bvolume{5},
+\bfpage{357}--\blpage{390}
+(\byear{1958})
+\doiurl{10.1016/0003-4916(58)90007-1}
+\end{barticle}
+\endbibitem
+
+%%% 16
+\bibitem[\protect\citeauthoryear{Kato}{1995}]{Kato1995}
+\begin{bbook}
+\bauthor{\bsnm{Kato}, \binits{T.}}:
+\bbtitle{Perturbation Theory for Linear Operators},
+\bedition{2}nd edn.
+\bpublisher{Springer},
+\blocation{Berlin}
+(\byear{1995}).
+\doiurl{10.1007/978-3-642-66282-9}
+\end{bbook}
+\endbibitem
+
+\end{thebibliography}

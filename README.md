@@ -1,17 +1,21 @@
-# PSLT Research Bundle (2026-02-01)
+# PSLT Research Bundle (EPJC submission track, 2026-06-06)
 
-**Title:** The Projection Spectral Layer Theory (PSLT): A Rank-2 Computable Closure for Spectral-Layer Occupancy and Higgs Signal Strength
+**Title:** A Computable Spectral-Layer Occupancy Closure on a Projected Two-Center Background
 **Author:** Bo-Yu Chen (Independent Researcher)
-**Date:** February 1, 2026
+**Date:** June 6, 2026
 
-This bundle contains the complete source code, data, and manuscript for the PSLT verification project.
+This bundle contains the source code, data, long technical companion, and EPJC official-template short manuscript for the PSLT verification project.
+The current submission-facing claim is deliberately conditional: under the stated A1--A5 assumptions and finite audit domains, the release baseline reports first-three-layer occupancy concentration and a finite-domain no-fourth-bound-layer certificate.
+The bundle should not be read as a complete first-principles proof of exactly three Standard Model fermion generations or as an absolute Higgs-sector prediction.
 
 **Reproducibility badge:** clone -> one command -> packaged Fig/Table artifacts with manifest/checksums.
 
-**Submission-freeze status (2026-04-29):** `ROADMAP_STATUS.md` is now the authoritative compact roadmap for submission.  The long module notes below preserve audit provenance; historical phrases such as "next narrowing step" should not be read as active requests to open new support sets, theorem objects, backends, or normalization families unless the item is explicitly listed as active in `ROADMAP_STATUS.md`.
+**Submission-freeze status (2026-06-06):** `ROADMAP_STATUS.md` is the authoritative compact roadmap for submission.  The current EPJC-format candidate is in `paper_epjc_official/`; the long module notes below preserve audit provenance.  Historical phrases such as "next narrowing step" should not be read as active requests to open new support sets, theorem objects, backends, or normalization families unless the item is explicitly listed as active in `ROADMAP_STATUS.md`.
 
 ## Directory Structure
-- `paper/`: Contains the main Latex manuscript (`main.tex`).
+- `paper_epjc_official/`: Current EPJC/Springer official-template short manuscript candidate (`main.tex`, `main.pdf`, copied figures, release-number JSON, and template files).
+- `paper_prd/`: Short-manuscript development track and compact-figure source assets.
+- `paper/`: Long technical manuscript / supplementary audit companion (`main.tex`).
 - `code/`: Contains the Python verification scripts.
   - `pslt_lib.py`: The core unified library (Kinetics, Visibility, Parameters).
   - `generate_plots.py`: Main plotting script for phase maps and H->mumu proxy plots.
@@ -51,6 +55,16 @@ If you also want to compile `paper/main.tex` in the same command:
 ```bash
 bash scripts/repro/reproduce_paper.sh --with-paper
 ```
+
+### 2b. EPJC Official-Template Short Manuscript
+The current EPJC-format candidate is built from the official Springer Nature template folder:
+
+```bash
+cd paper_epjc_official
+latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+```
+
+The generated PDF is `paper_epjc_official/main.pdf`.
 
 ### 3. Package Existing Outputs Only
 If you already ran scripts manually and only want standardized packaging:
@@ -113,7 +127,7 @@ The hygiene check verifies that the generated registries match the builder, all 
 
 ## Key Results
 - **First-Three-Layer Occupancy Stability:** In the current full-grid action-derived profile baseline, the release map gives $\mathcal{R}_3>90\%$ over **92.7%** of the sampled $(D,\eta)$ grid, with $\mathcal{R}_3>95\%$ over **92.6%** of the same grid.  This is a baseline spectral-layer occupancy statement, not a full action-level proof of exactly three SM fermion generations.
-- **H→μμ EFT/Wilson-Matched Compatibility (UV+LL-RG baseline):** The illustrative acceptance region ($\chi^2<4$) occupies about **15.0%** of the sampled grid, with best grid point near $(D,\eta)\approx(4.00,0.264)$ and $\chi^2\approx 2.21\times10^{-5}$.
+- **H→μμ reference-normalized diagnostic target region:** The illustrative target band ($\chi^2<4$) occupies about **15.0%** of the sampled grid, with best grid point near $(D,\eta)\approx(4.00,0.264)$ and $\chi^2\approx 2.21\times10^{-5}$. This is a scan-level diagnostic, not a formal global likelihood, exclusion, or absolute Higgs-sector prediction.
 - **Fully Normalized EFT Visibility + High-$N$ Stability:** Baseline visibility now uses `b_mode=eft_operator_norm`, i.e. operator-normalized layer weights built from overlap-extracted flavor-layer couplings and mediator scales with finite one-loop + LL-RG normalization; legacy `overlap_2d`/Yukawa visibility remains available as comparator. Baseline `g_mode=fp_2d_full` uses phase-space normalization (no Cardy anchor) plus bounded low-$N$ microcanonical windowing and controlled high-$N$ tail prescription.
 - **High-$N$ Decoupling Interpretation:** The current baseline does not remove higher layers by hand through the visibility block: `B_{N>3}=1` is a neutral saturation rather than an extra damping factor. In the audited action-derived single-track benchmark, no tested `D` point supports a fourth bound level (`/Users/boypatrick/codex/PSLT_quantam/output/highN_decoupling/highN_decoupling_single_track_summary.csv`), while the companion one-dimensional kinetic proxy keeps `E_4=\omega_4^2-m_0^2>0` across the tested window and a forced quasi-channel continuation does not generate an additional `\Gamma_4` hierarchy (`/Users/boypatrick/codex/PSLT_quantam/output/highN_decoupling/highN_decoupling_superrad_1d_summary.csv`). The paper now packages this as Proposition N1 / Corollary N1: a finite-volume Sturm/min-max certificate gives max negative-mode count 2 on the audited 1D chain, while the independent single-track benchmark has max bound count 3 and never supports N=4; remaining work is only continuum-tail / D-continuous interpolation strengthening.
 

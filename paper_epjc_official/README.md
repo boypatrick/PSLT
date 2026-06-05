@@ -22,6 +22,7 @@ The downloaded official package is kept as `springer-nature-latex-template.zip`,
 ## Final pre-submission checklist
 
 - Corresponding-author email is set in `main.tex`; the affiliation location is set to Hsinchu City, Taiwan.
-- Replace the data/code placeholder with a Zenodo/OSF/GitHub archive DOI.
+- Current temporary repository-version statement: `https://github.com/boypatrick/PSLT`, tag `epjc-submission-v2`.
+- Replace the temporary repository-version statement with a Zenodo/OSF/GitHub archive DOI if a persistent archive is minted before or during final submission.
 - If this becomes the final source archive, make the shared release-figure generator output-directory aware.
 - Re-run visual spot-check after any figure or table edits.

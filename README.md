@@ -11,6 +11,7 @@ The bundle should not be read as a complete first-principles proof of exactly th
 **Reproducibility badge:** clone -> one command -> packaged Fig/Table artifacts with manifest/checksums.
 
 **Submission-freeze status (2026-06-06):** `ROADMAP_STATUS.md` is the authoritative compact roadmap for submission.  The current EPJC-format candidate is in `paper_epjc_official/`; the long module notes below preserve audit provenance.  Historical phrases such as "next narrowing step" should not be read as active requests to open new support sets, theorem objects, backends, or normalization families unless the item is explicitly listed as active in `ROADMAP_STATUS.md`.
+Current temporary repository-version tag for the EPJC package: `epjc-submission-v2`.
 
 ## Directory Structure
 - `paper_epjc_official/`: Current EPJC/Springer official-template short manuscript candidate (`main.tex`, `main.pdf`, copied figures, release-number JSON, and template files).

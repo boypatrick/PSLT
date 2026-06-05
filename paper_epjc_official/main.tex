@@ -806,9 +806,13 @@ The reader sees the physical statement in the article; the supplement and regist
 
 \subsection{Data, code, and supplement availability}
 
-For an EPJC-style submission, the article will be accompanied by a versioned public repository archive containing the source commit, the generated release-number JSON, the figure-generation inputs, and the finite-domain certificate artifacts used in Tables~\ref{tab:release_results} and~\ref{tab:release_gates}.
+For an EPJC-style submission, the article is accompanied by the public repository snapshot
+\begin{center}
+\url{https://github.com/boypatrick/PSLT},\qquad tag \texttt{epjc-submission-v2}.
+\end{center}
+This snapshot contains the source commit, the generated release-number JSON, the figure-generation inputs, and the finite-domain certificate artifacts used in Tables~\ref{tab:release_results} and~\ref{tab:release_gates}.
 The long technical manuscript is cited as a supplementary audit companion, not as a second independent baseline-claim paper.
-At final submission time, the repository archive will be assigned a persistent identifier or, if the journal upload occurs before that archive is minted, the manuscript will carry a temporary repository-version statement to be replaced by the archive identifier.
+If a Zenodo/OSF archive is minted after journal upload, its persistent identifier should replace this temporary repository-version statement.
 All numerical claims in the short article are intended to be regenerable from the archived scripts and artifacts.
 This availability statement is part of the claim calibration: reproducibility supports the conditional closure, but it does not turn assumptions A1--A5 into first-principles theorems.
 
@@ -840,7 +844,7 @@ Bo-Yu Chen is the sole author and is responsible for the conception, calculation
 The author declares no competing interests.
 
 \noindent\textbf{Data and code availability.}
-The numerical claims in this short article are to be paired with a versioned public repository archive containing the source commit, release-number JSON, figure-generation scripts, generated figures, and finite-domain certificate artifacts.  A persistent archive identifier or temporary repository-version statement will be inserted at final submission.
+The numerical claims in this short article are paired with the public PSLT repository snapshot (\href{https://github.com/boypatrick/PSLT}{GitHub repository}, tag \texttt{epjc-submission-v2}) containing the source commit, release-number JSON, figure-generation scripts, generated figures, and finite-domain certificate artifacts.  If a persistent Zenodo/OSF archive is minted after journal upload, the archive DOI should replace this temporary repository-version statement.
 
 \noindent\textbf{Supplementary information.}
 The long technical manuscript is intended as a supplementary audit companion containing derivation checks, proposition chains, certificates, artifact registries, and negative or diagnostic branches.  It should not be read as a second independent baseline-claim paper.
